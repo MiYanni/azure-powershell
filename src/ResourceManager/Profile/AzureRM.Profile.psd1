@@ -106,7 +106,8 @@ CmdletsToExport = 'Disable-AzureRmDataCollection', 'Disable-AzureRmContextAutosa
                'Select-AzureRmContext', 'Rename-AzureRmContext', 
                'Remove-AzureRmContext', 'Clear-AzureRmContext', 
                'Remove-AzureRmAccount', 'Get-AzureRmContextAutosaveSetting', 
-               'Set-AzureRmDefault', 'Get-AzureRmDefault', 'Clear-AzureRmDefault'
+               'Set-AzureRmDefault', 'Get-AzureRmDefault', 'Clear-AzureRmDefault',
+			   'Invoke-AzureRmRestMethod'
 
 # Variables to export from this module
 # VariablesToExport = @()
