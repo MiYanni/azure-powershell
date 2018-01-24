@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Commands.Profile
         Patch
     }
 
-    public static class WebRequestMethodExtensions
+    internal static class WebRequestMethodExtensions
     {
         private static readonly HttpMethod HttpMethodMerge = new HttpMethod("MERGE");
         private static readonly HttpMethod HttpMethodPatch = new HttpMethod("PATCH");

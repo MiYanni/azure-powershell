@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -624,6 +624,42 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         internal static string ReplaceContextQuery {
             get {
                 return ResourceManager.GetString("ReplaceContextQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URI is missing query value &apos;api-version&apos; which is required for Azure REST API calls..
+        /// </summary>
+        internal static string RestMethodApiVersionRequired {
+            get {
+                return ResourceManager.GetString("RestMethodApiVersionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URI with host &apos;{0}&apos; is not supported. Only &apos;{1}&apos; is allowed..
+        /// </summary>
+        internal static string RestMethodUriHostInvalid {
+            get {
+                return ResourceManager.GetString("RestMethodUriHostInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URI &apos;{0}&apos; is not a valid Azure REST URI..
+        /// </summary>
+        internal static string RestMethodUriInvalid {
+            get {
+                return ResourceManager.GetString("RestMethodUriInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URI with scheme &apos;{0}&apos; is not supported. Only &apos;{1}&apos; is allowed..
+        /// </summary>
+        internal static string RestMethodUriSchemeInvalid {
+            get {
+                return ResourceManager.GetString("RestMethodUriSchemeInvalid", resourceCulture);
             }
         }
         

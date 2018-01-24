@@ -9,6 +9,9 @@ namespace Microsoft.Azure.Commands.Profile.Utilities
 {
     internal static class HttpRequestExtensions
     {
+        public static void InjectAzureAuthentication(this HttpRequestMessage request, IAzureContext context) =>
+            request.InjectAzureAuthentication(context, CancellationToken.None);
+
         public static void InjectAzureAuthentication(this HttpRequestMessage request, IAzureContext context, CancellationToken token) => 
             AzureSession.Instance.AuthenticationFactory.GetServiceClientCredentials(context).ProcessHttpRequestAsync(request, token).Wait(token);
 
