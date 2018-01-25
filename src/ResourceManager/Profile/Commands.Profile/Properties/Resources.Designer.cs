@@ -628,7 +628,7 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to URI is missing query value &apos;api-version&apos; which is required for Azure REST API calls..
+        ///   Looks up a localized string similar to URI is missing query value &apos;api-version&apos; which is required for Azure RM REST API calls..
         /// </summary>
         internal static string RestMethodApiVersionRequired {
             get {
@@ -646,7 +646,7 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to URI &apos;{0}&apos; is not a valid Azure REST URI..
+        ///   Looks up a localized string similar to URI &apos;{0}&apos; is not a valid Azure RM REST URI..
         /// </summary>
         internal static string RestMethodUriInvalid {
             get {

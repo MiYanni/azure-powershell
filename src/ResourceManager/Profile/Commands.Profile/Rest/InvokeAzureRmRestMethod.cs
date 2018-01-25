@@ -27,29 +27,24 @@ using Microsoft.Azure.Commands.Profile.Properties;
 using Microsoft.Azure.Commands.Profile.Utilities;
 using Microsoft.Azure.Commands.ResourceManager.Common;
 using Microsoft.Rest;
+using Newtonsoft.Json;
 using static Microsoft.Azure.Commands.Profile.Properties.Resources;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Azure.Commands.Profile
 {
-
-
     [Cmdlet(VerbsLifecycle.Invoke, "AzureRmRestMethod"), OutputType(typeof(PSObject))]
     public class InvokeAzureRmRestMethod : AzureRmLongRunningCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "Specifies the Uniform Resource Identifier (URI) of the Azure resource to which the web request is sent.")]
+        [Parameter(Position = 0, Mandatory = true, HelpMessage = "Specifies the Uniform Resource Identifier (URI) of the Azure RM resource to which the web request is sent.")]
         [ValidateNotNullOrEmpty]
         public Uri Uri { get; set; }
-
-        //[Parameter(Position = 0, Mandatory = true, HelpMessage = "Specifies the Uniform Resource Identifier (URI) of the Azure resource to which the web request is sent.")]
-        //[ValidateNotNullOrEmpty]
-        //public string Uri { get; set; }
 
         [Parameter(HelpMessage = "Specifies the method used for the web request.")]
         public WebRequestMethod Method { get; set; }
 
-        [Parameter(ValueFromPipeline = true, HelpMessage = "Specifies the body of the request.")]
-        public object Body { get; set; }
+        [Parameter(ValueFromPipeline = true, HelpMessage = "Specifies the body of the request. Azure RM REST API calls that require a body are in JSON format.")]
+        public PSObject Body { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Parameter(HelpMessage = "Specifies the headers of the web request.")]
@@ -89,18 +84,14 @@ namespace Microsoft.Azure.Commands.Profile
 
         public override void ExecuteCmdlet()
         {
-            //var cancellationToken = new CancellationToken();
-
             var uri = ResolveAzureUri(Uri, new Uri(DefaultContext.Environment.ResourceManagerUrl));
-            
-
             var httpRequest = new HttpRequestMessage(Method.ToHttpMethod(), uri);
             httpRequest.InjectAzureAuthentication(DefaultContext);
             httpRequest.Headers.AddRange(Headers ?? new Dictionary<string, string>());
-            //DefaultContext.Environment.ResourceManagerUrl
             if (Body != null)
             {
-                httpRequest.Content = new StringContent(Body.ToString(), Encoding.UTF8, "application/json");
+                var bodyJson = JsonConvert.SerializeObject(Body);
+                httpRequest.Content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
             }
 
             var shouldTrace = ServiceClientTracing.IsEnabled;

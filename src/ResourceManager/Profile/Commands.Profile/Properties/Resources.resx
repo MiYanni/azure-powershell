@@ -404,14 +404,14 @@
     <value>Must supply Subscription Id and Tenant Id when using -SkipValidation</value>
   </data>
   <data name="RestMethodApiVersionRequired" xml:space="preserve">
-    <value>URI is missing query value 'api-version' which is required for Azure REST API calls.</value>
+    <value>URI is missing query value 'api-version' which is required for Azure RM REST API calls.</value>
   </data>
   <data name="RestMethodUriHostInvalid" xml:space="preserve">
     <value>URI with host '{0}' is not supported. Only '{1}' is allowed.</value>
     <comment>{0} = provided host, {1} = RM host (aka, management.azure.com)</comment>
   </data>
   <data name="RestMethodUriInvalid" xml:space="preserve">
-    <value>URI '{0}' is not a valid Azure REST URI.</value>
+    <value>URI '{0}' is not a valid Azure RM REST URI.</value>
     <comment>{0} = provided URI</comment>
   </data>
   <data name="RestMethodUriSchemeInvalid" xml:space="preserve">
