@@ -122,6 +122,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Tenant\GetAzureRMTenant.cs" />
+    <Compile Include="Utilities\HttpClientTracer.cs" />
     <Compile Include="Utilities\EnvironmentHelper.cs" />
     <Compile Include="Utilities\HttpRequestExtensions.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />

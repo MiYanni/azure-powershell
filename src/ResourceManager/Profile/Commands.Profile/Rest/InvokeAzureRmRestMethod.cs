@@ -23,6 +23,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Web;
+using Microsoft.Azure.Commands.Common.Authentication;
 using Microsoft.Azure.Commands.Profile.Properties;
 using Microsoft.Azure.Commands.Profile.Utilities;
 using Microsoft.Azure.Commands.ResourceManager.Common;
@@ -88,6 +89,9 @@ namespace Microsoft.Azure.Commands.Profile
             var uri = ResolveAzureUri(Uri, new Uri(DefaultContext.Environment.ResourceManagerUrl));
             var httpRequest = new HttpRequestMessage(Method.ToHttpMethod(), uri);
             httpRequest.InjectAzureAuthentication(DefaultContext);
+            httpRequest.Headers.Add("x-ms-client-request-id", Guid.NewGuid().ToString());
+            httpRequest.Headers.Add("accept-language", "en-US");
+            httpRequest.Headers.AddUserAgent();
             httpRequest.Headers.AddRange(Headers ?? new Dictionary<string, string>());
             if (Body != null)
             {
