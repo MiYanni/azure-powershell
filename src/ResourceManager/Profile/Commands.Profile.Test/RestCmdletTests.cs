@@ -36,15 +36,24 @@ namespace Microsoft.Azure.Commands.Profile.Test
 
         public static IEnumerable<object[]> UriDataPositive => new []
         {
-            new object[] { "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
+            new object[] 
+            {
+                "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
                 "https://management.azure.com/",
-                "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10" },
-            new object[] { "/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
+                "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10" 
+            },
+            new object[] 
+            {
+                "/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
                 "https://management.azure.com/",
-                "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10" },
-            new object[] { "subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
+                "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10" 
+            },
+            new object[] 
+            {
+                "subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
                 "https://management.azure.com/",
-                "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10" }
+                "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10" 
+            }
         };
 
         [Theory, MemberData(nameof(UriDataPositive))]
@@ -67,14 +76,26 @@ namespace Microsoft.Azure.Commands.Profile.Test
 
         public static IEnumerable<object[]> UriDataNegative => new[]
         {
-            new object[] { "fdas5f4#$@*(/dsa/fdsa1ds/a65134543$#!@$\\&$%#&SDAfdhsgfdsg\\/jfhdas832541#/&(#@!(&DS()&VHvcxhhs",
-                "https://management.azure.com/" },
-            new object[] { "http://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
-                "https://management.azure.com/" },
-            new object[] { "https://management.core.windows.net/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
-                "https://management.azure.com/" },
-            new object[] { "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources",
-                "https://management.azure.com/" }
+            new object[] 
+            {
+                "fdas5f4#$@*(/dsa/fdsa1ds/a65134543$#!@$\\&$%#&SDAfdhsgfdsg\\/jfhdas832541#/&(#@!(&DS()&VHvcxhhs",
+                "https://management.azure.com/" 
+            },
+            new object[] 
+            {
+                "http://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
+                "https://management.azure.com/" 
+            },
+            new object[] 
+            {
+                "https://management.core.windows.net/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources?api-version=2017-05-10",
+                "https://management.azure.com/" 
+            },
+            new object[] 
+            {
+                "https://management.azure.com/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resources",
+                "https://management.azure.com/" 
+            }
         };
 
         [Theory, MemberData(nameof(UriDataNegative))]

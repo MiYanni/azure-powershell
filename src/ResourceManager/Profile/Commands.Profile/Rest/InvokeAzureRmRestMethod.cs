@@ -44,6 +44,7 @@ namespace Microsoft.Azure.Commands.Profile
         public WebRequestMethod Method { get; set; }
 
         [Parameter(ValueFromPipeline = true, HelpMessage = "Specifies the body of the request. Azure RM REST API calls that require a body are in JSON format.")]
+        [ValidateNotNullOrEmpty]
         public PSObject Body { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -90,74 +91,25 @@ namespace Microsoft.Azure.Commands.Profile
             httpRequest.Headers.AddRange(Headers ?? new Dictionary<string, string>());
             if (Body != null)
             {
-                var bodyJson = JsonConvert.SerializeObject(Body);
-                httpRequest.Content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+                httpRequest.Content = new StringContent(JsonConvert.SerializeObject(Body), Encoding.UTF8, "application/json");
             }
-
-            var shouldTrace = ServiceClientTracing.IsEnabled;
-            string invocationId = null;
-            if (shouldTrace)
-            {
-                invocationId = ServiceClientTracing.NextInvocationId.ToString();
-                //ServiceClientTracing.Enter(invocationId, this, VerbsLifecycle.Invoke, new Dictionary<string, object> { { "cancellationToken", cancellationToken } });
-                ServiceClientTracing.Enter(invocationId, this, VerbsLifecycle.Invoke, new Dictionary<string, object>());
-                ServiceClientTracing.SendRequest(invocationId, httpRequest);
-            }
-            //cancellationToken.ThrowIfCancellationRequested();
+            
             using (var client = new HttpClient())
             {
-                //var httpResponse = client.SendAsync(httpRequest, cancellationToken).Result;
+                var tracer = new HttpClientTracer();
+                tracer.Enter(this, VerbsLifecycle.Invoke);
+
+                tracer.SendRequest(httpRequest);
                 var httpResponse = client.SendAsync(httpRequest).Result;
+                tracer.ReceiveResponse(httpResponse);
 
-                if (shouldTrace)
-                {
-                    ServiceClientTracing.ReceiveResponse(invocationId, httpResponse);
-                }
-                //var statusCode = httpResponse.StatusCode;
-                //cancellationToken.ThrowIfCancellationRequested();
-
-                WriteObject($"Status: {httpResponse.StatusCode}{Environment.NewLine}Reason: {httpResponse.ReasonPhrase}{Environment.NewLine}Content: {httpResponse.Content.ReadAsStringAsync().Result}");
+                var result =
+                    $"Status: {httpResponse.StatusCode}" + Environment.NewLine + 
+                    $"Reason: {httpResponse.ReasonPhrase}" + Environment.NewLine + 
+                    $"Content: {httpResponse.Content.ReadAsStringAsync().Result}";
+                WriteObject(result);
+                tracer.Exit(result);
             }
-            
-            
-
-            //AzureSession.Instance.ClientFactory.CreateHttpClient(Uri.ToString(), )
-
         }
-
-
-
-        //public override void ExecuteCmdlet()
-        //{
-        //    if (ParameterSetName.Equals(Constants.ParameterSetNames.ListParameterSet))
-        //    {
-        //        try
-        //        {
-        //            WriteObject(BillingManagementClient.BillingPeriods.List(top: MaxCount).Select(x => new PSBillingPeriod(x)), true);
-        //        }
-        //        catch (ErrorResponseException error)
-        //        {
-        //            WriteWarning(error.Body.Error.Message);
-        //        }
-        //        return;
-        //    }
-
-        //    if (ParameterSetName.Equals(Constants.ParameterSetNames.SingleItemParameterSet))
-        //    {
-        //        foreach (var billingPeriodName in Name)
-        //        {
-        //            try
-        //            {
-        //                var billingPeriod = new PSBillingPeriod(BillingManagementClient.BillingPeriods.Get(billingPeriodName));
-        //                WriteObject(billingPeriod);
-        //            }
-        //            catch (ErrorResponseException error)
-        //            {
-        //                WriteWarning(billingPeriodName + ": " + error.Body.Error.Message);
-        //                // continue with the next
-        //            }
-        //        }
-        //    }
-        //}
     }
 }
