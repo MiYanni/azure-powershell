@@ -125,6 +125,7 @@
     <Compile Include="Utilities\HttpClientTracer.cs" />
     <Compile Include="Utilities\EnvironmentHelper.cs" />
     <Compile Include="Utilities\HttpRequestExtensions.cs" />
+    <Compile Include="Utilities\PSCmdletExtensions.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

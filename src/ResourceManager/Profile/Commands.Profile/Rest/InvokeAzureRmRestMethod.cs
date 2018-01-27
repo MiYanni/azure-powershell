@@ -19,15 +19,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Management.Automation;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
 using System.Web;
-using Microsoft.Azure.Commands.Common.Authentication;
-using Microsoft.Azure.Commands.Profile.Properties;
 using Microsoft.Azure.Commands.Profile.Utilities;
 using Microsoft.Azure.Commands.ResourceManager.Common;
-using Microsoft.Rest;
 using Newtonsoft.Json;
 using static Microsoft.Azure.Commands.Profile.Properties.Resources;
 
@@ -51,6 +46,8 @@ namespace Microsoft.Azure.Commands.Profile
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Parameter(HelpMessage = "Specifies the headers of the web request.")]
         public IDictionary Headers { get; set; }
+
+        private readonly HttpClientTracer _tracer = new HttpClientTracer();
 
         private static Uri ResolveAzureUri(Uri uri, Uri azureRmUri)
         {
@@ -93,26 +90,25 @@ namespace Microsoft.Azure.Commands.Profile
             httpRequest.Headers.Add("accept-language", "en-US");
             httpRequest.Headers.AddUserAgent();
             httpRequest.Headers.AddRange(Headers ?? new Dictionary<string, string>());
-            if (Body != null)
+            if (this.IsParamBound(c => c.Body))
             {
-                httpRequest.Content = new StringContent(JsonConvert.SerializeObject(Body), Encoding.UTF8, "application/json");
+                httpRequest.Content = new StringContent(JsonConvert.SerializeObject(Body.BaseObject), Encoding.UTF8, "application/json");
             }
             
             using (var client = new HttpClient())
             {
-                var tracer = new HttpClientTracer();
-                tracer.Enter(this, VerbsLifecycle.Invoke);
-
-                tracer.SendRequest(httpRequest);
+                _tracer.Enter(this, VerbsLifecycle.Invoke);
+                _tracer.SendRequest(httpRequest);
                 var httpResponse = client.SendAsync(httpRequest).Result;
-                tracer.ReceiveResponse(httpResponse);
+                _tracer.ReceiveResponse(httpResponse);
 
-                var result =
-                    $"Status: {httpResponse.StatusCode}" + Environment.NewLine + 
-                    $"Reason: {httpResponse.ReasonPhrase}" + Environment.NewLine + 
-                    $"Content: {httpResponse.Content.ReadAsStringAsync().Result}";
+                //var result =
+                //    $"Status: {httpResponse.StatusCode}" + Environment.NewLine + 
+                //    $"Reason: {httpResponse.ReasonPhrase}" + Environment.NewLine + 
+                //    $"Content: {httpResponse.Content.ReadAsStringAsync().Result}";
+                var result = new PSObject(httpResponse.Content.ReadAsStringAsync().Result);
                 WriteObject(result);
-                tracer.Exit(result);
+                _tracer.Exit(result);
             }
         }
     }
