@@ -29,7 +29,7 @@ using static Microsoft.Azure.Commands.Profile.Properties.Resources;
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Azure.Commands.Profile
 {
-    [Cmdlet(VerbsLifecycle.Invoke, "AzureRmRestMethod"), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsLifecycle.Invoke, "AzureRmRestMethod", SupportsShouldProcess = true), OutputType(typeof(PSObject))]
     public class InvokeAzureRmRestMethod : AzureRmLongRunningCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, HelpMessage = "Specifies the Uniform Resource Identifier (URI) of the Azure RM resource to which the web request is sent.")]
