@@ -102,10 +102,6 @@ namespace Microsoft.Azure.Commands.Profile
                 var httpResponse = client.SendAsync(httpRequest).Result;
                 _tracer.ReceiveResponse(httpResponse);
 
-                //var result =
-                //    $"Status: {httpResponse.StatusCode}" + Environment.NewLine + 
-                //    $"Reason: {httpResponse.ReasonPhrase}" + Environment.NewLine + 
-                //    $"Content: {httpResponse.Content.ReadAsStringAsync().Result}";
                 var result = new PSObject(httpResponse.Content.ReadAsStringAsync().Result);
                 WriteObject(result);
                 _tracer.Exit(result);
