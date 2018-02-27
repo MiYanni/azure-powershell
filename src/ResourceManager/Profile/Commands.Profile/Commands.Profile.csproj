@@ -71,7 +71,7 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\RemoveAzureRmAccount.cs" />
+    <Compile Include="Account\DisconnectAzureRmAccount.cs" />
     <Compile Include="AutoSave\DisableAzureRmContextAutosave.cs" />
     <Compile Include="AutoSave\GetAzureRmContextAutosaveSetting.cs" />
     <Compile Include="AutoSave\EnableAzureRmContextAutosave.cs" />
@@ -110,7 +110,7 @@
     <Compile Include="Rest\InvokeAzureRmRestMethod.cs" />
     <Compile Include="Rest\WebRequestMethod.cs" />
     <Compile Include="Subscription\GetAzureRMSubscription.cs" />
-    <Compile Include="Account\AddAzureRmAccount.cs" />
+    <Compile Include="Account\ConnectAzureRmAccount.cs" />
     <Compile Include="Context\GetAzureRMContext.cs" />
     <Compile Include="Context\SetAzureRMContext.cs" />
     <Compile Include="Context\ImportAzureRMContext.cs" />
