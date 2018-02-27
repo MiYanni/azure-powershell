@@ -102,6 +102,7 @@ namespace Microsoft.Azure.Commands.Profile
                 var httpResponse = client.SendAsync(httpRequest).Result;
                 _tracer.ReceiveResponse(httpResponse);
 
+                //var dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(httpResponse.Content.ReadAsStringAsync().Result);
                 var result = new PSObject(httpResponse.Content.ReadAsStringAsync().Result);
                 WriteObject(result);
                 _tracer.Exit(result);
