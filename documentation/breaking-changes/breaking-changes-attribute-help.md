@@ -134,7 +134,6 @@ Get-SomeObjectD <parms here>
 The cmdlet 'Get-SomeObjectC' is replacing the cmdlet'Get-SomeObjectD'
 The change is expected to take effect from the version : 5.0.0.0
 ```
-```
 
 Attribute specified with a replacement cmdlet and a deprecation in effect version and date specified:
 ```powershell
