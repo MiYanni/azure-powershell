@@ -24,6 +24,7 @@ using System.Web;
 using Microsoft.Azure.Commands.Profile.Utilities;
 using Microsoft.Azure.Commands.ResourceManager.Common;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using static Microsoft.Azure.Commands.Profile.Properties.Resources;
 
 // ReSharper disable once CheckNamespace
@@ -81,6 +82,93 @@ namespace Microsoft.Azure.Commands.Profile
             return absoluteUri;
         }
 
+        private static PSObject ResultToPsObject(string jsonText)
+        {
+            if (String.IsNullOrEmpty(jsonText)) return new PSObject();
+
+            var json = JObject.Parse(jsonText);
+            //https://stackoverflow.com/a/7216958/294804
+            //if (json["value"]?.Type != JTokenType.Array) return JObjectToPsObject(json);
+            if (!(json["value"] is JArray))
+            {
+                var psObject = new PSObject();
+                foreach (var key in json.Properties().Select(p => p.Name))
+                {
+                    psObject.Members.Add(new PSNoteProperty(key, json[key].ToString(Formatting.None)));
+                }
+                return new PSObject(psObject);
+            }
+
+            var items = json.Value<JArray>("value").ToObject<List<JObject>>();
+
+            //https://stackoverflow.com/a/13565373/294804
+            //return new PSObject(elements.ToObject<List<JObject>>().Select(JObjectToHashtable).ToList());
+
+            var result = new List<PSObject>();
+            foreach (var item in items)
+            {
+                var psObject = new PSObject();
+                foreach (var key in item.Properties().Select(p => p.Name))
+                {
+                    psObject.Members.Add(new PSNoteProperty(key, item[key].ToString(Formatting.None)));
+                }
+                result.Add(psObject);
+            }
+
+            return new PSObject(result);
+
+            //Hashtable JObjectToHashtable(JObject jObject) =>
+            //    new Hashtable(jObject.ToObject<List<KeyValuePair<string, JToken>>>().ToDictionary(tag => tag.Key, tag => tag.Value.ToString(Formatting.None)));
+            //Hashtable JObjectToHashtable(JObject jObject)
+            //{
+            //    var hashtable = new Hashtable();
+            //    //https://stackoverflow.com/a/29103652/294804
+            //    foreach (var tag in jObject)
+            //    {
+            //        hashtable.Add(tag.Key, tag.Value.ToString(Formatting.None));
+            //    }
+            //    return hashtable;
+            //}
+
+            //PSObject JObjectToPsObject(JObject jObject)
+            //{
+            //    var result = new PSObject();
+            //    //https://stackoverflow.com/a/29103652/294804
+            //    foreach (var tag in jObject)
+            //    {
+            //        //https://stackoverflow.com/a/30988995/294804
+            //        //result.Members.Add(new PSNoteProperty(tag.Key, tag.Value.ToString(Formatting.None)));
+            //        //result.Members.Add(new PSNoteProperty(tag.Key, tag.Value.ToString(Formatting.None).Replace("\"", String.Empty)));
+
+            //        var value = tag.Value.Type == JTokenType.Object
+            //            ? (object)tag.Value.ToObject<JObject>()
+            //            : tag.Value.ToObject<JValue>().ToString(Formatting.None).Replace("\"", String.Empty);
+
+            //        result.Members.Add(new PSNoteProperty(tag.Key, value));
+            //    }
+            //    return result;
+            //}
+
+            //PSObject JObjectToPsObject(JObject jObject)
+            //{
+            //    var result = new PSObject();
+            //    //https://stackoverflow.com/a/29103652/294804
+            //    foreach (var tag in jObject)
+            //    {
+            //        //https://stackoverflow.com/a/30988995/294804
+            //        //result.Members.Add(new PSNoteProperty(tag.Key, tag.Value.ToString(Formatting.None)));
+            //        //result.Members.Add(new PSNoteProperty(tag.Key, tag.Value.ToString(Formatting.None).Replace("\"", String.Empty)));
+
+            //        var value = tag.Value.Type == JTokenType.Object
+            //            ? (object)tag.Value.ToObject<JObject>()
+            //            : tag.Value.ToObject<JValue>().ToString(Formatting.None).Replace("\"", String.Empty);
+
+            //        result.Members.Add(new PSNoteProperty(tag.Key, value));
+            //    }
+            //    return result;
+            //}
+        }
+
         public override void ExecuteCmdlet()
         {
             var uri = ResolveAzureUri(Uri, new Uri(DefaultContext.Environment.ResourceManagerUrl));
@@ -102,8 +190,11 @@ namespace Microsoft.Azure.Commands.Profile
                 var httpResponse = client.SendAsync(httpRequest).Result;
                 _tracer.ReceiveResponse(httpResponse);
 
-                //var dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(httpResponse.Content.ReadAsStringAsync().Result);
-                var result = new PSObject(httpResponse.Content.ReadAsStringAsync().Result);
+                //var resultText = httpResponse.Content.ReadAsStringAsync().Result;
+                //var thing = JObject.Parse(resultText);
+                //var thing2 = JObjectToPsObject(thing);
+                var resultText = httpResponse.Content.ReadAsStringAsync().Result;
+                var result = ResultToPsObject(resultText);
                 WriteObject(result);
                 _tracer.Exit(result);
             }
