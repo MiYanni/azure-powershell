@@ -309,7 +309,7 @@ namespace Microsoft.Azure.Commands.Profile.Models
 
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
 
         static Uri UrlOrNull(string urlValue)

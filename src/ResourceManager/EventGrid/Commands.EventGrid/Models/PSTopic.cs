@@ -22,14 +22,14 @@ namespace Microsoft.Azure.Commands.EventGrid.Models
     {
         public PSTopic(Topic topic)
         {
-            this.Id = topic.Id;
-            this.TopicName = topic.Name;
-            this.Type = topic.Type;
-            this.ResourceGroupName = EventGridUtils.ParseResourceGroupFromId(topic.Id);
-            this.Location = topic.Location;
-            this.ProvisioningState = topic.ProvisioningState;
-            this.Tags = topic.Tags;
-            this.Endpoint = topic.Endpoint;
+            Id = topic.Id;
+            TopicName = topic.Name;
+            Type = topic.Type;
+            ResourceGroupName = EventGridUtils.ParseResourceGroupFromId(topic.Id);
+            Location = topic.Location;
+            ProvisioningState = topic.ProvisioningState;
+            Tags = topic.Tags;
+            Endpoint = topic.Endpoint;
         }
 
         public string ResourceGroupName { get; set; }

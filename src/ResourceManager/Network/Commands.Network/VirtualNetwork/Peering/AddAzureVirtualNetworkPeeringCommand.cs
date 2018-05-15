@@ -70,41 +70,38 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
 
-            if (this.IsVirtualNetworkPeeringPresent(this.VirtualNetwork.ResourceGroupName, this.VirtualNetwork.Name, this.Name))
+            if (IsVirtualNetworkPeeringPresent(VirtualNetwork.ResourceGroupName, VirtualNetwork.Name, Name))
             {
                 throw new ArgumentException("Peering with the specified name already exists");
             }
-            else
-            {
-                var virtualNetworkPeering = AddVirtualNetworkPeering();
+            var virtualNetworkPeering = AddVirtualNetworkPeering();
 
-                WriteObject(virtualNetworkPeering);
-            }
+            WriteObject(virtualNetworkPeering);
         }
 
         private PSVirtualNetworkPeering AddVirtualNetworkPeering()
         {
             var vnetPeering= new PSVirtualNetworkPeering();
-            vnetPeering.Name = this.Name;
+            vnetPeering.Name = Name;
 
-            if (!string.IsNullOrEmpty(this.RemoteVirtualNetworkId))
+            if (!string.IsNullOrEmpty(RemoteVirtualNetworkId))
             {
                 vnetPeering.RemoteVirtualNetwork = new PSResourceId();
-                vnetPeering.RemoteVirtualNetwork.Id = this.RemoteVirtualNetworkId;
+                vnetPeering.RemoteVirtualNetwork.Id = RemoteVirtualNetworkId;
             }
 
-            vnetPeering.AllowVirtualNetworkAccess = !this.BlockVirtualNetworkAccess.IsPresent;
-            vnetPeering.AllowGatewayTransit = this.AllowGatewayTransit;
-            vnetPeering.AllowForwardedTraffic = this.AllowForwardedTraffic;
-            vnetPeering.UseRemoteGateways = this.UseRemoteGateways;
+            vnetPeering.AllowVirtualNetworkAccess = !BlockVirtualNetworkAccess.IsPresent;
+            vnetPeering.AllowGatewayTransit = AllowGatewayTransit;
+            vnetPeering.AllowForwardedTraffic = AllowForwardedTraffic;
+            vnetPeering.UseRemoteGateways = UseRemoteGateways;
 
             // Map to the sdk object
             var vnetPeeringModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkPeering>(vnetPeering);
 
             // Execute the Create VirtualNetwork call
-            this.VirtualNetworkPeeringClient.CreateOrUpdate(this.VirtualNetwork.ResourceGroupName, this.VirtualNetwork.Name, this.Name, vnetPeeringModel);
+            VirtualNetworkPeeringClient.CreateOrUpdate(VirtualNetwork.ResourceGroupName, VirtualNetwork.Name, Name, vnetPeeringModel);
 
-            var getVirtualNetworkPeering = this.GetVirtualNetworkPeering(this.VirtualNetwork.ResourceGroupName, this.VirtualNetwork.Name, this.Name);
+            var getVirtualNetworkPeering = GetVirtualNetworkPeering(VirtualNetwork.ResourceGroupName, VirtualNetwork.Name, Name);
 
             return getVirtualNetworkPeering;
         }

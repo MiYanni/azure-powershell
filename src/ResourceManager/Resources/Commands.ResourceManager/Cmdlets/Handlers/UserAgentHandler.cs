@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
+    using Extensions;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
             var currentRequestHeaders = request.Headers.UserAgent
                 .ToInsensitiveDictionary(header => header.Product.Name + header.Product.Version);
 
-            var infosToAdd = this.headerValues
+            var infosToAdd = headerValues
                 .Where(productInfo => !currentRequestHeaders.ContainsKey(productInfo.Product.Name + productInfo.Product.Version));
 
             foreach (var infoToAdd in infosToAdd)
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
 
             return await base
                 .SendAsync(request, cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                .ConfigureAwait(false);
         }
     }
 }

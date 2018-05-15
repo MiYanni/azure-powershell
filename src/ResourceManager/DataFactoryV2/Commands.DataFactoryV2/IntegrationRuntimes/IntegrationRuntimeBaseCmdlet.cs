@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = Constants.HelpResourceGroup)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

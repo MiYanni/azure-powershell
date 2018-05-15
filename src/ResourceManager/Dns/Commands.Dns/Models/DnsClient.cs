@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
         public const int TxtRecordMinLength = 0;
 
-        private Dictionary<RecordType, Type> recordTypeValidationEntries = new Dictionary<RecordType, Type>()
+        private Dictionary<RecordType, Type> recordTypeValidationEntries = new Dictionary<RecordType, Type>
         {
             {RecordType.A, typeof (ARecord)},
             {RecordType.AAAA, typeof (AaaaRecord)},
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
         public DnsClient(IDnsManagementClient managementClient)
         {
-            this.DnsManagementClient = managementClient;
+            DnsManagementClient = managementClient;
         }
 
         public IDnsManagementClient DnsManagementClient { get; set; }
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
             IList<string> registrationVirtualNetworks,
             IList<string> resolutionVirtualNetworks)
         {
-            var response = this.DnsManagementClient.Zones.CreateOrUpdate(
+            var response = DnsManagementClient.Zones.CreateOrUpdate(
                 resourceGroupName,
                 name,
                 new Zone
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
         public DnsZone UpdateDnsZone(DnsZone zone, bool overwrite)
         {
-            var response = this.DnsManagementClient.Zones.CreateOrUpdate(
+            var response = DnsManagementClient.Zones.CreateOrUpdate(
                 zone.ResourceGroupName,
                 zone.Name,
                 new Zone
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
             DnsZone zone,
             bool overwrite)
         {
-            this.DnsManagementClient.Zones.Delete(
+            DnsManagementClient.Zones.Delete(
                 zone.ResourceGroupName,
                 zone.Name,
                 ifMatch: overwrite ? "*" : zone.Etag);
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
         public DnsZone GetDnsZone(string name, string resourceGroupName)
         {
-            return ToDnsZone(this.DnsManagementClient.Zones.Get(resourceGroupName, name));
+            return ToDnsZone(DnsManagementClient.Zones.Get(resourceGroupName, name));
         }
 
         public List<DnsZone> ListDnsZonesInResourceGroup(string resourceGroupName)
@@ -130,11 +130,11 @@ namespace Microsoft.Azure.Commands.Dns.Models
             {
                 if (getResponse != null && getResponse.NextPageLink != null)
                 {
-                    getResponse = this.DnsManagementClient.Zones.ListByResourceGroupNext(getResponse.NextPageLink);
+                    getResponse = DnsManagementClient.Zones.ListByResourceGroupNext(getResponse.NextPageLink);
                 }
                 else
                 {
-                    getResponse = this.DnsManagementClient.Zones.ListByResourceGroup(resourceGroupName);
+                    getResponse = DnsManagementClient.Zones.ListByResourceGroup(resourceGroupName);
                 }
 
                 results.AddRange(getResponse.Select(ToDnsZone));
@@ -151,11 +151,11 @@ namespace Microsoft.Azure.Commands.Dns.Models
             {
                 if (getResponse != null && getResponse.NextPageLink != null)
                 {
-                    getResponse = this.DnsManagementClient.Zones.ListNext(getResponse.NextPageLink);
+                    getResponse = DnsManagementClient.Zones.ListNext(getResponse.NextPageLink);
                 }
                 else
                 {
-                    getResponse = this.DnsManagementClient.Zones.List();
+                    getResponse = DnsManagementClient.Zones.List();
                 }
 
                 results.AddRange(getResponse.Select(ToDnsZone));
@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
         {
             var recordSet = ConstructRecordSetPropeties(relativeRecordSetName, recordType, ttl, tags, resourceRecords);
 
-            var response = this.DnsManagementClient.RecordSets.CreateOrUpdate(
+            var response = DnsManagementClient.RecordSets.CreateOrUpdate(
                 resourceGroupName,
                 zoneName,
                 relativeRecordSetName,
@@ -199,7 +199,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
             if (resourceRecords != null && resourceRecords.Length != 0)
             {
-                var expectedTypeOfRecords = this.recordTypeValidationEntries[recordType];
+                var expectedTypeOfRecords = recordTypeValidationEntries[recordType];
                 var mismatchedRecord = resourceRecords.FirstOrDefault(x => x.GetType() != expectedTypeOfRecords);
                 if (mismatchedRecord != null)
                 {
@@ -273,7 +273,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
         public DnsRecordSet UpdateDnsRecordSet(DnsRecordSet recordSet, bool overwrite)
         {
-            var response = this.DnsManagementClient.RecordSets.CreateOrUpdate(
+            var response = DnsManagementClient.RecordSets.CreateOrUpdate(
                 recordSet.ResourceGroupName,
                 recordSet.ZoneName,
                 recordSet.Name,
@@ -331,7 +331,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
         public bool DeleteDnsRecordSet(DnsRecordSet recordSet, bool overwrite)
         {
-            this.DnsManagementClient.RecordSets.Delete(
+            DnsManagementClient.RecordSets.Delete(
                 recordSet.ResourceGroupName,
                 recordSet.ZoneName,
                 recordSet.Name,
@@ -342,7 +342,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
         public DnsRecordSet GetDnsRecordSet(string name, string zoneName, string resourceGroupName, RecordType recordType)
         {
-            var getResponse = this.DnsManagementClient.RecordSets.Get(resourceGroupName, zoneName, name, recordType);
+            var getResponse = DnsManagementClient.RecordSets.Get(resourceGroupName, zoneName, name, recordType);
             return GetPowerShellRecordSet(zoneName, resourceGroupName, getResponse);
         }
 
@@ -355,11 +355,11 @@ namespace Microsoft.Azure.Commands.Dns.Models
             {
                 if (listResponse != null && listResponse.NextPageLink != null)
                 {
-                    listResponse = this.DnsManagementClient.RecordSets.ListByTypeNext(listResponse.NextPageLink);
+                    listResponse = DnsManagementClient.RecordSets.ListByTypeNext(listResponse.NextPageLink);
                 }
                 else
                 {
-                    listResponse = this.DnsManagementClient.RecordSets.ListByType(
+                    listResponse = DnsManagementClient.RecordSets.ListByType(
                                     resourceGroupName,
                                     zoneName,
                                     recordType);
@@ -381,11 +381,11 @@ namespace Microsoft.Azure.Commands.Dns.Models
             {
                 if (listResponse != null && listResponse.NextPageLink != null)
                 {
-                    listResponse = this.DnsManagementClient.RecordSets.ListByDnsZoneNext(listResponse.NextPageLink);
+                    listResponse = DnsManagementClient.RecordSets.ListByDnsZoneNext(listResponse.NextPageLink);
                 }
                 else
                 {
-                    listResponse = this.DnsManagementClient.RecordSets.ListByDnsZone(
+                    listResponse = DnsManagementClient.RecordSets.ListByDnsZone(
                                     resourceGroupName,
                                     zoneName);
                 }
@@ -401,7 +401,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
             DnsZone retrievedZone = null;
             try
             {
-                retrievedZone = this.GetDnsZone(zoneName, resourceGroupName);
+                retrievedZone = GetDnsZone(zoneName, resourceGroupName);
             }
             catch (CloudException exception)
             {
@@ -414,7 +414,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
             return retrievedZone;
         }
 
-        private static DnsRecordSet GetPowerShellRecordSet(string zoneName, string resourceGroupName, Management.Dns.Models.RecordSet mamlRecordSet)
+        private static DnsRecordSet GetPowerShellRecordSet(string zoneName, string resourceGroupName, RecordSet mamlRecordSet)
         {
             // e.g. "/subscriptions/<guid>/resourceGroups/<rg>/providers/microsoft.dns/dnszones/<zone>/A/<recordset>"
             string recordTypeAsString = mamlRecordSet.Id.Split('/').Reverse().Skip(1).First();
@@ -434,7 +434,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
             };
         }
 
-        private static List<DnsRecordBase> GetPowerShellRecords(Management.Dns.Models.RecordSet recordSet)
+        private static List<DnsRecordBase> GetPowerShellRecords(RecordSet recordSet)
         {
             var result = new List<DnsRecordBase>();
             result.AddRange(GetPowerShellRecords(recordSet.AaaaRecords));
@@ -481,7 +481,7 @@ namespace Microsoft.Azure.Commands.Dns.Models
 
         private static DnsZone ToDnsZone(Zone zone)
         {
-            return new DnsZone()
+            return new DnsZone
             {
                 Name = zone.Name,
                 ResourceGroupName = ExtractResourceGroupNameFromId(zone.Id),

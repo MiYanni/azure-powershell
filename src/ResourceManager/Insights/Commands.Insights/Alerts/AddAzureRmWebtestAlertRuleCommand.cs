@@ -63,34 +63,34 @@ namespace Microsoft.Azure.Commands.Insights.Alerts
             WriteVerboseWithTimestamp(string.Format("CreateRuleCondition: Creating location threshold rule condition (webtest rule)"));
             var dataSource = new RuleMetricDataSource
             {
-                MetricName = this.MetricName,
-                ResourceUri = this.TargetResourceUri
+                MetricName = MetricName,
+                ResourceUri = TargetResourceUri
             };
 
-            return new LocationThresholdRuleCondition()
+            return new LocationThresholdRuleCondition
             {
                 DataSource = dataSource,
-                FailedLocationCount = this.FailedLocationCount,
-                WindowSize = this.WindowSize
+                FailedLocationCount = FailedLocationCount,
+                WindowSize = WindowSize
             };
         }
 
         protected override AlertRuleResource CreateSdkCallParameters()
         {
-            RuleCondition condition = this.CreateRuleCondition();
+            RuleCondition condition = CreateRuleCondition();
 
             WriteVerboseWithTimestamp(string.Format("CreateSdkCallParameters: Creating rule object"));
-            return new AlertRuleResource()
+            return new AlertRuleResource
             {
-                Description = this.Description ?? Utilities.GetDefaultDescription("webtest alert rule"),
+                Description = Description ?? Utilities.GetDefaultDescription("webtest alert rule"),
                 Condition = condition,
-                Actions = this.Action,
-                Location = this.Location,
-                IsEnabled = !this.DisableRule,
-                AlertRuleResourceName = this.Name,
+                Actions = Action,
+                Location = Location,
+                IsEnabled = !DisableRule,
+                AlertRuleResourceName = Name,
 
                 // DO NOT REMOVE OR CHANGE the following. The two elements in the Tags are required by other services.
-                Tags = new Dictionary<string, string>()
+                Tags = new Dictionary<string, string>
                 {
                     {"$type" , "Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary,Microsoft.WindowsAzure.Management.Common.Storage"},
                     {"hidden-link:", "Resource" },

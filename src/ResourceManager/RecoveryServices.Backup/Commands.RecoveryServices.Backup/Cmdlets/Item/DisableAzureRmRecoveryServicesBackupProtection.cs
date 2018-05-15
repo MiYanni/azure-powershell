@@ -68,10 +68,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     {
                         base.ExecuteCmdlet();
                         PsBackupProviderManager providerManager =
-                            new PsBackupProviderManager(new Dictionary<System.Enum, object>()
-                        {
+                            new PsBackupProviderManager(new Dictionary<System.Enum, object>
+                            {
                                 {ItemParams.Item, Item},
-                                {ItemParams.DeleteBackupData, this.DeleteBackupData},
+                                {ItemParams.DeleteBackupData, DeleteBackupData}
                         }, ServiceClientAdapter);
 
                         IPsBackupProvider psBackupProvider =

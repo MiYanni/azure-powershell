@@ -48,36 +48,36 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            IEnumerable<Model.Webhook> webhooks = null;
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByAll)
+            IEnumerable<Webhook> webhooks = null;
+            if (ParameterSetName == AutomationCmdletParameterSets.ByAll)
             {
                 var nextLink = string.Empty;
                 do
                 {
-                    webhooks = this.AutomationClient.ListWebhooks(this.ResourceGroupName, this.AutomationAccountName, null, ref nextLink);
-                    this.GenerateCmdletOutput(webhooks);
+                    webhooks = AutomationClient.ListWebhooks(ResourceGroupName, AutomationAccountName, null, ref nextLink);
+                    GenerateCmdletOutput(webhooks);
                 }
                 while (!string.IsNullOrEmpty(nextLink));
 
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByName)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByName)
             {
                 webhooks = new List<Webhook>
                                {
-                                   this.AutomationClient.GetWebhook(
-                                       this.ResourceGroupName,
-                                       this.AutomationAccountName,
-                                       this.Name)
+                                   AutomationClient.GetWebhook(
+                                       ResourceGroupName,
+                                       AutomationAccountName,
+                                       Name)
                                };
-                this.GenerateCmdletOutput(webhooks);
+                GenerateCmdletOutput(webhooks);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByRunbookName)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByRunbookName)
             {
                 var nextLink = string.Empty;
                 do
                 {
-                    webhooks = this.AutomationClient.ListWebhooks(this.ResourceGroupName, this.AutomationAccountName, this.RunbookName, ref nextLink);
-                    this.GenerateCmdletOutput(webhooks);
+                    webhooks = AutomationClient.ListWebhooks(ResourceGroupName, AutomationAccountName, RunbookName, ref nextLink);
+                    GenerateCmdletOutput(webhooks);
                 }
                 while (!string.IsNullOrEmpty(nextLink));
             }

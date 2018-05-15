@@ -64,29 +64,29 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.Name,
+            if (ShouldProcess(
+                Name,
                 VerbsCommon.New))
             {
-                var mappingName = this.Name;
+                var mappingName = Name;
 
                 var props = new StorageMappingInputProperties
                 {
-                    TargetStorageClassificationId = this.RecoveryStorageClassification.Id
+                    TargetStorageClassificationId = RecoveryStorageClassification.Id
                 };
 
                 var input = new StorageClassificationMappingInput { Properties = props };
 
-                var operationResponse = this.RecoveryServicesClient.MapStorageClassification(
-                    this.PrimaryStorageClassification,
+                var operationResponse = RecoveryServicesClient.MapStorageClassification(
+                    PrimaryStorageClassification,
                     input,
                     mappingName);
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient
                         .GetJobIdFromReponseLocation(operationResponse.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
     }

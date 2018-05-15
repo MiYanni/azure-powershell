@@ -55,27 +55,27 @@ namespace Microsoft.Azure.Commands.Compute
                         privateSettings.Add(passwordKey, ConversionUtilities.SecureStringToString(Credential.Password));
                     }
 
-                    if (string.IsNullOrEmpty(this.Location))
+                    if (string.IsNullOrEmpty(Location))
                     {
-                        this.Location = GetLocationFromVm(this.ResourceGroupName, this.VMName);
+                        Location = GetLocationFromVm(ResourceGroupName, VMName);
                     }
 
                     var parameters = new VirtualMachineExtension
                     {
-                        Location = this.Location,
+                        Location = Location,
                         VirtualMachineExtensionType = VirtualMachineAccessExtensionContext.ExtensionDefaultName,
                         Publisher = VirtualMachineAccessExtensionContext.ExtensionDefaultPublisher,
-                        TypeHandlerVersion = (this.TypeHandlerVersion) ?? VirtualMachineAccessExtensionContext.ExtensionDefaultVersion,
+                        TypeHandlerVersion = TypeHandlerVersion ?? VirtualMachineAccessExtensionContext.ExtensionDefaultVersion,
                         Settings = publicSettings,
                         ProtectedSettings = privateSettings,
-                        AutoUpgradeMinorVersion = !this.DisableAutoUpgradeMinorVersion.IsPresent,
-                        ForceUpdateTag = this.ForceRerun
+                        AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent,
+                        ForceUpdateTag = ForceRerun
                     };
 
-                    var op = this.VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name,
+                    var op = VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name,
                         parameters).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
                     WriteObject(result);

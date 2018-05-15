@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             Created = keyBundle.Attributes.Created;
             Updated = keyBundle.Attributes.Updated;
             RecoveryLevel = keyBundle.Attributes.RecoveryLevel;
-            Tags = (keyBundle.Tags == null) ? null : keyBundle.Tags.ConvertToHashtable();
+            Tags = keyBundle.Tags == null ? null : keyBundle.Tags.ConvertToHashtable();
         }
 
         public PSKeyVaultKeyAttributes Attributes { get; set; }

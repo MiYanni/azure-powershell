@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.Network.Models
 {
-    using Microsoft.Azure.Management.Internal.Resources.Utilities;
+    using Management.Internal.Resources.Utilities;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -41,13 +41,13 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string SourceText
         {
-            get { return JsonConvert.SerializeObject(this.Source, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Source, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string DestinationText
         {
-            get { return JsonConvert.SerializeObject(this.Destination, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Destination, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

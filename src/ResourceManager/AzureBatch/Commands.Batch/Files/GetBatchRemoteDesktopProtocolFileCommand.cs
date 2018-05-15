@@ -60,10 +60,10 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            DownloadRemoteDesktopProtocolFileOptions options = new DownloadRemoteDesktopProtocolFileOptions(this.BatchContext, this.PoolId, this.ComputeNodeId,
-                this.ComputeNode, this.DestinationPath, this.DestinationStream, this.AdditionalBehaviors);
+            DownloadRemoteDesktopProtocolFileOptions options = new DownloadRemoteDesktopProtocolFileOptions(BatchContext, PoolId, ComputeNodeId,
+                ComputeNode, DestinationPath, DestinationStream, AdditionalBehaviors);
 
-            this.BatchClient.DownloadRemoteDesktopProtocolFile(options);
+            BatchClient.DownloadRemoteDesktopProtocolFile(options);
         }
     }
 }

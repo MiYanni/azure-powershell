@@ -23,13 +23,13 @@ namespace Microsoft.Azure.Commands.LocationBasedServices.Models
     {
         public PSLocationBasedServicesAccount(LocationBasedServicesAccount locationBasedServicesAccount)
         {
-            this.ResourceGroupName = ParseResourceGroupFromId(locationBasedServicesAccount.Id);
-            this.AccountName = locationBasedServicesAccount.Name;
-            this.Id = locationBasedServicesAccount.Id;
-            this.Location = locationBasedServicesAccount.Location;
-            this.Sku = new PSLocationBasedServicesAccountSku(locationBasedServicesAccount.Sku);
-            this.ResourceType = locationBasedServicesAccount.Type;
-            this.Tags = locationBasedServicesAccount.Tags;
+            ResourceGroupName = ParseResourceGroupFromId(locationBasedServicesAccount.Id);
+            AccountName = locationBasedServicesAccount.Name;
+            Id = locationBasedServicesAccount.Id;
+            Location = locationBasedServicesAccount.Location;
+            Sku = new PSLocationBasedServicesAccountSku(locationBasedServicesAccount.Sku);
+            ResourceType = locationBasedServicesAccount.Type;
+            Tags = locationBasedServicesAccount.Tags;
         }
 
         public string ResourceGroupName { get; private set; }
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.LocationBasedServices.Models
         /// <returns>null</returns>
         public override string ToString()
         {
-            return this.Id;
+            return Id;
         }
     }
 }

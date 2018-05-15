@@ -40,45 +40,45 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string LoadBalancerBackendAddressPoolsText
         {
-            get { return JsonConvert.SerializeObject(LoadBalancerBackendAddressPools, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(LoadBalancerBackendAddressPools, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string LoadBalancerInboundNatRulesText
         {
-            get { return JsonConvert.SerializeObject(LoadBalancerInboundNatRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(LoadBalancerInboundNatRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string ApplicationGatewayBackendAddressPoolsText
         {
-            get { return JsonConvert.SerializeObject(ApplicationGatewayBackendAddressPools, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(ApplicationGatewayBackendAddressPools, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string ApplicationSecurityGroupsText
         {
-            get { return JsonConvert.SerializeObject(ApplicationSecurityGroups, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(ApplicationSecurityGroups, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         public bool ShouldSerializeLoadBalancerBackendAddressPools()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeLoadBalancerInboundNatRules()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeApplicationGatewayBackendAddressPools()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeApplicationSecurityGroups()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }

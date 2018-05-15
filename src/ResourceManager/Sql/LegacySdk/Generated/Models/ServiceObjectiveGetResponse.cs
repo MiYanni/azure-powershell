@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServiceObjective ServiceObjective
         {
-            get { return this._serviceObjective; }
-            set { this._serviceObjective = value; }
+            get { return _serviceObjective; }
+            set { _serviceObjective = value; }
         }
         
         /// <summary>

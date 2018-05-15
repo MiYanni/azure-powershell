@@ -41,12 +41,12 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             get
             {
-                return this.automationClient = this.automationClient ?? new AutomationClient(DefaultProfile.DefaultContext);
+                return automationClient = automationClient ?? new AutomationClient(DefaultProfile.DefaultContext);
             }
 
             set
             {
-                this.automationClient = value;
+                automationClient = value;
             }
         }
 
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         /// Gets or sets the automation account name.
         /// </summary>
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -78,14 +78,14 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
-                string.Format(CultureInfo.CurrentCulture, Resources.RemovingAzureAutomationResourceWarning, this.Name),
-                string.Format(CultureInfo.CurrentCulture, Resources.RemoveAzureAutomationResourceDescription, this.Name),
-                this.Name,
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(CultureInfo.CurrentCulture, Resources.RemovingAzureAutomationResourceWarning, Name),
+                string.Format(CultureInfo.CurrentCulture, Resources.RemoveAzureAutomationResourceDescription, Name),
+                Name,
                 () =>
                 {
-                    AutomationClient.DeleteAutomationAccount(this.ResourceGroupName, this.Name);
+                    AutomationClient.DeleteAutomationAccount(ResourceGroupName, Name);
                 });
         }
     }

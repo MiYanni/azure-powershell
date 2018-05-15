@@ -29,11 +29,11 @@ namespace Microsoft.Azure.Commands.Network
         public PSApplicationGateway ApplicationGateway { get; set; }
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess("AzureApplicationGatewaySslPolicy", Microsoft.Azure.Commands.Network.Properties.Resources.CreatingResourceMessage))
+            if (ShouldProcess("AzureApplicationGatewaySslPolicy", Properties.Resources.CreatingResourceMessage))
             {
                 base.ExecuteCmdlet();
-                this.ApplicationGateway.SslPolicy = this.NewObject();
-                WriteObject(this.ApplicationGateway);
+                ApplicationGateway.SslPolicy = NewObject();
+                WriteObject(ApplicationGateway);
             }
         }
     }

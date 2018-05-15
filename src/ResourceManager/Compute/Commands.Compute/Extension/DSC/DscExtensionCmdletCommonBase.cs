@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
     {
         private static StorageManagementClientWrapper _storageClientWrapper;
 
-        private static IStorageManagementClient GetStorageClient(this Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet cmdlet)
+        private static IStorageManagementClient GetStorageClient(this ResourceManager.Common.AzureRMCmdlet cmdlet)
         {
             if (_storageClientWrapper == null)
             {
@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
             return _storageClientWrapper.StorageManagementClient;
         }
 
-        internal static StorageCredentials GetStorageCredentials(this Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet cmdlet, String resourceGroupName, String storageAccountName)
+        internal static StorageCredentials GetStorageCredentials(this ResourceManager.Common.AzureRMCmdlet cmdlet, String resourceGroupName, String storageAccountName)
         {
             StorageCredentials credentials = null;
             var storageClient = GetStorageClient(cmdlet);
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
             {
                 cmdlet.ThrowTerminatingError(
                     new ErrorRecord(
-                        new UnauthorizedAccessException(Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscDefaultStorageCredentialsNotFound),
+                        new UnauthorizedAccessException(Properties.Resources.AzureVMDscDefaultStorageCredentialsNotFound),
                         "CredentialsNotFound",
                         ErrorCategory.PermissionDenied,
                         null));
@@ -52,13 +52,13 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
 
             if (string.IsNullOrEmpty(credentials.AccountName))
             {
-                ThrowInvalidArgumentError(cmdlet, Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscStorageContextMustIncludeAccountName);
+                ThrowInvalidArgumentError(cmdlet, Properties.Resources.AzureVMDscStorageContextMustIncludeAccountName);
             }
 
             return credentials;
         }
 
-        internal static void ThrowInvalidArgumentError(this Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet cmdlet, string format, params object[] args)
+        internal static void ThrowInvalidArgumentError(this ResourceManager.Common.AzureRMCmdlet cmdlet, string format, params object[] args)
         {
             cmdlet.ThrowTerminatingError(
                 new ErrorRecord(

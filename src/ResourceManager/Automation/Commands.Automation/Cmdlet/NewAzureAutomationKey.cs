@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            var agentRegistration = this.AutomationClient.NewAgentRegistrationKey(this.ResourceGroupName, this.AutomationAccountName, this.KeyType);
-            this.WriteObject(agentRegistration);
+            var agentRegistration = AutomationClient.NewAgentRegistrationKey(ResourceGroupName, AutomationAccountName, KeyType);
+            WriteObject(agentRegistration);
         }
     }
 }

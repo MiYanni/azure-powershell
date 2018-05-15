@@ -95,15 +95,15 @@ namespace Microsoft.Azure.Commands.Insights.ActionGroups
         public override void ExecuteCmdlet()
         {
             PSActionGroupReceiverBase receiverBase = null;
-            if (this.ParameterSetName == NewEmailReceiver)
+            if (ParameterSetName == NewEmailReceiver)
             {
                 receiverBase = new PSEmailReceiver { Name = Name, EmailAddress = EmailAddress };
             }
-            else if (this.ParameterSetName == NewSmsReceiver)
+            else if (ParameterSetName == NewSmsReceiver)
             {
                 receiverBase = new PSSmsReceiver { Name = Name, CountryCode = CountryCode, PhoneNumber = PhoneNumber };
             }
-            else if (this.ParameterSetName == NewWebhookReceiver)
+            else if (ParameterSetName == NewWebhookReceiver)
             {
                 receiverBase = new PSWebhookReceiver { Name = Name, ServiceUri = ServiceUri };
             }

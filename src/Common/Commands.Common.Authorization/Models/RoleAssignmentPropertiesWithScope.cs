@@ -8,10 +8,10 @@
 
 namespace Microsoft.Azure.Management.Authorization.Version2015_07_01.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Management;
-    using Microsoft.Azure.Management.Authorization;
-    using Microsoft.Azure.Management.Authorization.Version2015_07_01;
+    using Azure;
+    using Management;
+    using Authorization;
+    using Version2015_07_01;
     using Newtonsoft.Json;
     using System.Linq;
 

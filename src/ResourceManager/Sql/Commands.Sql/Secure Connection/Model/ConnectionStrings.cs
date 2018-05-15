@@ -55,11 +55,11 @@ namespace Microsoft.Azure.Commands.Sql.SecureConnection.Model
         /// </summary>
         private string ConstructPhpConnectionString(string proxyDnsName, string port, string serverName, string databaseName)
         {
-            string enterUser = Microsoft.Azure.Commands.Sql.Properties.Resources.EnterUserId;
-            string enterPassword = Microsoft.Azure.Commands.Sql.Properties.Resources.EnterPassword;
-            string pdoTitle = Microsoft.Azure.Commands.Sql.Properties.Resources.PdoTitle;
-            string sqlServerSampleTitle = Microsoft.Azure.Commands.Sql.Properties.Resources.sqlSampleTitle;
-            string connectionError = Microsoft.Azure.Commands.Sql.Properties.Resources.PhpConnectionError;
+            string enterUser = Properties.Resources.EnterUserId;
+            string enterPassword = Properties.Resources.EnterPassword;
+            string pdoTitle = Properties.Resources.PdoTitle;
+            string sqlServerSampleTitle = Properties.Resources.sqlSampleTitle;
+            string connectionError = Properties.Resources.PhpConnectionError;
             StringBuilder sb = new StringBuilder();
             sb.Append(string.Format("Server: {0}, {1}", proxyDnsName, port)).Append(Environment.NewLine);
             sb.Append(string.Format("SQL Database: {0}", databaseName)).Append(Environment.NewLine);
@@ -87,8 +87,8 @@ namespace Microsoft.Azure.Commands.Sql.SecureConnection.Model
         /// </summary>
         private string ConstructOdbcConnectionString(string proxyDnsName, string port, string serverName, string databaseName)
         {
-            string enterUser = Microsoft.Azure.Commands.Sql.Properties.Resources.EnterUserId;
-            string enterPassword = Microsoft.Azure.Commands.Sql.Properties.Resources.EnterPassword;
+            string enterUser = Properties.Resources.EnterUserId;
+            string enterPassword = Properties.Resources.EnterPassword;
             StringBuilder sb = new StringBuilder();
             sb.Append("Driver={SQL Server Native Client 11.0};");
             sb.Append(string.Format("Server=tcp:{0},{1};", proxyDnsName, port));
@@ -104,8 +104,8 @@ namespace Microsoft.Azure.Commands.Sql.SecureConnection.Model
         /// </summary>
         private string ConstructJdbcConnectionString(string proxyDnsName, string port, string serverName, string databaseName)
         {
-            string enterUser = Microsoft.Azure.Commands.Sql.Properties.Resources.EnterUserId;
-            string enterPassword = Microsoft.Azure.Commands.Sql.Properties.Resources.EnterPassword;
+            string enterUser = Properties.Resources.EnterUserId;
+            string enterPassword = Properties.Resources.EnterPassword;
             return string.Format("jdbc:sqlserver://{0}:{1};database={2};user={3}@{4};password={5};encrypt=true;hostNameInCertificate=*.database.secure.windows.net;loginTimeout=30;",
                 proxyDnsName, port, databaseName, enterUser, serverName, enterPassword);
         }
@@ -115,8 +115,8 @@ namespace Microsoft.Azure.Commands.Sql.SecureConnection.Model
         /// </summary>
         private string ConstructAdoNetConnectionString(string proxyDnsName, string port, string serverName, string databaseName)
         {
-            string enterUser = Microsoft.Azure.Commands.Sql.Properties.Resources.EnterUserId;
-            string enterPassword = Microsoft.Azure.Commands.Sql.Properties.Resources.EnterPassword;
+            string enterUser = Properties.Resources.EnterUserId;
+            string enterPassword = Properties.Resources.EnterPassword;
             return string.Format("Server=tcp:{0},{1};Database={2};User ID={3}@{4};Password={5};Trusted_Connection=False;Encrypt=True;Connection Timeout=30",
                 proxyDnsName, port, databaseName, enterUser, serverName, enterPassword);
         }

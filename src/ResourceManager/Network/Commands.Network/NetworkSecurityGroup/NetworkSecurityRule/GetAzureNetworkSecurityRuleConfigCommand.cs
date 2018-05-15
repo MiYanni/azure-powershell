@@ -40,16 +40,16 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var rules = this.DefaultRules
-                            ? this.NetworkSecurityGroup.DefaultSecurityRules
-                            : this.NetworkSecurityGroup.SecurityRules;
+            var rules = DefaultRules
+                            ? NetworkSecurityGroup.DefaultSecurityRules
+                            : NetworkSecurityGroup.SecurityRules;
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var rule =
                     rules.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(rule);
             }

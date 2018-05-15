@@ -60,21 +60,21 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            var mappings = this.RecoveryServicesClient
+            var mappings = RecoveryServicesClient
                 .GetAzureSiteRecoveryStorageClassificationMapping();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByObjectWithName:
                     mappings = mappings.Where(
                             item => item.Name.Equals(
-                                this.Name,
+                                Name,
                                 StringComparison.InvariantCultureIgnoreCase))
                         .ToList();
                     mappings = mappings.Where(
                             item => item.GetPrimaryStorageClassificationId()
                                 .Equals(
-                                    this.StorageClassification.Id,
+                                    StorageClassification.Id,
                                     StringComparison.InvariantCultureIgnoreCase))
                         .ToList();
                     break;
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     mappings = mappings.Where(
                             item => item.GetPrimaryStorageClassificationId()
                                 .Equals(
-                                    this.StorageClassification.Id,
+                                    StorageClassification.Id,
                                     StringComparison.InvariantCultureIgnoreCase))
                         .ToList();
                     break;
@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     };
                 });
 
-            this.WriteObject(
+            WriteObject(
                 psObject,
                 true);
         }

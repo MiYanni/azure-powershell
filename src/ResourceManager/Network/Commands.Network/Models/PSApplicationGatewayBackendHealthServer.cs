@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string IpConfigurationText
         {
-            get { return JsonConvert.SerializeObject(IpConfiguration, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(IpConfiguration, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

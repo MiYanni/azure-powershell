@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// <summary>
     /// Filters resource group deployments.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRmResourceGroupDeployment", DefaultParameterSetName = GetAzureResourceGroupDeploymentCmdlet.DeploymentNameParameterSet), OutputType(typeof(List<PSResourceGroupDeployment>))]
+    [Cmdlet(VerbsCommon.Get, "AzureRmResourceGroupDeployment", DefaultParameterSetName = DeploymentNameParameterSet), OutputType(typeof(List<PSResourceGroupDeployment>))]
     public class GetAzureResourceGroupDeploymentCmdlet : ResourceManagerCmdletBase
     {
         /// <summary>
@@ -36,27 +36,27 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         internal const string DeploymentNameParameterSet = "GetByResourceGroupDeploymentName";
 
-        [Parameter(Position = 0, ParameterSetName = GetAzureResourceGroupDeploymentCmdlet.DeploymentNameParameterSet, Mandatory = true, 
+        [Parameter(Position = 0, ParameterSetName = DeploymentNameParameterSet, Mandatory = true, 
             ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the resource group.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         [Alias("DeploymentName")]
-        [Parameter(Position = 1, ParameterSetName = GetAzureResourceGroupDeploymentCmdlet.DeploymentNameParameterSet, Mandatory = false, 
+        [Parameter(Position = 1, ParameterSetName = DeploymentNameParameterSet, Mandatory = false, 
             ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the resource group deployment.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         [Alias("DeploymentId", "ResourceId")]
-        [Parameter(ParameterSetName = GetAzureResourceGroupDeploymentCmdlet.DeploymentIdParameterSet, Mandatory = true, 
+        [Parameter(ParameterSetName = DeploymentIdParameterSet, Mandatory = true, 
             HelpMessage = "The fully qualified resource Id of the deployment. example: /subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Resources/deployments/{deploymentName}")]
         [ValidateNotNullOrEmpty]
         public string Id { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            FilterResourceGroupDeploymentOptions options = new FilterResourceGroupDeploymentOptions()
+            FilterResourceGroupDeploymentOptions options = new FilterResourceGroupDeploymentOptions
             {
                 ResourceGroupName = ResourceGroupName ?? ResourceIdUtility.GetResourceGroupName(Id),
                 DeploymentName = Name ?? (string.IsNullOrEmpty(Id) ? null : ResourceIdUtility.GetResourceName(Id))

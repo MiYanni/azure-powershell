@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
     {
         public override string ToString()
         {
-            return this.Message.Substring(0, 20) + "...";
+            return Message.Substring(0, 20) + "...";
         }
     }
 }

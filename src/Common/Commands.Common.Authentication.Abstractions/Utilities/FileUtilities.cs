@@ -101,27 +101,21 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
             {
                 return Path.Combine(programFilesPath, directoryName);
             }
-            else
+            if (programFilesPath.IndexOf(Resources.x86InProgramFiles, StringComparison.InvariantCultureIgnoreCase) == -1)
             {
-                if (programFilesPath.IndexOf(Resources.x86InProgramFiles, StringComparison.InvariantCultureIgnoreCase) == -1)
+                programFilesPath += Resources.x86InProgramFiles;
+                if (throwIfNotFound)
                 {
-                    programFilesPath += Resources.x86InProgramFiles;
-                    if (throwIfNotFound)
-                    {
-                        ValidateDirectoryExists(Path.Combine(programFilesPath, directoryName));
-                    }
-                    return Path.Combine(programFilesPath, directoryName);
+                    ValidateDirectoryExists(Path.Combine(programFilesPath, directoryName));
                 }
-                else
-                {
-                    programFilesPath = programFilesPath.Replace(Resources.x86InProgramFiles, String.Empty);
-                    if (throwIfNotFound)
-                    {
-                        ValidateDirectoryExists(Path.Combine(programFilesPath, directoryName));
-                    }
-                    return Path.Combine(programFilesPath, directoryName);
-                }
+                return Path.Combine(programFilesPath, directoryName);
             }
+            programFilesPath = programFilesPath.Replace(Resources.x86InProgramFiles, String.Empty);
+            if (throwIfNotFound)
+            {
+                ValidateDirectoryExists(Path.Combine(programFilesPath, directoryName));
+            }
+            return Path.Combine(programFilesPath, directoryName);
         }
 
         /// <summary>
@@ -271,10 +265,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
             catch
             {
@@ -388,10 +379,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
                 {
                     throw new ArgumentException(string.Format(Resources.InvalidOrEmptyArgumentMessage, messageData));
                 }
-                else
-                {
-                    throw new ArgumentException(messageData);
-                }
+                throw new ArgumentException(messageData);
             }
         }
     }

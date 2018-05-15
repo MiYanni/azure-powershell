@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights
                     var dataSource = OperationalInsightsClient.GetDataSource(ResourceGroupName, WorkspaceName, Name);
                     WriteObject(dataSource, true);
                 }
-                catch (Microsoft.Rest.Azure.CloudException e)
+                catch (Rest.Azure.CloudException e)
                 {
                     // Get throws NotFound exception if workspace does not exist
                     if (e.Response.StatusCode == HttpStatusCode.NotFound)

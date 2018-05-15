@@ -16,10 +16,10 @@
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
     using Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.Azure.Commands.Common.Authentication.Models;
-    using Microsoft.Azure.Management.Logic;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Common.Authentication;
+    using Common.Authentication.Models;
+    using Management.Logic;
+    using Management.Logic.Models;
     using System;
     using System.Globalization;
     using System.Management.Automation;
@@ -45,8 +45,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="context">The Azure context instance</param>
         public LogicAppClient(IAzureContext context)
         {
-            this.LogicManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<LogicManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);            
-            this.LogicManagementClient.SubscriptionId = context.Subscription.Id.ToString();
+            LogicManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<LogicManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);            
+            LogicManagementClient.SubscriptionId = context.Subscription.Id.ToString();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="client">client reference</param>
         public LogicAppClient(ILogicManagementClient client)
         {
-            this.LogicManagementClient = client;        }
+            LogicManagementClient = client;        }
 
         /// <summary>
         /// Gets or sets the Logic client instance
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Newly created workflow object</returns>
         public Workflow UpdateWorkflow(string resourceGroupName, string workflowName, Workflow workflow)
         {
-            return this.LogicManagementClient.Workflows.CreateOrUpdate(resourceGroupName, workflowName, workflow);
+            return LogicManagementClient.Workflows.CreateOrUpdate(resourceGroupName, workflowName, workflow);
         }
 
         /// <summary>
@@ -90,15 +90,12 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Newly created workflow object</returns>
         public Workflow CreateWorkflow(string resourceGroupName, string workflowName, Workflow workflow)
         {
-            if (!this.DoesLogicAppExist(resourceGroupName, workflowName))
+            if (!DoesLogicAppExist(resourceGroupName, workflowName))
             {
-                return this.LogicManagementClient.Workflows.CreateOrUpdate(resourceGroupName, workflowName, workflow);
+                return LogicManagementClient.Workflows.CreateOrUpdate(resourceGroupName, workflowName, workflow);
             }
-            else
-            {
-                throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    Properties.Resource.ResourceAlreadyExists, workflowName, resourceGroupName));
-            }
+            throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
+                Properties.Resource.ResourceAlreadyExists, workflowName, resourceGroupName));
         }
 
         /// <summary>
@@ -109,7 +106,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Workflow object</returns>
         public Workflow GetWorkflow(string resourceGroupName, string workflowName)
         {
-            return this.LogicManagementClient.Workflows.Get(resourceGroupName, workflowName);
+            return LogicManagementClient.Workflows.Get(resourceGroupName, workflowName);
         }
 
         /// <summary>
@@ -121,7 +118,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Workflow object</returns>
         public WorkflowVersion GetWorkflowVersion(string resourceGroupName, string workflowName, string versionId)
         {
-            return this.LogicManagementClient.WorkflowVersions.Get(resourceGroupName, workflowName, versionId);
+            return LogicManagementClient.WorkflowVersions.Get(resourceGroupName, workflowName, versionId);
         }
 
         /// <summary>
@@ -133,7 +130,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Workflow object</returns>
         public object GetWorkflowUpgradedDefinition(string resourceGroupName, string workflowName, string targetSchemaVersion)
         {
-            return this.LogicManagementClient.Workflows.GenerateUpgradedDefinition(
+            return LogicManagementClient.Workflows.GenerateUpgradedDefinition(
                 resourceGroupName,
                 workflowName, 
                 new GenerateUpgradedDefinitionParameters(targetSchemaVersion)
@@ -147,7 +144,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="workflowName">Workflow name</param>
         public void RemoveWorkflow(string resourceGroupName, string workflowName)
         {
-            this.LogicManagementClient.Workflows.Delete(resourceGroupName, workflowName);
+            LogicManagementClient.Workflows.Delete(resourceGroupName, workflowName);
         }
 
         /// <summary>
@@ -159,7 +156,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="workflow">The Workflow object.</param>
         public void ValidateWorkflow(string resourceGroupName, string location, string workflowName, Workflow workflow)
         {
-            this.LogicManagementClient.Workflows.Validate(resourceGroupName, location, workflowName, workflow);
+            LogicManagementClient.Workflows.Validate(resourceGroupName, location, workflowName, workflow);
         }
 
         /// <summary>
@@ -173,7 +170,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
             bool result = false;
             try
             {
-                var workflow = this.LogicManagementClient.Workflows.GetAsync(resourceGroupName, workflowName).Result;
+                var workflow = LogicManagementClient.Workflows.GetAsync(resourceGroupName, workflowName).Result;
                 result = workflow != null;
             }
             catch

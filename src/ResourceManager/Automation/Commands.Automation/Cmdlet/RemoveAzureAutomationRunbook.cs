@@ -46,14 +46,14 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(CultureInfo.CurrentCulture, Resources.RemoveAzureAutomationRunbookWarning),
                 string.Format(CultureInfo.CurrentCulture, Resources.RemoveAzureAutomationRunbookDescription),
-                this.Name,
+                Name,
                 () =>
                 {
-                    AutomationClient.DeleteRunbook(this.ResourceGroupName, this.AutomationAccountName, this.Name);
+                    AutomationClient.DeleteRunbook(ResourceGroupName, AutomationAccountName, Name);
                 });
         }
     }

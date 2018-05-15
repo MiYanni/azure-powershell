@@ -48,15 +48,15 @@ namespace Microsoft.Azure.Commands.Insights.Alerts
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (!this.SendToServiceOwner && (this.CustomEmail == null || this.CustomEmail.Length < 1))
+            if (!SendToServiceOwner && (CustomEmail == null || CustomEmail.Length < 1))
             {
                 throw new ArgumentException("Either SendToServiceOwners must be set or at least one custom email must be present");
             }
 
             var action = new RuleEmailAction
             {
-                CustomEmails = this.CustomEmail,
-                SendToServiceOwners = this.SendToServiceOwner
+                CustomEmails = CustomEmail,
+                SendToServiceOwners = SendToServiceOwner
             };
 
             WriteObject(action);

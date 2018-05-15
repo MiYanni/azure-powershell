@@ -33,16 +33,16 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override void ExecuteCmdlet()
         {
-            if ((string.IsNullOrWhiteSpace(this.RecordSet.Etag) || this.RecordSet.Etag == "*") && !this.Overwrite.IsPresent)
+            if ((string.IsNullOrWhiteSpace(RecordSet.Etag) || RecordSet.Etag == "*") && !Overwrite.IsPresent)
             {
                 throw new PSArgumentException(string.Format(ProjectResources.Error_EtagNotSpecified, typeof(DnsRecordSet).Name));
             }
 
-            DnsRecordSet recordSetToUpdate = (DnsRecordSet)this.RecordSet.Clone();
+            DnsRecordSet recordSetToUpdate = (DnsRecordSet)RecordSet.Clone();
                     if (recordSetToUpdate.ZoneName != null && recordSetToUpdate.ZoneName.EndsWith("."))
                     {
                         recordSetToUpdate.ZoneName = recordSetToUpdate.ZoneName.TrimEnd('.');
-                        this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", recordSetToUpdate.ZoneName));
+                        WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", recordSetToUpdate.ZoneName));
                     }
 
             ConfirmAction(
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.Dns
                 recordSetToUpdate.Name,
             () =>
             {
-                DnsRecordSet result = this.DnsClient.UpdateDnsRecordSet(recordSetToUpdate, this.Overwrite.IsPresent);
+                DnsRecordSet result = DnsClient.UpdateDnsRecordSet(recordSetToUpdate, Overwrite.IsPresent);
 
                 WriteVerbose(ProjectResources.Success);
 

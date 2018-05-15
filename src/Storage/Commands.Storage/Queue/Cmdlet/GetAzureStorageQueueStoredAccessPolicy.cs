@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Queue.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Queue.Protocol;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage.Queue;
+    using WindowsAzure.Storage.Queue.Protocol;
     using System;
     using System.Globalization;
     using System.Management.Automation;
@@ -95,7 +95,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Queue.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (String.IsNullOrEmpty(Queue)) return;
-            Func<long, Task> taskGenerator = (taskId) => GetAzureQueueStoredAccessPolicyAsync(taskId, Channel, Queue, Policy);
+            Func<long, Task> taskGenerator = taskId => GetAzureQueueStoredAccessPolicyAsync(taskId, Channel, Queue, Policy);
             RunTask(taskGenerator);
         }
 

@@ -52,12 +52,12 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName = InputObject.ResourceGroupName;
             }
 
-            NewDataFactoryGatewayAuthKeyParameters param = new NewDataFactoryGatewayAuthKeyParameters()
+            NewDataFactoryGatewayAuthKeyParameters param = new NewDataFactoryGatewayAuthKeyParameters
             {
                 KeyName = KeyName
             };
 
-            if (ShouldProcess(this.DataFactoryName, "New Data Factory Gateway Auth Key"))
+            if (ShouldProcess(DataFactoryName, "New Data Factory Gateway Auth Key"))
             {
                 PSDataFactoryGatewayAuthKey gatewayKey = DataFactoryClient.RegenerateGatewayAuthKey(ResourceGroupName, DataFactoryName, GatewayName, param);
                 WriteObject(gatewayKey);

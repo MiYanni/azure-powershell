@@ -15,12 +15,12 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
 {
     using Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.Common.Authentication;
+    using Commands.Common.Authentication;
     using System;
     using System.IO;
     using System.Text;
     using WindowsAzure.Commands.Common;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
 
     /// <summary>
     /// The file utility.
@@ -63,8 +63,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
 
             if (!FileUtilities.DataStore.FileExists(finalOutputPath.ToString()) 
                 || overwrite
-                || (shouldContinue != null && shouldContinue(string.Format(ProjectResources.FileAlreadyExists, finalOutputPath),
-                    ProjectResources.OverrdingFile)))
+                || shouldContinue != null && shouldContinue(string.Format(ProjectResources.FileAlreadyExists, finalOutputPath),
+                    ProjectResources.OverrdingFile))
             {
                 saveFile();
             }

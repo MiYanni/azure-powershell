@@ -104,22 +104,22 @@ namespace Microsoft.Azure.Commands.KeyVault
                 VaultName = InputObject.VaultName;
             }
 
-            if (ShouldProcess(Name, Properties.Resources.BackupManagedStorageAccount))
+            if (ShouldProcess(Name, Resources.BackupManagedStorageAccount))
             {
                 if (string.IsNullOrEmpty(OutputFile))
                 {
                     OutputFile = GetDefaultFileForOperation("backup", VaultName, Name);
                 }
 
-                var filePath = this.GetUnresolvedProviderPathFromPSPath(OutputFile);
+                var filePath = GetUnresolvedProviderPathFromPSPath(OutputFile);
 
                 // deny request if the file exists and overwrite is not authorized
                 if (!AzureSession.Instance.DataStore.FileExists(filePath)
                     || Force.IsPresent
                     || ShouldContinue(string.Format(Resources.FileOverwriteMessage, filePath), Resources.FileOverwriteCaption))
                 {
-                    var backupBlobPath = this.DataServiceClient.BackupManagedStorageAccount(VaultName, Name, filePath);
-                    this.WriteObject(backupBlobPath);
+                    var backupBlobPath = DataServiceClient.BackupManagedStorageAccount(VaultName, Name, filePath);
+                    WriteObject(backupBlobPath);
                 }
             }
         }

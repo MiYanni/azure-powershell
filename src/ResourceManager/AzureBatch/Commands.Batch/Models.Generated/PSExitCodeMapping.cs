@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSExitCodeMapping
     {
         
-        internal Microsoft.Azure.Batch.ExitCodeMapping omObject;
+        internal ExitCodeMapping omObject;
         
         private PSExitOptions exitOptions;
         
         public PSExitCodeMapping(int code, PSExitOptions exitOptions)
         {
-            this.omObject = new Microsoft.Azure.Batch.ExitCodeMapping(code, exitOptions.omObject);
+            omObject = new ExitCodeMapping(code, exitOptions.omObject);
         }
         
-        internal PSExitCodeMapping(Microsoft.Azure.Batch.ExitCodeMapping omObject)
+        internal PSExitCodeMapping(ExitCodeMapping omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Code;
+                return omObject.Code;
             }
         }
         
@@ -62,12 +62,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.exitOptions == null) 
-                            && (this.omObject.ExitOptions != null)))
+                if (exitOptions == null 
+                    && omObject.ExitOptions != null)
                 {
-                    this.exitOptions = new PSExitOptions(this.omObject.ExitOptions);
+                    exitOptions = new PSExitOptions(omObject.ExitOptions);
                 }
-                return this.exitOptions;
+                return exitOptions;
             }
         }
     }

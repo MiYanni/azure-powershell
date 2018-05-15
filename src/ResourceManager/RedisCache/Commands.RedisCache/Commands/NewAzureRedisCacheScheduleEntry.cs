@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Commands.RedisCache
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.RedisCache.Models;
+    using Models;
 
     [Cmdlet(VerbsCommon.New, "AzureRmRedisCacheScheduleEntry"), OutputType(typeof(PSScheduleEntry))]
     public class NewAzureRedisCacheScheduleEntry : RedisCacheCmdletBase
@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.RedisCache
         
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSScheduleEntry()
+            WriteObject(new PSScheduleEntry
             {
                 DayOfWeek = DayOfWeek,
                 StartHourUtc = StartHourUtc,

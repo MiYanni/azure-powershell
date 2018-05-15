@@ -21,11 +21,11 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
     {
         public static NestedResourceStrategy<LoadBalancingRule, LoadBalancer> Strategy { get; }
             = NestedResourceStrategy.Create<LoadBalancingRule, LoadBalancer>(
-                provider: "loadBalancingRules",
-                getList: parentModel => parentModel.LoadBalancingRules,
-                setList: (parentModel, list) => parentModel.LoadBalancingRules = list,
-                getName: model => model.Name,
-                setName: (model, name) => model.Name = name);
+                "loadBalancingRules",
+                parentModel => parentModel.LoadBalancingRules,
+                (parentModel, list) => parentModel.LoadBalancingRules = list,
+                model => model.Name,
+                (model, name) => model.Name = name);
 
         public static NestedResourceConfig<LoadBalancingRule, LoadBalancer> CreateLoadBalancingRule(
             this ResourceConfig<LoadBalancer> loadBalancer,

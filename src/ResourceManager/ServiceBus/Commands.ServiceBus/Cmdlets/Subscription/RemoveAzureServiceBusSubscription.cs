@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Subscription
         public override void ExecuteCmdlet()
         {
             // delete a Subscription 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.RemoveSubscription, Name, Topic, Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.RemoveSubscription, Name, Topic, Namespace)))
             {
                 WriteObject(Client.DeleteSubscription(ResourceGroupName, Namespace, Topic, Name));
             }

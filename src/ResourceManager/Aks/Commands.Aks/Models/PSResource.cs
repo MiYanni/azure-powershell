@@ -2,7 +2,7 @@ using System.Management.Automation;
 
 namespace Microsoft.Azure.Commands.Aks.Models
 {
-    using Microsoft.Rest.Azure;
+    using Rest.Azure;
     using Newtonsoft.Json;
     using System.Collections.Generic;
 

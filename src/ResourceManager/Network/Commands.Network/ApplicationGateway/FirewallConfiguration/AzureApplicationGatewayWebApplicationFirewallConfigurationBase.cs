@@ -56,13 +56,13 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
             
-            if (!this.MyInvocation.BoundParameters.ContainsKey("RuleSetType"))
+            if (!MyInvocation.BoundParameters.ContainsKey("RuleSetType"))
             {
-                this.RuleSetType = "OWASP";
+                RuleSetType = "OWASP";
             }
-            if (!this.MyInvocation.BoundParameters.ContainsKey("RuleSetVersion"))
+            if (!MyInvocation.BoundParameters.ContainsKey("RuleSetVersion"))
             {
-                this.RuleSetVersion = "3.0";
+                RuleSetVersion = "3.0";
             }
         }
     }

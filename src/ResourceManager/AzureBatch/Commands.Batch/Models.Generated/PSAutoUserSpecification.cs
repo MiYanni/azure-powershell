@@ -26,41 +26,41 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSAutoUserSpecification
     {
         
-        internal Microsoft.Azure.Batch.AutoUserSpecification omObject;
+        internal AutoUserSpecification omObject;
         
-        public PSAutoUserSpecification(System.Nullable<Microsoft.Azure.Batch.Common.AutoUserScope> scope = null, System.Nullable<Microsoft.Azure.Batch.Common.ElevationLevel> elevationLevel = null)
+        public PSAutoUserSpecification(Nullable<Azure.Batch.Common.AutoUserScope> scope = null, Nullable<Azure.Batch.Common.ElevationLevel> elevationLevel = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.AutoUserSpecification(scope, elevationLevel);
+            omObject = new AutoUserSpecification(scope, elevationLevel);
         }
         
-        internal PSAutoUserSpecification(Microsoft.Azure.Batch.AutoUserSpecification omObject)
+        internal PSAutoUserSpecification(AutoUserSpecification omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.ElevationLevel? ElevationLevel
+        public Azure.Batch.Common.ElevationLevel? ElevationLevel
         {
             get
             {
-                return this.omObject.ElevationLevel;
+                return omObject.ElevationLevel;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.AutoUserScope? Scope
+        public Azure.Batch.Common.AutoUserScope? Scope
         {
             get
             {
-                return this.omObject.Scope;
+                return omObject.Scope;
             }
         }
     }

@@ -66,13 +66,13 @@ namespace Microsoft.Azure.Commands.OperationalInsights
 
         protected override void ProcessRecord()
         {
-            SavedSearch properties = new SavedSearch()
+            SavedSearch properties = new SavedSearch
             {
-                Category = this.Category,
-                DisplayName = this.DisplayName,
-                Query = this.Query,
-                Version = this.Version,
-                Tags = new List<Tag>() { new Tag() { Name = "Group", Value = "Computer" } }
+                Category = Category,
+                DisplayName = DisplayName,
+                Query = Query,
+                Version = Version,
+                Tags = new List<Tag> { new Tag { Name = "Group", Value = "Computer" } }
             };
 
             WriteObject(OperationalInsightsClient.CreateOrUpdateSavedSearch(ResourceGroupName, WorkspaceName, SavedSearchId, properties, Force, ConfirmAction), true);

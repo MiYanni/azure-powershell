@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Profile
                     if (!AzureSession.Instance.DataStore.FileExists(Path))
                     {
                         throw new PSArgumentException(string.Format(
-                            Microsoft.Azure.Commands.Profile.Properties.Resources.FileNotFound,
+                            Resources.FileNotFound,
                             Path));
                     }
 
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.Profile
                         StringComparison.OrdinalIgnoreCase))
                     {
                         WriteWarning(string.Format(
-                                       Microsoft.Azure.Commands.Profile.Properties.Resources.SelectedSubscriptionNotActive,
+                                       Resources.SelectedSubscriptionNotActive,
                                        profile.DefaultContext.Subscription.State));
                     }
 

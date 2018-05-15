@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime CreationDate
         {
-            get { return this._creationDate; }
-            set { this._creationDate = value; }
+            get { return _creationDate; }
+            set { _creationDate = value; }
         }
         
         private string _databaseName;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseName
         {
-            get { return this._databaseName; }
-            set { this._databaseName = value; }
+            get { return _databaseName; }
+            set { _databaseName = value; }
         }
         
         private DateTime _deletionDate;
@@ -59,19 +59,19 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime DeletionDate
         {
-            get { return this._deletionDate; }
-            set { this._deletionDate = value; }
+            get { return _deletionDate; }
+            set { _deletionDate = value; }
         }
         
-        private System.DateTime? _earliestRestoreDate;
+        private DateTime? _earliestRestoreDate;
         
         /// <summary>
         /// Optional. Gets or sets the earliest restore date
         /// </summary>
-        public System.DateTime? EarliestRestoreDate
+        public DateTime? EarliestRestoreDate
         {
-            get { return this._earliestRestoreDate; }
-            set { this._earliestRestoreDate = value; }
+            get { return _earliestRestoreDate; }
+            set { _earliestRestoreDate = value; }
         }
         
         private string _edition;
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Edition
         {
-            get { return this._edition; }
-            set { this._edition = value; }
+            get { return _edition; }
+            set { _edition = value; }
         }
         
         private string _elasticPoolName;
@@ -92,8 +92,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ElasticPoolName
         {
-            get { return this._elasticPoolName; }
-            set { this._elasticPoolName = value; }
+            get { return _elasticPoolName; }
+            set { _elasticPoolName = value; }
         }
         
         private long _maxSizeBytes;
@@ -103,8 +103,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public long MaxSizeBytes
         {
-            get { return this._maxSizeBytes; }
-            set { this._maxSizeBytes = value; }
+            get { return _maxSizeBytes; }
+            set { _maxSizeBytes = value; }
         }
         
         private string _serviceLevelObjective;
@@ -115,8 +115,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServiceLevelObjective
         {
-            get { return this._serviceLevelObjective; }
-            set { this._serviceLevelObjective = value; }
+            get { return _serviceLevelObjective; }
+            set { _serviceLevelObjective = value; }
         }
         
         /// <summary>

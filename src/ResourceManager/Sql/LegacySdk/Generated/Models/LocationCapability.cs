@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private string _status;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         private IList<ServerVersionCapability> _supportedServerVersions;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServerVersionCapability> SupportedServerVersions
         {
-            get { return this._supportedServerVersions; }
-            set { this._supportedServerVersions = value; }
+            get { return _supportedServerVersions; }
+            set { _supportedServerVersions = value; }
         }
         
         /// <summary>
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public LocationCapability()
         {
-            this.SupportedServerVersions = new LazyList<ServerVersionCapability>();
+            SupportedServerVersions = new LazyList<ServerVersionCapability>();
         }
     }
 }

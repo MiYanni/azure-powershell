@@ -61,9 +61,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Cmdlet
         /// Check to see if the server already exists in this resource group.
         /// </summary>
         /// <returns>Null if the server doesn't exist.  Otherwise throws exception</returns>
-        protected override IEnumerable<Model.AzureSqlServerUpgradeStartModel> GetEntity()
+        protected override IEnumerable<AzureSqlServerUpgradeStartModel> GetEntity()
         {
-            var upgrade = ModelAdapter.GetUpgrade(this.ResourceGroupName, this.ServerName);
+            var upgrade = ModelAdapter.GetUpgrade(ResourceGroupName, ServerName);
 
             if (upgrade.Status == ServerUpgradeStatus.Queued ||
                 upgrade.Status == ServerUpgradeStatus.InProgress ||
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Cmdlet
             {
                 // The server upgrade is already pending
                 throw new PSArgumentException(
-                    string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.ServerUpgradeExists, this.ServerName),
+                    string.Format(Properties.Resources.ServerUpgradeExists, ServerName),
                     "ServerName");
             }
 
@@ -112,12 +112,12 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Cmdlet
             var newEntity = new List<AzureSqlServerUpgradeStartModel>();
             newEntity.Add(new AzureSqlServerUpgradeStartModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                ServerVersion = this.ServerVersion,
-                ScheduleUpgradeAfterUtcDateTime = this.ScheduleUpgradeAfterUtcDateTime,
-                DatabaseCollection = this.DatabaseCollection,
-                ElasticPoolCollection = this.ElasticPoolCollection
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                ServerVersion = ServerVersion,
+                ScheduleUpgradeAfterUtcDateTime = ScheduleUpgradeAfterUtcDateTime,
+                DatabaseCollection = DatabaseCollection,
+                ElasticPoolCollection = ElasticPoolCollection
             });
             return newEntity;
         }

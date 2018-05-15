@@ -43,10 +43,10 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            RebootComputeNodeParameters parameters = new RebootComputeNodeParameters(this.BatchContext, this.PoolId,
-                this.Id, this.ComputeNode, this.AdditionalBehaviors)
+            RebootComputeNodeParameters parameters = new RebootComputeNodeParameters(BatchContext, PoolId,
+                Id, ComputeNode, AdditionalBehaviors)
             {
-                RebootOption = this.RebootOption
+                RebootOption = RebootOption
             };
             BatchClient.RebootComputeNode(parameters);
         }

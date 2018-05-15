@@ -52,8 +52,8 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
                     cognitiveServicesClientWrapper = new CognitiveServicesManagementClientWrapper(DefaultProfile.DefaultContext);
                 }
 
-                this.cognitiveServicesClientWrapper.VerboseLogger = WriteVerboseWithTimestamp;
-                this.cognitiveServicesClientWrapper.ErrorLogger = WriteErrorWithTimestamp;
+                cognitiveServicesClientWrapper.VerboseLogger = WriteVerboseWithTimestamp;
+                cognitiveServicesClientWrapper.ErrorLogger = WriteErrorWithTimestamp;
                 return cognitiveServicesClientWrapper.CognitiveServicesManagementClient;
             }
 
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
 
 
         protected void WriteCognitiveServicesAccount(
-            CognitiveServicesModels.CognitiveServicesAccount cognitiveServicesAccount)
+            CognitiveServicesAccount cognitiveServicesAccount)
         {
             if (cognitiveServicesAccount != null)
             {
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
         }
 
         protected void WriteCognitiveServicesAccountList(
-            IEnumerable<CognitiveServicesModels.CognitiveServicesAccount> cognitiveServicesAccounts)
+            IEnumerable<CognitiveServicesAccount> cognitiveServicesAccounts)
         {
             List<PSCognitiveServicesAccount> output = new List<PSCognitiveServicesAccount>();
             if (cognitiveServicesAccounts != null)

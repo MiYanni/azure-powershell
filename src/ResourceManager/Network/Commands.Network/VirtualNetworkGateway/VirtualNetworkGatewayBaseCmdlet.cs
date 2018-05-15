@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetVirtualNetworkGateway(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSVirtualNetworkGateway GetVirtualNetworkGateway(string resourceGroupName, string name)
         {
-            var vnetGateway = this.VirtualNetworkGatewayClient.Get(resourceGroupName, name);
+            var vnetGateway = VirtualNetworkGatewayClient.Get(resourceGroupName, name);
 
             var psVirtualNetworkGateway = ToPsVirtualNetworkGateway(vnetGateway);
             psVirtualNetworkGateway.ResourceGroupName = resourceGroupName;

@@ -129,34 +129,34 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            string resourceGroupName = this.ResourceGroupName;
-            string networkWatcherName = this.NetworkWatcherName;
+            string resourceGroupName = ResourceGroupName;
+            string networkWatcherName = NetworkWatcherName;
 
             if (ParameterSetName.Contains("SetByResource"))
             {
-                resourceGroupName = this.NetworkWatcher.ResourceGroupName;
-                networkWatcherName = this.NetworkWatcher.Name;
+                resourceGroupName = NetworkWatcher.ResourceGroupName;
+                networkWatcherName = NetworkWatcher.Name;
             }
             else if (ParameterSetName.Contains("SetByLocation"))
             {
-                var networkWatcher = this.GetNetworkWatcherByLocation(this.Location);
+                var networkWatcher = GetNetworkWatcherByLocation(Location);
 
                 if (networkWatcher == null)
                 {
-                    throw new ArgumentException("There is no network watcher in location {0}", this.Location);
+                    throw new ArgumentException("There is no network watcher in location {0}", Location);
                 }
 
-                resourceGroupName = NetworkBaseCmdlet.GetResourceGroup(networkWatcher.Id);
+                resourceGroupName = GetResourceGroup(networkWatcher.Id);
                 networkWatcherName = networkWatcher.Name;
             }
 
-            var present = this.IsConnectionMonitorPresent(resourceGroupName, networkWatcherName, this.Name);
+            var present = IsConnectionMonitorPresent(resourceGroupName, networkWatcherName, Name);
 
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Properties.Resources.OverwritingResource, this.Name),
+                string.Format(Properties.Resources.OverwritingResource, Name),
                 Properties.Resources.CreatingResourceMessage,
-                this.Name,
+                Name,
                 () =>
                 {
                     var connectionMonitor = CreateConnectionMonitor(resourceGroupName, networkWatcherName);
@@ -167,30 +167,30 @@ namespace Microsoft.Azure.Commands.Network
 
         private PSConnectionMonitorResult CreateConnectionMonitor(string resourceGroupName, string networkWatcherName)
         {
-            MNM.ConnectionMonitor parameters = new MNM.ConnectionMonitor
+            ConnectionMonitor parameters = new ConnectionMonitor
             {
-                Source = new MNM.ConnectionMonitorSource
+                Source = new ConnectionMonitorSource
                 {
-                    ResourceId = this.SourceResourceId,
-                    Port = this.SourcePort
+                    ResourceId = SourceResourceId,
+                    Port = SourcePort
                 },
-                Destination = new MNM.ConnectionMonitorDestination
+                Destination = new ConnectionMonitorDestination
                 {
-                    ResourceId = this.DestinationResourceId,
-                    Address = this.DestinationAddress,
-                    Port = this.DestinationPort
+                    ResourceId = DestinationResourceId,
+                    Address = DestinationAddress,
+                    Port = DestinationPort
                 },
-                Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true)
+                Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true)
             };
 
-            if (this.ConfigureOnly)
+            if (ConfigureOnly)
             {
                 parameters.AutoStart = false;
             }
 
-            if (this.MonitoringIntervalInSeconds != null)
+            if (MonitoringIntervalInSeconds != null)
             {
-                parameters.MonitoringIntervalInSeconds = this.MonitoringIntervalInSeconds;
+                parameters.MonitoringIntervalInSeconds = MonitoringIntervalInSeconds;
             }
 
             PSConnectionMonitorResult getConnectionMonitor = new PSConnectionMonitorResult();
@@ -198,20 +198,20 @@ namespace Microsoft.Azure.Commands.Network
             // Execute the CreateOrUpdate Connection monitor call
             if (ParameterSetName.Contains("SetByResource"))
             {
-                parameters.Location = this.NetworkWatcher.Location;
+                parameters.Location = NetworkWatcher.Location;
             }
             else if (ParameterSetName.Contains("SetByName"))
             {
-                NetworkWatcher networkWatcher = this.NetworkClient.NetworkManagementClient.NetworkWatchers.Get(this.ResourceGroupName, this.NetworkWatcherName);
+                NetworkWatcher networkWatcher = NetworkClient.NetworkManagementClient.NetworkWatchers.Get(ResourceGroupName, NetworkWatcherName);
                 parameters.Location = networkWatcher.Location;
             }
             else
             {
-                parameters.Location = this.Location;
+                parameters.Location = Location;
             }
 
-            this.ConnectionMonitors.CreateOrUpdate(resourceGroupName, networkWatcherName, this.Name, parameters);
-            getConnectionMonitor = this.GetConnectionMonitor(resourceGroupName, networkWatcherName, this.Name);
+            ConnectionMonitors.CreateOrUpdate(resourceGroupName, networkWatcherName, Name, parameters);
+            getConnectionMonitor = GetConnectionMonitor(resourceGroupName, networkWatcherName, Name);
 
             return getConnectionMonitor;
         }

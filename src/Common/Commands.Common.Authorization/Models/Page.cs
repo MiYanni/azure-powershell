@@ -8,12 +8,12 @@
 
 namespace Microsoft.Azure.Management.Authorization.Version2015_07_01.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Management;
-    using Microsoft.Azure.Management.Authorization;
-    using Microsoft.Azure.Management.Authorization.Version2015_07_01;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
+    using Azure;
+    using Management;
+    using Authorization;
+    using Version2015_07_01;
+    using Rest;
+    using Rest.Azure;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;

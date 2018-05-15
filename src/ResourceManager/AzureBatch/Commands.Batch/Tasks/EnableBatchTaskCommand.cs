@@ -39,11 +39,11 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            TaskOperationParameters parameters = new TaskOperationParameters(this.BatchContext, this.JobId, this.Id, this.Task, this.AdditionalBehaviors);
+            TaskOperationParameters parameters = new TaskOperationParameters(BatchContext, JobId, Id, Task, AdditionalBehaviors);
 
             if (ShouldProcess(Constants.AzureBatchTask))
             {
-                this.BatchClient.ReactivateTask(parameters);
+                BatchClient.ReactivateTask(parameters);
             }            
         }
     }

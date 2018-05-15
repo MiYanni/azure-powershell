@@ -38,19 +38,19 @@ namespace Microsoft.Azure.Commands.Compute
         /// <summary>
         /// storage url where databases will be backed up
         /// </summary>
-        [JsonIgnoreAttribute()]
+        [JsonIgnoreAttribute]
         public string StorageUrl { get; set; }
 
         /// <summary>
         /// Key of storage account used by managed backup
         /// </summary>
-        [JsonIgnoreAttribute()]
+        [JsonIgnoreAttribute]
         public string StorageAccessKey { get; set; }
 
         /// <summary>
         /// Password required for certification when encryption is enabled
         /// </summary>
-        [JsonIgnoreAttribute()]
+        [JsonIgnoreAttribute]
         public string Password { get; set; }
 
         /// <summary>

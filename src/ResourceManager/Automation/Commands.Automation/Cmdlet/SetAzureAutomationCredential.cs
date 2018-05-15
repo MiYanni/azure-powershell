@@ -62,9 +62,9 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                 password = Value.GetNetworkCredential().Password;
             }
 
-            var updatedCredential = this.AutomationClient.UpdateCredential(this.ResourceGroupName, this.AutomationAccountName, Name, userName, password, Description);
+            var updatedCredential = AutomationClient.UpdateCredential(ResourceGroupName, AutomationAccountName, Name, userName, password, Description);
 
-            this.WriteObject(updatedCredential);
+            WriteObject(updatedCredential);
         }
     }
 }

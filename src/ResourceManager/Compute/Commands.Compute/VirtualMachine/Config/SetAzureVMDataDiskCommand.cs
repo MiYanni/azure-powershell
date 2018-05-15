@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Compute
         ProfileNouns.DataDisk),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class SetAzureVMDataDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class SetAzureVMDataDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         private const string NameParameterSet = "ChangeWithName";
         private const string LunParameterSet = "ChangeWithLun";
@@ -91,16 +91,16 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            var storageProfile = this.VM.StorageProfile;
+            var storageProfile = VM.StorageProfile;
 
             if (storageProfile == null || storageProfile.DataDisks == null)
             {
                 ThrowDataDiskNotExistError();
             }
 
-            var dataDisk = (this.ParameterSetName.Equals(LunParameterSet))
-                ? storageProfile.DataDisks.SingleOrDefault(disk => disk.Lun == this.Lun)
-                : storageProfile.DataDisks.SingleOrDefault(disk => disk.Name == this.Name);
+            var dataDisk = ParameterSetName.Equals(LunParameterSet)
+                ? storageProfile.DataDisks.SingleOrDefault(disk => disk.Lun == Lun)
+                : storageProfile.DataDisks.SingleOrDefault(disk => disk.Name == Name);
 
             if (dataDisk == null)
             {
@@ -108,15 +108,15 @@ namespace Microsoft.Azure.Commands.Compute
             }
             else
             {
-                if (this.Caching != null)
+                if (Caching != null)
                 {
-                    dataDisk.Caching = this.Caching;
+                    dataDisk.Caching = Caching;
                 }
-                if (this.DiskSizeInGB != null)
+                if (DiskSizeInGB != null)
                 {
-                    dataDisk.DiskSizeGB = this.DiskSizeInGB;
+                    dataDisk.DiskSizeGB = DiskSizeInGB;
                 }
-                if (this.StorageAccountType != null)
+                if (StorageAccountType != null)
                 {
                     if (dataDisk.ManagedDisk == null)
                     {
@@ -129,28 +129,28 @@ namespace Microsoft.Azure.Commands.Compute
                     }
                     else
                     {
-                        dataDisk.ManagedDisk.StorageAccountType = this.StorageAccountType;
+                        dataDisk.ManagedDisk.StorageAccountType = StorageAccountType;
                     }
                 }
 
-                dataDisk.WriteAcceleratorEnabled = this.WriteAccelerator.IsPresent;
+                dataDisk.WriteAcceleratorEnabled = WriteAccelerator.IsPresent;
             }
 
-            this.VM.StorageProfile = storageProfile;
+            VM.StorageProfile = storageProfile;
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
 
         private void ThrowDataDiskNotExistError()
         {
-            var missingDisk = (this.ParameterSetName.Equals(LunParameterSet))
-                   ? string.Format("LUN # {0}", this.Lun)
-                   : "Name: " + this.Name;
+            var missingDisk = ParameterSetName.Equals(LunParameterSet)
+                   ? string.Format("LUN # {0}", Lun)
+                   : "Name: " + Name;
 
             ThrowTerminatingError
                 (new ErrorRecord(
                     new InvalidOperationException(string.Format(CultureInfo.InvariantCulture,
-                        Microsoft.Azure.Commands.Compute.Properties.Resources.DataDiskNotAssignedForVM, missingDisk)),
+                        Properties.Resources.DataDiskNotAssignedForVM, missingDisk)),
                     string.Empty,
                     ErrorCategory.InvalidData,
                     null));

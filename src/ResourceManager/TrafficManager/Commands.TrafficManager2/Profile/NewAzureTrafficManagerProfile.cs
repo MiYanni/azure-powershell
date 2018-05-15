@@ -20,10 +20,10 @@ namespace Microsoft.Azure.Commands.TrafficManager
     using System.Net;
     using System.Management.Automation;
 
-    using Microsoft.Azure.Commands.TrafficManager.Models;
-    using Microsoft.Azure.Commands.TrafficManager.Utilities;
-    using Microsoft.Rest.Azure;
-    using ProjectResources = Microsoft.Azure.Commands.TrafficManager.Properties.Resources;
+    using Models;
+    using Utilities;
+    using Rest.Azure;
+    using ProjectResources = Properties.Resources;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.New, "AzureRmTrafficManagerProfile"), OutputType(typeof(TrafficManagerProfile))]
@@ -98,31 +98,31 @@ namespace Microsoft.Azure.Commands.TrafficManager
             // Therefore, we need to check whether the Profile exists before we actually try to create it.
             try
             {
-                this.TrafficManagerClient.GetTrafficManagerProfile(this.ResourceGroupName, this.Name);
+                TrafficManagerClient.GetTrafficManagerProfile(ResourceGroupName, Name);
 
-                throw new PSArgumentException(string.Format(ProjectResources.Error_CreateExistingProfile, this.Name, this.ResourceGroupName));
+                throw new PSArgumentException(string.Format(ProjectResources.Error_CreateExistingProfile, Name, ResourceGroupName));
             }
             catch (CloudException exception)
             {
                 if (exception.Response.StatusCode.Equals(HttpStatusCode.NotFound))
                 {
-                    TrafficManagerProfile profile = this.TrafficManagerClient.CreateTrafficManagerProfile(
-                    this.ResourceGroupName,
-                    this.Name,
-                    this.ProfileStatus,
-                    this.TrafficRoutingMethod,
-                    this.RelativeDnsName,
-                    this.Ttl,
-                    this.MonitorProtocol,
-                    this.MonitorPort,
-                    this.MonitorPath,
-                    this.MonitorIntervalInSeconds,
-                    this.MonitorTimeoutInSeconds,
-                    this.MonitorToleratedNumberOfFailures,
-                    this.Tag);
+                    TrafficManagerProfile profile = TrafficManagerClient.CreateTrafficManagerProfile(
+                    ResourceGroupName,
+                    Name,
+                    ProfileStatus,
+                    TrafficRoutingMethod,
+                    RelativeDnsName,
+                    Ttl,
+                    MonitorProtocol,
+                    MonitorPort,
+                    MonitorPath,
+                    MonitorIntervalInSeconds,
+                    MonitorTimeoutInSeconds,
+                    MonitorToleratedNumberOfFailures,
+                    Tag);
 
-                    this.WriteVerbose(ProjectResources.Success);
-                    this.WriteObject(profile);
+                    WriteVerbose(ProjectResources.Success);
+                    WriteObject(profile);
                 }
                 else
                 {

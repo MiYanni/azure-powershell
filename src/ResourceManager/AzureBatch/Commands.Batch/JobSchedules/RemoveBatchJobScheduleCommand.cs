@@ -33,10 +33,10 @@ namespace Microsoft.Azure.Commands.Batch
         {
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Resources.RemoveJobScheduleConfirm, this.Id),
+                string.Format(Resources.RemoveJobScheduleConfirm, Id),
                 Resources.RemoveJobSchedule,
-                this.Id,
-                () => BatchClient.DeleteJobSchedule(this.BatchContext, this.Id, this.AdditionalBehaviors));
+                Id,
+                () => BatchClient.DeleteJobSchedule(BatchContext, Id, AdditionalBehaviors));
         }
     }
 }

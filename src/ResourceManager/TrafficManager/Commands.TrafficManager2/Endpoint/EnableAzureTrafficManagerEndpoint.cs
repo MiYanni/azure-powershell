@@ -49,30 +49,30 @@ namespace Microsoft.Azure.Commands.TrafficManager
         {
             TrafficManagerEndpoint endpointToEnable = null;
 
-            if (this.ParameterSetName == "Fields")
+            if (ParameterSetName == "Fields")
             {
                 endpointToEnable = new TrafficManagerEndpoint
                 {
-                    Name = this.Name,
-                    Type = this.Type,
-                    ProfileName = this.ProfileName,
-                    ResourceGroupName = this.ResourceGroupName
+                    Name = Name,
+                    Type = Type,
+                    ProfileName = ProfileName,
+                    ResourceGroupName = ResourceGroupName
                 };
             }
-            else if (this.ParameterSetName == "Object")
+            else if (ParameterSetName == "Object")
             {
-                endpointToEnable = this.TrafficManagerEndpoint;
+                endpointToEnable = TrafficManagerEndpoint;
             }
 
-            bool enabled = this.TrafficManagerClient.EnableDisableTrafficManagerEndpoint(endpointToEnable, shouldEnableEndpointStatus: true);
+            bool enabled = TrafficManagerClient.EnableDisableTrafficManagerEndpoint(endpointToEnable, true);
 
             if (enabled)
             {
-                this.WriteVerbose(ProjectResources.Success);
-                this.WriteVerbose(string.Format(ProjectResources.Success_EnableEndpoint, endpointToEnable.Name, endpointToEnable.ProfileName, endpointToEnable.ResourceGroupName));
+                WriteVerbose(ProjectResources.Success);
+                WriteVerbose(string.Format(ProjectResources.Success_EnableEndpoint, endpointToEnable.Name, endpointToEnable.ProfileName, endpointToEnable.ResourceGroupName));
             }
 
-            this.WriteObject(enabled);
+            WriteObject(enabled);
         }
     }
 }

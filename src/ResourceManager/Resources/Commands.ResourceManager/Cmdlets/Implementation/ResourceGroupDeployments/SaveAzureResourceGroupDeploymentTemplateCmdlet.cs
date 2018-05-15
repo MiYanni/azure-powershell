@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Commands.Common.Authentication.Abstractions;
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Components;
+    using Utilities;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using System.Management.Automation;
 
@@ -67,40 +67,39 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             base.OnProcessRecord();
             if (ShouldProcess(DeploymentName, VerbsData.Save))
             {
-                var resourceId = this.GetResourceId();
+                var resourceId = GetResourceId();
 
-                var apiVersion = this.DetermineApiVersion(resourceId: resourceId).Result;
+                var apiVersion = DetermineApiVersion(resourceId).Result;
 
-                var operationResult = this.GetResourcesClient()
+                var operationResult = GetResourcesClient()
                     .InvokeActionOnResource<JObject>(
-                        resourceId: resourceId,
-                        action: Constants.ExportTemplate,
-                        apiVersion: apiVersion,
-                        cancellationToken: this.CancellationToken.Value)
+                        resourceId,
+                        Constants.ExportTemplate,
+                        apiVersion,
+                        CancellationToken.Value)
                     .Result;
 
-                var managementUri = this.GetResourcesClient()
+                var managementUri = GetResourcesClient()
                     .GetResourceManagementRequestUri(
-                        resourceId: resourceId,
-                        apiVersion: apiVersion,
-                        action: Constants.ExportTemplate);
+                        resourceId,
+                        apiVersion,
+                        Constants.ExportTemplate);
 
                 var activity = string.Format("POST {0}", managementUri.PathAndQuery);
-                var resultString = this.GetLongRunningOperationTracker(activityName: activity,
-                    isResourceCreateOrUpdate: false)
-                    .WaitOnOperation(operationResult: operationResult);
+                var resultString = GetLongRunningOperationTracker(activity,
+                    false)
+                    .WaitOnOperation(operationResult);
 
                 var template = JToken.FromObject(JObject.Parse(resultString)["template"]);
 
                 string path = FileUtility.SaveTemplateFile(
-                    templateName: this.DeploymentName,
-                    contents: template.ToString(),
-                    outputPath:
-                        string.IsNullOrEmpty(this.Path)
-                            ? System.IO.Path.Combine(CurrentPath(), this.DeploymentName)
-                            : this.TryResolvePath(this.Path),
-                    overwrite: this.Force,
-                    shouldContinue: ShouldContinue);
+                    DeploymentName,
+                    template.ToString(),
+                    string.IsNullOrEmpty(Path)
+                            ? System.IO.Path.Combine(CurrentPath(), DeploymentName)
+                            : this.TryResolvePath(Path),
+                    Force,
+                    ShouldContinue);
 
                 WriteObject(PowerShellUtilities.ConstructPSObject(null, "Path", path));
             }
@@ -112,10 +111,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected string GetResourceId()
         {
             return ResourceIdUtility.GetResourceId(
-                subscriptionId: DefaultContext.Subscription.GetId(),
-                resourceGroupName: this.ResourceGroupName,
-                resourceType: Constants.MicrosoftResourcesDeploymentType,
-                resourceName: this.DeploymentName);
+                DefaultContext.Subscription.GetId(),
+                ResourceGroupName,
+                Constants.MicrosoftResourcesDeploymentType,
+                DeploymentName);
         }
     }
 }

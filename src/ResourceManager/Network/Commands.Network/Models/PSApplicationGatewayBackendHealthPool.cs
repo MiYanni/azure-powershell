@@ -27,13 +27,13 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string BackendAddressPoolText
         {
-            get { return JsonConvert.SerializeObject(BackendAddressPool, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(BackendAddressPool, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string BackendHttpSettingsCollectionText
         {
-            get { return JsonConvert.SerializeObject(BackendHttpSettingsCollection, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(BackendHttpSettingsCollection, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

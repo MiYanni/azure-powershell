@@ -103,20 +103,20 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             if (ShouldProcess(Name, VerbsData.Import))
             {
-                var runbook = this.AutomationClient.ImportRunbook(
-                    this.ResourceGroupName,
-                    this.AutomationAccountName,
-                    this.ResolvePath(this.Path),
-                    this.Description,
-                    this.Tags,
-                    RunbookTypeSdkValue.Resolve(this.Type),
-                    this.LogProgress,
-                    this.LogVerbose,
-                    this.Published.IsPresent,
-                    this.Force.IsPresent,
-                    this.Name);
+                var runbook = AutomationClient.ImportRunbook(
+                    ResourceGroupName,
+                    AutomationAccountName,
+                    this.ResolvePath(Path),
+                    Description,
+                    Tags,
+                    RunbookTypeSdkValue.Resolve(Type),
+                    LogProgress,
+                    LogVerbose,
+                    Published.IsPresent,
+                    Force.IsPresent,
+                    Name);
 
-                this.WriteObject(runbook);
+                WriteObject(runbook);
             }
         }
     }

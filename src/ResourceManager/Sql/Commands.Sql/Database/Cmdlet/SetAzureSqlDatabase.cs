@@ -133,8 +133,9 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlDatabaseModel> GetEntity()
         {
-            return new List<AzureSqlDatabaseModel>() {
-                ModelAdapter.GetDatabase(this.ResourceGroupName, this.ServerName, this.DatabaseName)
+            return new List<AzureSqlDatabaseModel>
+            {
+                ModelAdapter.GetDatabase(ResourceGroupName, ServerName, DatabaseName)
             };
         }
 
@@ -145,10 +146,10 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
         /// <returns>The model that was passed in</returns>
         protected override IEnumerable<AzureSqlDatabaseModel> ApplyUserInputToModel(IEnumerable<AzureSqlDatabaseModel> model)
         {
-            List<Model.AzureSqlDatabaseModel> newEntity = new List<AzureSqlDatabaseModel>();
-            if (this.ParameterSetName == UpdateParameterSetName)
+            List<AzureSqlDatabaseModel> newEntity = new List<AzureSqlDatabaseModel>();
+            if (ParameterSetName == UpdateParameterSetName)
             {
-                newEntity.Add(new AzureSqlDatabaseModel()
+                newEntity.Add(new AzureSqlDatabaseModel
                 {
                     ResourceGroupName = ResourceGroupName,
                     ServerName = ServerName,
@@ -176,14 +177,14 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlDatabaseModel> PersistChanges(IEnumerable<AzureSqlDatabaseModel> entity)
         {
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case UpdateParameterSetName:
                     return new List<AzureSqlDatabaseModel>
                     {
                         ModelAdapter.UpsertDatabaseWithNewSdk(
-                            this.ResourceGroupName,
-                            this.ServerName,
+                            ResourceGroupName,
+                            ServerName,
                             new AzureSqlDatabaseCreateOrUpdateModel
                             {
                                 Database = entity.First()
@@ -192,21 +193,21 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
 
                 case RenameParameterSetName:
                     ModelAdapter.RenameDatabase(
-                        this.ResourceGroupName,
-                        this.ServerName,
-                        this.DatabaseName,
-                        this.NewName);
+                        ResourceGroupName,
+                        ServerName,
+                        DatabaseName,
+                        NewName);
 
                     return new List<AzureSqlDatabaseModel>
                     {
                         ModelAdapter.GetDatabase(
-                            this.ResourceGroupName,
-                            this.ServerName,
-                            this.NewName)
+                            ResourceGroupName,
+                            ServerName,
+                            NewName)
                     };
 
                 default:
-                    throw new ArgumentException(this.ParameterSetName);
+                    throw new ArgumentException(ParameterSetName);
             }
         }
     }

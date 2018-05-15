@@ -28,7 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <summary>
         /// These filenames are reserved on windows, regardless of the file extension.
         /// </summary>
-        private static readonly string[] reservedBaseFileNames = new string[]
+        private static readonly string[] reservedBaseFileNames = new[]
             {
                 "CON", "PRN", "AUX", "NUL",
                 "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <summary>
         /// These filenames are reserved on windows, only if the full filenamem matches.
         /// </summary>
-        private static readonly string[] reservedFileNames = new string[]
+        private static readonly string[] reservedFileNames = new[]
             {
                 "CLOCK$",
             };
@@ -88,7 +88,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             this.getMaxFileNameLength = getMaxFileNameLength;
 
             string delimiterTemp = "\\/";
-            this.translateDelimitersRegex = new Regex(string.Format(CultureInfo.InvariantCulture, translateDelimitersRegexFormat, delimiterTemp), RegexOptions.Compiled);
+            translateDelimitersRegex = new Regex(string.Format(CultureInfo.InvariantCulture, translateDelimitersRegexFormat, delimiterTemp), RegexOptions.Compiled);
         }
 
         public string ResolveFileName(string relativePath, DateTimeOffset? snapshotTime)
@@ -96,10 +96,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             // 1) Unescape original string, original string is UrlEncoded.
             // 2) Replace Azure directory separator with Windows File System directory separator.
             // 3) Trim spaces at the end of the file name.
-            string destinationRelativePath = EscapeInvalidCharacters(this.TranslateDelimiters(relativePath).TrimEnd(new char[] { ' ' }));
+            string destinationRelativePath = EscapeInvalidCharacters(TranslateDelimiters(relativePath).TrimEnd(new[] { ' ' }));
 
             // Split into path + filename parts.
-            int lastSlash = destinationRelativePath.LastIndexOf(this.DirSeparator, StringComparison.Ordinal);
+            int lastSlash = destinationRelativePath.LastIndexOf(DirSeparator, StringComparison.Ordinal);
 
             string destinationFileName;
             string destinationPath;
@@ -119,18 +119,18 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             destinationFileName = AppendSnapShotToFileName(destinationFileName, snapshotTime);
 
             // Combine path and filename back together again.
-            destinationRelativePath = this.CombinePath(destinationPath, destinationFileName);
+            destinationRelativePath = CombinePath(destinationPath, destinationFileName);
 
             // Check if the destination name is 
             // - already used by a previously resolved file.
             // - or represents a reserved filename on the target file system.
             // - or is longer than the allowed path length on the target file system.
             // If this is the case add a numeric prefix to resolve the conflict.
-            destinationRelativePath = this.ResolveFileNameConflict(destinationRelativePath);
+            destinationRelativePath = ResolveFileNameConflict(destinationRelativePath);
 
             // Add the resolved name to the resolved files cache, so additional files
             // will not use the same target name to download to.
-            this.resolvedFilesCache.Add(destinationRelativePath.ToLowerInvariant(), destinationRelativePath);
+            resolvedFilesCache.Add(destinationRelativePath.ToLowerInvariant(), destinationRelativePath);
 
             return destinationRelativePath;
         }
@@ -139,14 +139,11 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         {
             if (!string.IsNullOrEmpty(folder))
             {
-                if (folder.EndsWith(this.DirSeparator, StringComparison.Ordinal))
+                if (folder.EndsWith(DirSeparator, StringComparison.Ordinal))
                 {
                     return string.Format(CultureInfo.CurrentCulture, "{0}{1}", folder, name);
                 }
-                else
-                {
-                    return string.Format(CultureInfo.CurrentCulture, "{0}{1}{2}", folder, this.DirSeparator, name);
-                }
+                return string.Format(CultureInfo.CurrentCulture, "{0}{1}{2}", folder, DirSeparator, name);
             }
 
             return name;
@@ -154,16 +151,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
 
         private string TranslateDelimiters(string source)
         {
-            if (string.Equals(this.DirSeparator, blobDelimiter, StringComparison.Ordinal))
+            if (string.Equals(DirSeparator, blobDelimiter, StringComparison.Ordinal))
             {
                 return source;
             }
-            else
-            {
-                // Transform delimiters used for directory separators to windows file system directory separator "\"
-                // or azure file separator "/" according to destination location type.
-                return this.translateDelimitersRegex.Replace(source, this.DirSeparator);
-            }
+            // Transform delimiters used for directory separators to windows file system directory separator "\"
+            // or azure file separator "/" according to destination location type.
+            return translateDelimitersRegex.Replace(source, DirSeparator);
         }
 
         /// <summary>
@@ -185,7 +179,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 resultName = string.Format(
                     "{0} ({1}){2}",
                     pathAndFileNameNoExt,
-                    timeStamp.Replace(":", string.Empty).TrimEnd(new char[] { 'Z' }),
+                    timeStamp.Replace(":", string.Empty).TrimEnd(new[] { 'Z' }),
                     extension);
             }
 
@@ -228,11 +222,11 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
 
         protected virtual string EscapeInvalidCharacters(string fileName)
         {
-            if (null != this.InvalidPathChars)
+            if (null != InvalidPathChars)
             {
                 // Replace invalid characters with %HH, with HH being the hexadecimal
                 // representation of the invalid character.
-                foreach (char c in this.InvalidPathChars)
+                foreach (char c in InvalidPathChars)
                 {
                     fileName = fileName.Replace(c.ToString(), string.Format(CultureInfo.InvariantCulture, "%{0:X2}", (int)c));
                 }
@@ -282,11 +276,11 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         private string ResolveFileNameConflict(string baseFileName)
         {
             // TODO - MaxFileNameLength could be <= 0.
-            int maxFileNameLength = this.getMaxFileNameLength();
+            int maxFileNameLength = getMaxFileNameLength();
 
             Func<string, bool> conflict = delegate (string fileName)
             {
-                return this.resolvedFilesCache.ContainsKey(fileName.ToLowerInvariant()) ||
+                return resolvedFilesCache.ContainsKey(fileName.ToLowerInvariant()) ||
                        IsReservedFileName(fileName) ||
                        fileName.Length > maxFileNameLength;
             };
@@ -296,7 +290,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 string postfixString = string.Format(" ({0})", count);
 
                 // TODO - trimLength could be be larger than pathAndFilename.Length, what do we do in this case?
-                int trimLength = (fileName.Length + postfixString.Length + extension.Length) - maxFileNameLength;
+                int trimLength = fileName.Length + postfixString.Length + extension.Length - maxFileNameLength;
 
                 if (trimLength > 0)
                 {

@@ -148,7 +148,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ServiceClient
             // so we are initializing the object directly
 
 
-            var queryFilterString = QueryBuilder.Instance.GetQueryString(new JobQueryObject()
+            var queryFilterString = QueryBuilder.Instance.GetQueryString(new JobQueryObject
             {
                 BackupManagementType = backupManagementType,
                 StartTime = startTime,

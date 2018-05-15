@@ -22,10 +22,10 @@ namespace Microsoft.Azure.Commands.LocationBasedServices.Models
 {
     public class PSLocationBasedServicesAccountKeys
     {
-        public PSLocationBasedServicesAccountKeys(LocationBasedServicesModels.LocationBasedServicesAccountKeys locationBasedServicesAccountKeys)
+        public PSLocationBasedServicesAccountKeys(LocationBasedServicesAccountKeys locationBasedServicesAccountKeys)
         {
-            this.PrimaryKey = locationBasedServicesAccountKeys.PrimaryKey;
-            this.SecondaryKey = locationBasedServicesAccountKeys.SecondaryKey;
+            PrimaryKey = locationBasedServicesAccountKeys.PrimaryKey;
+            SecondaryKey = locationBasedServicesAccountKeys.SecondaryKey;
         }
 
         public string PrimaryKey { get; private set; }

@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
     using Common.Tags;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Resources;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.WindowsAzure.Commands.Common;
+    using Components;
+    using Entities.Resources;
+    using Extensions;
+    using WindowsAzure.Commands.Common;
     using Newtonsoft.Json.Linq;
     using System.Collections;
     using System.Linq;
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// <summary>
     /// A cmdlet that creates a new azure resource.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureRmResource", SupportsShouldProcess = true, DefaultParameterSetName = ResourceManipulationCmdletBase.ResourceIdParameterSet), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsCommon.New, "AzureRmResource", SupportsShouldProcess = true, DefaultParameterSetName = ResourceIdParameterSet), OutputType(typeof(PSObject))]
     public sealed class NewAzureResourceCmdlet : ResourceManipulationCmdletBase
     {
         /// <summary>
@@ -93,37 +93,37 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            var resourceId = this.GetResourceId();
-            this.ConfirmAction(
-                this.Force,
+            var resourceId = GetResourceId();
+            ConfirmAction(
+                Force,
                 "Are you sure you want to create the following resource: " + resourceId,
                 "Creating the resource...",
                 resourceId,
                 () =>
                 {
-                    var apiVersion = this.DetermineApiVersion(resourceId: resourceId).Result;
-                    var resourceBody = this.GetResourceBody();
+                    var apiVersion = DetermineApiVersion(resourceId).Result;
+                    var resourceBody = GetResourceBody();
 
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .PutResource(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            resource: resourceBody,
-                            cancellationToken: this.CancellationToken.Value,
-                            odataQuery: this.ODataQuery)
+                            resourceId,
+                            apiVersion,
+                            resourceBody,
+                            CancellationToken.Value,
+                            ODataQuery)
                         .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                       .GetResourceManagementRequestUri(
-                          resourceId: resourceId,
-                          apiVersion: apiVersion,
-                          odataQuery: this.ODataQuery);
+                          resourceId,
+                          apiVersion,
+                          odataQuery: ODataQuery);
 
                     var activity = string.Format("PUT {0}", managementUri.PathAndQuery);
-                    var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: true)
-                        .WaitOnOperation(operationResult: operationResult);
+                    var result = GetLongRunningOperationTracker(activity, true)
+                        .WaitOnOperation(operationResult);
 
-                    this.TryConvertToResourceAndWriteObject(result);
+                    TryConvertToResourceAndWriteObject(result);
                 });
         }
 
@@ -132,9 +132,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private JToken GetResourceBody()
         {
-            return this.IsFullObject
-                ? this.Properties.ToResourcePropertiesBody().ToJToken()
-                : this.GetResource().ToJToken();
+            return IsFullObject
+                ? Properties.ToResourcePropertiesBody().ToJToken()
+                : GetResource().ToJToken();
         }
 
         /// <summary>
@@ -142,14 +142,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private Resource<JToken> GetResource()
         {
-            return new Resource<JToken>()
+            return new Resource<JToken>
             {
-                Location = this.Location,
-                Kind = this.Kind,
-                Plan = this.Plan.ToDictionary(addValueLayer: false).ToJson().FromJson<ResourcePlan>(),
-                Sku = this.Sku.ToDictionary(addValueLayer: false).ToJson().FromJson<ResourceSku>(),
-                Tags = TagsHelper.GetTagsDictionary(this.Tag),
-                Properties = this.Properties.ToResourcePropertiesBody()
+                Location = Location,
+                Kind = Kind,
+                Plan = Plan.ToDictionary(false).ToJson().FromJson<ResourcePlan>(),
+                Sku = Sku.ToDictionary(false).ToJson().FromJson<ResourceSku>(),
+                Tags = TagsHelper.GetTagsDictionary(Tag),
+                Properties = Properties.ToResourcePropertiesBody()
             };
         }
 

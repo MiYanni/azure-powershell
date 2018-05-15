@@ -51,15 +51,15 @@ namespace Microsoft.Azure.Commands.MachineLearning
         public ErrorResponseMessageException(HttpStatusCode httpStatus, ErrorResponseMessage errorResponseMessage, string errorMessage, Exception innerException = null)
             : base(errorMessage, innerException)
         {
-            if (((int)httpStatus >= 200 && (int)httpStatus <= 299) || (int)httpStatus == 304)
+            if ((int)httpStatus >= 200 && (int)httpStatus <= 299 || (int)httpStatus == 304)
             {
                 throw new ArgumentException(
-                    message: "The error response message exception should not be used for successful http response messages.",
-                    paramName: "httpStatus");
+                    "The error response message exception should not be used for successful http response messages.",
+                    "httpStatus");
             }
 
-            this.HttpStatus = httpStatus;
-            this.ErrorResponseMessage = errorResponseMessage;
+            HttpStatus = httpStatus;
+            ErrorResponseMessage = errorResponseMessage;
         }
         
         /// <summary>
@@ -71,20 +71,20 @@ namespace Microsoft.Azure.Commands.MachineLearning
         {
             var errorReport = new StringBuilder();
             errorReport.AppendLine();
-            if (this.ErrorResponseMessage != null &&
-                this.ErrorResponseMessage.Error != null)
+            if (ErrorResponseMessage != null &&
+                ErrorResponseMessage.Error != null)
             {
                 errorReport.AppendLine("Error Code: {0}"
-                    .FormatInvariant(this.ErrorResponseMessage.Error.Code));
+                    .FormatInvariant(ErrorResponseMessage.Error.Code));
                 errorReport.AppendLine("Error Message: {0}"
-                    .FormatInvariant(this.ErrorResponseMessage.Error.Message));
+                    .FormatInvariant(ErrorResponseMessage.Error.Message));
                 errorReport.AppendLine("Error Target: {0}"
-                    .FormatInvariant(this.ErrorResponseMessage.Error.Target));
+                    .FormatInvariant(ErrorResponseMessage.Error.Target));
                 
-                if (this.ErrorResponseMessage.Error.Details.Any())
+                if (ErrorResponseMessage.Error.Details.Any())
                 {
                     errorReport.AppendLine("Error Details:");
-                    foreach (var errorDetail in this.ErrorResponseMessage.Error.Details)
+                    foreach (var errorDetail in ErrorResponseMessage.Error.Details)
                     {
                         errorReport.AppendLine("\t[Code={0}, Message={1}]"
                             .FormatInvariant(errorDetail.Code, errorDetail.Message));
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
             }
             else
             {
-                errorReport.AppendLine("Error message: {0}".FormatInvariant(this.Message));
+                errorReport.AppendLine("Error message: {0}".FormatInvariant(Message));
             }
 
             var returnedError = new Exception(errorReport.ToString());

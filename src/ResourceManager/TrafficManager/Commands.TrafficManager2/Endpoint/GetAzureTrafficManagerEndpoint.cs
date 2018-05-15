@@ -49,25 +49,25 @@ namespace Microsoft.Azure.Commands.TrafficManager
         {
             TrafficManagerEndpoint trafficManagerEndpoint = null;
 
-            if (this.ParameterSetName == "Fields")
+            if (ParameterSetName == "Fields")
             {
-                trafficManagerEndpoint = this.TrafficManagerClient.GetTrafficManagerEndpoint(
-                    this.ResourceGroupName,
-                    this.ProfileName,
-                    this.Type,
-                    this.Name);
+                trafficManagerEndpoint = TrafficManagerClient.GetTrafficManagerEndpoint(
+                    ResourceGroupName,
+                    ProfileName,
+                    Type,
+                    Name);
             }
-            else if (this.ParameterSetName == "Object")
+            else if (ParameterSetName == "Object")
             {
-                trafficManagerEndpoint = this.TrafficManagerClient.GetTrafficManagerEndpoint(
-                    this.TrafficManagerEndpoint.ResourceGroupName,
-                    this.TrafficManagerEndpoint.ProfileName,
-                    this.TrafficManagerEndpoint.Type,
-                    this.TrafficManagerEndpoint.Name);
+                trafficManagerEndpoint = TrafficManagerClient.GetTrafficManagerEndpoint(
+                    TrafficManagerEndpoint.ResourceGroupName,
+                    TrafficManagerEndpoint.ProfileName,
+                    TrafficManagerEndpoint.Type,
+                    TrafficManagerEndpoint.Name);
             }
 
-            this.WriteVerbose(ProjectResources.Success);
-            this.WriteObject(trafficManagerEndpoint);
+            WriteVerbose(ProjectResources.Success);
+            WriteObject(trafficManagerEndpoint);
         }
     }
 }

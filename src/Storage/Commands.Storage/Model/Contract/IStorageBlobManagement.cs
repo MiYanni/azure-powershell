@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.Shared.Protocol;
+    using Common;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.Shared.Protocol;
     using System;
     using System.Collections.Generic;
     using System.Threading;

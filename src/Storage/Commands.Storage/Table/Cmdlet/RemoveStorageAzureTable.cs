@@ -14,9 +14,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Table.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.Table;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage.Table;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -101,10 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Table.Cmdlet
                 Channel.Delete(table, requestOptions, OperationContext);
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>

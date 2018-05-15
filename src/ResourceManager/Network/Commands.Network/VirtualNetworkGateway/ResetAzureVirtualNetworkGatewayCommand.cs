@@ -44,14 +44,14 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!this.IsVirtualNetworkGatewayPresent(this.VirtualNetworkGateway.ResourceGroupName, this.VirtualNetworkGateway.Name))
+            if (!IsVirtualNetworkGatewayPresent(VirtualNetworkGateway.ResourceGroupName, VirtualNetworkGateway.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
-            this.VirtualNetworkGatewayClient.Reset(this.VirtualNetworkGateway.ResourceGroupName, this.VirtualNetworkGateway.Name, GatewayVip);
+            VirtualNetworkGatewayClient.Reset(VirtualNetworkGateway.ResourceGroupName, VirtualNetworkGateway.Name, GatewayVip);
 
-            var getVirtualNetworkGateway = this.GetVirtualNetworkGateway(this.VirtualNetworkGateway.ResourceGroupName, this.VirtualNetworkGateway.Name);
+            var getVirtualNetworkGateway = GetVirtualNetworkGateway(VirtualNetworkGateway.ResourceGroupName, VirtualNetworkGateway.Name);
             WriteObject(getVirtualNetworkGateway);
         }
     }

@@ -14,8 +14,8 @@
 
 namespace Microsoft.WindowsAzure.Commands.Common.Storage
 {
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.WindowsAzure.Storage;
+    using Azure.Commands.Common.Authentication.Abstractions;
+    using WindowsAzure.Storage;
     using System;
     using System.Collections.Generic;
 
@@ -111,9 +111,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Storage
             get
             {
                 string returnValue = null;
-                if (this.StorageAccount != null)
+                if (StorageAccount != null)
                 {
-                    returnValue = this.StorageAccount.ToString(true);
+                    returnValue = StorageAccount.ToString(true);
                 }
 
                 return returnValue;

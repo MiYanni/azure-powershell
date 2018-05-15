@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string LatenciesText
         {
-            get { return JsonConvert.SerializeObject(Latencies, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Latencies, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

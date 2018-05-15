@@ -33,17 +33,17 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         protected override int Number
         {
-            get { return this.NumberOfNodesToAdd; }
+            get { return NumberOfNodesToAdd; }
         }
 
         public override void ExecuteCmdlet()
         {
-            if (this.Number < 0)
+            if (Number < 0)
             {
-                throw new PSArgumentException(this.Number.ToString());
+                throw new PSArgumentException(Number.ToString());
             }
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Add {0} nodes to {1}", this.Number, this.NodeType)))
+            if (ShouldProcess(Name, string.Format("Add {0} nodes to {1}", Number, NodeType)))
             {
                 base.ExecuteCmdlet();
             }

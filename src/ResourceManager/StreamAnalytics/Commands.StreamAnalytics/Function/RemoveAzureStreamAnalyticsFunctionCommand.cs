@@ -50,15 +50,15 @@ namespace Microsoft.Azure.Commands.StreamAnalytics
                 throw new PSArgumentNullException("Name");
             }
 
-            this.ConfirmAction(
+            ConfirmAction(
                 string.Format(
                     CultureInfo.InvariantCulture,
                     Resources.FunctionRemoving,
-                    this.Name,
-                    this.JobName,
-                    this.ResourceGroupName),
-                this.Name,
-                this.ExecuteDelete);
+                    Name,
+                    JobName,
+                    ResourceGroupName),
+                Name,
+                ExecuteDelete);
         }
 
         private void ExecuteDelete()

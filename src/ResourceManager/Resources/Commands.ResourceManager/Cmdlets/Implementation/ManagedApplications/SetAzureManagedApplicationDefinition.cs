@@ -16,11 +16,11 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Application;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Resources;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Components;
+    using Entities.Application;
+    using Entities.Resources;
+    using Extensions;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections;
@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// <summary>
     /// Creates the managed application definition.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureRmManagedApplicationDefinition", DefaultParameterSetName = SetAzureManagedApplicationDefinitionCmdlet.ManagedApplicationDefinitionNameParameterSet, SupportsShouldProcess = true), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsCommon.Set, "AzureRmManagedApplicationDefinition", DefaultParameterSetName = ManagedApplicationDefinitionNameParameterSet, SupportsShouldProcess = true), OutputType(typeof(PSObject))]
     public class SetAzureManagedApplicationDefinitionCmdlet : ManagedApplicationCmdletBase
     {
         /// <summary>
@@ -48,14 +48,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the managed application definition name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = SetAzureManagedApplicationDefinitionCmdlet.ManagedApplicationDefinitionNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The managed application definition name.")]
+        [Parameter(ParameterSetName = ManagedApplicationDefinitionNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The managed application definition name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the managed application definition resource group parameter
         /// </summary>
-        [Parameter(ParameterSetName = SetAzureManagedApplicationDefinitionCmdlet.ManagedApplicationDefinitionNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
+        [Parameter(ParameterSetName = ManagedApplicationDefinitionNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the managed application definition id parameter
         /// </summary>
         [Alias("ResourceId")]
-        [Parameter(ParameterSetName = SetAzureManagedApplicationDefinitionCmdlet.ManagedApplicationDefinitionIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified managed application definition Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
+        [Parameter(ParameterSetName = ManagedApplicationDefinitionIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified managed application definition Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
         [ValidateNotNullOrEmpty]
         public string Id { get; set; }
 
@@ -109,31 +109,31 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected override void OnProcessRecord()
         {
             base.OnProcessRecord();
-            if (this.ShouldProcess(this.Name, "Update Managed Application Definition"))
+            if (ShouldProcess(Name, "Update Managed Application Definition"))
             {
-                string resourceId = this.Id ?? GetResourceId();
+                string resourceId = Id ?? GetResourceId();
 
-                var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.ApplicationApiVersion : this.ApiVersion;
+                var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.ApplicationApiVersion : ApiVersion;
 
-                var operationResult = this.GetResourcesClient()
+                var operationResult = GetResourcesClient()
                     .PutResource(
-                        resourceId: resourceId,
-                        apiVersion: apiVersion,
-                        resource: this.GetResource(resourceId, apiVersion),
-                        cancellationToken: this.CancellationToken.Value,
-                        odataQuery: null)
+                        resourceId,
+                        apiVersion,
+                        GetResource(resourceId, apiVersion),
+                        CancellationToken.Value,
+                        null)
                     .Result;
 
-                var managementUri = this.GetResourcesClient()
+                var managementUri = GetResourcesClient()
                   .GetResourceManagementRequestUri(
-                      resourceId: resourceId,
-                      apiVersion: apiVersion,
+                      resourceId,
+                      apiVersion,
                       odataQuery: null);
 
                 var activity = string.Format("PUT {0}", managementUri.PathAndQuery);
-                var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: true)
-                    .WaitOnOperation(operationResult: operationResult);
-                this.WriteObject(this.GetOutputObjects("ManagedApplicationDefinitionId", JObject.Parse(result)), enumerateCollection: true);
+                var result = GetLongRunningOperationTracker(activity, true)
+                    .WaitOnOperation(operationResult);
+                WriteObject(GetOutputObjects("ManagedApplicationDefinitionId", JObject.Parse(result)), true);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             return string.Format("/subscriptions/{0}/providers/{1}/{2}",
                 subscriptionId.ToString(),
                 Constants.MicrosoftApplicationDefinitionType,
-                this.Name);
+                Name);
         }
 
         /// <summary>
@@ -154,27 +154,27 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private JToken GetResource(string resourceId, string apiVersion)
         {
-            var resource = this.GetExistingResource(resourceId, apiVersion).Result.ToResource();
+            var resource = GetExistingResource(resourceId, apiVersion).Result.ToResource();
 
             var applicationDefinitionObject = new ApplicationDefinition
             {
-                Name = this.Name,
+                Name = Name,
                 Location = resource.Location,
                 Properties = new ApplicationDefinitionProperties
                 {
                     LockLevel = (ApplicationLockLevel) Enum.Parse(typeof(ApplicationLockLevel), resource.Properties["lockLevel"].ToString(), true),
-                    Description = this.Description ?? (resource.Properties["description"] != null
+                    Description = Description ?? (resource.Properties["description"] != null
                         ? resource.Properties["description"].ToString()
                         : null),
-                    DisplayName = this.DisplayName ?? (resource.Properties["displayName"] != null
+                    DisplayName = DisplayName ?? (resource.Properties["displayName"] != null
                         ? resource.Properties["displayName"].ToString()
                         : null),
-                    PackageFileUri = this.PackageFileUri ?? null,
-                    Authorizations = this.Authorization != null
-                        ? JArray.Parse(this.GetAuthorizationObject(this.Authorization).ToString()).ToJson().FromJson<ApplicationProviderAuthorization[]>()
+                    PackageFileUri = PackageFileUri ?? null,
+                    Authorizations = Authorization != null
+                        ? JArray.Parse(GetAuthorizationObject(Authorization).ToString()).ToJson().FromJson<ApplicationProviderAuthorization[]>()
                         : JArray.Parse(resource.Properties["authorizations"].ToString()).ToJson().FromJson<ApplicationProviderAuthorization[]>()
                 },
-                Tags = TagsHelper.GetTagsDictionary(this.Tag) ?? resource.Tags
+                Tags = TagsHelper.GetTagsDictionary(Tag) ?? resource.Tags
             };
 
             return applicationDefinitionObject.ToJToken();

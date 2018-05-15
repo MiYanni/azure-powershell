@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
 {
     [Cmdlet(
         VerbsData.Update, 
-        WebServicesCmdletBase.CommandletSuffix, 
+        CommandletSuffix, 
         SupportsShouldProcess = true)]
     [OutputType(typeof(WebService))]
     public class UpdateAzureMLWebService : WebServicesCmdletBase
@@ -44,79 +44,79 @@ namespace Microsoft.Azure.Commands.MachineLearning
         public string Name { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "New title for the web service.")]
         public string Title { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "New description for the web service.")]
         public string Description { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "Mark the service as readonly.")]
         public SwitchParameter IsReadOnly { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "New access keys for the web service.")]
         public WebServiceKeys Keys { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "New access key for the storage account associated with the web service. This allows for key rotation if needed.")]
         public string StorageAccountKey { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "New diagnostics settings for the web service.")]
         public DiagnosticsConfiguration Diagnostics { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "New realtime endpoint runtime settings for the web service.")]
         public RealtimeConfiguration RealtimeConfiguration { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "Updated assets for the web service.")]
         public Hashtable Assets { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "Updated input schema for the web service.")]
         public ServiceInputOutputSpecification Input { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "Updated output schema for the web service.")]
         public ServiceInputOutputSpecification Output { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "Updated global parameter values definition for the web service.")]
         public Hashtable Parameters { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+            ParameterSetName = UpdateFromArgumentsParameterSet, 
             Mandatory = false, 
             HelpMessage = "Updated graph package for the web service.")]
         public GraphPackage Package { get; set; }
 
         [Parameter(
-            ParameterSetName = UpdateAzureMLWebService.UpdateFromObjectParameterSet, 
+            ParameterSetName = UpdateFromObjectParameterSet, 
             Mandatory = true, 
             HelpMessage = "An updated definition object to update the referenced web service with.", 
             ValueFromPipeline = true)]
@@ -127,81 +127,81 @@ namespace Microsoft.Azure.Commands.MachineLearning
 
         protected override void RunCmdlet()
         {
-            if (ShouldProcess(this.Name, @"Updating machine learning web service.."))
+            if (ShouldProcess(Name, @"Updating machine learning web service.."))
             {
-                bool isUpdateToReadonly = this.IsReadOnly.IsPresent;
+                bool isUpdateToReadonly = IsReadOnly.IsPresent;
                 if (string.Equals(
-                            this.ParameterSetName,
-                            UpdateAzureMLWebService.UpdateFromObjectParameterSet,
+                            ParameterSetName,
+                            UpdateFromObjectParameterSet,
                             StringComparison.OrdinalIgnoreCase))
                 {
-                    isUpdateToReadonly = this.ServiceUpdates.Properties != null &&
-                                         this.ServiceUpdates.Properties.ReadOnlyProperty.HasValue &&
-                                         this.ServiceUpdates.Properties.ReadOnlyProperty.Value;
+                    isUpdateToReadonly = ServiceUpdates.Properties != null &&
+                                         ServiceUpdates.Properties.ReadOnlyProperty.HasValue &&
+                                         ServiceUpdates.Properties.ReadOnlyProperty.Value;
                 }
 
-                var warningMessage = Resources.UpdateServiceWarning.FormatInvariant(this.Name);
+                var warningMessage = Resources.UpdateServiceWarning.FormatInvariant(Name);
                 if (isUpdateToReadonly)
                 {
-                    warningMessage = Resources.UpdateServiceToReadonly.FormatInvariant(this.Name);
+                    warningMessage = Resources.UpdateServiceToReadonly.FormatInvariant(Name);
                 }
 
-                if (this.Force.IsPresent || ShouldContinue(warningMessage, string.Empty))
+                if (Force.IsPresent || ShouldContinue(warningMessage, string.Empty))
                 {
-                    this.UpdateWebServiceResource();
+                    UpdateWebServiceResource();
                 }
             }
         }
 
         private void UpdateWebServiceResource()
         {
-            WebService serviceDefinitionUpdate = this.ServiceUpdates;
+            WebService serviceDefinitionUpdate = ServiceUpdates;
             if (string.Equals(
-                this.ParameterSetName, 
-                UpdateAzureMLWebService.UpdateFromArgumentsParameterSet, 
+                ParameterSetName, 
+                UpdateFromArgumentsParameterSet, 
                 StringComparison.OrdinalIgnoreCase))
             {
                 serviceDefinitionUpdate = new WebService
                 {
                     Properties = new WebServicePropertiesForGraph
                     {
-                        Title = this.Title,
-                        Description = this.Description,
-                        Diagnostics = this.Diagnostics,
-                        Keys = this.Keys,
-                        Assets = (this.Assets != null) ? 
-                                        this.Assets.Cast<DictionaryEntry>()
+                        Title = Title,
+                        Description = Description,
+                        Diagnostics = Diagnostics,
+                        Keys = Keys,
+                        Assets = Assets != null ? 
+                                        Assets.Cast<DictionaryEntry>()
                                                 .ToDictionary(
                                                     kvp => kvp.Key as string, 
                                                     kvp => kvp.Value as AssetItem)
                                         : null,
-                        Input = this.Input,
-                        Output = this.Output,
-                        ReadOnlyProperty = this.IsReadOnly.IsPresent,
-                        RealtimeConfiguration = this.RealtimeConfiguration,
-                        Parameters = (this.Parameters != null) ? 
-                                        this.Parameters.Cast<DictionaryEntry>()
+                        Input = Input,
+                        Output = Output,
+                        ReadOnlyProperty = IsReadOnly.IsPresent,
+                        RealtimeConfiguration = RealtimeConfiguration,
+                        Parameters = Parameters != null ? 
+                                        Parameters.Cast<DictionaryEntry>()
                                                 .ToDictionary(
                                                     kvp => kvp.Key as string,
                                                     kvp => kvp.Value as WebServiceParameter)
                                         : null,
-                        Package = this.Package
+                        Package = Package
                     }
                 };
 
-                if (!string.IsNullOrWhiteSpace(this.StorageAccountKey))
+                if (!string.IsNullOrWhiteSpace(StorageAccountKey))
                 {
                     serviceDefinitionUpdate.Properties.StorageAccount = 
-                        new StorageAccount(null, this.StorageAccountKey);
+                        new StorageAccount(null, StorageAccountKey);
                 }
             }
 
             WebService updatedService = 
-                this.WebServicesClient.UpdateAzureMlWebService(
-                                        this.ResourceGroupName, 
-                                        this.Name, 
+                WebServicesClient.UpdateAzureMlWebService(
+                                        ResourceGroupName, 
+                                        Name, 
                                         serviceDefinitionUpdate);
-            this.WriteObject(updatedService);
+            WriteObject(updatedService);
         }
     }
 }

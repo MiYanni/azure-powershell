@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Query
         {
             get
             {
-                if (this._operationalInsightsDataClient == null)
+                if (_operationalInsightsDataClient == null)
                 {
                     ServiceClientCredentials clientCredentials = null;
                     if (ParameterSetName == ParamSetNameByWorkspaceId && WorkspaceId == "DEMO_WORKSPACE")
@@ -72,11 +72,11 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Query
                         clientCredentials = AzureSession.Instance.AuthenticationFactory.GetServiceClientCredentials(DefaultContext, AzureEnvironment.ExtendedEndpoint.OperationalInsightsEndpoint);
                     }
 
-                    this._operationalInsightsDataClient =
+                    _operationalInsightsDataClient =
                         AzureSession.Instance.ClientFactory.CreateCustomArmClient<OperationalInsightsDataClient>(clientCredentials);
-                    this._operationalInsightsDataClient.Preferences.IncludeRender = IncludeRender.IsPresent;
-                    this._operationalInsightsDataClient.Preferences.IncludeStatistics = IncludeStatistics.IsPresent;
-                    this._operationalInsightsDataClient.NameHeader = "LogAnalyticsPSClient";
+                    _operationalInsightsDataClient.Preferences.IncludeRender = IncludeRender.IsPresent;
+                    _operationalInsightsDataClient.Preferences.IncludeStatistics = IncludeStatistics.IsPresent;
+                    _operationalInsightsDataClient.NameHeader = "LogAnalyticsPSClient";
 
                     Uri targetUri= null;
                     DefaultContext.Environment.TryGetEndpointUrl(
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Query
                         throw new Exception("Operational Insights is not supported in this Azure Environment");
                     }
 
-                    this._operationalInsightsDataClient.BaseUri = targetUri;
+                    _operationalInsightsDataClient.BaseUri = targetUri;
 
                     if (targetUri.AbsoluteUri.Contains("localhost"))
                     {
@@ -94,11 +94,11 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Query
                     }
                 }
 
-                return this._operationalInsightsDataClient;
+                return _operationalInsightsDataClient;
             }
             set
             {
-                this._operationalInsightsDataClient = value;
+                _operationalInsightsDataClient = value;
             }
         }
 

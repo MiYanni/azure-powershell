@@ -34,11 +34,11 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
         {
             if (billing.CurrentBillingFeatures.Any(f => f.Contains("Enterprise")))
             {
-                this.PricingPlan = "Application Insights Enterprise";
+                PricingPlan = "Application Insights Enterprise";
             }
             else
             {
-                this.PricingPlan = billing.CurrentBillingFeatures.FirstOrDefault();
+                PricingPlan = billing.CurrentBillingFeatures.FirstOrDefault();
             }
         }
     }

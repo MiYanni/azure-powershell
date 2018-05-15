@@ -67,17 +67,17 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            MNM.VpnDeviceScriptParameters vpnDeviceScriptParameter = new MNM.VpnDeviceScriptParameters()
+            MNM.VpnDeviceScriptParameters vpnDeviceScriptParameter = new MNM.VpnDeviceScriptParameters
             {
-                DeviceFamily = this.DeviceFamily,
-                FirmwareVersion = this.FirmwareVersion,
-                Vendor = this.DeviceVendor
+                DeviceFamily = DeviceFamily,
+                FirmwareVersion = FirmwareVersion,
+                Vendor = DeviceVendor
             };
 
             string vpnDeviceConfigurationScript = NetworkClient.NetworkManagementClient.VirtualNetworkGateways
                 .VpnDeviceConfigurationScript(
-                    this.ResourceGroupName,
-                    this.Name,
+                    ResourceGroupName,
+                    Name,
                     vpnDeviceScriptParameter);
 
             WriteObject(vpnDeviceConfigurationScript);

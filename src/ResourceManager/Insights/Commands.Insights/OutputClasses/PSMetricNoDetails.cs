@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         public PSMetricNoDetails(Metric metric)
             : base(metric)
         {
-            this.Name = new PSLocalizableStringNoDetails(metric.Name);
+            Name = new PSLocalizableStringNoDetails(metric.Name);
         }
     }
 }

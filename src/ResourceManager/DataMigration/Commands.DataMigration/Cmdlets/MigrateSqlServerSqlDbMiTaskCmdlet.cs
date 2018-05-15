@@ -33,15 +33,15 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void CustomInit()
         {
-            this.SourceConnectionInfoParam(true);
-            this.TargetConnectionInfoParam(true);
+            SourceConnectionInfoParam(true);
+            TargetConnectionInfoParam(true);
 
-            this.SimpleParam(SelectedDatabase, typeof(MigrateSqlServerSqlMIDatabaseInput[]), "Selected database to migrate", false);
-            this.SimpleParam(BackupFileShare, typeof(FileShare), "File Share where the source server database files should be backed up. Use fully qualified domain name for the server", false);
-            this.SimpleParam(BackupBlobSasUri, typeof(string), "SAS URI that provides DMS access to your storage account container that DMS will upload the backup files to and use for migrating databases to SQL DB Managed instance", false);
+            SimpleParam(SelectedDatabase, typeof(MigrateSqlServerSqlMIDatabaseInput[]), "Selected database to migrate", false);
+            SimpleParam(BackupFileShare, typeof(FileShare), "File Share where the source server database files should be backed up. Use fully qualified domain name for the server", false);
+            SimpleParam(BackupBlobSasUri, typeof(string), "SAS URI that provides DMS access to your storage account container that DMS will upload the backup files to and use for migrating databases to SQL DB Managed instance", false);
 
-            this.SimpleParam(SelectedAgentJobs, typeof(string[]), "Selected agents jobs to migrate by name.", false);
-            this.SimpleParam(SelectedLogins, typeof(string[]), "Selected logins to migrate by name.", false);
+            SimpleParam(SelectedAgentJobs, typeof(string[]), "Selected agents jobs to migrate by name.", false);
+            SimpleParam(SelectedLogins, typeof(string[]), "Selected logins to migrate by name.", false);
         }
 
         public override ProjectTaskProperties ProcessTaskCmdlet()

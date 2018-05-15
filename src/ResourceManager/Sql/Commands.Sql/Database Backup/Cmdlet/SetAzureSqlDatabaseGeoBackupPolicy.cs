@@ -43,8 +43,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlDatabaseGeoBackupPolicyModel> GetEntity()
         {
-            return new List<AzureSqlDatabaseGeoBackupPolicyModel>() { 
-                ModelAdapter.GetDatabaseGeoBackupPolicy(this.ResourceGroupName, this.ServerName, this.DatabaseName) 
+            return new List<AzureSqlDatabaseGeoBackupPolicyModel>
+            { 
+                ModelAdapter.GetDatabaseGeoBackupPolicy(ResourceGroupName, ServerName, DatabaseName) 
             };
         }
 
@@ -55,9 +56,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         /// <returns>The model that was passed in</returns>
         protected override IEnumerable<AzureSqlDatabaseGeoBackupPolicyModel> ApplyUserInputToModel(IEnumerable<AzureSqlDatabaseGeoBackupPolicyModel> model)
         {
-            List<Model.AzureSqlDatabaseGeoBackupPolicyModel> newEntity =
+            List<AzureSqlDatabaseGeoBackupPolicyModel> newEntity =
                 new List<AzureSqlDatabaseGeoBackupPolicyModel>();
-            newEntity.Add(new AzureSqlDatabaseGeoBackupPolicyModel()
+            newEntity.Add(new AzureSqlDatabaseGeoBackupPolicyModel
             {
                 Location = model.FirstOrDefault().Location,
                 ResourceGroupName = ResourceGroupName,
@@ -77,14 +78,12 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         {
             if (ShouldProcess(DatabaseName))
             {
-                return new List<AzureSqlDatabaseGeoBackupPolicyModel>() {
-                    ModelAdapter.SetDatabaseGeoBackupPolicy(this.ResourceGroupName, this.ServerName, this.DatabaseName, entity.First())
+                return new List<AzureSqlDatabaseGeoBackupPolicyModel>
+                {
+                    ModelAdapter.SetDatabaseGeoBackupPolicy(ResourceGroupName, ServerName, DatabaseName, entity.First())
                 };
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

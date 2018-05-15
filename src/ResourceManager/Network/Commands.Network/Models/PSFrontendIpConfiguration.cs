@@ -34,40 +34,40 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string InboundNatRulesText
         {
-            get { return JsonConvert.SerializeObject(InboundNatRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(InboundNatRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string LoadBalancingRulesText
         {
-            get { return JsonConvert.SerializeObject(LoadBalancingRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(LoadBalancingRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string InboundNatPoolsText
         {
-            get { return JsonConvert.SerializeObject(InboundNatPools, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(InboundNatPools, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string ZonesText
         {
-            get { return JsonConvert.SerializeObject(Zones, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Zones, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         public bool ShouldSerializeInboundNatRules()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeLoadBalancingRules()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeInboundNatPools()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }

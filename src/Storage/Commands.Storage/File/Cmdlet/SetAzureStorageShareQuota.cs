@@ -54,26 +54,26 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         {
             CloudFileShare fileShare = null;
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case Constants.ShareNameParameterSetName:
-                    fileShare = this.BuildFileShareObjectFromName(this.ShareName);
+                    fileShare = BuildFileShareObjectFromName(ShareName);
                     break;
 
                 case Constants.ShareParameterSetName:
-                    fileShare = this.Share;
+                    fileShare = Share;
                     break;
 
                 default:
-                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", this.ParameterSetName));
+                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", ParameterSetName));
             }
 
-            this.Channel.FetchShareAttributes(fileShare, null, this.RequestOptions, this.OperationContext);
+            Channel.FetchShareAttributes(fileShare, null, RequestOptions, OperationContext);
 
-            if (fileShare.Properties.Quota != this.Quota)
+            if (fileShare.Properties.Quota != Quota)
             {
-                fileShare.Properties.Quota = this.Quota;
-                this.Channel.SetShareProperties(fileShare, null, this.RequestOptions, this.OperationContext);
+                fileShare.Properties.Quota = Quota;
+                Channel.SetShareProperties(fileShare, null, RequestOptions, OperationContext);
             }
 
             WriteObject(fileShare.Properties);

@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Sql.Common
             Management.Sql.Models.ResourceIdentity identityResult = null;
             if (assignIdentityIsPresent)
             {
-                identityResult = new Management.Sql.Models.ResourceIdentity()
+                identityResult = new Management.Sql.Models.ResourceIdentity
                 {
                     Type = ResourceIdentityType.SystemAssigned.ToString()
                 };

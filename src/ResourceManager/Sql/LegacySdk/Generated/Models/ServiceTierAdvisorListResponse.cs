@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServiceTierAdvisor> ServiceTierAdvisors
         {
-            get { return this._serviceTierAdvisors; }
-            set { this._serviceTierAdvisors = value; }
+            get { return _serviceTierAdvisors; }
+            set { _serviceTierAdvisors = value; }
         }
         
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServiceTierAdvisorListResponse()
         {
-            this.ServiceTierAdvisors = new LazyList<ServiceTierAdvisor>();
+            ServiceTierAdvisors = new LazyList<ServiceTierAdvisor>();
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<ServiceTierAdvisor> GetEnumerator()
         {
-            return this.ServiceTierAdvisors.GetEnumerator();
+            return ServiceTierAdvisors.GetEnumerator();
         }
         
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

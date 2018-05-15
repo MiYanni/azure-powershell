@@ -37,9 +37,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException(nameof(location));
             }
 
-            this.ResourceGroup = resourceGroup;
-            this.BatchAccount = batchAccount;
-            this.Location = location;
+            ResourceGroup = resourceGroup;
+            BatchAccount = batchAccount;
+            Location = location;
         }
 
         /// <summary>

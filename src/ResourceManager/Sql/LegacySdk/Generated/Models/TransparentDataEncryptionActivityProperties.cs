@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public float PercentComplete
         {
-            get { return this._percentComplete; }
-            set { this._percentComplete = value; }
+            get { return _percentComplete; }
+            set { _percentComplete = value; }
         }
         
         private string _status;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         /// <summary>

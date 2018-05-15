@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
 
         public bool IsExpired()
         {
-            return DateTime.UtcNow - CreationDate > (TimeSpan.FromSeconds(ExpiresIn) - TimeoutThreshold);
+            return DateTime.UtcNow - CreationDate > TimeSpan.FromSeconds(ExpiresIn) - TimeoutThreshold;
         }
     }
 }

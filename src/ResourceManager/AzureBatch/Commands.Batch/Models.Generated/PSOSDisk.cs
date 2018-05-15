@@ -26,33 +26,33 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSOSDisk
     {
         
-        internal Microsoft.Azure.Batch.OSDisk omObject;
+        internal OSDisk omObject;
         
-        public PSOSDisk(System.Nullable<Microsoft.Azure.Batch.Common.CachingType> caching = null)
+        public PSOSDisk(Nullable<Azure.Batch.Common.CachingType> caching = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.OSDisk(caching);
+            omObject = new OSDisk(caching);
         }
         
-        internal PSOSDisk(Microsoft.Azure.Batch.OSDisk omObject)
+        internal PSOSDisk(OSDisk omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.CachingType? Caching
+        public Azure.Batch.Common.CachingType? Caching
         {
             get
             {
-                return this.omObject.Caching;
+                return omObject.Caching;
             }
         }
     }

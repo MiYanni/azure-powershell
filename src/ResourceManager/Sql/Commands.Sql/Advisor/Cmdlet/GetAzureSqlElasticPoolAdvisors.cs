@@ -53,11 +53,11 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("AdvisorName"))
             {
                 results = new List<AzureSqlElasticPoolAdvisorModel>();
-                results.Add(ModelAdapter.GetElasticPoolAdvisor(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.AdvisorName, this.ExpandRecommendedActions));
+                results.Add(ModelAdapter.GetElasticPoolAdvisor(ResourceGroupName, ServerName, ElasticPoolName, AdvisorName, ExpandRecommendedActions));
             }
             else
             {
-                results = ModelAdapter.ListElasticPoolAdvisors(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.ExpandRecommendedActions);
+                results = ModelAdapter.ListElasticPoolAdvisors(ResourceGroupName, ServerName, ElasticPoolName, ExpandRecommendedActions);
             }
 
             return results;

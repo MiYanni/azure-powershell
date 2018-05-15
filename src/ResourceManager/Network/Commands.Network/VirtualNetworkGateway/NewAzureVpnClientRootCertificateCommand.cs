@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Commands.Network
 
             base.Execute();
             var vpnClientRootCertificate = new PSVpnClientRootCertificate();
-            vpnClientRootCertificate.Name = this.Name;
-            vpnClientRootCertificate.PublicCertData = this.PublicCertData;
+            vpnClientRootCertificate.Name = Name;
+            vpnClientRootCertificate.PublicCertData = PublicCertData;
 
             WriteObject(vpnClientRootCertificate);
         }

@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureVMBackup
     {
         public AzureVMBackupException(int errorCode, string message) : base(message)
         {
-            this.AzureVMBackupErrorCode = errorCode;
+            AzureVMBackupErrorCode = errorCode;
         }
         public int AzureVMBackupErrorCode { get; set; }
     }

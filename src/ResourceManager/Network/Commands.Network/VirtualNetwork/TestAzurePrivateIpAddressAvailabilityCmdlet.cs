@@ -61,11 +61,11 @@ namespace Microsoft.Azure.Commands.Network
 
             if (string.Equals(ParameterSetName, "TestByResource"))
             {
-                result = this.TestIpAddressAvailability(this.VirtualNetwork.ResourceGroupName, this.VirtualNetwork.Name, this.IPAddress);
+                result = TestIpAddressAvailability(VirtualNetwork.ResourceGroupName, VirtualNetwork.Name, IPAddress);
             }
             else
             {
-                result = this.TestIpAddressAvailability(this.ResourceGroupName, this.VirtualNetworkName, this.IPAddress);
+                result = TestIpAddressAvailability(ResourceGroupName, VirtualNetworkName, IPAddress);
             }
 
             WriteObject(result);
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSIPAddressAvailabilityResult TestIpAddressAvailability(string resourceGroupName, string vnetName, string ipAddress)
         {
-            var result = this.NetworkClient.NetworkManagementClient.VirtualNetworks.CheckIPAddressAvailability(resourceGroupName, vnetName, ipAddress);
+            var result = NetworkClient.NetworkManagementClient.VirtualNetworks.CheckIPAddressAvailability(resourceGroupName, vnetName, ipAddress);
             var psResult = NetworkResourceManagerProfile.Mapper.Map<PSIPAddressAvailabilityResult>(result);
 
             return psResult;

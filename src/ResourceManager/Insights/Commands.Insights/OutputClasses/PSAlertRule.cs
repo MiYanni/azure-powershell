@@ -27,17 +27,17 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="ruleSpec"></param>
         public PSAlertRule(AlertRuleResource ruleSpec)
             : base(
-                  location: ruleSpec.Location,
-                  alertRuleResourceName: ruleSpec.AlertRuleResourceName,
-                  isEnabled: ruleSpec.IsEnabled,
-                  condition: ruleSpec.Condition,
-                  id: ruleSpec.Id,
-                  name: ruleSpec.Name,
-                  type: ruleSpec.Type,
-                  tags: ruleSpec.Tags,
-                  description: ruleSpec.Description,
-                  actions: ruleSpec.Actions,
-                  lastUpdatedTime: ruleSpec.LastUpdatedTime)
+                  ruleSpec.Location,
+                  ruleSpec.AlertRuleResourceName,
+                  ruleSpec.IsEnabled,
+                  ruleSpec.Condition,
+                  ruleSpec.Id,
+                  ruleSpec.Name,
+                  ruleSpec.Type,
+                  ruleSpec.Tags,
+                  ruleSpec.Description,
+                  ruleSpec.Actions,
+                  ruleSpec.LastUpdatedTime)
         {
         }
     }

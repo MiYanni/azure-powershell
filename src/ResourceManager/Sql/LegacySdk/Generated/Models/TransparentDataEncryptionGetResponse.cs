@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public TransparentDataEncryption TransparentDataEncryption
         {
-            get { return this._transparentDataEncryption; }
-            set { this._transparentDataEncryption = value; }
+            get { return _transparentDataEncryption; }
+            set { _transparentDataEncryption = value; }
         }
         
         /// <summary>

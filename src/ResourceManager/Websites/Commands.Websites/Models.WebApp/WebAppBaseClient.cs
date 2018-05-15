@@ -31,9 +31,9 @@ namespace Microsoft.Azure.Commands.WebApps.Models
                     _resourcesClient = new ResourceClient(DefaultProfile.DefaultContext);
                 }
 
-                this._resourcesClient.VerboseLogger = WriteVerboseWithTimestamp;
-                this._resourcesClient.ErrorLogger = WriteErrorWithTimestamp;
-                this._resourcesClient.WarningLogger = WriteWarningWithTimestamp;
+                _resourcesClient.VerboseLogger = WriteVerboseWithTimestamp;
+                _resourcesClient.ErrorLogger = WriteErrorWithTimestamp;
+                _resourcesClient.WarningLogger = WriteWarningWithTimestamp;
                 return _resourcesClient;
             }
             set { _resourcesClient = value; }

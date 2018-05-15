@@ -73,11 +73,11 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
             if (ParameterSetName == ByPartnerServerName)
             {
                 results = new List<AzureReplicationLinkModel>();
-                results.Add(ModelAdapter.GetLink(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.PartnerResourceGroupName, this.PartnerServerName));
+                results.Add(ModelAdapter.GetLink(ResourceGroupName, ServerName, DatabaseName, PartnerResourceGroupName, PartnerServerName));
             }
             else
             {
-                results = ModelAdapter.ListLinks(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.PartnerResourceGroupName);
+                results = ModelAdapter.ListLinks(ResourceGroupName, ServerName, DatabaseName, PartnerResourceGroupName);
             }
 
             return results;

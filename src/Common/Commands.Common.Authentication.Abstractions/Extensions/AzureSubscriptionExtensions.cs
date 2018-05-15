@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         public static bool IsDefault(this IAzureSubscription subscription)
         {
             return subscription.IsPropertySet(AzureSubscription.Property.Default) && 
-                string.Equals("True", subscription.GetProperty(AzureSubscription.Property.Default), System.StringComparison.OrdinalIgnoreCase);
+                string.Equals("True", subscription.GetProperty(AzureSubscription.Property.Default), StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

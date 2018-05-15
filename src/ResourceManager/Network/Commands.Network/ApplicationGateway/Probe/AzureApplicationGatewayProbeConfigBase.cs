@@ -83,25 +83,25 @@ namespace Microsoft.Azure.Commands.Network
         public PSApplicationGatewayProbe NewObject()
         {
             var probe = new PSApplicationGatewayProbe();
-            probe.Name = this.Name;
-            probe.Protocol = this.Protocol;
-            probe.Host = this.HostName;
-            probe.Path = this.Path;
-            probe.Interval = this.Interval;
-            probe.Timeout = this.Timeout;
-            probe.UnhealthyThreshold = this.UnhealthyThreshold;
-            if (this.PickHostNameFromBackendHttpSettings.IsPresent)
+            probe.Name = Name;
+            probe.Protocol = Protocol;
+            probe.Host = HostName;
+            probe.Path = Path;
+            probe.Interval = Interval;
+            probe.Timeout = Timeout;
+            probe.UnhealthyThreshold = UnhealthyThreshold;
+            if (PickHostNameFromBackendHttpSettings.IsPresent)
             {
                 probe.PickHostNameFromBackendHttpSettings = true;
             }
-            probe.MinServers = this.MinServers;
-            probe.Match = this.Match;
+            probe.MinServers = MinServers;
+            probe.Match = Match;
 
             probe.Id =
                 ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayProbeName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    Properties.Resources.ApplicationGatewayProbeName,
+                    Name);
 
             return probe;
         }

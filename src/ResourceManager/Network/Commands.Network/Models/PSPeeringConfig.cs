@@ -40,13 +40,13 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string AdvertisedPublicPrefixesSText
         {
-            get { return JsonConvert.SerializeObject(AdvertisedPublicPrefixes, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(AdvertisedPublicPrefixes, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string AdvertisedCommunitiesSText
         {
-            get { return JsonConvert.SerializeObject(AdvertisedCommunities, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(AdvertisedCommunities, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

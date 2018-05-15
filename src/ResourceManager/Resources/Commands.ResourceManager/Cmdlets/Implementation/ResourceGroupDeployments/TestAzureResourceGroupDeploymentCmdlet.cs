@@ -37,12 +37,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 
         public TestAzureResourceGroupDeploymentCmdlet()
         {
-            this.Mode = DeploymentMode.Incremental;
+            Mode = DeploymentMode.Incremental;
         }
 
         public override void ExecuteCmdlet()
         {
-            PSValidateResourceGroupDeploymentParameters parameters = new PSValidateResourceGroupDeploymentParameters()
+            PSValidateResourceGroupDeploymentParameters parameters = new PSValidateResourceGroupDeploymentParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 TemplateFile = TemplateUri ?? this.TryResolvePath(TemplateFile),

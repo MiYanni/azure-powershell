@@ -45,12 +45,12 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.BackupRestore
 
         public override void ExecuteCmdlet()
         {
-            DatabaseBackupSetting setting = new DatabaseBackupSetting()
+            DatabaseBackupSetting setting = new DatabaseBackupSetting
             {
-                Name = this.Name,
-                DatabaseType = this.DatabaseType,
-                ConnectionString = this.ConnectionString,
-                ConnectionStringName = this.ConnectionStringName
+                Name = Name,
+                DatabaseType = DatabaseType,
+                ConnectionString = ConnectionString,
+                ConnectionStringName = ConnectionStringName
             };
             WriteObject(setting);
         }

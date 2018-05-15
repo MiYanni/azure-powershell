@@ -63,22 +63,22 @@ namespace Microsoft.Azure.Commands.EventGrid
             string resourceGroupName;
             string topicName;
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                EventGridUtils.GetResourceGroupNameAndTopicName(this.ResourceId, out resourceGroupName, out topicName);
+                EventGridUtils.GetResourceGroupNameAndTopicName(ResourceId, out resourceGroupName, out topicName);
             }
-            else if (this.InputObject != null)
+            else if (InputObject != null)
             {
-                resourceGroupName = this.InputObject.ResourceGroupName;
-                topicName = this.InputObject.TopicName;
+                resourceGroupName = InputObject.ResourceGroupName;
+                topicName = InputObject.TopicName;
             }
             else
             {
-                resourceGroupName = this.ResourceGroupName;
-                topicName = this.Name;
+                resourceGroupName = ResourceGroupName;
+                topicName = Name;
             }
 
-            this.WriteObject(this.Client.GetTopicSharedAccessKeys(resourceGroupName, topicName));
+            WriteObject(Client.GetTopicSharedAccessKeys(resourceGroupName, topicName));
         }
     }
 }

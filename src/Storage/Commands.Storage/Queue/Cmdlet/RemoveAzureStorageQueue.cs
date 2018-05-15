@@ -14,9 +14,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Queue
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.Queue;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage.Queue;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -100,10 +100,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Queue
                 Channel.DeleteQueue(queue, requestOptions, OperationContext);
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>

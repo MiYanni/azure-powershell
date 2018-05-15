@@ -44,9 +44,9 @@ namespace Microsoft.Azure.Commands.Management.Storage
         {
             base.ExecuteCmdlet();
 
-            var storageKeys = this.StorageClient.StorageAccounts.ListKeys(
-                 this.ResourceGroupName,
-                 this.Name).Keys;
+            var storageKeys = StorageClient.StorageAccounts.ListKeys(
+                 ResourceGroupName,
+                 Name).Keys;
 
             WriteObject(storageKeys, true);
         }

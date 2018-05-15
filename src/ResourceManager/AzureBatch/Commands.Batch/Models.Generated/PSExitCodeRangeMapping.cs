@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSExitCodeRangeMapping
     {
         
-        internal Microsoft.Azure.Batch.ExitCodeRangeMapping omObject;
+        internal ExitCodeRangeMapping omObject;
         
         private PSExitOptions exitOptions;
         
         public PSExitCodeRangeMapping(int start, int end, PSExitOptions exitOptions)
         {
-            this.omObject = new Microsoft.Azure.Batch.ExitCodeRangeMapping(start, end, exitOptions.omObject);
+            omObject = new ExitCodeRangeMapping(start, end, exitOptions.omObject);
         }
         
-        internal PSExitCodeRangeMapping(Microsoft.Azure.Batch.ExitCodeRangeMapping omObject)
+        internal PSExitCodeRangeMapping(ExitCodeRangeMapping omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.End;
+                return omObject.End;
             }
         }
         
@@ -62,12 +62,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.exitOptions == null) 
-                            && (this.omObject.ExitOptions != null)))
+                if (exitOptions == null 
+                    && omObject.ExitOptions != null)
                 {
-                    this.exitOptions = new PSExitOptions(this.omObject.ExitOptions);
+                    exitOptions = new PSExitOptions(omObject.ExitOptions);
                 }
-                return this.exitOptions;
+                return exitOptions;
             }
         }
         
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Start;
+                return omObject.Start;
             }
         }
     }

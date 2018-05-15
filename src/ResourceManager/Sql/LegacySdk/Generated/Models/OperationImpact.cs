@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double? ChangeValueAbsolute
         {
-            get { return this._changeValueAbsolute; }
-            set { this._changeValueAbsolute = value; }
+            get { return _changeValueAbsolute; }
+            set { _changeValueAbsolute = value; }
         }
         
         private double? _changeValueRelative;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double? ChangeValueRelative
         {
-            get { return this._changeValueRelative; }
-            set { this._changeValueRelative = value; }
+            get { return _changeValueRelative; }
+            set { _changeValueRelative = value; }
         }
         
         private string _name;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private string _unit;
@@ -71,8 +71,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Unit
         {
-            get { return this._unit; }
-            set { this._unit = value; }
+            get { return _unit; }
+            set { _unit = value; }
         }
         
         /// <summary>

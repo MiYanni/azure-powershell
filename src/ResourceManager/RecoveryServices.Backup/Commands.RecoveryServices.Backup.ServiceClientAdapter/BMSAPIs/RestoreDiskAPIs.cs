@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ServiceClient
                 throw new Exception(string.Format(Resources.RestoreDiskStorageTypeError, vmType));
             }
 
-            IaasVMRestoreRequest restoreRequest = new IaasVMRestoreRequest()
+            IaasVMRestoreRequest restoreRequest = new IaasVMRestoreRequest
             {
                 CreateNewCloudService = false,
                 RecoveryPointId = recoveryPointId,
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ServiceClient
                 Region = vaultLocation,
                 StorageAccountId = storageAccountId,
                 SourceResourceId = rp.SourceResourceId,
-                OriginalStorageAccountOption = useOsa,
+                OriginalStorageAccountOption = useOsa
             };
 
             RestoreRequestResource triggerRestoreRequest = new RestoreRequestResource();

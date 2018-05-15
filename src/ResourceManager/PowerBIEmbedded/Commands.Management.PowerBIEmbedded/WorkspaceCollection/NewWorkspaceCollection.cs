@@ -53,8 +53,8 @@ namespace Microsoft.Azure.Commands.Management.PowerBIEmbedded.WorkspaceCollectio
 
         public override void ExecuteCmdlet()
         {
-            var description = string.Format(Resources.NewWorkspaceCollectionDescription, this.WorkspaceCollectionName);
-            var warning = string.Format(Resources.NewWorkspaceCollectionWarning, this.WorkspaceCollectionName);
+            var description = string.Format(Resources.NewWorkspaceCollectionDescription, WorkspaceCollectionName);
+            var warning = string.Format(Resources.NewWorkspaceCollectionWarning, WorkspaceCollectionName);
 
             if (!ShouldProcess(description, warning, Resources.ShouldProcessCaption))
             {
@@ -64,15 +64,15 @@ namespace Microsoft.Azure.Commands.Management.PowerBIEmbedded.WorkspaceCollectio
             // TODO: This will need to be udpated to params once we support multiple locations / skus
             var createWorkspaceRequest = new CreateWorkspaceCollectionRequest
             {
-                Location = this.Location
+                Location = Location
             };
 
-            var workspace = this.PowerBIClient.WorkspaceCollections.Create(
-                this.ResourceGroupName,
-                this.WorkspaceCollectionName,
+            var workspace = PowerBIClient.WorkspaceCollections.Create(
+                ResourceGroupName,
+                WorkspaceCollectionName,
                 createWorkspaceRequest);
 
-            this.WriteWorkspaceCollection(workspace);
+            WriteWorkspaceCollection(workspace);
         }
     }
 }

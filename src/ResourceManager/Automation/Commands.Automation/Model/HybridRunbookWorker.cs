@@ -14,9 +14,9 @@ namespace Microsoft.Azure.Commands.Automation.Model
         }
         public HybridRunbookWorker(string ipAddress, string name, DateTimeOffset registrationDataTime)
         {
-            this.IpAddress = ipAddress;
-            this.Name = name;
-            this.RegistrationTime = registrationDataTime;
+            IpAddress = ipAddress;
+            Name = name;
+            RegistrationTime = registrationDataTime;
         }
         public string IpAddress { get; set; }
         //

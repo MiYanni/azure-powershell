@@ -26,29 +26,29 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSImageReference
     {
         
-        internal Microsoft.Azure.Batch.ImageReference omObject;
+        internal ImageReference omObject;
         
         public PSImageReference(string offer, string publisher, string sku, string version = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.ImageReference(offer, publisher, sku, version);
+            omObject = new ImageReference(offer, publisher, sku, version);
         }
         
         public PSImageReference(string virtualMachineImageId)
         {
-            this.omObject = new Microsoft.Azure.Batch.ImageReference(virtualMachineImageId);
+            omObject = new ImageReference(virtualMachineImageId);
         }
         
-        internal PSImageReference(Microsoft.Azure.Batch.ImageReference omObject)
+        internal PSImageReference(ImageReference omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Offer;
+                return omObject.Offer;
             }
         }
         
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Publisher;
+                return omObject.Publisher;
             }
         }
         
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Sku;
+                return omObject.Sku;
             }
         }
         
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Version;
+                return omObject.Version;
             }
         }
         
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.VirtualMachineImageId;
+                return omObject.VirtualMachineImageId;
             }
         }
     }

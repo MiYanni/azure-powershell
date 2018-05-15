@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Reservations.Models
 
         public IEnumerator<PSReservation> GetEnumerator()
         {
-            return Items == null ? System.Linq.Enumerable.Empty<PSReservation>().GetEnumerator() : Items.GetEnumerator();
+            return Items == null ? Enumerable.Empty<PSReservation>().GetEnumerator() : Items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

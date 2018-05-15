@@ -26,44 +26,44 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSUserAccount
     {
         
-        internal Microsoft.Azure.Batch.UserAccount omObject;
+        internal UserAccount omObject;
         
         private PSLinuxUserConfiguration linuxUserConfiguration;
         
-        public PSUserAccount(string name, string password, System.Nullable<Microsoft.Azure.Batch.Common.ElevationLevel> elevationLevel = null, PSLinuxUserConfiguration linuxUserConfiguration = default(PSLinuxUserConfiguration))
+        public PSUserAccount(string name, string password, Nullable<Azure.Batch.Common.ElevationLevel> elevationLevel = null, PSLinuxUserConfiguration linuxUserConfiguration = default(PSLinuxUserConfiguration))
         {
-            Microsoft.Azure.Batch.LinuxUserConfiguration linuxUserConfigurationOmObject = null;
-            if ((linuxUserConfiguration != null))
+            LinuxUserConfiguration linuxUserConfigurationOmObject = null;
+            if (linuxUserConfiguration != null)
             {
                 linuxUserConfigurationOmObject = linuxUserConfiguration.omObject;
             }
-            this.omObject = new Microsoft.Azure.Batch.UserAccount(name, password, elevationLevel, linuxUserConfigurationOmObject);
+            omObject = new UserAccount(name, password, elevationLevel, linuxUserConfigurationOmObject);
         }
         
-        internal PSUserAccount(Microsoft.Azure.Batch.UserAccount omObject)
+        internal PSUserAccount(UserAccount omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.ElevationLevel? ElevationLevel
+        public Azure.Batch.Common.ElevationLevel? ElevationLevel
         {
             get
             {
-                return this.omObject.ElevationLevel;
+                return omObject.ElevationLevel;
             }
             set
             {
-                this.omObject.ElevationLevel = value;
+                omObject.ElevationLevel = value;
             }
         }
         
@@ -71,24 +71,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.linuxUserConfiguration == null) 
-                            && (this.omObject.LinuxUserConfiguration != null)))
+                if (linuxUserConfiguration == null 
+                    && omObject.LinuxUserConfiguration != null)
                 {
-                    this.linuxUserConfiguration = new PSLinuxUserConfiguration(this.omObject.LinuxUserConfiguration);
+                    linuxUserConfiguration = new PSLinuxUserConfiguration(omObject.LinuxUserConfiguration);
                 }
-                return this.linuxUserConfiguration;
+                return linuxUserConfiguration;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.LinuxUserConfiguration = null;
+                    omObject.LinuxUserConfiguration = null;
                 }
                 else
                 {
-                    this.omObject.LinuxUserConfiguration = value.omObject;
+                    omObject.LinuxUserConfiguration = value.omObject;
                 }
-                this.linuxUserConfiguration = value;
+                linuxUserConfiguration = value;
             }
         }
         
@@ -96,11 +96,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Name;
+                return omObject.Name;
             }
             set
             {
-                this.omObject.Name = value;
+                omObject.Name = value;
             }
         }
         
@@ -108,11 +108,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Password;
+                return omObject.Password;
             }
             set
             {
-                this.omObject.Password = value;
+                omObject.Password = value;
             }
         }
     }

@@ -59,16 +59,13 @@ namespace Microsoft.Azure.Commands.Sql.ServiceTierAdvisor.Cmdlet
                     ElasticPools = null
                 };
             }
-            else
+            // Return elastic pool hints and exclude databases contained in pools
+            var elasticPoolAdapter = new AzureSqlElasticPoolRecommendationAdapter(DefaultProfile.DefaultContext);
+            return new UpgradeServerHint
             {
-                // Return elastic pool hints and exclude databases contained in pools
-                var elasticPoolAdapter = new AzureSqlElasticPoolRecommendationAdapter(DefaultProfile.DefaultContext);
-                return new UpgradeServerHint
-                {
-                    Databases = ModelAdapter.ListUpgradeDatabaseHints(ResourceGroupName, ServerName, true),
-                    ElasticPools = elasticPoolAdapter.ListRecommendedElasticPoolProperties(ResourceGroupName, ServerName)
-                };
-            }
+                Databases = ModelAdapter.ListUpgradeDatabaseHints(ResourceGroupName, ServerName, true),
+                ElasticPools = elasticPoolAdapter.ListRecommendedElasticPoolProperties(ResourceGroupName, ServerName)
+            };
         }
 
         /// <summary>

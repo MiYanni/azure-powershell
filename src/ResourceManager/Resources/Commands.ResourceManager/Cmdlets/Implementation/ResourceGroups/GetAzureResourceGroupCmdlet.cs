@@ -15,9 +15,9 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
+    using Commands.Common.Authentication;
+    using Components;
+    using SdkModels;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -64,10 +64,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 
         public override void ExecuteCmdlet()
         {
-            Name = Name ?? ResourceIdentifier.FromResourceGroupIdentifier(this.Id).ResourceGroupName;
+            Name = Name ?? ResourceIdentifier.FromResourceGroupIdentifier(Id).ResourceGroupName;
 
-            this.WriteObject(
-                ResourceManagerSdkClient.FilterResourceGroups(name: this.Name, tag: this.Tag, detailed: false, location: this.Location),
+            WriteObject(
+                ResourceManagerSdkClient.FilterResourceGroups(Name, Tag, false, Location),
                 true);
         }
 

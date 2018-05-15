@@ -29,9 +29,9 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// </summary>
         public PSMetricSettings(MetricSettings metricSettings)
         {
-            this.Enabled = metricSettings.Enabled;
-            this.TimeGrain = metricSettings.TimeGrain;
-            this.RetentionPolicy = metricSettings.RetentionPolicy;
+            Enabled = metricSettings.Enabled;
+            TimeGrain = metricSettings.TimeGrain;
+            RetentionPolicy = metricSettings.RetentionPolicy;
         }
 
         /// <summary>

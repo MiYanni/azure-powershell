@@ -33,8 +33,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Code
         {
-            get { return this._code; }
-            set { this._code = value; }
+            get { return _code; }
+            set { _code = value; }
         }
         
         private string _message;
@@ -44,8 +44,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Message
         {
-            get { return this._message; }
-            set { this._message = value; }
+            get { return _message; }
+            set { _message = value; }
         }
         
         private string _target;
@@ -55,8 +55,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Target
         {
-            get { return this._target; }
-            set { this._target = value; }
+            get { return _target; }
+            set { _target = value; }
         }
         
         /// <summary>
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("message");
             }
-            this.Code = code;
-            this.Message = message;
+            Code = code;
+            Message = message;
         }
     }
 }

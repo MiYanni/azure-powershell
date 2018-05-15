@@ -38,48 +38,48 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if ((this.SourceAddressPrefix != null) && (this.SourceAddressPrefix.Count > 0) && (this.SourceApplicationSecurityGroup != null) && (this.SourceApplicationSecurityGroup.Count > 0))
+            if (SourceAddressPrefix != null && SourceAddressPrefix.Count > 0 && SourceApplicationSecurityGroup != null && SourceApplicationSecurityGroup.Count > 0)
             {
                 throw new ArgumentException($"{nameof(SourceAddressPrefix)} and {nameof(SourceApplicationSecurityGroup)} cannot be used simultaneously.");
             }
 
-            if ((this.SourceAddressPrefix != null) && (this.SourceAddressPrefix.Count > 0) && (this.SourceApplicationSecurityGroupId != null) && (this.SourceApplicationSecurityGroupId.Count > 0))
+            if (SourceAddressPrefix != null && SourceAddressPrefix.Count > 0 && SourceApplicationSecurityGroupId != null && SourceApplicationSecurityGroupId.Count > 0)
             {
                 throw new ArgumentException($"{nameof(SourceAddressPrefix)} and {nameof(SourceApplicationSecurityGroupId)} cannot be used simultaneously.");
             }
 
-            if ((this.DestinationAddressPrefix != null) && (this.DestinationAddressPrefix.Count > 0) && (this.DestinationApplicationSecurityGroup != null) && (this.DestinationApplicationSecurityGroup.Count > 0))
+            if (DestinationAddressPrefix != null && DestinationAddressPrefix.Count > 0 && DestinationApplicationSecurityGroup != null && DestinationApplicationSecurityGroup.Count > 0)
             {
                 throw new ArgumentException($"{nameof(DestinationAddressPrefix)} and {nameof(DestinationApplicationSecurityGroup)} cannot be used simultaneously.");
             }
 
-            if ((this.DestinationAddressPrefix != null) && (this.DestinationAddressPrefix.Count > 0) && (this.DestinationApplicationSecurityGroupId != null) && (this.DestinationApplicationSecurityGroupId.Count > 0))
+            if (DestinationAddressPrefix != null && DestinationAddressPrefix.Count > 0 && DestinationApplicationSecurityGroupId != null && DestinationApplicationSecurityGroupId.Count > 0)
             {
                 throw new ArgumentException($"{nameof(DestinationAddressPrefix)} and {nameof(DestinationApplicationSecurityGroupId)} cannot be used simultaneously.");
             }
 
             // Verify if the subnet exists in the NetworkSecurityGroup
-            var rule = this.NetworkSecurityGroup.SecurityRules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var rule = NetworkSecurityGroup.SecurityRules.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (rule == null)
             {
                 throw new ArgumentException("Rule with the specified name does not exist");
             }
 
-            rule.Description = this.Description;
-            rule.Protocol = this.Protocol;
-            rule.SourcePortRange = this.SourcePortRange;
-            rule.DestinationPortRange = this.DestinationPortRange;
-            rule.SourceAddressPrefix = this.SourceAddressPrefix;
-            rule.DestinationAddressPrefix = this.DestinationAddressPrefix;
-            rule.Access = this.Access;
-            rule.Priority = this.Priority;
-            rule.Direction = this.Direction;
+            rule.Description = Description;
+            rule.Protocol = Protocol;
+            rule.SourcePortRange = SourcePortRange;
+            rule.DestinationPortRange = DestinationPortRange;
+            rule.SourceAddressPrefix = SourceAddressPrefix;
+            rule.DestinationAddressPrefix = DestinationAddressPrefix;
+            rule.Access = Access;
+            rule.Priority = Priority;
+            rule.Direction = Direction;
 
             SetSourceApplicationSecurityGroupInRule(rule);
             SetDestinationApplicationSecurityGroupInRule(rule);
 
-            WriteObject(this.NetworkSecurityGroup);
+            WriteObject(NetworkSecurityGroup);
         }
     }
 }

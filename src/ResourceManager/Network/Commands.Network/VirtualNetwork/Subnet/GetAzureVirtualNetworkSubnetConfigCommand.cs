@@ -36,18 +36,18 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var subnet =
-                    this.VirtualNetwork.Subnets.First(
+                    VirtualNetwork.Subnets.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(subnet);
             }
             else
             {
-                var subnets = this.VirtualNetwork.Subnets;
+                var subnets = VirtualNetwork.Subnets;
                 WriteObject(subnets, true);
             }
 

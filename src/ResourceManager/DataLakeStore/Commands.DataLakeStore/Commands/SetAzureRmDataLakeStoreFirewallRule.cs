@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore
         [Parameter(Position = 3,
             ValueFromPipelineByPropertyName = true, Mandatory = false,
             HelpMessage = "Name of resource group under which want to retrieve the account.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

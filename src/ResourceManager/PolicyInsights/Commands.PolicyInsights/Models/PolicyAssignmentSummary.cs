@@ -54,10 +54,10 @@ namespace Microsoft.Azure.Commands.PolicyInsights.Models
                 return;
             }
 
-            this.PolicyAssignmentId = policyAssignmentSummary.PolicyAssignmentId;
-            this.PolicySetDefinitionId = policyAssignmentSummary.PolicySetDefinitionId;
-            this.PolicyDefinitions = policyAssignmentSummary.PolicyDefinitions.Select(policyDefinitionSummary => new PolicyDefinitionSummary(policyDefinitionSummary)).ToList();
-            this.Results = new SummaryResults(policyAssignmentSummary.Results);
+            PolicyAssignmentId = policyAssignmentSummary.PolicyAssignmentId;
+            PolicySetDefinitionId = policyAssignmentSummary.PolicySetDefinitionId;
+            PolicyDefinitions = policyAssignmentSummary.PolicyDefinitions.Select(policyDefinitionSummary => new PolicyDefinitionSummary(policyDefinitionSummary)).ToList();
+            Results = new SummaryResults(policyAssignmentSummary.Results);
         }
     }
 }

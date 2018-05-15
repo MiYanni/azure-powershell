@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public VhdHeaderVersion(uint data)
         {
-            this.Data = data;
+            Data = data;
         }
 
         public uint Data { get; private set; }
@@ -32,7 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public override string ToString()
         {
-            return this.Data.ToString();
+            return Data.ToString();
         }
     }
 }

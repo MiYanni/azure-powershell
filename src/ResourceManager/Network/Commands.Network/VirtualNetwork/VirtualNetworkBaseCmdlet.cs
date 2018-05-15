@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetVirtualNetwork(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSVirtualNetwork GetVirtualNetwork(string resourceGroupName, string name, string expandResource = null)
         {
-            var vnet = this.VirtualNetworkClient.Get(resourceGroupName, name, expandResource);
+            var vnet = VirtualNetworkClient.Get(resourceGroupName, name, expandResource);
 
             var psVirtualNetwork = NetworkResourceManagerProfile.Mapper.Map<PSVirtualNetwork>(vnet);
             psVirtualNetwork.ResourceGroupName = resourceGroupName;

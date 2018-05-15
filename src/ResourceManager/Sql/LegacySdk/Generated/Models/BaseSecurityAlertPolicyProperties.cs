@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DisabledAlerts
         {
-            get { return this._disabledAlerts; }
-            set { this._disabledAlerts = value; }
+            get { return _disabledAlerts; }
+            set { _disabledAlerts = value; }
         }
         
         private string _emailAccountAdmins;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string EmailAccountAdmins
         {
-            get { return this._emailAccountAdmins; }
-            set { this._emailAccountAdmins = value; }
+            get { return _emailAccountAdmins; }
+            set { _emailAccountAdmins = value; }
         }
         
         private string _emailAddresses;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string EmailAddresses
         {
-            get { return this._emailAddresses; }
-            set { this._emailAddresses = value; }
+            get { return _emailAddresses; }
+            set { _emailAddresses = value; }
         }
         
         private int _retentionDays;
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int RetentionDays
         {
-            get { return this._retentionDays; }
-            set { this._retentionDays = value; }
+            get { return _retentionDays; }
+            set { _retentionDays = value; }
         }
         
         private string _state;
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         private string _storageAccountAccessKey;
@@ -93,8 +93,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageAccountAccessKey
         {
-            get { return this._storageAccountAccessKey; }
-            set { this._storageAccountAccessKey = value; }
+            get { return _storageAccountAccessKey; }
+            set { _storageAccountAccessKey = value; }
         }
         
         private string _storageEndpoint;
@@ -105,8 +105,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageEndpoint
         {
-            get { return this._storageEndpoint; }
-            set { this._storageEndpoint = value; }
+            get { return _storageEndpoint; }
+            set { _storageEndpoint = value; }
         }
         
         /// <summary>

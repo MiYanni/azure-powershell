@@ -24,17 +24,17 @@ namespace Microsoft.Azure.Commands.TrafficManager.Utilities
         {
             get
             {
-                if (this.trafficManagerClient == null)
+                if (trafficManagerClient == null)
                 {
-                    this.trafficManagerClient = new TrafficManagerClient(DefaultProfile.DefaultContext);
+                    trafficManagerClient = new TrafficManagerClient(DefaultProfile.DefaultContext);
                 }
 
-                this.trafficManagerClient.VerboseLogger = WriteVerboseWithTimestamp;
-                this.trafficManagerClient.ErrorLogger = WriteErrorWithTimestamp;
-                return this.trafficManagerClient;
+                trafficManagerClient.VerboseLogger = WriteVerboseWithTimestamp;
+                trafficManagerClient.ErrorLogger = WriteErrorWithTimestamp;
+                return trafficManagerClient;
             }
 
-            set { this.trafficManagerClient = value; }
+            set { trafficManagerClient = value; }
         }
     }
 }

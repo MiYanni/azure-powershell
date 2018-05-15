@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
 
         internal static PSQueryResponse Create(QueryResults response)
         {
-            var psResponse = new PSQueryResponse()
+            var psResponse = new PSQueryResponse
             {
                 Results = GetResultEnumerable(response.Results),
                 Render = response.Render,

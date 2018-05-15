@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string SecurityRulesPropertyText
         {
-            get { return JsonConvert.SerializeObject(this.SecurityRulesProperty, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(SecurityRulesProperty, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

@@ -34,23 +34,23 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// </param>
         /// <exception cref="System.ArgumentException">
         /// </exception>
-        public Connection(string resourceGroupName, string accountAcccountName, Azure.Management.Automation.Models.Connection connection)
+        public Connection(string resourceGroupName, string accountAcccountName, Management.Automation.Models.Connection connection)
         {
             Requires.Argument("connection", connection).NotNull();
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = accountAcccountName;
-            this.Name = connection.Name;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = accountAcccountName;
+            Name = connection.Name;
 
             if (connection.Properties == null) return;
 
-            this.Description = connection.Properties.Description;
-            this.CreationTime = connection.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = connection.Properties.LastModifiedTime.ToLocalTime();
-            this.ConnectionTypeName = connection.Properties.ConnectionType.Name;
-            this.FieldDefinitionValues = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            Description = connection.Properties.Description;
+            CreationTime = connection.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = connection.Properties.LastModifiedTime.ToLocalTime();
+            ConnectionTypeName = connection.Properties.ConnectionType.Name;
+            FieldDefinitionValues = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in connection.Properties.FieldDefinitionValues)
             {
-                this.FieldDefinitionValues.Add(kvp.Key, kvp.Value.ToString());
+                FieldDefinitionValues.Add(kvp.Key, kvp.Value.ToString());
             }
         }
 

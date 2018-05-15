@@ -32,11 +32,11 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("DatabaseName"))
             {
                 results = new List<AzureSqlDatabaseGeoBackupModel>();
-                results.Add(ModelAdapter.GetGeoBackup(this.ResourceGroupName, this.ServerName, this.DatabaseName));
+                results.Add(ModelAdapter.GetGeoBackup(ResourceGroupName, ServerName, DatabaseName));
             }
             else
             {
-                results = ModelAdapter.ListGeoBackups(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListGeoBackups(ResourceGroupName, ServerName);
             }
 
             return results;

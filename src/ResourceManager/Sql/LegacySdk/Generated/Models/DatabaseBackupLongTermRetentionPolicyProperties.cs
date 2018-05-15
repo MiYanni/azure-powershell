@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RecoveryServicesBackupPolicyResourceId
         {
-            get { return this._recoveryServicesBackupPolicyResourceId; }
-            set { this._recoveryServicesBackupPolicyResourceId = value; }
+            get { return _recoveryServicesBackupPolicyResourceId; }
+            set { _recoveryServicesBackupPolicyResourceId = value; }
         }
         
         private string _state;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         /// <summary>

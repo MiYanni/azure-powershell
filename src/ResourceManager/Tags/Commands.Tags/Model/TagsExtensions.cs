@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Tags.Model
     {
         public static PSTag ToPSTag(this TagDetails tag)
         {
-            return new PSTag()
+            return new PSTag
             {
                 Count = tag.Count.Value.ToString(),
                 Name = tag.TagName,
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Tags.Model
 
         public static PSTagValue ToPSTagValue(this TagValue value)
         {
-            return new PSTagValue()
+            return new PSTagValue
             {
                 Count = value.Count.Value.ToString(),
                 Name = value.TagValueProperty
@@ -48,11 +48,11 @@ namespace Microsoft.Azure.Commands.Tags.Model
         {
             get
             {
-                return new TagValue()
+                return new TagValue
                 {
                     TagValueProperty = string.Empty,
                     Id = string.Empty,
-                    Count = new TagCount()
+                    Count = new TagCount
                     {
                         Type = string.Empty
                     }

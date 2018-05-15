@@ -14,11 +14,11 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.Azure.Management.Logic;
+    using Management.Logic.Models;
+    using Management.Logic;
     using System.Management.Automation;
     using System.Globalization;
-    using Microsoft.Rest.Azure;
+    using Rest.Azure;
 
     /// <summary>
     /// LogicApp client partial class for integration account operations.
@@ -34,15 +34,12 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Newly created integration account object.</returns>
         public IntegrationAccount CreateIntegrationAccount(string resourceGroupName, string integrationAccountName, IntegrationAccount integrationAccount)
         {
-            if (!this.DoesIntegrationAccountExist(resourceGroupName, integrationAccountName))
+            if (!DoesIntegrationAccountExist(resourceGroupName, integrationAccountName))
             {
-                return this.LogicManagementClient.IntegrationAccounts.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccount);
+                return LogicManagementClient.IntegrationAccounts.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccount);
             }
-            else
-            {
-                throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    Properties.Resource.ResourceAlreadyExists, integrationAccountName, resourceGroupName));
-            }
+            throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
+                Properties.Resource.ResourceAlreadyExists, integrationAccountName, resourceGroupName));
         }
 
         /// <summary>
@@ -54,7 +51,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Newly created integration account object.</returns>
         public IntegrationAccount UpdateIntegrationAccount(string resourceGroupName, string integrationAccountName, IntegrationAccount integrationAccount)
         {
-            return this.LogicManagementClient.IntegrationAccounts.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccount);
+            return LogicManagementClient.IntegrationAccounts.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccount);
         }
 
         /// <summary>
@@ -65,7 +62,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>The integration account object</returns>
         public IntegrationAccount GetIntegrationAccount(string resourceGroupName, string integrationAccountName)
         {
-            return this.LogicManagementClient.IntegrationAccounts.Get(resourceGroupName, integrationAccountName);
+            return LogicManagementClient.IntegrationAccounts.Get(resourceGroupName, integrationAccountName);
         }
 
         /// <summary>
@@ -77,7 +74,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>The integration account callback URL object</returns>
         public CallbackUrl GetIntegrationAccountCallbackUrl(string resourceGroupName, string integrationAccountName, GetCallbackUrlParameters callbackUrl)
         {
-            return this.LogicManagementClient.IntegrationAccounts.GetCallbackUrl(resourceGroupName, integrationAccountName, callbackUrl);
+            return LogicManagementClient.IntegrationAccounts.GetCallbackUrl(resourceGroupName, integrationAccountName, callbackUrl);
         }
         
         /// <summary>
@@ -89,12 +86,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         {
             if (string.IsNullOrEmpty(resourceGroupName))
             {
-                return this.LogicManagementClient.IntegrationAccounts.ListBySubscription(top: 1000);
+                return LogicManagementClient.IntegrationAccounts.ListBySubscription(1000);
             }
-            else
-            {
-                return this.LogicManagementClient.IntegrationAccounts.ListByResourceGroup(resourceGroupName, top: 1000);
-            }
+            return LogicManagementClient.IntegrationAccounts.ListByResourceGroup(resourceGroupName, 1000);
         }
 
         /// <summary>
@@ -104,7 +98,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="integrationAccountName">The integration account name.</param>
         public void RemoveIntegrationAccount(string resourceGroupName, string integrationAccountName)
         {
-            this.LogicManagementClient.IntegrationAccounts.Delete(resourceGroupName, integrationAccountName);
+            LogicManagementClient.IntegrationAccounts.Delete(resourceGroupName, integrationAccountName);
         }
 
         /// <summary>
@@ -118,7 +112,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
             bool result = false;
             try
             {
-                var account = this.LogicManagementClient.IntegrationAccounts.Get(resourceGroupName, integrationAccountName);
+                var account = LogicManagementClient.IntegrationAccounts.Get(resourceGroupName, integrationAccountName);
                 result = account != null;
             }
             catch

@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.HDInsight
         typeof(AzureHDInsightPigJobDefinition))]
     public class NewAzureHDInsightPigJobDefinitionCommand : HDInsightCmdletBase
     {
-        private AzureHDInsightPigJobDefinition job;
+        private readonly AzureHDInsightPigJobDefinition _job;
 
         #region Input Parameter Definitions
 
@@ -38,22 +38,22 @@ namespace Microsoft.Azure.Commands.HDInsight
         [Parameter(HelpMessage = "The output location to use for the job.")]
         public string StatusFolder
         {
-            get { return job.StatusFolder; }
-            set { job.StatusFolder = value; }
+            get { return _job.StatusFolder; }
+            set { _job.StatusFolder = value; }
         }
 
         [Parameter(HelpMessage = "The query file to run in the jobDetails.")]
         public string File
         {
-            get { return job.File; }
-            set { job.File = value; }
+            get { return _job.File; }
+            set { _job.File = value; }
         }
 
         [Parameter(HelpMessage = "The query to run in the jobDetails.")]
         public string Query
         {
-            get { return job.Query; }
-            set { job.Query = value; }
+            get { return _job.Query; }
+            set { _job.Query = value; }
         }
 
         #endregion
@@ -62,22 +62,22 @@ namespace Microsoft.Azure.Commands.HDInsight
         {
             Arguments = new string[] { };
             Files = new string[] { };
-            job = new AzureHDInsightPigJobDefinition();
+            _job = new AzureHDInsightPigJobDefinition();
         }
 
         public override void ExecuteCmdlet()
         {
             foreach (var arg in Arguments)
             {
-                job.Arguments.Add(arg);
+                _job.Arguments.Add(arg);
             }
 
             foreach (var file in Files)
             {
-                job.Files.Add(file);
+                _job.Files.Add(file);
             }
 
-            WriteObject(job);
+            WriteObject(_job);
         }
     }
 }

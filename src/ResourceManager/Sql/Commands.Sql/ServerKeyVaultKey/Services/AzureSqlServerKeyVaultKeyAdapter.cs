@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerKeyVaultKey.Services
         public IList<AzureSqlServerKeyVaultKeyModel> List(string resourceGroupName, string serverName)
         {
             var resp = Communicator.List(resourceGroupName, serverName);
-            return resp.Select((serverKey) =>
+            return resp.Select(serverKey =>
             {
                 return CreateServerKeyModelFromResponse(resourceGroupName, serverName, serverKey.Name, serverKey);
             }).ToList();
@@ -84,9 +84,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerKeyVaultKey.Services
         /// <returns>The updated server key Vault Key model</returns>
         public AzureSqlServerKeyVaultKeyModel CreateOrUpdate(AzureSqlServerKeyVaultKeyModel model)
         {
-            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.ServerKeyName, new ServerKeyCreateOrUpdateParameters()
+            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.ServerKeyName, new ServerKeyCreateOrUpdateParameters
             {
-                Properties = new ServerKeyCreateOrUpdateProperties()
+                Properties = new ServerKeyCreateOrUpdateProperties
                 {
                     ServerKeyType = ServerKeyType.AzureKeyVault,
                     Uri = model.Uri
@@ -115,7 +115,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerKeyVaultKey.Services
         /// <param name="serverName">The name of the server</param>
         /// <param name="resp">The management client server key response to convert</param>
         /// <returns>The converted server key vault key model</returns>
-        private static AzureSqlServerKeyVaultKeyModel CreateServerKeyModelFromResponse(string resourceGroup, string serverName, string keyName, Microsoft.Azure.Management.Sql.LegacySdk.Models.ServerKey resp)
+        private static AzureSqlServerKeyVaultKeyModel CreateServerKeyModelFromResponse(string resourceGroup, string serverName, string keyName, ServerKey resp)
         {
             AzureSqlServerKeyVaultKeyModel ServerKey = new AzureSqlServerKeyVaultKeyModel();
             ServerKey.ResourceGroupName = resourceGroup;

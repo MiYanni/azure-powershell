@@ -208,57 +208,57 @@ namespace Microsoft.Azure.Commands.EventGrid
 
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(this.EventSubscriptionName))
+            if (string.IsNullOrEmpty(EventSubscriptionName))
             {
                 // This can happen with the InputObject parameter set where the
                 // event subscription name needs to be determined based on the piped in
                 // EventSubscriptionObject
-                if (this.InputObject == null)
+                if (InputObject == null)
                 {
                     throw new Exception("Unexpected condition: Event Subscription name cannot be determined.");
                 }
 
-                this.EventSubscriptionName = this.InputObject.EventSubscriptionName;
+                EventSubscriptionName = InputObject.EventSubscriptionName;
             }
 
-            if (this.ShouldProcess(this.EventSubscriptionName, $"Update existing Event Grid subscription {this.EventSubscriptionName}"))
+            if (ShouldProcess(EventSubscriptionName, $"Update existing Event Grid subscription {EventSubscriptionName}"))
             {
                 string scope;
 
-                if (!string.IsNullOrEmpty(this.ResourceId))
+                if (!string.IsNullOrEmpty(ResourceId))
                 {
-                    scope = this.ResourceId;
+                    scope = ResourceId;
                 }
-                else if (this.InputObject != null)
+                else if (InputObject != null)
                 {
-                    scope = this.InputObject.Topic;
+                    scope = InputObject.Topic;
                 }
                 else
                 {
                     // ResourceID not specified, build the scope for the event subscription for either the
                     // subscription, or resource group, or custom topic depending on which of the parameters are provided.
-                    scope = EventGridUtils.GetScope(this.DefaultContext.Subscription.Id, this.ResourceGroupName, this.TopicName);
+                    scope = EventGridUtils.GetScope(DefaultContext.Subscription.Id, ResourceGroupName, TopicName);
                 }
 
-                EventSubscription existingEventSubscription = this.Client.GetEventSubscription(scope, this.EventSubscriptionName);
+                EventSubscription existingEventSubscription = Client.GetEventSubscription(scope, EventSubscriptionName);
                 if (existingEventSubscription == null)
                 {
-                    throw new Exception($"Cannot find an existing event subscription with name {this.EventSubscriptionName}.");
+                    throw new Exception($"Cannot find an existing event subscription with name {EventSubscriptionName}.");
                 }
 
-                EventSubscription eventSubscription = this.Client.UpdateEventSubscription(
-                    scope: scope,
-                    eventSubscriptionName: this.EventSubscriptionName,
-                    endpoint: this.Endpoint,
-                    endpointType: this.EndpointType,
-                    subjectBeginsWith: this.SubjectBeginsWith ?? existingEventSubscription.Filter.SubjectBeginsWith,
-                    subjectEndsWith: this.SubjectEndsWith ?? existingEventSubscription.Filter.SubjectEndsWith,
-                    isSubjectCaseSensitive: existingEventSubscription.Filter.IsSubjectCaseSensitive,
-                    includedEventTypes: this.IncludedEventType,
-                    labels: this.Label);
+                EventSubscription eventSubscription = Client.UpdateEventSubscription(
+                    scope,
+                    EventSubscriptionName,
+                    Endpoint,
+                    EndpointType,
+                    SubjectBeginsWith ?? existingEventSubscription.Filter.SubjectBeginsWith,
+                    SubjectEndsWith ?? existingEventSubscription.Filter.SubjectEndsWith,
+                    existingEventSubscription.Filter.IsSubjectCaseSensitive,
+                    IncludedEventType,
+                    Label);
 
                 PSEventSubscription psEventSubscription = new PSEventSubscription(eventSubscription);
-                this.WriteObject(psEventSubscription);
+                WriteObject(psEventSubscription);
             }
         }
     }

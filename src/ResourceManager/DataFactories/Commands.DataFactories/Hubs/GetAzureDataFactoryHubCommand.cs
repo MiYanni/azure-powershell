@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName = DataFactory.ResourceGroupName;
             }
 
-            HubFilterOptions filterOptions = new HubFilterOptions()
+            HubFilterOptions filterOptions = new HubFilterOptions
             {
                 Name = Name,
                 ResourceGroupName = ResourceGroupName,

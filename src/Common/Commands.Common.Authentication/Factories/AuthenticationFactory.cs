@@ -167,9 +167,9 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
             {
                 case AzureAccount.AccountType.Certificate:
                     var certificate = AzureSession.Instance.DataStore.GetCertificate(context.Account.Id);
-                    return new CertificateCloudCredentials(context.Subscription.Id.ToString(), certificate);
+                    return new CertificateCloudCredentials(context.Subscription.Id, certificate);
                 case AzureAccount.AccountType.AccessToken:
-                    return new TokenCloudCredentials(context.Subscription.Id.ToString(), GetEndpointToken(context.Account, targetEndpoint));
+                    return new TokenCloudCredentials(context.Subscription.Id, GetEndpointToken(context.Account, targetEndpoint));
             }
 
             string tenant = null;
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
 
             if (tenant == null && context.Tenant != null && new Guid(context.Tenant.Id) != Guid.Empty)
             {
-                tenant = context.Tenant.Id.ToString();
+                tenant = context.Tenant.Id;
             }
 
             if (tenant == null)
@@ -251,7 +251,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
             switch (context.Account.Type)
             {
                 case AzureAccount.AccountType.Certificate:
-                    throw new NotSupportedException(AzureAccount.AccountType.Certificate.ToString());
+                    throw new NotSupportedException(AzureAccount.AccountType.Certificate);
                 case AzureAccount.AccountType.AccessToken:
                     return new TokenCredentials(GetEndpointToken(context.Account, targetEndpoint));
             }
@@ -268,7 +268,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
 
             if (tenant == null && context.Tenant != null && new Guid(context.Tenant.Id) != Guid.Empty)
             {
-                tenant = context.Tenant.Id.ToString();
+                tenant = context.Tenant.Id;
             }
 
             if (tenant == null)
@@ -340,7 +340,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
                         }
                         break;
                     default:
-                        throw new NotSupportedException(context.Account.Type.ToString());
+                        throw new NotSupportedException(context.Account.Type);
                 }
 
                 return result;
@@ -446,7 +446,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
 
             return new AdalConfiguration
             {
-                AdEndpoint = adEndpoint.ToString(),
+                AdEndpoint = adEndpoint,
                 ResourceClientUri = environment.GetEndpoint(resourceId),
                 AdDomain = tenantId,
                 ValidateAuthority = !environment.OnPremise,
@@ -469,7 +469,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
         {
             if (cache != null && cache.Count > 0 && account != null && !string.IsNullOrWhiteSpace(account.Id) && !string.IsNullOrWhiteSpace(account.Type))
             {
-                var items = cache.ReadItems().Where((i) => MatchCacheItem(account, i));
+                var items = cache.ReadItems().Where(i => MatchCacheItem(account, i));
                 foreach (var item in items)
                 {
                     cache.DeleteItem(item);
@@ -489,9 +489,9 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
                         break;
                     case AzureAccount.AccountType.User:
                         result = string.Equals(account.Id, item.DisplayableId, StringComparison.OrdinalIgnoreCase)
-                            || (account.TenantMap != null && account.TenantMap.Any(
-                                (m) => string.Equals(m.Key, item.TenantId, StringComparison.OrdinalIgnoreCase)
-                                       && string.Equals(m.Value, item.UniqueId, StringComparison.OrdinalIgnoreCase)));
+                            || account.TenantMap != null && account.TenantMap.Any(
+                                     m => string.Equals(m.Key, item.TenantId, StringComparison.OrdinalIgnoreCase)
+                                          && string.Equals(m.Value, item.UniqueId, StringComparison.OrdinalIgnoreCase));
                         break;
                 }
             }

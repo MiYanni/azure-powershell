@@ -26,31 +26,31 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSUserIdentity
     {
         
-        internal Microsoft.Azure.Batch.UserIdentity omObject;
+        internal UserIdentity omObject;
         
         private PSAutoUserSpecification autoUser;
         
         public PSUserIdentity(string userName)
         {
-            this.omObject = new Microsoft.Azure.Batch.UserIdentity(userName);
+            omObject = new UserIdentity(userName);
         }
         
         public PSUserIdentity(PSAutoUserSpecification autoUserSpecification)
         {
-            this.omObject = new Microsoft.Azure.Batch.UserIdentity(autoUserSpecification.omObject);
+            omObject = new UserIdentity(autoUserSpecification.omObject);
         }
         
-        internal PSUserIdentity(Microsoft.Azure.Batch.UserIdentity omObject)
+        internal PSUserIdentity(UserIdentity omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -59,12 +59,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.autoUser == null) 
-                            && (this.omObject.AutoUser != null)))
+                if (autoUser == null 
+                    && omObject.AutoUser != null)
                 {
-                    this.autoUser = new PSAutoUserSpecification(this.omObject.AutoUser);
+                    autoUser = new PSAutoUserSpecification(omObject.AutoUser);
                 }
-                return this.autoUser;
+                return autoUser;
             }
         }
         
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.UserName;
+                return omObject.UserName;
             }
         }
     }

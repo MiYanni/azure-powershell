@@ -165,7 +165,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Queue
             { queueAttributes.ForwardDeadLetteredMessagesTo = ForwardDeadLetteredMessagesTo; }
 
 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.CreateQueue, Name, Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.CreateQueue, Name, Namespace)))
             {
                 WriteObject(Client.CreateUpdateQueue(ResourceGroupName, Namespace, Name, queueAttributes));
             }

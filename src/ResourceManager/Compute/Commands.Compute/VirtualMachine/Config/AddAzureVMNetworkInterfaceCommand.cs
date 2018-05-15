@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute
         DefaultParameterSetName = NicIdParamSetName),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class AddAzureVMNetworkInterfaceCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class AddAzureVMNetworkInterfaceCommand : ResourceManager.Common.AzureRMCmdlet
     {
         protected const string NicIdParamSetName = "GetNicFromNicId";
         protected const string NicObjectParamSetName = "GetNicFromNicObject";
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            var networkProfile = this.VM.NetworkProfile;
+            var networkProfile = VM.NetworkProfile;
 
             if (networkProfile == null)
             {
@@ -97,15 +97,15 @@ namespace Microsoft.Azure.Commands.Compute
                 networkProfile.NetworkInterfaces = new List<NetworkInterfaceReference>();
             }
 
-            if (this.ParameterSetName.Equals(NicIdParamSetName))
+            if (ParameterSetName.Equals(NicIdParamSetName))
             {
-                if (!this.Primary.IsPresent)
+                if (!Primary.IsPresent)
                 {
-                    if (!networkProfile.NetworkInterfaces.Any(e => e.Id.Equals(this.Id)))
+                    if (!networkProfile.NetworkInterfaces.Any(e => e.Id.Equals(Id)))
                     {
                         networkProfile.NetworkInterfaces.Add(new NetworkInterfaceReference
                         {
-                            Id = this.Id,
+                            Id = Id,
                         });
                     }
 
@@ -125,13 +125,13 @@ namespace Microsoft.Azure.Commands.Compute
                         networkInterfaceReference.Primary = false;
                     }
 
-                    var existingNic = networkProfile.NetworkInterfaces.FirstOrDefault(e => e.Id.Equals(this.Id));
+                    var existingNic = networkProfile.NetworkInterfaces.FirstOrDefault(e => e.Id.Equals(Id));
                     if (existingNic == null)
                     {
                         networkProfile.NetworkInterfaces.Add(
                             new NetworkInterfaceReference
                             {
-                                Id = this.Id,
+                                Id = Id,
                                 Primary = true
                             });
                     }
@@ -143,7 +143,7 @@ namespace Microsoft.Azure.Commands.Compute
             }
             else
             { // Nic Object Parameter Set
-                foreach (var nic in this.NetworkInterface)
+                foreach (var nic in NetworkInterface)
                 {
                     var existingNic = networkProfile.NetworkInterfaces.FirstOrDefault(e => e.Id.Equals(nic.Id));
 
@@ -163,9 +163,9 @@ namespace Microsoft.Azure.Commands.Compute
                 }
             }
 
-            this.VM.NetworkProfile = networkProfile;
+            VM.NetworkProfile = networkProfile;
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

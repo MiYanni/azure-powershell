@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Profile
                 }
                 else
                 {
-                    WriteContext(context, (profile)?.DefaultContextKey);
+                    WriteContext(context, profile?.DefaultContextKey);
                 }
             }
         }
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Commands.Profile
             {
                 var nameParameter = new RuntimeDefinedParameter(
                 "Name", typeof(string),
-                    new Collection<Attribute>()
+                    new Collection<Attribute>
                     {
                         new ParameterAttribute { Position =0, Mandatory=false, HelpMessage="The name of the context", ParameterSetName=GetSingleParameterSet },
                         new ValidateSetAttribute((DefaultProfile as AzureRmProfile).Contexts.Keys.ToArray())

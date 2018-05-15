@@ -53,12 +53,12 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Microsoft.Azure.Commands.Network.Properties.Resources.RemovingResource, Name),
-                Microsoft.Azure.Commands.Network.Properties.Resources.RemoveResourceMessage,
+                string.Format(Properties.Resources.RemovingResource, Name),
+                Properties.Resources.RemoveResourceMessage,
                 Name,
                 () =>
                 {
-                    this.ExpressRouteCircuitClient.Delete(this.ResourceGroupName, this.Name);
+                    ExpressRouteCircuitClient.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

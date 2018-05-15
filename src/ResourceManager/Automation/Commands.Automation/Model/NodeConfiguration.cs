@@ -14,9 +14,9 @@
 
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using Microsoft.Azure.Commands.Automation.Common;
+    using Common;
     using System;
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The Dsc Node configuration
@@ -39,16 +39,16 @@ namespace Microsoft.Azure.Commands.Automation.Model
             Requires.Argument("nodeConfiguration", nodeConfiguration).NotNull();
             Requires.Argument("accountName", accountName).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = accountName;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = accountName;
 
-            this.Name = nodeConfiguration.Name;
-            this.CreationTime = nodeConfiguration.CreationTime.ToLocalTime();
-            this.LastModifiedTime = nodeConfiguration.LastModifiedTime.ToLocalTime();
-            this.RollupStatus = rollUpStatus;
+            Name = nodeConfiguration.Name;
+            CreationTime = nodeConfiguration.CreationTime.ToLocalTime();
+            LastModifiedTime = nodeConfiguration.LastModifiedTime.ToLocalTime();
+            RollupStatus = rollUpStatus;
             if (nodeConfiguration.Configuration != null)
             {
-                this.ConfigurationName = nodeConfiguration.Configuration.Name;
+                ConfigurationName = nodeConfiguration.Configuration.Name;
             }
         }
 

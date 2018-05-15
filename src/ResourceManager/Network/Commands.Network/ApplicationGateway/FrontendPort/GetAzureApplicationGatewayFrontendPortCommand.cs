@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var frontendPort =
-                    this.ApplicationGateway.FrontendPorts.First(
+                    ApplicationGateway.FrontendPorts.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(frontendPort);
             }
             else
             {
-                var frontendPorts = this.ApplicationGateway.FrontendPorts;
+                var frontendPorts = ApplicationGateway.FrontendPorts;
                 WriteObject(frontendPorts, true);
             }
 

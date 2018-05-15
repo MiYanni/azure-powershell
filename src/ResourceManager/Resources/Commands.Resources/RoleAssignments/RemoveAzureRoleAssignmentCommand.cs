@@ -167,7 +167,7 @@ namespace Microsoft.Azure.Commands.Resources
                 RoleDefinitionName = InputObject.RoleDefinitionName;
             }
 
-            FilterRoleAssignmentsOptions options = new FilterRoleAssignmentsOptions()
+            FilterRoleAssignmentsOptions options = new FilterRoleAssignmentsOptions
             {
                 Scope = Scope,
                 RoleDefinitionName = RoleDefinitionName,
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Commands.Resources
                     Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                     SPN = ServicePrincipalName
                 },
-                ResourceIdentifier = new ResourceIdentifier()
+                ResourceIdentifier = new ResourceIdentifier
                 {
                     ParentResource = ParentResource,
                     ResourceGroupName = ResourceGroupName,
@@ -204,7 +204,7 @@ namespace Microsoft.Azure.Commands.Resources
                         DefaultProfile.DefaultContext.Subscription.Id.ToString());
                     if (PassThru)
                     {
-                        WriteObject(roleAssignments, enumerateCollection: true);
+                        WriteObject(roleAssignments, true);
                     }
                 });
 

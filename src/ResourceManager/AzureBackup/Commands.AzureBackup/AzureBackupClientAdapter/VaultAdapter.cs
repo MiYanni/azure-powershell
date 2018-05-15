@@ -31,12 +31,12 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         /// <returns></returns>
         public AzureBackupVault CreateOrUpdateAzureBackupVault(string resourceGroupName, string vaultName, string location)
         {
-            var createResourceParameters = new AzureBackupVaultCreateOrUpdateParameters()
+            var createResourceParameters = new AzureBackupVaultCreateOrUpdateParameters
             {
                 Location = location,
-                Properties = new AzureBackupVaultProperties()
+                Properties = new AzureBackupVaultProperties
                 {
-                    Sku = new SkuProperties()
+                    Sku = new SkuProperties
                     {
                         Name = defaultSKU,
                     },
@@ -53,9 +53,9 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         /// <param name="storageType"></param>
         public void UpdateStorageType(string resourceGroupName, string resourceName, string storageType)
         {
-            UpdateVaultStorageTypeRequest updateVaultStorageTypeRequest = new UpdateVaultStorageTypeRequest()
+            UpdateVaultStorageTypeRequest updateVaultStorageTypeRequest = new UpdateVaultStorageTypeRequest
             {
-                StorageTypeProperties = new StorageTypeProperties()
+                StorageTypeProperties = new StorageTypeProperties
                 {
                     StorageModelType = storageType,
                 },
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
             try
             {
                 var response = AzureBackupVaultClient.Vault.GetResourceStorageConfigAsync(resourceGroupName, vaultName, GetCustomRequestHeaders(), CmdletCancellationToken).Result;
-                storageType = (response != null) ? response.StorageDetails.StorageType : null;
+                storageType = response != null ? response.StorageDetails.StorageType : null;
             }
             catch (Exception) { }
 
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         public AzureBackupVault GetVault(string resourceGroupName, string vaultName)
         {
             var getResponse = AzureBackupVaultClient.Vault.GetAsync(resourceGroupName, vaultName, GetCustomRequestHeaders(), CmdletCancellationToken).Result;
-            return (getResponse != null) ? getResponse.Vault : null;
+            return getResponse != null ? getResponse.Vault : null;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         public IEnumerable<AzureBackupVault> GetVaults()
         {
             var listResponse = AzureBackupVaultClient.Vault.ListAsync(defaultTop, GetCustomRequestHeaders(), CmdletCancellationToken).Result;
-            return (listResponse != null) ? listResponse.Vaults : null;
+            return listResponse != null ? listResponse.Vaults : null;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         public IEnumerable<AzureBackupVault> GetVaultsInResourceGroup(string resourceGroupName)
         {
             var listResponse = AzureBackupVaultClient.Vault.ListByResourceGroupAsync(resourceGroupName, defaultTop, GetCustomRequestHeaders(), CmdletCancellationToken).Result;
-            return (listResponse != null) ? listResponse.Vaults : null;
+            return listResponse != null ? listResponse.Vaults : null;
         }
 
         /// <summary>

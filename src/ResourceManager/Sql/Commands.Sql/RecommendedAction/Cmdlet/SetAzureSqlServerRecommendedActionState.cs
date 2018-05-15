@@ -52,8 +52,9 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
         /// <returns>A list of entities</returns>
         protected override IEnumerable<AzureSqlServerRecommendedActionModel> GetEntity()
         {
-            return new List<AzureSqlServerRecommendedActionModel>() {
-                ModelAdapter.GetServerRecommendedAction(this.ResourceGroupName, this.ServerName, this.AdvisorName, this.RecommendedActionName)
+            return new List<AzureSqlServerRecommendedActionModel>
+            {
+                ModelAdapter.GetServerRecommendedAction(ResourceGroupName, ServerName, AdvisorName, RecommendedActionName)
             };
         }
 
@@ -65,13 +66,13 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
         protected override IEnumerable<AzureSqlServerRecommendedActionModel> ApplyUserInputToModel(IEnumerable<AzureSqlServerRecommendedActionModel> model)
         {
             List<AzureSqlServerRecommendedActionModel> newEntity = new List<AzureSqlServerRecommendedActionModel>();
-            newEntity.Add(new AzureSqlServerRecommendedActionModel()
+            newEntity.Add(new AzureSqlServerRecommendedActionModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
                 AdvisorName = AdvisorName,
                 RecommendedActionName = RecommendedActionName,
-                State = new RecommendedActionStateInfo()
+                State = new RecommendedActionStateInfo
                 {
                     CurrentValue = State.ToString()
                 }
@@ -87,7 +88,8 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlServerRecommendedActionModel> PersistChanges(IEnumerable<AzureSqlServerRecommendedActionModel> entity)
         {
-            return new List<AzureSqlServerRecommendedActionModel>() {
+            return new List<AzureSqlServerRecommendedActionModel>
+            {
                 ModelAdapter.UpdateState(entity.Single())
             };
         }
@@ -98,8 +100,8 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!ShouldProcess(
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetRecommendedActionStateDescription, this.RecommendedActionName, this.State),
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetRecommendedActionStateWarning, this.RecommendedActionName, this.State),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetRecommendedActionStateDescription, RecommendedActionName, State),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetRecommendedActionStateWarning, RecommendedActionName, State),
                     Properties.Resources.ShouldProcessCaption))
             {
                 return;

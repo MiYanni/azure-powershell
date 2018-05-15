@@ -36,18 +36,18 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true,
                    HelpMessage = "Reliability tier")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("Level")]
         public ReliabilityLevel ReliabilityLevel { get; set; }
 
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         {
             var cluster = GetCurrentCluster();
             var oldReliabilityLevel = GetReliabilityLevel(cluster);
-            if (this.ReliabilityLevel == oldReliabilityLevel)
+            if (ReliabilityLevel == oldReliabilityLevel)
             {
                 WriteObject(new PSCluster(cluster), true);
                 return;
@@ -79,11 +79,11 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSInvalidOperationException(ServiceFabricProperties.Resources.SkuCapacityIsNull);
             }
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Update fabric reliability level to {0}", this.ReliabilityLevel)))
+            if (ShouldProcess(Name, string.Format("Update fabric reliability level to {0}", ReliabilityLevel)))
             {
-                if ((int)this.ReliabilityLevel >= (int)oldReliabilityLevel)
+                if ((int)ReliabilityLevel >= (int)oldReliabilityLevel)
                 {
-                    if (instanceNumber > primaryVmss.Sku.Capacity && !this.AutoAddNode.IsPresent)
+                    if (instanceNumber > primaryVmss.Sku.Capacity && !AutoAddNode.IsPresent)
                     {
                         throw new InvalidOperationException(
                             string.Format(
@@ -98,11 +98,11 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                         primaryVmss.Sku.Capacity = instanceNumber;
 
                         var updateVmssTask = ComputeClient.VirtualMachineScaleSets.CreateOrUpdateAsync(
-                               this.ResourceGroupName,
+                               ResourceGroupName,
                                primaryVmss.Name,
                                primaryVmss);
 
-                        WriteClusterAndVmssVerboseWhenUpdate(new List<Task>() { updateVmssTask }, false);
+                        WriteClusterAndVmssVerboseWhenUpdate(new List<Task> { updateVmssTask }, false);
                     }
                 }
 
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 primayNodeType.VmInstanceCount = Convert.ToInt32(primaryVmss.Sku.Capacity);
                 var request = new ClusterUpdateParameters
                 {
-                    ReliabilityLevel = this.ReliabilityLevel.ToString(),
+                    ReliabilityLevel = ReliabilityLevel.ToString(),
                     NodeTypes = cluster.NodeTypes
                 };
 

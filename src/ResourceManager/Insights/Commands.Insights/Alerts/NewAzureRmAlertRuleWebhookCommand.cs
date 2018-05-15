@@ -49,15 +49,15 @@ namespace Microsoft.Azure.Commands.Insights.Alerts
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Utilities.ValidateUri(this.ServiceUri, "ServiceUri");
+            Utilities.ValidateUri(ServiceUri, "ServiceUri");
 
-            var dictionary = this.Property == null
+            var dictionary = Property == null
                 ? new Dictionary<string, string>()
-                : this.Property.Keys.Cast<object>().ToDictionary(key => (string)key, key => (string)this.Property[key]);
+                : Property.Keys.Cast<object>().ToDictionary(key => (string)key, key => (string)Property[key]);
 
             var action = new RuleWebhookAction
             {
-                ServiceUri = this.ServiceUri,
+                ServiceUri = ServiceUri,
                 Properties = dictionary
             };
 

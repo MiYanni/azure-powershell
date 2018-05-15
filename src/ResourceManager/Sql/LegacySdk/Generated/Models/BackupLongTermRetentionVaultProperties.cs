@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RecoveryServicesVaultResourceId
         {
-            get { return this._recoveryServicesVaultResourceId; }
-            set { this._recoveryServicesVaultResourceId = value; }
+            get { return _recoveryServicesVaultResourceId; }
+            set { _recoveryServicesVaultResourceId = value; }
         }
         
         /// <summary>

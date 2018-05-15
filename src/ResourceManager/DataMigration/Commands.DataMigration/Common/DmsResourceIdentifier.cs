@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Common
                         throw new ArgumentException("Invalid format of the resource identifier. Cannot retrieve ServiceName", "idFromServer");
                     }
 
-                    serviceName = this.tokens[7];
+                    serviceName = tokens[7];
                 }
 
                 return serviceName;
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Common
                         throw new ArgumentException("Invalid format of the resource identifier. Cannot retrieve ProjectName", "idFromServer");
                     }
 
-                    projectName = this.tokens[9];
+                    projectName = tokens[9];
                 }
 
                 return projectName;
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Common
                         throw new ArgumentException("Invalid format of the resource identifier. Cannot retrieve TaskName", "idFromServer");
                     }
 
-                    taskName = this.tokens[11];
+                    taskName = tokens[11];
                 }
 
                 return taskName;

@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
 
         public PSPipeline()
         {
-            this._pipeline = new Pipeline();
+            _pipeline = new Pipeline();
         }
 
         public PSPipeline(Pipeline pipeline)
@@ -36,18 +36,18 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 throw new ArgumentNullException("pipeline");
             }
 
-            this._pipeline = pipeline;
+            _pipeline = pipeline;
         }
 
         public string PipelineName
         {
             get
             {
-                return this._pipeline.Name;
+                return _pipeline.Name;
             }
             set
             {
-                this._pipeline.Name = value;
+                _pipeline.Name = value;
             }
         }
 
@@ -59,11 +59,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._pipeline.Properties;
+                return _pipeline.Properties;
             }
             set
             {
-                this._pipeline.Properties = value;
+                _pipeline.Properties = value;
             }
         }
 

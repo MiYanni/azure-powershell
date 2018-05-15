@@ -41,19 +41,19 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
         public CmdletParameterBreakingChangeAttribute(string nameOfParameterChanging) :
             base(string.Empty)
         {
-            this.NameOfParameterChanging = nameOfParameterChanging;
+            NameOfParameterChanging = nameOfParameterChanging;
         }
 
         public CmdletParameterBreakingChangeAttribute(string nameOfParameterChanging, string deprecateByVersion) :
              base(string.Empty, deprecateByVersion)
         {
-            this.NameOfParameterChanging = nameOfParameterChanging;
+            NameOfParameterChanging = nameOfParameterChanging;
         }
 
         public CmdletParameterBreakingChangeAttribute(string nameOfParameterChanging, string deprecateByVersion, string changeInEfectByDate) :
              base(string.Empty, deprecateByVersion, changeInEfectByDate)
         {
-            this.NameOfParameterChanging = nameOfParameterChanging;
+            NameOfParameterChanging = nameOfParameterChanging;
         }
 
         protected override string GetAttributeSpecificMessage()
@@ -97,7 +97,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
         /// <returns>bool</returns>
         public override bool IsApplicableToInvocation(InvocationInfo invocationInfo)
         {
-            bool? applicable = invocationInfo == null ? true : invocationInfo.BoundParameters?.Keys?.Contains(this.NameOfParameterChanging);
+            bool? applicable = invocationInfo == null ? true : invocationInfo.BoundParameters?.Keys?.Contains(NameOfParameterChanging);
             return applicable.HasValue ? applicable.Value : false;
         }
     }

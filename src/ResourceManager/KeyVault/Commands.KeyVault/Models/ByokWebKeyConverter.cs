@@ -34,10 +34,9 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             if (CanProcess(fileInfo))
                 return Convert(fileInfo.FullName);
-            else if (next != null)
+            if (next != null)
                 return next.ConvertKeyFromFile(fileInfo, password);
-            else
-                throw new ArgumentException(string.Format(KeyVaultProperties.Resources.UnsupportedFileFormat, fileInfo.Name));
+            throw new ArgumentException(string.Format(KeyVaultProperties.Resources.UnsupportedFileFormat, fileInfo.Name));
         }
 
         private bool CanProcess(FileInfo fileInfo)
@@ -54,7 +53,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             if (byokBlob == null || byokBlob.Length == 0)
                 throw new ArgumentException(string.Format(KeyVaultProperties.Resources.InvalidKeyBlob, "BYOK"));
-            return new JsonWebKey()
+            return new JsonWebKey
             {
                 Kty = JsonWebKeyType.RsaHsm,
                 T = byokBlob,

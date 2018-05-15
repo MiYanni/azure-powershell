@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>True if the environment exists in the container, otherwise false</returns>
         public static bool HasEnvironment(this IAzureContextContainer container, string name)
         {
-            return container.Environments.Any((e) => string.Equals(e.Name, name, StringComparison.CurrentCultureIgnoreCase));
+            return container.Environments.Any(e => string.Equals(e.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>The environment, or null if no such environment exists in the container</returns>
         public static IAzureEnvironment GetEnvironment(this IAzureContextContainer container, string name)
         {
-            return container.Environments.FirstOrDefault((e) => string.Equals(e.Name, name, StringComparison.CurrentCultureIgnoreCase));
+            return container.Environments.FirstOrDefault(e => string.Equals(e.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>True if a subscription with that name exists, false otherwise</returns>
         public static bool HasSubscriptionName(this IAzureContextContainer container, string subscriptionName)
         {
-            return container.Subscriptions.Any((s) => string.Equals(s.Name, subscriptionName, StringComparison.CurrentCultureIgnoreCase));
+            return container.Subscriptions.Any(s => string.Equals(s.Name, subscriptionName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>True if a subscription with that id exists, false otherwise</returns>
         public static bool HasSubscriptionId(this IAzureContextContainer container, string id)
         {
-            return container.Subscriptions.Any((s) => string.Equals(s.Id, id, StringComparison.OrdinalIgnoreCase));
+            return container.Subscriptions.Any(s => string.Equals(s.Id, id, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>True if a subscription with that id exists, false otherwise</returns>
         public static bool HasSubscriptionId(this IAzureContextContainer container, Guid id)
         {
-            return container.Subscriptions.Any((s) => s.GetId() == id);
+            return container.Subscriptions.Any(s => s.GetId() == id);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>The subscription with the given name, if it exists, null otherwise</returns>
         public static IAzureSubscription GetSubscriptionByName(this IAzureContextContainer container, string subscriptionName)
         {
-            return container.Subscriptions.FirstOrDefault((s) => string.Equals(s.Name, subscriptionName, StringComparison.CurrentCultureIgnoreCase));
+            return container.Subscriptions.FirstOrDefault(s => string.Equals(s.Name, subscriptionName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>True if a subscription with that id exists, false otherwise</returns>
         public static IAzureSubscription GetSubscriptionById(this IAzureContextContainer container, string id)
         {
-            return container.Subscriptions.FirstOrDefault((s) => string.Equals(s.Id, id, StringComparison.OrdinalIgnoreCase));
+            return container.Subscriptions.FirstOrDefault(s => string.Equals(s.Id, id, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>True if a subscription with that id exists, false otherwise</returns>
         public static IAzureSubscription GetSubscriptionById(this IAzureContextContainer container, Guid id)
         {
-            return container.Subscriptions.FirstOrDefault((s) => s.GetId() == id);
+            return container.Subscriptions.FirstOrDefault(s => s.GetId() == id);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>True if the account exists, otherwise false</returns>
         public static bool HasAccount(this IAzureContextContainer container, string account)
         {
-            return container.Accounts.Any((a) => string.Equals(a.Id, account, StringComparison.CurrentCultureIgnoreCase));
+            return container.Accounts.Any(a => string.Equals(a.Id, account, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         /// <returns>The account if it exists, otherwise null</returns>
         public static IAzureAccount GetAccount(this IAzureContextContainer container, string account)
         {
-            return container.Accounts.FirstOrDefault((a) => string.Equals(a.Id, account, StringComparison.CurrentCultureIgnoreCase));
+            return container.Accounts.FirstOrDefault(a => string.Equals(a.Id, account, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>

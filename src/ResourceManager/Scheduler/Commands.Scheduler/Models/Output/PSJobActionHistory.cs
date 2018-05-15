@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.Scheduler.Models
 {
-    using Microsoft.Azure.Management.Scheduler.Models;
+    using Management.Scheduler.Models;
 
     public class PSJobActionHistory
     {

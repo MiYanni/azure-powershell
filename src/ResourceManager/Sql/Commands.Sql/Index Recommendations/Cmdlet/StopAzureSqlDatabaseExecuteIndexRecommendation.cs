@@ -37,15 +37,12 @@ namespace Microsoft.Azure.Commands.Sql.Cmdlet
                 recommendation.State = IndexState.Active;
                 return recommendation;
             }
-            else if (recommendation.State == IndexState.PendingRevert)
+            if (recommendation.State == IndexState.PendingRevert)
             {
                 recommendation.State = IndexState.RevertCanceled;
                 return recommendation;
             }
-            else
-            {
-                throw new Exception("Index operation can only be stopped if recommendation is currently in 'Pending' or 'Pending Revert' state");
-            }
+            throw new Exception("Index operation can only be stopped if recommendation is currently in 'Pending' or 'Pending Revert' state");
         }
     }
 }

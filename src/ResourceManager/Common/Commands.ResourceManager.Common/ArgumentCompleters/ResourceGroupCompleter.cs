@@ -78,10 +78,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters
                         return tempResourceGroupList;
                     }
 
-                    else
-                    {
-                        return _resourceGroupNamesDictionary[contextHash];
-                    }
+                    return _resourceGroupNamesDictionary[contextHash];
                 }
             }
         }

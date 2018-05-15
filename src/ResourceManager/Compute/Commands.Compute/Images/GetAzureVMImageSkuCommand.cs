@@ -39,10 +39,10 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                var result = this.VirtualMachineImageClient.ListSkusWithHttpMessagesAsync(
-                    this.Location.Canonicalize(),
-                    this.PublisherName,
-                    this.Offer).GetAwaiter().GetResult();
+                var result = VirtualMachineImageClient.ListSkusWithHttpMessagesAsync(
+                    Location.Canonicalize(),
+                    PublisherName,
+                    Offer).GetAwaiter().GetResult();
 
                 var images = from r in result.Body
                              select new PSVirtualMachineImageSku
@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Commands.Compute
                                  StatusCode = result.Response.StatusCode,
                                  Id = r.Id,
                                  Location = r.Location,
-                                 PublisherName = this.PublisherName,
-                                 Offer = this.Offer,
+                                 PublisherName = PublisherName,
+                                 Offer = Offer,
                                  Skus = r.Name
                              };
 

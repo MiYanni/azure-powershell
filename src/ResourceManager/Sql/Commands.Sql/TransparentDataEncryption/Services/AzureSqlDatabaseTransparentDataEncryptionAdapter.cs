@@ -73,9 +73,9 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Adapter
         /// <returns>The updated server model</returns>
         public AzureSqlDatabaseTransparentDataEncryptionModel UpsertTransparentDataEncryption(AzureSqlDatabaseTransparentDataEncryptionModel model)
         {
-            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.DatabaseName, new TransparentDataEncryptionCreateOrUpdateParameters()
+            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.DatabaseName, new TransparentDataEncryptionCreateOrUpdateParameters
             {
-                Properties = new TransparentDataEncryptionCreateOrUpdateProperties()
+                Properties = new TransparentDataEncryptionCreateOrUpdateProperties
                 {
                     State = model.State.ToString(),
                 }
@@ -103,9 +103,9 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Adapter
         /// <returns>The created or updated encryption protector model</returns>
         public AzureSqlServerTransparentDataEncryptionProtectorModel CreateOrUpdateEncryptionProtector(AzureSqlServerTransparentDataEncryptionProtectorModel model)
         {
-            var resp = Communicator.CreateOrUpdateEncryptionProtector(model.ResourceGroupName, model.ServerName, new EncryptionProtectorCreateOrUpdateParameters()
+            var resp = Communicator.CreateOrUpdateEncryptionProtector(model.ResourceGroupName, model.ServerName, new EncryptionProtectorCreateOrUpdateParameters
             {
-                Properties = new EncryptionProtectorCreateOrUpdateProperties()
+                Properties = new EncryptionProtectorCreateOrUpdateProperties
                 {
                     ServerKeyType = model.Type.ToString(),
                     ServerKeyName = model.ServerKeyVaultKeyName
@@ -143,7 +143,7 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Adapter
         /// <param name="serverName">The name of the server</param>
         /// <param name="resp">The management client server response to convert</param>
         /// <returns>The converted server model</returns>
-        private static AzureSqlDatabaseTransparentDataEncryptionActivityModel CreateTransparentDataEncryptionActivityModelFromResponse(string resourceGroup, string serverName, string databaseName, Management.Sql.LegacySdk.Models.TransparentDataEncryptionActivity resp)
+        private static AzureSqlDatabaseTransparentDataEncryptionActivityModel CreateTransparentDataEncryptionActivityModelFromResponse(string resourceGroup, string serverName, string databaseName, TransparentDataEncryptionActivity resp)
         {
             AzureSqlDatabaseTransparentDataEncryptionActivityModel TransparentDataEncryptionActivity = new AzureSqlDatabaseTransparentDataEncryptionActivityModel();
 
@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Adapter
 
             var resp = Communicator.ListActivity(resourceGroupName, serverName, databaseName);
 
-            return resp.Select((tdeActivity) =>
+            return resp.Select(tdeActivity =>
             {
                 return CreateTransparentDataEncryptionActivityModelFromResponse(resourceGroupName, serverName, databaseName, tdeActivity);
             }).ToList();
@@ -191,11 +191,11 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Adapter
             EncryptionProtector.ResourceGroupName = resourceGroup;
             EncryptionProtector.ServerName = serverName;
             EncryptionProtector.ServerKeyVaultKeyName = resp.Properties.ServerKeyName;
-            Model.EncryptionProtectorType type = Model.EncryptionProtectorType.ServiceManaged;
-            Enum.TryParse<Model.EncryptionProtectorType>(resp.Properties.ServerKeyType, true, out type);
+            EncryptionProtectorType type = EncryptionProtectorType.ServiceManaged;
+            Enum.TryParse<EncryptionProtectorType>(resp.Properties.ServerKeyType, true, out type);
             EncryptionProtector.Type = type;
 
-            if (type == Model.EncryptionProtectorType.AzureKeyVault)
+            if (type == EncryptionProtectorType.AzureKeyVault)
             {
                 EncryptionProtector.KeyId = resp.Properties.Uri;
             }

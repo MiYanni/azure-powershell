@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerAdministrator Administrator
         {
-            get { return this._administrator; }
-            set { this._administrator = value; }
+            get { return _administrator; }
+            set { _administrator = value; }
         }
         
         /// <summary>

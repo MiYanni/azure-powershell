@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Commands.Batch
         [Parameter(ParameterSetName = Constants.ODataFilterParameterSet)]
         public int MaxCount
         {
-            get { return this.maxCount; }
-            set { this.maxCount = value; }
+            get { return maxCount; }
+            set { maxCount = value; }
         }
 
         [Parameter]
@@ -51,13 +51,13 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            ListPoolOptions options = new ListPoolOptions(this.BatchContext, this.AdditionalBehaviors)
+            ListPoolOptions options = new ListPoolOptions(BatchContext, AdditionalBehaviors)
             {
-                PoolId = this.Id,
-                Filter = this.Filter,
-                Select = this.Select,
-                Expand = this.Expand,
-                MaxCount = this.MaxCount
+                PoolId = Id,
+                Filter = Filter,
+                Select = Select,
+                Expand = Expand,
+                MaxCount = MaxCount
             };
 
             // The enumerator will internally query the service in chunks. Using WriteObject with the enumerate flag will enumerate

@@ -106,59 +106,59 @@ namespace Microsoft.Azure.Commands.Dns
         public override void ExecuteCmdlet()
         {
             DnsRecordBase result = null;
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ParameterSetA:
                     {
-                        result = new ARecord { Ipv4Address = this.Ipv4Address };
+                        result = new ARecord { Ipv4Address = Ipv4Address };
                         break;
                     }
 
                 case ParameterSetAaaa:
                     {
-                        result = new AaaaRecord { Ipv6Address = this.Ipv6Address };
+                        result = new AaaaRecord { Ipv6Address = Ipv6Address };
                         break;
                     }
 
                 case ParameterSetMx:
                     {
-                        result = new MxRecord { Preference = this.Preference, Exchange = this.Exchange };
+                        result = new MxRecord { Preference = Preference, Exchange = Exchange };
                         break;
                     }
 
                 case ParameterSetNs:
                     {
-                        result = new NsRecord { Nsdname = this.Nsdname };
+                        result = new NsRecord { Nsdname = Nsdname };
                         break;
                     }
                 case ParameterSetSrv:
                     {
-                        result = new SrvRecord { Priority = this.Priority, Port = this.Port, Target = this.Target, Weight = this.Weight };
+                        result = new SrvRecord { Priority = Priority, Port = Port, Target = Target, Weight = Weight };
                         break;
                     }
                 case ParameterSetTxt:
                     {
-                        result = new TxtRecord { Value = this.Value };
+                        result = new TxtRecord { Value = Value };
                         break;
                     }
                 case ParameterSetCName:
                     {
-                        result = new CnameRecord { Cname = this.Cname };
+                        result = new CnameRecord { Cname = Cname };
                         break;
                     }
                 case ParameterSetPtr:
                     {
-                        result = new PtrRecord {Ptrdname = this.Ptrdname};
+                        result = new PtrRecord {Ptrdname = Ptrdname};
                         break;
                     }
                 case ParameterSetCaa:
                     {
-                        result = new CaaRecord { Flags = this.CaaFlags, Tag = this.CaaTag, Value = this.CaaValue};
+                        result = new CaaRecord { Flags = CaaFlags, Tag = CaaTag, Value = CaaValue};
                         break;
                     }
                 default:
                     {
-                        throw new PSArgumentException(string.Format(ProjectResources.Error_UnknownParameterSetName, this.ParameterSetName));
+                        throw new PSArgumentException(string.Format(ProjectResources.Error_UnknownParameterSetName, ParameterSetName));
                     }
             }
 

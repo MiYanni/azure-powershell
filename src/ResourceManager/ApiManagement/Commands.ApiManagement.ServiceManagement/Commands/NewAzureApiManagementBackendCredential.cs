@@ -18,7 +18,7 @@ using System.Linq;
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 {
     using Management.ApiManagement.SmapiModels;
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models;
+    using Models;
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 
             if (!string.IsNullOrEmpty(AuthorizationHeaderParameter) && !string.IsNullOrEmpty(AuthorizationHeaderScheme))
             {
-                var authorization = new PsApiManagementAuthorizationHeaderCredential()
+                var authorization = new PsApiManagementAuthorizationHeaderCredential
                 {
                     Scheme = AuthorizationHeaderScheme,
                     Parameter = AuthorizationHeaderParameter

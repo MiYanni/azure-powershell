@@ -223,7 +223,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                     Exportable = KeyNotExportable.IsPresent ? !KeyNotExportable.IsPresent : (bool?)null
                 };
 
-                this.WriteObject(policy);
+                WriteObject(policy);
             }
         }
 

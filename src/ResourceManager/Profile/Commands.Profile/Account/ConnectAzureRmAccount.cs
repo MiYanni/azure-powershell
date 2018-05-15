@@ -263,7 +263,7 @@ namespace Microsoft.Azure.Commands.Profile
 
             if (!string.IsNullOrEmpty(TenantId))
             {
-                azureAccount.SetProperty(AzureAccount.Property.Tenants, new[] { TenantId });
+                azureAccount.SetProperty(AzureAccount.Property.Tenants, TenantId);
             }
 
             if (ShouldProcess(string.Format(Resources.LoginTarget, azureAccount.Type, _environment.Name), "log in"))
@@ -283,7 +283,7 @@ namespace Microsoft.Azure.Commands.Profile
                         subscriptionName,
                         password,
                         SkipValidation,
-                        (s) => WriteWarning(s),
+                        s => WriteWarning(s),
                         name));
                });
             }

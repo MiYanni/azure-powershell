@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Commands.KeyVault
         public override void ExecuteCmdlet()
         {
             if (ShouldProcess(Name, Properties.Resources.AddCertificate)) {
-                var certificateOperation = this.DataServiceClient.EnrollCertificate(VaultName, Name, CertificatePolicy == null ? null : CertificatePolicy.ToCertificatePolicy(), Tag == null ? null : Tag.ConvertToDictionary());
-                this.WriteObject(certificateOperation);
+                var certificateOperation = DataServiceClient.EnrollCertificate(VaultName, Name, CertificatePolicy == null ? null : CertificatePolicy.ToCertificatePolicy(), Tag == null ? null : Tag.ConvertToDictionary());
+                WriteObject(certificateOperation);
             }
         }
     }

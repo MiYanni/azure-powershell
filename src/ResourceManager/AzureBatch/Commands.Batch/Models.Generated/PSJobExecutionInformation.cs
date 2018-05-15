@@ -26,30 +26,30 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSJobExecutionInformation
     {
         
-        internal Microsoft.Azure.Batch.JobExecutionInformation omObject;
+        internal JobExecutionInformation omObject;
         
         private PSJobSchedulingError schedulingError;
         
-        internal PSJobExecutionInformation(Microsoft.Azure.Batch.JobExecutionInformation omObject)
+        internal PSJobExecutionInformation(JobExecutionInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.DateTime? EndTime
+        public DateTime? EndTime
         {
             get
             {
-                return this.omObject.EndTime;
+                return omObject.EndTime;
             }
         }
         
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PoolId;
+                return omObject.PoolId;
             }
         }
         
@@ -65,20 +65,20 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.schedulingError == null) 
-                            && (this.omObject.SchedulingError != null)))
+                if (schedulingError == null 
+                    && omObject.SchedulingError != null)
                 {
-                    this.schedulingError = new PSJobSchedulingError(this.omObject.SchedulingError);
+                    schedulingError = new PSJobSchedulingError(omObject.SchedulingError);
                 }
-                return this.schedulingError;
+                return schedulingError;
             }
         }
         
-        public System.DateTime StartTime
+        public DateTime StartTime
         {
             get
             {
-                return this.omObject.StartTime;
+                return omObject.StartTime;
             }
         }
         
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.TerminateReason;
+                return omObject.TerminateReason;
             }
         }
     }

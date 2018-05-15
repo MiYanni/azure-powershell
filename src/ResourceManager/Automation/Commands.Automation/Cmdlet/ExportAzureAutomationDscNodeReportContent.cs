@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, HelpMessage = "Forces an overwrite of an existing local file with the same name.")]
         public SwitchParameter Force
         {
-            get { return this.overwriteExistingFile; }
-            set { this.overwriteExistingFile = value; }
+            get { return overwriteExistingFile; }
+            set { overwriteExistingFile = value; }
         }
 
         /// <summary>
@@ -70,10 +70,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             if (ShouldProcess(ReportId.ToString(), VerbsData.Export))
             {
-                var ret = this.AutomationClient.GetDscNodeReportContent(this.ResourceGroupName,
-                    this.AutomationAccountName, this.NodeId, this.ReportId, OutputFolder, overwriteExistingFile);
+                var ret = AutomationClient.GetDscNodeReportContent(ResourceGroupName,
+                    AutomationAccountName, NodeId, ReportId, OutputFolder, overwriteExistingFile);
 
-                this.WriteObject(ret, true);
+                WriteObject(ret, true);
             }
         }
     }

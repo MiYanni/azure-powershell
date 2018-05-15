@@ -26,36 +26,36 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskStatistics
     {
         
-        internal Microsoft.Azure.Batch.TaskStatistics omObject;
+        internal TaskStatistics omObject;
         
-        internal PSTaskStatistics(Microsoft.Azure.Batch.TaskStatistics omObject)
+        internal PSTaskStatistics(TaskStatistics omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.TimeSpan KernelCpuTime
+        public TimeSpan KernelCpuTime
         {
             get
             {
-                return this.omObject.KernelCpuTime;
+                return omObject.KernelCpuTime;
             }
         }
         
-        public System.DateTime LastUpdateTime
+        public DateTime LastUpdateTime
         {
             get
             {
-                return this.omObject.LastUpdateTime;
+                return omObject.LastUpdateTime;
             }
         }
         
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ReadIOGiB;
+                return omObject.ReadIOGiB;
             }
         }
         
@@ -71,15 +71,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ReadIOps;
+                return omObject.ReadIOps;
             }
         }
         
-        public System.DateTime StartTime
+        public DateTime StartTime
         {
             get
             {
-                return this.omObject.StartTime;
+                return omObject.StartTime;
             }
         }
         
@@ -87,31 +87,31 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Url;
+                return omObject.Url;
             }
         }
         
-        public System.TimeSpan UserCpuTime
+        public TimeSpan UserCpuTime
         {
             get
             {
-                return this.omObject.UserCpuTime;
+                return omObject.UserCpuTime;
             }
         }
         
-        public System.TimeSpan WaitTime
+        public TimeSpan WaitTime
         {
             get
             {
-                return this.omObject.WaitTime;
+                return omObject.WaitTime;
             }
         }
         
-        public System.TimeSpan WallClockTime
+        public TimeSpan WallClockTime
         {
             get
             {
-                return this.omObject.WallClockTime;
+                return omObject.WallClockTime;
             }
         }
         
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.WriteIOGiB;
+                return omObject.WriteIOGiB;
             }
         }
         
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.WriteIOps;
+                return omObject.WriteIOps;
             }
         }
     }

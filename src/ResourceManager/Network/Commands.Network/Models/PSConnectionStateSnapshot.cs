@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string HopsText
         {
-            get { return JsonConvert.SerializeObject(this.Hops, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Hops, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

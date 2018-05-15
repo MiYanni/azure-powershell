@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SyncAgent> SyncAgents
         {
-            get { return this._syncAgents; }
-            set { this._syncAgents = value; }
+            get { return _syncAgents; }
+            set { _syncAgents = value; }
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncAgentListResponse()
         {
-            this.SyncAgents = new LazyList<SyncAgent>();
+            SyncAgents = new LazyList<SyncAgent>();
         }
         
         /// <summary>
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<SyncAgent> GetEnumerator()
         {
-            return this.SyncAgents.GetEnumerator();
+            return SyncAgents.GetEnumerator();
         }
         
         /// <summary>
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

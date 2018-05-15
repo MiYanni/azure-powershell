@@ -47,18 +47,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             {
                 try
                 {
-                    var response = RecoveryServicesClient.DeleteVault(this.Vault.ResourceGroupName, this.Vault.Name);
+                    var response = RecoveryServicesClient.DeleteVault(Vault.ResourceGroupName, Vault.Name);
 
-                    VaultOperationOutput output = new VaultOperationOutput()
+                    VaultOperationOutput output = new VaultOperationOutput
                     {
                         Response = response.Response.StatusCode == HttpStatusCode.OK ? Resources.VaultDeletionSuccessMessage : response.Response.StatusCode.ToString()
                     };
 
-                    this.WriteObject(output, true);
+                    WriteObject(output, true);
                 }
                 catch (Exception exception)
                 {
-                    this.HandleException(exception);
+                    HandleException(exception);
                 }
             }
         }

@@ -53,8 +53,9 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlSyncGroupModel> GetEntity()
         {
-            return new List<AzureSqlSyncGroupModel>() { 
-                ModelAdapter.GetSyncGroup(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName) 
+            return new List<AzureSqlSyncGroupModel>
+            { 
+                ModelAdapter.GetSyncGroup(ResourceGroupName, ServerName, DatabaseName, SyncGroupName) 
             };
         }
 
@@ -65,7 +66,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlSyncGroupModel> PersistChanges(IEnumerable<AzureSqlSyncGroupModel> entity)
         {
-            ModelAdapter.StopSynchronization(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName);
+            ModelAdapter.StopSynchronization(ResourceGroupName, ServerName, DatabaseName, SyncGroupName);
             return entity;
         }
     }

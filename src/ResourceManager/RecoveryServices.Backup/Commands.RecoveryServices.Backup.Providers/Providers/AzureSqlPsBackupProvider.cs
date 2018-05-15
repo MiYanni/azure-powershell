@@ -87,10 +87,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                                 containerUri,
                                 protectedItemUri);
             }
-            else
-            {
-                throw new Exception(Resources.AzureSqlRetainDataException);
-            }
+            throw new Exception(Resources.AzureSqlRetainDataException);
         }
 
         public RestAzureNS.AzureOperationResponse TriggerBackup()
@@ -146,8 +143,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
         /// <returns>List of recovery point PowerShell model objects</returns>
         public List<RecoveryPointBase> ListRecoveryPoints()
         {
-            DateTime startDate = (DateTime)(ProviderData[RecoveryPointParams.StartDate]);
-            DateTime endDate = (DateTime)(ProviderData[RecoveryPointParams.EndDate]);
+            DateTime startDate = (DateTime)ProviderData[RecoveryPointParams.StartDate];
+            DateTime endDate = (DateTime)ProviderData[RecoveryPointParams.EndDate];
             AzureSqlItem item = ProviderData[RecoveryPointParams.Item]
                 as AzureSqlItem;
 
@@ -162,7 +159,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             }
 
             //we need to fetch the list of RPs
-            var queryFilterString = QueryBuilder.Instance.GetQueryString(new BMSRPQueryObject()
+            var queryFilterString = QueryBuilder.Instance.GetQueryString(new BMSRPQueryObject
             {
                 StartDate = startDate,
                 EndDate = endDate
@@ -197,9 +194,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             Logger.Instance.WriteDebug("Validation of Retention policy is successful");
 
             // construct Hydra policy request            
-            ProtectionPolicyResource hydraRequest = new ProtectionPolicyResource()
+            ProtectionPolicyResource hydraRequest = new ProtectionPolicyResource
             {
-                Properties = new AzureSqlProtectionPolicy()
+                Properties = new AzureSqlProtectionPolicy
                 {
                     RetentionPolicy = PolicyHelpers.GetServiceClientSimpleRetentionPolicy(
                             (CmdletModel.SimpleRetentionPolicy)retentionPolicy)
@@ -232,18 +229,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             {
                 throw new ArgumentException(Resources.RetentionPolicyEmptyInAzureSql);
             }
-            else
-            {
-                ValidateAzureSqlRetentionPolicy(retentionPolicy);
-                ((AzureSqlPolicy)policy).RetentionPolicy = retentionPolicy;
-                Logger.Instance.WriteDebug("Validation of Retention policy is successful");
-            }
+            ValidateAzureSqlRetentionPolicy(retentionPolicy);
+            ((AzureSqlPolicy)policy).RetentionPolicy = retentionPolicy;
+            Logger.Instance.WriteDebug("Validation of Retention policy is successful");
 
             CmdletModel.SimpleRetentionPolicy sqlRetentionPolicy =
                 (CmdletModel.SimpleRetentionPolicy)((AzureSqlPolicy)policy).RetentionPolicy;
-            ProtectionPolicyResource hydraRequest = new ProtectionPolicyResource()
+            ProtectionPolicyResource hydraRequest = new ProtectionPolicyResource
             {
-                Properties = new AzureSqlProtectionPolicy()
+                Properties = new AzureSqlProtectionPolicy
                 {
                     RetentionPolicy =
                             PolicyHelpers.GetServiceClientSimpleRetentionPolicy(sqlRetentionPolicy)
@@ -260,7 +254,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
         /// <returns>List of protection containers</returns>
         public List<ContainerBase> ListProtectionContainers()
         {
-            string name = (string)this.ProviderData[ContainerParams.Name];
+            string name = (string)ProviderData[ContainerParams.Name];
 
             ODataQuery<BMSContainerQueryObject> queryParams =
                 new ODataQuery<BMSContainerQueryObject>(
@@ -462,7 +456,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                 throw new ArgumentException(
                     string.Format(
                     Resources.InvalidProtectionPolicyException,
-                    typeof(AzureSqlPolicy).ToString()));
+                    typeof(AzureSqlPolicy)));
             }
 
             ValidateAzureSqlWorkloadType(policy.WorkloadType);
@@ -478,7 +472,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                 throw new ArgumentException(
                     string.Format(
                         Resources.InvalidRetentionPolicyException,
-                        typeof(CmdletModel.SimpleRetentionPolicy).ToString()));
+                        typeof(CmdletModel.SimpleRetentionPolicy)));
             }
 
             // call validation
@@ -493,7 +487,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                 throw new ArgumentException(
                     string.Format(
                         Resources.InvalidProtectionItemException,
-                        typeof(AzureSqlItem).ToString()));
+                        typeof(AzureSqlItem)));
             }
 
             ValidateAzureSqlWorkloadType(itemBase.WorkloadType);

@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ServiceBus.Models
 {
-    using Azure.Management.ServiceBus.Models;
+    using Management.ServiceBus.Models;
     using System;
 
     /// <summary>

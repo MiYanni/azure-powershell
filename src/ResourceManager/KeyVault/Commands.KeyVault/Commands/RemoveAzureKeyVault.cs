@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ParameterSetName = RemoveVaultParameterSet,
             HelpMessage = "Specifies the name of resource group for Azure key vault to remove.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = false,
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ParameterSetName = ResourceIdRemoveDeletedVaultParameterSet,
             HelpMessage = "The location of the deleted vault.")]
         [LocationCompleter("Microsoft.KeyVault/vaults")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string Location { get; set; }
 
         /// <summary>
@@ -181,8 +181,8 @@ namespace Microsoft.Azure.Commands.KeyVault
                         () =>
                         {
                             KeyVaultManagementClient.PurgeVault(
-                                vaultName: VaultName,
-                                location: Location);
+                                VaultName,
+                                Location);
 
                             if (PassThru)
                             {
@@ -209,8 +209,8 @@ namespace Microsoft.Azure.Commands.KeyVault
                     () =>
                     {
                         KeyVaultManagementClient.DeleteVault(
-                    vaultName: VaultName,
-                    resourceGroupName: this.ResourceGroupName);
+                    VaultName,
+                    ResourceGroupName);
 
                         if (PassThru)
                         {

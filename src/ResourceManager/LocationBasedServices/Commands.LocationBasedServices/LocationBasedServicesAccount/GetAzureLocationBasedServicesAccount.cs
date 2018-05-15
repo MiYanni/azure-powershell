@@ -73,20 +73,20 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
                 {
                     case AccountNameParameterSet:
                     {
-                        var locationBasedServicesAccount = this.LocationBasedServicesClient.Accounts.Get(this.ResourceGroupName, this.Name);
+                        var locationBasedServicesAccount = LocationBasedServicesClient.Accounts.Get(ResourceGroupName, Name);
                         WriteLocationBasedServicesAccount(locationBasedServicesAccount);
                         break;
                     }
                     case ResourceGroupParameterSet:
                     {
-                        if (string.IsNullOrEmpty(this.ResourceGroupName))
+                        if (string.IsNullOrEmpty(ResourceGroupName))
                         {
-                            var locationBasedServicesAccounts = this.LocationBasedServicesClient.Accounts.ListBySubscription();
+                            var locationBasedServicesAccounts = LocationBasedServicesClient.Accounts.ListBySubscription();
                             WriteLocationBasedServicesAccountList(locationBasedServicesAccounts);
                         }
                         else
                         {
-                            var locationBasedServicesAccounts = this.LocationBasedServicesClient.Accounts.ListByResourceGroup(this.ResourceGroupName);
+                            var locationBasedServicesAccounts = LocationBasedServicesClient.Accounts.ListByResourceGroup(ResourceGroupName);
                             WriteLocationBasedServicesAccountList(locationBasedServicesAccounts);
                         }
                         break;
@@ -96,9 +96,9 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
                         string resourceGroupName;
                         string resourceName;
 
-                        if (ValidateAndExtractName(this.ResourceId, out resourceGroupName, out resourceName))
+                        if (ValidateAndExtractName(ResourceId, out resourceGroupName, out resourceName))
                         {
-                            var locationBasedServicesAccount = this.LocationBasedServicesClient.Accounts.Get(resourceGroupName, resourceName);
+                            var locationBasedServicesAccount = LocationBasedServicesClient.Accounts.Get(resourceGroupName, resourceName);
                             WriteLocationBasedServicesAccount(locationBasedServicesAccount);
                         }
                         break;

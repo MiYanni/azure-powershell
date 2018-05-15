@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Commands.ContainerInstance.Models
 {
-    public class ContainerInstanceAutoMapperProfile : AutoMapper.Profile
+    public class ContainerInstanceAutoMapperProfile : Profile
     {
         private static IMapper _mapper = null;
 

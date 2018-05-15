@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
         {
             get
             {
-                return (this.EndOffset - this.StartOffset) + 1;
+                return EndOffset - StartOffset + 1;
             }
         }
 

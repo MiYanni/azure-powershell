@@ -15,9 +15,9 @@
 
 namespace Microsoft.Azure.Commands.ApiManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.Models;
-    using Microsoft.Azure.Commands.ApiManagement.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Models;
+    using Properties;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common;
     using System;
     using System.Management.Automation;

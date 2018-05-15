@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string BgpCommunitiesText
         {
-            get { return JsonConvert.SerializeObject(BgpCommunities, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(BgpCommunities, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
         
     }

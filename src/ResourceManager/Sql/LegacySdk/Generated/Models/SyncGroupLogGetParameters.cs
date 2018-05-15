@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ContinuationToken
         {
-            get { return this._continuationToken; }
-            set { this._continuationToken = value; }
+            get { return _continuationToken; }
+            set { _continuationToken = value; }
         }
         
         private string _endTime;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string EndTime
         {
-            get { return this._endTime; }
-            set { this._endTime = value; }
+            get { return _endTime; }
+            set { _endTime = value; }
         }
         
         private string _startTime;
@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StartTime
         {
-            get { return this._startTime; }
-            set { this._startTime = value; }
+            get { return _startTime; }
+            set { _startTime = value; }
         }
         
         private string _syncGroupName;
@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncGroupName
         {
-            get { return this._syncGroupName; }
-            set { this._syncGroupName = value; }
+            get { return _syncGroupName; }
+            set { _syncGroupName = value; }
         }
         
         private string _type;
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Type
         {
-            get { return this._type; }
-            set { this._type = value; }
+            get { return _type; }
+            set { _type = value; }
         }
         
         /// <summary>
@@ -111,9 +111,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("type");
             }
-            this.SyncGroupName = syncGroupName;
-            this.StartTime = startTime;
-            this.Type = type;
+            SyncGroupName = syncGroupName;
+            StartTime = startTime;
+            Type = type;
         }
     }
 }

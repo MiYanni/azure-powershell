@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Eventhub
 
         public EventHubsClient(IAzureContext context)
         {
-            this.Client = AzureSession.Instance.ClientFactory.CreateArmClient<EventHubManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            Client = AzureSession.Instance.ClientFactory.CreateArmClient<EventHubManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
 
         }
         public EventHubManagementClient Client
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.Eventhub
         public PSNamespaceAttributes UpdateNamespace(string resourceGroupName, string namespaceName, string location, string skuName, int? skuCapacity, NamespaceState? state, Dictionary<string, string> tags, bool? isAutoInflateEnabled, int? maximumThroughputUnits)
         {
 
-            var parameter = new EHNamespace()
+            var parameter = new EHNamespace
             {
                 Location = location
             };
@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.Eventhub
 
         public PSSharedAccessAuthorizationRuleAttributes CreateOrUpdateNamespaceAuthorizationRules(string resourceGroupName, string namespaceName, string authorizationRuleName, PSSharedAccessAuthorizationRuleAttributes parameter)
         {
-            var parameter1 = new AuthorizationRule()
+            var parameter1 = new AuthorizationRule
             {
                 Rights = parameter.Rights.ToList()
             };
@@ -227,7 +227,7 @@ namespace Microsoft.Azure.Commands.Eventhub
                 Parameter1.CaptureDescription = new CaptureDescription();
                 Parameter1.CaptureDescription.Destination = new Destination();
                 Parameter1.CaptureDescription.Enabled = parameter.CaptureDescription.Enabled;
-                Parameter1.CaptureDescription.Encoding = (Management.EventHub.Models.EncodingCaptureDescription?)parameter.CaptureDescription.Encoding;
+                Parameter1.CaptureDescription.Encoding = (EncodingCaptureDescription?)parameter.CaptureDescription.Encoding;
                 Parameter1.CaptureDescription.IntervalInSeconds = parameter.CaptureDescription.IntervalInSeconds;
                 Parameter1.CaptureDescription.SizeLimitInBytes = parameter.CaptureDescription.SizeLimitInBytes;
                 Parameter1.CaptureDescription.Destination.Name = parameter.CaptureDescription.Destination.Name;
@@ -261,7 +261,7 @@ namespace Microsoft.Azure.Commands.Eventhub
                 
         public PSSharedAccessAuthorizationRuleAttributes CreateOrUpdateEventHubAuthorizationRules(string resourceGroupName, string namespaceName, string eventHubName, string authorizationRuleName, PSSharedAccessAuthorizationRuleAttributes parameters)
         {
-            var parameter1 = new AuthorizationRule()
+            var parameter1 = new AuthorizationRule
             {
                 Rights = parameters.Rights.ToList()
             };
@@ -317,7 +317,7 @@ namespace Microsoft.Azure.Commands.Eventhub
 
         public PSEventHubDRConfigurationAttributes CreateEventHubDRConfiguration(string resourceGroupName, string namespaceName, string alias, PSEventHubDRConfigurationAttributes parameter)
         {
-            var Parameter1 = new Management.EventHub.Models.ArmDisasterRecovery();
+            var Parameter1 = new ArmDisasterRecovery();
 
             if (!string.IsNullOrEmpty(parameter.PartnerNamespace))
                 Parameter1.PartnerNamespace = parameter.PartnerNamespace;
@@ -371,7 +371,7 @@ namespace Microsoft.Azure.Commands.Eventhub
         #region ConsumerGroup
         public PSConsumerGroupAttributes CreateOrUpdateConsumerGroup(string resourceGroupName, string namespaceName, string eventHubName, string consumerGroupName, PSConsumerGroupAttributes parameter)
         {
-            var Parameter1 = new ConsumerGroup()
+            var Parameter1 = new ConsumerGroup
             {
                 UserMetadata = parameter.UserMetadata
             };

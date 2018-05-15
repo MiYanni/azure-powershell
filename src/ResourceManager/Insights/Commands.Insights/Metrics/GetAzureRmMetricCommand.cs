@@ -95,42 +95,42 @@ namespace Microsoft.Azure.Commands.Insights.Metrics
         protected string ProcessParameters()
         {
             var buffer = new StringBuilder();
-            if (this.MetricName != null)
+            if (MetricName != null)
             {
-                var metrics = this.MetricName.Select(n => string.Concat("name.value eq '", n, "'")).Aggregate((a, b) => string.Concat(a, " or ", b));
+                var metrics = MetricName.Select(n => string.Concat("name.value eq '", n, "'")).Aggregate((a, b) => string.Concat(a, " or ", b));
 
                 buffer.Append("(");
                 buffer.Append(metrics);
                 buffer.Append(")");
 
-                if (this.TimeGrain != default(TimeSpan))
+                if (TimeGrain != default(TimeSpan))
                 {
                     buffer.Append(" and timeGrain eq duration'");
-                    buffer.Append(XmlConvert.ToString(this.TimeGrain));
+                    buffer.Append(XmlConvert.ToString(TimeGrain));
                     buffer.Append("'");
                 }
 
                 // EndTime defaults to Now
-                if (this.EndTime == default(DateTime))
+                if (EndTime == default(DateTime))
                 {
-                    this.EndTime = DateTime.UtcNow;
+                    EndTime = DateTime.UtcNow;
                 }
 
                 // StartTime defaults to EndTime - DefaultTimeRange  (NOTE: EndTime defaults to Now)
-                if (this.StartTime == default(DateTime))
+                if (StartTime == default(DateTime))
                 {
-                    this.StartTime = this.EndTime.Subtract(DefaultTimeRange);
+                    StartTime = EndTime.Subtract(DefaultTimeRange);
                 }
 
                 buffer.Append(" and startTime eq ");
-                buffer.Append(this.StartTime.ToUniversalTime().ToString("O"));
+                buffer.Append(StartTime.ToUniversalTime().ToString("O"));
                 buffer.Append(" and endTime eq ");
-                buffer.Append(this.EndTime.ToUniversalTime().ToString("O"));
+                buffer.Append(EndTime.ToUniversalTime().ToString("O"));
 
-                if (this.AggregationType != null)
+                if (AggregationType != null)
                 {
                     buffer.Append(" and aggregationType eq '");
-                    buffer.Append(this.AggregationType);
+                    buffer.Append(AggregationType);
                     buffer.Append("'");
                 }
             }
@@ -149,17 +149,17 @@ namespace Microsoft.Azure.Commands.Insights.Metrics
         /// </summary>
         protected override void ProcessRecordInternal()
         {
-            this.WriteIdentifiedWarning(
-                cmdletName: "Get-AzureRmMetric",
-                topic: "Parameter deprecation", 
-                message: "The DetailedOutput parameter will be deprecated in a future breaking change release.");
-            string queryFilter = this.ProcessParameters();
-            bool fullDetails = this.DetailedOutput.IsPresent;
+            WriteIdentifiedWarning(
+                "Get-AzureRmMetric",
+                "Parameter deprecation", 
+                "The DetailedOutput parameter will be deprecated in a future breaking change release.");
+            string queryFilter = ProcessParameters();
+            bool fullDetails = DetailedOutput.IsPresent;
 
             // If fullDetails is present full details of the records are displayed, otherwise only a summary of the records is displayed
-            var records = this.MonitorClient.Metrics.List(resourceUri: this.ResourceId, odataQuery: new ODataQuery<Metric>(queryFilter))
+            var records = MonitorClient.Metrics.List(ResourceId, new ODataQuery<Metric>(queryFilter))
                 .Select(e => fullDetails ? new PSMetric(e) : new PSMetricNoDetails(e)).ToArray();
-            WriteObject(sendToPipeline: records, enumerateCollection: true);
+            WriteObject(records, true);
         }
     }
 }

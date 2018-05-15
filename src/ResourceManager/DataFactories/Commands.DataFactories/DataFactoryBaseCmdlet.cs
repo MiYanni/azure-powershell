@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.DataFactories
 
         [Parameter(ParameterSetName = ByFactoryName, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -39,15 +39,15 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             get
             {
-                if (this.dataFactoryClient == null)
+                if (dataFactoryClient == null)
                 {
-                    this.dataFactoryClient = new DataFactoryClient(DefaultContext);
+                    dataFactoryClient = new DataFactoryClient(DefaultContext);
                 }
-                return this.dataFactoryClient;
+                return dataFactoryClient;
             }
             set
             {
-                this.dataFactoryClient = value;
+                dataFactoryClient = value;
             }
         }
 

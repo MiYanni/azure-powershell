@@ -34,12 +34,12 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string FrontendIPConfigurationText
         {
-            get { return JsonConvert.SerializeObject(FrontendIPConfiguration, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(FrontendIPConfiguration, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         public bool ShouldSerializeBackendPort()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }

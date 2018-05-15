@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -65,14 +65,14 @@ namespace Microsoft.Azure.Commands.Compute
             {
                 if (Status.IsPresent)
                 {
-                    var result = this.VirtualMachineExtensionClient.GetWithInstanceView(this.ResourceGroupName, this.VMName, this.Name);
-                    WriteObject(result.ToPSVirtualMachineExtension(this.ResourceGroupName, this.VMName));
+                    var result = VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName, VMName, Name);
+                    WriteObject(result.ToPSVirtualMachineExtension(ResourceGroupName, VMName));
                 }
                 else
                 {
-                    var result = this.VirtualMachineExtensionClient.GetWithHttpMessagesAsync(this.ResourceGroupName,
-                        this.VMName, this.Name).GetAwaiter().GetResult();
-                    WriteObject(result.ToPSVirtualMachineExtension(this.ResourceGroupName, this.VMName));
+                    var result = VirtualMachineExtensionClient.GetWithHttpMessagesAsync(ResourceGroupName,
+                        VMName, Name).GetAwaiter().GetResult();
+                    WriteObject(result.ToPSVirtualMachineExtension(ResourceGroupName, VMName));
                 }
             });
         }

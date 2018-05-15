@@ -44,25 +44,25 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.InputObject.FriendlyName,
+            if (ShouldProcess(
+                InputObject.FriendlyName,
                 VerbsCommon.Remove))
             {
-                var response = this.RecoveryServicesClient.RemoveAzureSiteRecoveryNetworkMapping(
+                var response = RecoveryServicesClient.RemoveAzureSiteRecoveryNetworkMapping(
                     Utilities.GetValueFromArmId(
-                        this.InputObject.ID,
+                        InputObject.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
                     Utilities.GetValueFromArmId(
-                        this.InputObject.ID,
+                        InputObject.ID,
                         "replicationNetworks"),
                     Utilities.GetValueFromArmId(
-                        this.InputObject.ID,
+                        InputObject.ID,
                         "replicationNetworkMappings"));
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
     }

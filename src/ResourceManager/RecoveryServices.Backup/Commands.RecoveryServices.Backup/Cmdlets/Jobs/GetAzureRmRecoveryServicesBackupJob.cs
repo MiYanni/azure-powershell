@@ -114,11 +114,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 {
                     throw new Exception(Resources.JobToShouldBeGreaterThanFrom);
                 }
-                else if (rangeEnd.Subtract(rangeStart) > TimeSpan.FromDays(30))
+                if (rangeEnd.Subtract(rangeStart) > TimeSpan.FromDays(30))
                 {
                     throw new Exception(Resources.JobAllowedDateTimeRangeExceeded);
                 }
-                else if (rangeStart > DateTime.UtcNow)
+                if (rangeStart > DateTime.UtcNow)
                 {
                     throw new Exception(Resources.JobStartTimeShouldBeLessThanCurrent);
                 }
@@ -161,7 +161,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     adapterResponse, result, ref resultCount);
 
                 WriteDebug("Number of jobs fetched: " + result.Count);
-                WriteObject(result, enumerateCollection: true);
+                WriteObject(result, true);
             });
         }
     }

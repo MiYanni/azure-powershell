@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseId
         {
-            get { return this._databaseId; }
-            set { this._databaseId = value; }
+            get { return _databaseId; }
+            set { _databaseId = value; }
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("databaseId");
             }
-            this.DatabaseId = databaseId;
+            DatabaseId = databaseId;
         }
     }
 }

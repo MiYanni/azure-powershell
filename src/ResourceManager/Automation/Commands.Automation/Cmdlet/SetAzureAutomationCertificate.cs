@@ -70,9 +70,9 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
 
-            var updateddCertificate = this.AutomationClient.UpdateCertificate(this.ResourceGroupName, this.AutomationAccountName, this.Name, this.ResolvePath(this.Path), this.Password, this.Description, this.Exportable);
+            var updateddCertificate = AutomationClient.UpdateCertificate(ResourceGroupName, AutomationAccountName, Name, this.ResolvePath(Path), Password, Description, Exportable);
 
-            this.WriteObject(updateddCertificate);
+            WriteObject(updateddCertificate);
         }
     }
 }

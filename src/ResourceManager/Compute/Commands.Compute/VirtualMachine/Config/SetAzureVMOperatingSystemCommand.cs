@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Compute
         DefaultParameterSetName = WindowsParamSet),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class SetAzureVMOperatingSystemCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class SetAzureVMOperatingSystemCommand : ResourceManager.Common.AzureRMCmdlet
     {
         protected const string WindowsParamSet = "Windows";
         protected const string WinRmHttpsParamSet = "WindowsWinRmHttps";
@@ -241,47 +241,47 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            this.VM.OSProfile = new OSProfile
+            VM.OSProfile = new OSProfile
             {
-                ComputerName = this.ComputerName,
-                AdminUsername = this.Credential.UserName,
-                AdminPassword = ConversionUtilities.SecureStringToString(this.Credential.Password),
-                CustomData = string.IsNullOrWhiteSpace(this.CustomData) ? null : Convert.ToBase64String(Encoding.UTF8.GetBytes(this.CustomData)),
+                ComputerName = ComputerName,
+                AdminUsername = Credential.UserName,
+                AdminPassword = ConversionUtilities.SecureStringToString(Credential.Password),
+                CustomData = string.IsNullOrWhiteSpace(CustomData) ? null : Convert.ToBase64String(Encoding.UTF8.GetBytes(CustomData)),
             };
 
-            if (this.ParameterSetName == LinuxParamSet)
+            if (ParameterSetName == LinuxParamSet)
             {
-                if (this.VM.OSProfile.WindowsConfiguration != null)
+                if (VM.OSProfile.WindowsConfiguration != null)
                 {
-                    throw new ArgumentException(Microsoft.Azure.Commands.Compute.Properties.Resources.BothWindowsAndLinuxConfigurationsSpecified);
+                    throw new ArgumentException(Properties.Resources.BothWindowsAndLinuxConfigurationsSpecified);
                 }
 
-                if (this.VM.OSProfile.LinuxConfiguration == null)
+                if (VM.OSProfile.LinuxConfiguration == null)
                 {
-                    this.VM.OSProfile.LinuxConfiguration = new LinuxConfiguration();
+                    VM.OSProfile.LinuxConfiguration = new LinuxConfiguration();
                 }
 
-                this.VM.OSProfile.LinuxConfiguration.DisablePasswordAuthentication =
-                    (this.DisablePasswordAuthentication.IsPresent)
+                VM.OSProfile.LinuxConfiguration.DisablePasswordAuthentication =
+                    DisablePasswordAuthentication.IsPresent
                     ? (bool?)true
                     : null;
             }
             else
             {
-                if (this.VM.OSProfile.LinuxConfiguration != null)
+                if (VM.OSProfile.LinuxConfiguration != null)
                 {
-                    throw new ArgumentException(Microsoft.Azure.Commands.Compute.Properties.Resources.BothWindowsAndLinuxConfigurationsSpecified);
+                    throw new ArgumentException(Properties.Resources.BothWindowsAndLinuxConfigurationsSpecified);
                 }
 
-                if (this.VM.OSProfile.WindowsConfiguration == null)
+                if (VM.OSProfile.WindowsConfiguration == null)
                 {
-                    this.VM.OSProfile.WindowsConfiguration = new WindowsConfiguration();
-                    this.VM.OSProfile.WindowsConfiguration.AdditionalUnattendContent = null;
+                    VM.OSProfile.WindowsConfiguration = new WindowsConfiguration();
+                    VM.OSProfile.WindowsConfiguration.AdditionalUnattendContent = null;
                 }
 
                 var listenerList = new List<WinRMListener>();
 
-                if (this.WinRMHttp.IsPresent)
+                if (WinRMHttp.IsPresent)
                 {
                     listenerList.Add(new WinRMListener
                     {
@@ -290,34 +290,34 @@ namespace Microsoft.Azure.Commands.Compute
                     });
                 }
 
-                if (this.WinRMHttps.IsPresent)
+                if (WinRMHttps.IsPresent)
                 {
                     listenerList.Add(new WinRMListener
                     {
                         Protocol = ProtocolTypes.Https,
-                        CertificateUrl = this.WinRMCertificateUrl.ToString(),
+                        CertificateUrl = WinRMCertificateUrl.ToString(),
                     });
                 }
 
                 // OS Profile
-                this.VM.OSProfile.WindowsConfiguration.ProvisionVMAgent = this.VM.OSProfile.WindowsConfiguration.ProvisionVMAgent;
+                VM.OSProfile.WindowsConfiguration.ProvisionVMAgent = VM.OSProfile.WindowsConfiguration.ProvisionVMAgent;
 
-                if (this.ProvisionVMAgent.IsPresent)
+                if (ProvisionVMAgent.IsPresent)
                 {
-                    this.VM.OSProfile.WindowsConfiguration.ProvisionVMAgent = true;
+                    VM.OSProfile.WindowsConfiguration.ProvisionVMAgent = true;
                 }
 
-                if (this.DisableVMAgent.IsPresent)
+                if (DisableVMAgent.IsPresent)
                 {
-                    this.VM.OSProfile.WindowsConfiguration.ProvisionVMAgent = false;
+                    VM.OSProfile.WindowsConfiguration.ProvisionVMAgent = false;
                 }
 
-                this.VM.OSProfile.WindowsConfiguration.EnableAutomaticUpdates = this.EnableAutoUpdate.IsPresent;
+                VM.OSProfile.WindowsConfiguration.EnableAutomaticUpdates = EnableAutoUpdate.IsPresent;
 
-                this.VM.OSProfile.WindowsConfiguration.TimeZone = this.TimeZone;
+                VM.OSProfile.WindowsConfiguration.TimeZone = TimeZone;
 
-                this.VM.OSProfile.WindowsConfiguration.WinRM =
-                    !(this.WinRMHttp.IsPresent || this.WinRMHttps.IsPresent)
+                VM.OSProfile.WindowsConfiguration.WinRM =
+                    !(WinRMHttp.IsPresent || WinRMHttps.IsPresent)
                     ? null
                     : new WinRMConfiguration
                     {
@@ -325,7 +325,7 @@ namespace Microsoft.Azure.Commands.Compute
                     };
             }
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

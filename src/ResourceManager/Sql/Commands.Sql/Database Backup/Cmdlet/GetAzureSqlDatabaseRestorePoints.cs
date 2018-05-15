@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlDatabaseRestorePointModel> GetEntity()
         {
-            return ModelAdapter.ListRestorePoints(this.ResourceGroupName, this.ServerName, this.DatabaseName);
+            return ModelAdapter.ListRestorePoints(ResourceGroupName, ServerName, DatabaseName);
         }
 
         /// <summary>

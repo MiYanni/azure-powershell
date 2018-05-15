@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 {
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Remove, "AzureRmIotHubEventHubConsumerGroup", SupportsShouldProcess = true), OutputType(typeof(IEnumerable<string>))]
@@ -63,9 +63,9 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (ShouldProcess(EventHubConsumerGroupName, Properties.Resources.RemoveEventHubConsumerGroup))
             {
-                this.IotHubClient.IotHubResource.DeleteEventHubConsumerGroup(this.ResourceGroupName, this.Name, this.EventHubEndpointName, this.EventHubConsumerGroupName);
-                IEnumerable<EventHubConsumerGroupInfo> iotHubEHConsumerGroups = this.IotHubClient.IotHubResource.ListEventHubConsumerGroups(this.ResourceGroupName, this.Name, this.EventHubEndpointName);
-                this.WriteObject(IotHubUtils.ToPSEventHubConsumerGroupInfo(iotHubEHConsumerGroups), true);
+                IotHubClient.IotHubResource.DeleteEventHubConsumerGroup(ResourceGroupName, Name, EventHubEndpointName, EventHubConsumerGroupName);
+                IEnumerable<EventHubConsumerGroupInfo> iotHubEHConsumerGroups = IotHubClient.IotHubResource.ListEventHubConsumerGroups(ResourceGroupName, Name, EventHubEndpointName);
+                WriteObject(IotHubUtils.ToPSEventHubConsumerGroupInfo(iotHubEHConsumerGroups), true);
             }
         }
 

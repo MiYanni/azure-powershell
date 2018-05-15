@@ -75,22 +75,22 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <summary>
         /// Minimum recurrence quota for Free plan.
         /// </summary>
-        public static readonly TimeSpan MinRecurrenceQuotaFree = new TimeSpan(hours: 1, minutes: 0, seconds: 0);
+        public static readonly TimeSpan MinRecurrenceQuotaFree = new TimeSpan(1, 0, 0);
 
         /// <summary>
         /// Minimum recurrence quota for Standard plan.
         /// </summary>
-        public static readonly TimeSpan MinRecurrenceQuotaStandard = new TimeSpan(hours: 0, minutes: 1, seconds: 0);
+        public static readonly TimeSpan MinRecurrenceQuotaStandard = new TimeSpan(0, 1, 0);
 
         /// <summary>
         /// Minimum recurrence quota for P10Premium plan.
         /// </summary>
-        public static readonly TimeSpan MinRecurrenceQuotaP10Premium = new TimeSpan(hours: 0, minutes: 1, seconds: 0);
+        public static readonly TimeSpan MinRecurrenceQuotaP10Premium = new TimeSpan(0, 1, 0);
 
         /// <summary>
         /// Minimum recurrence quota for P20Premium plan.
         /// </summary>
-        public static readonly TimeSpan MinRecurrenceQuotaP20Premium = new TimeSpan(hours: 0, minutes: 1, seconds: 0);
+        public static readonly TimeSpan MinRecurrenceQuotaP20Premium = new TimeSpan(0, 1, 0);
 
         #endregion
 
@@ -319,7 +319,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <summary>
         /// Comma semicolon separator definition.
         /// </summary>
-        public static char[] ApostropheSemicolonSeparator = new char[] { '\'', ';' };
+        public static char[] ApostropheSemicolonSeparator = new[] { '\'', ';' };
 
         #endregion
     }

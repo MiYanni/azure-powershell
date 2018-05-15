@@ -282,32 +282,32 @@ namespace Microsoft.Azure.Commands.EventGrid
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(this.EventSubscriptionName, $"Create a new Event Grid subscription {this.EventSubscriptionName}"))
+            if (ShouldProcess(EventSubscriptionName, $"Create a new Event Grid subscription {EventSubscriptionName}"))
             {
                 string scope;
-                bool isSubjectCaseSensitive = this.SubjectCaseSensitive.IsPresent;
+                bool isSubjectCaseSensitive = SubjectCaseSensitive.IsPresent;
 
-                if (!string.IsNullOrEmpty(this.ResourceId))
+                if (!string.IsNullOrEmpty(ResourceId))
                 {
-                    scope = this.ResourceId;
+                    scope = ResourceId;
                 }
-                else if (this.InputObject != null)
+                else if (InputObject != null)
                 {
-                    scope = this.InputObject.Id;
+                    scope = InputObject.Id;
                 }
                 else
                 {
                     // ResourceID not specified, build the scope for the event subscription for either the 
                     // subscription, or resource group, or custom topic depending on which of the parameters are provided.
-                    scope = EventGridUtils.GetScope(this.DefaultContext.Subscription.Id, this.ResourceGroupName, this.TopicName);
+                    scope = EventGridUtils.GetScope(DefaultContext.Subscription.Id, ResourceGroupName, TopicName);
                 }
 
-                EventSubscription eventSubscription = this.Client.CreateEventSubscription(scope,
-                    this.EventSubscriptionName, this.Endpoint, this.EndpointType, this.SubjectBeginsWith,
-                    this.SubjectEndsWith, isSubjectCaseSensitive, this.IncludedEventType, this.Label);
+                EventSubscription eventSubscription = Client.CreateEventSubscription(scope,
+                    EventSubscriptionName, Endpoint, EndpointType, SubjectBeginsWith,
+                    SubjectEndsWith, isSubjectCaseSensitive, IncludedEventType, Label);
 
                 PSEventSubscription psEventSubscription = new PSEventSubscription(eventSubscription);
-                this.WriteObject(psEventSubscription);
+                WriteObject(psEventSubscription);
             }
         }
     }

@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </param>
         internal CapabilitiesOperations(SqlManagementClient client)
         {
-            this._client = client;
+            _client = client;
         }
         
         private SqlManagementClient _client;
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public SqlManagementClient Client
         {
-            get { return this._client; }
+            get { return _client; }
         }
         
         /// <summary>
@@ -98,9 +98,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/providers/";
             url = url + "Microsoft.Sql";
@@ -113,7 +113,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -149,7 +149,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -188,21 +188,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken nameValue = responseDoc["name"];
                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                             {
-                                string nameInstance = ((string)nameValue);
+                                string nameInstance = (string)nameValue;
                                 capabilitiesInstance.Name = nameInstance;
                             }
                             
                             JToken statusValue = responseDoc["status"];
                             if (statusValue != null && statusValue.Type != JTokenType.Null)
                             {
-                                string statusInstance = ((string)statusValue);
+                                string statusInstance = (string)statusValue;
                                 capabilitiesInstance.Status = statusInstance;
                             }
                             
                             JToken supportedServerVersionsArray = responseDoc["supportedServerVersions"];
                             if (supportedServerVersionsArray != null && supportedServerVersionsArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken supportedServerVersionsValue in ((JArray)supportedServerVersionsArray))
+                                foreach (JToken supportedServerVersionsValue in (JArray)supportedServerVersionsArray)
                                 {
                                     ServerVersionCapability serverVersionCapabilityInstance = new ServerVersionCapability();
                                     capabilitiesInstance.SupportedServerVersions.Add(serverVersionCapabilityInstance);
@@ -210,21 +210,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken nameValue2 = supportedServerVersionsValue["name"];
                                     if (nameValue2 != null && nameValue2.Type != JTokenType.Null)
                                     {
-                                        string nameInstance2 = ((string)nameValue2);
+                                        string nameInstance2 = (string)nameValue2;
                                         serverVersionCapabilityInstance.Name = nameInstance2;
                                     }
                                     
                                     JToken statusValue2 = supportedServerVersionsValue["status"];
                                     if (statusValue2 != null && statusValue2.Type != JTokenType.Null)
                                     {
-                                        string statusInstance2 = ((string)statusValue2);
+                                        string statusInstance2 = (string)statusValue2;
                                         serverVersionCapabilityInstance.Status = statusInstance2;
                                     }
                                     
                                     JToken supportedEditionsArray = supportedServerVersionsValue["supportedEditions"];
                                     if (supportedEditionsArray != null && supportedEditionsArray.Type != JTokenType.Null)
                                     {
-                                        foreach (JToken supportedEditionsValue in ((JArray)supportedEditionsArray))
+                                        foreach (JToken supportedEditionsValue in (JArray)supportedEditionsArray)
                                         {
                                             EditionCapability editionCapabilityInstance = new EditionCapability();
                                             serverVersionCapabilityInstance.SupportedEditions.Add(editionCapabilityInstance);
@@ -232,21 +232,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                             JToken nameValue3 = supportedEditionsValue["name"];
                                             if (nameValue3 != null && nameValue3.Type != JTokenType.Null)
                                             {
-                                                string nameInstance3 = ((string)nameValue3);
+                                                string nameInstance3 = (string)nameValue3;
                                                 editionCapabilityInstance.Name = nameInstance3;
                                             }
                                             
                                             JToken statusValue3 = supportedEditionsValue["status"];
                                             if (statusValue3 != null && statusValue3.Type != JTokenType.Null)
                                             {
-                                                string statusInstance3 = ((string)statusValue3);
+                                                string statusInstance3 = (string)statusValue3;
                                                 editionCapabilityInstance.Status = statusInstance3;
                                             }
                                             
                                             JToken supportedServiceLevelObjectivesArray = supportedEditionsValue["supportedServiceLevelObjectives"];
                                             if (supportedServiceLevelObjectivesArray != null && supportedServiceLevelObjectivesArray.Type != JTokenType.Null)
                                             {
-                                                foreach (JToken supportedServiceLevelObjectivesValue in ((JArray)supportedServiceLevelObjectivesArray))
+                                                foreach (JToken supportedServiceLevelObjectivesValue in (JArray)supportedServiceLevelObjectivesArray)
                                                 {
                                                     ServiceObjectiveCapability serviceObjectiveCapabilityInstance = new ServiceObjectiveCapability();
                                                     editionCapabilityInstance.SupportedServiceObjectives.Add(serviceObjectiveCapabilityInstance);
@@ -254,28 +254,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                                     JToken nameValue4 = supportedServiceLevelObjectivesValue["name"];
                                                     if (nameValue4 != null && nameValue4.Type != JTokenType.Null)
                                                     {
-                                                        string nameInstance4 = ((string)nameValue4);
+                                                        string nameInstance4 = (string)nameValue4;
                                                         serviceObjectiveCapabilityInstance.Name = nameInstance4;
                                                     }
                                                     
                                                     JToken statusValue4 = supportedServiceLevelObjectivesValue["status"];
                                                     if (statusValue4 != null && statusValue4.Type != JTokenType.Null)
                                                     {
-                                                        string statusInstance4 = ((string)statusValue4);
+                                                        string statusInstance4 = (string)statusValue4;
                                                         serviceObjectiveCapabilityInstance.Status = statusInstance4;
                                                     }
                                                     
                                                     JToken idValue = supportedServiceLevelObjectivesValue["id"];
                                                     if (idValue != null && idValue.Type != JTokenType.Null)
                                                     {
-                                                        Guid idInstance = Guid.Parse(((string)idValue));
+                                                        Guid idInstance = Guid.Parse((string)idValue);
                                                         serviceObjectiveCapabilityInstance.Id = idInstance;
                                                     }
                                                     
                                                     JToken supportedMaxSizesArray = supportedServiceLevelObjectivesValue["supportedMaxSizes"];
                                                     if (supportedMaxSizesArray != null && supportedMaxSizesArray.Type != JTokenType.Null)
                                                     {
-                                                        foreach (JToken supportedMaxSizesValue in ((JArray)supportedMaxSizesArray))
+                                                        foreach (JToken supportedMaxSizesValue in (JArray)supportedMaxSizesArray)
                                                         {
                                                             MaxSizeCapability maxSizeCapabilityInstance = new MaxSizeCapability();
                                                             serviceObjectiveCapabilityInstance.SupportedMaxSizes.Add(maxSizeCapabilityInstance);
@@ -283,21 +283,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                                             JToken limitValue = supportedMaxSizesValue["limit"];
                                                             if (limitValue != null && limitValue.Type != JTokenType.Null)
                                                             {
-                                                                int limitInstance = ((int)limitValue);
+                                                                int limitInstance = (int)limitValue;
                                                                 maxSizeCapabilityInstance.Limit = limitInstance;
                                                             }
                                                             
                                                             JToken unitValue = supportedMaxSizesValue["unit"];
                                                             if (unitValue != null && unitValue.Type != JTokenType.Null)
                                                             {
-                                                                string unitInstance = ((string)unitValue);
+                                                                string unitInstance = (string)unitValue;
                                                                 maxSizeCapabilityInstance.Unit = unitInstance;
                                                             }
                                                             
                                                             JToken statusValue5 = supportedMaxSizesValue["status"];
                                                             if (statusValue5 != null && statusValue5.Type != JTokenType.Null)
                                                             {
-                                                                string statusInstance5 = ((string)statusValue5);
+                                                                string statusInstance5 = (string)statusValue5;
                                                                 maxSizeCapabilityInstance.Status = statusInstance5;
                                                             }
                                                         }

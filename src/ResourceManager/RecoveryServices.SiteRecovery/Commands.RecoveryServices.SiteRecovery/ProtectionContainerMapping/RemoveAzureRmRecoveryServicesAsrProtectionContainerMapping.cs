@@ -53,13 +53,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.InputObject.Name,
+            if (ShouldProcess(
+                InputObject.Name,
                 VerbsCommon.Remove))
             {
                 PSSiteRecoveryLongRunningOperation response = null;
 
-                if (!this.Force.IsPresent)
+                if (!Force.IsPresent)
                 {
                     var inputProperties = new RemoveProtectionContainerMappingInputProperties
                     {
@@ -69,32 +69,32 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     var input =
                         new RemoveProtectionContainerMappingInput { Properties = inputProperties };
 
-                    response = this.RecoveryServicesClient.UnConfigureProtection(
+                    response = RecoveryServicesClient.UnConfigureProtection(
                         Utilities.GetValueFromArmId(
-                            this.InputObject.ID,
+                            InputObject.ID,
                             ARMResourceTypeConstants.ReplicationFabrics),
                         Utilities.GetValueFromArmId(
-                            this.InputObject.ID,
+                            InputObject.ID,
                             ARMResourceTypeConstants.ReplicationProtectionContainers),
-                        this.InputObject.Name,
+                        InputObject.Name,
                         input);
                 }
                 else
                 {
-                    response = this.RecoveryServicesClient.PurgeCloudMapping(
+                    response = RecoveryServicesClient.PurgeCloudMapping(
                         Utilities.GetValueFromArmId(
-                            this.InputObject.ID,
+                            InputObject.ID,
                             ARMResourceTypeConstants.ReplicationFabrics),
                         Utilities.GetValueFromArmId(
-                            this.InputObject.ID,
+                            InputObject.ID,
                             ARMResourceTypeConstants.ReplicationProtectionContainers),
-                        this.InputObject.Name);
+                        InputObject.Name);
                 }
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
     }

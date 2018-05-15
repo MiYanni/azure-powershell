@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void BackUpAzureBackUpItem()
         {
-            this.RunPowerShellTest("Test-BackUpAzureBackUpItem");
+            RunPowerShellTest("Test-BackUpAzureBackUpItem");
         }
     }
 }

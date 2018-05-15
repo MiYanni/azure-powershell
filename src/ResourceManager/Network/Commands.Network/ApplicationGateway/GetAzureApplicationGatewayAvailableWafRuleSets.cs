@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var availableWafRuleSets = this.ApplicationGatewayClient.ListAvailableWafRuleSets();
+            var availableWafRuleSets = ApplicationGatewayClient.ListAvailableWafRuleSets();
             var psAvailableWafRuleSets = NetworkResourceManagerProfile.Mapper.Map<PSApplicationGatewayAvailableWafRuleSetsResult>(availableWafRuleSets);
             WriteObject(psAvailableWafRuleSets);
         }

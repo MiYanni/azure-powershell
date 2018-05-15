@@ -37,15 +37,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var probe = this.ApplicationGateway.Probes.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var probe = ApplicationGateway.Probes.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (probe != null)
             {
-                this.ApplicationGateway.Probes.Remove(probe);
+                ApplicationGateway.Probes.Remove(probe);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

@@ -46,8 +46,8 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public IndexRange(long startIndex, long endIndex)
         {
-            this.StartIndex = startIndex;
-            this.EndIndex = endIndex;
+            StartIndex = startIndex;
+            EndIndex = endIndex;
         }
 
         public bool After(IndexRange range)
@@ -57,56 +57,56 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
                 return false;
             }
 
-            return (this.StartIndex > range.EndIndex);
+            return StartIndex > range.EndIndex;
         }
 
         public IEnumerable<IndexRange> Subtract(IndexRange range)
         {
-            if (this.Equals(range))
+            if (Equals(range))
             {
                 return new List<IndexRange>();
             }
-            if (!this.Intersects(range))
+            if (!Intersects(range))
             {
                 return new List<IndexRange> { this };
             }
-            var intersection = this.Intersection(range);
-            if (this.Equals(intersection))
+            var intersection = Intersection(range);
+            if (Equals(intersection))
             {
                 return new List<IndexRange>();
             }
-            if (intersection.StartIndex == this.StartIndex)
+            if (intersection.StartIndex == StartIndex)
             {
-                return new List<IndexRange> { new IndexRange(intersection.EndIndex + 1, this.EndIndex) };
+                return new List<IndexRange> { new IndexRange(intersection.EndIndex + 1, EndIndex) };
             }
-            if (intersection.EndIndex == this.EndIndex)
+            if (intersection.EndIndex == EndIndex)
             {
-                return new List<IndexRange> { new IndexRange(this.StartIndex, intersection.StartIndex - 1) };
+                return new List<IndexRange> { new IndexRange(StartIndex, intersection.StartIndex - 1) };
             }
             return new List<IndexRange>
                        {
-                           new IndexRange(this.StartIndex, intersection.StartIndex - 1),
-                           new IndexRange(intersection.EndIndex + 1, this.EndIndex)
+                           new IndexRange(StartIndex, intersection.StartIndex - 1),
+                           new IndexRange(intersection.EndIndex + 1, EndIndex)
                        };
         }
 
         public bool Abuts(IndexRange range)
         {
-            return !this.Intersects(range) && this.Gap(range) == null;
+            return !Intersects(range) && Gap(range) == null;
         }
 
         public IndexRange Gap(IndexRange range)
         {
-            if (this.Intersects(range))
+            if (Intersects(range))
                 return null;
-            if (this.CompareTo(range) > 0)
+            if (CompareTo(range) > 0)
             {
-                var r = new IndexRange(range.EndIndex + 1, this.StartIndex - 1);
+                var r = new IndexRange(range.EndIndex + 1, StartIndex - 1);
                 if (r.Length <= 0)
                     return null;
                 return r;
             }
-            var result = new IndexRange(this.EndIndex + 1, range.StartIndex - 1);
+            var result = new IndexRange(EndIndex + 1, range.StartIndex - 1);
             if (result.Length <= 0)
                 return null;
             return result;
@@ -114,66 +114,66 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public int CompareTo(IndexRange range)
         {
-            return this.StartIndex != range.StartIndex ?
-                                                           this.StartIndex.CompareTo(range.StartIndex) :
-                                                                                                           this.EndIndex.CompareTo(range.EndIndex);
+            return StartIndex != range.StartIndex ?
+                                                           StartIndex.CompareTo(range.StartIndex) :
+                                                                                                           EndIndex.CompareTo(range.EndIndex);
         }
 
         public IndexRange Merge(IndexRange range)
         {
-            if (!this.Abuts(range))
+            if (!Abuts(range))
             {
                 throw new ArgumentOutOfRangeException("range", "Ranges must be adjacent.");
             }
-            if (this.CompareTo(range) > 0)
+            if (CompareTo(range) > 0)
             {
-                return new IndexRange(range.StartIndex, this.EndIndex);
+                return new IndexRange(range.StartIndex, EndIndex);
             }
-            return new IndexRange(this.StartIndex, range.EndIndex);
+            return new IndexRange(StartIndex, range.EndIndex);
         }
 
         public IEnumerable<IndexRange> PartitionBy(int size)
         {
-            if (this.Length <= size)
+            if (Length <= size)
             {
                 return new List<IndexRange> { this };
             }
             var result = new List<IndexRange>();
-            long count = this.Length / size;
-            long remainder = this.Length % size;
+            long count = Length / size;
+            long remainder = Length % size;
             for (long i = 0; i < count; i++)
             {
-                result.Add(IndexRange.FromLength(this.StartIndex + i * size, size));
+                result.Add(FromLength(StartIndex + i * size, size));
             }
             if (remainder != 0)
             {
-                result.Add(IndexRange.FromLength(this.StartIndex + count * size, remainder));
+                result.Add(FromLength(StartIndex + count * size, remainder));
             }
             return result;
         }
 
         public IndexRange Intersection(IndexRange range)
         {
-            if (!this.Intersects(range))
+            if (!Intersects(range))
             {
                 return null;
             }
-            var start = Math.Max(range.StartIndex, this.StartIndex);
-            var end = Math.Min(range.EndIndex, this.EndIndex);
+            var start = Math.Max(range.StartIndex, StartIndex);
+            var end = Math.Min(range.EndIndex, EndIndex);
 
             return new IndexRange(start, end);
         }
 
         public bool Intersects(IndexRange range)
         {
-            var start = Math.Max(range.StartIndex, this.StartIndex);
-            var end = Math.Min(range.EndIndex, this.EndIndex);
+            var start = Math.Max(range.StartIndex, StartIndex);
+            var end = Math.Min(range.EndIndex, EndIndex);
             return start <= end;
         }
 
         public bool Includes(IndexRange range)
         {
-            return this.Includes(range.StartIndex) && this.Includes(range.EndIndex);
+            return Includes(range.StartIndex) && Includes(range.EndIndex);
         }
 
         public long EndIndex { get; private set; }
@@ -192,7 +192,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public bool Equals(IndexRange other)
         {
-            return other != null && this.StartIndex == other.StartIndex && this.EndIndex == other.EndIndex;
+            return other != null && StartIndex == other.StartIndex && EndIndex == other.EndIndex;
         }
 
         public override string ToString()

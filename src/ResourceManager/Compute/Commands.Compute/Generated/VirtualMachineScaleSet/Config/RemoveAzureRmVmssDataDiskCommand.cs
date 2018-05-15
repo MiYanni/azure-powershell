@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Remove", "AzureRmVmssDataDisk", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class RemoveAzureRmVmssDataDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class RemoveAzureRmVmssDataDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -57,41 +57,41 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         protected override void ProcessRecord()
         {
             // VirtualMachineProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
 
             // StorageProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
 
             // DataDisks
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
-            var vDataDisks = this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks.First
+            var vDataDisks = VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks.First
                 (e =>
-                    (this.Name != null && e.Name == this.Name)
-                    || (this.Lun != null && e.Lun == this.Lun)
+                    Name != null && e.Name == Name
+                    || Lun != null && e.Lun == Lun
                 );
 
             if (vDataDisks != null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks.Remove(vDataDisks);
+                VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks.Remove(vDataDisks);
             }
 
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks.Count == 0)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks.Count == 0)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks = null;
+                VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks = null;
             }
-            WriteObject(this.VirtualMachineScaleSet);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

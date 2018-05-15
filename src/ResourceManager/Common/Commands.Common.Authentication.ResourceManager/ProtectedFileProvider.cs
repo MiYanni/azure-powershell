@@ -151,7 +151,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.ResourceManager
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
         }
 
         /// <summary>

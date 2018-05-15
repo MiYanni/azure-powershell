@@ -31,13 +31,13 @@ namespace Microsoft.Azure.Commands.Network
 
             base.Execute();
             var backendAddressPool = new PSBackendAddressPool();
-            backendAddressPool.Name = this.Name;
+            backendAddressPool.Name = Name;
 
             backendAddressPool.Id =
                 ChildResourceHelper.GetResourceNotSetId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerBackendAddressPoolName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    Properties.Resources.LoadBalancerBackendAddressPoolName,
+                    Name);
 
             WriteObject(backendAddressPool);
         }

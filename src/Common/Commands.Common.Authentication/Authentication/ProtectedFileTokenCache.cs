@@ -115,7 +115,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
         {
             if(cacheFileName == null)
             {
-                cacheFileName = ProtectedFileTokenCache.CacheFileName;
+                cacheFileName = CacheFileName;
             }
 
             lock (fileLock)
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
         {
             if(cacheFileName == null)
             {
-                cacheFileName = ProtectedFileTokenCache.CacheFileName;
+                cacheFileName = CacheFileName;
             }
 
 #if !NETSTANDARD

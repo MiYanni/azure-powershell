@@ -37,16 +37,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     {
         private static Assembly assembly = Assembly.GetExecutingAssembly();
 
-        private static List<string> AuthorizationHeaderNames = new List<string>() { "Authorization" };
+        private static List<string> AuthorizationHeaderNames = new List<string> { "Authorization" };
 
         // this is only used to determine cutoff for streams (not xml or json).
         private const int StreamCutOffSize = 10 * 1024; //10KB
 
         private static bool TryFindCertificatesInStore(string thumbprint,
-            System.Security.Cryptography.X509Certificates.StoreLocation location, out X509Certificate2Collection certificates)
+            StoreLocation location, out X509Certificate2Collection certificates)
         {
             X509Certificate2Collection found = null;
-            DiskDataStore.X509StoreWrapper(StoreName.My, location, (store) =>
+            DiskDataStore.X509StoreWrapper(StoreName.My, location, store =>
             {
                 store.Open(OpenFlags.ReadOnly);
                 found = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
@@ -68,13 +68,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 return certificates[0];
             }
-            else
-            {
-                throw new ArgumentException(string.Format(
-                    "Certificate {0} was not found in the certificate store.  Please ensure the referenced " +
-                    "certificate exists in the the LocalMachine\\My or CurrentUser\\My store",
-                    thumbprint));
-            }
+            throw new ArgumentException(string.Format(
+                "Certificate {0} was not found in the certificate store.  Please ensure the referenced " +
+                "certificate exists in the the LocalMachine\\My or CurrentUser\\My store",
+                thumbprint));
         }
 
         /// <summary>
@@ -132,7 +129,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// <returns>A non-null sequence.</returns>
         public static IEnumerable<T> NonNull<T>(this IEnumerable<T> sequence)
         {
-            return (sequence != null) ?
+            return sequence != null ?
                 sequence :
                 Enumerable.Empty<T>();
         }
@@ -166,22 +163,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             if (left == null)
             {
                 return right != null ?
-                    new T[] { right } :
+                    new[] { right } :
                     new T[] { };
             }
-            else if (right == null)
+            if (right == null)
             {
                 return left;
             }
-            else
-            {
-                return Enumerable.Concat(left, new T[] { right }).ToArray();
-            }
+            return Enumerable.Concat(left, new[] { right }).ToArray();
         }
 
         public static TResult MaxOrDefault<T, TResult>(this IEnumerable<T> sequence, Func<T, TResult> selector, TResult defaultValue)
         {
-            return (sequence != null) ? sequence.Max(selector) : defaultValue;
+            return sequence != null ? sequence.Max(selector) : defaultValue;
         }
 
         /// <summary>
@@ -313,7 +307,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             return GetHttpRequestLog(
                 request.Method.ToString(),
                 request.RequestUri.ToString(),
-                (HttpHeaders)request.Headers,
+                request.Headers,
                 body);
         }
 
@@ -323,16 +317,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 return TryFormatXml(content);
             }
-            else if (CloudException.IsJson(content))
+            if (CloudException.IsJson(content))
             {
                 return TryFormatJson(content);
             }
-            else
-            {
-                return content.Length <= GeneralUtilities.StreamCutOffSize ? 
-                    content : 
-                    content.Substring(0, StreamCutOffSize) + "\r\nDATA TRUNCATED DUE TO SIZE\r\n";
-            }
+            return content.Length <= StreamCutOffSize ? 
+                content : 
+                content.Substring(0, StreamCutOffSize) + "\r\nDATA TRUNCATED DUE TO SIZE\r\n";
         }
 
         private static string TryFormatJson(string str)
@@ -341,7 +332,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 object parsedJson = JsonConvert.DeserializeObject(str);
                 return JsonConvert.SerializeObject(parsedJson,
-                    Newtonsoft.Json.Formatting.Indented);
+                    Formatting.Indented);
             }
             catch
             {

@@ -15,13 +15,13 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 {
     using Common.Tags;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Collections;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
+    using Collections;
+    using Extensions;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
 
     /// <summary>
     /// Helper class for tags.

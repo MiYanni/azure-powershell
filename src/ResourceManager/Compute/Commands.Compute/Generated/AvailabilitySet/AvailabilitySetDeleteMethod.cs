@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string availabilitySetName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "AvailabilitySetName" },
+                 new[] { "ResourceGroupName", "AvailabilitySetName" },
                  new object[] { resourceGroupName, availabilitySetName });
         }
     }

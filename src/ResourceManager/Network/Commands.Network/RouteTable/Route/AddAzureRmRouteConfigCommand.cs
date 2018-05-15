@@ -66,19 +66,19 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             // Routes
-            if (this.RouteTable.Routes == null)
+            if (RouteTable.Routes == null)
             {
-                this.RouteTable.Routes = new List<PSRoute>();
+                RouteTable.Routes = new List<PSRoute>();
             }
 
             var vRoutes = new PSRoute();
 
-            vRoutes.AddressPrefix = this.AddressPrefix;
-            vRoutes.NextHopType = this.NextHopType;
-            vRoutes.NextHopIpAddress = this.NextHopIpAddress;
-            vRoutes.Name = this.Name;
-            this.RouteTable.Routes.Add(vRoutes);
-            WriteObject(this.RouteTable, true);
+            vRoutes.AddressPrefix = AddressPrefix;
+            vRoutes.NextHopType = NextHopType;
+            vRoutes.NextHopIpAddress = NextHopIpAddress;
+            vRoutes.Name = Name;
+            RouteTable.Routes.Add(vRoutes);
+            WriteObject(RouteTable, true);
         }
     }
 }

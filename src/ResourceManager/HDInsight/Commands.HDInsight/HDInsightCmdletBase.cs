@@ -113,18 +113,18 @@ namespace Microsoft.Azure.Commands.HDInsight.Commands
             var coreSiteConfiguration = HDInsightManagementClient.GetClusterConfigurations(resourceGroupName, cluster.Name, ConfigurationKey.CoreSite);
             var clusterIdentityConfiguration = HDInsightManagementClient.GetClusterConfigurations(resourceGroupName, cluster.Name, ConfigurationKey.ClusterIdentity);
 
-            var DefaultStorageAccount = ClusterConfigurationUtils.GetDefaultStorageAccountDetails(
+            var defaultStorageAccount = ClusterConfigurationUtils.GetDefaultStorageAccountDetails(
                                                 cluster.Properties.ClusterVersion,
                                                 coreSiteConfiguration,
                                                 clusterIdentityConfiguration
                                          );
 
-            if (DefaultStorageAccount == null)
+            if (defaultStorageAccount == null)
             {
                 throw new CloudException(string.Format("Couldn't find storage information for cluster {0}", clusterName));
             }
 
-            return DefaultStorageAccount;
+            return defaultStorageAccount;
         }
     }
 }

@@ -38,22 +38,22 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!this.IsNetworkSecurityGroupPresent(this.NetworkSecurityGroup.ResourceGroupName, this.NetworkSecurityGroup.Name))
+            if (!IsNetworkSecurityGroupPresent(NetworkSecurityGroup.ResourceGroupName, NetworkSecurityGroup.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Map to the sdk object
-            var nsgModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkSecurityGroup>(this.NetworkSecurityGroup);
+            var nsgModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkSecurityGroup>(NetworkSecurityGroup);
 
-			this.NullifyApplicationSecurityGroupsIfAbsent(nsgModel);
+			NullifyApplicationSecurityGroupsIfAbsent(nsgModel);
 
-			nsgModel.Tags = TagsConversionHelper.CreateTagDictionary(this.NetworkSecurityGroup.Tag, validate: true);
+			nsgModel.Tags = TagsConversionHelper.CreateTagDictionary(NetworkSecurityGroup.Tag, validate: true);
 
             // Execute the PUT NetworkSecurityGroup call
-            this.NetworkSecurityGroupClient.CreateOrUpdate(this.NetworkSecurityGroup.ResourceGroupName, this.NetworkSecurityGroup.Name, nsgModel);
+            NetworkSecurityGroupClient.CreateOrUpdate(NetworkSecurityGroup.ResourceGroupName, NetworkSecurityGroup.Name, nsgModel);
 
-            var getNetworkSecurityGroup = this.GetNetworkSecurityGroup(this.NetworkSecurityGroup.ResourceGroupName, this.NetworkSecurityGroup.Name);
+            var getNetworkSecurityGroup = GetNetworkSecurityGroup(NetworkSecurityGroup.ResourceGroupName, NetworkSecurityGroup.Name);
             WriteObject(getNetworkSecurityGroup);
         }
     }

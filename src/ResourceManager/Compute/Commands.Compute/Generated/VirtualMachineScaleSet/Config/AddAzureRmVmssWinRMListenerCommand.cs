@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Add", "AzureRmVmssWinRMListener", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class AddAzureRmVmssWinRMListenerCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class AddAzureRmVmssWinRMListenerCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -63,41 +63,41 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // VirtualMachineProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
             }
 
             // OsProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
             }
 
             // WindowsConfiguration
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new Microsoft.Azure.Management.Compute.Models.WindowsConfiguration();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new WindowsConfiguration();
             }
 
             // WinRM
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM = new Microsoft.Azure.Management.Compute.Models.WinRMConfiguration();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM = new WinRMConfiguration();
             }
 
             // Listeners
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM.Listeners == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM.Listeners == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM.Listeners = new List<Microsoft.Azure.Management.Compute.Models.WinRMListener>();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM.Listeners = new List<WinRMListener>();
             }
 
-            var vListeners = new Microsoft.Azure.Management.Compute.Models.WinRMListener();
+            var vListeners = new WinRMListener();
 
-            vListeners.Protocol = this.MyInvocation.BoundParameters.ContainsKey("Protocol") ? this.Protocol : (ProtocolTypes?) null;
-            vListeners.CertificateUrl = this.MyInvocation.BoundParameters.ContainsKey("CertificateUrl") ? this.CertificateUrl : null;
-            this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM.Listeners.Add(vListeners);
-            WriteObject(this.VirtualMachineScaleSet);
+            vListeners.Protocol = MyInvocation.BoundParameters.ContainsKey("Protocol") ? Protocol : null;
+            vListeners.CertificateUrl = MyInvocation.BoundParameters.ContainsKey("CertificateUrl") ? CertificateUrl : null;
+            VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM.Listeners.Add(vListeners);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

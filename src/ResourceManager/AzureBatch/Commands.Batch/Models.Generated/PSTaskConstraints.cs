@@ -26,61 +26,61 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskConstraints
     {
         
-        internal Microsoft.Azure.Batch.TaskConstraints omObject;
+        internal TaskConstraints omObject;
         
-        public PSTaskConstraints(System.Nullable<System.TimeSpan> maxWallClockTime = null, System.Nullable<System.TimeSpan> retentionTime = null, System.Nullable<int> maxTaskRetryCount = null)
+        public PSTaskConstraints(Nullable<TimeSpan> maxWallClockTime = null, Nullable<TimeSpan> retentionTime = null, Nullable<int> maxTaskRetryCount = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.TaskConstraints(maxWallClockTime, retentionTime, maxTaskRetryCount);
+            omObject = new TaskConstraints(maxWallClockTime, retentionTime, maxTaskRetryCount);
         }
         
-        internal PSTaskConstraints(Microsoft.Azure.Batch.TaskConstraints omObject)
+        internal PSTaskConstraints(TaskConstraints omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.Int32? MaxTaskRetryCount
+        public Int32? MaxTaskRetryCount
         {
             get
             {
-                return this.omObject.MaxTaskRetryCount;
+                return omObject.MaxTaskRetryCount;
             }
             set
             {
-                this.omObject.MaxTaskRetryCount = value;
+                omObject.MaxTaskRetryCount = value;
             }
         }
         
-        public System.TimeSpan? MaxWallClockTime
+        public TimeSpan? MaxWallClockTime
         {
             get
             {
-                return this.omObject.MaxWallClockTime;
+                return omObject.MaxWallClockTime;
             }
             set
             {
-                this.omObject.MaxWallClockTime = value;
+                omObject.MaxWallClockTime = value;
             }
         }
         
-        public System.TimeSpan? RetentionTime
+        public TimeSpan? RetentionTime
         {
             get
             {
-                return this.omObject.RetentionTime;
+                return omObject.RetentionTime;
             }
             set
             {
-                this.omObject.RetentionTime = value;
+                omObject.RetentionTime = value;
             }
         }
     }

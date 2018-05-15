@@ -77,33 +77,33 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var vRouteTable = this.NetworkClient.NetworkManagementClient.RouteTables.Get(ResourceGroupName, Name, ExpandResource);
-                var vRouteTableModel = NetworkResourceManagerProfile.Mapper.Map<CNM.PSRouteTable>(vRouteTable);
-                vRouteTableModel.ResourceGroupName = this.ResourceGroupName;
+                var vRouteTable = NetworkClient.NetworkManagementClient.RouteTables.Get(ResourceGroupName, Name, ExpandResource);
+                var vRouteTableModel = NetworkResourceManagerProfile.Mapper.Map<PSRouteTable>(vRouteTable);
+                vRouteTableModel.ResourceGroupName = ResourceGroupName;
                 vRouteTableModel.Tag = TagsConversionHelper.CreateTagHashtable(vRouteTable.Tags);
                 WriteObject(vRouteTableModel, true);
             }
             else
             {
                 IPage<RouteTable> vRouteTablePage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    vRouteTablePage = this.NetworkClient.NetworkManagementClient.RouteTables.List(this.ResourceGroupName);
+                    vRouteTablePage = NetworkClient.NetworkManagementClient.RouteTables.List(ResourceGroupName);
                 }
                 else
                 {
-                    vRouteTablePage = this.NetworkClient.NetworkManagementClient.RouteTables.ListAll();
+                    vRouteTablePage = NetworkClient.NetworkManagementClient.RouteTables.ListAll();
                 }
 
                 var vRouteTableList = ListNextLink<RouteTable>.GetAllResourcesByPollingNextLink(vRouteTablePage,
-                    this.NetworkClient.NetworkManagementClient.RouteTables.ListNext);
+                    NetworkClient.NetworkManagementClient.RouteTables.ListNext);
                 List<PSRouteTable> psRouteTableList = new List<PSRouteTable>();
                 foreach (var vRouteTable in vRouteTableList)
                 {
-                    var vRouteTableModel = NetworkResourceManagerProfile.Mapper.Map<CNM.PSRouteTable>(vRouteTable);
-                    vRouteTableModel.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(vRouteTable.Id);
+                    var vRouteTableModel = NetworkResourceManagerProfile.Mapper.Map<PSRouteTable>(vRouteTable);
+                    vRouteTableModel.ResourceGroupName = GetResourceGroup(vRouteTable.Id);
                     vRouteTableModel.Tag = TagsConversionHelper.CreateTagHashtable(vRouteTable.Tags);
                     psRouteTableList.Add(vRouteTableModel);
                 }

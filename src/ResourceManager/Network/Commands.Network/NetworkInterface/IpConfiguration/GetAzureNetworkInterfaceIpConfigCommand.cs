@@ -37,18 +37,18 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var ipconfig =
-                    this.NetworkInterface.IpConfigurations.First(
+                    NetworkInterface.IpConfigurations.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(ipconfig);
             }
             else
             {
-                var ipconfigs = this.NetworkInterface.IpConfigurations;
+                var ipconfigs = NetworkInterface.IpConfigurations;
                 WriteObject(ipconfigs, true);
             }
 

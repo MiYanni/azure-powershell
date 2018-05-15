@@ -21,9 +21,9 @@ namespace Microsoft.Azure.Commands.WebApps.Models
     {
         public PSSite(Site other)
             : base(
-                  location: other.Location,
-                  id: other.Id,
-                  name: other.Name,
+                  other.Location,
+                  other.Id,
+                  other.Name,
                   type: other.Type,
                   tags: other.Tags,
                   state: other.State,

@@ -29,22 +29,22 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess("AzureApplicationGatewayWebApplicationFirewallConfiguration", Microsoft.Azure.Commands.Network.Properties.Resources.OverwritingResourceMessage))
+            if (ShouldProcess("AzureApplicationGatewayWebApplicationFirewallConfiguration", Properties.Resources.OverwritingResourceMessage))
             {
                 base.ExecuteCmdlet();
 
-                if (this.ApplicationGateway.WebApplicationFirewallConfiguration == null)
+                if (ApplicationGateway.WebApplicationFirewallConfiguration == null)
                 {
-                    this.ApplicationGateway.WebApplicationFirewallConfiguration = new PSApplicationGatewayWebApplicationFirewallConfiguration();
+                    ApplicationGateway.WebApplicationFirewallConfiguration = new PSApplicationGatewayWebApplicationFirewallConfiguration();
                 }
 
-                this.ApplicationGateway.WebApplicationFirewallConfiguration.Enabled = this.Enabled;
-                this.ApplicationGateway.WebApplicationFirewallConfiguration.FirewallMode = this.FirewallMode;
-                this.ApplicationGateway.WebApplicationFirewallConfiguration.RuleSetType = this.RuleSetType;
-                this.ApplicationGateway.WebApplicationFirewallConfiguration.RuleSetVersion = this.RuleSetVersion;
-                this.ApplicationGateway.WebApplicationFirewallConfiguration.DisabledRuleGroups = this.DisabledRuleGroups;
+                ApplicationGateway.WebApplicationFirewallConfiguration.Enabled = Enabled;
+                ApplicationGateway.WebApplicationFirewallConfiguration.FirewallMode = FirewallMode;
+                ApplicationGateway.WebApplicationFirewallConfiguration.RuleSetType = RuleSetType;
+                ApplicationGateway.WebApplicationFirewallConfiguration.RuleSetVersion = RuleSetVersion;
+                ApplicationGateway.WebApplicationFirewallConfiguration.DisabledRuleGroups = DisabledRuleGroups;
 
-                WriteObject(this.ApplicationGateway);
+                WriteObject(ApplicationGateway);
             }
         }
     }

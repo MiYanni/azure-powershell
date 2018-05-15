@@ -9,9 +9,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.File;
+    using WindowsAzure.Storage.Auth;
+    using WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.File;
     using System;
     using System.Globalization;
 
@@ -36,10 +36,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return file.SnapshotQualifiedUri;
             }
-            else
-            {
-                return new Uri(string.Format(CultureInfo.InvariantCulture, "{0}{1}", file.SnapshotQualifiedUri.AbsoluteUri, sasToken));
-            }
+            return new Uri(string.Format(CultureInfo.InvariantCulture, "{0}{1}", file.SnapshotQualifiedUri.AbsoluteUri, sasToken));
         }
 
         internal static CloudFile GenerateCopySourceFile(
@@ -67,7 +64,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return string.Empty;
             }
-            else if (file.ServiceClient.Credentials.IsSAS)
+            if (file.ServiceClient.Credentials.IsSAS)
             {
                 return file.ServiceClient.Credentials.SASToken;
             }
@@ -75,7 +72,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             // SAS life time is at least 10 minutes.
             TimeSpan sasLifeTime = TimeSpan.FromMinutes(CopySASLifeTimeInMinutes);
 
-            SharedAccessFilePolicy policy = new SharedAccessFilePolicy()
+            SharedAccessFilePolicy policy = new SharedAccessFilePolicy
             {
                 SharedAccessExpiryTime = DateTime.Now.Add(sasLifeTime),
                 Permissions = SharedAccessFilePermissions.Read,
@@ -159,7 +156,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return string.Empty;
             }
-            else if (blob.ServiceClient.Credentials.IsSAS)
+            if (blob.ServiceClient.Credentials.IsSAS)
             {
                 return blob.ServiceClient.Credentials.SASToken;
             }
@@ -167,7 +164,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             // SAS life time is at least 10 minutes.
             TimeSpan sasLifeTime = TimeSpan.FromMinutes(CopySASLifeTimeInMinutes);
 
-            SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy()
+            SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy
             {
                 SharedAccessExpiryTime = DateTime.Now.Add(sasLifeTime),
                 Permissions = SharedAccessBlobPermissions.Read,

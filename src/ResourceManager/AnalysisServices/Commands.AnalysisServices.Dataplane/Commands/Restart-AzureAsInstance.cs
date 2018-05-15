@@ -45,8 +45,8 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 
         public RestartAzureAnalysisServer()
         {
-            this.AsAzureHttpClient = new AsAzureHttpClient(() => new HttpClient());
-            this.TokenCacheItemProvider = new TokenCacheItemProvider();
+            AsAzureHttpClient = new AsAzureHttpClient(() => new HttpClient());
+            TokenCacheItemProvider = new TokenCacheItemProvider();
 
         }
 
@@ -107,17 +107,17 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                 }
             }
 
-            if (this.AsAzureHttpClient == null)
+            if (AsAzureHttpClient == null)
             {
-                this.AsAzureHttpClient = new AsAzureHttpClient(() =>
+                AsAzureHttpClient = new AsAzureHttpClient(() =>
                 {
                     return new HttpClient();
                 });
             }
 
-            if (this.TokenCacheItemProvider == null)
+            if (TokenCacheItemProvider == null)
             {
-                this.TokenCacheItemProvider = new TokenCacheItemProvider();
+                TokenCacheItemProvider = new TokenCacheItemProvider();
             }
         }
 
@@ -136,7 +136,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 #else
                 AsAzureClientSession.Instance.Login(context, null);
 #endif
-                string accessToken = this.TokenCacheItemProvider.GetTokenFromTokenCache(AsAzureClientSession.TokenCache, context.Account.UniqueId);
+                string accessToken = TokenCacheItemProvider.GetTokenFromTokenCache(AsAzureClientSession.TokenCache, context.Account.UniqueId);
 
                 Uri restartBaseUri = new Uri(string.Format("{0}{1}{2}", Uri.UriSchemeHttps, Uri.SchemeDelimiter, context.Environment.Name));
 

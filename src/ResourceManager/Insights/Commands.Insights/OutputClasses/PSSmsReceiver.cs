@@ -47,10 +47,10 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="receiver">The receiver to wrap.</param>
         public PSSmsReceiver(SmsReceiver receiver)
         {
-            this.Name = receiver.Name;
-            this.CountryCode = receiver.CountryCode;
-            this.PhoneNumber = receiver.PhoneNumber;
-            this.Status = receiver.Status;
+            Name = receiver.Name;
+            CountryCode = receiver.CountryCode;
+            PhoneNumber = receiver.PhoneNumber;
+            Status = receiver.Status;
         }
     }
 }

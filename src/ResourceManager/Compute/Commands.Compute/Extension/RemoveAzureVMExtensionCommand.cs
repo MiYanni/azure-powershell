@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -62,14 +62,14 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                if (this.ShouldProcess(String.Format(VMName, Name, VMName), string.Format(Properties.Resources.RemoveExtensionAction, Name))
-                    && (this.Force.IsPresent
-                    || this.ShouldContinue(Properties.Resources.VirtualMachineExtensionRemovalConfirmation, Properties.Resources.VirtualMachineExtensionRemovalCaption)))
+                if (ShouldProcess(String.Format(VMName, Name, VMName), string.Format(Properties.Resources.RemoveExtensionAction, Name))
+                    && (Force.IsPresent
+                    || ShouldContinue(Properties.Resources.VirtualMachineExtensionRemovalConfirmation, Properties.Resources.VirtualMachineExtensionRemovalCaption)))
                 {
-                    var op = this.VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name).GetAwaiter().GetResult();
+                    var op = VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
                     WriteObject(result);
                 }

@@ -26,8 +26,8 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             public ByteRange(long start, long end)
             {
-                this.Start = start;
-                this.End = end;
+                Start = start;
+                End = end;
             }
 
             public long Start { get; }
@@ -53,9 +53,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException(Resources.NoDownloadDestination);
             }
 
-            this.DestinationPath = destinationPath;
-            this.Range = byteRange;
-            this.Stream = stream;
+            DestinationPath = destinationPath;
+            Range = byteRange;
+            Stream = stream;
         }
 
         /// <summary>

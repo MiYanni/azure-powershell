@@ -36,9 +36,9 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
                condition: ruleSpec.Condition,
                lastUpdatedTime: ruleSpec.LastUpdatedTime)
         {
-            this.Tags = ruleSpec.Tags;
-            this.Actions = ruleSpec.Actions;
-            this.Description = ruleSpec.Description;
+            Tags = ruleSpec.Tags;
+            Actions = ruleSpec.Actions;
+            Description = ruleSpec.Description;
         }
     }
 }

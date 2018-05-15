@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "Resource group name of the virtual machine")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -94,14 +94,14 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             if (OSType.Windows.Equals(currentOSType))
             {
-                this.Name = this.Name ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultName;
-                this.ExtensionPublisherName = this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher;
-                this.ExtensionType = this.ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType;
+                Name = Name ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultName;
+                ExtensionPublisherName = ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher;
+                ExtensionType = ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType;
                 vmExtensionParameters = new VirtualMachineExtension
                 {
                     Location = vmParameters.Location,
-                    Publisher = this.ExtensionPublisherName,
-                    VirtualMachineExtensionType = this.ExtensionType,
+                    Publisher = ExtensionPublisherName,
+                    VirtualMachineExtensionType = ExtensionType,
                     TypeHandlerVersion = AzureDiskEncryptionExtensionContext.ExtensionDefaultVersion,
                     Settings = publicSettings,
                     ProtectedSettings = protectedSettings
@@ -109,14 +109,14 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             }
             else if (OSType.Linux.Equals(currentOSType))
             {
-                this.Name = this.Name ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
-                this.ExtensionPublisherName = this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher;
-                this.ExtensionType = this.ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType;
+                Name = Name ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
+                ExtensionPublisherName = ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher;
+                ExtensionType = ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType;
                 vmExtensionParameters = new VirtualMachineExtension
                 {
                     Location = vmParameters.Location,
-                    Publisher = this.ExtensionPublisherName,
-                    VirtualMachineExtensionType = this.ExtensionType,
+                    Publisher = ExtensionPublisherName,
+                    VirtualMachineExtensionType = ExtensionType,
                     TypeHandlerVersion = AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultVersion,
                     Settings = publicSettings,
                     ProtectedSettings = protectedSettings
@@ -130,35 +130,35 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
         {
             if (OSType.Windows.Equals(currentOSType))
             {
-                this.Name = this.Name ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultName;
+                Name = Name ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultName;
             }
             else if (OSType.Linux.Equals(currentOSType))
             {
-                this.Name = this.Name ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
+                Name = Name ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
             }
 
             
-            AzureOperationResponse<VirtualMachineExtension> extensionResult = this.VirtualMachineExtensionClient.GetWithInstanceView(this.ResourceGroupName, this.VMName, this.Name);
+            AzureOperationResponse<VirtualMachineExtension> extensionResult = VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName, VMName, Name);
             if (extensionResult == null)
             {
                 return false;
             }
 
             PSVirtualMachineExtension returnedExtension = extensionResult.ToPSVirtualMachineExtension(
-                this.ResourceGroupName, this.VMName);
+                ResourceGroupName, VMName);
 
-            if ((returnedExtension == null) ||
-                (string.IsNullOrWhiteSpace(returnedExtension.Publisher)) ||
-                (string.IsNullOrWhiteSpace(returnedExtension.ExtensionType)))
+            if (returnedExtension == null ||
+                string.IsNullOrWhiteSpace(returnedExtension.Publisher) ||
+                string.IsNullOrWhiteSpace(returnedExtension.ExtensionType))
             {
                 return false;
             }
             bool publisherMatch = false;
             if (OSType.Linux.Equals(currentOSType))
             {
-                if (returnedExtension.Publisher.Equals(this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher,
+                if (returnedExtension.Publisher.Equals(ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher,
                     StringComparison.InvariantCultureIgnoreCase) &&
-                    returnedExtension.ExtensionType.Equals(this.ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType,
+                    returnedExtension.ExtensionType.Equals(ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType,
                     StringComparison.InvariantCultureIgnoreCase))
                 {
                     publisherMatch = true;
@@ -166,8 +166,8 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             }
             else if (OSType.Windows.Equals(currentOSType))
             {
-                if (returnedExtension.Publisher.Equals(this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
-                    returnedExtension.ExtensionType.Equals(this.ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase))
+                if (returnedExtension.Publisher.Equals(ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
+                    returnedExtension.ExtensionType.Equals(ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase))
                 {
                     publisherMatch = true;
                 }
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
         private string GetExtensionStatusMessage(OSType currentOSType, bool returnSubstatusMessage=false)
         {
-            AzureOperationResponse<VirtualMachineExtension> extensionResult = this.VirtualMachineExtensionClient.GetWithInstanceView(this.ResourceGroupName, this.VMName, this.Name);
+            AzureOperationResponse<VirtualMachineExtension> extensionResult = VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName, VMName, Name);
             if (extensionResult == null)
             {
                 ThrowTerminatingError(new ErrorRecord(new ApplicationFailedException(string.Format(CultureInfo.CurrentUICulture, "Failed to retrieve extension status")),
@@ -192,11 +192,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             }
 
             PSVirtualMachineExtension returnedExtension = extensionResult.ToPSVirtualMachineExtension(
-                this.ResourceGroupName, this.VMName);
+                ResourceGroupName, VMName);
 
-            if ((returnedExtension == null) ||
-                (string.IsNullOrWhiteSpace(returnedExtension.Publisher)) ||
-                (string.IsNullOrWhiteSpace(returnedExtension.ExtensionType)))
+            if (returnedExtension == null ||
+                string.IsNullOrWhiteSpace(returnedExtension.Publisher) ||
+                string.IsNullOrWhiteSpace(returnedExtension.ExtensionType))
             {
                 ThrowTerminatingError(new ErrorRecord(new ApplicationFailedException(string.Format(CultureInfo.CurrentUICulture, "Missing extension publisher and type info")),
                                                       "InvalidResult",
@@ -206,16 +206,16 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             bool publisherMatch = false;
             if (OSType.Linux.Equals(currentOSType))
             {
-                if (returnedExtension.Publisher.Equals(this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
-                    returnedExtension.ExtensionType.Equals(this.ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase))
+                if (returnedExtension.Publisher.Equals(ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
+                    returnedExtension.ExtensionType.Equals(ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase))
                 {
                     publisherMatch = true;
                 }
             }
             else if (OSType.Windows.Equals(currentOSType))
             {
-                if (returnedExtension.Publisher.Equals(this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
-                    returnedExtension.ExtensionType.Equals(this.ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase))
+                if (returnedExtension.Publisher.Equals(ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
+                    returnedExtension.ExtensionType.Equals(ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase))
                 {
                     publisherMatch = true;
                 }
@@ -223,42 +223,30 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             if (publisherMatch)
             {
                 AzureDiskEncryptionExtensionContext context = new AzureDiskEncryptionExtensionContext(returnedExtension);
-                if ((context == null) || (context.Statuses == null) || (context.Statuses.Count < 1))
+                if (context == null || context.Statuses == null || context.Statuses.Count < 1)
                 {
                     throw new KeyNotFoundException(string.Format(CultureInfo.CurrentUICulture, "Invalid extension status"));
                 }
 
                 if (returnSubstatusMessage)
                 {
-                    if ((context == null) || (context.SubStatuses == null) || (context.SubStatuses.Count < 1))
+                    if (context == null || context.SubStatuses == null || context.SubStatuses.Count < 1)
                     {
                         throw new KeyNotFoundException(string.Format(CultureInfo.CurrentUICulture, "Invalid extension substatus"));
                     }
-                    else
-                    {
-                        return context.SubStatuses[0].Message;
-                    }
+                    return context.SubStatuses[0].Message;
                 }
-                else
+                if (!string.IsNullOrWhiteSpace(context.Statuses[0].Message))
                 {
-                    if (!string.IsNullOrWhiteSpace(context.Statuses[0].Message))
-                    {
-                        return context.Statuses[0].Message;
-                    }
-                    else
-                    {
-                        // if message is empty, fall back to display status
-                        return context.Statuses[0].DisplayStatus;
-                    }
-                }                
+                    return context.Statuses[0].Message;
+                }
+                // if message is empty, fall back to display status
+                return context.Statuses[0].DisplayStatus;
             }
-            else
-            {
-                ThrowTerminatingError(new ErrorRecord(new ApplicationFailedException(string.Format(CultureInfo.CurrentUICulture, "Extension publisher and type mismatched")),
-                                                      "InvalidResult",
-                                                      ErrorCategory.InvalidResult,
-                                                      null));
-            }
+            ThrowTerminatingError(new ErrorRecord(new ApplicationFailedException(string.Format(CultureInfo.CurrentUICulture, "Extension publisher and type mismatched")),
+                "InvalidResult",
+                ErrorCategory.InvalidResult,
+                null));
             return null;
         }
 
@@ -268,22 +256,19 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             {
                 return OSType.Unknown;
             }
-            else
+            if (OperatingSystemTypes.Linux == vmParameters.StorageProfile.OsDisk.OsType)
             {
-                if (OperatingSystemTypes.Linux == vmParameters.StorageProfile.OsDisk.OsType)
-                {
-                    return OSType.Linux;
-                }
-                if (OperatingSystemTypes.Windows == vmParameters.StorageProfile.OsDisk.OsType)
-                {
-                    return OSType.Windows;
-                }
-                return OSType.Unknown;
+                return OSType.Linux;
             }
+            if (OperatingSystemTypes.Windows == vmParameters.StorageProfile.OsDisk.OsType)
+            {
+                return OSType.Windows;
+            }
+            return OSType.Unknown;
         }
         private EncryptionStatus IsOsVolumeEncrypted(VirtualMachine vmParameters)
         {
-            OSType osType = this.GetOSType(vmParameters);
+            OSType osType = GetOSType(vmParameters);
             switch (osType)
             {
                 case OSType.Windows:
@@ -318,9 +303,9 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
         private DiskEncryptionSettings GetOsVolumeEncryptionSettings(VirtualMachine vmParameters)
         {
-            if ((vmParameters != null) &&
-                (vmParameters.StorageProfile != null) &&
-                (vmParameters.StorageProfile.OsDisk != null))
+            if (vmParameters != null &&
+                vmParameters.StorageProfile != null &&
+                vmParameters.StorageProfile.OsDisk != null)
             {
                 return vmParameters.StorageProfile.OsDisk.EncryptionSettings;
             }
@@ -334,22 +319,22 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             switch (osType)
             {
                 case OSType.Windows:
-                    if ((vmExtension != null) &&
-                        (vmExtension.Publisher != null) &&
-                        (vmExtension.VirtualMachineExtensionType != null) &&
-                        (vmExtension.Publisher.Equals(this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase)) &&
-                        (vmExtension.VirtualMachineExtensionType.Equals(this.ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase)))
+                    if (vmExtension != null &&
+                        vmExtension.Publisher != null &&
+                        vmExtension.VirtualMachineExtensionType != null &&
+                        vmExtension.Publisher.Equals(ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
+                        vmExtension.VirtualMachineExtensionType.Equals(ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return true;
                     }
 
                     return false;
                 case OSType.Linux:
-                    if ((vmExtension != null) &&
-                        (vmExtension.Publisher != null) &&
-                        (vmExtension.VirtualMachineExtensionType != null) &&
-                        (vmExtension.Publisher.Equals(this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase)) &&
-                        (vmExtension.VirtualMachineExtensionType.Equals(this.ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase)))
+                    if (vmExtension != null &&
+                        vmExtension.Publisher != null &&
+                        vmExtension.VirtualMachineExtensionType != null &&
+                        vmExtension.Publisher.Equals(ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
+                        vmExtension.VirtualMachineExtensionType.Equals(ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return true;
                     }
@@ -366,9 +351,9 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
         {
             if (adeExtension != null)
             {
-                if ((string.IsNullOrWhiteSpace(adeExtension.VolumeType)) ||
-                    (adeExtension.VolumeType.Equals(AzureDiskEncryptionExtensionContext.VolumeTypeData, StringComparison.InvariantCultureIgnoreCase)) ||
-                    (adeExtension.VolumeType.Equals(AzureDiskEncryptionExtensionContext.VolumeTypeAll, StringComparison.InvariantCultureIgnoreCase)))
+                if (string.IsNullOrWhiteSpace(adeExtension.VolumeType) ||
+                    adeExtension.VolumeType.Equals(AzureDiskEncryptionExtensionContext.VolumeTypeData, StringComparison.InvariantCultureIgnoreCase) ||
+                    adeExtension.VolumeType.Equals(AzureDiskEncryptionExtensionContext.VolumeTypeAll, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;
                 }
@@ -379,8 +364,8 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
         private bool ExtensionProvisioningSucceeded(AzureDiskEncryptionExtensionContext adeExtension)
         {
-            var extensionStatusViewresult = this.VirtualMachineExtensionClient.GetWithInstanceView(this.ResourceGroupName, this.VMName, adeExtension.Name);
-            var extensionStatusView = extensionStatusViewresult.ToPSVirtualMachineExtension(this.ResourceGroupName, this.VMName);
+            var extensionStatusViewresult = VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName, VMName, adeExtension.Name);
+            var extensionStatusView = extensionStatusViewresult.ToPSVirtualMachineExtension(ResourceGroupName, VMName);
             var adeExtensionWithStatus = new AzureDiskEncryptionExtensionContext(extensionStatusView);
             if (adeExtensionWithStatus.ProvisioningState.Equals(AzureDiskEncryptionExtensionContext.StatusSucceeded, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -393,10 +378,10 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
         private EncryptionStatus AreDataVolumesEncrypted(VirtualMachine vmParameters)
         {
             // return true if any (non-OS) data volume attached to the VM reports an encrypted state
-            VirtualMachineInstanceView iv = this.ComputeClient.ComputeManagementClient.VirtualMachines.InstanceView(this.ResourceGroupName, this.VMName);
+            VirtualMachineInstanceView iv = ComputeClient.ComputeManagementClient.VirtualMachines.InstanceView(ResourceGroupName, VMName);
             foreach (DiskInstanceView div in iv.Disks)
             {
-                if (!((div.Name.Equals("osDisk") || div.Name.Contains("_OsDisk_"))) &&
+                if (!(div.Name.Equals("osDisk") || div.Name.Contains("_OsDisk_")) &&
                     GetLastEncryptionStatus(div).Equals("EncryptionState/encrypted"))
                 {
                     return EncryptionStatus.Encrypted;
@@ -409,7 +394,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                 return EncryptionStatus.Unknown;
             }
 
-            OSType osType = this.GetOSType(vmParameters);
+            OSType osType = GetOSType(vmParameters);
             foreach (VirtualMachineExtension vmExtension in vmParameters.Resources)
             {
                 switch (osType)
@@ -418,7 +403,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                     case OSType.Linux:
                         if (IsAzureDiskEncryptionExtension(osType, vmExtension))
                         {
-                            AzureDiskEncryptionExtensionContext adeExtension = new AzureDiskEncryptionExtensionContext(vmExtension.ToPSVirtualMachineExtension(this.ResourceGroupName, this.VMName));
+                            AzureDiskEncryptionExtensionContext adeExtension = new AzureDiskEncryptionExtensionContext(vmExtension.ToPSVirtualMachineExtension(ResourceGroupName, VMName));
                             if (DataVolumeInExtensionConfig(adeExtension))
                             {
                                 if (adeExtension.EncryptionOperation.Equals(AzureDiskEncryptionExtensionConstants.enableEncryptionOperation, StringComparison.InvariantCultureIgnoreCase))
@@ -444,7 +429,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
         {
             AzureDiskEncryptionStatusContext result = null;
 
-            VirtualMachineInstanceView iv = this.ComputeClient.ComputeManagementClient.VirtualMachines.InstanceView(this.ResourceGroupName, this.VMName);
+            VirtualMachineInstanceView iv = ComputeClient.ComputeManagementClient.VirtualMachines.InstanceView(ResourceGroupName, VMName);
             if (iv != null)
             {
                 result = new AzureDiskEncryptionStatusContext();
@@ -469,7 +454,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                             default:
                                 break;
                         }
-                        result.OsVolumeEncryptionSettings = (div.EncryptionSettings != null) ? div.EncryptionSettings[0] : null;
+                        result.OsVolumeEncryptionSettings = div.EncryptionSettings != null ? div.EncryptionSettings[0] : null;
                     }
                     else if (result.DataVolumesEncrypted == EncryptionStatus.Unknown)
                     {
@@ -497,7 +482,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             ExecuteClientAction(() =>
             {
                 // get current extension status progress message
-                VirtualMachine vmParameters = (this.ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName));
+                VirtualMachine vmParameters = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
                 OSType osType = GetOSType(vmParameters);
                 string progressMessage = null;
                 if (IsExtensionInstalled(osType))
@@ -540,26 +525,26 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                     case OSType.Linux:
                         if (!IsExtensionInstalled(osType))
                         {
-                            VirtualMachine virtualMachineResponse = this.ComputeClient.ComputeManagementClient.VirtualMachines.GetWithInstanceView(
-                                this.ResourceGroupName, VMName).Body;
+                            VirtualMachine virtualMachineResponse = ComputeClient.ComputeManagementClient.VirtualMachines.GetWithInstanceView(
+                                ResourceGroupName, VMName).Body;
                             VirtualMachineExtension parameters = GetVmExtensionParameters(virtualMachineResponse, osType);
 
-                            this.VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
-                                this.ResourceGroupName,
-                                this.VMName,
-                                this.Name,
+                            VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
+                                ResourceGroupName,
+                                VMName,
+                                Name,
                                 parameters).GetAwaiter().GetResult();
                         }
 
                         Dictionary<string, string> encryptionStatusParsed = null;
                         try
                         {
-                            string encryptionStatusJson = GetExtensionStatusMessage(osType, returnSubstatusMessage: true);
+                            string encryptionStatusJson = GetExtensionStatusMessage(osType, true);
                             encryptionStatusParsed = JsonConvert.DeserializeObject<Dictionary<string, string>>(encryptionStatusJson);
                         }
                         catch(KeyNotFoundException)
                         {
-                            encryptionStatusParsed = new Dictionary<string, string>()
+                            encryptionStatusParsed = new Dictionary<string, string>
                             {
                                 { AzureDiskEncryptionExtensionConstants.encryptionResultOsKey, EncryptionStatus.Unknown.ToString() },
                                 { AzureDiskEncryptionExtensionConstants.encryptionResultDataKey, EncryptionStatus.Unknown.ToString() }

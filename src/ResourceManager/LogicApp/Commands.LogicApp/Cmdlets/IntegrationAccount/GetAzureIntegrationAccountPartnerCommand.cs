@@ -15,9 +15,9 @@
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.Rest.Azure;
+    using Utilities;
+    using Management.Logic.Models;
+    using Rest.Azure;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -54,13 +54,13 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (string.IsNullOrEmpty(this.PartnerName))
+            if (string.IsNullOrEmpty(PartnerName))
             {
-                this.WriteObject(IntegrationAccountClient.ListIntegrationAccountPartners(this.ResourceGroupName,this.Name), true);
+                WriteObject(IntegrationAccountClient.ListIntegrationAccountPartners(ResourceGroupName,Name), true);
             }
             else
             {
-                this.WriteObject(IntegrationAccountClient.GetIntegrationAccountPartner(this.ResourceGroupName, this.Name, this.PartnerName), true);
+                WriteObject(IntegrationAccountClient.GetIntegrationAccountPartner(ResourceGroupName, Name, PartnerName), true);
             }
         }
     }

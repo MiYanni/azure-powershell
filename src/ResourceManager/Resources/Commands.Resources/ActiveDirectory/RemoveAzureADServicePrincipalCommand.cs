@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     }
                     else if (this.IsParameterBound(c => c.ServicePrincipalName) || this.IsParameterBound(c => c.DisplayName))
                     {
-                        ADObjectFilterOptions options = new ADObjectFilterOptions()
+                        ADObjectFilterOptions options = new ADObjectFilterOptions
                         {
                             SPN = ServicePrincipalName,
                             SearchString = DisplayName

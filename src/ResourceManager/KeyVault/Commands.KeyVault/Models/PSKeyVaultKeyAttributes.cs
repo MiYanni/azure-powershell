@@ -28,26 +28,26 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
         internal PSKeyVaultKeyAttributes(bool? enabled, DateTime? expires, DateTime? notBefore, string keyType, string[] keyOps, Hashtable tags)
         {
-            this.Enabled = enabled;
-            this.Expires = expires;
-            this.NotBefore = notBefore;
-            this.KeyType = keyType;
-            this.KeyOps = keyOps;
-            this.Tags = tags;
+            Enabled = enabled;
+            Expires = expires;
+            NotBefore = notBefore;
+            KeyType = keyType;
+            KeyOps = keyOps;
+            Tags = tags;
         }
 
         internal PSKeyVaultKeyAttributes(bool? enabled, DateTime? expires, DateTime? notBefore, string keyType, 
             string[] keyOps, DateTime? created, DateTime? updated, string deletionRecoveryLevel, IDictionary<string, string> tags)
         {
-            this.Enabled = enabled;
-            this.Expires = expires;
-            this.NotBefore = notBefore;
-            this.KeyType = keyType;
-            this.KeyOps = keyOps;
-            this.Created = created;
-            this.Updated = updated;
-            this.RecoveryLevel = deletionRecoveryLevel;
-            this.Tags = (tags == null) ? null : tags.ConvertToHashtable();
+            Enabled = enabled;
+            Expires = expires;
+            NotBefore = notBefore;
+            KeyType = keyType;
+            KeyOps = keyOps;
+            Created = created;
+            Updated = updated;
+            RecoveryLevel = deletionRecoveryLevel;
+            Tags = tags == null ? null : tags.ConvertToHashtable();
         }
 
         public bool? Enabled { get; set; }
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return (Tags == null) ? null : Tags.ConvertToTagsTable();
+                return Tags == null ? null : Tags.ConvertToTagsTable();
             }
         }
 
@@ -82,13 +82,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return (Tags == null) ? null : Tags.ConvertToDictionary();
+                return Tags == null ? null : Tags.ConvertToDictionary();
             }
         }
 
         public static explicit operator Azure.KeyVault.Models.KeyAttributes(PSKeyVaultKeyAttributes attr)
         {
-            return new Azure.KeyVault.Models.KeyAttributes()
+            return new Azure.KeyVault.Models.KeyAttributes
             {
                 Enabled = attr.Enabled,
                 NotBefore = attr.NotBefore,

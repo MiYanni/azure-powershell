@@ -14,10 +14,10 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
-    using Microsoft.Azure.Management.ResourceManager.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Extensions;
+    using SdkModels;
+    using Management.ResourceManager.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -34,11 +34,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            var allLocations = this.SubscriptionSdkClient.ListLocations(DefaultContext.Subscription.Id.ToString());
-            var providers = this.ResourceManagerSdkClient.ListResourceProviders(providerName: null, listAvailable: true);
+            var allLocations = SubscriptionSdkClient.ListLocations(DefaultContext.Subscription.Id.ToString());
+            var providers = ResourceManagerSdkClient.ListResourceProviders(null, true);
             var providerLocations = ConstructResourceProviderLocations(allLocations, providers);
 
-            this.WriteObject(providerLocations, enumerateCollection: true);
+            WriteObject(providerLocations, true);
         }
 
         private List<PSResourceProviderLocation> ConstructResourceProviderLocations(List<Internal.Subscriptions.Models.Location> locations, List<Provider> providers)

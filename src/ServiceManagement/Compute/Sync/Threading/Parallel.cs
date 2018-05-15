@@ -192,7 +192,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Threading
 
             public InternalLoopResult()
             {
-                this.exceptions = new List<Exception>();
+                exceptions = new List<Exception>();
             }
 
             public override bool IsCompleted
@@ -211,21 +211,21 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Threading
                 {
                     lock (lockObject)
                     {
-                        return this.exceptions.Count > 0;
+                        return exceptions.Count > 0;
                     }
                 }
             }
 
             public void SetCompleted()
             {
-                this.IsCompleted = true;
+                IsCompleted = true;
             }
 
             public void AddException(Exception exception)
             {
                 lock (lockObject)
                 {
-                    this.exceptions.Add(exception);
+                    exceptions.Add(exception);
                 }
             }
         }

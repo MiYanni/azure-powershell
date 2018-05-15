@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Common.Strategies
         public IEnumerable<string> GetIdFromResourceGroup()
             => ResourceGroup == null
                 ? Enumerable.Empty<string>() 
-                : new string[] { Strategy.Type.Namespace, Strategy.Type.Provider, Name };
+                : new[] { Strategy.Type.Namespace, Strategy.Type.Provider, Name };
 
         public NestedResourceConfig<TNestedModel, TModel> CreateNested<TNestedModel>(
             NestedResourceStrategy<TNestedModel, TModel> strategy,

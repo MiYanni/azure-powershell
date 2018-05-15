@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
         /// <summary>
         /// The default ports.
         /// </summary>
-        public static readonly int[] DefaultPorts = new int[] { 80 };
+        public static readonly int[] DefaultPorts = new[] { 80 };
 
         /// <summary>
         /// The default CPU.
@@ -167,16 +167,16 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
 
         private void ValidateRegistryParameters()
         {
-            if (!string.IsNullOrEmpty(this.RegistryServer))
+            if (!string.IsNullOrEmpty(RegistryServer))
             {
-                if (string.IsNullOrEmpty(this.RegistryUsername) || string.IsNullOrEmpty(this.RegistryPassword))
+                if (string.IsNullOrEmpty(RegistryUsername) || string.IsNullOrEmpty(RegistryPassword))
                 {
                     throw new ArgumentException("Please specify valid RegistryCredential");
                 }
             }
-            else if (this.ContainerImage.Contains(ContainerGroupCreationParameters.AcrServerSuffix))
+            else if (ContainerImage.Contains(AcrServerSuffix))
             {
-                if (string.IsNullOrEmpty(this.RegistryUsername) || string.IsNullOrEmpty(this.RegistryPassword))
+                if (string.IsNullOrEmpty(RegistryUsername) || string.IsNullOrEmpty(RegistryPassword))
                 {
                     throw new ArgumentException("Please specify valid RegistryCredential");
                 }
@@ -188,13 +188,13 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
                     throw new ArgumentException("Failed to Azure Container Registry server, please specify RegistryServer explicitly");
                 }
 
-                this.RegistryServer = acrServer;
+                RegistryServer = acrServer;
             }
         }
 
         private void ValidateAzureFileVolumeParameters()
         {
-            if (!string.IsNullOrWhiteSpace(this.AzureFileVolumeMountPath) && this.AzureFileVolumeMountPath.Contains(":"))
+            if (!string.IsNullOrWhiteSpace(AzureFileVolumeMountPath) && AzureFileVolumeMountPath.Contains(":"))
             {
                 throw new ArgumentException("Azure File volume mount path must not contain ':'");
             }
@@ -205,9 +205,9 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
         /// </summary>
         private string ParseRegistryServer()
         {
-            var parsedImage = this.ContainerImage
+            var parsedImage = ContainerImage
                 .ToLowerInvariant()
-                .Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                .Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (parsedImage.Any())
             {
                 return parsedImage[0];

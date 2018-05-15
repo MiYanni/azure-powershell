@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Compute
            ValueFromPipelineByPropertyName = true,
            ParameterSetName = PerformMaintenanceResourceGroupNameParameterSet,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -88,22 +88,22 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(Name, VerbsLifecycle.Restart))
+            if (ShouldProcess(Name, VerbsLifecycle.Restart))
             {
                 base.ExecuteCmdlet();
 
-                if (this.ParameterSetName.Equals(RestartIdParameterSet) || this.ParameterSetName.Equals(PerformMaintenanceIdParameterSet))
+                if (ParameterSetName.Equals(RestartIdParameterSet) || ParameterSetName.Equals(PerformMaintenanceIdParameterSet))
                 {
-                    this.ResourceGroupName = GetResourceGroupNameFromId(this.Id);
+                    ResourceGroupName = GetResourceGroupNameFromId(Id);
                 }
 
-                if (this.PerformMaintenance.IsPresent)
+                if (PerformMaintenance.IsPresent)
                 {
                     ExecuteClientAction(() =>
                     {
-                        var op = this.VirtualMachineClient.PerformMaintenanceWithHttpMessagesAsync(
-                            this.ResourceGroupName,
-                            this.Name).GetAwaiter().GetResult();
+                        var op = VirtualMachineClient.PerformMaintenanceWithHttpMessagesAsync(
+                            ResourceGroupName,
+                            Name).GetAwaiter().GetResult();
                         var result = ComputeAutoMapperProfile.Mapper.Map<PSComputeLongRunningOperation>(op);
                         WriteObject(result);
                     });
@@ -112,9 +112,9 @@ namespace Microsoft.Azure.Commands.Compute
                 {
                     ExecuteClientAction(() =>
                     {
-                        var op = this.VirtualMachineClient.RestartWithHttpMessagesAsync(
-                            this.ResourceGroupName,
-                            this.Name).GetAwaiter().GetResult();
+                        var op = VirtualMachineClient.RestartWithHttpMessagesAsync(
+                            ResourceGroupName,
+                            Name).GetAwaiter().GetResult();
                         var result = ComputeAutoMapperProfile.Mapper.Map<PSComputeLongRunningOperation>(op);
                         WriteObject(result);
                     });

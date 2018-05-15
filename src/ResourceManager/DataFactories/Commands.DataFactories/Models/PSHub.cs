@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
 
         public PSHub()
         {
-            this._hub = new Hub();
+            _hub = new Hub();
         }
 
         public PSHub(Hub hub)
@@ -33,18 +33,18 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 throw new ArgumentNullException("hub");
             }
 
-            this._hub = hub;
+            _hub = hub;
         }
 
         public string HubName
         {
             get
             {
-                return this._hub.Name;
+                return _hub.Name;
             }
             set
             {
-                this._hub.Name = value;
+                _hub.Name = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._hub.Properties;
+                return _hub.Properties;
             }
 
             set
             {
-                this._hub.Properties = value;
+                _hub.Properties = value;
             }
         }
 

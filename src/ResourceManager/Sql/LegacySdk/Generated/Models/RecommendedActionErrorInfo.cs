@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ErrorCode
         {
-            get { return this._errorCode; }
-            set { this._errorCode = value; }
+            get { return _errorCode; }
+            set { _errorCode = value; }
         }
         
         private string _isRetryable;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string IsRetryable
         {
-            get { return this._isRetryable; }
-            set { this._isRetryable = value; }
+            get { return _isRetryable; }
+            set { _isRetryable = value; }
         }
         
         /// <summary>

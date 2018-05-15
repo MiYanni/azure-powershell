@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </param>
         internal ItemOperations(GalleryClient client)
         {
-            this._client = client;
+            _client = client;
         }
 
         private GalleryClient _client;
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public GalleryClient Client
         {
-            get { return this._client; }
+            get { return _client; }
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -156,63 +156,63 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken identityValue = responseDoc["identity"];
                             if (identityValue != null && identityValue.Type != JTokenType.Null)
                             {
-                                string identityInstance = ((string)identityValue);
+                                string identityInstance = (string)identityValue;
                                 itemInstance.Identity = identityInstance;
                             }
 
                             JToken itemNameValue = responseDoc["itemName"];
                             if (itemNameValue != null && itemNameValue.Type != JTokenType.Null)
                             {
-                                string itemNameInstance = ((string)itemNameValue);
+                                string itemNameInstance = (string)itemNameValue;
                                 itemInstance.Name = itemNameInstance;
                             }
 
                             JToken itemDisplayNameValue = responseDoc["itemDisplayName"];
                             if (itemDisplayNameValue != null && itemDisplayNameValue.Type != JTokenType.Null)
                             {
-                                string itemDisplayNameInstance = ((string)itemDisplayNameValue);
+                                string itemDisplayNameInstance = (string)itemDisplayNameValue;
                                 itemInstance.DisplayName = itemDisplayNameInstance;
                             }
 
                             JToken publisherValue = responseDoc["publisher"];
                             if (publisherValue != null && publisherValue.Type != JTokenType.Null)
                             {
-                                string publisherInstance = ((string)publisherValue);
+                                string publisherInstance = (string)publisherValue;
                                 itemInstance.Publisher = publisherInstance;
                             }
 
                             JToken publisherDisplayNameValue = responseDoc["publisherDisplayName"];
                             if (publisherDisplayNameValue != null && publisherDisplayNameValue.Type != JTokenType.Null)
                             {
-                                string publisherDisplayNameInstance = ((string)publisherDisplayNameValue);
+                                string publisherDisplayNameInstance = (string)publisherDisplayNameValue;
                                 itemInstance.PublisherDisplayName = publisherDisplayNameInstance;
                             }
 
                             JToken versionValue = responseDoc["version"];
                             if (versionValue != null && versionValue.Type != JTokenType.Null)
                             {
-                                string versionInstance = ((string)versionValue);
+                                string versionInstance = (string)versionValue;
                                 itemInstance.Version = versionInstance;
                             }
 
                             JToken summaryValue = responseDoc["summary"];
                             if (summaryValue != null && summaryValue.Type != JTokenType.Null)
                             {
-                                string summaryInstance = ((string)summaryValue);
+                                string summaryInstance = (string)summaryValue;
                                 itemInstance.Summary = summaryInstance;
                             }
 
                             JToken longSummaryValue = responseDoc["longSummary"];
                             if (longSummaryValue != null && longSummaryValue.Type != JTokenType.Null)
                             {
-                                string longSummaryInstance = ((string)longSummaryValue);
+                                string longSummaryInstance = (string)longSummaryValue;
                                 itemInstance.LongSummary = longSummaryInstance;
                             }
 
                             JToken descriptionValue = responseDoc["description"];
                             if (descriptionValue != null && descriptionValue.Type != JTokenType.Null)
                             {
-                                string descriptionInstance = ((string)descriptionValue);
+                                string descriptionInstance = (string)descriptionValue;
                                 itemInstance.Description = descriptionInstance;
                             }
 
@@ -225,7 +225,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                 JToken pathValue = marketingMaterialValue["path"];
                                 if (pathValue != null && pathValue.Type != JTokenType.Null)
                                 {
-                                    string pathInstance = ((string)pathValue);
+                                    string pathInstance = (string)pathValue;
                                     marketingMaterialInstance.Path = pathInstance;
                                 }
                             }
@@ -233,19 +233,19 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken screenshotUrisArray = responseDoc["screenshotUris"];
                             if (screenshotUrisArray != null && screenshotUrisArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken screenshotUrisValue in ((JArray)screenshotUrisArray))
+                                foreach (JToken screenshotUrisValue in (JArray)screenshotUrisArray)
                                 {
-                                    itemInstance.ScreenshotUris.Add(((string)screenshotUrisValue));
+                                    itemInstance.ScreenshotUris.Add((string)screenshotUrisValue);
                                 }
                             }
 
-                            JToken iconFileUrisSequenceElement = ((JToken)responseDoc["iconFileUris"]);
+                            JToken iconFileUrisSequenceElement = responseDoc["iconFileUris"];
                             if (iconFileUrisSequenceElement != null && iconFileUrisSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in iconFileUrisSequenceElement)
                                 {
-                                    string iconFileUrisKey = ((string)property.Name);
-                                    string iconFileUrisValue = ((string)property.Value);
+                                    string iconFileUrisKey = property.Name;
+                                    string iconFileUrisValue = (string)property.Value;
                                     itemInstance.IconFileUris.Add(iconFileUrisKey, iconFileUrisValue);
                                 }
                             }
@@ -253,7 +253,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken linksArray = responseDoc["links"];
                             if (linksArray != null && linksArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken linksValue in ((JArray)linksArray))
+                                foreach (JToken linksValue in (JArray)linksArray)
                                 {
                                     Link linkInstance = new Link();
                                     itemInstance.Links.Add(linkInstance);
@@ -261,21 +261,21 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken idValue = linksValue["id"];
                                     if (idValue != null && idValue.Type != JTokenType.Null)
                                     {
-                                        string idInstance = ((string)idValue);
+                                        string idInstance = (string)idValue;
                                         linkInstance.Identifier = idInstance;
                                     }
 
                                     JToken displayNameValue = linksValue["displayName"];
                                     if (displayNameValue != null && displayNameValue.Type != JTokenType.Null)
                                     {
-                                        string displayNameInstance = ((string)displayNameValue);
+                                        string displayNameInstance = (string)displayNameValue;
                                         linkInstance.DisplayName = displayNameInstance;
                                     }
 
                                     JToken uriValue = linksValue["uri"];
                                     if (uriValue != null && uriValue.Type != JTokenType.Null)
                                     {
-                                        string uriInstance = ((string)uriValue);
+                                        string uriInstance = (string)uriValue;
                                         linkInstance.Uri = uriInstance;
                                     }
                                 }
@@ -284,30 +284,30 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken categoryIdsArray = responseDoc["categoryIds"];
                             if (categoryIdsArray != null && categoryIdsArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken categoryIdsValue in ((JArray)categoryIdsArray))
+                                foreach (JToken categoryIdsValue in (JArray)categoryIdsArray)
                                 {
-                                    itemInstance.Categories.Add(((string)categoryIdsValue));
+                                    itemInstance.Categories.Add((string)categoryIdsValue);
                                 }
                             }
 
-                            JToken propertiesSequenceElement = ((JToken)responseDoc["properties"]);
+                            JToken propertiesSequenceElement = responseDoc["properties"];
                             if (propertiesSequenceElement != null && propertiesSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property2 in propertiesSequenceElement)
                                 {
-                                    string propertiesKey = ((string)property2.Name);
-                                    string propertiesValue = ((string)property2.Value);
+                                    string propertiesKey = property2.Name;
+                                    string propertiesValue = (string)property2.Value;
                                     itemInstance.Properties.Add(propertiesKey, propertiesValue);
                                 }
                             }
 
-                            JToken metadataSequenceElement = ((JToken)responseDoc["metadata"]);
+                            JToken metadataSequenceElement = responseDoc["metadata"];
                             if (metadataSequenceElement != null && metadataSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property3 in metadataSequenceElement)
                                 {
-                                    string metadataKey = ((string)property3.Name);
-                                    string metadataValue = ((string)property3.Value);
+                                    string metadataKey = property3.Name;
+                                    string metadataValue = (string)property3.Value;
                                     itemInstance.Metadata.Add(metadataKey, metadataValue);
                                 }
                             }
@@ -315,7 +315,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken artifactsArray = responseDoc["artifacts"];
                             if (artifactsArray != null && artifactsArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken artifactsValue in ((JArray)artifactsArray))
+                                foreach (JToken artifactsValue in (JArray)artifactsArray)
                                 {
                                     Artifact artifactInstance = new Artifact();
                                     itemInstance.Artifacts.Add(artifactInstance);
@@ -323,21 +323,21 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken nameValue = artifactsValue["name"];
                                     if (nameValue != null && nameValue.Type != JTokenType.Null)
                                     {
-                                        string nameInstance = ((string)nameValue);
+                                        string nameInstance = (string)nameValue;
                                         artifactInstance.Name = nameInstance;
                                     }
 
                                     JToken uriValue2 = artifactsValue["uri"];
                                     if (uriValue2 != null && uriValue2.Type != JTokenType.Null)
                                     {
-                                        string uriInstance2 = ((string)uriValue2);
+                                        string uriInstance2 = (string)uriValue2;
                                         artifactInstance.Uri = uriInstance2;
                                     }
 
                                     JToken typeValue = artifactsValue["type"];
                                     if (typeValue != null && typeValue.Type != JTokenType.Null)
                                     {
-                                        string typeInstance = ((string)typeValue);
+                                        string typeInstance = (string)typeValue;
                                         artifactInstance.Type = typeInstance;
                                     }
                                 }
@@ -346,7 +346,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken filtersArray = responseDoc["filters"];
                             if (filtersArray != null && filtersArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken filtersValue in ((JArray)filtersArray))
+                                foreach (JToken filtersValue in (JArray)filtersArray)
                                 {
                                     Filter filterInstance = new Filter();
                                     itemInstance.Filters.Add(filterInstance);
@@ -354,14 +354,14 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken typeValue2 = filtersValue["type"];
                                     if (typeValue2 != null && typeValue2.Type != JTokenType.Null)
                                     {
-                                        string typeInstance2 = ((string)typeValue2);
+                                        string typeInstance2 = (string)typeValue2;
                                         filterInstance.Type = typeInstance2;
                                     }
 
                                     JToken valueValue = filtersValue["value"];
                                     if (valueValue != null && valueValue.Type != JTokenType.Null)
                                     {
-                                        string valueInstance = ((string)valueValue);
+                                        string valueInstance = (string)valueValue;
                                         filterInstance.Value = valueInstance;
                                     }
                                 }
@@ -370,7 +370,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken productsArray = responseDoc["products"];
                             if (productsArray != null && productsArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken productsValue in ((JArray)productsArray))
+                                foreach (JToken productsValue in (JArray)productsArray)
                                 {
                                     Product productInstance = new Product();
                                     itemInstance.Products.Add(productInstance);
@@ -378,35 +378,35 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken displayNameValue2 = productsValue["displayName"];
                                     if (displayNameValue2 != null && displayNameValue2.Type != JTokenType.Null)
                                     {
-                                        string displayNameInstance2 = ((string)displayNameValue2);
+                                        string displayNameInstance2 = (string)displayNameValue2;
                                         productInstance.DisplayName = displayNameInstance2;
                                     }
 
                                     JToken publisherDisplayNameValue2 = productsValue["publisherDisplayName"];
                                     if (publisherDisplayNameValue2 != null && publisherDisplayNameValue2.Type != JTokenType.Null)
                                     {
-                                        string publisherDisplayNameInstance2 = ((string)publisherDisplayNameValue2);
+                                        string publisherDisplayNameInstance2 = (string)publisherDisplayNameValue2;
                                         productInstance.PublisherDisplayName = publisherDisplayNameInstance2;
                                     }
 
                                     JToken legalTermsUriValue = productsValue["legalTermsUri"];
                                     if (legalTermsUriValue != null && legalTermsUriValue.Type != JTokenType.Null)
                                     {
-                                        string legalTermsUriInstance = ((string)legalTermsUriValue);
+                                        string legalTermsUriInstance = (string)legalTermsUriValue;
                                         productInstance.LegalTermsUri = legalTermsUriInstance;
                                     }
 
                                     JToken privacyPolicyUriValue = productsValue["privacyPolicyUri"];
                                     if (privacyPolicyUriValue != null && privacyPolicyUriValue.Type != JTokenType.Null)
                                     {
-                                        string privacyPolicyUriInstance = ((string)privacyPolicyUriValue);
+                                        string privacyPolicyUriInstance = (string)privacyPolicyUriValue;
                                         productInstance.PrivacyPolicyUri = privacyPolicyUriInstance;
                                     }
 
                                     JToken pricingDetailsUriValue = productsValue["pricingDetailsUri"];
                                     if (pricingDetailsUriValue != null && pricingDetailsUriValue.Type != JTokenType.Null)
                                     {
-                                        string pricingDetailsUriInstance = ((string)pricingDetailsUriValue);
+                                        string pricingDetailsUriInstance = (string)pricingDetailsUriValue;
                                         productInstance.PricingDetailsUri = pricingDetailsUriInstance;
                                     }
 
@@ -419,21 +419,21 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                         JToken offerIdValue = offerDetailsValue["offerId"];
                                         if (offerIdValue != null && offerIdValue.Type != JTokenType.Null)
                                         {
-                                            string offerIdInstance = ((string)offerIdValue);
+                                            string offerIdInstance = (string)offerIdValue;
                                             offerDetailsInstance.OfferIdentifier = offerIdInstance;
                                         }
 
                                         JToken publisherIdValue = offerDetailsValue["publisherId"];
                                         if (publisherIdValue != null && publisherIdValue.Type != JTokenType.Null)
                                         {
-                                            string publisherIdInstance = ((string)publisherIdValue);
+                                            string publisherIdInstance = (string)publisherIdValue;
                                             offerDetailsInstance.PublisherIdentifier = publisherIdInstance;
                                         }
 
                                         JToken plansArray = offerDetailsValue["plans"];
                                         if (plansArray != null && plansArray.Type != JTokenType.Null)
                                         {
-                                            foreach (JToken plansValue in ((JArray)plansArray))
+                                            foreach (JToken plansValue in (JArray)plansArray)
                                             {
                                                 Plan planInstance = new Plan();
                                                 offerDetailsInstance.Plans.Add(planInstance);
@@ -441,28 +441,28 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                                 JToken planIdValue = plansValue["planId"];
                                                 if (planIdValue != null && planIdValue.Type != JTokenType.Null)
                                                 {
-                                                    string planIdInstance = ((string)planIdValue);
+                                                    string planIdInstance = (string)planIdValue;
                                                     planInstance.PlanIdentifier = planIdInstance;
                                                 }
 
                                                 JToken displayNameValue3 = plansValue["displayName"];
                                                 if (displayNameValue3 != null && displayNameValue3.Type != JTokenType.Null)
                                                 {
-                                                    string displayNameInstance3 = ((string)displayNameValue3);
+                                                    string displayNameInstance3 = (string)displayNameValue3;
                                                     planInstance.DisplayName = displayNameInstance3;
                                                 }
 
                                                 JToken summaryValue2 = plansValue["summary"];
                                                 if (summaryValue2 != null && summaryValue2.Type != JTokenType.Null)
                                                 {
-                                                    string summaryInstance2 = ((string)summaryValue2);
+                                                    string summaryInstance2 = (string)summaryValue2;
                                                     planInstance.Summary = summaryInstance2;
                                                 }
 
                                                 JToken descriptionValue2 = plansValue["description"];
                                                 if (descriptionValue2 != null && descriptionValue2.Type != JTokenType.Null)
                                                 {
-                                                    string descriptionInstance2 = ((string)descriptionValue2);
+                                                    string descriptionInstance2 = (string)descriptionValue2;
                                                     planInstance.Description = descriptionInstance2;
                                                 }
                                             }
@@ -474,7 +474,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken uiDefinitionUriValue = responseDoc["uiDefinitionUri"];
                             if (uiDefinitionUriValue != null && uiDefinitionUriValue.Type != JTokenType.Null)
                             {
-                                string uiDefinitionUriInstance = ((string)uiDefinitionUriValue);
+                                string uiDefinitionUriInstance = (string)uiDefinitionUriValue;
                                 itemInstance.UiDefinitionUri = uiDefinitionUriInstance;
                             }
                         }
@@ -560,7 +560,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -585,7 +585,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -596,7 +596,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -632,7 +632,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                             JToken itemsArray = responseDoc;
                             if (itemsArray != null && itemsArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken itemsValue in ((JArray)itemsArray))
+                                foreach (JToken itemsValue in (JArray)itemsArray)
                                 {
                                     GalleryItem galleryItemInstance = new GalleryItem();
                                     result.Items.Add(galleryItemInstance);
@@ -640,63 +640,63 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken identityValue = itemsValue["identity"];
                                     if (identityValue != null && identityValue.Type != JTokenType.Null)
                                     {
-                                        string identityInstance = ((string)identityValue);
+                                        string identityInstance = (string)identityValue;
                                         galleryItemInstance.Identity = identityInstance;
                                     }
 
                                     JToken itemNameValue = itemsValue["itemName"];
                                     if (itemNameValue != null && itemNameValue.Type != JTokenType.Null)
                                     {
-                                        string itemNameInstance = ((string)itemNameValue);
+                                        string itemNameInstance = (string)itemNameValue;
                                         galleryItemInstance.Name = itemNameInstance;
                                     }
 
                                     JToken itemDisplayNameValue = itemsValue["itemDisplayName"];
                                     if (itemDisplayNameValue != null && itemDisplayNameValue.Type != JTokenType.Null)
                                     {
-                                        string itemDisplayNameInstance = ((string)itemDisplayNameValue);
+                                        string itemDisplayNameInstance = (string)itemDisplayNameValue;
                                         galleryItemInstance.DisplayName = itemDisplayNameInstance;
                                     }
 
                                     JToken publisherValue = itemsValue["publisher"];
                                     if (publisherValue != null && publisherValue.Type != JTokenType.Null)
                                     {
-                                        string publisherInstance = ((string)publisherValue);
+                                        string publisherInstance = (string)publisherValue;
                                         galleryItemInstance.Publisher = publisherInstance;
                                     }
 
                                     JToken publisherDisplayNameValue = itemsValue["publisherDisplayName"];
                                     if (publisherDisplayNameValue != null && publisherDisplayNameValue.Type != JTokenType.Null)
                                     {
-                                        string publisherDisplayNameInstance = ((string)publisherDisplayNameValue);
+                                        string publisherDisplayNameInstance = (string)publisherDisplayNameValue;
                                         galleryItemInstance.PublisherDisplayName = publisherDisplayNameInstance;
                                     }
 
                                     JToken versionValue = itemsValue["version"];
                                     if (versionValue != null && versionValue.Type != JTokenType.Null)
                                     {
-                                        string versionInstance = ((string)versionValue);
+                                        string versionInstance = (string)versionValue;
                                         galleryItemInstance.Version = versionInstance;
                                     }
 
                                     JToken summaryValue = itemsValue["summary"];
                                     if (summaryValue != null && summaryValue.Type != JTokenType.Null)
                                     {
-                                        string summaryInstance = ((string)summaryValue);
+                                        string summaryInstance = (string)summaryValue;
                                         galleryItemInstance.Summary = summaryInstance;
                                     }
 
                                     JToken longSummaryValue = itemsValue["longSummary"];
                                     if (longSummaryValue != null && longSummaryValue.Type != JTokenType.Null)
                                     {
-                                        string longSummaryInstance = ((string)longSummaryValue);
+                                        string longSummaryInstance = (string)longSummaryValue;
                                         galleryItemInstance.LongSummary = longSummaryInstance;
                                     }
 
                                     JToken descriptionValue = itemsValue["description"];
                                     if (descriptionValue != null && descriptionValue.Type != JTokenType.Null)
                                     {
-                                        string descriptionInstance = ((string)descriptionValue);
+                                        string descriptionInstance = (string)descriptionValue;
                                         galleryItemInstance.Description = descriptionInstance;
                                     }
 
@@ -709,7 +709,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                         JToken pathValue = marketingMaterialValue["path"];
                                         if (pathValue != null && pathValue.Type != JTokenType.Null)
                                         {
-                                            string pathInstance = ((string)pathValue);
+                                            string pathInstance = (string)pathValue;
                                             marketingMaterialInstance.Path = pathInstance;
                                         }
                                     }
@@ -717,19 +717,19 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken screenshotUrisArray = itemsValue["screenshotUris"];
                                     if (screenshotUrisArray != null && screenshotUrisArray.Type != JTokenType.Null)
                                     {
-                                        foreach (JToken screenshotUrisValue in ((JArray)screenshotUrisArray))
+                                        foreach (JToken screenshotUrisValue in (JArray)screenshotUrisArray)
                                         {
-                                            galleryItemInstance.ScreenshotUris.Add(((string)screenshotUrisValue));
+                                            galleryItemInstance.ScreenshotUris.Add((string)screenshotUrisValue);
                                         }
                                     }
 
-                                    JToken iconFileUrisSequenceElement = ((JToken)itemsValue["iconFileUris"]);
+                                    JToken iconFileUrisSequenceElement = itemsValue["iconFileUris"];
                                     if (iconFileUrisSequenceElement != null && iconFileUrisSequenceElement.Type != JTokenType.Null)
                                     {
                                         foreach (JProperty property in iconFileUrisSequenceElement)
                                         {
-                                            string iconFileUrisKey = ((string)property.Name);
-                                            string iconFileUrisValue = ((string)property.Value);
+                                            string iconFileUrisKey = property.Name;
+                                            string iconFileUrisValue = (string)property.Value;
                                             galleryItemInstance.IconFileUris.Add(iconFileUrisKey, iconFileUrisValue);
                                         }
                                     }
@@ -737,7 +737,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken linksArray = itemsValue["links"];
                                     if (linksArray != null && linksArray.Type != JTokenType.Null)
                                     {
-                                        foreach (JToken linksValue in ((JArray)linksArray))
+                                        foreach (JToken linksValue in (JArray)linksArray)
                                         {
                                             Link linkInstance = new Link();
                                             galleryItemInstance.Links.Add(linkInstance);
@@ -745,21 +745,21 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                             JToken idValue = linksValue["id"];
                                             if (idValue != null && idValue.Type != JTokenType.Null)
                                             {
-                                                string idInstance = ((string)idValue);
+                                                string idInstance = (string)idValue;
                                                 linkInstance.Identifier = idInstance;
                                             }
 
                                             JToken displayNameValue = linksValue["displayName"];
                                             if (displayNameValue != null && displayNameValue.Type != JTokenType.Null)
                                             {
-                                                string displayNameInstance = ((string)displayNameValue);
+                                                string displayNameInstance = (string)displayNameValue;
                                                 linkInstance.DisplayName = displayNameInstance;
                                             }
 
                                             JToken uriValue = linksValue["uri"];
                                             if (uriValue != null && uriValue.Type != JTokenType.Null)
                                             {
-                                                string uriInstance = ((string)uriValue);
+                                                string uriInstance = (string)uriValue;
                                                 linkInstance.Uri = uriInstance;
                                             }
                                         }
@@ -768,30 +768,30 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken categoryIdsArray = itemsValue["categoryIds"];
                                     if (categoryIdsArray != null && categoryIdsArray.Type != JTokenType.Null)
                                     {
-                                        foreach (JToken categoryIdsValue in ((JArray)categoryIdsArray))
+                                        foreach (JToken categoryIdsValue in (JArray)categoryIdsArray)
                                         {
-                                            galleryItemInstance.Categories.Add(((string)categoryIdsValue));
+                                            galleryItemInstance.Categories.Add((string)categoryIdsValue);
                                         }
                                     }
 
-                                    JToken propertiesSequenceElement = ((JToken)itemsValue["properties"]);
+                                    JToken propertiesSequenceElement = itemsValue["properties"];
                                     if (propertiesSequenceElement != null && propertiesSequenceElement.Type != JTokenType.Null)
                                     {
                                         foreach (JProperty property2 in propertiesSequenceElement)
                                         {
-                                            string propertiesKey = ((string)property2.Name);
-                                            string propertiesValue = ((string)property2.Value);
+                                            string propertiesKey = property2.Name;
+                                            string propertiesValue = (string)property2.Value;
                                             galleryItemInstance.Properties.Add(propertiesKey, propertiesValue);
                                         }
                                     }
 
-                                    JToken metadataSequenceElement = ((JToken)itemsValue["metadata"]);
+                                    JToken metadataSequenceElement = itemsValue["metadata"];
                                     if (metadataSequenceElement != null && metadataSequenceElement.Type != JTokenType.Null)
                                     {
                                         foreach (JProperty property3 in metadataSequenceElement)
                                         {
-                                            string metadataKey = ((string)property3.Name);
-                                            string metadataValue = ((string)property3.Value);
+                                            string metadataKey = property3.Name;
+                                            string metadataValue = (string)property3.Value;
                                             galleryItemInstance.Metadata.Add(metadataKey, metadataValue);
                                         }
                                     }
@@ -799,7 +799,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken artifactsArray = itemsValue["artifacts"];
                                     if (artifactsArray != null && artifactsArray.Type != JTokenType.Null)
                                     {
-                                        foreach (JToken artifactsValue in ((JArray)artifactsArray))
+                                        foreach (JToken artifactsValue in (JArray)artifactsArray)
                                         {
                                             Artifact artifactInstance = new Artifact();
                                             galleryItemInstance.Artifacts.Add(artifactInstance);
@@ -807,21 +807,21 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                             JToken nameValue = artifactsValue["name"];
                                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                                             {
-                                                string nameInstance = ((string)nameValue);
+                                                string nameInstance = (string)nameValue;
                                                 artifactInstance.Name = nameInstance;
                                             }
 
                                             JToken uriValue2 = artifactsValue["uri"];
                                             if (uriValue2 != null && uriValue2.Type != JTokenType.Null)
                                             {
-                                                string uriInstance2 = ((string)uriValue2);
+                                                string uriInstance2 = (string)uriValue2;
                                                 artifactInstance.Uri = uriInstance2;
                                             }
 
                                             JToken typeValue = artifactsValue["type"];
                                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                                             {
-                                                string typeInstance = ((string)typeValue);
+                                                string typeInstance = (string)typeValue;
                                                 artifactInstance.Type = typeInstance;
                                             }
                                         }
@@ -830,7 +830,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken filtersArray = itemsValue["filters"];
                                     if (filtersArray != null && filtersArray.Type != JTokenType.Null)
                                     {
-                                        foreach (JToken filtersValue in ((JArray)filtersArray))
+                                        foreach (JToken filtersValue in (JArray)filtersArray)
                                         {
                                             Filter filterInstance = new Filter();
                                             galleryItemInstance.Filters.Add(filterInstance);
@@ -838,14 +838,14 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                             JToken typeValue2 = filtersValue["type"];
                                             if (typeValue2 != null && typeValue2.Type != JTokenType.Null)
                                             {
-                                                string typeInstance2 = ((string)typeValue2);
+                                                string typeInstance2 = (string)typeValue2;
                                                 filterInstance.Type = typeInstance2;
                                             }
 
                                             JToken valueValue = filtersValue["value"];
                                             if (valueValue != null && valueValue.Type != JTokenType.Null)
                                             {
-                                                string valueInstance = ((string)valueValue);
+                                                string valueInstance = (string)valueValue;
                                                 filterInstance.Value = valueInstance;
                                             }
                                         }
@@ -854,7 +854,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken productsArray = itemsValue["products"];
                                     if (productsArray != null && productsArray.Type != JTokenType.Null)
                                     {
-                                        foreach (JToken productsValue in ((JArray)productsArray))
+                                        foreach (JToken productsValue in (JArray)productsArray)
                                         {
                                             Product productInstance = new Product();
                                             galleryItemInstance.Products.Add(productInstance);
@@ -862,35 +862,35 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                             JToken displayNameValue2 = productsValue["displayName"];
                                             if (displayNameValue2 != null && displayNameValue2.Type != JTokenType.Null)
                                             {
-                                                string displayNameInstance2 = ((string)displayNameValue2);
+                                                string displayNameInstance2 = (string)displayNameValue2;
                                                 productInstance.DisplayName = displayNameInstance2;
                                             }
 
                                             JToken publisherDisplayNameValue2 = productsValue["publisherDisplayName"];
                                             if (publisherDisplayNameValue2 != null && publisherDisplayNameValue2.Type != JTokenType.Null)
                                             {
-                                                string publisherDisplayNameInstance2 = ((string)publisherDisplayNameValue2);
+                                                string publisherDisplayNameInstance2 = (string)publisherDisplayNameValue2;
                                                 productInstance.PublisherDisplayName = publisherDisplayNameInstance2;
                                             }
 
                                             JToken legalTermsUriValue = productsValue["legalTermsUri"];
                                             if (legalTermsUriValue != null && legalTermsUriValue.Type != JTokenType.Null)
                                             {
-                                                string legalTermsUriInstance = ((string)legalTermsUriValue);
+                                                string legalTermsUriInstance = (string)legalTermsUriValue;
                                                 productInstance.LegalTermsUri = legalTermsUriInstance;
                                             }
 
                                             JToken privacyPolicyUriValue = productsValue["privacyPolicyUri"];
                                             if (privacyPolicyUriValue != null && privacyPolicyUriValue.Type != JTokenType.Null)
                                             {
-                                                string privacyPolicyUriInstance = ((string)privacyPolicyUriValue);
+                                                string privacyPolicyUriInstance = (string)privacyPolicyUriValue;
                                                 productInstance.PrivacyPolicyUri = privacyPolicyUriInstance;
                                             }
 
                                             JToken pricingDetailsUriValue = productsValue["pricingDetailsUri"];
                                             if (pricingDetailsUriValue != null && pricingDetailsUriValue.Type != JTokenType.Null)
                                             {
-                                                string pricingDetailsUriInstance = ((string)pricingDetailsUriValue);
+                                                string pricingDetailsUriInstance = (string)pricingDetailsUriValue;
                                                 productInstance.PricingDetailsUri = pricingDetailsUriInstance;
                                             }
 
@@ -903,21 +903,21 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                                 JToken offerIdValue = offerDetailsValue["offerId"];
                                                 if (offerIdValue != null && offerIdValue.Type != JTokenType.Null)
                                                 {
-                                                    string offerIdInstance = ((string)offerIdValue);
+                                                    string offerIdInstance = (string)offerIdValue;
                                                     offerDetailsInstance.OfferIdentifier = offerIdInstance;
                                                 }
 
                                                 JToken publisherIdValue = offerDetailsValue["publisherId"];
                                                 if (publisherIdValue != null && publisherIdValue.Type != JTokenType.Null)
                                                 {
-                                                    string publisherIdInstance = ((string)publisherIdValue);
+                                                    string publisherIdInstance = (string)publisherIdValue;
                                                     offerDetailsInstance.PublisherIdentifier = publisherIdInstance;
                                                 }
 
                                                 JToken plansArray = offerDetailsValue["plans"];
                                                 if (plansArray != null && plansArray.Type != JTokenType.Null)
                                                 {
-                                                    foreach (JToken plansValue in ((JArray)plansArray))
+                                                    foreach (JToken plansValue in (JArray)plansArray)
                                                     {
                                                         Plan planInstance = new Plan();
                                                         offerDetailsInstance.Plans.Add(planInstance);
@@ -925,28 +925,28 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                                         JToken planIdValue = plansValue["planId"];
                                                         if (planIdValue != null && planIdValue.Type != JTokenType.Null)
                                                         {
-                                                            string planIdInstance = ((string)planIdValue);
+                                                            string planIdInstance = (string)planIdValue;
                                                             planInstance.PlanIdentifier = planIdInstance;
                                                         }
 
                                                         JToken displayNameValue3 = plansValue["displayName"];
                                                         if (displayNameValue3 != null && displayNameValue3.Type != JTokenType.Null)
                                                         {
-                                                            string displayNameInstance3 = ((string)displayNameValue3);
+                                                            string displayNameInstance3 = (string)displayNameValue3;
                                                             planInstance.DisplayName = displayNameInstance3;
                                                         }
 
                                                         JToken summaryValue2 = plansValue["summary"];
                                                         if (summaryValue2 != null && summaryValue2.Type != JTokenType.Null)
                                                         {
-                                                            string summaryInstance2 = ((string)summaryValue2);
+                                                            string summaryInstance2 = (string)summaryValue2;
                                                             planInstance.Summary = summaryInstance2;
                                                         }
 
                                                         JToken descriptionValue2 = plansValue["description"];
                                                         if (descriptionValue2 != null && descriptionValue2.Type != JTokenType.Null)
                                                         {
-                                                            string descriptionInstance2 = ((string)descriptionValue2);
+                                                            string descriptionInstance2 = (string)descriptionValue2;
                                                             planInstance.Description = descriptionInstance2;
                                                         }
                                                     }
@@ -958,7 +958,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
                                     JToken uiDefinitionUriValue = itemsValue["uiDefinitionUri"];
                                     if (uiDefinitionUriValue != null && uiDefinitionUriValue.Type != JTokenType.Null)
                                     {
-                                        string uiDefinitionUriInstance = ((string)uiDefinitionUriValue);
+                                        string uiDefinitionUriInstance = (string)uiDefinitionUriValue;
                                         galleryItemInstance.UiDefinitionUri = uiDefinitionUriInstance;
                                     }
                                 }

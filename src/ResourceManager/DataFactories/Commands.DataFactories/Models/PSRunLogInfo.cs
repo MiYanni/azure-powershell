@@ -35,14 +35,14 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 throw new ArgumentNullException("runLogUri");
             }
 
-            this._runLogUri = runLogUri;
+            _runLogUri = runLogUri;
         }
 
         public string SasUri
         {
             get
             {
-                return this._runLogUri.AbsoluteUri;
+                return _runLogUri.AbsoluteUri;
             }
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._runLogUri.Host.Split('.').FirstOrDefault();
+                return _runLogUri.Host.Split('.').FirstOrDefault();
             }
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._runLogUri.AbsolutePath.Split('/')[1];
+                return _runLogUri.AbsolutePath.Split('/')[1];
             }
         }
 
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 }
 
                 // remove /<container>/ from the Absolute path to get the subfolder
-                return _runLogUri.LocalPath.TrimStart('/').Substring(this.Container.Length + 1);
+                return _runLogUri.LocalPath.TrimStart('/').Substring(Container.Length + 1);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._runLogUri.Query;
+                return _runLogUri.Query;
             }
         }
     }

@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.WebSites
 #else
         public static void Save(this System.Xml.Linq.XDocument xdoc, string fileName, System.Xml.Linq.SaveOptions options)
         {
-            using (var fileStream = System.IO.File.Create(fileName))
+            using (var fileStream = File.Create(fileName))
             {
                 xdoc.Save(fileStream, options);
             }
@@ -522,8 +522,7 @@ namespace Microsoft.Azure.Management.WebSites
             bool temp;
             if (bool.TryParse(val, out temp))
                 return temp;
-            else
-                return null;
+            return null;
         }
 
         public static ICertificatesOperations Certificates(this WebSiteManagementClient client)

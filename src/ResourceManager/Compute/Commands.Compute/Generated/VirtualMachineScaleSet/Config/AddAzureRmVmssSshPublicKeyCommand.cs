@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Add", "AzureRmVmssSshPublicKey", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class AddAzureRmVmssSshPublicKeyCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class AddAzureRmVmssSshPublicKeyCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -63,41 +63,41 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // VirtualMachineProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
             }
 
             // OsProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
             }
 
             // LinuxConfiguration
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration = new Microsoft.Azure.Management.Compute.Models.LinuxConfiguration();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration = new LinuxConfiguration();
             }
 
             // Ssh
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh = new Microsoft.Azure.Management.Compute.Models.SshConfiguration();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh = new SshConfiguration();
             }
 
             // PublicKeys
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh.PublicKeys == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh.PublicKeys == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh.PublicKeys = new List<Microsoft.Azure.Management.Compute.Models.SshPublicKey>();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh.PublicKeys = new List<SshPublicKey>();
             }
 
-            var vPublicKeys = new Microsoft.Azure.Management.Compute.Models.SshPublicKey();
+            var vPublicKeys = new SshPublicKey();
 
-            vPublicKeys.Path = this.MyInvocation.BoundParameters.ContainsKey("Path") ? this.Path : null;
-            vPublicKeys.KeyData = this.MyInvocation.BoundParameters.ContainsKey("KeyData") ? this.KeyData : null;
-            this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh.PublicKeys.Add(vPublicKeys);
-            WriteObject(this.VirtualMachineScaleSet);
+            vPublicKeys.Path = MyInvocation.BoundParameters.ContainsKey("Path") ? Path : null;
+            vPublicKeys.KeyData = MyInvocation.BoundParameters.ContainsKey("KeyData") ? KeyData : null;
+            VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh.PublicKeys.Add(vPublicKeys);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

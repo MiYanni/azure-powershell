@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         public PSMetricDefinitionNoDetails(MetricDefinition metricDefinition)
             : base(metricDefinition)
         {
-            this.Name = new PSLocalizableStringNoDetails(metricDefinition.Name);
-            this.MetricAvailabilities = metricDefinition.MetricAvailabilities;
+            Name = new PSLocalizableStringNoDetails(metricDefinition.Name);
+            MetricAvailabilities = metricDefinition.MetricAvailabilities;
         }
     }
 }

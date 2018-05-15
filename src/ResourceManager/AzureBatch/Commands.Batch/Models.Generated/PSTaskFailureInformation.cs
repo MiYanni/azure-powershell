@@ -26,30 +26,30 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskFailureInformation
     {
         
-        internal Microsoft.Azure.Batch.TaskFailureInformation omObject;
+        internal TaskFailureInformation omObject;
         
         private IReadOnlyList<PSNameValuePair> details;
         
-        internal PSTaskFailureInformation(Microsoft.Azure.Batch.TaskFailureInformation omObject)
+        internal PSTaskFailureInformation(TaskFailureInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.ErrorCategory Category
+        public Azure.Batch.Common.ErrorCategory Category
         {
             get
             {
-                return this.omObject.Category;
+                return omObject.Category;
             }
         }
         
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Code;
+                return omObject.Code;
             }
         }
         
@@ -65,22 +65,22 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.details == null) 
-                            && (this.omObject.Details != null)))
+                if (details == null 
+                    && omObject.Details != null)
                 {
                     List<PSNameValuePair> list;
                     list = new List<PSNameValuePair>();
-                    IEnumerator<Microsoft.Azure.Batch.NameValuePair> enumerator;
-                    enumerator = this.omObject.Details.GetEnumerator();
+                    IEnumerator<NameValuePair> enumerator;
+                    enumerator = omObject.Details.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSNameValuePair(enumerator.Current));
                     }
-                    this.details = list.AsReadOnly();
+                    details = list.AsReadOnly();
                 }
-                return this.details;
+                return details;
             }
         }
         
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Message;
+                return omObject.Message;
             }
         }
     }

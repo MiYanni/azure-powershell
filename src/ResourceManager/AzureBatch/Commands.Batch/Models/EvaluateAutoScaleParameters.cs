@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("autoScaleFormula");
             }
 
-            this.AutoScaleFormula = autoScaleFormula;
+            AutoScaleFormula = autoScaleFormula;
         }
 
         /// <summary>

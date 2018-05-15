@@ -30,8 +30,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
                 throw new ArgumentNullException("keys");
             }
 
-            this.PrimarySharedKey = keys.PrimarySharedKey;
-            this.SecondarySharedKey = keys.SecondarySharedKey;
+            PrimarySharedKey = keys.PrimarySharedKey;
+            SecondarySharedKey = keys.SecondarySharedKey;
         }
 
         public string PrimarySharedKey { get; set; }

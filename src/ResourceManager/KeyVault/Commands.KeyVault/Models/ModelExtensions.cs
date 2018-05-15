@@ -174,7 +174,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                 // Error occured. Don't get the friendly name
             }
 
-            return displayName + (!string.IsNullOrWhiteSpace(upnOrSpn) ? (" (" + upnOrSpn + ")") : "");
+            return displayName + (!string.IsNullOrWhiteSpace(upnOrSpn) ? " (" + upnOrSpn + ")" : "");
         }
 
         public static string GetDisplayNameForTenant(Guid id, ActiveDirectoryClient adClient)

@@ -39,10 +39,10 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane.Models
 
         public string GetTokenFromTokenCache(TokenCache tokenCache, string uniqueId, string environmentName)
         {
-            TokenCacheItem tokenCacheItem = null;
+            TokenCacheItem tokenCacheItem;
             if (string.IsNullOrEmpty(uniqueId))
             {
-                var tokenCacheItems = tokenCache.ReadItems().Where(tokenItem => (string.IsNullOrEmpty(environmentName) || tokenItem.Resource.Contains(environmentName)));
+                var tokenCacheItems = tokenCache.ReadItems().Where(tokenItem => string.IsNullOrEmpty(environmentName) || tokenItem.Resource.Contains(environmentName));
                 tokenCacheItem = tokenCacheItems.FirstOrDefault();
             }
             else

@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             int platformUpdateDomain = new int();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName", "PlatformUpdateDomain" },
+                 new[] { "ResourceGroupName", "VMScaleSetName", "PlatformUpdateDomain" },
                  new object[] { resourceGroupName, vmScaleSetName, platformUpdateDomain });
         }
     }
@@ -120,26 +120,26 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.VMScaleSetName, "Repair"))
+                if (ShouldProcess(VMScaleSetName, "Repair"))
                 {
                     string resourceGroupName;
                     string vmScaleSetName;
-                    switch(this.ParameterSetName)
+                    switch(ParameterSetName)
                     {
                         case "ResourceIdParameter":
-                            resourceGroupName = GetResourceGroupName(this.ResourceId);
-                            vmScaleSetName = GetResourceName(this.ResourceId, "Microsoft.Compute/VirtualMachineScaleSets");
+                            resourceGroupName = GetResourceGroupName(ResourceId);
+                            vmScaleSetName = GetResourceName(ResourceId, "Microsoft.Compute/VirtualMachineScaleSets");
                             break;
                         case "ObjectParameter":
-                            resourceGroupName = GetResourceGroupName(this.VirtualMachineScaleSet.Id);
-                            vmScaleSetName = GetResourceName(this.VirtualMachineScaleSet.Id, "Microsoft.Compute/VirtualMachineScaleSets");
+                            resourceGroupName = GetResourceGroupName(VirtualMachineScaleSet.Id);
+                            vmScaleSetName = GetResourceName(VirtualMachineScaleSet.Id, "Microsoft.Compute/VirtualMachineScaleSets");
                             break;
                         default:
-                            resourceGroupName = this.ResourceGroupName;
-                            vmScaleSetName = this.VMScaleSetName;
+                            resourceGroupName = ResourceGroupName;
+                            vmScaleSetName = VMScaleSetName;
                             break;
                     }
-                    int platformUpdateDomain = this.PlatformUpdateDomain;
+                    int platformUpdateDomain = PlatformUpdateDomain;
 
                     var result = VirtualMachineScaleSetsClient.ForceRecoveryServiceFabricPlatformUpdateDomainWalk(resourceGroupName, vmScaleSetName, platformUpdateDomain);
                     var psObject = new PSRecoveryWalkResponse();
@@ -154,7 +154,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

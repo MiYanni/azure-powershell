@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            AutoscaleProfile profile = this.CreateSettingProfile();
+            AutoscaleProfile profile = CreateSettingProfile();
             WriteObject(profile);
         }
 
@@ -153,27 +153,27 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         {
             return new AutoscaleProfile
             {
-                Name = this.Name ?? string.Empty,
-                Capacity = new ScaleCapacity()
+                Name = Name ?? string.Empty,
+                Capacity = new ScaleCapacity
                 {
-                    DefaultProperty = this.DefaultCapacity,
-                    Minimum = this.MinimumCapacity,
-                    Maximum = this.MaximumCapacity,
+                    DefaultProperty = DefaultCapacity,
+                    Minimum = MinimumCapacity,
+                    Maximum = MaximumCapacity,
                 },
 
                 // NOTE: "always" is specify by a null value in the FixedDate value with null ScheduledDays(Minutes, Seconds)
                 // Premise: Fixed date schedule and recurrence are mutually exclusive, but they can both be missing so that the rule is always enabled.
                 // Assuming dates are validated by the server
-                FixedDate = this.ScheduleDay == null && (this.StartTimeWindow != default(DateTime) || this.EndTimeWindow != default(DateTime))
-                        ? new TimeWindow()
-                        {
-                            Start = this.StartTimeWindow,
-                            End = this.EndTimeWindow,
-                            TimeZone = this.TimeWindowTimeZone,
+                FixedDate = ScheduleDay == null && (StartTimeWindow != default(DateTime) || EndTimeWindow != default(DateTime))
+                        ? new TimeWindow
+                    {
+                            Start = StartTimeWindow,
+                            End = EndTimeWindow,
+                            TimeZone = TimeWindowTimeZone,
                         }
                         : null,
-                Recurrence = this.ScheduleDay != null ? this.CreateAutoscaleRecurrence() : null,
-                Rules = this.Rule,
+                Recurrence = ScheduleDay != null ? CreateAutoscaleRecurrence() : null,
+                Rules = Rule,
             };
         }
 
@@ -183,23 +183,23 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         /// <returns>A Recurrence created based on the properties of this object</returns>
         public Recurrence CreateAutoscaleRecurrence()
         {
-            return new Recurrence()
+            return new Recurrence
             {
-                Frequency = this.RecurrenceFrequency,
-                Schedule = this.CreateRecurrentSchedule()
+                Frequency = RecurrenceFrequency,
+                Schedule = CreateRecurrentSchedule()
             };
         }
 
         private RecurrentSchedule CreateRecurrentSchedule()
         {
             // Assuming validation is done by the server
-            return new RecurrentSchedule()
+            return new RecurrentSchedule
             {
-                Days = this.ScheduleDay,
+                Days = ScheduleDay,
 
-                Hours = this.ScheduleHour,
-                Minutes = this.ScheduleMinute,
-                TimeZone = this.ScheduleTimeZone,
+                Hours = ScheduleHour,
+                Minutes = ScheduleMinute,
+                TimeZone = ScheduleTimeZone,
             };
         }
     }

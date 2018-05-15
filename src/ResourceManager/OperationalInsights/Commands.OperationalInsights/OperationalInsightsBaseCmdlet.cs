@@ -30,16 +30,16 @@ namespace Microsoft.Azure.Commands.OperationalInsights
         {
             get
             {
-                if (this.operationalInsightsClient == null)
+                if (operationalInsightsClient == null)
                 {
-                    this.operationalInsightsClient = new OperationalInsightsClient(DefaultProfile.DefaultContext);
+                    operationalInsightsClient = new OperationalInsightsClient(DefaultProfile.DefaultContext);
                 }
 
-                return this.operationalInsightsClient;
+                return operationalInsightsClient;
             }
             set
             {
-                this.operationalInsightsClient = value;
+                operationalInsightsClient = value;
             }
         }
 

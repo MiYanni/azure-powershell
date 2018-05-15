@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.Management.IotHub.Models
 {
-    using Microsoft.Rest.Serialization;
+    using Rest.Serialization;
     using Newtonsoft.Json;
 
     public class PSCertificatePropertiesWithNonce

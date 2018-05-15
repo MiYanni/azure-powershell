@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </param>
         internal ServerOperations(SqlManagementClient client)
         {
-            this._client = client;
+            _client = client;
         }
         
         private SqlManagementClient _client;
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public SqlManagementClient Client
         {
-            get { return this._client; }
+            get { return _client; }
         }
         
         /// <summary>
@@ -122,9 +122,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Serialize Request
                 string requestContent = null;
@@ -220,7 +220,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -265,28 +265,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken fullyQualifiedDomainNameValue = propertiesValue2["fullyQualifiedDomainName"];
                                 if (fullyQualifiedDomainNameValue != null && fullyQualifiedDomainNameValue.Type != JTokenType.Null)
                                 {
-                                    string fullyQualifiedDomainNameInstance = ((string)fullyQualifiedDomainNameValue);
+                                    string fullyQualifiedDomainNameInstance = (string)fullyQualifiedDomainNameValue;
                                     propertiesInstance.FullyQualifiedDomainName = fullyQualifiedDomainNameInstance;
                                 }
                                 
                                 JToken versionValue = propertiesValue2["version"];
                                 if (versionValue != null && versionValue.Type != JTokenType.Null)
                                 {
-                                    string versionInstance = ((string)versionValue);
+                                    string versionInstance = (string)versionValue;
                                     propertiesInstance.Version = versionInstance;
                                 }
                                 
                                 JToken administratorLoginValue = propertiesValue2["administratorLogin"];
                                 if (administratorLoginValue != null && administratorLoginValue.Type != JTokenType.Null)
                                 {
-                                    string administratorLoginInstance = ((string)administratorLoginValue);
+                                    string administratorLoginInstance = (string)administratorLoginValue;
                                     propertiesInstance.AdministratorLogin = administratorLoginInstance;
                                 }
                                 
                                 JToken administratorLoginPasswordValue = propertiesValue2["administratorLoginPassword"];
                                 if (administratorLoginPasswordValue != null && administratorLoginPasswordValue.Type != JTokenType.Null)
                                 {
-                                    string administratorLoginPasswordInstance = ((string)administratorLoginPasswordValue);
+                                    string administratorLoginPasswordInstance = (string)administratorLoginPasswordValue;
                                     propertiesInstance.AdministratorLoginPassword = administratorLoginPasswordInstance;
                                 }
                             }
@@ -294,38 +294,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue = responseDoc["id"];
                             if (idValue != null && idValue.Type != JTokenType.Null)
                             {
-                                string idInstance = ((string)idValue);
+                                string idInstance = (string)idValue;
                                 serverInstance.Id = idInstance;
                             }
                             
                             JToken nameValue = responseDoc["name"];
                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                             {
-                                string nameInstance = ((string)nameValue);
+                                string nameInstance = (string)nameValue;
                                 serverInstance.Name = nameInstance;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 serverInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue = responseDoc["location"];
                             if (locationValue != null && locationValue.Type != JTokenType.Null)
                             {
-                                string locationInstance = ((string)locationValue);
+                                string locationInstance = (string)locationValue;
                                 serverInstance.Location = locationInstance;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey2 = ((string)property.Name);
-                                    string tagsValue2 = ((string)property.Value);
+                                    string tagsKey2 = property.Name;
+                                    string tagsValue2 = (string)property.Value;
                                     serverInstance.Tags.Add(tagsKey2, tagsValue2);
                                 }
                             }
@@ -405,9 +405,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -421,7 +421,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -446,7 +446,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -457,7 +457,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -550,9 +550,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -566,7 +566,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -591,7 +591,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -602,7 +602,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -647,28 +647,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken fullyQualifiedDomainNameValue = propertiesValue["fullyQualifiedDomainName"];
                                 if (fullyQualifiedDomainNameValue != null && fullyQualifiedDomainNameValue.Type != JTokenType.Null)
                                 {
-                                    string fullyQualifiedDomainNameInstance = ((string)fullyQualifiedDomainNameValue);
+                                    string fullyQualifiedDomainNameInstance = (string)fullyQualifiedDomainNameValue;
                                     propertiesInstance.FullyQualifiedDomainName = fullyQualifiedDomainNameInstance;
                                 }
                                 
                                 JToken versionValue = propertiesValue["version"];
                                 if (versionValue != null && versionValue.Type != JTokenType.Null)
                                 {
-                                    string versionInstance = ((string)versionValue);
+                                    string versionInstance = (string)versionValue;
                                     propertiesInstance.Version = versionInstance;
                                 }
                                 
                                 JToken administratorLoginValue = propertiesValue["administratorLogin"];
                                 if (administratorLoginValue != null && administratorLoginValue.Type != JTokenType.Null)
                                 {
-                                    string administratorLoginInstance = ((string)administratorLoginValue);
+                                    string administratorLoginInstance = (string)administratorLoginValue;
                                     propertiesInstance.AdministratorLogin = administratorLoginInstance;
                                 }
                                 
                                 JToken administratorLoginPasswordValue = propertiesValue["administratorLoginPassword"];
                                 if (administratorLoginPasswordValue != null && administratorLoginPasswordValue.Type != JTokenType.Null)
                                 {
-                                    string administratorLoginPasswordInstance = ((string)administratorLoginPasswordValue);
+                                    string administratorLoginPasswordInstance = (string)administratorLoginPasswordValue;
                                     propertiesInstance.AdministratorLoginPassword = administratorLoginPasswordInstance;
                                 }
                             }
@@ -676,38 +676,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue = responseDoc["id"];
                             if (idValue != null && idValue.Type != JTokenType.Null)
                             {
-                                string idInstance = ((string)idValue);
+                                string idInstance = (string)idValue;
                                 serverInstance.Id = idInstance;
                             }
                             
                             JToken nameValue = responseDoc["name"];
                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                             {
-                                string nameInstance = ((string)nameValue);
+                                string nameInstance = (string)nameValue;
                                 serverInstance.Name = nameInstance;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 serverInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue = responseDoc["location"];
                             if (locationValue != null && locationValue.Type != JTokenType.Null)
                             {
-                                string locationInstance = ((string)locationValue);
+                                string locationInstance = (string)locationValue;
                                 serverInstance.Location = locationInstance;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey = ((string)property.Name);
-                                    string tagsValue = ((string)property.Value);
+                                    string tagsKey = property.Name;
+                                    string tagsValue = (string)property.Value;
                                     serverInstance.Tags.Add(tagsKey, tagsValue);
                                 }
                             }
@@ -778,9 +778,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -793,7 +793,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -818,7 +818,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -829,7 +829,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -865,7 +865,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken valueArray = responseDoc["value"];
                             if (valueArray != null && valueArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken valueValue in ((JArray)valueArray))
+                                foreach (JToken valueValue in (JArray)valueArray)
                                 {
                                     Server serverInstance = new Server();
                                     result.Servers.Add(serverInstance);
@@ -879,28 +879,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken fullyQualifiedDomainNameValue = propertiesValue["fullyQualifiedDomainName"];
                                         if (fullyQualifiedDomainNameValue != null && fullyQualifiedDomainNameValue.Type != JTokenType.Null)
                                         {
-                                            string fullyQualifiedDomainNameInstance = ((string)fullyQualifiedDomainNameValue);
+                                            string fullyQualifiedDomainNameInstance = (string)fullyQualifiedDomainNameValue;
                                             propertiesInstance.FullyQualifiedDomainName = fullyQualifiedDomainNameInstance;
                                         }
                                         
                                         JToken versionValue = propertiesValue["version"];
                                         if (versionValue != null && versionValue.Type != JTokenType.Null)
                                         {
-                                            string versionInstance = ((string)versionValue);
+                                            string versionInstance = (string)versionValue;
                                             propertiesInstance.Version = versionInstance;
                                         }
                                         
                                         JToken administratorLoginValue = propertiesValue["administratorLogin"];
                                         if (administratorLoginValue != null && administratorLoginValue.Type != JTokenType.Null)
                                         {
-                                            string administratorLoginInstance = ((string)administratorLoginValue);
+                                            string administratorLoginInstance = (string)administratorLoginValue;
                                             propertiesInstance.AdministratorLogin = administratorLoginInstance;
                                         }
                                         
                                         JToken administratorLoginPasswordValue = propertiesValue["administratorLoginPassword"];
                                         if (administratorLoginPasswordValue != null && administratorLoginPasswordValue.Type != JTokenType.Null)
                                         {
-                                            string administratorLoginPasswordInstance = ((string)administratorLoginPasswordValue);
+                                            string administratorLoginPasswordInstance = (string)administratorLoginPasswordValue;
                                             propertiesInstance.AdministratorLoginPassword = administratorLoginPasswordInstance;
                                         }
                                     }
@@ -908,38 +908,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken idValue = valueValue["id"];
                                     if (idValue != null && idValue.Type != JTokenType.Null)
                                     {
-                                        string idInstance = ((string)idValue);
+                                        string idInstance = (string)idValue;
                                         serverInstance.Id = idInstance;
                                     }
                                     
                                     JToken nameValue = valueValue["name"];
                                     if (nameValue != null && nameValue.Type != JTokenType.Null)
                                     {
-                                        string nameInstance = ((string)nameValue);
+                                        string nameInstance = (string)nameValue;
                                         serverInstance.Name = nameInstance;
                                     }
                                     
                                     JToken typeValue = valueValue["type"];
                                     if (typeValue != null && typeValue.Type != JTokenType.Null)
                                     {
-                                        string typeInstance = ((string)typeValue);
+                                        string typeInstance = (string)typeValue;
                                         serverInstance.Type = typeInstance;
                                     }
                                     
                                     JToken locationValue = valueValue["location"];
                                     if (locationValue != null && locationValue.Type != JTokenType.Null)
                                     {
-                                        string locationInstance = ((string)locationValue);
+                                        string locationInstance = (string)locationValue;
                                         serverInstance.Location = locationInstance;
                                     }
                                     
-                                    JToken tagsSequenceElement = ((JToken)valueValue["tags"]);
+                                    JToken tagsSequenceElement = valueValue["tags"];
                                     if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                                     {
                                         foreach (JProperty property in tagsSequenceElement)
                                         {
-                                            string tagsKey = ((string)property.Name);
-                                            string tagsValue = ((string)property.Value);
+                                            string tagsKey = property.Name;
+                                            string tagsValue = (string)property.Value;
                                             serverInstance.Tags.Add(tagsKey, tagsValue);
                                         }
                                     }
@@ -1022,9 +1022,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -1039,7 +1039,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -1064,7 +1064,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -1075,7 +1075,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -1111,7 +1111,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken valueArray = responseDoc["value"];
                             if (valueArray != null && valueArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken valueValue in ((JArray)valueArray))
+                                foreach (JToken valueValue in (JArray)valueArray)
                                 {
                                     ServerMetric serverMetricInstance = new ServerMetric();
                                     result.Metrics.Add(serverMetricInstance);
@@ -1119,42 +1119,42 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken resourceNameValue = valueValue["resourceName"];
                                     if (resourceNameValue != null && resourceNameValue.Type != JTokenType.Null)
                                     {
-                                        string resourceNameInstance = ((string)resourceNameValue);
+                                        string resourceNameInstance = (string)resourceNameValue;
                                         serverMetricInstance.ResourceName = resourceNameInstance;
                                     }
                                     
                                     JToken displayNameValue = valueValue["displayName"];
                                     if (displayNameValue != null && displayNameValue.Type != JTokenType.Null)
                                     {
-                                        string displayNameInstance = ((string)displayNameValue);
+                                        string displayNameInstance = (string)displayNameValue;
                                         serverMetricInstance.DisplayName = displayNameInstance;
                                     }
                                     
                                     JToken currentValueValue = valueValue["currentValue"];
                                     if (currentValueValue != null && currentValueValue.Type != JTokenType.Null)
                                     {
-                                        double currentValueInstance = ((double)currentValueValue);
+                                        double currentValueInstance = (double)currentValueValue;
                                         serverMetricInstance.CurrentValue = currentValueInstance;
                                     }
                                     
                                     JToken limitValue = valueValue["limit"];
                                     if (limitValue != null && limitValue.Type != JTokenType.Null)
                                     {
-                                        double limitInstance = ((double)limitValue);
+                                        double limitInstance = (double)limitValue;
                                         serverMetricInstance.Limit = limitInstance;
                                     }
                                     
                                     JToken unitValue = valueValue["unit"];
                                     if (unitValue != null && unitValue.Type != JTokenType.Null)
                                     {
-                                        string unitInstance = ((string)unitValue);
+                                        string unitInstance = (string)unitValue;
                                         serverMetricInstance.Unit = unitInstance;
                                     }
                                     
                                     JToken nextResetTimeValue = valueValue["nextResetTime"];
                                     if (nextResetTimeValue != null && nextResetTimeValue.Type != JTokenType.Null)
                                     {
-                                        DateTime nextResetTimeInstance = ((DateTime)nextResetTimeValue);
+                                        DateTime nextResetTimeInstance = (DateTime)nextResetTimeValue;
                                         serverMetricInstance.NextResetTime = nextResetTimeInstance;
                                     }
                                 }

@@ -38,22 +38,22 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!this.IsLoadBalancerPresent(this.LoadBalancer.ResourceGroupName, this.LoadBalancer.Name))
+            if (!IsLoadBalancerPresent(LoadBalancer.ResourceGroupName, LoadBalancer.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Normalize the IDs
-            ChildResourceHelper.NormalizeChildResourcesId(this.LoadBalancer, this.NetworkClient.NetworkManagementClient.SubscriptionId);
+            ChildResourceHelper.NormalizeChildResourcesId(LoadBalancer, NetworkClient.NetworkManagementClient.SubscriptionId);
 
             // Map to the sdk object
-            var lbModel = NetworkResourceManagerProfile.Mapper.Map<MNM.LoadBalancer>(this.LoadBalancer);
-            lbModel.Tags = TagsConversionHelper.CreateTagDictionary(this.LoadBalancer.Tag, validate: true);
+            var lbModel = NetworkResourceManagerProfile.Mapper.Map<MNM.LoadBalancer>(LoadBalancer);
+            lbModel.Tags = TagsConversionHelper.CreateTagDictionary(LoadBalancer.Tag, validate: true);
 
             // Execute the Create VirtualNetwork call
-            this.LoadBalancerClient.CreateOrUpdate(this.LoadBalancer.ResourceGroupName, this.LoadBalancer.Name, lbModel);
+            LoadBalancerClient.CreateOrUpdate(LoadBalancer.ResourceGroupName, LoadBalancer.Name, lbModel);
 
-            var getLoadBalancer = this.GetLoadBalancer(this.LoadBalancer.ResourceGroupName, this.LoadBalancer.Name);
+            var getLoadBalancer = GetLoadBalancer(LoadBalancer.ResourceGroupName, LoadBalancer.Name);
             WriteObject(getLoadBalancer);
         }
     }

@@ -64,13 +64,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByObject:
-                    this.GetAll();
+                    GetAll();
                     break;
                 case ASRParameterSets.ByObjectWithName:
-                    this.GetByName();
+                    GetByName();
                     break;
                 default:
                     throw new PSInvalidOperationException(Resources.InvalidParameterSet);
@@ -82,17 +82,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetAll()
         {
-            var recoveryPointListResponse = this.RecoveryServicesClient
+            var recoveryPointListResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryRecoveryPoint(
                     Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
                     Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationProtectionContainers),
-                    this.ReplicationProtectedItem.Name);
+                    ReplicationProtectedItem.Name);
 
-            this.WriteRecoveryPoints(recoveryPointListResponse);
+            WriteRecoveryPoints(recoveryPointListResponse);
         }
 
         /// <summary>
@@ -102,20 +102,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             try
             {
-                var recoveryPointResponse = this.RecoveryServicesClient
+                var recoveryPointResponse = RecoveryServicesClient
                     .GetAzureSiteRecoveryRecoveryPoint(
                         Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationFabrics),
                         Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationProtectionContainers),
-                        this.ReplicationProtectedItem.Name,
-                        this.Name);
+                        ReplicationProtectedItem.Name,
+                        Name);
 
                 if (recoveryPointResponse != null)
                 {
-                    this.WriteRecoveryPoint(recoveryPointResponse);
+                    WriteRecoveryPoint(recoveryPointResponse);
                 }
             }
             catch (CloudException ex)
@@ -129,8 +129,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.InvalidParameterSet,
-                            this.Name,
-                            this.ReplicationProtectedItem.FriendlyName));
+                            Name,
+                            ReplicationProtectedItem.FriendlyName));
                 }
 
                 throw;
@@ -144,7 +144,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteRecoveryPoint(
             RecoveryPoint recoveryPoint)
         {
-            this.WriteObject(new ASRRecoveryPoint(recoveryPoint));
+            WriteObject(new ASRRecoveryPoint(recoveryPoint));
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteRecoveryPoints(
             IList<RecoveryPoint> recoveryPoints)
         {
-            this.WriteObject(
+            WriteObject(
                 recoveryPoints.Select(recoveryPoint => new ASRRecoveryPoint(recoveryPoint)),
                 true);
         }

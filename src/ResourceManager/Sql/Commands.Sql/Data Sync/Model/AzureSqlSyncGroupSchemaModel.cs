@@ -59,17 +59,17 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Model
         public SyncGroupSchema ToSyncGroupSchema()
         {
             List<SyncGroupSchemaTable> syncGroupSchemaTable = null;
-            if (this.Tables != null)
+            if (Tables != null)
             {
                 syncGroupSchemaTable = new List<SyncGroupSchemaTable>();
-                foreach (var table in this.Tables)
+                foreach (var table in Tables)
                 {
                     syncGroupSchemaTable.Add(table.ToSyncGroupSchemaTable());
                 }
             }
-            return new SyncGroupSchema()
+            return new SyncGroupSchema
             {
-                MasterSyncMemberName = this.MasterSyncMemberName,
+                MasterSyncMemberName = MasterSyncMemberName,
                 Tables = syncGroupSchemaTable
             };
         }

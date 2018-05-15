@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (ShouldProcess(this.Name, Resources.createService))
+            if (ShouldProcess(Name, Resources.createService))
             {
                 // Write object in PowerShell
                 WriteObject(new PSDataMigrationService(CreateService()));
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
             // string vnetId = GetVirtualSubnetId(SubnetName);
 
             // Create Sku 
-            ServiceSku sku = new ServiceSku()
+            ServiceSku sku = new ServiceSku
             {
                 Name = Sku
             };

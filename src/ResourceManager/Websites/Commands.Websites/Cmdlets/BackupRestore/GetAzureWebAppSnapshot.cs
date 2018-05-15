@@ -28,11 +28,11 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.BackupRestore
         {
             base.ExecuteCmdlet();
             var list = WebsitesClient.GetSiteSnapshots(ResourceGroupName, Name, Slot).Select(s => {
-                return new AzureWebAppSnapshot()
+                return new AzureWebAppSnapshot
                 {
-                    ResourceGroupName = this.ResourceGroupName,
-                    Name = this.Name,
-                    Slot = string.IsNullOrEmpty(this.Slot) ? "Production" : this.Slot,
+                    ResourceGroupName = ResourceGroupName,
+                    Name = Name,
+                    Slot = string.IsNullOrEmpty(Slot) ? "Production" : Slot,
                     SnapshotTime = DateTime.Parse(s.Time)
                 };
             }).OrderByDescending(s => s.SnapshotTime).ToArray();

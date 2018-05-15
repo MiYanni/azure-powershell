@@ -32,18 +32,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var httpListener = this.ApplicationGateway.HttpListeners.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var httpListener = ApplicationGateway.HttpListeners.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (httpListener != null)
             {
                 throw new ArgumentException("Http Listener with the specified name already exists");
             }
 
-            httpListener = base.NewObject();
-            this.ApplicationGateway.HttpListeners.Add(httpListener);
+            httpListener = NewObject();
+            ApplicationGateway.HttpListeners.Add(httpListener);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

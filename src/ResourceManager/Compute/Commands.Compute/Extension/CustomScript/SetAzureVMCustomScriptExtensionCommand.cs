@@ -127,35 +127,35 @@ namespace Microsoft.Azure.Commands.Compute
             {
                 ExecuteClientAction(() =>
                 {
-                    if (string.Equals(this.ParameterSetName, SetCustomScriptExtensionByContainerBlobsParamSetName))
+                    if (string.Equals(ParameterSetName, SetCustomScriptExtensionByContainerBlobsParamSetName))
                     {
-                        this.StorageEndpointSuffix = string.IsNullOrEmpty(this.StorageEndpointSuffix) ?
-                            DefaultProfile.DefaultContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.StorageEndpointSuffix) : this.StorageEndpointSuffix;
-                        var sName = string.IsNullOrEmpty(this.StorageAccountName) ? GetStorageName() : this.StorageAccountName;
-                        var sKey = string.IsNullOrEmpty(this.StorageAccountKey) ? GetStorageKey(sName) : this.StorageAccountKey;
+                        StorageEndpointSuffix = string.IsNullOrEmpty(StorageEndpointSuffix) ?
+                            DefaultProfile.DefaultContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.StorageEndpointSuffix) : StorageEndpointSuffix;
+                        var sName = string.IsNullOrEmpty(StorageAccountName) ? GetStorageName() : StorageAccountName;
+                        var sKey = string.IsNullOrEmpty(StorageAccountKey) ? GetStorageKey(sName) : StorageAccountKey;
 
-                        if (this.FileName != null && this.FileName.Any())
+                        if (FileName != null && FileName.Any())
                         {
-                            this.FileUri = (from blobName in this.FileName
-                                            select GetSasUrlStr(sName, sKey, this.ContainerName, blobName)).ToArray();
+                            FileUri = (from blobName in FileName
+                                            select GetSasUrlStr(sName, sKey, ContainerName, blobName)).ToArray();
 
-                            if (string.IsNullOrEmpty(this.Run))
+                            if (string.IsNullOrEmpty(Run))
                             {
-                                WriteWarning(Microsoft.Azure.Commands.Compute.Properties.Resources.CustomScriptExtensionTryToUseTheFirstSpecifiedFileAsRunScript);
-                                this.Run = this.FileName[0];
+                                WriteWarning(Properties.Resources.CustomScriptExtensionTryToUseTheFirstSpecifiedFileAsRunScript);
+                                Run = FileName[0];
                             }
                         }
                     }
 
                     var policyStr = string.Format(policyFormatStr, defaultPolicyStr);
-                    var commandToExecute = string.Format(poshCmdFormatStr, policyStr, this.Run, this.Argument);
+                    var commandToExecute = string.Format(poshCmdFormatStr, policyStr, Run, Argument);
 
                     var privateSettings = GetPrivateConfiguration();
 
                     var publicSettings = new Hashtable();
                     publicSettings.Add(fileUrisKey, FileUri ?? new string[] { });
 
-                    if (this.SecureExecution.IsPresent)
+                    if (SecureExecution.IsPresent)
                     {
                         if (privateSettings == null)
                         {
@@ -170,20 +170,20 @@ namespace Microsoft.Azure.Commands.Compute
 
                     var parameters = new VirtualMachineExtension
                     {
-                        Location = this.Location,
+                        Location = Location,
                         Publisher = VirtualMachineCustomScriptExtensionContext.ExtensionDefaultPublisher,
                         VirtualMachineExtensionType = VirtualMachineCustomScriptExtensionContext.ExtensionDefaultName,
-                        TypeHandlerVersion = (this.TypeHandlerVersion) ?? VirtualMachineCustomScriptExtensionContext.ExtensionDefaultVersion,
+                        TypeHandlerVersion = TypeHandlerVersion ?? VirtualMachineCustomScriptExtensionContext.ExtensionDefaultVersion,
                         Settings = publicSettings,
                         ProtectedSettings = privateSettings,
-                        AutoUpgradeMinorVersion = !this.DisableAutoUpgradeMinorVersion.IsPresent,
-                        ForceUpdateTag = this.ForceRerun
+                        AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent,
+                        ForceUpdateTag = ForceRerun
                     };
 
-                    var op = this.VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
-                    this.ResourceGroupName,
-                    this.VMName,
-                    this.Name,
+                    var op = VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
+                    ResourceGroupName,
+                    VMName,
+                    Name,
                     parameters).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
                     WriteObject(result);
@@ -205,11 +205,11 @@ namespace Microsoft.Azure.Commands.Compute
                 var storageClient = AzureSession.Instance.ClientFactory.CreateArmClient<StorageManagementClient>(DefaultProfile.DefaultContext,
                         AzureEnvironment.Endpoint.ResourceManager);
 
-                var storageAccount = storageClient.StorageAccounts.GetProperties(this.ResourceGroupName, storageName);
+                var storageAccount = storageClient.StorageAccounts.GetProperties(ResourceGroupName, storageName);
 
                 if (storageAccount != null)
                 {
-                    var keys = storageClient.StorageAccounts.ListKeys(this.ResourceGroupName, storageName);
+                    var keys = storageClient.StorageAccounts.ListKeys(ResourceGroupName, storageName);
                     if (keys != null)
                     {
                         storageKey = keys.GetFirstAvailableKey();
@@ -225,15 +225,15 @@ namespace Microsoft.Azure.Commands.Compute
             var storageClient = AzureSession.Instance.ClientFactory.CreateArmClient<StorageManagementClient>(DefaultProfile.DefaultContext,
                         AzureEnvironment.Endpoint.ResourceManager);
             var cred = new StorageCredentials(storageName, storageKey);
-            var storageAccount = string.IsNullOrEmpty(this.StorageEndpointSuffix)
+            var storageAccount = string.IsNullOrEmpty(StorageEndpointSuffix)
                                ? new CloudStorageAccount(cred, true)
-                               : new CloudStorageAccount(cred, this.StorageEndpointSuffix, true);
+                               : new CloudStorageAccount(cred, StorageEndpointSuffix, true);
 
             var blobClient = storageAccount.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference(containerName);
             var cloudBlob = container.GetBlockBlobReference(blobName);
             var sasToken = cloudBlob.GetSharedAccessSignature(
-                new SharedAccessBlobPolicy()
+                new SharedAccessBlobPolicy
                 {
                     SharedAccessExpiryTime = DateTime.UtcNow.AddHours(24.0),
                     Permissions = SharedAccessBlobPermissions.Read
@@ -249,17 +249,14 @@ namespace Microsoft.Azure.Commands.Compute
 
         protected Hashtable GetPrivateConfiguration()
         {
-            if (string.IsNullOrEmpty(this.StorageAccountName) || string.IsNullOrEmpty(this.StorageAccountKey))
+            if (string.IsNullOrEmpty(StorageAccountName) || string.IsNullOrEmpty(StorageAccountKey))
             {
                 return null;
             }
-            else
-            {
-                var privateSettings = new Hashtable();
-                privateSettings.Add(storageAccountNameKey, StorageAccountName);
-                privateSettings.Add(storageAccountKeyKey, StorageAccountKey);
-                return privateSettings;
-            }
+            var privateSettings = new Hashtable();
+            privateSettings.Add(storageAccountNameKey, StorageAccountName);
+            privateSettings.Add(storageAccountKeyKey, StorageAccountKey);
+            return privateSettings;
         }
     }
 }

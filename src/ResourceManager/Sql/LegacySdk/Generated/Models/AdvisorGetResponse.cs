@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Advisor Advisor
         {
-            get { return this._advisor; }
-            set { this._advisor = value; }
+            get { return _advisor; }
+            set { _advisor = value; }
         }
         
         /// <summary>

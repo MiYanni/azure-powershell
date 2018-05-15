@@ -60,8 +60,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, HelpMessage = "Forces an overwrite of an existing local file with the same name.")]
         public SwitchParameter Force
         {
-            get { return this.overwriteExistingFile; }
-            set { this.overwriteExistingFile = value; }
+            get { return overwriteExistingFile; }
+            set { overwriteExistingFile = value; }
         }
 
         /// <summary>
@@ -70,13 +70,13 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            bool? isDraft = this.IsDraft();
+            bool? isDraft = IsDraft();
             if (ShouldProcess(Name, VerbsData.Export))
             {
-                var ret = this.AutomationClient.GetConfigurationContent(this.ResourceGroupName,
-                    this.AutomationAccountName, this.Name, isDraft, OutputFolder, this.Force);
+                var ret = AutomationClient.GetConfigurationContent(ResourceGroupName,
+                    AutomationAccountName, Name, isDraft, OutputFolder, Force);
 
-                this.WriteObject(ret, true);
+                WriteObject(ret, true);
             }
         }
 
@@ -90,10 +90,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             bool? isDraft = null;
 
-            if (this.Slot != null)
+            if (Slot != null)
             {
-                isDraft = (0 == string.Compare(this.Slot, Constants.Draft, CultureInfo.InvariantCulture,
-                              CompareOptions.OrdinalIgnoreCase));
+                isDraft = 0 == string.Compare(Slot, Constants.Draft, CultureInfo.InvariantCulture,
+                              CompareOptions.OrdinalIgnoreCase);
             }
 
             return isDraft;

@@ -57,26 +57,26 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
                 FrequencyInterval, freq,
                 KeepAtLeastOneBackup.IsPresent,
                 RetentionPeriodInDays, StartTime);
-            BackupRequest request = new BackupRequest()
+            BackupRequest request = new BackupRequest
             {
                 Enabled = true,
-                StorageAccountUrl = this.StorageAccountUrl,
+                StorageAccountUrl = StorageAccountUrl,
                 BackupSchedule = schedule,
-                Databases = this.Databases,
+                Databases = Databases,
                 BackupRequestType = BackupRestoreOperationType.Default
             };
             WebsitesClient.UpdateWebAppBackupConfiguration(ResourceGroupName, Name, Slot, request);
-            var config = new AzureWebAppBackupConfiguration()
+            var config = new AzureWebAppBackupConfiguration
             {
-                Name = this.Name,
-                ResourceGroupName = this.ResourceGroupName,
-                StorageAccountUrl = this.StorageAccountUrl,
-                FrequencyInterval = this.FrequencyInterval,
-                FrequencyUnit = this.FrequencyUnit,
-                RetentionPeriodInDays = this.RetentionPeriodInDays,
-                StartTime = this.StartTime,
-                KeepAtLeastOneBackup = this.KeepAtLeastOneBackup.IsPresent,
-                Databases = this.Databases,
+                Name = Name,
+                ResourceGroupName = ResourceGroupName,
+                StorageAccountUrl = StorageAccountUrl,
+                FrequencyInterval = FrequencyInterval,
+                FrequencyUnit = FrequencyUnit,
+                RetentionPeriodInDays = RetentionPeriodInDays,
+                StartTime = StartTime,
+                KeepAtLeastOneBackup = KeepAtLeastOneBackup.IsPresent,
+                Databases = Databases,
                 Enabled = true
             };
             WriteObject(config);

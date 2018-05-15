@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
             ICollection<AzureSqlDatabaseTransparentDataEncryptionModel> results = null;
 
             results = new List<AzureSqlDatabaseTransparentDataEncryptionModel>();
-            results.Add(ModelAdapter.GetTransparentDataEncryption(this.ResourceGroupName, this.ServerName, this.DatabaseName));
+            results.Add(ModelAdapter.GetTransparentDataEncryption(ResourceGroupName, ServerName, DatabaseName));
 
             return results;
         }

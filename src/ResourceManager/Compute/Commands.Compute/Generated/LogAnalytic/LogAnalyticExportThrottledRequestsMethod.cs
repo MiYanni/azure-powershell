@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string location = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "Parameters", "Location" },
+                 new[] { "Parameters", "Location" },
                  new object[] { parameters, location });
         }
     }
@@ -177,16 +177,16 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.Location, VerbsData.Export))
+                if (ShouldProcess(Location, VerbsData.Export))
                 {
                     var parameters = new ThrottledRequestsInput();
-                    parameters.GroupByOperationName = this.GroupByOperationName;
-                    parameters.FromTime = this.FromTime;
-                    parameters.GroupByThrottlePolicy = this.GroupByThrottlePolicy;
-                    parameters.BlobContainerSasUri = this.BlobContainerSasUri;
-                    parameters.GroupByResourceName = this.GroupByResourceName;
-                    parameters.ToTime = this.ToTime;
-                    string location = this.Location.Canonicalize();
+                    parameters.GroupByOperationName = GroupByOperationName;
+                    parameters.FromTime = FromTime;
+                    parameters.GroupByThrottlePolicy = GroupByThrottlePolicy;
+                    parameters.BlobContainerSasUri = BlobContainerSasUri;
+                    parameters.GroupByResourceName = GroupByResourceName;
+                    parameters.ToTime = ToTime;
+                    string location = Location.Canonicalize();
 
                     var result = LogAnalyticsClient.ExportThrottledRequests(parameters, location);
                     var psObject = new PSLogAnalyticsOperationResult();

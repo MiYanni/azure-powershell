@@ -52,10 +52,10 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                target: string.Format("Remove an autoscale setting: {0} from resource group: {1}", this.Name, this.ResourceGroupName),
-                action: "Remove an autoscale setting"))
+                string.Format("Remove an autoscale setting: {0} from resource group: {1}", Name, ResourceGroupName),
+                "Remove an autoscale setting"))
             {
-                var result = this.MonitorManagementClient.AutoscaleSettings.DeleteWithHttpMessagesAsync(resourceGroupName: this.ResourceGroupName, autoscaleSettingName: this.Name).Result;
+                var result = MonitorManagementClient.AutoscaleSettings.DeleteWithHttpMessagesAsync(ResourceGroupName, Name).Result;
 
                 // Keep this response for backwards compatibility.
                 // Note: Delete operations return nothing in the new specification.

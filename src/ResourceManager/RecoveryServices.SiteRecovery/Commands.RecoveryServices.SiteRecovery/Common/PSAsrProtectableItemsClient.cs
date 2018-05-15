@@ -33,22 +33,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string fabricName,
             string protectionContainerName)
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationProtectableItems
                 .ListByReplicationProtectionContainersWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
 
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationProtectableItems
                     .ListByReplicationProtectionContainersNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
 
             pages.Insert(0, firstPage);
 
@@ -67,12 +67,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             string replicatedProtectedItemName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .ReplicationProtectableItems.GetWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicatedProtectedItemName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -90,12 +90,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             DiscoverProtectableItemRequest input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectionContainers.BeginDiscoverProtectableItemWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 

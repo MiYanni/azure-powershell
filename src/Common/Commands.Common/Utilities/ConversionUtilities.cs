@@ -31,39 +31,36 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 return null;
             }
-            else
+            var dictionary = new Dictionary<string, object>();
+            foreach (var entry in hashtable.Cast<DictionaryEntry>())
             {
-                var dictionary = new Dictionary<string, object>();
-                foreach (var entry in hashtable.Cast<DictionaryEntry>())
-                {
-                    var valueAsHashtable = entry.Value as Hashtable;
+                var valueAsHashtable = entry.Value as Hashtable;
 
-                    if (valueAsHashtable != null)
+                if (valueAsHashtable != null)
+                {
+                    dictionary[(string)entry.Key] =
+                        valueAsHashtable.ToDictionary(addValueLayer);
+                }
+                else
+                {
+                    object value = entry.Value;
+
+                    if (entry.Value is SecureString)
                     {
-                        dictionary[(string)entry.Key] =
-                            valueAsHashtable.ToDictionary(addValueLayer);
+                        value = SecureStringToString(entry.Value as SecureString);
+                    }
+
+                    if (addValueLayer)
+                    {
+                        dictionary[(string)entry.Key] = new Hashtable { { "value", value } };
                     }
                     else
                     {
-                        object value = entry.Value;
-
-                        if (entry.Value is SecureString)
-                        {
-                            value = SecureStringToString(entry.Value as SecureString);
-                        }
-
-                        if (addValueLayer)
-                        {
-                            dictionary[(string)entry.Key] = new Hashtable { { "value", value } };
-                        }
-                        else
-                        {
-                            dictionary[(string)entry.Key] = value;
-                        }
+                        dictionary[(string)entry.Key] = value;
                     }
                 }
-                return dictionary;
             }
+            return dictionary;
         }
 
         public static Hashtable ToHashtable<TV>(this IDictionary<string, TV> dictionary)
@@ -72,10 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 return null;
             }
-            else
-            {
-                return new Hashtable((Dictionary<string, TV>)dictionary);
-            }
+            return new Hashtable((Dictionary<string, TV>)dictionary);
         }
 
         /// <summary>
@@ -87,7 +81,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         /// <returns>The array into string representation</returns>
         public static string ArrayToString<T>(this T[] array, string delimiter)
         {
-            return (array == null) ? null : (array.Length == 0) ? String.Empty
+            return array == null ? null : array.Length == 0 ? String.Empty
                 : array.Skip(1).Aggregate(new StringBuilder(array[0].ToString()),
                 (s, i) => s.Append(delimiter).Append(i), s => s.ToString());
         }

@@ -21,7 +21,7 @@ using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 {
 
-    [Cmdlet(VerbsCommon.New, CommitmentPlansCmdletBase.CommitmentPlanCommandletSuffix, SupportsShouldProcess = true)]
+    [Cmdlet(VerbsCommon.New, CommitmentPlanCommandletSuffix, SupportsShouldProcess = true)]
     [OutputType(typeof(CommitmentPlan))]
     public class NewAzureMLCommitmentPlan : CommitmentPlansCmdletBase
     {
@@ -60,23 +60,23 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 
         protected override void RunCmdlet()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
-                Resources.NewServiceWarning.FormatInvariant(this.Name), 
+            ConfirmAction(
+                Force.IsPresent,
+                Resources.NewServiceWarning.FormatInvariant(Name), 
                 "Creating the new commitment plan", 
-                this.Name, 
+                Name, 
                 () =>
                 {
-                    int skuCapacity = this.SkuCapacity == 0 ? 1 : this.SkuCapacity;
-                    ResourceSku sku = new ResourceSku(skuCapacity, this.SkuName, this.SkuTier);
+                    int skuCapacity = SkuCapacity == 0 ? 1 : SkuCapacity;
+                    ResourceSku sku = new ResourceSku(skuCapacity, SkuName, SkuTier);
 
-                    CommitmentPlan newCommitmentPlan = this.CommitmentPlansClient.CreateOrUpdateAzureMlCommitmentPlan(
-                                                    this.ResourceGroupName,
-                                                    this.Location,
-                                                    this.Name,
+                    CommitmentPlan newCommitmentPlan = CommitmentPlansClient.CreateOrUpdateAzureMlCommitmentPlan(
+                                                    ResourceGroupName,
+                                                    Location,
+                                                    Name,
                                                     sku);
 
-                    this.WriteObject(newCommitmentPlan);
+                    WriteObject(newCommitmentPlan);
                 });
         }
     }

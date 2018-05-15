@@ -42,26 +42,26 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <param name="backendEvent">ASR Event object</param>
         public ASREvent(EventModel backendEvent)
         {
-            this.Name = backendEvent.Name;
-            this.Id = backendEvent.Id;
+            Name = backendEvent.Name;
+            Id = backendEvent.Id;
             if (backendEvent.Properties != null)
             {
-                this.Description = backendEvent.Properties.Description;
-                this.EventType = backendEvent.Properties.EventType;
-                this.FabricId = backendEvent.Properties.FabricId;
-                this.AffectedObjectFriendlyName =
+                Description = backendEvent.Properties.Description;
+                EventType = backendEvent.Properties.EventType;
+                FabricId = backendEvent.Properties.FabricId;
+                AffectedObjectFriendlyName =
                     backendEvent.Properties.AffectedObjectFriendlyName;
-                this.EventCode = backendEvent.Properties.EventCode;
+                EventCode = backendEvent.Properties.EventCode;
                 if (backendEvent.Properties.TimeOfOccurrence != null)
                 {
-                    this.TimeOfOccurence = backendEvent.Properties.TimeOfOccurrence.Value;
+                    TimeOfOccurence = backendEvent.Properties.TimeOfOccurrence.Value;
                 }
-                this.Severity = backendEvent.Properties.Severity;
-                this.HealthErrors = this.TranslateHealthErrors(
+                Severity = backendEvent.Properties.Severity;
+                HealthErrors = TranslateHealthErrors(
                     backendEvent.Properties.HealthErrors);
-                this.EventSpecificDetails = this.TranslateEventSpecificDetails(
+                EventSpecificDetails = TranslateEventSpecificDetails(
                     backendEvent.Properties.EventSpecificDetails);
-                this.ProviderSpecificEventDetails = this.TranslateProviderSpecificEventDetails(
+                ProviderSpecificEventDetails = TranslateProviderSpecificEventDetails(
                     backendEvent.Properties.ProviderSpecificDetails);
             }
         }
@@ -203,17 +203,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             if (healthError.CreationTimeUtc.HasValue)
             {
-                this.CreationTimeUtc = healthError.CreationTimeUtc.Value.ToUniversalTime()
+                CreationTimeUtc = healthError.CreationTimeUtc.Value.ToUniversalTime()
                     .ToString("o");
             }
 
-            this.EntityId = healthError.EntityId;
-            this.ErrorCode = healthError.ErrorCode;
-            this.ErrorLevel = healthError.ErrorLevel;
-            this.ErrorMessage = healthError.ErrorMessage;
-            this.PossibleCauses = healthError.PossibleCauses;
-            this.RecommendedAction = healthError.RecommendedAction;
-            this.RecoveryProviderErrorMessage = healthError.RecoveryProviderErrorMessage;
+            EntityId = healthError.EntityId;
+            ErrorCode = healthError.ErrorCode;
+            ErrorLevel = healthError.ErrorLevel;
+            ErrorMessage = healthError.ErrorMessage;
+            PossibleCauses = healthError.PossibleCauses;
+            RecommendedAction = healthError.RecommendedAction;
+            RecoveryProviderErrorMessage = healthError.RecoveryProviderErrorMessage;
         }
 
         /// <summary>
@@ -316,9 +316,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         ///</returns>
         public ASRHyperVReplicaAzureEventDetails(HyperVReplicaAzureEventDetails eventDetails)
         {
-            this.ContainerName = eventDetails.ContainerName;
-            this.FabricName = eventDetails.FabricName;
-            this.RemoteContainerName = eventDetails.RemoteContainerName;
+            ContainerName = eventDetails.ContainerName;
+            FabricName = eventDetails.FabricName;
+            RemoteContainerName = eventDetails.RemoteContainerName;
         }
 
         /// <summary>
@@ -350,10 +350,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRHyperVReplica2012EventDetails(
             HyperVReplica2012EventDetails eventDetails)
         {
-            this.RemoteContainerName = eventDetails.RemoteContainerName;
-            this.ContainerName = eventDetails.ContainerName;
-            this.FabricName = eventDetails.FabricName;
-            this.RemoteFabricName = eventDetails.RemoteFabricName;
+            RemoteContainerName = eventDetails.RemoteContainerName;
+            ContainerName = eventDetails.ContainerName;
+            FabricName = eventDetails.FabricName;
+            RemoteFabricName = eventDetails.RemoteFabricName;
         }
 
         /// <summary>
@@ -370,10 +370,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRHyperVReplica2012R2EventDetails(
             HyperVReplica2012R2EventDetails eventDetails)
         {
-            this.RemoteContainerName = eventDetails.RemoteContainerName;
-            this.ContainerName = eventDetails.ContainerName;
-            this.FabricName = eventDetails.FabricName;
-            this.RemoteFabricName = eventDetails.RemoteFabricName;
+            RemoteContainerName = eventDetails.RemoteContainerName;
+            ContainerName = eventDetails.ContainerName;
+            FabricName = eventDetails.FabricName;
+            RemoteFabricName = eventDetails.RemoteFabricName;
         }
 
         /// <summary>
@@ -395,13 +395,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         ///</returns>
         public ASRInMageAzureV2EventDetails(InMageAzureV2EventDetails inMageAzureV2EventDetails)
         {
-            this.Category = inMageAzureV2EventDetails.Category;
-            this.Component = inMageAzureV2EventDetails.Component;
-            this.CorrectiveAction = inMageAzureV2EventDetails.CorrectiveAction;
-            this.Details = inMageAzureV2EventDetails.Details;
-            this.EventType = inMageAzureV2EventDetails.EventType;
-            this.SiteName = inMageAzureV2EventDetails.SiteName;
-            this.Summary = inMageAzureV2EventDetails.Summary;
+            Category = inMageAzureV2EventDetails.Category;
+            Component = inMageAzureV2EventDetails.Component;
+            CorrectiveAction = inMageAzureV2EventDetails.CorrectiveAction;
+            Details = inMageAzureV2EventDetails.Details;
+            EventType = inMageAzureV2EventDetails.EventType;
+            SiteName = inMageAzureV2EventDetails.SiteName;
+            Summary = inMageAzureV2EventDetails.Summary;
         }
 
         /// <summary>
@@ -459,10 +459,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRJobStatusEventDetails(JobStatusEventDetails jobStatusEventDetails) : base(
             jobStatusEventDetails)
         {
-            this.JobId = jobStatusEventDetails.JobId;
-            this.JobFriendlyName = jobStatusEventDetails.JobFriendlyName;
-            this.JobStatus = jobStatusEventDetails.JobStatus;
-            this.AffectedObjectType = jobStatusEventDetails.AffectedObjectType;
+            JobId = jobStatusEventDetails.JobId;
+            JobFriendlyName = jobStatusEventDetails.JobFriendlyName;
+            JobStatus = jobStatusEventDetails.JobStatus;
+            AffectedObjectType = jobStatusEventDetails.AffectedObjectType;
         }
 
         /// <summary>

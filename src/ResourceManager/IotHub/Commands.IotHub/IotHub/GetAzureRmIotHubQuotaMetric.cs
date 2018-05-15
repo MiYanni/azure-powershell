@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 {
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIotHubQuotaMetric")]
@@ -46,8 +46,8 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 
         public override void ExecuteCmdlet()
         {
-            IEnumerable<IotHubQuotaMetricInfo> iotHubQuotaMetrics = this.IotHubClient.IotHubResource.GetQuotaMetrics(this.ResourceGroupName, this.Name);
-            this.WriteObject(IotHubUtils.ToPSIotHubQuotaMetrics(iotHubQuotaMetrics), true);
+            IEnumerable<IotHubQuotaMetricInfo> iotHubQuotaMetrics = IotHubClient.IotHubResource.GetQuotaMetrics(ResourceGroupName, Name);
+            WriteObject(IotHubUtils.ToPSIotHubQuotaMetrics(iotHubQuotaMetrics), true);
         }
     }
 }

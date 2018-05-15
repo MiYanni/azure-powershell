@@ -14,11 +14,11 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.Azure.Management.Logic;
+    using Management.Logic.Models;
+    using Management.Logic;
     using System.Management.Automation;
     using System.Globalization;
-    using Microsoft.Rest.Azure;
+    using Rest.Azure;
     using System.Collections.Generic;
 
     /// <summary>
@@ -36,15 +36,12 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Newly created integration account map object.</returns>
         public IntegrationAccountMap CreateIntegrationAccountMap(string resourceGroupName, string integrationAccountName, string integrationAccountMapName, IntegrationAccountMap integrationAccountMap)
         {
-            if (!this.DoesIntegrationAccountMapExist(resourceGroupName, integrationAccountName,integrationAccountMapName))
+            if (!DoesIntegrationAccountMapExist(resourceGroupName, integrationAccountName,integrationAccountMapName))
             {
-                return this.LogicManagementClient.Maps.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountMapName, integrationAccountMap);
+                return LogicManagementClient.Maps.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountMapName, integrationAccountMap);
             }
-            else
-            {
-                throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    Properties.Resource.ResourceAlreadyExists, integrationAccountMapName, resourceGroupName));
-            }
+            throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
+                Properties.Resource.ResourceAlreadyExists, integrationAccountMapName, resourceGroupName));
         }
 
         /// <summary>
@@ -59,7 +56,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
             bool result = false;
             try
             {
-                var map = this.LogicManagementClient.Maps.Get(resourceGroupName, integrationAccountName, integrationAccountMapName);
+                var map = LogicManagementClient.Maps.Get(resourceGroupName, integrationAccountName, integrationAccountMapName);
                 result = map != null;
             }
             catch
@@ -79,7 +76,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Updated integration account map</returns>
         public IntegrationAccountMap UpdateIntegrationAccountMap(string resourceGroupName, string integrationAccountName, string integrationAccountMapName, IntegrationAccountMap integrationAccountMap)
         {
-            return this.LogicManagementClient.Maps.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountMapName, integrationAccountMap);
+            return LogicManagementClient.Maps.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountMapName, integrationAccountMap);
         }
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Integration account map object.</returns>
         public IntegrationAccountMap GetIntegrationAccountMap(string resourceGroupName, string integrationAccountName, string integrationAccountMapName)
         {
-            return this.LogicManagementClient.Maps.Get(resourceGroupName, integrationAccountName, integrationAccountMapName);
+            return LogicManagementClient.Maps.Get(resourceGroupName, integrationAccountName, integrationAccountMapName);
         }
 
         /// <summary>
@@ -102,7 +99,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>List of integration account schemas.</returns>
         public IPage<IntegrationAccountMap> ListIntegrationAccountMaps(string resourceGroupName, string integrationAccountName)
         {
-            return this.LogicManagementClient.Maps.ListByIntegrationAccounts(resourceGroupName, integrationAccountName, "$filter=mapType eq 'Xslt'&$top=1000");
+            return LogicManagementClient.Maps.ListByIntegrationAccounts(resourceGroupName, integrationAccountName, "$filter=mapType eq 'Xslt'&$top=1000");
         }
 
         /// <summary>
@@ -113,7 +110,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="integrationAccountMapName">The integration account map name.</param>
         public void RemoveIntegrationAccountMap(string resourceGroupName, string integrationAccountName, string integrationAccountMapName)
         {
-            this.LogicManagementClient.Maps.Delete(resourceGroupName, integrationAccountName, integrationAccountMapName);
+            LogicManagementClient.Maps.Delete(resourceGroupName, integrationAccountName, integrationAccountMapName);
         }
     }
 }

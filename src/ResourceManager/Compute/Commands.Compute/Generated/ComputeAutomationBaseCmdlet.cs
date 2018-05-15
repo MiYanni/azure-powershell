@@ -33,7 +33,7 @@ using System.Text.RegularExpressions;
 
 namespace Microsoft.Azure.Commands.Compute.Automation
 {
-    public abstract class ComputeAutomationBaseCmdlet : Microsoft.Azure.Commands.Compute.ComputeClientBaseCmdlet
+    public abstract class ComputeAutomationBaseCmdlet : ComputeClientBaseCmdlet
     {
         public override void ExecuteCmdlet()
         {
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             var objType = obj.GetType();
 
-            System.Reflection.PropertyInfo[] pros = objType.GetProperties();
+            PropertyInfo[] pros = objType.GetProperties();
             string result = "\n";
             var resultTuples = new List<Tuple<string, string, int>>();
             var totalTab = GetTabLength(obj, 0, 0, resultTuples) + 1;
@@ -252,7 +252,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
                                 else
                                 {
                                     tupleList.Add(MakeTuple(property.Name + "[" + i + "]", "", depth));
-                                    max = Math.Max(max, GetTabLength((Object)elem[i], max, depth + 1, tupleList));
+                                    max = Math.Max(max, GetTabLength(elem[i], max, depth + 1, tupleList));
                                 }
                             }
                         }

@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string location = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "Location" },
+                 new[] { "Location" },
                  new object[] { location });
         }
     }

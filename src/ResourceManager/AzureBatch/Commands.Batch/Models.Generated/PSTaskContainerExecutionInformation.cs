@@ -26,19 +26,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskContainerExecutionInformation
     {
         
-        internal Microsoft.Azure.Batch.TaskContainerExecutionInformation omObject;
+        internal TaskContainerExecutionInformation omObject;
         
-        internal PSTaskContainerExecutionInformation(Microsoft.Azure.Batch.TaskContainerExecutionInformation omObject)
+        internal PSTaskContainerExecutionInformation(TaskContainerExecutionInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ContainerId;
+                return omObject.ContainerId;
             }
         }
         
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Error;
+                return omObject.Error;
             }
         }
         
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.State;
+                return omObject.State;
             }
         }
     }

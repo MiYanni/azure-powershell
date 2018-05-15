@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var serviceProviderList = this.NetworkClient.NetworkManagementClient.ExpressRouteServiceProviders.List();
+            var serviceProviderList = NetworkClient.NetworkManagementClient.ExpressRouteServiceProviders.List();
 
             var psProviders = new List<PSExpressRouteServiceProvider>();
 

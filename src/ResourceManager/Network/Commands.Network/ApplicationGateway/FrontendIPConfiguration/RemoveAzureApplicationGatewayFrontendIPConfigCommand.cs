@@ -37,15 +37,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var frontendIPConfiguration = this.ApplicationGateway.FrontendIPConfigurations.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var frontendIPConfiguration = ApplicationGateway.FrontendIPConfigurations.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (frontendIPConfiguration != null)
             {
-                this.ApplicationGateway.FrontendIPConfigurations.Remove(frontendIPConfiguration);
+                ApplicationGateway.FrontendIPConfigurations.Remove(frontendIPConfiguration);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

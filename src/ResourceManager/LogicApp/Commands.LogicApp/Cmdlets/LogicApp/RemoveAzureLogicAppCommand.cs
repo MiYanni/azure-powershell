@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Globalization;
     using System.Management.Automation;
@@ -52,8 +52,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
             ConfirmAction(Force.IsPresent,
-                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceWarning, "Microsoft.Logic/workflows", this.Name),
-                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceMessage, "Microsoft.Logic/workflows", this.Name),                
+                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceWarning, "Microsoft.Logic/workflows", Name),
+                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceMessage, "Microsoft.Logic/workflows", Name),                
                 Name,
                 () =>
                 {

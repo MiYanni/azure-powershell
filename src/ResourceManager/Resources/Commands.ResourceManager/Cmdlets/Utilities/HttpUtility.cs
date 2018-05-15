@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
         /// <param name="statusCode">The status code.</param>
         public static bool IsSuccessfulRequest(this HttpStatusCode statusCode)
         {
-            return HttpUtility.IsSuccessfulRequest((int)statusCode);
+            return IsSuccessfulRequest((int)statusCode);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
         /// <param name="statusCode">The status code.</param>
         public static bool IsServerFailureRequest(this HttpStatusCode statusCode)
         {
-            return HttpUtility.IsServerFailureRequest((int)statusCode);
+            return IsServerFailureRequest((int)statusCode);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
         /// <param name="statusCode">The status code.</param>
         public static bool IsClientFailureRequest(this HttpStatusCode statusCode)
         {
-            return HttpUtility.IsClientFailureRequest((int)statusCode);
+            return IsClientFailureRequest((int)statusCode);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
         /// <param name="statusCode">The status code.</param>
         private static bool IsSuccessfulRequest(int statusCode)
         {
-            return (statusCode >= 200 && statusCode <= 299) || statusCode == 304;
+            return statusCode >= 200 && statusCode <= 299 || statusCode == 304;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
         /// <param name="statusCode">The status code.</param>
         private static bool IsClientFailureRequest(int statusCode)
         {
-            return statusCode == 505 || statusCode == 501 || (statusCode >= 400 && statusCode < 500 && statusCode != 408);
+            return statusCode == 505 || statusCode == 501 || statusCode >= 400 && statusCode < 500 && statusCode != 408;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
         /// <param name="statusCode">The status code.</param>
         private static bool IsServerFailureRequest(int statusCode)
         {
-            return (statusCode >= 500 && statusCode <= 599 && statusCode != 505 && statusCode != 501) || statusCode == 408;
+            return statusCode >= 500 && statusCode <= 599 && statusCode != 505 && statusCode != 501 || statusCode == 408;
         }
     }
 }

@@ -19,7 +19,7 @@ using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 
 namespace Microsoft.Azure.Commands.MachineLearning
 {
-    [Cmdlet(VerbsCommon.Move, CommitmentPlansCmdletBase.CommitmentAssociationCommandletSuffix, SupportsShouldProcess = true)]
+    [Cmdlet(VerbsCommon.Move, CommitmentAssociationCommandletSuffix, SupportsShouldProcess = true)]
     [OutputType(typeof(CommitmentPlan), typeof(CommitmentPlan[]))]
     public class MoveAzureMLCommitmentAssociation : CommitmentPlansCmdletBase
     {
@@ -42,20 +42,20 @@ namespace Microsoft.Azure.Commands.MachineLearning
 
         protected override void RunCmdlet()
         {
-            if (!ShouldProcess(this.Name, @"Moving Azure ML commitment association."))
+            if (!ShouldProcess(Name, @"Moving Azure ML commitment association."))
             {
                 return;
             }
 
             CommitmentAssociation commitmentAssociation =
-                this.CommitmentPlansClient.MoveCommitmentAssociationAsync(
-                    this.ResourceGroupName,
-                    this.CommitmentPlanName,
-                    this.Name,
-                    this.DestinationPlanId,
-                    this.CancellationToken).Result;
+                CommitmentPlansClient.MoveCommitmentAssociationAsync(
+                    ResourceGroupName,
+                    CommitmentPlanName,
+                    Name,
+                    DestinationPlanId,
+                    CancellationToken).Result;
 
-            this.WriteObject(commitmentAssociation, true);
+            WriteObject(commitmentAssociation, true);
         }
     }
 }

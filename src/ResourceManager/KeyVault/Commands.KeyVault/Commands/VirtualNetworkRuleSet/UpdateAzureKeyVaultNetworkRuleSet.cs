@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ParameterSetName = ByVaultNameParameterSet,
             HelpMessage = "Specifies the name of the resource group associated with the key vault whose network rule is being modified.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         /// <summary>
@@ -112,16 +112,16 @@ namespace Microsoft.Azure.Commands.KeyVault
 
             if (ShouldProcess(VaultName, Properties.Resources.UpdateNetworkRule))
             {
-                bool isIpAddressRangeSpecified = base.IsIpAddressRangeSpecified;
-                bool isVirtualNetResIdSpecified = base.IsVirtualNetworkResourceIdSpecified;
+                bool isIpAddressRangeSpecified = IsIpAddressRangeSpecified;
+                bool isVirtualNetResIdSpecified = IsVirtualNetworkResourceIdSpecified;
                 if (!DefaultAction.HasValue && !Bypass.HasValue && !isIpAddressRangeSpecified && !isVirtualNetResIdSpecified)
                 {
                     throw new ArgumentException("At least one of DefaultAction, Bypass, IpAddressRange or VirtualNetworkResourceId must be specified.");
                 }
 
-                base.ValidateArrayInputs();
+                ValidateArrayInputs();
 
-                PSKeyVault existingVault = base.GetCurrentVault(this.VaultName, this.ResourceGroupName);
+                PSKeyVault existingVault = GetCurrentVault(VaultName, ResourceGroupName);
 
                 PSKeyVaultNetworkRuleSet updatedNetworkAcls = ConvertInputToRuleSet(
                     existingVault.NetworkAcls, isIpAddressRangeSpecified, isVirtualNetResIdSpecified);
@@ -140,27 +140,27 @@ namespace Microsoft.Azure.Commands.KeyVault
             PSKeyVaultNetworkRuleSet existingNetworkRuleSet, bool isIpAddressRangeSpecified, bool isVirtualNetworkResourceIdSpecified)
         {
             PSKeyVaultNetworkRuleDefaultActionEnum defaultAct = existingNetworkRuleSet.DefaultAction;
-            if (this.DefaultAction.HasValue)
+            if (DefaultAction.HasValue)
             {
-                defaultAct = this.DefaultAction.Value;
+                defaultAct = DefaultAction.Value;
             }
 
             PSKeyVaultNetworkRuleBypassEnum bypass = existingNetworkRuleSet.Bypass;
-            if (this.Bypass.HasValue)
+            if (Bypass.HasValue)
             {
-                bypass = this.Bypass.Value;
+                bypass = Bypass.Value;
             }
 
             IList<string> ipAddressRanges = existingNetworkRuleSet.IpAddressRanges;
             if (isIpAddressRangeSpecified)
             {
-                ipAddressRanges = this.IpAddressRange == null ? null : new List<string>(this.IpAddressRange);
+                ipAddressRanges = IpAddressRange == null ? null : new List<string>(IpAddressRange);
             }
 
             IList<string> virtualNetworkResourceId = existingNetworkRuleSet.VirtualNetworkResourceIds;
             if (isVirtualNetworkResourceIdSpecified)
             {
-                virtualNetworkResourceId = this.VirtualNetworkResourceId == null ? null : new List<string>(this.VirtualNetworkResourceId);
+                virtualNetworkResourceId = VirtualNetworkResourceId == null ? null : new List<string>(VirtualNetworkResourceId);
             }
 
             return new PSKeyVaultNetworkRuleSet(defaultAct, bypass, ipAddressRanges, virtualNetworkResourceId);

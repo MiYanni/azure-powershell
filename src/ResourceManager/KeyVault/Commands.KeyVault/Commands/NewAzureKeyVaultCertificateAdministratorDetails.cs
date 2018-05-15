@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Commands
                     PhoneNumber = PhoneNumber,
                 };
 
-                this.WriteObject(adminDetails);
+                WriteObject(adminDetails);
             }
         }
     }

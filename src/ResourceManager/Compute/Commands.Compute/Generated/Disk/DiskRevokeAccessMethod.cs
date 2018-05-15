@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string diskName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "DiskName" },
+                 new[] { "ResourceGroupName", "DiskName" },
                  new object[] { resourceGroupName, diskName });
         }
     }
@@ -105,10 +105,10 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.DiskName, VerbsSecurity.Revoke))
+                if (ShouldProcess(DiskName, VerbsSecurity.Revoke))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string diskName = this.DiskName;
+                    string resourceGroupName = ResourceGroupName;
+                    string diskName = DiskName;
 
                     var result = DisksClient.RevokeAccess(resourceGroupName, diskName);
                     var psObject = new PSOperationStatusResponse();
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

@@ -108,7 +108,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             cloudCredentials = AzureSession.Instance.AuthenticationFactory
                 .GetSubscriptionCloudCredentials(azureProfile.DefaultContext);
-            this.recoveryServicesVaultClient = AzureSession.Instance.ClientFactory
+            recoveryServicesVaultClient = AzureSession.Instance.ClientFactory
                 .CreateArmClient<RecoveryServicesClient>(
                     AzureContext,
                     AzureEnvironment.Endpoint.ResourceManager);
@@ -122,8 +122,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <summary>
         ///     Gets the value of recovery services vault management client.
         /// </summary>
-        public RecoveryServicesClient GetRecoveryServicesVaultClient => this
-            .recoveryServicesVaultClient;
+        public RecoveryServicesClient GetRecoveryServicesVaultClient => recoveryServicesVaultClient;
 
         /// <summary>
         ///     Site Recovery requests that go to on-premise components (like the Provider installed
@@ -178,9 +177,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>VaultExtendedInfo Resource Object</returns>
         public VaultExtendedInfoResource GetVaultExtendedInfo(String vaultResourceGroupName, String vaultName)
         {
-            return this.recoveryServicesVaultClient
+            return recoveryServicesVaultClient
                 .VaultExtendedInfo
-                .GetWithHttpMessagesAsync(vaultResourceGroupName, vaultName, this.GetRequestHeaders(false))
+                .GetWithHttpMessagesAsync(vaultResourceGroupName, vaultName, GetRequestHeaders(false))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -216,7 +215,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var customHeaders = new Dictionary<string, List<string>>();
 
-            this.ClientRequestId = Guid.NewGuid() +
+            ClientRequestId = Guid.NewGuid() +
                                    "-" +
                                    DateTime.Now.ToUniversalTime()
                                        .ToString("yyyy-MM-dd HH:mm:ssZ") +
@@ -224,7 +223,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             customHeaders.Add(
                 "x-ms-client-request-id",
-                new List<string> { this.ClientRequestId });
+                new List<string> { ClientRequestId });
 
             if (shouldSignRequest)
             {
@@ -232,7 +231,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     "Agent-Authentication",
                     new List<string>
                     {
-                        GenerateAgentAuthenticationHeader(this.ClientRequestId)
+                        GenerateAgentAuthenticationHeader(ClientRequestId)
                     });
             }
             else
@@ -317,7 +316,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             //    throw new ArgumentException(Properties.Resources.InvalidResourceGroup);
             //}
 
-            foreach (var vault in this.GetRecoveryServicesVaultClient.Vaults.ListByResourceGroup(
+            foreach (var vault in GetRecoveryServicesVaultClient.Vaults.ListByResourceGroup(
                 resourceGroupName))
             {
                 if (string.Compare(

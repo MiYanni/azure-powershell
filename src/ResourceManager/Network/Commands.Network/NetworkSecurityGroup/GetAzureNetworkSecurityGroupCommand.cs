@@ -64,33 +64,33 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var nsg = this.GetNetworkSecurityGroup(this.ResourceGroupName, this.Name, this.ExpandResource);
+                var nsg = GetNetworkSecurityGroup(ResourceGroupName, Name, ExpandResource);
 
                 WriteObject(nsg);
             }
             else
             {
                 IPage<NetworkSecurityGroup> nsgPage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    nsgPage = this.NetworkSecurityGroupClient.List(this.ResourceGroupName);
+                    nsgPage = NetworkSecurityGroupClient.List(ResourceGroupName);
                 }
                 else
                 {
-                    nsgPage = this.NetworkSecurityGroupClient.ListAll();                    
+                    nsgPage = NetworkSecurityGroupClient.ListAll();                    
                 }
 
                 // Get all resources by polling on next page link
-                var nsgList = ListNextLink<NetworkSecurityGroup>.GetAllResourcesByPollingNextLink(nsgPage, this.NetworkSecurityGroupClient.ListNext);
+                var nsgList = ListNextLink<NetworkSecurityGroup>.GetAllResourcesByPollingNextLink(nsgPage, NetworkSecurityGroupClient.ListNext);
 
                 var psNsgs = new List<PSNetworkSecurityGroup>();
 
                 foreach (var networkSecurityGroup in nsgList)
                 {
-                    var psNsg = this.ToPsNetworkSecurityGroup(networkSecurityGroup);
-                    psNsg.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(networkSecurityGroup.Id);
+                    var psNsg = ToPsNetworkSecurityGroup(networkSecurityGroup);
+                    psNsg.ResourceGroupName = GetResourceGroup(networkSecurityGroup.Id);
                     psNsgs.Add(psNsg);
                 }
 

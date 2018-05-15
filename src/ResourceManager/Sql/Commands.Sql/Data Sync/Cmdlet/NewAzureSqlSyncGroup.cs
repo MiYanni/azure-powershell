@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
             // We try to get the sync group. Since this is a create, we don't want the sync group to exist
             try
             {
-                ModelAdapter.GetSyncGroup(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.Name);
+                ModelAdapter.GetSyncGroup(ResourceGroupName, ServerName, DatabaseName, Name);
             }
             catch (CloudException ex)
             {
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
 
             // The sync group already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.SyncGroupNameExists, this.Name, this.DatabaseName),
+                string.Format(Properties.Resources.SyncGroupNameExists, Name, DatabaseName),
                 "SyncGroupName");
         }
 
@@ -133,29 +133,29 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The model that was passed in</returns>
         protected override IEnumerable<AzureSqlSyncGroupModel> ApplyUserInputToModel(IEnumerable<AzureSqlSyncGroupModel> model)
         {
-            List<Model.AzureSqlSyncGroupModel> newEntity = new List<AzureSqlSyncGroupModel>();
-            AzureSqlSyncGroupModel newModel = new AzureSqlSyncGroupModel()
+            List<AzureSqlSyncGroupModel> newEntity = new List<AzureSqlSyncGroupModel>();
+            AzureSqlSyncGroupModel newModel = new AzureSqlSyncGroupModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                DatabaseName = this.DatabaseName,
-                SyncGroupName = this.Name,
-                ConflictResolutionPolicy = this.ConflictResolutionPolicy != null ? this.ConflictResolutionPolicy.ToString() : null,
-                HubDatabaseUserName = this.DatabaseCredential != null ? this.DatabaseCredential.UserName : null,
-                HubDatabasePassword = this.DatabaseCredential != null ? this.DatabaseCredential.Password : null
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                DatabaseName = DatabaseName,
+                SyncGroupName = Name,
+                ConflictResolutionPolicy = ConflictResolutionPolicy != null ? ConflictResolutionPolicy.ToString() : null,
+                HubDatabaseUserName = DatabaseCredential != null ? DatabaseCredential.UserName : null,
+                HubDatabasePassword = DatabaseCredential != null ? DatabaseCredential.Password : null
             };
 
             if (MyInvocation.BoundParameters.ContainsKey("IntervalInSeconds"))
             {
-                newModel.IntervalInSeconds = this.IntervalInSeconds;
+                newModel.IntervalInSeconds = IntervalInSeconds;
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("SyncDatabaseResourceGroupName") 
                 && MyInvocation.BoundParameters.ContainsKey("SyncDatabaseServerName") 
                 && MyInvocation.BoundParameters.ContainsKey("SyncDatabaseName"))
             {
-                this.syncDatabaseId = string.Format("resourceGroups/{0}/providers/Microsoft.Sql/servers/{1}/databases/{2}",
-                    this.SyncDatabaseResourceGroupName, this.SyncDatabaseServerName, this.SyncDatabaseName);
+                syncDatabaseId = string.Format("resourceGroups/{0}/providers/Microsoft.Sql/servers/{1}/databases/{2}",
+                    SyncDatabaseResourceGroupName, SyncDatabaseServerName, SyncDatabaseName);
             }
 
             // if schema file is specified
@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
             {
                 try
                 {
-                    newModel.Schema = ConstructSchemaFromFile(this.SchemaFile);
+                    newModel.Schema = ConstructSchemaFromFile(SchemaFile);
                 }
                 catch (CloudException ex)
                 {
@@ -182,8 +182,9 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlSyncGroupModel> PersistChanges(IEnumerable<AzureSqlSyncGroupModel> entity)
         {
-            return new List<AzureSqlSyncGroupModel>() {
-                ModelAdapter.CreateSyncGroup(entity.First(), this.syncDatabaseId)
+            return new List<AzureSqlSyncGroupModel>
+            {
+                ModelAdapter.CreateSyncGroup(entity.First(), syncDatabaseId)
             };
         }
     }

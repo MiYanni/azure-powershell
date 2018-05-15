@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<DatabaseBackupLongTermRetentionPolicy> DatabaseBackupLongTermRetentionPolicies
         {
-            get { return this._databaseBackupLongTermRetentionPolicies; }
-            set { this._databaseBackupLongTermRetentionPolicies = value; }
+            get { return _databaseBackupLongTermRetentionPolicies; }
+            set { _databaseBackupLongTermRetentionPolicies = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DatabaseBackupLongTermRetentionPolicyListResponse()
         {
-            this.DatabaseBackupLongTermRetentionPolicies = new LazyList<DatabaseBackupLongTermRetentionPolicy>();
+            DatabaseBackupLongTermRetentionPolicies = new LazyList<DatabaseBackupLongTermRetentionPolicy>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<DatabaseBackupLongTermRetentionPolicy> GetEnumerator()
         {
-            return this.DatabaseBackupLongTermRetentionPolicies.GetEnumerator();
+            return DatabaseBackupLongTermRetentionPolicies.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

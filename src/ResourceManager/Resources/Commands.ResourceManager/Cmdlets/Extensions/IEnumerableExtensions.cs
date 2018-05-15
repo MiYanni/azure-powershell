@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Collections;
+    using Collections;
     using System;
     using System.Collections.Generic;
     using System.Linq;

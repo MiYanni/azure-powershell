@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerSecurityAlertPolicyOperationResult OperationResult
         {
-            get { return this._operationResult; }
-            set { this._operationResult = value; }
+            get { return _operationResult; }
+            set { _operationResult = value; }
         }
         
         /// <summary>

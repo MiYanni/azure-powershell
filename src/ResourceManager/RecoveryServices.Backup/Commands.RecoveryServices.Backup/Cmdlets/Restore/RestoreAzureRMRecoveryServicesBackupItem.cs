@@ -71,8 +71,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 WriteDebug(string.Format("StorageId = {0}", storageAccountResource.Id));
 
                 PsBackupProviderManager providerManager = new PsBackupProviderManager(
-                    new Dictionary<Enum, object>()
-                {
+                    new Dictionary<Enum, object>
+                    {
                     {RestoreBackupItemParams.RecoveryPoint, RecoveryPoint},
                     {RestoreBackupItemParams.StorageAccountId, storageAccountResource.Id},
                     {RestoreBackupItemParams.StorageAccountLocation, storageAccountResource.Location},
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
             identity.ResourceType = string.Empty;
             identity.ParentResourcePath = string.Empty;
 
-            GenericResource resource = null;
+            GenericResource resource;
             try
             {
                 WriteDebug(string.Format("Query Microsoft.ClassicStorage with name = {0}",

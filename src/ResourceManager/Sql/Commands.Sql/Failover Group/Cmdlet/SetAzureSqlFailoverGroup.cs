@@ -83,8 +83,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> GetEntity()
         {
-            return new List<AzureSqlFailoverGroupModel>() {
-                ModelAdapter.GetFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName)
+            return new List<AzureSqlFailoverGroupModel>
+            {
+                ModelAdapter.GetFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName)
             };
         }
 
@@ -107,7 +108,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
             }
 
             newModel.ReadWriteFailoverPolicy = effectivePolicy.ToString();
-            newModel.FailoverWithDataLossGracePeriodHours = ComputeEffectiveGracePeriod(effectivePolicy, originalGracePeriod: newModel.FailoverWithDataLossGracePeriodHours);
+            newModel.FailoverWithDataLossGracePeriodHours = ComputeEffectiveGracePeriod(effectivePolicy, newModel.FailoverWithDataLossGracePeriodHours);
             newModel.ReadOnlyFailoverPolicy = MyInvocation.BoundParameters.ContainsKey("AllowReadOnlyFailoverToPrimary") ? AllowReadOnlyFailoverToPrimary.ToString() : newModel.ReadOnlyFailoverPolicy;
             newEntity.Add(newModel);
 
@@ -121,7 +122,8 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> PersistChanges(IEnumerable<AzureSqlFailoverGroupModel> entity)
         {
-            return new List<AzureSqlFailoverGroupModel>() {
+            return new List<AzureSqlFailoverGroupModel>
+            {
                 ModelAdapter.PatchUpdateFailoverGroup(entity.First())
             };
         }

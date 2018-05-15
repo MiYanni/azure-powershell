@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
+    using Models;
+    using Azure.Management.DeviceProvisioningServices.Models;
     using Newtonsoft.Json;
 
     public static class IotDpsUtils

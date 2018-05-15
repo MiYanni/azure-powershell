@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            PSBatchLocationQuotas quotas = BatchClient.GetLocationQuotas(this.Location);
+            PSBatchLocationQuotas quotas = BatchClient.GetLocationQuotas(Location);
             WriteObject(quotas);
         }
     }

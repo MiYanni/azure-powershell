@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specifies the name of an existing resource group in which to create the key vault.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specifies the Azure region in which to create the key vault. Use the command Get-AzureRmResourceProvider with the ProviderNamespace parameter to see your choices.")]
         [LocationCompleter("Microsoft.KeyVault/vaults")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string Location { get; set; }
 
         [Parameter(Mandatory = false,
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(Name, Properties.Resources.CreateKeyVault))
+            if (ShouldProcess(Name, Resources.CreateKeyVault))
             {
                 if (VaultExistsInCurrentSubscription(Name))
                 {
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
                 if (!string.IsNullOrWhiteSpace(userObjectId))
                 {
-                    accessPolicy = new AccessPolicyEntry()
+                    accessPolicy = new AccessPolicyEntry
                     {
                         TenantId = GetTenantId(),
                         ObjectId = userObjectId,
@@ -144,26 +144,26 @@ namespace Microsoft.Azure.Commands.KeyVault
                     };
                 }
 
-                var newVault = KeyVaultManagementClient.CreateNewVault(new VaultCreationParameters()
+                var newVault = KeyVaultManagementClient.CreateNewVault(new VaultCreationParameters
                     {
-                        VaultName = this.Name,
-                        ResourceGroupName = this.ResourceGroupName,
-                        Location = this.Location,
-                        EnabledForDeployment = this.EnabledForDeployment.IsPresent,
+                        VaultName = Name,
+                        ResourceGroupName = ResourceGroupName,
+                        Location = Location,
+                        EnabledForDeployment = EnabledForDeployment.IsPresent,
                         EnabledForTemplateDeployment = EnabledForTemplateDeployment.IsPresent,
                         EnabledForDiskEncryption = EnabledForDiskEncryption.IsPresent,
                         EnableSoftDelete = EnableSoftDelete.IsPresent,
                         EnablePurgeProtection = EnablePurgeProtection.IsPresent,
                         SkuFamilyName = DefaultSkuFamily,
-                        SkuName = this.Sku,
+                        SkuName = Sku,
                         TenantId = GetTenantId(),
                         AccessPolicy = accessPolicy,
                         NetworkAcls = new NetworkRuleSet(),     // New key-vault takes in default network rule set
-                        Tags = this.Tag
+                        Tags = Tag
                     },
                     ActiveDirectoryClient);
 
-                this.WriteObject(newVault);
+                WriteObject(newVault);
 
                 if (accessPolicy == null)
                 {

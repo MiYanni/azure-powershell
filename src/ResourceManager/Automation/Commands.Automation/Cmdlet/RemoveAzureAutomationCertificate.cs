@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                        Name,
                        () =>
                        {
-                           this.AutomationClient.DeleteCertificate(this.ResourceGroupName, this.AutomationAccountName, Name);
+                           AutomationClient.DeleteCertificate(ResourceGroupName, AutomationAccountName, Name);
                        });
         }
     }

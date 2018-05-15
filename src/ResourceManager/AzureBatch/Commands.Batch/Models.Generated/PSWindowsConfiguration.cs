@@ -26,33 +26,33 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSWindowsConfiguration
     {
         
-        internal Microsoft.Azure.Batch.WindowsConfiguration omObject;
+        internal WindowsConfiguration omObject;
         
-        public PSWindowsConfiguration(System.Nullable<bool> enableAutomaticUpdates = null)
+        public PSWindowsConfiguration(Nullable<bool> enableAutomaticUpdates = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.WindowsConfiguration(enableAutomaticUpdates);
+            omObject = new WindowsConfiguration(enableAutomaticUpdates);
         }
         
-        internal PSWindowsConfiguration(Microsoft.Azure.Batch.WindowsConfiguration omObject)
+        internal PSWindowsConfiguration(WindowsConfiguration omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.Boolean? EnableAutomaticUpdates
+        public Boolean? EnableAutomaticUpdates
         {
             get
             {
-                return this.omObject.EnableAutomaticUpdates;
+                return omObject.EnableAutomaticUpdates;
             }
         }
     }

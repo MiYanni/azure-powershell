@@ -23,18 +23,18 @@ namespace Microsoft.Azure.Commands.ManagementPartner
 {
     public abstract class AzureManagementPartnerCmdletsBase:AzureRMCmdlet
     {
-        private IACEProvisioningManagementPartnerAPIClient aceProvisioningManagementPartnerApiClient;
+        private IACEProvisioningManagementPartnerAPIClient _aceProvisioningManagementPartnerApiClient;
 
         public IACEProvisioningManagementPartnerAPIClient AceProvisioningManagementPartnerApiClient
         {
             get
             {
-                return aceProvisioningManagementPartnerApiClient ?? (aceProvisioningManagementPartnerApiClient =
+                return _aceProvisioningManagementPartnerApiClient ?? (_aceProvisioningManagementPartnerApiClient =
                            AzureSession.Instance.ClientFactory.CreateArmClient<ACEProvisioningManagementPartnerAPIClient>(
                                DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager));
             }
 
-            set { aceProvisioningManagementPartnerApiClient = value; }
+            set { _aceProvisioningManagementPartnerApiClient = value; }
         }
 
         protected void LogException(Exception ex)

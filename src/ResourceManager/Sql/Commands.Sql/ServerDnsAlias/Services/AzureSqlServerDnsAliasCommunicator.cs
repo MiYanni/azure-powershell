@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Services
 			//
 			if (SqlClient == null)
 			{
-				SqlClient = AzureSession.Instance.ClientFactory.CreateArmClient<Management.Sql.SqlManagementClient>(Context, AzureEnvironment.Endpoint.ResourceManager);
+				SqlClient = AzureSession.Instance.ClientFactory.CreateArmClient<SqlManagementClient>(Context, AzureEnvironment.Endpoint.ResourceManager);
 			}
 			return SqlClient;
 		}

@@ -35,12 +35,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
@@ -56,11 +56,11 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         public override void ExecuteCmdlet()
         {
             var cluster = GetCurrentCluster();
-            var vmss = GetVmss(this.NodeType);
-            var nodeType = GetNodeType(cluster, this.NodeType);
+            var vmss = GetVmss(NodeType);
+            var nodeType = GetNodeType(cluster, NodeType);
             var durabilityLevel = (DurabilityLevel)Enum.Parse(typeof(DurabilityLevel), nodeType.DurabilityLevel);
 
-            if (this.Number < 0)
+            if (Number < 0)
             {
                 if (durabilityLevel == DurabilityLevel.Bronze)
                 {
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSInvalidOperationException(ServiceFabricProperties.Resources.InvalidVmssConfiguration);
             }
 
-            vmss.Sku.Capacity += this.Number;
+            vmss.Sku.Capacity += Number;
             if (vmss.Sku.Capacity < 0)
             {
                 throw new PSArgumentException(ServiceFabricProperties.Resources.SkuCapacityZero);
@@ -93,14 +93,14 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             WriteVerboseWithTimestamp("Begin to add nodes to the node type");
 
-            var updateTask = this.ComputeClient.VirtualMachineScaleSets.CreateOrUpdateAsync(this.ResourceGroupName, vmss.Name, vmss);
+            var updateTask = ComputeClient.VirtualMachineScaleSets.CreateOrUpdateAsync(ResourceGroupName, vmss.Name, vmss);
 
-            WriteClusterAndVmssVerboseWhenUpdate(new List<Task>() { updateTask }, false, this.NodeType);
+            WriteClusterAndVmssVerboseWhenUpdate(new List<Task> { updateTask }, false, NodeType);
 
             cluster = GetCurrentCluster();
-            nodeType = GetNodeType(cluster, this.NodeType);
+            nodeType = GetNodeType(cluster, NodeType);
             nodeType.VmInstanceCount = Convert.ToInt32(vmss.Sku.Capacity);
-            cluster = SendPatchRequest(new ClusterUpdateParameters()
+            cluster = SendPatchRequest(new ClusterUpdateParameters
             {
                 NodeTypes = cluster.NodeTypes
             });

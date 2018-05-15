@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServiceTierAdvisor ServiceTierAdvisor
         {
-            get { return this._serviceTierAdvisor; }
-            set { this._serviceTierAdvisor = value; }
+            get { return _serviceTierAdvisor; }
+            set { _serviceTierAdvisor = value; }
         }
         
         /// <summary>

@@ -72,19 +72,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
                 if (DefaultBackendAddressPool != null)
                 {
-                    this.DefaultBackendAddressPoolId = this.DefaultBackendAddressPool.Id;
+                    DefaultBackendAddressPoolId = DefaultBackendAddressPool.Id;
                 }
                 if (DefaultBackendHttpSettings != null)
                 {
-                    this.DefaultBackendHttpSettingsId = this.DefaultBackendHttpSettings.Id;
+                    DefaultBackendHttpSettingsId = DefaultBackendHttpSettings.Id;
                 }
                 if (DefaultRedirectConfiguration != null)
                 {
-                    this.DefaultRedirectConfigurationId = this.DefaultRedirectConfiguration.Id;
+                    DefaultRedirectConfigurationId = DefaultRedirectConfiguration.Id;
                 }
             }
         }
@@ -93,31 +93,31 @@ namespace Microsoft.Azure.Commands.Network
         {
             var urlPathMap = new PSApplicationGatewayUrlPathMap();
 
-            urlPathMap.Name = this.Name;
-            urlPathMap.PathRules = this.PathRules;
+            urlPathMap.Name = Name;
+            urlPathMap.PathRules = PathRules;
 
-            if (!string.IsNullOrEmpty(this.DefaultBackendAddressPoolId))
+            if (!string.IsNullOrEmpty(DefaultBackendAddressPoolId))
             {
                 urlPathMap.DefaultBackendAddressPool = new PSResourceId();
-                urlPathMap.DefaultBackendAddressPool.Id = this.DefaultBackendAddressPoolId;
+                urlPathMap.DefaultBackendAddressPool.Id = DefaultBackendAddressPoolId;
             }
 
-            if (!string.IsNullOrEmpty(this.DefaultBackendHttpSettingsId))
+            if (!string.IsNullOrEmpty(DefaultBackendHttpSettingsId))
             {
                 urlPathMap.DefaultBackendHttpSettings = new PSResourceId();
-                urlPathMap.DefaultBackendHttpSettings.Id = this.DefaultBackendHttpSettingsId;
+                urlPathMap.DefaultBackendHttpSettings.Id = DefaultBackendHttpSettingsId;
             }
 
-            if (!string.IsNullOrEmpty(this.DefaultRedirectConfigurationId))
+            if (!string.IsNullOrEmpty(DefaultRedirectConfigurationId))
             {
                 urlPathMap.DefaultRedirectConfiguration = new PSResourceId();
-                urlPathMap.DefaultRedirectConfiguration.Id = this.DefaultRedirectConfigurationId;
+                urlPathMap.DefaultRedirectConfiguration.Id = DefaultRedirectConfigurationId;
             }
 
             urlPathMap.Id = ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayUrlPathMapName,
-                this.Name);
+                NetworkClient.NetworkManagementClient.SubscriptionId,
+                Properties.Resources.ApplicationGatewayUrlPathMapName,
+                Name);
 
             return urlPathMap;
         }

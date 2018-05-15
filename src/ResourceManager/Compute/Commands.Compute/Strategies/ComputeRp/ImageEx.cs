@@ -86,8 +86,8 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
                     imageModel.OsDiskImage.OperatingSystem,
                     image,
                     imageModel.DataDiskImages.GetLuns());
-            } 
-            else if (imageName.Contains("/"))
+            }
+            if (imageName.Contains("/"))
             {
                 var resourceId = ResourceId.TryParse(imageName);
                 if (resourceId == null
@@ -104,37 +104,34 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
 
                 return await compute.GetImageAndOsTypeAsync(resourceId.ResourceGroupName, resourceId.Name);
             }
-            else
+            try
             {
-                try
-                {
-                    return await compute.GetImageAndOsTypeAsync(resourceGroupName, imageName);
-                }
-                catch
-                {
-                }
-
-                // get generic image
-                var result = Images
-                    .Instance
-                    .SelectMany(osAndMap => osAndMap
-                        .Value
-                        .Where(nameAndImage => nameAndImage.Key.ToLower() == imageName.ToLower())
-                        .Select(nameAndImage => new ImageAndOsType(
-                            osAndMap.Key == "Windows" 
-                                ? OperatingSystemTypes.Windows
-                                : OperatingSystemTypes.Linux,
-                            nameAndImage.Value,
-                            null)))
-                    .FirstOrDefault();
-
-                if (result == null)
-                {
-                    throw new ArgumentException(string.Format(Resources.ComputeNoImageFound, imageName));
-                }
-
-                return result;
+                return await compute.GetImageAndOsTypeAsync(resourceGroupName, imageName);
             }
+            catch
+            {
+            }
+
+            // get generic image
+            var result = Images
+                .Instance
+                .SelectMany(osAndMap => osAndMap
+                    .Value
+                    .Where(nameAndImage => nameAndImage.Key.ToLower() == imageName.ToLower())
+                    .Select(nameAndImage => new ImageAndOsType(
+                        osAndMap.Key == "Windows" 
+                            ? OperatingSystemTypes.Windows
+                            : OperatingSystemTypes.Linux,
+                        nameAndImage.Value,
+                        null)))
+                .FirstOrDefault();
+
+            if (result == null)
+            {
+                throw new ArgumentException(string.Format(Resources.ComputeNoImageFound, imageName));
+            }
+
+            return result;
         }
 
         static async Task<ImageAndOsType> GetImageAndOsTypeAsync(

@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.HDInsight
         typeof(AzureHDInsightConfig))]
     public class AddAzureHDInsightMetastoreCommand : HDInsightCmdletBase
     {
-        private AzureHDInsightMetastore _metastore;
+        private readonly AzureHDInsightMetastore _metastore;
 
         #region Input Parameter Definitions
 

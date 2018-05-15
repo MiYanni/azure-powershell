@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Set", "AzureRmVmssRollingUpgradePolicy", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class SetAzureRmVmssRollingUpgradePolicyCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class SetAzureRmVmssRollingUpgradePolicyCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -73,67 +73,67 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
         private void Run()
         {
-            if (this.MyInvocation.BoundParameters.ContainsKey("MaxBatchInstancePercent"))
+            if (MyInvocation.BoundParameters.ContainsKey("MaxBatchInstancePercent"))
             {
                 // UpgradePolicy
-                if (this.VirtualMachineScaleSet.UpgradePolicy == null)
+                if (VirtualMachineScaleSet.UpgradePolicy == null)
                 {
-                    this.VirtualMachineScaleSet.UpgradePolicy = new Microsoft.Azure.Management.Compute.Models.UpgradePolicy();
+                    VirtualMachineScaleSet.UpgradePolicy = new UpgradePolicy();
                 }
                 // RollingUpgradePolicy
-                if (this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy == null)
+                if (VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy == null)
                 {
-                    this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy = new Microsoft.Azure.Management.Compute.Models.RollingUpgradePolicy();
+                    VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy = new RollingUpgradePolicy();
                 }
-                this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy.MaxBatchInstancePercent = this.MaxBatchInstancePercent;
+                VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy.MaxBatchInstancePercent = MaxBatchInstancePercent;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("MaxUnhealthyInstancePercent"))
+            if (MyInvocation.BoundParameters.ContainsKey("MaxUnhealthyInstancePercent"))
             {
                 // UpgradePolicy
-                if (this.VirtualMachineScaleSet.UpgradePolicy == null)
+                if (VirtualMachineScaleSet.UpgradePolicy == null)
                 {
-                    this.VirtualMachineScaleSet.UpgradePolicy = new Microsoft.Azure.Management.Compute.Models.UpgradePolicy();
+                    VirtualMachineScaleSet.UpgradePolicy = new UpgradePolicy();
                 }
                 // RollingUpgradePolicy
-                if (this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy == null)
+                if (VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy == null)
                 {
-                    this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy = new Microsoft.Azure.Management.Compute.Models.RollingUpgradePolicy();
+                    VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy = new RollingUpgradePolicy();
                 }
-                this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy.MaxUnhealthyInstancePercent = this.MaxUnhealthyInstancePercent;
+                VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy.MaxUnhealthyInstancePercent = MaxUnhealthyInstancePercent;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("MaxUnhealthyUpgradedInstancePercent"))
+            if (MyInvocation.BoundParameters.ContainsKey("MaxUnhealthyUpgradedInstancePercent"))
             {
                 // UpgradePolicy
-                if (this.VirtualMachineScaleSet.UpgradePolicy == null)
+                if (VirtualMachineScaleSet.UpgradePolicy == null)
                 {
-                    this.VirtualMachineScaleSet.UpgradePolicy = new Microsoft.Azure.Management.Compute.Models.UpgradePolicy();
+                    VirtualMachineScaleSet.UpgradePolicy = new UpgradePolicy();
                 }
                 // RollingUpgradePolicy
-                if (this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy == null)
+                if (VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy == null)
                 {
-                    this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy = new Microsoft.Azure.Management.Compute.Models.RollingUpgradePolicy();
+                    VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy = new RollingUpgradePolicy();
                 }
-                this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy.MaxUnhealthyUpgradedInstancePercent = this.MaxUnhealthyUpgradedInstancePercent;
+                VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy.MaxUnhealthyUpgradedInstancePercent = MaxUnhealthyUpgradedInstancePercent;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("PauseTimeBetweenBatches"))
+            if (MyInvocation.BoundParameters.ContainsKey("PauseTimeBetweenBatches"))
             {
                 // UpgradePolicy
-                if (this.VirtualMachineScaleSet.UpgradePolicy == null)
+                if (VirtualMachineScaleSet.UpgradePolicy == null)
                 {
-                    this.VirtualMachineScaleSet.UpgradePolicy = new Microsoft.Azure.Management.Compute.Models.UpgradePolicy();
+                    VirtualMachineScaleSet.UpgradePolicy = new UpgradePolicy();
                 }
                 // RollingUpgradePolicy
-                if (this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy == null)
+                if (VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy == null)
                 {
-                    this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy = new Microsoft.Azure.Management.Compute.Models.RollingUpgradePolicy();
+                    VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy = new RollingUpgradePolicy();
                 }
-                this.VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy.PauseTimeBetweenBatches = this.PauseTimeBetweenBatches;
+                VirtualMachineScaleSet.UpgradePolicy.RollingUpgradePolicy.PauseTimeBetweenBatches = PauseTimeBetweenBatches;
             }
 
-            WriteObject(this.VirtualMachineScaleSet);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

@@ -16,9 +16,9 @@ using System;
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
+    using SdkModels;
     using System.Management.Automation;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
 
     /// <summary>
     /// Register the previewed features of a certain azure resource provider.
@@ -38,10 +38,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            this.ConfirmAction(
-                processMessage: ProjectResources.RegisterProviderMessage,
-                target: this.ProviderNamespace,
-                action: () => this.WriteObject(this.ResourceManagerSdkClient.RegisterProvider(providerName: this.ProviderNamespace)));
+            ConfirmAction(
+                ProjectResources.RegisterProviderMessage,
+                ProviderNamespace,
+                () => WriteObject(ResourceManagerSdkClient.RegisterProvider(ProviderNamespace)));
         }
     }
 }

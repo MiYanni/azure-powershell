@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string OperrationMode
         {
-            get { return this._operrationMode; }
-            set { this._operrationMode = value; }
+            get { return _operrationMode; }
+            set { _operrationMode = value; }
         }
         
         /// <summary>
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ImportExtensionProperties()
         {
-            this.OperrationMode = "Import";
+            OperrationMode = "Import";
         }
     }
 }

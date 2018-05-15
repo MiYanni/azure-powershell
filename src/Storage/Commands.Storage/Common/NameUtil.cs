@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <param name="name">Blob name</param>
         public static void ValidateBlobName(string name)
         {
-            if (!NameUtil.IsValidBlobName(name))
+            if (!IsValidBlobName(name))
             {
                 throw new ArgumentException(String.Format(
                     CultureInfo.CurrentCulture,
@@ -60,7 +60,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <param name="name">Container name</param>
         public static void ValidateContainerName(string name)
         {
-            if (!NameUtil.IsValidContainerName(name))
+            if (!IsValidContainerName(name))
             {
                 throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, Resources.InvalidContainerName, name));
             }
@@ -94,25 +94,19 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            else
+            if (containerPrefix.Length > 0 && containerPrefix.Length < 3)
             {
-                if (containerPrefix.Length > 0 && containerPrefix.Length < 3)
-                {
-                    containerPrefix = containerPrefix + "abc";
-                };
+                containerPrefix = containerPrefix + "abc";
+            };
 
-                if (containerPrefix.EndsWith("-"))
-                {
-                    containerPrefix += "a";
-                }
-
-                return IsValidContainerName(containerPrefix);
+            if (containerPrefix.EndsWith("-"))
+            {
+                containerPrefix += "a";
             }
+
+            return IsValidContainerName(containerPrefix);
         }
 
         /// <summary>
@@ -129,10 +123,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>
@@ -159,11 +150,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return true;
             }
-            else
-            {
-                Regex regex = new Regex(@"^[A-Za-z][A-Za-z0-9]{2,62}$");
-                return regex.IsMatch(tableName);
-            }
+            Regex regex = new Regex(@"^[A-Za-z][A-Za-z0-9]{2,62}$");
+            return regex.IsMatch(tableName);
         }
 
         /// <summary>
@@ -226,22 +214,19 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return false;
             }
-            else if (fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) != -1)
+            if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
             {
                 return false;
             }
-            else
-            {
-                string realName = Path.GetFileNameWithoutExtension(fileName);
-                //http://en.wikipedia.org/wiki/Filename
-                //In Windows and DOS utilities, some words might also be reserved and can not be used as filenames.
-                //However, "CLOCK$", "COM0", "LPT0" are not forbidden name since they can be used as file name in command line prompt.
-                string[] forbiddenList = { "CON", "PRN", "AUX", "NUL",
-                    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-                    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
-                bool forbidden = forbiddenList.Contains(realName);
-                return !forbidden;
-            }
+            string realName = Path.GetFileNameWithoutExtension(fileName);
+            //http://en.wikipedia.org/wiki/Filename
+            //In Windows and DOS utilities, some words might also be reserved and can not be used as filenames.
+            //However, "CLOCK$", "COM0", "LPT0" are not forbidden name since they can be used as file name in command line prompt.
+            string[] forbiddenList = { "CON", "PRN", "AUX", "NUL",
+                "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+                "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+            bool forbidden = forbiddenList.Contains(realName);
+            return !forbidden;
         }
 
         public static bool IsValidStoredAccessPolicyName(string policyName)
@@ -269,8 +254,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             string fileName = blobName;
 
             //replace dirctionary
-            Dictionary<string, string> replaceRules = new Dictionary<string, string>()
-                {
+            Dictionary<string, string> replaceRules = new Dictionary<string, string>
+            {
                     {"/", "\\"}
                 };
 
@@ -286,7 +271,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 string prefix = string.Empty;
                 string postfix = string.Empty;
                 string timeStamp = string.Format("{0:u}", snapshotTime.Value);
-                timeStamp = timeStamp.Replace(":", string.Empty).TrimEnd(new char[] { 'Z' });
+                timeStamp = timeStamp.Replace(":", string.Empty).TrimEnd(new[] { 'Z' });
 
                 if (index == -1)
                 {

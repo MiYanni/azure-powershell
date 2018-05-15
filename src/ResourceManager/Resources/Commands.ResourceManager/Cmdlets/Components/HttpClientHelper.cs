@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers;
+    using Extensions;
+    using Handlers;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -61,14 +61,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         {
             var delegateHandlers = new DelegatingHandler[]
             {
-                new AuthenticationHandler(cloudCredentials: credentials),
-                new UserAgentHandler(headerValues: headerValues),
-                new CmdletInfoHandler(cmdletHeaderValues: cmdletHeaderValues),
+                new AuthenticationHandler(credentials),
+                new UserAgentHandler(headerValues),
+                new CmdletInfoHandler(cmdletHeaderValues),
                 new TracingHandler(),
                 new RetryHandler(),
             };
 
-            var pipeline = (HttpMessageHandler)(new HttpClientHandler());
+            var pipeline = (HttpMessageHandler)new HttpClientHandler();
             var reversedHandlers = primaryHandlers.CoalesceEnumerable().Concat(delegateHandlers).ToArray().Reverse();
             foreach (var handler in reversedHandlers)
             {

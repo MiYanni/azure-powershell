@@ -60,13 +60,13 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            AccountCreateParameters parameters = new AccountCreateParameters(this.ResourceGroupName, this.AccountName, this.Location)
+            AccountCreateParameters parameters = new AccountCreateParameters(ResourceGroupName, AccountName, Location)
             {
-                AutoStorageAccountId = this.AutoStorageAccountId,
-                PoolAllocationMode = this.PoolAllocationMode,
-                KeyVaultId = this.KeyVaultId,
-                KeyVaultUrl = this.KeyVaultUrl,
-                Tags = this.Tag
+                AutoStorageAccountId = AutoStorageAccountId,
+                PoolAllocationMode = PoolAllocationMode,
+                KeyVaultId = KeyVaultId,
+                KeyVaultUrl = KeyVaultUrl,
+                Tags = Tag
             };
             BatchAccountContext context = BatchClient.CreateAccount(parameters);
             WriteObject(context);

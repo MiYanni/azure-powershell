@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
             {
                 throw new ArgumentException(string.Format(Resources.InvalidCredentialType, "User"), "credentialType");
             }
-            return new ServicePrincipalAccessToken(config, AcquireTokenWithSecret(config, userId, password), this.RenewWithSecret, userId);
+            return new ServicePrincipalAccessToken(config, AcquireTokenWithSecret(config, userId, password), RenewWithSecret, userId);
         }
 
         public IAccessToken GetAccessTokenWithCertificate(
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
             return new ServicePrincipalAccessToken(
                 config,
                 AcquireTokenWithCertificate(config, clientId, certificateThumbprint),
-                (adalConfig, appId) => this.RenewWithCertificate(adalConfig, appId, certificateThumbprint), clientId);
+                (adalConfig, appId) => RenewWithCertificate(adalConfig, appId, certificateThumbprint), clientId);
         }
 
         private AuthenticationContext GetContext(AdalConfiguration config)
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
 #if !NETSTANDARD
             return context.AcquireToken(config.ResourceClientUri, new ClientAssertionCertificate(appId, certificate));
 #else
-            return context.AcquireTokenAsync(config.ResourceClientUri, new Microsoft.IdentityModel.Clients.ActiveDirectory.ClientAssertionCertificate(appId, certificate))
+            return context.AcquireTokenAsync(config.ResourceClientUri, new IdentityModel.Clients.ActiveDirectory.ClientAssertionCertificate(appId, certificate))
                           .ConfigureAwait(false).GetAwaiter().GetResult();
 #endif
         }
@@ -186,7 +186,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
 
             public string LoginType { get { return Authentication.LoginType.OrgId; } }
 
-            public string TenantId { get { return this.Configuration.AdDomain; } }
+            public string TenantId { get { return Configuration.AdDomain; } }
 
             private bool IsExpired
             {

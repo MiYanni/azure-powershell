@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Compute
 
         protected string GetLocationFromVm(string rgName, string vmName)
         {
-            var vm = this.ComputeClient.ComputeManagementClient.VirtualMachines.Get(rgName, vmName);
+            var vm = ComputeClient.ComputeManagementClient.VirtualMachines.Get(rgName, vmName);
             return vm.Location;
         }
     }

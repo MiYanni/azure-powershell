@@ -23,18 +23,18 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
     {
         public PSKeyVaultManagedStorageSasDefinitionAttributes( bool? enabled )
         {
-            this.Enabled = enabled;
+            Enabled = enabled;
         }
 
         internal PSKeyVaultManagedStorageSasDefinitionAttributes( bool? enabled, DateTime? created, DateTime? updated, string recoveryLevel )
             : this( enabled )
         {
-            this.Created = created;
-            this.Updated = updated;
-            this.RecoveryLevel = recoveryLevel;
+            Created = created;
+            Updated = updated;
+            RecoveryLevel = recoveryLevel;
         }
 
-        internal PSKeyVaultManagedStorageSasDefinitionAttributes( Microsoft.Azure.KeyVault.Models.SasDefinitionAttributes modelAttributes )
+        internal PSKeyVaultManagedStorageSasDefinitionAttributes( Azure.KeyVault.Models.SasDefinitionAttributes modelAttributes )
             : this(modelAttributes.Enabled, modelAttributes.Created, modelAttributes.Updated, modelAttributes.RecoveryLevel)
         { }
 

@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<string> DatabaseCollection
         {
-            get { return this._databaseCollection; }
-            set { this._databaseCollection = value; }
+            get { return _databaseCollection; }
+            set { _databaseCollection = value; }
         }
         
         private int _databaseDtuMax;
@@ -52,8 +52,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int DatabaseDtuMax
         {
-            get { return this._databaseDtuMax; }
-            set { this._databaseDtuMax = value; }
+            get { return _databaseDtuMax; }
+            set { _databaseDtuMax = value; }
         }
         
         private int _databaseDtuMin;
@@ -64,8 +64,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int DatabaseDtuMin
         {
-            get { return this._databaseDtuMin; }
-            set { this._databaseDtuMin = value; }
+            get { return _databaseDtuMin; }
+            set { _databaseDtuMin = value; }
         }
         
         private int _dtu;
@@ -76,8 +76,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int Dtu
         {
-            get { return this._dtu; }
-            set { this._dtu = value; }
+            get { return _dtu; }
+            set { _dtu = value; }
         }
         
         private string _edition;
@@ -88,8 +88,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Edition
         {
-            get { return this._edition; }
-            set { this._edition = value; }
+            get { return _edition; }
+            set { _edition = value; }
         }
         
         private bool? _includeAllDatabases;
@@ -100,8 +100,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool? IncludeAllDatabases
         {
-            get { return this._includeAllDatabases; }
-            set { this._includeAllDatabases = value; }
+            get { return _includeAllDatabases; }
+            set { _includeAllDatabases = value; }
         }
         
         private string _name;
@@ -112,8 +112,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private int _storageMb;
@@ -124,8 +124,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int StorageMb
         {
-            get { return this._storageMb; }
-            set { this._storageMb = value; }
+            get { return _storageMb; }
+            set { _storageMb = value; }
         }
         
         /// <summary>
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public UpgradeRecommendedElasticPoolProperties()
         {
-            this.DatabaseCollection = new LazyList<string>();
+            DatabaseCollection = new LazyList<string>();
         }
     }
 }

@@ -30,9 +30,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException(Resources.NoComputeNode);
             }
 
-            this.PoolId = poolId;
-            this.ComputeNodeIds = computeNodeIds;
-            this.ComputeNode = computeNode;
+            PoolId = poolId;
+            ComputeNodeIds = computeNodeIds;
+            ComputeNode = computeNode;
         }
 
         /// <summary>

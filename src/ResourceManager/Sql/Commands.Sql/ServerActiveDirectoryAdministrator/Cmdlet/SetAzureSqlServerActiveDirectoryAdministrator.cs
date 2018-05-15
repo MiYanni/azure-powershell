@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Cmdlet
             ValueFromPipelineByPropertyName = true,
             Position = 2,
             HelpMessage = "Specifies the display name of the user or group for whom to grant permissions. This display name must exist in the active directory associated with the current subscription.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string DisplayName { get; set; }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Cmdlet
             ValueFromPipelineByPropertyName = true,
             Position = 3,
             HelpMessage = "Specifies the object ID of the user or group in Azure Active Directory for which to grant permissions.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public Guid ObjectId { get; set; }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Cmdlet
             List<AzureSqlServerActiveDirectoryAdministratorModel> currentActiveDirectoryAdmins = null;
             try
             {
-                currentActiveDirectoryAdmins = new List<AzureSqlServerActiveDirectoryAdministratorModel>()
+                currentActiveDirectoryAdmins = new List<AzureSqlServerActiveDirectoryAdministratorModel>
                 {
-                    ModelAdapter.GetServerActiveDirectoryAdministrator(this.ResourceGroupName, this.ServerName),
+                    ModelAdapter.GetServerActiveDirectoryAdministrator(ResourceGroupName, ServerName),
                 };
             }
             catch (CloudException ex)
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Cmdlet
         /// <returns>A list of models that was passed in</returns>
         protected override IEnumerable<AzureSqlServerActiveDirectoryAdministratorModel> ApplyUserInputToModel(IEnumerable<AzureSqlServerActiveDirectoryAdministratorModel> model)
         {
-            List<Model.AzureSqlServerActiveDirectoryAdministratorModel> newEntity = new List<AzureSqlServerActiveDirectoryAdministratorModel>();
-            newEntity.Add(new AzureSqlServerActiveDirectoryAdministratorModel()
+            List<AzureSqlServerActiveDirectoryAdministratorModel> newEntity = new List<AzureSqlServerActiveDirectoryAdministratorModel>();
+            newEntity.Add(new AzureSqlServerActiveDirectoryAdministratorModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
@@ -99,8 +99,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Cmdlet
         /// <returns>A list of the persisted entities</returns>
         protected override IEnumerable<AzureSqlServerActiveDirectoryAdministratorModel> PersistChanges(IEnumerable<AzureSqlServerActiveDirectoryAdministratorModel> entity)
         {
-            return new List<AzureSqlServerActiveDirectoryAdministratorModel>() {
-                ModelAdapter.UpsertServerActiveDirectoryAdministrator(this.ResourceGroupName, this.ServerName, entity.First())
+            return new List<AzureSqlServerActiveDirectoryAdministratorModel>
+            {
+                ModelAdapter.UpsertServerActiveDirectoryAdministrator(ResourceGroupName, ServerName, entity.First())
             };
         }
     }

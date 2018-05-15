@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             IAuthorizationManagementClient authorizationManagementClient)
         {
             AuthorizationManagementClient = authorizationManagementClient;
-            this.ResourceManagementClient = resourceManagementClient;
+            ResourceManagementClient = resourceManagementClient;
         }
 
         /// <summary>
@@ -217,10 +217,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 return error.OriginalMessage;
             }
-            else
-            {
-                return error.Message;
-            }
+            return error.Message;
         }
 
         public static List<string> ParseDetailErrorMessage(string statusMessage)
@@ -284,8 +281,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 if (operation.Properties.TargetResource != null &&
                     operation.Properties.TargetResource.ResourceType.Equals(Constants.MicrosoftResourcesDeploymentType, StringComparison.OrdinalIgnoreCase) &&
                     ResourceManagementClient.Deployments.CheckExistence(
-                        resourceGroupName: ResourceIdUtility.GetResourceGroupName(operation.Properties.TargetResource.Id),
-                        deploymentName: operation.Properties.TargetResource.ResourceName).Exists())
+                        ResourceIdUtility.GetResourceGroupName(operation.Properties.TargetResource.Id),
+                        operation.Properties.TargetResource.ResourceName).Exists())
                 {
                     HttpStatusCode statusCode;
                     Enum.TryParse<HttpStatusCode>(operation.Properties.StatusCode, out statusCode);
@@ -294,9 +291,9 @@ namespace Microsoft.Azure.Commands.Resources.Models
                         List<DeploymentOperation> newNestedOperations = new List<DeploymentOperation>();
 
                         var result = ResourceManagementClient.DeploymentOperations.List(
-                            resourceGroupName: ResourceIdUtility.GetResourceGroupName(operation.Properties.TargetResource.Id),
-                            deploymentName: operation.Properties.TargetResource.ResourceName,
-                            parameters: null);
+                            ResourceIdUtility.GetResourceGroupName(operation.Properties.TargetResource.Id),
+                            operation.Properties.TargetResource.ResourceName,
+                            null);
 
                         newNestedOperations = GetNewOperations(operations, result.Operations());
 
@@ -317,9 +314,9 @@ namespace Microsoft.Azure.Commands.Resources.Models
         }
 
         public ProviderOperationsMetadata GetProviderOperationsMetadata(string providerNamespace) =>
-            this.AuthorizationManagementClient.ProviderOperationsMetadata.Get(providerNamespace);
+            AuthorizationManagementClient.ProviderOperationsMetadata.Get(providerNamespace);
 
         public IPage<ProviderOperationsMetadata> ListProviderOperationsMetadata() =>
-            this.AuthorizationManagementClient.ProviderOperationsMetadata.List();
+            AuthorizationManagementClient.ProviderOperationsMetadata.List();
     }
 }

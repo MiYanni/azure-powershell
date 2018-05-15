@@ -26,64 +26,64 @@ namespace Microsoft.Azure.Commands.HDInsight
     OutputType(typeof(string))]
     public class InvokeHiveCommand : HDInsightCmdletBase
     {
-        private readonly NewAzureHDInsightHiveJobDefinitionCommand hiveJobDefinitionCommand;
+        private readonly NewAzureHDInsightHiveJobDefinitionCommand _hiveJobDefinitionCommand;
 
         #region Input Parameter Definitions
 
         [Parameter(HelpMessage = "The hive arguments for the jobDetails.")]
         public string[] Arguments
         {
-            get { return hiveJobDefinitionCommand.Arguments; }
-            set { hiveJobDefinitionCommand.Arguments = value; }
+            get { return _hiveJobDefinitionCommand.Arguments; }
+            set { _hiveJobDefinitionCommand.Arguments = value; }
         }
 
         [Parameter(HelpMessage = "The files for the jobDetails.")]
         public string[] Files
         {
-            get { return hiveJobDefinitionCommand.Files; }
-            set { hiveJobDefinitionCommand.Files = value; }
+            get { return _hiveJobDefinitionCommand.Files; }
+            set { _hiveJobDefinitionCommand.Files = value; }
         }
 
         [Parameter(HelpMessage = "The output location to use for the job.")]
         public string StatusFolder
         {
-            get { return hiveJobDefinitionCommand.StatusFolder; }
-            set { hiveJobDefinitionCommand.StatusFolder = value; }
+            get { return _hiveJobDefinitionCommand.StatusFolder; }
+            set { _hiveJobDefinitionCommand.StatusFolder = value; }
         }
 
         [Parameter(HelpMessage = "The parameters for the jobDetails.")]
         public Hashtable Defines
         {
-            get { return hiveJobDefinitionCommand.Defines; }
-            set { hiveJobDefinitionCommand.Defines = value; }
+            get { return _hiveJobDefinitionCommand.Defines; }
+            set { _hiveJobDefinitionCommand.Defines = value; }
         }
 
         [Parameter(HelpMessage = "The query file to run in the jobDetails.")]
         public string File
         {
-            get { return hiveJobDefinitionCommand.File; }
-            set { hiveJobDefinitionCommand.File = value; }
+            get { return _hiveJobDefinitionCommand.File; }
+            set { _hiveJobDefinitionCommand.File = value; }
         }
 
         [Parameter(HelpMessage = "The name of the jobDetails.")]
         public string JobName
         {
-            get { return hiveJobDefinitionCommand.JobName; }
-            set { hiveJobDefinitionCommand.JobName = value; }
+            get { return _hiveJobDefinitionCommand.JobName; }
+            set { _hiveJobDefinitionCommand.JobName = value; }
         }
 
         [Parameter(HelpMessage = "The query to run in the jobDetails.")]
         public string Query
         {
-            get { return hiveJobDefinitionCommand.Query; }
-            set { hiveJobDefinitionCommand.Query = value; }
+            get { return _hiveJobDefinitionCommand.Query; }
+            set { _hiveJobDefinitionCommand.Query = value; }
         }
 
         [Parameter(HelpMessage = "Run the query as a file.")]
         public SwitchParameter RunAsFileJob
         {
-            get { return hiveJobDefinitionCommand.RunAsFileJob; }
-            set { hiveJobDefinitionCommand.RunAsFileJob = value; }
+            get { return _hiveJobDefinitionCommand.RunAsFileJob; }
+            set { _hiveJobDefinitionCommand.RunAsFileJob = value; }
         }
 
         [Parameter(HelpMessage = "The default container name.")]
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.HDInsight
 
         public InvokeHiveCommand()
         {
-            this.hiveJobDefinitionCommand = new NewAzureHDInsightHiveJobDefinitionCommand();
+            this._hiveJobDefinitionCommand = new NewAzureHDInsightHiveJobDefinitionCommand();
         }
 
         public override void ExecuteCmdlet()
@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Commands.HDInsight
             }
 
             //get hive job
-            var hivejob = hiveJobDefinitionCommand.GetHiveJob();
+            var hivejob = _hiveJobDefinitionCommand.GetHiveJob();
 
             //start hive job
             WriteObject("Submitting hive query...");

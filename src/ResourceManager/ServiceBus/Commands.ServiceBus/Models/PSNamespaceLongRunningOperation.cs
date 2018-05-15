@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Models
                 OperationLink = longRunningResponse.OperationLink,
                 RetryAfter =  longRunningResponse.RetryAfter,
                 Status = longRunningResponse.Status,
-                Error = (longRunningResponse.Error != null) ? longRunningResponse.Error : null
+                Error = longRunningResponse.Error != null ? longRunningResponse.Error : null
             };
 
             return result;

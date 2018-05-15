@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
+    using Commands.Common.Storage;
 
     /// <summary>
     /// Storage management interface

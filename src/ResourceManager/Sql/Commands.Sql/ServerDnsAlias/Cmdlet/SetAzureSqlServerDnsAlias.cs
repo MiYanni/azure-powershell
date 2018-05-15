@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 	/// </summary>
 	[Cmdlet(VerbsCommon.Set, "AzureRmSqlServerDnsAlias",
 		SupportsShouldProcess = true)]
-	[OutputType(typeof(Model.AzureSqlServerDnsAliasModel))]
+	[OutputType(typeof(AzureSqlServerDnsAliasModel))]
 	public class SetAzureSqlServerDnsAlias : AzureSqlCmdletBase<IEnumerable<AzureSqlServerDnsAliasModel>, AzureSqlServerDnsAliasAdapter>
 	{
 		/// <summary>
@@ -98,15 +98,15 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
         /// <summary>
         /// Get entity method - nothing to return
         /// </summary>
-        protected override IEnumerable<Model.AzureSqlServerDnsAliasModel> GetEntity()
+        protected override IEnumerable<AzureSqlServerDnsAliasModel> GetEntity()
 		{
-			return new List<Model.AzureSqlServerDnsAliasModel>();
+			return new List<AzureSqlServerDnsAliasModel>();
 		}
 
 		/// <summary>
 		/// Apply user input to model - nothing to do
 		/// </summary>
-		protected override IEnumerable<Model.AzureSqlServerDnsAliasModel> ApplyUserInputToModel(IEnumerable<Model.AzureSqlServerDnsAliasModel> model)
+		protected override IEnumerable<AzureSqlServerDnsAliasModel> ApplyUserInputToModel(IEnumerable<AzureSqlServerDnsAliasModel> model)
 		{
 			return model;
 		}
@@ -114,15 +114,15 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 		/// <summary>
 		/// Persist changes - actually invoke acquire on alias to move it from one server to another
 		/// </summary>
-		protected override IEnumerable<Model.AzureSqlServerDnsAliasModel> PersistChanges(IEnumerable<Model.AzureSqlServerDnsAliasModel> entity)
+		protected override IEnumerable<AzureSqlServerDnsAliasModel> PersistChanges(IEnumerable<AzureSqlServerDnsAliasModel> entity)
 		{
-			return new List<Model.AzureSqlServerDnsAliasModel>()
+			return new List<AzureSqlServerDnsAliasModel>
 			{
 				ModelAdapter.AcquireServerDnsAlias(
-					this.ResourceGroupName,
-					this.TargetServerName,
-					this.Name,
-					new Management.Sql.Models.ServerDnsAliasAcquisition(oldServerDnsAliasId: ConstructOldServerId()))
+					ResourceGroupName,
+					TargetServerName,
+					Name,
+					new Management.Sql.Models.ServerDnsAliasAcquisition(ConstructOldServerId()))
 			};
 		}
 
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 		/// <returns></returns>
 		private string ConstructOldServerId()
 		{
-			return string.Format(ServerDnsAliasIdTemplate, this.SourceServerSubscriptionId, this.SourceServerResourceGroupName, this.SourceServerName, this.Name);
+			return string.Format(ServerDnsAliasIdTemplate, SourceServerSubscriptionId, SourceServerResourceGroupName, SourceServerName, Name);
 		}
 	}
 }

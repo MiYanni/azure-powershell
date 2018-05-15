@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
         public string WebhookName { get; set; }
 
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = ListWebhookEventsByNameResourceGroupParameterSet, HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

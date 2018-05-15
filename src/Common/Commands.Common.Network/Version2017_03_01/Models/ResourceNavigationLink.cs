@@ -4,20 +4,20 @@
 
 namespace Microsoft.Azure.Management.Internal.Network.Version2017_03_01.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Management;
-    using Microsoft.Azure.Management.Internal;
-    using Microsoft.Azure.Management.Internal.Network;
-    using Microsoft.Azure.Management.Internal.Network.Version2017_03_01;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Serialization;
+    using Azure;
+    using Management;
+    using Internal;
+    using Network;
+    using Version2017_03_01;
+    using Rest;
+    using Rest.Serialization;
     using Newtonsoft.Json;
     using System.Linq;
 
     /// <summary>
     /// ResourceNavigationLink resource.
     /// </summary>
-    [Rest.Serialization.JsonTransformation]
+    [JsonTransformation]
     public partial class ResourceNavigationLink : SubResource
     {
         /// <summary>

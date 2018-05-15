@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            BatchClient.StopResizePool(this.BatchContext, this.Id, this.AdditionalBehaviors);
+            BatchClient.StopResizePool(BatchContext, Id, AdditionalBehaviors);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Commands.RedisCache
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.RedisCache.Properties;
+    using Properties;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsData.Import, "AzureRmRedisCache", SupportsShouldProcess = true), OutputType(typeof(bool))]

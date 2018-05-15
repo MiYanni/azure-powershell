@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()		
          {
              base.Execute();
-             var arpTables = this.NetworkClient.NetworkManagementClient.ExpressRouteCircuits.ListArpTable
+             var arpTables = NetworkClient.NetworkManagementClient.ExpressRouteCircuits.ListArpTable
                      (ResourceGroupName, ExpressRouteCircuitName, PeeringType, DevicePath.ToString()).Value.Cast<object>().ToList();
              var psARPs = new List<PSExpressRouteCircuitArpTable>();
              foreach (var arpTable in arpTables)

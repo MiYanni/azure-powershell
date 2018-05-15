@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime DateTime
         {
-            get { return this._dateTime; }
-            set { this._dateTime = value; }
+            get { return _dateTime; }
+            set { _dateTime = value; }
         }
         
         private double _dtu;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double Dtu
         {
-            get { return this._dtu; }
-            set { this._dtu = value; }
+            get { return _dtu; }
+            set { _dtu = value; }
         }
         
         private double _sizeGB;
@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double SizeGB
         {
-            get { return this._sizeGB; }
-            set { this._sizeGB = value; }
+            get { return _sizeGB; }
+            set { _sizeGB = value; }
         }
         
         /// <summary>

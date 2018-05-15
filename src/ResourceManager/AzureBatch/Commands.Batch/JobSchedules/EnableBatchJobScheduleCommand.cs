@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            BatchClient.EnableJobSchedule(this.BatchContext, this.Id, this.AdditionalBehaviors);
+            BatchClient.EnableJobSchedule(BatchContext, Id, AdditionalBehaviors);
         }
     }
 }

@@ -310,7 +310,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
                 if (PassThru.IsPresent)
                 {
-                    this.WriteObject(resultantPolicy);
+                    WriteObject(resultantPolicy);
                 }
             }
         }

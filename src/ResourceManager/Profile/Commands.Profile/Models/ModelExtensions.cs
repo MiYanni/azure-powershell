@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common
             subscription.Name = other.DisplayName;
             subscription.State = other.State.ToString();
             subscription.SetProperty(AzureSubscription.Property.Tenants,
-                context.Tenant.Id.ToString());
+                context.Tenant.Id);
             return subscription;
         }
 
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common
             {
                 var existingTenants = new List<AzureTenant>();
                 account.SetProperty(AzureAccount.Property.Tenants, null);
-                tenants.ForEach((t) =>
+                tenants.ForEach(t =>
                 {
                     existingTenants.Add(new AzureTenant { Id = t.TenantId, Directory = token.GetDomain() });
                     account.SetOrAppendProperty(AzureAccount.Property.Tenants, t.TenantId);

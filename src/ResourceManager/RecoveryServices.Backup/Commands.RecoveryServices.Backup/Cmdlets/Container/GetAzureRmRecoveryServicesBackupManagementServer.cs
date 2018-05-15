@@ -43,8 +43,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 base.ExecuteCmdlet();
 
                 PsBackupProviderManager providerManager = new PsBackupProviderManager(
-                    new Dictionary<System.Enum, object>()
-                {
+                    new Dictionary<System.Enum, object>
+                    {
                     {ContainerParams.ContainerType, ContainerType.Windows},
                     {ContainerParams.Name, Name}
                 }, ServiceClientAdapter);
@@ -53,14 +53,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     providerManager.GetProviderInstanceForBackupManagementServer();
 
                 var backupServerModels = psBackupProvider.ListBackupManagementServers();
-                if (!string.IsNullOrEmpty(this.Name))
+                if (!string.IsNullOrEmpty(Name))
                 {
                     if (backupServerModels != null)
                     {
-                        backupServerModels = backupServerModels.Where(x => x.Name == this.Name).ToList();
+                        backupServerModels = backupServerModels.Where(x => x.Name == Name).ToList();
                     }
                 }
-                WriteObject(backupServerModels, enumerateCollection: true);
+                WriteObject(backupServerModels, true);
             });
         }
     }

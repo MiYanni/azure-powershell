@@ -14,9 +14,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Table
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.Table;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
     /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Table
         {
             try
             {
-                TableQuery<DynamicTableEntity> projectionQuery = new TableQuery<DynamicTableEntity>().Select(new string[] { "PartitionKey" });
+                TableQuery<DynamicTableEntity> projectionQuery = new TableQuery<DynamicTableEntity>().Select(new[] { "PartitionKey" });
                 projectionQuery.TakeCount = 1;
                 //https://ahmet.im/blog/azure-listblobssegmentedasync-listcontainerssegmentedasync-how-to/
                 TableContinuationToken continuationToken = null;

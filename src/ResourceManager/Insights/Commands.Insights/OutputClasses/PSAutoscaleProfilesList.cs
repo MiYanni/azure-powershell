@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         {
             if (profiles != null)
             {
-                this.AddRange(profiles);
+                AddRange(profiles);
             }
         }
     }

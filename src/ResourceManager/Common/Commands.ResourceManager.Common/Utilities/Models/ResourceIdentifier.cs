@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Management.Internal.Resources.Utilities.Models
                 return new ResourceIdentifier
                 {
                     Subscription = tokens[1],
-                    ResourceGroupName = tokens[3],
+                    ResourceGroupName = tokens[3]
                 };
             }
 
@@ -102,10 +102,7 @@ namespace Microsoft.Azure.Management.Internal.Resources.Utilities.Models
             {
                 return string.Empty;
             }
-            else
-            {
-                return resourceType.Substring(0, indexOfSlash);
-            }
+            return resourceType.Substring(0, indexOfSlash);
         }
 
         public static string GetTypeFromResourceType(string resourceType)
@@ -120,10 +117,7 @@ namespace Microsoft.Azure.Management.Internal.Resources.Utilities.Models
             {
                 return string.Empty;
             }
-            else
-            {
-                return resourceType.Substring(lastIndexOfSlash + 1);
-            }
+            return resourceType.Substring(lastIndexOfSlash + 1);
         }
 
         public override string ToString()

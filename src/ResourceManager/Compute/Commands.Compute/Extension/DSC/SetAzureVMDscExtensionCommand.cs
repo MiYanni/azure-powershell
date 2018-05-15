@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
            Position = 2,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The name of the resource group that contains the virtual machine.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -249,11 +249,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                 if (ConfigurationName != null || ConfigurationArgument != null
                     || ConfigurationData != null)
                 {
-                    this.ThrowInvalidArgumentError(Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscNullArchiveNoConfiguragionParameters);
+                    this.ThrowInvalidArgumentError(Properties.Resources.AzureVMDscNullArchiveNoConfiguragionParameters);
                 }
                 if (ArchiveContainerName != null || ArchiveStorageEndpointSuffix != null)
                 {
-                    this.ThrowInvalidArgumentError(Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscNullArchiveNoStorageParameters);
+                    this.ThrowInvalidArgumentError(Properties.Resources.AzureVMDscNullArchiveNoStorageParameters);
                 }
             }
             else
@@ -263,7 +263,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                     ArchiveBlobName,
                     StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
-                    this.ThrowInvalidArgumentError(Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscConfigurationDataFileShouldNotIncludePath);
+                    this.ThrowInvalidArgumentError(Properties.Resources.AzureVMDscConfigurationDataFileShouldNotIncludePath);
                 }
 
                 if (ConfigurationData != null)
@@ -273,7 +273,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                     if (!File.Exists(ConfigurationData))
                     {
                         this.ThrowInvalidArgumentError(
-                            Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscCannotFindConfigurationDataFile,
+                            Properties.Resources.AzureVMDscCannotFindConfigurationDataFile,
                             ConfigurationData);
                     }
                     if (string.Compare(
@@ -281,7 +281,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                         ".psd1",
                         StringComparison.InvariantCultureIgnoreCase) != 0)
                     {
-                        this.ThrowInvalidArgumentError(Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscInvalidConfigurationDataFile);
+                        this.ThrowInvalidArgumentError(Properties.Resources.AzureVMDscInvalidConfigurationDataFile);
                     }
                 }
 
@@ -308,9 +308,9 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                         DefaultProfile.DefaultContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.StorageEndpointSuffix);
                 }
 
-                if (!(Regex.Match(Version, VersionRegexExpr).Success))
+                if (!Regex.Match(Version, VersionRegexExpr).Success)
                 {
-                    this.ThrowInvalidArgumentError(Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscExtensionInvalidVersion);
+                    this.ThrowInvalidArgumentError(Properties.Resources.AzureVMDscExtensionInvalidVersion);
                 }
             }
         }
@@ -349,14 +349,14 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                 }
             }
 
-            if (string.IsNullOrEmpty(this.Location))
+            if (string.IsNullOrEmpty(Location))
             {
-                this.Location = GetLocationFromVm(this.ResourceGroupName, this.VMName);
+                Location = GetLocationFromVm(ResourceGroupName, VMName);
             }
 
             var parameters = new VirtualMachineExtension
             {
-                Location = this.Location,
+                Location = Location,
                 Publisher = DscExtensionCmdletConstants.ExtensionPublishedNamespace,
                 VirtualMachineExtensionType = DscExtensionCmdletConstants.ExtensionPublishedName,
                 TypeHandlerVersion = Version,
@@ -459,7 +459,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                     string.Empty,
                     string.Format(
                         CultureInfo.CurrentUICulture,
-                        Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscUploadToBlobStorageAction,
+                        Properties.Resources.AzureVMDscUploadToBlobStorageAction,
                         ConfigurationData),
                     configurationDataBlobReference.Uri.AbsoluteUri,
                     () =>
@@ -471,7 +471,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                                     new UnauthorizedAccessException(
                                         string.Format(
                                             CultureInfo.CurrentUICulture,
-                                            Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscStorageBlobAlreadyExists,
+                                            Properties.Resources.AzureVMDscStorageBlobAlreadyExists,
                                             configurationDataBlobName)),
                                     "StorageBlobAlreadyExists",
                                     ErrorCategory.PermissionDenied,

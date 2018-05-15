@@ -83,36 +83,36 @@ namespace Microsoft.Azure.Commands.Compute
         {
             base.ExecuteCmdlet();
 
-            if (ShouldProcess(this.ExtensionType, VerbsCommon.Set))
+            if (ShouldProcess(ExtensionType, VerbsCommon.Set))
             {
                 ExecuteClientAction(() =>
                 {
-                    if (this.ParameterSetName.Equals(SettingStringParamSet))
+                    if (ParameterSetName.Equals(SettingStringParamSet))
                     {
-                        this.Settings = string.IsNullOrEmpty(this.SettingString)
+                        Settings = string.IsNullOrEmpty(SettingString)
                             ? null
-                            : JsonConvert.DeserializeObject<Hashtable>(this.SettingString);
-                        this.ProtectedSettings = string.IsNullOrEmpty(this.ProtectedSettingString)
+                            : JsonConvert.DeserializeObject<Hashtable>(SettingString);
+                        ProtectedSettings = string.IsNullOrEmpty(ProtectedSettingString)
                             ? null
-                            : JsonConvert.DeserializeObject<Hashtable>(this.ProtectedSettingString);
+                            : JsonConvert.DeserializeObject<Hashtable>(ProtectedSettingString);
                     }
 
                     var parameters = new VirtualMachineExtension
                     {
-                        Location = this.Location,
-                        Publisher = this.Publisher,
-                        VirtualMachineExtensionType = this.ExtensionType,
-                        TypeHandlerVersion = this.TypeHandlerVersion,
-                        Settings = this.Settings,
-                        ProtectedSettings = this.ProtectedSettings,
-                        AutoUpgradeMinorVersion = !this.DisableAutoUpgradeMinorVersion.IsPresent,
-                        ForceUpdateTag = this.ForceRerun
+                        Location = Location,
+                        Publisher = Publisher,
+                        VirtualMachineExtensionType = ExtensionType,
+                        TypeHandlerVersion = TypeHandlerVersion,
+                        Settings = Settings,
+                        ProtectedSettings = ProtectedSettings,
+                        AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent,
+                        ForceUpdateTag = ForceRerun
                     };
 
-                    var op = this.VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name,
+                    var op = VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name,
                         parameters).GetAwaiter().GetResult();
 
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);

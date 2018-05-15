@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights
 
         public override void ExecuteCmdlet()
         {
-            CreatePSStorageInsightParameters parameters = new CreatePSStorageInsightParameters()
+            CreatePSStorageInsightParameters parameters = new CreatePSStorageInsightParameters
             {
                 Name = Name,
                 StorageAccountResourceId = StorageAccountResourceId,

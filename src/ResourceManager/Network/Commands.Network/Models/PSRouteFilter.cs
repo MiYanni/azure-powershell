@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string RulesText
         {
-            get { return JsonConvert.SerializeObject(Rules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore}); }
+            get { return JsonConvert.SerializeObject(Rules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore}); }
         }
 
         [JsonIgnore]
@@ -38,18 +38,18 @@ namespace Microsoft.Azure.Commands.Network.Models
         {
             get
             {
-                return JsonConvert.SerializeObject(Peerings, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
+                return JsonConvert.SerializeObject(Peerings, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
             }
         }
 
         public bool ShouldSerializePeerings()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeRules()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }

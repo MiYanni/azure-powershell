@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance
             ParameterSetName = ListContainerGroupParamSet,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -70,26 +70,26 @@ namespace Microsoft.Azure.Commands.ContainerInstance
 
         public override void ExecuteCmdlet()
         {
-            if (!string.IsNullOrEmpty(this.ResourceGroupName) && !string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(ResourceGroupName) && !string.IsNullOrEmpty(Name))
             {
                 var psContainerGroup = PSContainerGroup.FromContainerGroup(
-                    this.ContainerClient.ContainerGroups.Get(this.ResourceGroupName, this.Name));
-                this.WriteObject(psContainerGroup);
+                    ContainerClient.ContainerGroups.Get(ResourceGroupName, Name));
+                WriteObject(psContainerGroup);
             }
-            else if (!string.IsNullOrEmpty(this.ResourceId))
+            else if (!string.IsNullOrEmpty(ResourceId))
             {
-                var resource = this.ResourceClient.Resources.GetById(this.ResourceId, this.ContainerClient.ApiVersion);
+                var resource = ResourceClient.Resources.GetById(ResourceId, ContainerClient.ApiVersion);
                 if (resource != null)
                 {
                     var psContainerGroup = PSContainerGroup.FromContainerGroup(
-                        this.ContainerClient.ContainerGroups.Get(this.ParseResourceGroupFromResourceId(this.ResourceId), resource.Name));
-                    this.WriteObject(psContainerGroup);
+                        ContainerClient.ContainerGroups.Get(ParseResourceGroupFromResourceId(ResourceId), resource.Name));
+                    WriteObject(psContainerGroup);
                 }
             }
             else
             {
                 var psContainerGroups = new List<PSContainerGroupList>();
-                var containerGroups = this.ListContainerGroups();
+                var containerGroups = ListContainerGroups();
                 foreach (var containerGroup in containerGroups)
                 {
                     psContainerGroups.Add(ContainerInstanceAutoMapperProfile.Mapper.Map<PSContainerGroupList>(PSContainerGroup.FromContainerGroup(containerGroup)));
@@ -97,29 +97,29 @@ namespace Microsoft.Azure.Commands.ContainerInstance
 
                 while (!string.IsNullOrEmpty(containerGroups.NextPageLink))
                 {
-                    containerGroups = this.ListContainerGroupsNext(containerGroups.NextPageLink);
+                    containerGroups = ListContainerGroupsNext(containerGroups.NextPageLink);
                     foreach (var containerGroup in containerGroups)
                     {
                         psContainerGroups.Add(ContainerInstanceAutoMapperProfile.Mapper.Map<PSContainerGroupList>(PSContainerGroup.FromContainerGroup(containerGroup)));
                     }
                 }
 
-                this.WriteObject(psContainerGroups, true);
+                WriteObject(psContainerGroups, true);
             }
         }
 
         private IPage<ContainerGroup> ListContainerGroups()
         {
-            return string.IsNullOrEmpty(this.ResourceGroupName)
-                ? this.ContainerClient.ContainerGroups.List()
-                : this.ContainerClient.ContainerGroups.ListByResourceGroup(this.ResourceGroupName);
+            return string.IsNullOrEmpty(ResourceGroupName)
+                ? ContainerClient.ContainerGroups.List()
+                : ContainerClient.ContainerGroups.ListByResourceGroup(ResourceGroupName);
         }
 
         private IPage<ContainerGroup> ListContainerGroupsNext(string nextPageLink)
         {
-            return string.IsNullOrEmpty(this.ResourceGroupName)
-                ? this.ContainerClient.ContainerGroups.ListNext(nextPageLink)
-                : this.ContainerClient.ContainerGroups.ListByResourceGroupNext(nextPageLink);
+            return string.IsNullOrEmpty(ResourceGroupName)
+                ? ContainerClient.ContainerGroups.ListNext(nextPageLink)
+                : ContainerClient.ContainerGroups.ListByResourceGroupNext(nextPageLink);
         }
     }
 }

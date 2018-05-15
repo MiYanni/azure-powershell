@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             if (itemBase == null)
             {
                 isComputeAzureVM = string.IsNullOrEmpty(azureVMCloudServiceName) ? true : false;
-                string azureVMRGName = (isComputeAzureVM) ?
+                string azureVMRGName = isComputeAzureVM ?
                     azureVMResourceGroupName : azureVMCloudServiceName;
 
                 ValidateAzureVMWorkloadType(policy.WorkloadType);
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             properties.PolicyId = policy.Id;
             properties.SourceResourceId = sourceResourceId;
 
-            ProtectedItemResource serviceClientRequest = new ProtectedItemResource()
+            ProtectedItemResource serviceClientRequest = new ProtectedItemResource
             {
                 Properties = properties
             };
@@ -178,36 +178,33 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                                 containerUri,
                                 protectedItemUri);
             }
+            isComputeAzureVM = IsComputeAzureVM(item.VirtualMachineId);
+
+            // construct Service Client protectedItem request
+
+            AzureIaaSVMProtectedItem properties;
+            if (isComputeAzureVM == false)
+            {
+                properties = new AzureIaaSClassicComputeVMProtectedItem();
+            }
             else
             {
-                isComputeAzureVM = IsComputeAzureVM(item.VirtualMachineId);
-
-                // construct Service Client protectedItem request
-
-                AzureIaaSVMProtectedItem properties;
-                if (isComputeAzureVM == false)
-                {
-                    properties = new AzureIaaSClassicComputeVMProtectedItem();
-                }
-                else
-                {
-                    properties = new AzureIaaSComputeVMProtectedItem();
-                }
-
-                properties.PolicyId = string.Empty;
-                properties.ProtectionState = ProtectionState.ProtectionStopped;
-                properties.SourceResourceId = item.SourceResourceId;
-
-                ProtectedItemResource serviceClientRequest = new ProtectedItemResource()
-                {
-                    Properties = properties,
-                };
-
-                return ServiceClientAdapter.CreateOrUpdateProtectedItem(
-                                    containerUri,
-                                    protectedItemUri,
-                                    serviceClientRequest);
+                properties = new AzureIaaSComputeVMProtectedItem();
             }
+
+            properties.PolicyId = string.Empty;
+            properties.ProtectionState = ProtectionState.ProtectionStopped;
+            properties.SourceResourceId = item.SourceResourceId;
+
+            ProtectedItemResource serviceClientRequest = new ProtectedItemResource
+            {
+                Properties = properties
+            };
+
+            return ServiceClientAdapter.CreateOrUpdateProtectedItem(
+                containerUri,
+                protectedItemUri,
+                serviceClientRequest);
         }
 
         /// <summary>
@@ -307,7 +304,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                 new IaasVMILRRegistrationRequest();
             registrationRequest.RecoveryPointId = rp.RecoveryPointId;
             registrationRequest.VirtualMachineId = rp.SourceResourceId;
-            registrationRequest.RenewExistingRegistration = (rp.IlrSessionActive == false) ? false : true;
+            registrationRequest.RenewExistingRegistration = rp.IlrSessionActive == false ? false : true;
 
             var ilRResponse = ServiceClientAdapter.ProvisioninItemLevelRecoveryAccess(
                 containerUri, protectedItemName, rp.RecoveryPointId, registrationRequest);
@@ -338,13 +335,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                     if (recoveryTarget.ClientScripts.Count == 2)
                     {
                         // clientScriptForConnection.OsType == "Windows"
-                        result = this.GenerateILRResponseForWindowsVMs(
+                        result = GenerateILRResponseForWindowsVMs(
                                 recoveryTarget.ClientScripts[1], out content);
                     }
                     else
                     {
                         // clientScriptForConnection.OsType == "Linux"
-                        result = this.GenerateILRResponseForLinuxVMs(
+                        result = GenerateILRResponseForLinuxVMs(
                                 recoveryTarget.ClientScripts[0],
                                 protectedItemName, rp.RecoveryPointTime.ToString(), out content);
                     }
@@ -395,7 +392,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
 
             if (response != null && response.Status != null)
             {
-                Logger.Instance.WriteDebug("Completed the call with status code" + response.Status.ToString());
+                Logger.Instance.WriteDebug("Completed the call with status code" + response.Status);
             }
         }
 
@@ -405,8 +402,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
         /// <returns>List of recovery point PowerShell model objects</returns>
         public List<RecoveryPointBase> ListRecoveryPoints()
         {
-            DateTime startDate = (DateTime)(ProviderData[RecoveryPointParams.StartDate]);
-            DateTime endDate = (DateTime)(ProviderData[RecoveryPointParams.EndDate]);
+            DateTime startDate = (DateTime)ProviderData[RecoveryPointParams.StartDate];
+            DateTime endDate = (DateTime)ProviderData[RecoveryPointParams.EndDate];
 
             AzureVmItem item = ProviderData[RecoveryPointParams.Item]
                 as AzureVmItem;
@@ -422,7 +419,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             }
 
             //we need to fetch the list of RPs
-            var queryFilterString = QueryBuilder.Instance.GetQueryString(new BMSRPQueryObject()
+            var queryFilterString = QueryBuilder.Instance.GetQueryString(new BMSRPQueryObject
             {
                 StartDate = startDate,
                 EndDate = endDate
@@ -475,9 +472,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             Logger.Instance.WriteDebug("Validation of Retention policy with Schedule policy is successful");
 
             // construct Service Client policy request            
-            ProtectionPolicyResource serviceClientRequest = new ProtectionPolicyResource()
+            ProtectionPolicyResource serviceClientRequest = new ProtectionPolicyResource
             {
-                Properties = new AzureIaaSVMProtectionPolicy()
+                Properties = new AzureIaaSVMProtectionPolicy
                 {
                     RetentionPolicy = PolicyHelpers.GetServiceClientLongTermRetentionPolicy(
                                                 (CmdletModel.LongTermRetentionPolicy)retentionPolicy),
@@ -550,9 +547,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             Logger.Instance.WriteDebug("Validation of Retention policy with Schedule policy is successful");
 
             // construct Service Client policy request            
-            ProtectionPolicyResource serviceClientRequest = new ProtectionPolicyResource()
+            ProtectionPolicyResource serviceClientRequest = new ProtectionPolicyResource
             {
-                Properties = new AzureIaaSVMProtectionPolicy()
+                Properties = new AzureIaaSVMProtectionPolicy
                 {
                     RetentionPolicy = PolicyHelpers.GetServiceClientLongTermRetentionPolicy(
                                   (CmdletModel.LongTermRetentionPolicy)((AzureVmPolicy)policy).RetentionPolicy),
@@ -868,7 +865,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             //Schedule time will be random to avoid the load in service (same is in portal as well)
             Random rand = new Random();
             int hour = rand.Next(0, 24);
-            int minute = (rand.Next(0, 2) == 0) ? 0 : 30;
+            int minute = rand.Next(0, 2) == 0 ? 0 : 30;
             return new DateTime(DateTime.Now.Year,
                 DateTime.Now.Month,
                 DateTime.Now.Day,
@@ -927,7 +924,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             if (policy == null || policy.GetType() != typeof(AzureVmPolicy))
             {
                 throw new ArgumentException(string.Format(Resources.InvalidProtectionPolicyException,
-                                            typeof(AzureVmPolicy).ToString()));
+                                            typeof(AzureVmPolicy)));
             }
 
             ValidateAzureVMWorkloadType(policy.WorkloadType);
@@ -941,7 +938,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             if (policy == null || policy.GetType() != typeof(CmdletModel.SimpleSchedulePolicy))
             {
                 throw new ArgumentException(string.Format(Resources.InvalidSchedulePolicyException,
-                                            typeof(CmdletModel.SimpleSchedulePolicy).ToString()));
+                                            typeof(CmdletModel.SimpleSchedulePolicy)));
             }
 
             // call validation
@@ -953,7 +950,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             if (policy == null || policy.GetType() != typeof(CmdletModel.LongTermRetentionPolicy))
             {
                 throw new ArgumentException(string.Format(Resources.InvalidRetentionPolicyException,
-                                            typeof(CmdletModel.LongTermRetentionPolicy).ToString()));
+                                            typeof(CmdletModel.LongTermRetentionPolicy)));
             }
 
             // call validation
@@ -981,7 +978,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             if (itemBase == null || itemBase.GetType() != typeof(AzureVmItem))
             {
                 throw new ArgumentException(string.Format(Resources.InvalidProtectionPolicyException,
-                                            typeof(AzureVmItem).ToString()));
+                                            typeof(AzureVmItem)));
             }
 
             if (string.IsNullOrEmpty(((AzureVmItem)itemBase).VirtualMachineId))
@@ -996,7 +993,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             if (itemBase == null || itemBase.GetType() != typeof(AzureVmItem))
             {
                 throw new ArgumentException(string.Format(Resources.InvalidProtectionPolicyException,
-                                            typeof(AzureVmItem).ToString()));
+                                            typeof(AzureVmItem)));
             }
 
             if (string.IsNullOrEmpty(((AzureVmItem)itemBase).VirtualMachineId))
@@ -1048,7 +1045,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                 if (isDiscoveryNeed == true)
                 {
                     // Container is not discovered. Throw exception
-                    string vmversion = (isComputeAzureVM) ?
+                    string vmversion = isComputeAzureVM ?
                         computeAzureVMVersion :
                         classicComputeAzureVMVersion;
                     string errMsg = string.Format(Resources.DiscoveryFailure,
@@ -1066,7 +1063,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             if (protectableObjectResource == null)
             {
                 // Container is not discovered. Throw exception
-                string vmversion = (isComputeAzureVM) ?
+                string vmversion = isComputeAzureVM ?
                     computeAzureVMVersion : classicComputeAzureVMVersion;
                 string errMsg = string.Format(
                     Resources.DiscoveryFailure,
@@ -1089,7 +1086,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
             bool isDiscoveryNeed = true;
             protectableObjectResource = null;
             string vmVersion = string.Empty;
-            vmVersion = (isComputeAzureVM) == true ? computeAzureVMVersion : classicComputeAzureVMVersion;
+            vmVersion = isComputeAzureVM == true ? computeAzureVMVersion : classicComputeAzureVMVersion;
             string virtualMachineId = GetAzureIaasVirtualMachineId(rgName, vmVersion, vmName);
 
             ODataQuery<BMSPOQueryObject> queryParam = new ODataQuery<BMSPOQueryObject>(
@@ -1214,8 +1211,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                         content = Convert.ToBase64String(
                             memoryStream.ToArray());
                         string suffix = clientScriptForConnection.ScriptNameSuffix;
-                        string password = this.RemovePasswordFromSuffixAndReturn(ref suffix);
-                        string fileName = this.ConstructFileName(
+                        string password = RemovePasswordFromSuffixAndReturn(ref suffix);
+                        string fileName = ConstructFileName(
                             suffix, clientScriptForConnection.ScriptExtension);
 
                         return new AzureVmRPMountScriptDetails(
@@ -1251,8 +1248,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                 string fileName, password;
                 if (suffix != null)
                 {
-                    this.RemovePasswordFromSuffixAndReturn(ref suffix);
-                    fileName = this.ConstructFileName(
+                    RemovePasswordFromSuffixAndReturn(ref suffix);
+                    fileName = ConstructFileName(
                         suffix, clientScriptForConnection.ScriptExtension);
                 }
                 else
@@ -1266,7 +1263,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel
                             vmName,
                             recoveryPointTime);
                 }
-                password = this.ReplacePasswordInScriptContentAndReturn(ref content);
+                password = ReplacePasswordInScriptContentAndReturn(ref content);
 
                 return new AzureVmRPMountScriptDetails(
                     clientScriptForConnection.OsType, fileName, password);

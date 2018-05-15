@@ -4,11 +4,11 @@
 
 namespace Microsoft.Azure.Graph.RBAC.Version1_6.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Graph;
-    using Microsoft.Azure.Graph.RBAC;
-    using Microsoft.Azure.Graph.RBAC.Version1_6;
-    using Microsoft.Rest;
+    using Azure;
+    using Graph;
+    using RBAC;
+    using Version1_6;
+    using Rest;
 
     /// <summary>
     /// Exception thrown for an invalid response with GraphError information.

@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<Advisor> Advisors
         {
-            get { return this._advisors; }
-            set { this._advisors = value; }
+            get { return _advisors; }
+            set { _advisors = value; }
         }
         
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public AdvisorListResponse()
         {
-            this.Advisors = new LazyList<Advisor>();
+            Advisors = new LazyList<Advisor>();
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<Advisor> GetEnumerator()
         {
-            return this.Advisors.GetEnumerator();
+            return Advisors.GetEnumerator();
         }
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerSecurityAlertPolicy SecurityAlertPolicy
         {
-            get { return this._securityAlertPolicy; }
-            set { this._securityAlertPolicy = value; }
+            get { return _securityAlertPolicy; }
+            set { _securityAlertPolicy = value; }
         }
         
         /// <summary>

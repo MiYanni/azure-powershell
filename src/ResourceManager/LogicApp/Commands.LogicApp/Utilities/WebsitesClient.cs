@@ -16,10 +16,10 @@
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
     using System;
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.Azure.Commands.Common.Authentication.Models;
-    using Microsoft.Azure.Management.WebSites;
-    using Microsoft.Azure.Management.WebSites.Models;
+    using Common.Authentication;
+    using Common.Authentication.Models;
+    using Management.WebSites;
+    using Management.WebSites.Models;
     using Common.Authentication.Abstractions;
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="context"></param>
         public WebsitesClient(IAzureContext context)
         {
-            this.WrappedWebsitesClient = AzureSession.Instance.ClientFactory.CreateArmClient<WebSiteManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            WrappedWebsitesClient = AzureSession.Instance.ClientFactory.CreateArmClient<WebSiteManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
         }
 
         /// <summary>

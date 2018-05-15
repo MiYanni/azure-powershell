@@ -265,7 +265,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
             var accountNameStartIndex = storageEndpoint.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase)? 8 : 7; // https:// or http://
             var accountNameEndIndex = storageEndpoint.IndexOf(".blob", StringComparison.InvariantCultureIgnoreCase);
             model.StorageAccountName = storageEndpoint.Substring(accountNameStartIndex, accountNameEndIndex- accountNameStartIndex);
-            model.StorageKeyType = (isSecondary) ? StorageKeyKind.Secondary : StorageKeyKind.Primary;
+            model.StorageKeyType = isSecondary ? StorageKeyKind.Secondary : StorageKeyKind.Primary;
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
             model.TableIdentifier = auditLogsTableName;
             model.FullAuditLogsTableName = fullAuditLogsTableName;
             uint retentionDaysForModel;
-            if (!(uint.TryParse(retentionDays, out retentionDaysForModel)))
+            if (!uint.TryParse(retentionDays, out retentionDaysForModel))
             {
                 retentionDaysForModel = 0;
             }
@@ -442,7 +442,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
             var properties = new DatabaseAuditingPolicyProperties();
             updateParameters.Properties = properties;
             properties.AuditingState = model.AuditState.ToString();
-            properties.UseServerDefault = (model.UseServerDefault == UseServerDefaultOptions.Enabled) ? SecurityConstants.AuditingEndpoint.Enabled : SecurityConstants.AuditingEndpoint.Disabled;
+            properties.UseServerDefault = model.UseServerDefault == UseServerDefaultOptions.Enabled ? SecurityConstants.AuditingEndpoint.Enabled : SecurityConstants.AuditingEndpoint.Disabled;
             properties.StorageAccountName = ExtractStorageAccountName(model);
             properties.StorageAccountResourceGroupName = ExtractStorageAccountResourceGroup(properties.StorageAccountName);
             properties.StorageAccountSubscriptionId = ExtractStorageAccountSubscriptionId(properties.StorageAccountName);
@@ -467,7 +467,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
             var properties = new BlobAuditingProperties();
             updateParameters.Properties = properties;
             properties.State = model.AuditState.ToString();
-            if (!IgnoreStorage && (model.AuditState == AuditStateType.Enabled))
+            if (!IgnoreStorage && model.AuditState == AuditStateType.Enabled)
             {
                 properties.StorageEndpoint = ExtractStorageAccountName(model, storageEndpointSuffix);
                 properties.StorageAccountAccessKey = ExtractStorageAccountKey(model.StorageAccountName, model.StorageKeyType);
@@ -553,7 +553,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
             {
                 storageAccountName = model.StorageAccountName;
             }
-            if (string.IsNullOrEmpty(storageAccountName) && (!IgnoreStorage)) // can happen if the user didn't provide account name for a policy that lacked it 
+            if (string.IsNullOrEmpty(storageAccountName) && !IgnoreStorage) // can happen if the user didn't provide account name for a policy that lacked it 
             {
                 throw new Exception(string.Format(Properties.Resources.NoStorageAccountWhenConfiguringAuditingPolicy));
             }
@@ -589,7 +589,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
         /// </summary>
         private string ExtractStorageAccountTableEndpoint(string storageName, string endpointSuffix)
         {
-            if (IgnoreStorage || (storageName == FetchedStorageAccountName && FetchedStorageAccountTableEndpoint != null))
+            if (IgnoreStorage || storageName == FetchedStorageAccountName && FetchedStorageAccountTableEndpoint != null)
             {
                 return FetchedStorageAccountTableEndpoint;
             }
@@ -601,7 +601,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
         /// </summary>
         private string ExtractStorageAccountSubscriptionId(string storageName)
         {
-            if (IgnoreStorage || (storageName == FetchedStorageAccountName && FetchedStorageAccountSubscription != null))
+            if (IgnoreStorage || storageName == FetchedStorageAccountName && FetchedStorageAccountSubscription != null)
             {
                 return FetchedStorageAccountSubscription;
             }
@@ -613,7 +613,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
         /// </summary>
         private string ExtractStorageAccountResourceGroup(string storageName)
         {
-            if (IgnoreStorage || (storageName == FetchedStorageAccountName && FetchedStorageAccountResourceGroup != null))
+            if (IgnoreStorage || storageName == FetchedStorageAccountName && FetchedStorageAccountResourceGroup != null)
             {
                 return FetchedStorageAccountResourceGroup;
             }
@@ -625,7 +625,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Services
         /// </summary>
         private string ExtractStorageAccountKey(string storageName, BaseTableAuditingPolicyModel model, string storageAccountResourceGroup, StorageKeyKind keyType)
         {
-            if (!IgnoreStorage && (model.StorageKeyType == keyType))
+            if (!IgnoreStorage && model.StorageKeyType == keyType)
             {
                 return AzureCommunicator.GetStorageKeys(storageAccountResourceGroup, storageName)[keyType];
             }

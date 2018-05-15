@@ -28,28 +28,28 @@ namespace Microsoft.Azure.Commands.Management.Storage.Models
     {
         public PSStorageAccount(StorageModels.StorageAccount storageAccount)
         {
-            this.ResourceGroupName = ParseResourceGroupFromId(storageAccount.Id);
-            this.StorageAccountName = storageAccount.Name;
-            this.Id = storageAccount.Id;
-            this.Location = storageAccount.Location;
-            this.Sku = storageAccount.Sku;
-            this.Encryption = storageAccount.Encryption;
-            this.Kind = storageAccount.Kind;
-            this.AccessTier = storageAccount.AccessTier;
-            this.CreationTime = storageAccount.CreationTime;
-            this.CustomDomain = storageAccount.CustomDomain;
-            this.Identity = storageAccount.Identity;
-            this.LastGeoFailoverTime = storageAccount.LastGeoFailoverTime;
-            this.PrimaryEndpoints = storageAccount.PrimaryEndpoints;
-            this.PrimaryLocation = storageAccount.PrimaryLocation;
-            this.ProvisioningState = storageAccount.ProvisioningState;
-            this.SecondaryEndpoints = storageAccount.SecondaryEndpoints;
-            this.SecondaryLocation = storageAccount.SecondaryLocation;
-            this.StatusOfPrimary = storageAccount.StatusOfPrimary;
-            this.StatusOfSecondary = storageAccount.StatusOfSecondary;
-            this.Tags = storageAccount.Tags;
-            this.EnableHttpsTrafficOnly = storageAccount.EnableHttpsTrafficOnly;
-            this.NetworkRuleSet = PSNetworkRuleSet.ParsePSNetworkRule(storageAccount.NetworkRuleSet);
+            ResourceGroupName = ParseResourceGroupFromId(storageAccount.Id);
+            StorageAccountName = storageAccount.Name;
+            Id = storageAccount.Id;
+            Location = storageAccount.Location;
+            Sku = storageAccount.Sku;
+            Encryption = storageAccount.Encryption;
+            Kind = storageAccount.Kind;
+            AccessTier = storageAccount.AccessTier;
+            CreationTime = storageAccount.CreationTime;
+            CustomDomain = storageAccount.CustomDomain;
+            Identity = storageAccount.Identity;
+            LastGeoFailoverTime = storageAccount.LastGeoFailoverTime;
+            PrimaryEndpoints = storageAccount.PrimaryEndpoints;
+            PrimaryLocation = storageAccount.PrimaryLocation;
+            ProvisioningState = storageAccount.ProvisioningState;
+            SecondaryEndpoints = storageAccount.SecondaryEndpoints;
+            SecondaryLocation = storageAccount.SecondaryLocation;
+            StatusOfPrimary = storageAccount.StatusOfPrimary;
+            StatusOfSecondary = storageAccount.StatusOfSecondary;
+            Tags = storageAccount.Tags;
+            EnableHttpsTrafficOnly = storageAccount.EnableHttpsTrafficOnly;
+            NetworkRuleSet = PSNetworkRuleSet.ParsePSNetworkRule(storageAccount.NetworkRuleSet);
         }
 
         public string ResourceGroupName { get; set; }
@@ -96,10 +96,10 @@ namespace Microsoft.Azure.Commands.Management.Storage.Models
         public static PSStorageAccount Create(StorageModels.StorageAccount storageAccount, IStorageManagementClient client)
         {
             var result = new PSStorageAccount(storageAccount);
-             result.Context = new LazyAzureStorageContext((s) => 
+             result.Context = new LazyAzureStorageContext(s => 
              { 
-                return (new ARMStorageProvider(client)).GetCloudStorageAccount(s, result.ResourceGroupName);  
-             }, result.StorageAccountName) as AzureStorageContext; 
+                 return new ARMStorageProvider(client).GetCloudStorageAccount(s, result.ResourceGroupName);  
+             }, result.StorageAccountName); 
 
             return result;
         }

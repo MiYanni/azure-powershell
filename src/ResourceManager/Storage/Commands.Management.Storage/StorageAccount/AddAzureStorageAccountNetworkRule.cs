@@ -25,8 +25,8 @@ using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 namespace Microsoft.Azure.Commands.Management.Storage
 {
     [Cmdlet(VerbsCommon.Add, StorageAccountRuleNounStr, SupportsShouldProcess = true, DefaultParameterSetName = NetWorkRuleStringParameterSet)]
-    [OutputType(typeof(PSVirtualNetworkRule), ParameterSetName = new string[] { NetWorkRuleStringParameterSet, NetworkRuleObjectParameterSet })]
-    [OutputType(typeof(PSIpRule), ParameterSetName = new string[] { IpRuleStringParameterSet, IpRuleObjectParameterSet})]
+    [OutputType(typeof(PSVirtualNetworkRule), ParameterSetName = new[] { NetWorkRuleStringParameterSet, NetworkRuleObjectParameterSet })]
+    [OutputType(typeof(PSIpRule), ParameterSetName = new[] { IpRuleStringParameterSet, IpRuleObjectParameterSet})]
     public class AddAzureStorageAccountNetworkRuleCommand : StorageAccountBaseCmdlet
     {
         /// <summary>
@@ -100,11 +100,11 @@ namespace Microsoft.Azure.Commands.Management.Storage
         {
             base.ExecuteCmdlet();
 
-            if (ShouldProcess(this.Name, "Add Storage Account NetworkRules"))
+            if (ShouldProcess(Name, "Add Storage Account NetworkRules"))
             {
-                var storageAccount = this.StorageClient.StorageAccounts.GetProperties(
-                this.ResourceGroupName,
-                this.Name);
+                var storageAccount = StorageClient.StorageAccounts.GetProperties(
+                ResourceGroupName,
+                Name);
                 NetworkRuleSet storageACL = storageAccount.NetworkRuleSet;
 
                 if (storageACL == null)
@@ -153,12 +153,12 @@ namespace Microsoft.Azure.Commands.Management.Storage
                 StorageAccountUpdateParameters updateParameters = new StorageAccountUpdateParameters();
                 updateParameters.NetworkRuleSet = storageACL;
 
-                var updatedAccountResponse = this.StorageClient.StorageAccounts.Update(
-                    this.ResourceGroupName,
-                    this.Name,
+                var updatedAccountResponse = StorageClient.StorageAccounts.Update(
+                    ResourceGroupName,
+                    Name,
                     updateParameters);
 
-                storageAccount = this.StorageClient.StorageAccounts.GetProperties(this.ResourceGroupName, this.Name);
+                storageAccount = StorageClient.StorageAccounts.GetProperties(ResourceGroupName, Name);
 
                 switch (ParameterSetName)
                 {

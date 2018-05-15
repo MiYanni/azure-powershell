@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.HDInsight.Models
 
                     return new AzureHDInsightDataLakeDefaultStorageAccount
                     (
-                        storageAccountName: coreSiteConfiguration.Single(k => k.Key.StartsWith("dfs.adls.") && k.Key.EndsWith(".hostname")).Value,
+                        coreSiteConfiguration.Single(k => k.Key.StartsWith("dfs.adls.") && k.Key.EndsWith(".hostname")).Value,
                         storageRootPath: storageRootPath,
                         applicationId: appId,
                         tenantId: tenantId,
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.HDInsight.Models
                         resourceUri: resourceUri
                     );
                 }
-                else if (defaultFSUrl.StartsWith(WasbPrefix))
+                if (defaultFSUrl.StartsWith(WasbPrefix))
                 {
                     string[] accountAndContainer = defaultFSUrl.Substring(WasbPrefix.Length).Split('@');
 
@@ -89,10 +89,7 @@ namespace Microsoft.Azure.Commands.HDInsight.Models
                         storageAccountKey: coreSiteConfiguration[Constants.ClusterConfiguration.StorageAccountKeyPrefix + accountAndContainer[1]]
                     );
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
 
             return null;

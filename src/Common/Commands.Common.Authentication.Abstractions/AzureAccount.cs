@@ -61,10 +61,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
             {
                 return false;
             }
-            else
-            {
-                return string.Equals(anotherAccount.Id, Id, StringComparison.InvariantCultureIgnoreCase);
-            }
+            return string.Equals(anotherAccount.Id, Id, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>

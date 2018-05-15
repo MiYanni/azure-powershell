@@ -22,14 +22,14 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public VhdCreatorVersion(uint data)
         {
-            this.Data = data;
+            Data = data;
         }
 
         public uint Data { get; private set; }
 
         public override string ToString()
         {
-            return this.Data.ToString();
+            return Data.ToString();
         }
     }
 }

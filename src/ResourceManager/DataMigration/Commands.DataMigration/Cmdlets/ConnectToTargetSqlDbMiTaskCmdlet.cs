@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void CustomInit()
         {
-            this.TargetConnectionInfoParam(true);
+            TargetConnectionInfoParam(true);
         }
 
         public override ProjectTaskProperties ProcessTaskCmdlet()

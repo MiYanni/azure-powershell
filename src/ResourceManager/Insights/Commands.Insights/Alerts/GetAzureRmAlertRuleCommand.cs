@@ -109,32 +109,32 @@ namespace Microsoft.Azure.Commands.Insights.Alerts
         /// </summary>
         protected override void ProcessRecordInternal()
         {
-            this.WriteIdentifiedWarning(
-                cmdletName: "Get-AzureRmAlertRule",
-                topic: "Parameter deprecation", 
-                message: "The DetailedOutput parameter will be deprecated in a future breaking change release.");
-            if (string.IsNullOrWhiteSpace(this.Name))
+            WriteIdentifiedWarning(
+                "Get-AzureRmAlertRule",
+                "Parameter deprecation", 
+                "The DetailedOutput parameter will be deprecated in a future breaking change release.");
+            if (string.IsNullOrWhiteSpace(Name))
             {
                 // Retrieve all the AlertRules for a ResourceGroup
-                IEnumerable<AlertRuleResource> result = this.MonitorManagementClient.AlertRules.ListByResourceGroupAsync(resourceGroupName: this.ResourceGroupName).Result;
+                IEnumerable<AlertRuleResource> result = MonitorManagementClient.AlertRules.ListByResourceGroupAsync(ResourceGroupName).Result;
 
                 // The filter on targetResourceId is not supported by the servers, not specified in in Swagger, nor supported by the SDK.
                 // This is added to maintain support in PowerShell
-                if (!string.IsNullOrWhiteSpace(this.TargetResourceId))
+                if (!string.IsNullOrWhiteSpace(TargetResourceId))
                 {
-                    result = result.Where(a => string.Equals(this.TargetResourceId, ExtractTargetResourceId(a), StringComparison.OrdinalIgnoreCase));
+                    result = result.Where(a => string.Equals(TargetResourceId, ExtractTargetResourceId(a), StringComparison.OrdinalIgnoreCase));
                 }
 
-                var records = result.Select(e => this.DetailedOutput.IsPresent ? new PSAlertRule(e) : new PSAlertRuleNoDetails(e));
-                WriteObject(sendToPipeline: records.ToList(), enumerateCollection: true);
+                var records = result.Select(e => DetailedOutput.IsPresent ? new PSAlertRule(e) : new PSAlertRuleNoDetails(e));
+                WriteObject(records.ToList(), true);
             }
             else
             {
                 // Retrieve a single AlertRule determined by the ResourceGroup and the rule name
-                AlertRuleResource result = this.MonitorManagementClient.AlertRules.GetAsync(resourceGroupName: this.ResourceGroupName, ruleName: this.Name).Result;
+                AlertRuleResource result = MonitorManagementClient.AlertRules.GetAsync(ResourceGroupName, Name).Result;
 
-                var finalResult = new List<PSAlertRule> { this.DetailedOutput.IsPresent ? new PSAlertRule(result) : new PSAlertRuleNoDetails(result) };
-                WriteObject(sendToPipeline: finalResult, enumerateCollection: true);
+                var finalResult = new List<PSAlertRule> { DetailedOutput.IsPresent ? new PSAlertRule(result) : new PSAlertRuleNoDetails(result) };
+                WriteObject(finalResult, true);
             }
         }
     }

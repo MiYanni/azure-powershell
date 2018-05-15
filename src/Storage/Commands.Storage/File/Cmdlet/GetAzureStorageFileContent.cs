@@ -19,11 +19,11 @@ using System.Management.Automation;
 
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage.DataMovement;
-    using LocalConstants = Microsoft.WindowsAzure.Commands.Storage.File.Constants;
-    using LocalDirectory = System.IO.Directory;
-    using LocalPath = System.IO.Path;
+    using Common;
+    using WindowsAzure.Storage.DataMovement;
+    using LocalConstants = Constants;
+    using LocalDirectory = Directory;
+    using LocalPath = Path;
 
     [Cmdlet(VerbsCommon.Get, LocalConstants.FileContentCmdletName, SupportsShouldProcess = true, DefaultParameterSetName = LocalConstants.ShareNameParameterSetName)]
     public class GetAzureStorageFileContent : StorageFileDataManagementCmdletBase
@@ -113,34 +113,34 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         public override void ExecuteCmdlet()
         {
             CloudFile fileToBeDownloaded;
-            string[] path = NamingUtil.ValidatePath(this.Path, true);
-            switch (this.ParameterSetName)
+            string[] path = NamingUtil.ValidatePath(Path, true);
+            switch (ParameterSetName)
             {
                 case LocalConstants.FileParameterSetName:
-                    fileToBeDownloaded = this.File;
+                    fileToBeDownloaded = File;
                     break;
 
                 case LocalConstants.ShareNameParameterSetName:
-                    var share = this.BuildFileShareObjectFromName(this.ShareName);
+                    var share = BuildFileShareObjectFromName(ShareName);
                     fileToBeDownloaded = share.GetRootDirectoryReference().GetFileReferenceByPath(path);
                     break;
 
                 case LocalConstants.ShareParameterSetName:
-                    fileToBeDownloaded = this.Share.GetRootDirectoryReference().GetFileReferenceByPath(path);
+                    fileToBeDownloaded = Share.GetRootDirectoryReference().GetFileReferenceByPath(path);
                     break;
 
                 case LocalConstants.DirectoryParameterSetName:
-                    fileToBeDownloaded = this.Directory.GetFileReferenceByPath(path);
+                    fileToBeDownloaded = Directory.GetFileReferenceByPath(path);
                     break;
 
                 default:
-                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", this.ParameterSetName));
+                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", ParameterSetName));
             }
 
-            string resolvedDestination = this.GetUnresolvedProviderPathFromPSPath(
-                string.IsNullOrWhiteSpace(this.Destination) ? "." : this.Destination);
+            string resolvedDestination = GetUnresolvedProviderPathFromPSPath(
+                string.IsNullOrWhiteSpace(Destination) ? "." : Destination);
 
-            FileMode mode = this.Force ? FileMode.Create : FileMode.CreateNew;
+            FileMode mode = Force ? FileMode.Create : FileMode.CreateNew;
             string targetFile;
             if (LocalDirectory.Exists(resolvedDestination))
             {
@@ -159,36 +159,36 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
             if (ShouldProcess(targetFile, "Download"))
             {
-                this.RunTask(async taskId =>
+                RunTask(async taskId =>
                 {
                     await
-                        fileToBeDownloaded.FetchAttributesAsync(null, this.RequestOptions, OperationContext,
+                        fileToBeDownloaded.FetchAttributesAsync(null, RequestOptions, OperationContext,
                             CmdletCancellationToken).ConfigureAwait(false);
 
                     var progressRecord = new ProgressRecord(
-                        this.OutputStream.GetProgressId(taskId),
+                        OutputStream.GetProgressId(taskId),
                         string.Format(CultureInfo.CurrentCulture, Resources.ReceiveAzureFileActivity,
                             fileToBeDownloaded.GetFullPath(), targetFile),
                         Resources.PrepareDownloadingFile);
 
                     await DataMovementTransferHelper.DoTransfer(() =>
                     {
-                        return this.TransferManager.DownloadAsync(
+                        return TransferManager.DownloadAsync(
                             fileToBeDownloaded,
                             targetFile,
                             new DownloadOptions
                             {
-                                DisableContentMD5Validation = !this.CheckMd5
+                                DisableContentMD5Validation = !CheckMd5
                             },
-                            this.GetTransferContext(progressRecord, fileToBeDownloaded.Properties.Length),
+                            GetTransferContext(progressRecord, fileToBeDownloaded.Properties.Length),
                             CmdletCancellationToken);
                     },
                         progressRecord,
-                        this.OutputStream).ConfigureAwait(false);
+                        OutputStream).ConfigureAwait(false);
 
-                    if (this.PassThru)
+                    if (PassThru)
                     {
-                        this.OutputStream.WriteObject(taskId, fileToBeDownloaded);
+                        OutputStream.WriteObject(taskId, fileToBeDownloaded);
                     }
                 });
             }

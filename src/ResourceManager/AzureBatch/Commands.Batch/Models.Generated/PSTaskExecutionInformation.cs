@@ -26,23 +26,23 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskExecutionInformation
     {
         
-        internal Microsoft.Azure.Batch.TaskExecutionInformation omObject;
+        internal TaskExecutionInformation omObject;
         
         private PSTaskContainerExecutionInformation containerInformation;
         
         private PSTaskFailureInformation failureInformation;
         
-        internal PSTaskExecutionInformation(Microsoft.Azure.Batch.TaskExecutionInformation omObject)
+        internal PSTaskExecutionInformation(TaskExecutionInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -51,28 +51,28 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.containerInformation == null) 
-                            && (this.omObject.ContainerInformation != null)))
+                if (containerInformation == null 
+                    && omObject.ContainerInformation != null)
                 {
-                    this.containerInformation = new PSTaskContainerExecutionInformation(this.omObject.ContainerInformation);
+                    containerInformation = new PSTaskContainerExecutionInformation(omObject.ContainerInformation);
                 }
-                return this.containerInformation;
+                return containerInformation;
             }
         }
         
-        public System.DateTime? EndTime
+        public DateTime? EndTime
         {
             get
             {
-                return this.omObject.EndTime;
+                return omObject.EndTime;
             }
         }
         
-        public System.Int32? ExitCode
+        public Int32? ExitCode
         {
             get
             {
-                return this.omObject.ExitCode;
+                return omObject.ExitCode;
             }
         }
         
@@ -80,28 +80,28 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.failureInformation == null) 
-                            && (this.omObject.FailureInformation != null)))
+                if (failureInformation == null 
+                    && omObject.FailureInformation != null)
                 {
-                    this.failureInformation = new PSTaskFailureInformation(this.omObject.FailureInformation);
+                    failureInformation = new PSTaskFailureInformation(omObject.FailureInformation);
                 }
-                return this.failureInformation;
+                return failureInformation;
             }
         }
         
-        public System.DateTime? LastRequeueTime
+        public DateTime? LastRequeueTime
         {
             get
             {
-                return this.omObject.LastRequeueTime;
+                return omObject.LastRequeueTime;
             }
         }
         
-        public System.DateTime? LastRetryTime
+        public DateTime? LastRetryTime
         {
             get
             {
-                return this.omObject.LastRetryTime;
+                return omObject.LastRetryTime;
             }
         }
         
@@ -109,15 +109,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.RequeueCount;
+                return omObject.RequeueCount;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.TaskExecutionResult? Result
+        public Azure.Batch.Common.TaskExecutionResult? Result
         {
             get
             {
-                return this.omObject.Result;
+                return omObject.Result;
             }
         }
         
@@ -125,15 +125,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.RetryCount;
+                return omObject.RetryCount;
             }
         }
         
-        public System.DateTime? StartTime
+        public DateTime? StartTime
         {
             get
             {
-                return this.omObject.StartTime;
+                return omObject.StartTime;
             }
         }
     }

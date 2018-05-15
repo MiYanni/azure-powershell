@@ -120,22 +120,22 @@ namespace Microsoft.Azure.Commands.Network
 
         protected void SetDestinationApplicationSecurityGroupInRule(PSSecurityRule rule)
         {
-            if ((this.DestinationApplicationSecurityGroup != null) || (this.DestinationApplicationSecurityGroupId != null))
+            if (DestinationApplicationSecurityGroup != null || DestinationApplicationSecurityGroupId != null)
             {
                 rule.DestinationApplicationSecurityGroups = new List<PSApplicationSecurityGroup>();
             }
 
-            if (this.DestinationApplicationSecurityGroup != null)
+            if (DestinationApplicationSecurityGroup != null)
             {
-                foreach (var psApplicationSecurityGroup in this.DestinationApplicationSecurityGroup)
+                foreach (var psApplicationSecurityGroup in DestinationApplicationSecurityGroup)
                 {
                     rule.DestinationApplicationSecurityGroups.Add(psApplicationSecurityGroup);
                 }
             }
 
-            if (this.DestinationApplicationSecurityGroupId != null)
+            if (DestinationApplicationSecurityGroupId != null)
             {
-                foreach (var psApplicationSecurityGroupId in this.DestinationApplicationSecurityGroupId)
+                foreach (var psApplicationSecurityGroupId in DestinationApplicationSecurityGroupId)
                 {
                     rule.DestinationApplicationSecurityGroups.Add(new PSApplicationSecurityGroup { Id = psApplicationSecurityGroupId });
                 }
@@ -144,22 +144,22 @@ namespace Microsoft.Azure.Commands.Network
 
         protected void SetSourceApplicationSecurityGroupInRule(PSSecurityRule rule)
         {
-            if ((this.SourceApplicationSecurityGroup != null) || (this.SourceApplicationSecurityGroupId != null))
+            if (SourceApplicationSecurityGroup != null || SourceApplicationSecurityGroupId != null)
             {
                 rule.SourceApplicationSecurityGroups = new List<PSApplicationSecurityGroup>();
             }
 
-            if (this.SourceApplicationSecurityGroup != null)
+            if (SourceApplicationSecurityGroup != null)
             {
-                foreach (var psApplicationSecurityGroup in this.SourceApplicationSecurityGroup)
+                foreach (var psApplicationSecurityGroup in SourceApplicationSecurityGroup)
                 {
                     rule.SourceApplicationSecurityGroups.Add(psApplicationSecurityGroup);
                 }
             }
 
-            if (this.SourceApplicationSecurityGroupId != null)
+            if (SourceApplicationSecurityGroupId != null)
             {
-                foreach (var psApplicationSecurityGroupId in this.SourceApplicationSecurityGroupId)
+                foreach (var psApplicationSecurityGroupId in SourceApplicationSecurityGroupId)
                 {
                     rule.SourceApplicationSecurityGroups.Add(new PSApplicationSecurityGroup { Id = psApplicationSecurityGroupId });
                 }

@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.NotificationHubs
 
         public NamespaceAttributes CreateNamespace(string resourceGroupName, string namespaceName, string location, Dictionary<string, string> tags, string skuTier)
         {
-            var parameter = new NamespaceCreateOrUpdateParameters()
+            var parameter = new NamespaceCreateOrUpdateParameters
             {
                 Location = location,
                 Sku = new Sku { Name = skuTier }
@@ -99,12 +99,12 @@ namespace Microsoft.Azure.Commands.NotificationHubs
 
         public NamespaceAttributes UpdateNamespace(string resourceGroupName, string namespaceName, string location, NamespaceState state, bool critical, Dictionary<string, string> tags, string skuTier)
         {
-            var parameter = new NamespaceCreateOrUpdateParameters()
+            var parameter = new NamespaceCreateOrUpdateParameters
             {
                 Location = location,
                 NamespaceType = NamespaceType.NotificationHub,
-                Status = ((state == NamespaceState.Disabled) ? state : NamespaceState.Active).ToString(),
-                Enabled = (state == NamespaceState.Disabled) ? false : true,
+                Status = (state == NamespaceState.Disabled ? state : NamespaceState.Active).ToString(),
+                Enabled = state == NamespaceState.Disabled ? false : true,
                 Sku = new Sku { Name = skuTier}
             };
 
@@ -145,10 +145,10 @@ namespace Microsoft.Azure.Commands.NotificationHubs
         public SharedAccessAuthorizationRuleAttributes CreateOrUpdateNamespaceAuthorizationRules(string resourceGroupName, string location, string namespaceName, string authRuleName,
                                 List<AccessRights?> rights)
         {
-            var parameter = new SharedAccessAuthorizationRuleCreateOrUpdateParameters()
+            var parameter = new SharedAccessAuthorizationRuleCreateOrUpdateParameters
             {
                 Location = location,
-                Properties = new SharedAccessAuthorizationRuleProperties()
+                Properties = new SharedAccessAuthorizationRuleProperties
                 {
                     Rights = new List<AccessRights?>(rights)
                 }
@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Commands.NotificationHubs
         public ResourceListKeys RegenerateNamespacKeys(string resourceGroupName, string namespaceName, string authRuleName, string policyKeyName)
         {
             ResourceListKeys listKeys = Client.Namespaces.RegenerateKeys(resourceGroupName, namespaceName, authRuleName,
-                new PolicykeyResource()
+                new PolicykeyResource
                 {
                     PolicyKey = policyKeyName
                 });
@@ -205,7 +205,7 @@ namespace Microsoft.Azure.Commands.NotificationHubs
 
         public NotificationHubAttributes CreateNotificationHub(string resourceGroupName, string namespaceName, NotificationHubAttributes nhAttributes)
         {
-            var parameter = new NotificationHubCreateOrUpdateParameters()
+            var parameter = new NotificationHubCreateOrUpdateParameters
             {
                 Location = nhAttributes.Location,
                 AdmCredential = nhAttributes.AdmCredential,
@@ -228,7 +228,7 @@ namespace Microsoft.Azure.Commands.NotificationHubs
 
         public NotificationHubAttributes UpdateNotificationHub(string resourceGroupName, string namespaceName, NotificationHubAttributes nhAttributes)
         {
-            var parameter = new NotificationHubCreateOrUpdateParameters()
+            var parameter = new NotificationHubCreateOrUpdateParameters
             {
                 Location = nhAttributes.Location,
                 AdmCredential = nhAttributes.AdmCredential,
@@ -275,10 +275,10 @@ namespace Microsoft.Azure.Commands.NotificationHubs
                                 string notificationHubName, string authRuleName,
                                 List<AccessRights?> rights)
         {
-            var parameter = new SharedAccessAuthorizationRuleCreateOrUpdateParameters()
+            var parameter = new SharedAccessAuthorizationRuleCreateOrUpdateParameters
             {
                 Location = location,
-                Properties = new SharedAccessAuthorizationRuleProperties()
+                Properties = new SharedAccessAuthorizationRuleProperties
                 {
                     Rights = new List<AccessRights?>(rights),
                 }
@@ -304,7 +304,7 @@ namespace Microsoft.Azure.Commands.NotificationHubs
         public ResourceListKeys RegenerateNotificationHubKeys(string resourceGroupName, string namespaceName, string notificationHubName, string authRuleName, string policyKeyName)
         {
             ResourceListKeys listKeys = Client.NotificationHubs.RegenerateKeys(resourceGroupName, namespaceName, notificationHubName, authRuleName,
-                new PolicykeyResource()
+                new PolicykeyResource
                 {
                     PolicyKey = policyKeyName
                 });

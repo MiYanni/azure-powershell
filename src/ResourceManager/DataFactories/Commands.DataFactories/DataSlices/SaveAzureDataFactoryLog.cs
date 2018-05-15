@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.DataFactories
 
                 try
                 {
-                    DataFactoryClient.DownloadFileToBlob(new BlobDownloadParameters()
+                    DataFactoryClient.DownloadFileToBlob(new BlobDownloadParameters
                     {
                         Directory = directory,
                         SasUri = runLogUri,

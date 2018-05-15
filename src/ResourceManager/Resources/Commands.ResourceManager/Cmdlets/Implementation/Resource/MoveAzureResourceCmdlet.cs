@@ -15,9 +15,9 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ResourceGroups;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
+    using Components;
+    using Entities.ResourceGroups;
+    using Extensions;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Concurrent;
@@ -72,9 +72,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         protected override void OnProcessRecord()
         {
-            foreach (var resourceId in this.ResourceId.CoalesceEnumerable())
+            foreach (var resourceId in ResourceId.CoalesceEnumerable())
             {
-                this.resourceIds.Add(resourceId);
+                resourceIds.Add(resourceId);
             }
 
             base.OnProcessRecord();
@@ -85,8 +85,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         protected override void OnEndProcessing()
         {
-            this.ResourceId = this.resourceIds.DistinctArray();
-            this.RunCmdlet();
+            ResourceId = resourceIds.DistinctArray();
+            RunCmdlet();
             base.OnEndProcessing();
         }
 
@@ -95,11 +95,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private void RunCmdlet()
         {
-            var resourceIdsToUse = this.resourceIds
-                .Concat(this.ResourceId)
+            var resourceIdsToUse = resourceIds
+                .Concat(ResourceId)
                 .DistinctArray(StringComparer.InvariantCultureIgnoreCase);
 
-            this.DestinationSubscriptionId = this.DestinationSubscriptionId ?? DefaultContext.Subscription.GetId();
+            DestinationSubscriptionId = DestinationSubscriptionId ?? DefaultContext.Subscription.GetId();
 
             var sourceResourceGroups = resourceIdsToUse
                 .Select(resourceId => ResourceIdUtility.GetResourceGroupId(resourceId))
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             {
                 throw new InvalidOperationException("At least one valid resource Id must be provided.");
             }
-            else if (count > 1)
+            if (count > 1)
             {
                 throw new InvalidOperationException(
                     string.Format("The resources being moved must all reside in the same resource group. The resources: {0}", resourceIdsToUse.ConcatStrings(", ")));
@@ -120,13 +120,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             var sourceResourceGroup = sourceResourceGroups.Single();
 
             var destinationResourceGroup = ResourceIdUtility.GetResourceId(
-                subscriptionId: this.DestinationSubscriptionId,
-                resourceGroupName: this.DestinationResourceGroupName,
+                DestinationSubscriptionId,
+                DestinationResourceGroupName,
                 resourceName: null,
                 resourceType: null);
 
-            this.ConfirmAction(
-                this.Force,
+            ConfirmAction(
+                Force,
                 string.Format(
                     "Are you sure you want to move these resources to the resource group '{0}' the resources: {1}",
                     destinationResourceGroup,
@@ -135,10 +135,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                 destinationResourceGroup,
                 () =>
                 {
-                    var apiVersion = this
-                        .DetermineApiVersion(
-                            providerNamespace: Constants.MicrosoftResourceNamesapce,
-                            resourceType: Constants.ResourceGroups)
+                    var apiVersion = DetermineApiVersion(
+                            Constants.MicrosoftResourceNamesapce,
+                            Constants.ResourceGroups)
                         .Result;
 
                     var parameters = new ResourceBatchMoveParameters
@@ -147,30 +146,29 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                         TargetResourceGroup = destinationResourceGroup,
                     };
 
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .InvokeActionOnResource<JObject>(
-                            resourceId: sourceResourceGroup,
-                            action: Constants.MoveResources,
-                            apiVersion: apiVersion,
+                            sourceResourceGroup,
+                            Constants.MoveResources,
+                            apiVersion,
                             parameters: parameters.ToJToken(),
-                            cancellationToken: this.CancellationToken.Value)
+                            cancellationToken: CancellationToken.Value)
                         .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                     .GetResourceManagementRequestUri(
-                        resourceId: destinationResourceGroup,
-                        apiVersion: apiVersion,
-                        action: Constants.MoveResources);
+                        destinationResourceGroup,
+                        apiVersion,
+                        Constants.MoveResources);
 
                     var activity = string.Format("POST {0}", managementUri.PathAndQuery);
 
-                    var result = this
-                        .GetLongRunningOperationTracker(
-                            activityName: activity,
-                            isResourceCreateOrUpdate: false)
-                        .WaitOnOperation(operationResult: operationResult);
+                    var result = GetLongRunningOperationTracker(
+                            activity,
+                            false)
+                        .WaitOnOperation(operationResult);
 
-                    this.TryConvertAndWriteObject(result);
+                    TryConvertAndWriteObject(result);
                 });
         }
     }

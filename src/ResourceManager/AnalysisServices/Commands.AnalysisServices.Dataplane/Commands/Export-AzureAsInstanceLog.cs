@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
     [OutputType(typeof(void))]
     public class ExportAzureAnalysisServerLog : AzurePSCmdlet
     {
-        private string serverName;
+        private string _serverName;
 
         [Parameter(Mandatory = true, HelpMessage = "Name of the Azure Analysis Services which log will be fetched")]
         [ValidateNotNullOrEmpty]
@@ -55,8 +55,8 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 
         public ExportAzureAnalysisServerLog()
         {
-            this.AsAzureHttpClient = new AsAzureHttpClient(() => new HttpClient());
-            this.TokenCacheItemProvider = new TokenCacheItemProvider();
+            AsAzureHttpClient = new AsAzureHttpClient(() => new HttpClient());
+            TokenCacheItemProvider = new TokenCacheItemProvider();
         }
 
         public ExportAzureAnalysisServerLog(IAsAzureHttpClient AsAzureHttpClient, ITokenCacheItemProvider TokenCacheItemProvider)
@@ -91,14 +91,14 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                 throw new PSInvalidOperationException(string.Format(Resources.NotLoggedInMessage, ""));
             }
 
-            serverName = Instance;
+            _serverName = Instance;
             Uri uriResult;
 
             // if the user specifies the FQN of the server, then extract the servername out of that.
             // and set the current context
             if (Uri.TryCreate(Instance, UriKind.Absolute, out uriResult) && uriResult.Scheme == "asazure")
             {
-                serverName = uriResult.PathAndQuery.Trim('/');
+                _serverName = uriResult.PathAndQuery.Trim('/');
                 if (string.Compare(AsAzureClientSession.Instance.Profile.Context.Environment.Name, uriResult.DnsSafeHost, StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
                     AsAzureClientSession.Instance.SetCurrentContext(
@@ -112,21 +112,21 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                 if (currentContext != null
                     && AsAzureClientSession.AsAzureRolloutEnvironmentMapping.ContainsKey(currentContext.Environment.Name))
                 {
-                    throw new PSInvalidOperationException(string.Format(Resources.InvalidServerName, serverName));
+                    throw new PSInvalidOperationException(string.Format(Resources.InvalidServerName, _serverName));
                 }
             }
 
-            if (this.AsAzureHttpClient == null)
+            if (AsAzureHttpClient == null)
             {
-                this.AsAzureHttpClient = new AsAzureHttpClient(() =>
+                AsAzureHttpClient = new AsAzureHttpClient(() =>
                 {
                     return new HttpClient();
                 });
             }
 
-            if (this.TokenCacheItemProvider == null)
+            if (TokenCacheItemProvider == null)
             {
-                this.TokenCacheItemProvider = new TokenCacheItemProvider();
+                TokenCacheItemProvider = new TokenCacheItemProvider();
             }
         }
 
@@ -145,32 +145,32 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 #else
                 AsAzureClientSession.Instance.Login(context, null);
 #endif
-                string accessToken = this.TokenCacheItemProvider.GetTokenFromTokenCache(
+                string accessToken = TokenCacheItemProvider.GetTokenFromTokenCache(
                     AsAzureClientSession.TokenCache, context.Account.UniqueId);
 
                 Uri logfileBaseUri =
                     new Uri(string.Format("{0}{1}{2}", Uri.UriSchemeHttps, Uri.SchemeDelimiter, context.Environment.Name));
 
                 UriBuilder resolvedUriBuilder = new UriBuilder(logfileBaseUri);
-                resolvedUriBuilder.Host = ClusterResolve(logfileBaseUri, accessToken, serverName);
+                resolvedUriBuilder.Host = ClusterResolve(logfileBaseUri, accessToken, _serverName);
 
                 var logfileEndpoint = string.Format(
                         (string) context.Environment.Endpoints[AsAzureEnvironment.AsRolloutEndpoints.LogfileEndpointFormat],
-                        serverName);
+                        _serverName);
 
-                this.AsAzureHttpClient.resetHttpClient();
+                AsAzureHttpClient.resetHttpClient();
                 using (HttpResponseMessage message = AsAzureHttpClient.CallGetAsync(
                     resolvedUriBuilder.Uri,
                     logfileEndpoint,
                     accessToken).ConfigureAwait(false).GetAwaiter().GetResult())
                 {
                     message.EnsureSuccessStatusCode();
-                    string actionWarning = string.Format(CultureInfo.CurrentCulture, Resources.ExportingLogOverwriteWarning, this.OutputPath);
-                    if (AzureSession.Instance.DataStore.FileExists(this.OutputPath) && !this.Force.IsPresent && !ShouldContinue(actionWarning, Resources.Confirm))
+                    string actionWarning = string.Format(CultureInfo.CurrentCulture, Resources.ExportingLogOverwriteWarning, OutputPath);
+                    if (AzureSession.Instance.DataStore.FileExists(OutputPath) && !Force.IsPresent && !ShouldContinue(actionWarning, Resources.Confirm))
                     {
                         return;
                     }
-                    AzureSession.Instance.DataStore.WriteFile(this.OutputPath, message.Content.ReadAsStringAsync().Result);
+                    AzureSession.Instance.DataStore.WriteFile(OutputPath, message.Content.ReadAsStringAsync().Result);
                 }
             }
         }

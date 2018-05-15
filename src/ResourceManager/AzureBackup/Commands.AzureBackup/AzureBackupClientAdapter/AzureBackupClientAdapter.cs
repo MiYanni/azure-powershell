@@ -61,12 +61,12 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         {
             get
             {
-                if (this.azureBackupVaultClient == null)
+                if (azureBackupVaultClient == null)
                 {
-                    this.azureBackupVaultClient = AzureSession.Instance.ClientFactory.CreateCustomClient<BackupVaultServicesManagementClient>(cloudCreds, baseURI);
+                    azureBackupVaultClient = AzureSession.Instance.ClientFactory.CreateCustomClient<BackupVaultServicesManagementClient>(cloudCreds, baseURI);
                 }
 
-                return this.azureBackupVaultClient;
+                return azureBackupVaultClient;
             }
         }
 
@@ -77,12 +77,12 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         {
             get
             {
-                if (this.azureBackupClient == null)
+                if (azureBackupClient == null)
                 {
-                    this.azureBackupClient = AzureSession.Instance.ClientFactory.CreateCustomClient<BackupServicesManagementClient>(cloudCreds, baseURI);
+                    azureBackupClient = AzureSession.Instance.ClientFactory.CreateCustomClient<BackupServicesManagementClient>(cloudCreds, baseURI);
                 }
 
-                return this.azureBackupClient;
+                return azureBackupClient;
             }
         }
 
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
 
         public void RefreshClientRequestId()
         {
-            clientRequestId = Guid.NewGuid().ToString() + "-" + DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ssZ") + "-PS";
+            clientRequestId = Guid.NewGuid() + "-" + DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ssZ") + "-PS";
         }
 
         public string GetClientRequestId()
@@ -109,10 +109,10 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
 
         internal CustomRequestHeaders GetCustomRequestHeaders()
         {
-            var hdrs = new CustomRequestHeaders()
+            var hdrs = new CustomRequestHeaders
             {
                 // ClientRequestId is a unique ID for every request to backend service.
-                ClientRequestId = this.clientRequestId,
+                ClientRequestId = clientRequestId,
             };
 
             return hdrs;

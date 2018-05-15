@@ -70,44 +70,44 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                    target: string.Format("Patch activity logs alert: {0} from resource group: {1}", this.Name, this.ResourceGroupName),
-                    action: "Patch activity logs alert"))
+                    string.Format("Patch activity logs alert: {0} from resource group: {1}", Name, ResourceGroupName),
+                    "Patch activity logs alert"))
             {
-                string resourceGroupName = this.ResourceGroupName;
-                string activityLogAlertName = this.Name;
+                string resourceGroupName = ResourceGroupName;
+                string activityLogAlertName = Name;
                 IDictionary<string, string> tags = null;
 
                 // Using value from the pipe
-                if (this.MyInvocation.BoundParameters.ContainsKey("InputObject") || this.InputObject != null)
+                if (MyInvocation.BoundParameters.ContainsKey("InputObject") || InputObject != null)
                 {
                     ActivityLogAlertUtilities.ProcessPipeObject(
-                        inputObject: this.InputObject,
-                        resourceGroupName: out resourceGroupName,
-                        activityLogAlertName: out activityLogAlertName);
+                        InputObject,
+                        out resourceGroupName,
+                        out activityLogAlertName);
 
-                    tags = this.InputObject.Tags;
+                    tags = InputObject.Tags;
                 }
-                else if (this.MyInvocation.BoundParameters.ContainsKey("ResourceId") || !string.IsNullOrWhiteSpace(this.ResourceId))
+                else if (MyInvocation.BoundParameters.ContainsKey("ResourceId") || !string.IsNullOrWhiteSpace(ResourceId))
                 {
                     ActivityLogAlertUtilities.ProcessPipeObject(
-                        resourceId: this.ResourceId,
-                        resourceGroupName: out resourceGroupName,
-                        activityLogAlertName: out activityLogAlertName);
+                        ResourceId,
+                        out resourceGroupName,
+                        out activityLogAlertName);
                 }
 
                 WriteObject(
-                    this.MonitorManagementClient.ActivityLogAlerts.Update(
-                        resourceGroupName: resourceGroupName,
-                        activityLogAlertName: activityLogAlertName,
-                        activityLogAlertPatch: this.CreateActivityLogAlertPatchBody(enableAlert: false, tags: tags)));
+                    MonitorManagementClient.ActivityLogAlerts.Update(
+                        resourceGroupName,
+                        activityLogAlertName,
+                        CreateActivityLogAlertPatchBody(false, tags)));
             }
         }
 
         private ActivityLogAlertPatchBody CreateActivityLogAlertPatchBody(bool enableAlert, IDictionary<string, string> tags)
         {
             return new ActivityLogAlertPatchBody(
-                tags: tags,
-                enabled: enableAlert);
+                tags,
+                enableAlert);
         }
     }
 }

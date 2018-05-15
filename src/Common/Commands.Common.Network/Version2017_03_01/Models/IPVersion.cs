@@ -4,11 +4,11 @@
 
 namespace Microsoft.Azure.Management.Internal.Network.Version2017_03_01.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Management;
-    using Microsoft.Azure.Management.Internal;
-    using Microsoft.Azure.Management.Internal.Network;
-    using Microsoft.Azure.Management.Internal.Network.Version2017_03_01;
+    using Azure;
+    using Management;
+    using Internal;
+    using Network;
+    using Version2017_03_01;
 
     /// <summary>
     /// Defines values for IPVersion.

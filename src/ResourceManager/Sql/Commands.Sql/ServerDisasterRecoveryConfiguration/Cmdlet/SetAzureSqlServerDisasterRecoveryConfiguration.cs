@@ -69,10 +69,10 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlServerDisasterRecoveryConfigurationModel> GetEntity()
         {
-            return new List<AzureSqlServerDisasterRecoveryConfigurationModel>()
+            return new List<AzureSqlServerDisasterRecoveryConfigurationModel>
             {
-                ModelAdapter.GetServerDisasterRecoveryConfiguration(this.ResourceGroupName, this.ServerName,
-                    this.VirtualEndpointName)
+                ModelAdapter.GetServerDisasterRecoveryConfiguration(ResourceGroupName, ServerName,
+                    VirtualEndpointName)
             };
         }
 
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
             AzureSqlServerDisasterRecoveryConfigurationModel entry = model.First();
             if (entry != null)
             {
-                newEntity.Add(new AzureSqlServerDisasterRecoveryConfigurationModel()
+                newEntity.Add(new AzureSqlServerDisasterRecoveryConfigurationModel
                 {
                     ResourceGroupName = entry.ResourceGroupName,
                     ServerName = entry.ServerName,
@@ -116,8 +116,8 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
             switch (ParameterSetName)
             {
                 case ByFailoverParams:
-                    ModelAdapter.FailoverServerDisasterRecoveryConfiguration(this.ResourceGroupName,
-                        this.ServerName, entity.First(), AllowDataLoss.IsPresent);
+                    ModelAdapter.FailoverServerDisasterRecoveryConfiguration(ResourceGroupName,
+                        ServerName, entity.First(), AllowDataLoss.IsPresent);
                     break;
                 default:
                     // Warning user that no options were provided so no action can be taken.

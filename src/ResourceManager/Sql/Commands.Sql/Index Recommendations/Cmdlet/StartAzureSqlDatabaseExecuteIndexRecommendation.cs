@@ -37,10 +37,7 @@ namespace Microsoft.Azure.Commands.Sql.Cmdlet
                 recommendation.State = IndexState.Pending;
                 return recommendation;
             }
-            else
-            {
-                throw new Exception("Index operation can only start if recommendation is currently in 'Active' or 'Error' state (retry operation index).");
-            }
+            throw new Exception("Index operation can only start if recommendation is currently in 'Active' or 'Error' state (retry operation index).");
         }
     }
 }

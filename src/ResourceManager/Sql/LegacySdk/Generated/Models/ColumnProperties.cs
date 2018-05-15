@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ColumnType
         {
-            get { return this._columnType; }
-            set { this._columnType = value; }
+            get { return _columnType; }
+            set { _columnType = value; }
         }
         
         /// <summary>

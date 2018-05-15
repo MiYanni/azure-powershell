@@ -71,17 +71,17 @@ namespace Microsoft.Azure.Commands.Network
 
             var vDdosProtectionPlan = new PSDdosProtectionPlan
             {
-                Location = this.Location,
+                Location = Location,
             };
 
-            var vDdosProtectionPlanModel = NetworkResourceManagerProfile.Mapper.Map<MNM.DdosProtectionPlan>(vDdosProtectionPlan);
-            vDdosProtectionPlanModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            var vDdosProtectionPlanModel = NetworkResourceManagerProfile.Mapper.Map<DdosProtectionPlan>(vDdosProtectionPlan);
+            vDdosProtectionPlanModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
             var present = true;
             try
             {
-                this.NetworkClient.NetworkManagementClient.DdosProtectionPlans.Get(this.ResourceGroupName, this.Name);
+                NetworkClient.NetworkManagementClient.DdosProtectionPlans.Get(ResourceGroupName, Name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -101,10 +101,10 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
             () =>
             {
-                this.NetworkClient.NetworkManagementClient.DdosProtectionPlans.CreateOrUpdate(this.ResourceGroupName, this.Name, vDdosProtectionPlanModel);
-                var getDdosProtectionPlan = this.NetworkClient.NetworkManagementClient.DdosProtectionPlans.Get(this.ResourceGroupName, this.Name);
+                NetworkClient.NetworkManagementClient.DdosProtectionPlans.CreateOrUpdate(ResourceGroupName, Name, vDdosProtectionPlanModel);
+                var getDdosProtectionPlan = NetworkClient.NetworkManagementClient.DdosProtectionPlans.Get(ResourceGroupName, Name);
                 var psDdosProtectionPlan = NetworkResourceManagerProfile.Mapper.Map<PSDdosProtectionPlan>(getDdosProtectionPlan);
-                psDdosProtectionPlan.ResourceGroupName = this.ResourceGroupName;
+                psDdosProtectionPlan.ResourceGroupName = ResourceGroupName;
                 psDdosProtectionPlan.Tag = TagsConversionHelper.CreateTagHashtable(getDdosProtectionPlan.Tags);
                 WriteObject(psDdosProtectionPlan, true);
             },

@@ -28,11 +28,11 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
                 throw new ArgumentNullException("InvocationInfo");
             }
 
-            this.MyInvocation = myInvocation;
-            this.RuntimeDefinedParams = new RuntimeDefinedParameterDictionary();
+            MyInvocation = myInvocation;
+            RuntimeDefinedParams = new RuntimeDefinedParameterDictionary();
 
             //Custom Init to create your dynamic parameter list
-            this.CustomInit();
+            CustomInit();
         }
 
         public InvocationInfo MyInvocation { get; private set; }
@@ -41,14 +41,14 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public void SimpleParam(string paramName, Type type, string helpMessage, bool mandatory = false, params string[] argumentCompleterList)
         {
-            RuntimeDefinedParameter param = new RuntimeDefinedParameter(paramName, type, new Collection<Attribute>()
-                {
+            RuntimeDefinedParameter param = new RuntimeDefinedParameter(paramName, type, new Collection<Attribute>
+            {
                     new ParameterAttribute { Mandatory=mandatory, HelpMessage = helpMessage },
                     new ValidateNotNullOrEmptyAttribute(),
                     new PSArgumentCompleterAttribute(argumentCompleterList)
                 });
 
-            this.RuntimeDefinedParams.Add(param.Name, param);
+            RuntimeDefinedParams.Add(param.Name, param);
         }
 
         /// <summary>

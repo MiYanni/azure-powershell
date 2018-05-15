@@ -103,10 +103,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 return string.Empty;
             }
-            else
-            {
-                return resourceType.Substring(0, indexOfSlash);
-            }
+            return resourceType.Substring(0, indexOfSlash);
         }
 
         public static string GetTypeFromResourceType(string resourceType)
@@ -121,10 +118,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 return string.Empty;
             }
-            else
-            {
-                return resourceType.Substring(lastIndexOfSlash + 1);
-            }
+            return resourceType.Substring(lastIndexOfSlash + 1);
         }
 
         public override string ToString()

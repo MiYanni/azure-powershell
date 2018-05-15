@@ -66,16 +66,16 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
             ConfirmAction(
                 Properties.Resources.RemoveResourceMessage,
-                this.PacketCaptureName,
+                PacketCaptureName,
                 () =>
                 {
                     if (ParameterSetName.Contains("SetByResource"))
                     {
-                        this.PacketCaptures.Delete(this.NetworkWatcher.ResourceGroupName, this.NetworkWatcher.Name, this.PacketCaptureName);
+                        PacketCaptures.Delete(NetworkWatcher.ResourceGroupName, NetworkWatcher.Name, PacketCaptureName);
                     }
                     else
                     {
-                        this.PacketCaptures.Delete(this.ResourceGroupName, this.NetworkWatcherName, this.PacketCaptureName);
+                        PacketCaptures.Delete(ResourceGroupName, NetworkWatcherName, PacketCaptureName);
                     }
                     if (PassThru)
                     {

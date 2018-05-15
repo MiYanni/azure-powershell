@@ -18,11 +18,11 @@ namespace Microsoft.Azure.Commands.TrafficManager
     using System.Management.Automation;
     using System.Net;
 
-    using Microsoft.Azure.Commands.TrafficManager.Models;
-    using Microsoft.Azure.Commands.TrafficManager.Utilities;
-    using Microsoft.Rest.Azure;
+    using Models;
+    using Utilities;
+    using Rest.Azure;
 
-    using ProjectResources = Microsoft.Azure.Commands.TrafficManager.Properties.Resources;
+    using ProjectResources = Properties.Resources;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.New, "AzureRmTrafficManagerEndpoint"), OutputType(typeof(TrafficManagerEndpoint))]
@@ -87,30 +87,30 @@ namespace Microsoft.Azure.Commands.TrafficManager
             // Therefore, we need to check whether the Profile exists before we actually try to create it.
             try
             {
-                this.TrafficManagerClient.GetTrafficManagerEndpoint(this.ResourceGroupName, this.ProfileName, this.Type, this.Name);
+                TrafficManagerClient.GetTrafficManagerEndpoint(ResourceGroupName, ProfileName, Type, Name);
 
-                throw new PSArgumentException(string.Format(ProjectResources.Error_CreateExistingEndpoint, this.Name, this.ProfileName, this.ResourceGroupName));
+                throw new PSArgumentException(string.Format(ProjectResources.Error_CreateExistingEndpoint, Name, ProfileName, ResourceGroupName));
             }
             catch (CloudException exception)
             {
                 if (exception.Response.StatusCode.Equals(HttpStatusCode.NotFound))
                 {
-                    TrafficManagerEndpoint trafficManagerEndpoint = this.TrafficManagerClient.CreateTrafficManagerEndpoint(
-                        this.ResourceGroupName,
-                        this.ProfileName,
-                        this.Type,
-                        this.Name,
-                        this.TargetResourceId,
-                        this.Target,
-                        this.EndpointStatus,
-                        this.Weight,
-                        this.Priority,
-                        this.EndpointLocation,
-                        this.MinChildEndpoints,
-                        this.GeoMapping);
+                    TrafficManagerEndpoint trafficManagerEndpoint = TrafficManagerClient.CreateTrafficManagerEndpoint(
+                        ResourceGroupName,
+                        ProfileName,
+                        Type,
+                        Name,
+                        TargetResourceId,
+                        Target,
+                        EndpointStatus,
+                        Weight,
+                        Priority,
+                        EndpointLocation,
+                        MinChildEndpoints,
+                        GeoMapping);
 
-                    this.WriteVerbose(ProjectResources.Success);
-                    this.WriteObject(trafficManagerEndpoint);
+                    WriteVerbose(ProjectResources.Success);
+                    WriteObject(trafficManagerEndpoint);
                 }
                 else
                 {

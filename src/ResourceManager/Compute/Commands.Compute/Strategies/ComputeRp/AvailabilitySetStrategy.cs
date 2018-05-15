@@ -25,23 +25,23 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
     {
         public static ResourceStrategy<AvailabilitySet> Strategy { get; }
             = ComputeStrategy.Create(
-                provider: "availabilitySets",
-                getOperations: client => client.AvailabilitySets,
-                getAsync: (o, p) => o.GetAsync(
+                "availabilitySets",
+                client => client.AvailabilitySets,
+                (o, p) => o.GetAsync(
                     p.ResourceGroupName, p.Name, p.CancellationToken),
-                createOrUpdateAsync: (o, p) => o.CreateOrUpdateAsync(
+                (o, p) => o.CreateOrUpdateAsync(
                     p.ResourceGroupName, p.Name, p.Model, p.CancellationToken),
-                createTime: c => 1);
+                c => 1);
 
         public static ResourceConfig<AvailabilitySet> CreateAvailabilitySetConfig(
             this ResourceConfig<ResourceGroup> resourceGroup, string name)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: _ =>
+                resourceGroup,
+                name,
+                _ =>
                 {
                     throw new InvalidOperationException("Availability set doesn't exist.");
                 },
-                dependencies: Enumerable.Empty<IEntityConfig>());
+                Enumerable.Empty<IEntityConfig>());
     }
 }

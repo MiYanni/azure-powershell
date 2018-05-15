@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
                 if (tag.Value != null && !(tag.Value is string))
                     throw new ArgumentException("Tag has invalid value");
-                string value = (tag.Value == null) ? string.Empty : (string)tag.Value;
+                string value = tag.Value == null ? string.Empty : (string)tag.Value;
                 tagsDictionary[key] = value;
             }
 
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
                 if (tag.Value != null && !(tag.Value is string))
                     continue;
-                var value = (tag.Value == null) ? string.Empty : (string)tag.Value;
+                var value = tag.Value == null ? string.Empty : (string)tag.Value;
 
                 yield return new KeyValuePair<string, string>(key, value);
             }

@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Profile.Common
             if (source != null && source.Properties != null)
             {
                 var props = source.Properties.Match(name);
-                result = props != null && props.Any((p) => p.IsOfType<T>());
+                result = props != null && props.Any(p => p.IsOfType<T>());
             }
 
             return result;
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Commands.Profile.Common
                 var props = source.Properties.Match(name);
                 if (props != null)
                 {
-                    var prop = props.FirstOrDefault((p) => p.IsOfType<T>());
+                    var prop = props.FirstOrDefault(p => p.IsOfType<T>());
                     if (prop != null)
                     {
                         propertyValue = prop.GetValue<T>();
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Commands.Profile.Common
                 var props = source.Properties.Match(name);
                 if (props != null)
                 {
-                    var prop = props.FirstOrDefault((p) => p.IsOfType<T>());
+                    var prop = props.FirstOrDefault(p => p.IsOfType<T>());
                     if (prop != null)
                     {
                         propertyValue = prop.GetValue<T>();
@@ -274,7 +274,7 @@ namespace Microsoft.Azure.Commands.Profile.Common
             T result = default(T);
             if (info != null && string.Equals(info.TypeNameOfValue, typeof(T).FullName, StringComparison.OrdinalIgnoreCase))
             {
-                result = (T)(info.Value);
+                result = (T)info.Value;
             }
             else if (info != null && info.Value != null)
             {
@@ -283,11 +283,11 @@ namespace Microsoft.Azure.Commands.Profile.Common
                 {
                     if (typeof(T) == typeof(PSObject))
                     {
-                        result = (T)(info.Value);
+                        result = (T)info.Value;
                     }
                     else if (psValue.BaseObject != null && psValue.BaseObject.GetType() == typeof(T))
                     {
-                        result = (T)(psValue.BaseObject);
+                        result = (T)psValue.BaseObject;
                     }
                 }
             }

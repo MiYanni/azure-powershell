@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                                 out string resourceGroupName, 
                                 out string resourceName)
         {
-            var match = CmdletHelpers.MlResourceIdRegex.Match(resourceId);
+            var match = MlResourceIdRegex.Match(resourceId);
             if (match.Success)
             {
                 subscriptionId = match.Groups["subscriptionId"].Value;

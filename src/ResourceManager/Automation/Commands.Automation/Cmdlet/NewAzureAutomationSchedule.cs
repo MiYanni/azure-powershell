@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         /// </summary>
         public NewAzureAutomationSchedule()
         {
-            this.ExpiryTime = Constants.DefaultScheduleExpiryTime;
+            ExpiryTime = Constants.DefaultScheduleExpiryTime;
         }
 
         /// <summary>
@@ -144,39 +144,39 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             var schedule = new Schedule
             {
-                Name = this.Name,
-                StartTime = this.StartTime,
-                Description = this.Description,
-                ExpiryTime = this.ExpiryTime,
-                TimeZone = this.TimeZone,
+                Name = Name,
+                StartTime = StartTime,
+                Description = Description,
+                ExpiryTime = ExpiryTime,
+                TimeZone = TimeZone,
             };
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case AutomationCmdletParameterSets.ByOneTime:
                     schedule.Frequency = ScheduleFrequency.Onetime;
                     break;
                 case AutomationCmdletParameterSets.ByDaily:
                     schedule.Frequency = ScheduleFrequency.Day;
-                    schedule.Interval = this.DayInterval;
+                    schedule.Interval = DayInterval;
                     break;
                 case AutomationCmdletParameterSets.ByHourly:
                     schedule.Frequency = ScheduleFrequency.Hour;
-                    schedule.Interval = this.HourInterval;
+                    schedule.Interval = HourInterval;
                     break;
                 case AutomationCmdletParameterSets.ByWeekly:
-                    schedule = this.CreateWeeklyScheduleModel();
+                    schedule = CreateWeeklyScheduleModel();
                     break;
                 case AutomationCmdletParameterSets.ByMonthlyDayOfWeek:
-                    schedule = this.CreateMonthlyScheduleModel();
+                    schedule = CreateMonthlyScheduleModel();
                     break;
                 case AutomationCmdletParameterSets.ByMonthlyDaysOfMonth:
-                    schedule = this.CreateMonthlyScheduleModel();
+                    schedule = CreateMonthlyScheduleModel();
                     break;
             }
 
-            Schedule createdSchedule = this.AutomationClient.CreateSchedule(this.ResourceGroupName, this.AutomationAccountName, schedule);
-            this.WriteObject(createdSchedule);
+            Schedule createdSchedule = AutomationClient.CreateSchedule(ResourceGroupName, AutomationAccountName, schedule);
+            WriteObject(createdSchedule);
         }
 
         /// <summary>
@@ -190,32 +190,32 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         /// </exception>
         private Schedule CreateMonthlyScheduleModel()
         {
-            var dayOfWeek = this.DayOfWeek.HasValue ? this.DayOfWeek.ToString() : null;
-            if ((!string.IsNullOrWhiteSpace(dayOfWeek) && this.DayOfWeekOccurrence == 0) || (string.IsNullOrWhiteSpace(dayOfWeek) && this.DayOfWeekOccurrence != 0))
+            var dayOfWeek = DayOfWeek.HasValue ? DayOfWeek.ToString() : null;
+            if (!string.IsNullOrWhiteSpace(dayOfWeek) && DayOfWeekOccurrence == 0 || string.IsNullOrWhiteSpace(dayOfWeek) && DayOfWeekOccurrence != 0)
             {
                 throw new ArgumentException(Resources.MonthlyScheduleNeedsDayOfWeekAndOccurrence);
             }
 
             var newSchedule = new Schedule
             {
-                Name = this.Name,
-                StartTime = this.StartTime,
-                Description = this.Description,
-                ExpiryTime = this.ExpiryTime,
-                TimeZone = this.TimeZone,
+                Name = Name,
+                StartTime = StartTime,
+                Description = Description,
+                ExpiryTime = ExpiryTime,
+                TimeZone = TimeZone,
                 Frequency = ScheduleFrequency.Month,
-                Interval = this.MonthInterval,
-                MonthlyScheduleOptions = this.IsMonthlyScheduleNull() 
+                Interval = MonthInterval,
+                MonthlyScheduleOptions = IsMonthlyScheduleNull() 
                     ? null
-                    : new MonthlyScheduleOptions()
+                    : new MonthlyScheduleOptions
                     {
-                        DaysOfMonth = this.DaysOfMonth,
-                        DayOfWeek = this.DayOfWeek == null && this.DayOfWeekOccurrence == 0
+                        DaysOfMonth = DaysOfMonth,
+                        DayOfWeek = DayOfWeek == null && DayOfWeekOccurrence == 0
                             ? null
-                            : new DayOfWeek()
+                            : new DayOfWeek
                             {
                                 Day = dayOfWeek,
-                                Occurrence = this.DayOfWeekOccurrence == 0 ? null : this.DayOfWeekOccurrence.ToString()
+                                Occurrence = DayOfWeekOccurrence == 0 ? null : DayOfWeekOccurrence.ToString()
                             }
                     }
             };
@@ -231,7 +231,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         /// </returns>
         private bool IsMonthlyScheduleNull()
         {
-            return this.DaysOfMonth == null && this.DayOfWeek == null && this.DayOfWeekOccurrence == 0;
+            return DaysOfMonth == null && DayOfWeek == null && DayOfWeekOccurrence == 0;
         }
 
         /// <summary>
@@ -244,18 +244,18 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             var newSchedule = new Schedule
             {
-                Name = this.Name,
-                StartTime = this.StartTime,
-                Description = this.Description,
-                ExpiryTime = this.ExpiryTime,
-                TimeZone = this.TimeZone,
+                Name = Name,
+                StartTime = StartTime,
+                Description = Description,
+                ExpiryTime = ExpiryTime,
+                TimeZone = TimeZone,
                 Frequency = ScheduleFrequency.Week,
-                Interval = this.WeekInterval,
-                WeeklyScheduleOptions = this.DaysOfWeek == null
+                Interval = WeekInterval,
+                WeeklyScheduleOptions = DaysOfWeek == null
                     ? null
-                    : new WeeklyScheduleOptions()
+                    : new WeeklyScheduleOptions
                     {
-                       DaysOfWeek = this.DaysOfWeek.Select(day => day.ToString()).ToList()
+                       DaysOfWeek = DaysOfWeek.Select(day => day.ToString()).ToList()
                     }
             };
 

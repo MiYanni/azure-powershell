@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ReplicationLink ReplicationLink
         {
-            get { return this._replicationLink; }
-            set { this._replicationLink = value; }
+            get { return _replicationLink; }
+            set { _replicationLink = value; }
         }
         
         /// <summary>

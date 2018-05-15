@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("New", "AzureRmVmssConfig", SupportsShouldProcess = true, DefaultParameterSetName = "DefaultParameterSet")]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class NewAzureRmVmssConfigCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class NewAzureRmVmssConfigCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = false,
@@ -192,235 +192,235 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // Sku
-            Microsoft.Azure.Management.Compute.Models.Sku vSku = null;
+            Sku vSku = null;
 
             // Plan
-            Microsoft.Azure.Management.Compute.Models.Plan vPlan = null;
+            Plan vPlan = null;
 
             // UpgradePolicy
-            Microsoft.Azure.Management.Compute.Models.UpgradePolicy vUpgradePolicy = null;
+            UpgradePolicy vUpgradePolicy = null;
 
             // VirtualMachineProfile
-            Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile vVirtualMachineProfile = null;
+            VirtualMachineScaleSetVMProfile vVirtualMachineProfile = null;
 
             // Identity
-            Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetIdentity vIdentity = null;
+            VirtualMachineScaleSetIdentity vIdentity = null;
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SkuName"))
+            if (MyInvocation.BoundParameters.ContainsKey("SkuName"))
             {
                 if (vSku == null)
                 {
-                    vSku = new Microsoft.Azure.Management.Compute.Models.Sku();
+                    vSku = new Sku();
                 }
-                vSku.Name = this.SkuName;
+                vSku.Name = SkuName;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SkuTier"))
+            if (MyInvocation.BoundParameters.ContainsKey("SkuTier"))
             {
                 if (vSku == null)
                 {
-                    vSku = new Microsoft.Azure.Management.Compute.Models.Sku();
+                    vSku = new Sku();
                 }
-                vSku.Tier = this.SkuTier;
+                vSku.Tier = SkuTier;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SkuCapacity"))
+            if (MyInvocation.BoundParameters.ContainsKey("SkuCapacity"))
             {
                 if (vSku == null)
                 {
-                    vSku = new Microsoft.Azure.Management.Compute.Models.Sku();
+                    vSku = new Sku();
                 }
-                vSku.Capacity = this.SkuCapacity;
+                vSku.Capacity = SkuCapacity;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("PlanName"))
+            if (MyInvocation.BoundParameters.ContainsKey("PlanName"))
             {
                 if (vPlan == null)
                 {
-                    vPlan = new Microsoft.Azure.Management.Compute.Models.Plan();
+                    vPlan = new Plan();
                 }
-                vPlan.Name = this.PlanName;
+                vPlan.Name = PlanName;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("PlanPublisher"))
+            if (MyInvocation.BoundParameters.ContainsKey("PlanPublisher"))
             {
                 if (vPlan == null)
                 {
-                    vPlan = new Microsoft.Azure.Management.Compute.Models.Plan();
+                    vPlan = new Plan();
                 }
-                vPlan.Publisher = this.PlanPublisher;
+                vPlan.Publisher = PlanPublisher;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("PlanProduct"))
+            if (MyInvocation.BoundParameters.ContainsKey("PlanProduct"))
             {
                 if (vPlan == null)
                 {
-                    vPlan = new Microsoft.Azure.Management.Compute.Models.Plan();
+                    vPlan = new Plan();
                 }
-                vPlan.Product = this.PlanProduct;
+                vPlan.Product = PlanProduct;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("PlanPromotionCode"))
+            if (MyInvocation.BoundParameters.ContainsKey("PlanPromotionCode"))
             {
                 if (vPlan == null)
                 {
-                    vPlan = new Microsoft.Azure.Management.Compute.Models.Plan();
+                    vPlan = new Plan();
                 }
-                vPlan.PromotionCode = this.PlanPromotionCode;
+                vPlan.PromotionCode = PlanPromotionCode;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("UpgradePolicyMode"))
+            if (MyInvocation.BoundParameters.ContainsKey("UpgradePolicyMode"))
             {
                 if (vUpgradePolicy == null)
                 {
-                    vUpgradePolicy = new Microsoft.Azure.Management.Compute.Models.UpgradePolicy();
+                    vUpgradePolicy = new UpgradePolicy();
                 }
-                vUpgradePolicy.Mode = this.UpgradePolicyMode;
+                vUpgradePolicy.Mode = UpgradePolicyMode;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("RollingUpgradePolicy"))
+            if (MyInvocation.BoundParameters.ContainsKey("RollingUpgradePolicy"))
             {
                 if (vUpgradePolicy == null)
                 {
-                    vUpgradePolicy = new Microsoft.Azure.Management.Compute.Models.UpgradePolicy();
+                    vUpgradePolicy = new UpgradePolicy();
                 }
-                vUpgradePolicy.RollingUpgradePolicy = this.RollingUpgradePolicy;
+                vUpgradePolicy.RollingUpgradePolicy = RollingUpgradePolicy;
             }
 
             if (vUpgradePolicy == null)
             {
-                vUpgradePolicy = new Microsoft.Azure.Management.Compute.Models.UpgradePolicy();
+                vUpgradePolicy = new UpgradePolicy();
             }
-            vUpgradePolicy.AutomaticOSUpgrade = this.AutoOSUpgrade.IsPresent;
+            vUpgradePolicy.AutomaticOSUpgrade = AutoOSUpgrade.IsPresent;
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("OsProfile"))
+            if (MyInvocation.BoundParameters.ContainsKey("OsProfile"))
             {
                 if (vVirtualMachineProfile == null)
                 {
-                    vVirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    vVirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
-                vVirtualMachineProfile.OsProfile = this.OsProfile;
+                vVirtualMachineProfile.OsProfile = OsProfile;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("StorageProfile"))
+            if (MyInvocation.BoundParameters.ContainsKey("StorageProfile"))
             {
                 if (vVirtualMachineProfile == null)
                 {
-                    vVirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    vVirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
-                vVirtualMachineProfile.StorageProfile = this.StorageProfile;
+                vVirtualMachineProfile.StorageProfile = StorageProfile;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("HealthProbeId"))
+            if (MyInvocation.BoundParameters.ContainsKey("HealthProbeId"))
             {
                 if (vVirtualMachineProfile == null)
                 {
-                    vVirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    vVirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 if (vVirtualMachineProfile.NetworkProfile == null)
                 {
-                    vVirtualMachineProfile.NetworkProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetNetworkProfile();
+                    vVirtualMachineProfile.NetworkProfile = new VirtualMachineScaleSetNetworkProfile();
                 }
                 if (vVirtualMachineProfile.NetworkProfile.HealthProbe == null)
                 {
-                    vVirtualMachineProfile.NetworkProfile.HealthProbe = new Microsoft.Azure.Management.Compute.Models.ApiEntityReference();
+                    vVirtualMachineProfile.NetworkProfile.HealthProbe = new ApiEntityReference();
                 }
-                vVirtualMachineProfile.NetworkProfile.HealthProbe.Id = this.HealthProbeId;
+                vVirtualMachineProfile.NetworkProfile.HealthProbe.Id = HealthProbeId;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("NetworkInterfaceConfiguration"))
+            if (MyInvocation.BoundParameters.ContainsKey("NetworkInterfaceConfiguration"))
             {
                 if (vVirtualMachineProfile == null)
                 {
-                    vVirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    vVirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 if (vVirtualMachineProfile.NetworkProfile == null)
                 {
-                    vVirtualMachineProfile.NetworkProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetNetworkProfile();
+                    vVirtualMachineProfile.NetworkProfile = new VirtualMachineScaleSetNetworkProfile();
                 }
-                vVirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations = this.NetworkInterfaceConfiguration;
+                vVirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations = NetworkInterfaceConfiguration;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("BootDiagnostic"))
+            if (MyInvocation.BoundParameters.ContainsKey("BootDiagnostic"))
             {
                 if (vVirtualMachineProfile == null)
                 {
-                    vVirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    vVirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 if (vVirtualMachineProfile.DiagnosticsProfile == null)
                 {
-                    vVirtualMachineProfile.DiagnosticsProfile = new Microsoft.Azure.Management.Compute.Models.DiagnosticsProfile();
+                    vVirtualMachineProfile.DiagnosticsProfile = new DiagnosticsProfile();
                 }
-                vVirtualMachineProfile.DiagnosticsProfile.BootDiagnostics = this.BootDiagnostic;
+                vVirtualMachineProfile.DiagnosticsProfile.BootDiagnostics = BootDiagnostic;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Extension"))
+            if (MyInvocation.BoundParameters.ContainsKey("Extension"))
             {
                 if (vVirtualMachineProfile == null)
                 {
-                    vVirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    vVirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 if (vVirtualMachineProfile.ExtensionProfile == null)
                 {
-                    vVirtualMachineProfile.ExtensionProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetExtensionProfile();
+                    vVirtualMachineProfile.ExtensionProfile = new VirtualMachineScaleSetExtensionProfile();
                 }
-                vVirtualMachineProfile.ExtensionProfile.Extensions = this.Extension;
+                vVirtualMachineProfile.ExtensionProfile.Extensions = Extension;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("LicenseType"))
+            if (MyInvocation.BoundParameters.ContainsKey("LicenseType"))
             {
                 if (vVirtualMachineProfile == null)
                 {
-                    vVirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    vVirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
-                vVirtualMachineProfile.LicenseType = this.LicenseType;
+                vVirtualMachineProfile.LicenseType = LicenseType;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Priority"))
+            if (MyInvocation.BoundParameters.ContainsKey("Priority"))
             {
                 if (vVirtualMachineProfile == null)
                 {
-                    vVirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    vVirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
-                vVirtualMachineProfile.Priority = this.Priority;
+                vVirtualMachineProfile.Priority = Priority;
             }
 
-            if (this.AssignIdentity.IsPresent)
+            if (AssignIdentity.IsPresent)
             {
                 if (vIdentity == null)
                 {
-                    vIdentity = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetIdentity();
+                    vIdentity = new VirtualMachineScaleSetIdentity();
                 }
                 vIdentity.Type = ResourceIdentityType.SystemAssigned;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("IdentityType"))
+            if (MyInvocation.BoundParameters.ContainsKey("IdentityType"))
             {
                 if (vIdentity == null)
                 {
-                    vIdentity = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetIdentity();
+                    vIdentity = new VirtualMachineScaleSetIdentity();
                 }
-                vIdentity.Type = this.IdentityType;
+                vIdentity.Type = IdentityType;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("IdentityId"))
+            if (MyInvocation.BoundParameters.ContainsKey("IdentityId"))
             {
                 if (vIdentity == null)
                 {
-                    vIdentity = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetIdentity();
+                    vIdentity = new VirtualMachineScaleSetIdentity();
                 }
-                vIdentity.IdentityIds = this.IdentityId;
+                vIdentity.IdentityIds = IdentityId;
             }
 
             var vVirtualMachineScaleSet = new PSVirtualMachineScaleSet
             {
-                Overprovision = this.MyInvocation.BoundParameters.ContainsKey("Overprovision") ? this.Overprovision : (bool?) null,
-                SinglePlacementGroup = this.MyInvocation.BoundParameters.ContainsKey("SinglePlacementGroup") ? this.SinglePlacementGroup : (bool?) null,
-                ZoneBalance = this.ZoneBalance.IsPresent ? true : (bool?) null,
-                PlatformFaultDomainCount = this.MyInvocation.BoundParameters.ContainsKey("PlatformFaultDomainCount") ? this.PlatformFaultDomainCount : (int?) null,
-                Zones = this.MyInvocation.BoundParameters.ContainsKey("Zone") ? this.Zone : null,
-                Location = this.MyInvocation.BoundParameters.ContainsKey("Location") ? this.Location : null,
-                Tags = this.MyInvocation.BoundParameters.ContainsKey("Tag") ? this.Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
+                Overprovision = MyInvocation.BoundParameters.ContainsKey("Overprovision") ? Overprovision : null,
+                SinglePlacementGroup = MyInvocation.BoundParameters.ContainsKey("SinglePlacementGroup") ? SinglePlacementGroup : null,
+                ZoneBalance = ZoneBalance.IsPresent ? true : (bool?) null,
+                PlatformFaultDomainCount = MyInvocation.BoundParameters.ContainsKey("PlatformFaultDomainCount") ? PlatformFaultDomainCount : (int?) null,
+                Zones = MyInvocation.BoundParameters.ContainsKey("Zone") ? Zone : null,
+                Location = MyInvocation.BoundParameters.ContainsKey("Location") ? Location : null,
+                Tags = MyInvocation.BoundParameters.ContainsKey("Tag") ? Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
                 Sku = vSku,
                 Plan = vPlan,
                 UpgradePolicy = vUpgradePolicy,

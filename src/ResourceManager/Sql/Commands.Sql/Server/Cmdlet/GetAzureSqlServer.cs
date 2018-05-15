@@ -63,11 +63,11 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("ServerName") && MyInvocation.BoundParameters.ContainsKey("ResourceGroupName"))
             {
                 results = new List<AzureSqlServerModel>();
-                results.Add(ModelAdapter.GetServer(this.ResourceGroupName, this.ServerName));
+                results.Add(ModelAdapter.GetServer(ResourceGroupName, ServerName));
             }
             else if (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName"))
             {
-                results = ModelAdapter.ListServersByResourceGroup(this.ResourceGroupName);
+                results = ModelAdapter.ListServersByResourceGroup(ResourceGroupName);
             }
             else if (!MyInvocation.BoundParameters.ContainsKey("ServerName"))
             {

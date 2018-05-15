@@ -29,7 +29,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
 
         public Downloader(BlobUri blobUri, string storageAccountKey, string locaFilePath)
         {
-            this.parameters = new DownloaderParameters
+            parameters = new DownloaderParameters
             {
                 BlobUri = blobUri,
                 LocalFilePath = locaFilePath,
@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
                 }
             }
 
-            var blobHandle = new BlobHandle(parameters.BlobUri, this.parameters.StorageAccountKey);
+            var blobHandle = new BlobHandle(parameters.BlobUri, parameters.StorageAccountKey);
 
             if (parameters.ValidateFreeDiskSpace)
             {
@@ -94,7 +94,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
                                         {
                                             b.Seek(r.StartIndex, SeekOrigin.Begin);
 
-                                            byte[] buffer = this.EnsureReadAsSize(b, (int)r.Length, bufferManager);
+                                            byte[] buffer = EnsureReadAsSize(b, (int)r.Length, bufferManager);
 
                                             lock (fileStreamLock)
                                             {

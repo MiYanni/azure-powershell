@@ -37,20 +37,20 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string TargetServiceLevelObjective
         {
-            get { return this._targetServiceLevelObjective; }
-            set { this._targetServiceLevelObjective = value; }
+            get { return _targetServiceLevelObjective; }
+            set { _targetServiceLevelObjective = value; }
         }
         
-        private System.Guid? _targetServiceLevelObjectiveId;
+        private Guid? _targetServiceLevelObjectiveId;
         
         /// <summary>
         /// Optional. Gets or sets targetServiceLevelObjectiveId for upgrade
         /// hint.
         /// </summary>
-        public System.Guid? TargetServiceLevelObjectiveId
+        public Guid? TargetServiceLevelObjectiveId
         {
-            get { return this._targetServiceLevelObjectiveId; }
-            set { this._targetServiceLevelObjectiveId = value; }
+            get { return _targetServiceLevelObjectiveId; }
+            set { _targetServiceLevelObjectiveId = value; }
         }
         
         /// <summary>

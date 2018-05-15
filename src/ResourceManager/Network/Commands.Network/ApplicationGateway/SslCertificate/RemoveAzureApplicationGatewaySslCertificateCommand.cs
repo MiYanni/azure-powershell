@@ -37,14 +37,14 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var sslCertificate = this.ApplicationGateway.SslCertificates.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var sslCertificate = ApplicationGateway.SslCertificates.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (sslCertificate != null)
             {
-                this.ApplicationGateway.SslCertificates.Remove(sslCertificate);
+                ApplicationGateway.SslCertificates.Remove(sslCertificate);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

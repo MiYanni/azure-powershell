@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.WebApps.Models
             AuthorizationManagementClient authorizationManagementClient)
         {
             AuthorizationManagementClient = authorizationManagementClient;
-            this.ResourceManagementClient = resourceManagementClient;
+            ResourceManagementClient = resourceManagementClient;
         }
 
         /// <summary>
@@ -197,10 +197,7 @@ namespace Microsoft.Azure.Commands.WebApps.Models
             {
                 return error.OriginalMessage;
             }
-            else
-            {
-                return error.Message;
-            }
+            return error.Message;
         }
 
         public static List<string> ParseDetailErrorMessage(string statusMessage)
@@ -264,8 +261,8 @@ namespace Microsoft.Azure.Commands.WebApps.Models
                 if (operation.Properties.TargetResource != null &&
                     operation.Properties.TargetResource.ResourceType.Equals("Microsoft.Resources/deployments", StringComparison.OrdinalIgnoreCase) &&
                     ResourceManagementClient.Deployments.CheckExistence(
-                        resourceGroupName: GetResourceGroupName(operation.Properties.TargetResource.Id),
-                        deploymentName: operation.Properties.TargetResource.ResourceName))
+                        GetResourceGroupName(operation.Properties.TargetResource.Id),
+                        operation.Properties.TargetResource.ResourceName))
                 {
                     HttpStatusCode statusCode;
                     Enum.TryParse<HttpStatusCode>(operation.Properties.StatusCode, out statusCode);
@@ -275,8 +272,8 @@ namespace Microsoft.Azure.Commands.WebApps.Models
                         Rest.Azure.IPage<DeploymentOperation> result;
 
                         result = ResourceManagementClient.DeploymentOperations.List(
-                            resourceGroupName: GetResourceGroupName(operation.Properties.TargetResource.Id),
-                            deploymentName: operation.Properties.TargetResource.ResourceName);
+                            GetResourceGroupName(operation.Properties.TargetResource.Id),
+                            operation.Properties.TargetResource.ResourceName);
 
                         newNestedOperations = GetNewOperations(operations, result);
 
@@ -302,7 +299,7 @@ namespace Microsoft.Azure.Commands.WebApps.Models
         /// <param name="statusCode">The status code.</param>
         private static bool IsClientFailureRequest(int statusCode)
         {
-            return statusCode == 505 || statusCode == 501 || (statusCode >= 400 && statusCode < 500 && statusCode != 408);
+            return statusCode == 505 || statusCode == 501 || statusCode >= 400 && statusCode < 500 && statusCode != 408;
         }
 
         /// <summary>
@@ -311,7 +308,7 @@ namespace Microsoft.Azure.Commands.WebApps.Models
         /// <param name="resourceId">The resource id.</param>
         private static string GetResourceGroupName(string resourceId)
         {
-            return GetNextSegmentAfter(resourceId: resourceId, segmentName: "ResourceGroups");
+            return GetNextSegmentAfter(resourceId, "ResourceGroups");
         }
 
         /// <summary>
@@ -323,9 +320,9 @@ namespace Microsoft.Azure.Commands.WebApps.Models
         private static string GetNextSegmentAfter(string resourceId, string segmentName, bool selectLastSegment = false)
         {
             var segment = GetSubstringAfterSegment(
-                    resourceId: resourceId,
-                    segmentName: segmentName,
-                    selectLastSegment: selectLastSegment);
+                    resourceId,
+                    segmentName,
+                    selectLastSegment);
             var segments = SplitRemoveEmpty(segment, '/').FirstOrDefault();
             return string.IsNullOrWhiteSpace(segment)
                 ? null

@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -87,24 +87,24 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
         {
             base.ExecuteCmdlet();
 
-            if (this.Linux.IsPresent)
+            if (Linux.IsPresent)
             {
-                this.Name = LinuxExtensionName;
+                Name = LinuxExtensionName;
             }
-            else if (this.Windows.IsPresent)
+            else if (Windows.IsPresent)
             {
-                this.Name = ExtensionDefaultName;
+                Name = ExtensionDefaultName;
             }
 
             ExecuteClientAction(() =>
             {
-                if (string.IsNullOrEmpty(this.Name))
+                if (string.IsNullOrEmpty(Name))
                 {
-                    var virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName);
+                    var virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
                     var chefExtension = virtualMachine.Resources != null
                             ? virtualMachine.Resources.FirstOrDefault(extension =>
                                 extension.Publisher.Equals(ExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
-                                extension.VirtualMachineExtensionType.Equals(this.Name, StringComparison.InvariantCultureIgnoreCase))
+                                extension.VirtualMachineExtensionType.Equals(Name, StringComparison.InvariantCultureIgnoreCase))
                             : null;
 
                     if (chefExtension == null)
@@ -112,28 +112,25 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
                         WriteObject(null);
                         return;
                     }
-                    else
-                    {
-                        this.Name = chefExtension.Name;
-                    }
+                    Name = chefExtension.Name;
                 } 
 
                 AzureOperationResponse<VirtualMachineExtension> virtualMachineExtensionGetResponse = null;
                 if (Status.IsPresent)
                 {
                     virtualMachineExtensionGetResponse =
-                        this.VirtualMachineExtensionClient.GetWithInstanceView(this.ResourceGroupName,
-                            this.VMName, this.Name);
+                        VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName,
+                            VMName, Name);
                 }
                 else
                 {
-                    virtualMachineExtensionGetResponse = this.VirtualMachineExtensionClient.GetWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name).GetAwaiter().GetResult();
+                    virtualMachineExtensionGetResponse = VirtualMachineExtensionClient.GetWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name).GetAwaiter().GetResult();
                 }
 
-                var returnedExtension = virtualMachineExtensionGetResponse.ToPSVirtualMachineExtension(this.ResourceGroupName, this.VMName);
+                var returnedExtension = virtualMachineExtensionGetResponse.ToPSVirtualMachineExtension(ResourceGroupName, VMName);
                 WriteObject(returnedExtension);
             });
         }

@@ -159,10 +159,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             {
                 return (input as PSObject).BaseObject;
             }
-            else
-            {
-                return input;
-            }
+            return input;
         }
 
         protected override void ProcessRecord()

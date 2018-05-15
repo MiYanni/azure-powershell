@@ -39,15 +39,15 @@ namespace Microsoft.Azure.Commands.Automation.Model
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = automationAccountName;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = automationAccountName;
             if (agentRegistration.Keys != null)
             {
-                this.PrimaryKey = agentRegistration.Keys.Primary;
-                this.SecondaryKey = agentRegistration.Keys.Secondary;
+                PrimaryKey = agentRegistration.Keys.Primary;
+                SecondaryKey = agentRegistration.Keys.Secondary;
             }
 
-            this.Endpoint = agentRegistration.Endpoint;
+            Endpoint = agentRegistration.Endpoint;
         }
 
         /// <summary>

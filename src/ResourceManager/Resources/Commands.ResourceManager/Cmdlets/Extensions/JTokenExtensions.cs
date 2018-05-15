@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         /// <summary>
         /// A lookup table that contains the native mappings which are supported.
         /// </summary>
-        private static readonly Dictionary<JTokenType, Type> PrimitiveTypeMap = new Dictionary<JTokenType, Type>()
+        private static readonly Dictionary<JTokenType, Type> PrimitiveTypeMap = new Dictionary<JTokenType, Type>
         {
             { JTokenType.String, typeof(string) },
             { JTokenType.Integer, typeof(long) },
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
 
             if (jtoken.Type != JTokenType.Object)
             {
-                return new PSObject(JTokenExtensions.ConvertPropertyValueForPsObject(propertyValue: jtoken));
+                return new PSObject(ConvertPropertyValueForPsObject(jtoken));
             }
 
             var jobject = (JObject)jtoken;
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
             foreach (var property in jobject.Properties())
             {
                 psObject.Properties.Add(new PSNoteProperty(
-                    name: property.Name,
-                    value: JTokenExtensions.ConvertPropertyValueForPsObject(propertyValue: property.Value)));
+                    property.Name,
+                    ConvertPropertyValueForPsObject(property.Value)));
             }
 
             return psObject;
@@ -97,14 +97,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
 
                 for (int i = 0; i < array.Length; ++i)
                 {
-                    array[i] = JTokenExtensions.ConvertPropertyValueForPsObject(jArray[i]);
+                    array[i] = ConvertPropertyValueForPsObject(jArray[i]);
                 }
 
                 return array;
             }
 
             Type primitiveType;
-            if (JTokenExtensions.PrimitiveTypeMap.TryGetValue(propertyValue.Type, out primitiveType))
+            if (PrimitiveTypeMap.TryGetValue(propertyValue.Type, out primitiveType))
             {
                 try
                 {

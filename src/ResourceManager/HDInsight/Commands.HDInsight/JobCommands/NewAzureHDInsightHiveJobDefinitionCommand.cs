@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.HDInsight
         typeof(AzureHDInsightHiveJobDefinition))]
     public class NewAzureHDInsightHiveJobDefinitionCommand : HDInsightCmdletBase
     {
-        private AzureHDInsightHiveJobDefinition job;
+        private readonly AzureHDInsightHiveJobDefinition _job;
 
         #region Input Parameter Definitions
 
@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Commands.HDInsight
         [Parameter(HelpMessage = "The output location to use for the job.")]
         public string StatusFolder
         {
-            get { return job.StatusFolder; }
-            set { job.StatusFolder = value; }
+            get { return _job.StatusFolder; }
+            set { _job.StatusFolder = value; }
         }
 
         [Parameter(HelpMessage = "The parameters for the jobDetails.")]
@@ -50,29 +50,29 @@ namespace Microsoft.Azure.Commands.HDInsight
         [Parameter(HelpMessage = "The query file to run in the jobDetails.")]
         public string File
         {
-            get { return job.File; }
-            set { job.File = value; }
+            get { return _job.File; }
+            set { _job.File = value; }
         }
 
         [Parameter(HelpMessage = "The name of the jobDetails.")]
         public string JobName
         {
-            get { return job.JobName; }
-            set { job.JobName = value; }
+            get { return _job.JobName; }
+            set { _job.JobName = value; }
         }
 
         [Parameter(HelpMessage = "The query to run in the jobDetails.")]
         public string Query
         {
-            get { return job.Query; }
-            set { job.Query = value; }
+            get { return _job.Query; }
+            set { _job.Query = value; }
         }
 
         [Parameter(HelpMessage = "Run the query as a file.")]
         public SwitchParameter RunAsFileJob
         {
-            get { return job.RunAsFileJob; }
-            set { job.RunAsFileJob = value; }
+            get { return _job.RunAsFileJob; }
+            set { _job.RunAsFileJob = value; }
         }
 
         #endregion
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.HDInsight
             Arguments = new string[] { };
             Files = new string[] { };
             Defines = new Hashtable();
-            job = new AzureHDInsightHiveJobDefinition();
+            _job = new AzureHDInsightHiveJobDefinition();
         }
 
         public override void ExecuteCmdlet()
@@ -96,19 +96,19 @@ namespace Microsoft.Azure.Commands.HDInsight
         {
             foreach (var arg in Arguments)
             {
-                job.Arguments.Add(arg);
+                _job.Arguments.Add(arg);
             }
 
             foreach (var file in Files)
             {
-                job.Files.Add(file);
+                _job.Files.Add(file);
             }
             var defineDic = Defines.ToDictionary(false);
             foreach (var define in defineDic)
             {
-                job.Defines.Add(define.Key, define.Value.ToString());
+                _job.Defines.Add(define.Key, define.Value.ToString());
             }
-            return job;
+            return _job;
         }
     }
 }

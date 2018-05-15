@@ -26,28 +26,28 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskDependencies
     {
         
-        internal Microsoft.Azure.Batch.TaskDependencies omObject;
+        internal TaskDependencies omObject;
         
         private IReadOnlyList<PSTaskIdRange> taskIdRanges;
         
-        private IReadOnlyList<System.String> taskIds;
+        private IReadOnlyList<String> taskIds;
         
-        public PSTaskDependencies(System.Collections.Generic.IEnumerable<string> taskIds, System.Collections.Generic.IEnumerable<Microsoft.Azure.Batch.TaskIdRange> taskIdRanges)
+        public PSTaskDependencies(IEnumerable<string> taskIds, IEnumerable<TaskIdRange> taskIdRanges)
         {
-            this.omObject = new Microsoft.Azure.Batch.TaskDependencies(taskIds, taskIdRanges);
+            omObject = new TaskDependencies(taskIds, taskIdRanges);
         }
         
-        internal PSTaskDependencies(Microsoft.Azure.Batch.TaskDependencies omObject)
+        internal PSTaskDependencies(TaskDependencies omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -56,45 +56,45 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.taskIdRanges == null) 
-                            && (this.omObject.TaskIdRanges != null)))
+                if (taskIdRanges == null 
+                    && omObject.TaskIdRanges != null)
                 {
                     List<PSTaskIdRange> list;
                     list = new List<PSTaskIdRange>();
-                    IEnumerator<Microsoft.Azure.Batch.TaskIdRange> enumerator;
-                    enumerator = this.omObject.TaskIdRanges.GetEnumerator();
+                    IEnumerator<TaskIdRange> enumerator;
+                    enumerator = omObject.TaskIdRanges.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSTaskIdRange(enumerator.Current));
                     }
-                    this.taskIdRanges = list.AsReadOnly();
+                    taskIdRanges = list.AsReadOnly();
                 }
-                return this.taskIdRanges;
+                return taskIdRanges;
             }
         }
         
-        public IReadOnlyList<System.String> TaskIds
+        public IReadOnlyList<String> TaskIds
         {
             get
             {
-                if (((this.taskIds == null) 
-                            && (this.omObject.TaskIds != null)))
+                if (taskIds == null 
+                    && omObject.TaskIds != null)
                 {
-                    List<System.String> list;
-                    list = new List<System.String>();
-                    IEnumerator<System.String> enumerator;
-                    enumerator = this.omObject.TaskIds.GetEnumerator();
+                    List<String> list;
+                    list = new List<String>();
+                    IEnumerator<String> enumerator;
+                    enumerator = omObject.TaskIds.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(enumerator.Current);
                     }
-                    this.taskIds = list.AsReadOnly();
+                    taskIds = list.AsReadOnly();
                 }
-                return this.taskIds;
+                return taskIds;
             }
         }
     }

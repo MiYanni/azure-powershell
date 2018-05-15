@@ -115,8 +115,9 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlElasticPoolModel> GetEntity()
         {
-            return new List<AzureSqlElasticPoolModel>() {
-                ModelAdapter.GetElasticPool(this.ResourceGroupName, this.ServerName, this.ElasticPoolName)
+            return new List<AzureSqlElasticPoolModel>
+            {
+                ModelAdapter.GetElasticPool(ResourceGroupName, ServerName, ElasticPoolName)
             };
         }
 
@@ -129,7 +130,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         {
             string location = ModelAdapter.GetServerLocation(ResourceGroupName, ServerName);
             List<AzureSqlElasticPoolModel> newEntity = new List<AzureSqlElasticPoolModel>();
-            newEntity.Add(new AzureSqlElasticPoolModel()
+            newEntity.Add(new AzureSqlElasticPoolModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
@@ -153,7 +154,8 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlElasticPoolModel> PersistChanges(IEnumerable<AzureSqlElasticPoolModel> entity)
         {
-            return new List<AzureSqlElasticPoolModel>() {
+            return new List<AzureSqlElasticPoolModel>
+            {
                 ModelAdapter.UpsertElasticPool(entity.First())
             };
         }

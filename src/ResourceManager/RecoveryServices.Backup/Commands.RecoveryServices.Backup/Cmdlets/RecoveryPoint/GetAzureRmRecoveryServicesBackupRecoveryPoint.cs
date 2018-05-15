@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     var rpList = psBackupProvider.ListRecoveryPoints();
 
                     WriteDebug(string.Format("RPCount in Response = {0}", rpList.Count));
-                    WriteObject(rpList, enumerateCollection: true);
+                    WriteObject(rpList, true);
                 }
                 else if (ParameterSetName == RecoveryPointIdParameterSet)
                 {

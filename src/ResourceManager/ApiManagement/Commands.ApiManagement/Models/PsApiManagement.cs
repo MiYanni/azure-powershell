@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.ApiManagement.Models
 {
-    using Microsoft.Azure.Commands.ApiManagement.Properties;
-    using Microsoft.Azure.Management.ApiManagement.Models;
+    using Properties;
+    using Management.ApiManagement.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;

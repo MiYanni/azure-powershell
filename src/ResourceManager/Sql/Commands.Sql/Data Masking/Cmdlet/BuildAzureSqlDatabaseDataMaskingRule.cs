@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Commands.Sql.DataMasking.Cmdlet
 
                 if (rule.NumberFrom > rule.NumberTo)
                 {
-                    throw new Exception(string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.DataMaskingNumberRuleIntervalDefinitionError));
+                    throw new Exception(string.Format(CultureInfo.InvariantCulture, Properties.Resources.DataMaskingNumberRuleIntervalDefinitionError));
                 }
             }
             return rule;

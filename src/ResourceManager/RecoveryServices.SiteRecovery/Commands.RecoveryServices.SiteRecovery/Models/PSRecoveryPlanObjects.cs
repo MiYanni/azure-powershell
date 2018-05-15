@@ -31,22 +31,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             if (recoveryPlanGroup != null)
             {
-                this.GroupType = recoveryPlanGroup.GroupType.ToString(); //TODO
-                this.StartGroupActions = recoveryPlanGroup.StartGroupActions;
-                this.EndGroupActions = recoveryPlanGroup.EndGroupActions;
+                GroupType = recoveryPlanGroup.GroupType.ToString(); //TODO
+                StartGroupActions = recoveryPlanGroup.StartGroupActions;
+                EndGroupActions = recoveryPlanGroup.EndGroupActions;
 
                 if (replicationProtectedItems != null)
                 {
                     var replicationProtectedItemList =
                         recoveryPlanGroup.ReplicationProtectedItems.Select(
                             item => item.Id.ToLower());
-                    this.ReplicationProtectedItems = replicationProtectedItems.Where(
+                    ReplicationProtectedItems = replicationProtectedItems.Where(
                             rpi => replicationProtectedItemList.Contains(rpi.Id.ToLower()))
                         .ToList();
                 }
                 else
                 {
-                    this.ReplicationProtectedItems = new List<ReplicationProtectedItem>();
+                    ReplicationProtectedItems = new List<ReplicationProtectedItem>();
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             recoveryPlanGroup,
             replicationProtectedItems)
         {
-            this.Name = groupName;
+            Name = groupName;
         }
 
         /// <summary>
@@ -111,13 +111,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             RecoveryPlan recoveryPlan,
             IList<ReplicationProtectedItem> replicationProtectedItems)
         {
-            this.Id = recoveryPlan.Id;
-            this.Name = recoveryPlan.Name;
-            this.FriendlyName = recoveryPlan.Properties.FriendlyName;
-            this.ServerId = recoveryPlan.Properties.PrimaryFabricId;
-            this.TargetServerId = recoveryPlan.Properties.RecoveryFabricId;
-            this.FailoverDeploymentModel = recoveryPlan.Properties.FailoverDeploymentModel;
-            this.Groups = new List<ASRRecoveryPlanGroup>();
+            Id = recoveryPlan.Id;
+            Name = recoveryPlan.Name;
+            FriendlyName = recoveryPlan.Properties.FriendlyName;
+            ServerId = recoveryPlan.Properties.PrimaryFabricId;
+            TargetServerId = recoveryPlan.Properties.RecoveryFabricId;
+            FailoverDeploymentModel = recoveryPlan.Properties.FailoverDeploymentModel;
+            Groups = new List<ASRRecoveryPlanGroup>();
             var groupCount = 0;
             string groupName = null;
 
@@ -137,14 +137,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         break;
                 }
 
-                this.Groups.Add(
+                Groups.Add(
                     new ASRRecoveryPlanGroup(
                         groupName,
                         recoveryPlanGroup,
                         replicationProtectedItems));
             }
 
-            this.ReplicationProvider = recoveryPlan.Properties.ReplicationProviders;
+            ReplicationProvider = recoveryPlan.Properties.ReplicationProviders;
         }
 
         /// <summary>
@@ -154,22 +154,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRRecoveryPlan RefreshASRRecoveryPlanGroupNames()
         {
             var bootGroupCount = 0;
-            for (var groupCount = 0; groupCount < this.Groups.Count; groupCount++)
+            for (var groupCount = 0; groupCount < Groups.Count; groupCount++)
             {
-                switch (this.Groups[groupCount]
+                switch (Groups[groupCount]
                     .GroupType)
                 {
                     case Constants.Boot:
                         bootGroupCount++;
-                        this.Groups[groupCount]
+                        Groups[groupCount]
                             .Name = "Group " + bootGroupCount;
                         break;
                     case Constants.Failover:
-                        this.Groups[groupCount]
+                        Groups[groupCount]
                             .Name = Constants.Failover;
                         break;
                     case Constants.Shutdown:
-                        this.Groups[groupCount]
+                        Groups[groupCount]
                             .Name = Constants.Shutdown;
                         break;
                 }

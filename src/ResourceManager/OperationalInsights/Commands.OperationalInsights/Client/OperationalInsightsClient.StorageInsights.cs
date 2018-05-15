@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Client
                 PSStorageInsight storageInsight = GetStorageInsight(resourceGroupName, workspaceName, storageInsightName);
                 return true;
             }
-            catch (Microsoft.Rest.Azure.CloudException e)
+            catch (Rest.Azure.CloudException e)
             {
                 // Get throws NotFound exception if workspace does not exist
                 if (e.Response.StatusCode == HttpStatusCode.NotFound)

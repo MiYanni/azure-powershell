@@ -44,17 +44,17 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            this.ByResourceId();
-            this.ByIntegrationRuntimeObject();
+            ByResourceId();
+            ByIntegrationRuntimeObject();
 
             Action updateIntegrationRuntimeNode = () =>
             {
-                var node = this.DataFactoryClient.UpdateIntegrationRuntimeNodesAsync(
+                var node = DataFactoryClient.UpdateIntegrationRuntimeNodesAsync(
                     ResourceGroupName,
                     DataFactoryName,
                     IntegrationRuntimeName,
                     Name,
-                    new UpdateIntegrationRuntimeNodeRequest()
+                    new UpdateIntegrationRuntimeNodeRequest
                     {
                         ConcurrentJobsLimit = ConcurrentJobsLimit
                     }).ConfigureAwait(false).GetAwaiter().GetResult();

@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
         public string ServiceName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = V2VMParameterSet, HelpMessage = AzureBackupCmdletHelpMessage.RGName)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
 
@@ -54,14 +54,14 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 string rgName = String.Empty;
                 string ServiceOrRG = String.Empty;
 
-                if (this.ParameterSetName == V1VMParameterSet)
+                if (ParameterSetName == V1VMParameterSet)
                 {
                     vmName = Name;
                     rgName = ServiceName;
                     WriteDebug(String.Format(Resources.RegisteringARMVM1, vmName, rgName));
                     ServiceOrRG = "CloudServiceName";
                 }
-                else if (this.ParameterSetName == V2VMParameterSet)
+                else if (ParameterSetName == V2VMParameterSet)
                 {
                     vmName = Name;
                     rgName = ResourceGroupName;
@@ -74,17 +74,16 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                     throw new PSArgumentException(Resources.PSArgumentException); //TODO: PM scrub needed
                 }
 
-                Guid jobId = Guid.Empty;
-                bool isDiscoveryNeed = false;
+                bool isDiscoveryNeed;
 
-                CSMContainerResponse container = null;
+                CSMContainerResponse container;
                 isDiscoveryNeed = IsDiscoveryNeeded(vmName, rgName, out container);
                 if (isDiscoveryNeed)
                 {
                     WriteDebug(String.Format(Resources.VMNotDiscovered, vmName));
                     RefreshContainer(Vault.ResourceGroupName, Vault.Name);
                     isDiscoveryNeed = IsDiscoveryNeeded(vmName, rgName, out container);
-                    if ((isDiscoveryNeed == true) || (container == null))
+                    if (isDiscoveryNeed == true || container == null)
                     {
                         //Container is not discovered. Throw exception
                         string errMsg = String.Format(Resources.DiscoveryFailure, vmName, ServiceOrRG, rgName);
@@ -136,8 +135,8 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 isDiscoverySuccessful = false;
                 errorMessage = status.Error.Message;
                 WriteDebug(String.Format(Resources.DiscoveryFailureErrorCode, status.Error.Code));
-                if ((status.Error.Code == AzureBackupOperationErrorCode.DiscoveryInProgress.ToString() ||
-                    (status.Error.Code == AzureBackupOperationErrorCode.BMSUserErrorObjectLocked.ToString())))
+                if (status.Error.Code == AzureBackupOperationErrorCode.DiscoveryInProgress.ToString() ||
+                    status.Error.Code == AzureBackupOperationErrorCode.BMSUserErrorObjectLocked.ToString())
                 {
                     //Need to retry for this errors
                     isRetryNeeded = true;
@@ -150,7 +149,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
         private bool IsDiscoveryNeeded(string vmName, string rgName, out CSMContainerResponse container)
         {
             bool isDiscoveryNeed = false;
-            ContainerQueryParameters parameters = new ContainerQueryParameters()
+            ContainerQueryParameters parameters = new ContainerQueryParameters
             {
                 ContainerType = ManagedContainerType.IaasVM.ToString(),
                 FriendlyName = vmName,

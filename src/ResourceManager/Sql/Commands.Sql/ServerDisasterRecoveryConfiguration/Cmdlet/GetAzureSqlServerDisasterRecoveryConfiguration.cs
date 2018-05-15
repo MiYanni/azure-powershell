@@ -41,12 +41,12 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
             {
                 results = new List<AzureSqlServerDisasterRecoveryConfigurationModel>
                 {
-                    ModelAdapter.GetServerDisasterRecoveryConfiguration(this.ResourceGroupName, this.ServerName, this.VirtualEndpointName)
+                    ModelAdapter.GetServerDisasterRecoveryConfiguration(ResourceGroupName, ServerName, VirtualEndpointName)
                 };
             }
             else
             {
-                results = ModelAdapter.ListServerDisasterRecoveryConfigurations(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListServerDisasterRecoveryConfigurations(ResourceGroupName, ServerName);
             }
 
             return results;

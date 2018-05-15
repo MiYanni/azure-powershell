@@ -29,28 +29,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
     /// </summary>
     public partial class RestorePointProperties
     {
-        private System.DateTime? _earliestRestoreDate;
+        private DateTime? _earliestRestoreDate;
         
         /// <summary>
         /// Optional. Earliest restore time. Populated when restorePointType =
         /// DISCRETE. Null otherwise.
         /// </summary>
-        public System.DateTime? EarliestRestoreDate
+        public DateTime? EarliestRestoreDate
         {
-            get { return this._earliestRestoreDate; }
-            set { this._earliestRestoreDate = value; }
+            get { return _earliestRestoreDate; }
+            set { _earliestRestoreDate = value; }
         }
         
-        private System.DateTime? _restorePointCreationDate;
+        private DateTime? _restorePointCreationDate;
         
         /// <summary>
         /// Optional. Restore point creation time. Populated when
         /// restorePointType = CONTINUOUS. Null otherwise.
         /// </summary>
-        public System.DateTime? RestorePointCreationDate
+        public DateTime? RestorePointCreationDate
         {
-            get { return this._restorePointCreationDate; }
-            set { this._restorePointCreationDate = value; }
+            get { return _restorePointCreationDate; }
+            set { _restorePointCreationDate = value; }
         }
         
         private string _restorePointType;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RestorePointType
         {
-            get { return this._restorePointType; }
-            set { this._restorePointType = value; }
+            get { return _restorePointType; }
+            set { _restorePointType = value; }
         }
         
         /// <summary>

@@ -81,13 +81,10 @@
     <ItemGroup>
       <MarkdownFiles Include="$(ProjectDir)help\*.*" />
     </ItemGroup>
-    <ItemGroup>  
-        <OutFiles Include="$(OutDir)\**\*.*"/>  
-    </ItemGroup>  
-    <Copy  
-            SourceFiles="@(OutFiles)"  
-            DestinationFiles="@(OutFiles->'..\..\..\Stack\$(Configuration)\ResourceManager\AzureResourceManager\AzureRM.UsageAggregates\%(RecursiveDir)%(Filename)%(Extension)')"  
-     />  
+    <ItemGroup>
+      <OutFiles Include="$(OutDir)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(OutFiles)" DestinationFiles="@(OutFiles->'..\..\..\Stack\$(Configuration)\ResourceManager\AzureResourceManager\AzureRM.UsageAggregates\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(MarkdownFiles)" DestinationFolder="$(OutputPath)\help\" ContinueOnError="false" />
   </Target>
 </Project>

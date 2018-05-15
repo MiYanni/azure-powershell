@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
     using System.Collections.Generic;
     using System.Linq;
 
-    [Cmdlet(VerbsData.Update, CommitmentPlansCmdletBase.CommitmentPlanCommandletSuffix, SupportsShouldProcess = true)]
+    [Cmdlet(VerbsData.Update, CommitmentPlanCommandletSuffix, SupportsShouldProcess = true)]
     [OutputType(typeof(CommitmentPlan))]
     public class UpdateAzureMLCommitmentPlan : CommitmentPlansCmdletBase
     {
@@ -63,19 +63,19 @@ namespace Microsoft.Azure.Commands.MachineLearning
 
         protected override void RunCmdlet()
         {
-            if (!ShouldProcess(this.Name, @"Updating Azure ML commitment plan."))
+            if (!ShouldProcess(Name, @"Updating Azure ML commitment plan."))
             {
                 return;
             }
 
-            if (!this.Force.IsPresent && !ShouldContinue(Resources.UpdateServiceWarning.FormatInvariant(this.Name), string.Empty))
+            if (!Force.IsPresent && !ShouldContinue(Resources.UpdateServiceWarning.FormatInvariant(Name), string.Empty))
             {
                 return;
             }
 
-            int skuCapacity = this.SkuCapacity == 0 ? 1 : this.SkuCapacity;
-            var sku = new ResourceSku(skuCapacity, this.SkuName, this.SkuTier);
-            var tags = this.Tag.Cast<DictionaryEntry>()
+            int skuCapacity = SkuCapacity == 0 ? 1 : SkuCapacity;
+            var sku = new ResourceSku(skuCapacity, SkuName, SkuTier);
+            var tags = Tag.Cast<DictionaryEntry>()
                 .ToDictionary(kvp => (string) kvp.Key, kvp => (string) kvp.Value);
 
             CommitmentPlanPatchPayload patchPayload = new CommitmentPlanPatchPayload
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
                 Tags = tags
             };
 
-            this.CommitmentPlansClient.PatchAzureMlCommitmentPlan(this.ResourceGroupName, this.Name, patchPayload);
+            CommitmentPlansClient.PatchAzureMlCommitmentPlan(ResourceGroupName, Name, patchPayload);
         }
     }
 }

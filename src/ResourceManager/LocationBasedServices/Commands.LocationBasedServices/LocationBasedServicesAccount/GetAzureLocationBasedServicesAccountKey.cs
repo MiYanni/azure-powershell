@@ -82,20 +82,20 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
                     }
                     case NameParameterSet:
                     {
-                        rgName = this.ResourceGroupName;
-                        name = this.Name;
+                        rgName = ResourceGroupName;
+                        name = Name;
                         break;
                     }
                     case ResourceIdParameterSet:
                     {
-                        ValidateAndExtractName(this.ResourceId, out rgName, out name);
+                        ValidateAndExtractName(ResourceId, out rgName, out name);
                         break;
                     }
                 }
 
                 if (!string.IsNullOrEmpty(rgName) && !string.IsNullOrEmpty(name))
                 {
-                    var locationBasedServicesKeys = this.LocationBasedServicesClient.Accounts.ListKeys(rgName, name);
+                    var locationBasedServicesKeys = LocationBasedServicesClient.Accounts.ListKeys(rgName, name);
                     WriteObject(new PSLocationBasedServicesAccountKeys(locationBasedServicesKeys));
                 }
             });

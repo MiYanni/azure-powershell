@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.Resources
 
             AuthorizationClient.ValidateScope(options.Scope, true);
 
-            WriteObject(PoliciesClient.FilterRoleDefinitions(options), enumerateCollection: true);
+            WriteObject(PoliciesClient.FilterRoleDefinitions(options), true);
         }
     }
 }

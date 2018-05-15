@@ -35,12 +35,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             var cluster = GetCurrentCluster();
             var vmssExists = VmssExists();
-            var existingNodeType = GetNodeType(cluster, this.NodeType, ignoreErrors:true);
+            var existingNodeType = GetNodeType(cluster, NodeType, true);
             if (existingNodeType != null)
             {
                 if (existingNodeType.IsPrimary)
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                     throw new PSInvalidOperationException(
                         string.Format(
                             ServiceFabricProperties.Resources.CannotDeletePrimaryNodeType,
-                            this.NodeType));
+                            NodeType));
                 }
 
                 var durabilityLevel = GetDurabilityLevel(existingNodeType.DurabilityLevel);
@@ -76,14 +76,14 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSArgumentException(
                     string.Format(
                         ServiceFabricProperties.Resources.CannotFindTheNodeType,
-                        this.NodeType));
+                        NodeType));
             }
 
-            if (ShouldProcess(target: this.NodeType, action: string.Format("Remove a nodetype {0} ", this.NodeType)))
+            if (ShouldProcess(NodeType, string.Format("Remove a nodetype {0} ", NodeType)))
             {
                 if (vmssExists)
                 {
-                    this.ComputeClient.VirtualMachineScaleSets.Delete(this.ResourceGroupName, this.NodeType);
+                    ComputeClient.VirtualMachineScaleSets.Delete(ResourceGroupName, NodeType);
                 }
 
                 if (cluster.NodeTypes == null)
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 if (existingNodeType != null)
                 {
                     cluster.NodeTypes.Remove(existingNodeType);
-                    cluster.UpgradeDescription.DeltaHealthPolicy = new ClusterUpgradeDeltaHealthPolicy()
+                    cluster.UpgradeDescription.DeltaHealthPolicy = new ClusterUpgradeDeltaHealthPolicy
                     {
                         MaxPercentDeltaUnhealthyApplications = 0,
                         MaxPercentDeltaUnhealthyNodes = 0,

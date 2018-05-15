@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
         {
             WriteObject(
                 new ActivityLogAlertLeafCondition(
-                    field: this.Field,
-                    equals: this.Equal));
+                    Field,
+                    Equal));
         }
     }
 }

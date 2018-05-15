@@ -18,7 +18,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
     using System.Management.Automation;
     using System.Security.Permissions;
     using StorageClient = WindowsAzure.Storage.Shared.Protocol;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+    using Model.ResourceModel;
 
     /// <summary>
     /// Modify Azure Storage service properties
@@ -56,7 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
             {
                 StorageClient.ServiceProperties serviceProperties = Channel.GetStorageServiceProperties(ServiceType, GetRequestOptions(ServiceType), OperationContext);
 
-                serviceProperties.DefaultServiceVersion = this.DefaultServiceVersion;
+                serviceProperties.DefaultServiceVersion = DefaultServiceVersion;
 
                 Channel.SetStorageServiceProperties(ServiceType, serviceProperties,
                     GetRequestOptions(ServiceType), OperationContext);

@@ -46,13 +46,13 @@ namespace Microsoft.Azure.Commands.Sql.ServerKeyVaultKey.Cmdlet
 
             // If no KeyId is supplied, then list all the server key vault keys
             //
-            if (!this.MyInvocation.BoundParameters.ContainsKey("KeyId"))
+            if (!MyInvocation.BoundParameters.ContainsKey("KeyId"))
             {
-                results = ModelAdapter.List(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.List(ResourceGroupName, ServerName);
             }
             else
             {
-                results.Add(ModelAdapter.Get(this.ResourceGroupName, this.ServerName, KeyId));
+                results.Add(ModelAdapter.Get(ResourceGroupName, ServerName, KeyId));
             }
 
             return results;

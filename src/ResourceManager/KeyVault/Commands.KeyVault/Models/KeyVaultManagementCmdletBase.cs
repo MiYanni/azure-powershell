@@ -45,20 +45,20 @@ namespace Microsoft.Azure.Commands.KeyVault
     public class KeyVaultManagementCmdletBase : AzureRMCmdlet
     {
 
-        private PSKeyVaultModels.VaultManagementClient _keyVaultManagementClient;
+        private VaultManagementClient _keyVaultManagementClient;
         private DataServiceCredential _dataServiceCredential;
-        public PSKeyVaultModels.VaultManagementClient KeyVaultManagementClient
+        public VaultManagementClient KeyVaultManagementClient
         {
             get
             {
-                if (this._keyVaultManagementClient == null)
+                if (_keyVaultManagementClient == null)
                 {
-                    this._keyVaultManagementClient = new PSKeyVaultModels.VaultManagementClient(DefaultContext);
+                    _keyVaultManagementClient = new VaultManagementClient(DefaultContext);
                 }
-                return this._keyVaultManagementClient;
+                return _keyVaultManagementClient;
             }
 
-            set { this._keyVaultManagementClient = value; }
+            set { _keyVaultManagementClient = value; }
         }
 
 
@@ -78,10 +78,10 @@ namespace Microsoft.Azure.Commands.KeyVault
                     () => Task.FromResult(_dataServiceCredential.GetToken()));
 #endif
                 }
-                return this._activeDirectoryClient;
+                return _activeDirectoryClient;
             }
 
-            set { this._activeDirectoryClient = value; }
+            set { _activeDirectoryClient = value; }
         }
 
         private ResourceManagementClient _resourceClient;
@@ -97,12 +97,12 @@ namespace Microsoft.Azure.Commands.KeyVault
                 return _resourceClient;
             }
 
-            set { this._resourceClient = value; }
+            set { _resourceClient = value; }
         }
 
-        protected List<PSKeyVaultModels.PSKeyVaultIdentityItem> ListVaults(string resourceGroupName, Hashtable tag)
+        protected List<PSKeyVaultIdentityItem> ListVaults(string resourceGroupName, Hashtable tag)
         {
-            IResourceManagementClient armClient = this.ResourceClient;
+            IResourceManagementClient armClient = ResourceClient;
 
             PSTagValuePair tagValuePair = new PSTagValuePair();
             if (tag != null && tag.Count > 0)
@@ -132,11 +132,11 @@ namespace Microsoft.Azure.Commands.KeyVault
                              r.Tagvalue == tagValuePair.Value));
             }
 
-            List<PSKeyVaultModels.PSKeyVaultIdentityItem> vaults = new List<PSKeyVaultModels.PSKeyVaultIdentityItem>();
+            List<PSKeyVaultIdentityItem> vaults = new List<PSKeyVaultIdentityItem>();
             if (listResult != null)
             {
                 vaults.AddRange(listResult.Where(r => r.Type.Equals(KeyVaultManagementClient.VaultsResourceType, StringComparison.OrdinalIgnoreCase))
-                    .Select(r => new PSKeyVaultModels.PSKeyVaultIdentityItem(r)));
+                    .Select(r => new PSKeyVaultIdentityItem(r)));
             }
 
             while (!string.IsNullOrEmpty(listResult.NextPageLink))
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
                 if (listResult != null)
                 {
-                    vaults.AddRange(listResult.Select(r => new PSKeyVaultModels.PSKeyVaultIdentityItem(r)));
+                    vaults.AddRange(listResult.Select(r => new PSKeyVaultIdentityItem(r)));
                 }
             }
 
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         protected string GetResourceGroupName(string vaultName)
         {
             string rg = null;
-            var resourcesByName = this.ResourceClient.FilterResources(new FilterResourcesOptions()
+            var resourcesByName = ResourceClient.FilterResources(new FilterResourcesOptions
             {
                 ResourceType = KeyVaultManagementClient.VaultsResourceType
             });
@@ -231,7 +231,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             if (principal.ElementAtOrDefault(1) != null)
             {
                 throw new ArgumentException(string.Format(PSKeyVaultProperties.Resources.ADObjectAmbiguous, objectFilter,
-                (_dataServiceCredential != null) ? _dataServiceCredential.TenantId : string.Empty));
+                _dataServiceCredential != null ? _dataServiceCredential.TenantId : string.Empty));
             }
         }
 
@@ -241,7 +241,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             if (!string.IsNullOrWhiteSpace(upn))
             {
 #if NETSTANDARD
-                var user = ActiveDirectoryClient.FilterUsers(new ADObjectFilterOptions() { UPN = upn }).SingleOrDefault();
+                var user = ActiveDirectoryClient.FilterUsers(new ADObjectFilterOptions { UPN = upn }).SingleOrDefault();
 #else
                 var user = ActiveDirectoryClient.Users.Where(u => u.UserPrincipalName.Equals(upn, StringComparison.OrdinalIgnoreCase))
                      .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult().CurrentPage.SingleOrDefault();
@@ -284,7 +284,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             if (!DefaultProfile.DefaultContext.Environment.OnPremise && !string.IsNullOrWhiteSpace(email))
             {
 #if NETSTANDARD
-                var users = ActiveDirectoryClient.FilterUsers(new ADObjectFilterOptions() { Mail = email });
+                var users = ActiveDirectoryClient.FilterUsers(new ADObjectFilterOptions { Mail = email });
                 if (users != null)
                 {
                     ThrowIfMultipleObjectIds(users, email);
@@ -353,7 +353,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
             if (string.IsNullOrWhiteSpace(objId))
                 throw new ArgumentException(string.Format(PSKeyVaultProperties.Resources.ADObjectNotFound, objectFilter,
-                    (_dataServiceCredential != null) ? _dataServiceCredential.TenantId : string.Empty));
+                    _dataServiceCredential != null ? _dataServiceCredential.TenantId : string.Empty));
 
             return objId;
         }

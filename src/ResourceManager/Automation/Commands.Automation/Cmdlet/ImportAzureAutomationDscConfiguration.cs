@@ -63,8 +63,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, HelpMessage = "Import the configuration in published state.")]
         public SwitchParameter Published
         {
-            get { return this.publishConfiguration; }
-            set { this.publishConfiguration = value; }
+            get { return publishConfiguration; }
+            set { publishConfiguration = value; }
         }
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, HelpMessage = "Forces the command to overwrite an existing configuration.")]
         public SwitchParameter Force
         {
-            get { return this.overwriteExistingConfiguration; }
-            set { this.overwriteExistingConfiguration = value; }
+            get { return overwriteExistingConfiguration; }
+            set { overwriteExistingConfiguration = value; }
         }
 
         /// <summary>
@@ -91,17 +91,17 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             if (ShouldProcess(SourcePath, VerbsData.Import))
             {
-                var configuration = this.AutomationClient.CreateConfiguration(
-                    this.ResourceGroupName,
-                    this.AutomationAccountName,
-                    this.SourcePath,
-                    this.Tags,
-                    this.Description,
-                    this.LogVerbose,
-                    this.Published,
-                    this.Force);
+                var configuration = AutomationClient.CreateConfiguration(
+                    ResourceGroupName,
+                    AutomationAccountName,
+                    SourcePath,
+                    Tags,
+                    Description,
+                    LogVerbose,
+                    Published,
+                    Force);
 
-                this.WriteObject(configuration);
+                WriteObject(configuration);
             }
         }
     }

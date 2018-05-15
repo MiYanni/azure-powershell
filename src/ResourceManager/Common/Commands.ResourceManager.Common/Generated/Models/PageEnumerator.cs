@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Internal.Subscriptions.Models
             IPage<Subscription> tempPage = _client.Subscriptions.ListNext(_nextPageLink);
             _currentEnumerator = tempPage.GetEnumerator();
             _nextPageLink = tempPage.NextPageLink;
-            return this.MoveNext();
+            return MoveNext();
         }
 
         public void Reset()

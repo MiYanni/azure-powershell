@@ -20,13 +20,13 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices.Models
     {
         public PSCognitiveServicesUsage(Usage usage)
         {
-            this.CurrentValue = usage.CurrentValue;
-            this.Limit = usage.Limit;
-            this.Name = usage.Name.Value;
-            this.Status = usage.Status;
-            this.Unit = usage.Unit;
-            this.QuotaPeriod = usage.QuotaPeriod;
-            this.NextResetTime = usage.NextResetTime;
+            CurrentValue = usage.CurrentValue;
+            Limit = usage.Limit;
+            Name = usage.Name.Value;
+            Status = usage.Status;
+            Unit = usage.Unit;
+            QuotaPeriod = usage.QuotaPeriod;
+            NextResetTime = usage.NextResetTime;
         }
 
         public double? CurrentValue { get; }

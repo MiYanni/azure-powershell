@@ -30,8 +30,8 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException(Resources.NoDownloadDestination);
             }
 
-            this.DestinationPath = destinationPath;
-            this.Stream = stream;
+            DestinationPath = destinationPath;
+            Stream = stream;
         }
 
         /// <summary>

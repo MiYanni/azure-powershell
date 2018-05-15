@@ -60,14 +60,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
             serviceProperties.Clean();
             serviceProperties.Cors = new CorsProperties();
 
-            foreach (var corsRuleObject in this.CorsRules)
+            foreach (var corsRuleObject in CorsRules)
             {
                 CorsRule corsRule = new CorsRule();
                 corsRule.AllowedHeaders = corsRuleObject.AllowedHeaders;
                 corsRule.AllowedOrigins = corsRuleObject.AllowedOrigins;
                 corsRule.ExposedHeaders = corsRuleObject.ExposedHeaders;
                 corsRule.MaxAgeInSeconds = corsRuleObject.MaxAgeInSeconds;
-                this.SetAllowedMethods(corsRule, corsRuleObject.AllowedMethods);
+                SetAllowedMethods(corsRule, corsRuleObject.AllowedMethods);
                 serviceProperties.Cors.CorsRules.Add(corsRule);
             }
 
@@ -78,36 +78,33 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
             }
             catch (StorageException se)
             {
-                if ((null != se.RequestInformation) &&
-                    ((int)HttpStatusCode.BadRequest == se.RequestInformation.HttpStatusCode) &&
-                    (null != se.RequestInformation.ExtendedErrorInformation) &&
+                if (null != se.RequestInformation &&
+                    (int)HttpStatusCode.BadRequest == se.RequestInformation.HttpStatusCode &&
+                    null != se.RequestInformation.ExtendedErrorInformation &&
                     (string.Equals(InvalidXMLNodeValueError, se.RequestInformation.ErrorCode, StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(InvalidXMLDocError, se.RequestInformation.ErrorCode, StringComparison.OrdinalIgnoreCase)))
                 {
                     throw new InvalidOperationException(Resources.CORSRuleError);
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             if (PassThru)
             {
-                WriteObject(this.CorsRules);
+                WriteObject(CorsRules);
             }
         }
 
         private void SetAllowedMethods(CorsRule corsRule, string[] allowedMethods)
         {
-            corsRule.AllowedMethods = SharedProtocol.CorsHttpMethods.None;
+            corsRule.AllowedMethods = CorsHttpMethods.None;
 
             if (null != allowedMethods)
             {
                 foreach (var method in allowedMethods)
                 {
-                    SharedProtocol.CorsHttpMethods allowedCorsMethod = SharedProtocol.CorsHttpMethods.None;
-                    if (Enum.TryParse<SharedProtocol.CorsHttpMethods>(method, true, out allowedCorsMethod))
+                    CorsHttpMethods allowedCorsMethod = CorsHttpMethods.None;
+                    if (Enum.TryParse<CorsHttpMethods>(method, true, out allowedCorsMethod))
                     {
                         corsRule.AllowedMethods |= allowedCorsMethod;
                     }

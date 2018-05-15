@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         public VhdFooterSerializer(VhdFooter vhdFooter)
         {
             this.vhdFooter = vhdFooter;
-            this.attributeHelper = new AttributeHelper<VhdFooter>();
+            attributeHelper = new AttributeHelper<VhdFooter>();
         }
 
         public byte[] ToByteArray()
@@ -69,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
             uint checksum = 0;
             for (var i = 0; i < attributeHelper.GetEntityAttribute().Size; i++)
             {
-                if (i < VhdConstants.VHD_FOOTER_OFFSET_CHECKSUM || i >= (VhdConstants.VHD_FOOTER_OFFSET_CHECKSUM + 4))
+                if (i < VhdConstants.VHD_FOOTER_OFFSET_CHECKSUM || i >= VhdConstants.VHD_FOOTER_OFFSET_CHECKSUM + 4)
                 {
                     checksum += buffer[i];
                 }

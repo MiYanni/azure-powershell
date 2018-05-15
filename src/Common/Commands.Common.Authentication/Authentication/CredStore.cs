@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
     {
         internal enum CredentialType
         {
-            Generic = 1,
+            Generic = 1
         }
 
         internal static class NativeMethods
@@ -78,24 +78,24 @@ namespace Microsoft.Azure.Commands.Common.Authentication
             {
                 public Credential(string userName, string key, string value)
                 {
-                    this.flags = 0;
-                    this.type = CredentialType.Generic;
+                    flags = 0;
+                    type = CredentialType.Generic;
 
                     // set the key in the targetName 
-                    this.targetName = key;
+                    targetName = key;
 
-                    this.targetAlias = null;
-                    this.comment = null;
-                    this.lastWritten.dwHighDateTime = 0;
-                    this.lastWritten.dwLowDateTime = 0;
+                    targetAlias = null;
+                    comment = null;
+                    lastWritten.dwHighDateTime = 0;
+                    lastWritten.dwLowDateTime = 0;
 
                     // set the value in credentialBlob. 
-                    this.credentialBlob = Marshal.StringToHGlobalUni(value);
-                    this.credentialBlobSize = (uint)((value.Length + 1) * 2);
+                    credentialBlob = Marshal.StringToHGlobalUni(value);
+                    credentialBlobSize = (uint)((value.Length + 1) * 2);
 
-                    this.persist = 1;
-                    this.attibuteCount = 0;
-                    this.attributes = IntPtr.Zero;
+                    persist = 1;
+                    attibuteCount = 0;
+                    attributes = IntPtr.Zero;
                     this.userName = userName;
                 }
 

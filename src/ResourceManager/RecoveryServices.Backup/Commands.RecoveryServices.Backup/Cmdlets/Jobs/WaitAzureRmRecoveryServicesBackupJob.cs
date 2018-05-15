@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     TestMockSupport.Delay(30 * 1000);
                 }
 
-                WriteObject(finalJobs, enumerateCollection: true);
+                WriteObject(finalJobs, true);
             });
         }
 

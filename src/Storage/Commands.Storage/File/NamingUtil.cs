@@ -35,9 +35,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
 
         private const int MaxPathLength = 2048;
 
-        private static readonly char[] PathSeparators = new char[] { '/', '\\' };
+        private static readonly char[] PathSeparators = new[] { '/', '\\' };
 
-        private static readonly string[] DirectoryIndicators = new string[] { ".", ".." };
+        private static readonly string[] DirectoryIndicators = new[] { ".", ".." };
 
         /// <summary>
         /// Validates the given path. Provides an overload which does not
@@ -137,8 +137,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
                 // When validating exact share name (not a prefix), we must
                 // ensure the minimum length and make sure the last character
                 // is not dash.
-                else if (shareName.Length >= MinShareNameLength &&
-                         shareName.Last() != '-')
+                if (shareName.Length >= MinShareNameLength &&
+                    shareName.Last() != '-')
                 {
                     return;
                 }

@@ -64,9 +64,9 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            string filePath = this.InputObject == null ? this.Path : this.InputObject.Path;
-            NodeFileOperationParameters parameters = new NodeFileOperationParameters(this.BatchContext, this.JobId, this.TaskId, this.PoolId,
-                this.ComputeNodeId, this.Path, this.InputObject, this.AdditionalBehaviors);
+            string filePath = InputObject == null ? Path : InputObject.Path;
+            NodeFileOperationParameters parameters = new NodeFileOperationParameters(BatchContext, JobId, TaskId, PoolId,
+                ComputeNodeId, Path, InputObject, AdditionalBehaviors);
 
             ConfirmAction(
                 Force.IsPresent,

@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Resources
 
         public override void ExecuteCmdlet()
         {
-            Name = Name ?? ResourceIdentifier.FromResourceGroupIdentifier(this.Id).ResourceGroupName;
+            Name = Name ?? ResourceIdentifier.FromResourceGroupIdentifier(Id).ResourceGroupName;
 
             ConfirmAction(
                 Force.IsPresent,

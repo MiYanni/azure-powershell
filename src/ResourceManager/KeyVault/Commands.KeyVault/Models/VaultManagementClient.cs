@@ -87,21 +87,21 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 properties.EnablePurgeProtection = parameters.EnablePurgeProtection.HasValue && parameters.EnablePurgeProtection.Value ? true : (bool?)null;
                 properties.TenantId = parameters.TenantId;
                 properties.VaultUri = "";
-                properties.AccessPolicies = (parameters.AccessPolicy != null) ? new[] { parameters.AccessPolicy } : new AccessPolicyEntry[] { };
+                properties.AccessPolicies = parameters.AccessPolicy != null ? new[] { parameters.AccessPolicy } : new AccessPolicyEntry[] { };
                 properties.NetworkAcls = parameters.NetworkAcls;
             }
             else
             {
                 properties.CreateMode = CreateMode.Recover;
             }
-            var response = this.KeyVaultManagementClient.Vaults.CreateOrUpdate(
-                resourceGroupName: parameters.ResourceGroupName,
-                vaultName: parameters.VaultName,
+            var response = KeyVaultManagementClient.Vaults.CreateOrUpdate(
+                parameters.ResourceGroupName,
+                parameters.VaultName,
 
-                parameters: new VaultCreateOrUpdateParameters()
+                new VaultCreateOrUpdateParameters
                 {
                     Location = parameters.Location,
-                    Tags = TagsConversionHelper.CreateTagDictionary(parameters.Tags, validate: true),
+                    Tags = TagsConversionHelper.CreateTagDictionary(parameters.Tags, true),
                     Properties = properties
                 });
 
@@ -124,7 +124,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             try
             {
-                var response = this.KeyVaultManagementClient.Vaults.Get(resourceGroupName, vaultName);
+                var response = KeyVaultManagementClient.Vaults.Get(resourceGroupName, vaultName);
 
                 return new PSKeyVault(response, adClient);
             }
@@ -132,8 +132,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             {
                 if (ce.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
         }
 
@@ -183,10 +182,10 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 && updatedPurgeProtectionSwitch.Value)
                 properties.EnablePurgeProtection = updatedPurgeProtectionSwitch;
 
-            properties.AccessPolicies = (updatedPolicies == null) ?
+            properties.AccessPolicies = updatedPolicies == null ?
                 new List<AccessPolicyEntry>() :
-                updatedPolicies.Select(a => new AccessPolicyEntry()
-                        {
+                updatedPolicies.Select(a => new AccessPolicyEntry
+                {
                             TenantId = a.TenantId,
                             ObjectId = a.ObjectId,
                             ApplicationId = a.ApplicationId,
@@ -201,14 +200,14 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             UpdateVaultNetworkRuleSetProperties(properties, updatedNetworkAcls);
 
-            var response = this.KeyVaultManagementClient.Vaults.CreateOrUpdate(
-                resourceGroupName: existingVault.ResourceGroupName,
-                vaultName: existingVault.VaultName,
-                parameters: new VaultCreateOrUpdateParameters()
+            var response = KeyVaultManagementClient.Vaults.CreateOrUpdate(
+                existingVault.ResourceGroupName,
+                existingVault.VaultName,
+                new VaultCreateOrUpdateParameters
                 {
                     Location = existingVault.Location,
                     Properties = properties,
-                    Tags = TagsConversionHelper.CreateTagDictionary(existingVault.Tags, validate: true)
+                    Tags = TagsConversionHelper.CreateTagDictionary(existingVault.Tags, true)
                 }
                 );
             return new PSKeyVault(response, adClient);
@@ -228,7 +227,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             try
             {
-                this.KeyVaultManagementClient.Vaults.Delete(resourceGroupName, vaultName);
+                KeyVaultManagementClient.Vaults.Delete(resourceGroupName, vaultName);
             }
             catch (CloudException ce)
             {
@@ -252,7 +251,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             try
             {
-                this.KeyVaultManagementClient.Vaults.PurgeDeleted(vaultName, location);
+                KeyVaultManagementClient.Vaults.PurgeDeleted(vaultName, location);
             }
             catch (CloudException ce)
             {
@@ -277,7 +276,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             try
             {
-                var response = this.KeyVaultManagementClient.Vaults.GetDeleted(vaultName, location);
+                var response = KeyVaultManagementClient.Vaults.GetDeleted(vaultName, location);
 
                 return new PSDeletedKeyVault(response);
             }
@@ -285,8 +284,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             {
                 if (ce.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
         }
 
@@ -298,7 +296,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             List<PSDeletedKeyVault> deletedVaults = new List<PSDeletedKeyVault>();
 
-            var response = this.KeyVaultManagementClient.Vaults.ListDeleted();
+            var response = KeyVaultManagementClient.Vaults.ListDeleted();
 
             foreach (var deletedVault in response)
             {
@@ -307,7 +305,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             while (response?.NextPageLink != null)
             {
-                response = this.KeyVaultManagementClient.Vaults.ListDeletedNext(response.NextPageLink);
+                response = KeyVaultManagementClient.Vaults.ListDeletedNext(response.NextPageLink);
 
                 foreach (var deletedVault in response)
                 {
@@ -342,7 +340,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 {
                     updatedRuleSet.IpRules = psRuleSet.IpAddressRanges.Select(ipAddress =>
                     {
-                        return new IPRule() { Value = ipAddress };
+                        return new IPRule { Value = ipAddress };
                     }).ToList<IPRule>();
                 }
                 else
@@ -354,7 +352,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 {
                     updatedRuleSet.VirtualNetworkRules = psRuleSet.VirtualNetworkResourceIds.Select(resourceId =>
                     {
-                        return new VirtualNetworkRule() { Id = resourceId };
+                        return new VirtualNetworkRule { Id = resourceId };
                     }).ToList<VirtualNetworkRule>();
                 }
                 else

@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncGroup SyncGroup
         {
-            get { return this._syncGroup; }
-            set { this._syncGroup = value; }
+            get { return _syncGroup; }
+            set { _syncGroup = value; }
         }
         
         /// <summary>

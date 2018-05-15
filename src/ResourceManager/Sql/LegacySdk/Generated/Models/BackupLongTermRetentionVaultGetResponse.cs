@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public BackupLongTermRetentionVault BackupLongTermRetentionVault
         {
-            get { return this._backupLongTermRetentionVault; }
-            set { this._backupLongTermRetentionVault = value; }
+            get { return _backupLongTermRetentionVault; }
+            set { _backupLongTermRetentionVault = value; }
         }
         
         /// <summary>

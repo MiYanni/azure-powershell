@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         {
             try
             {
-                ModelAdapter.GetVirtualNetworkRule(this.ResourceGroupName, this.ServerName, this.VirtualNetworkRuleName);
+                ModelAdapter.GetVirtualNetworkRule(ResourceGroupName, ServerName, VirtualNetworkRuleName);
             }
             catch (CloudException ex)
             {
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
 
             // The server already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.ServerVirtualNetworkRuleNameExists, this.VirtualNetworkRuleName, this.ServerName),
+                string.Format(Properties.Resources.ServerVirtualNetworkRuleNameExists, VirtualNetworkRuleName, ServerName),
                 "VirtualNetworkRule");
         }
 
@@ -92,13 +92,13 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         protected override IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> ApplyUserInputToModel(IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> model)
         {
             List<Model.AzureSqlServerVirtualNetworkRuleModel> newEntity = new List<Model.AzureSqlServerVirtualNetworkRuleModel>();
-            newEntity.Add(new Model.AzureSqlServerVirtualNetworkRuleModel()
+            newEntity.Add(new Model.AzureSqlServerVirtualNetworkRuleModel
             {
-                ResourceGroupName = this.ResourceGroupName.Trim(),
-                ServerName = this.ServerName.Trim(),
-                VirtualNetworkRuleName = this.VirtualNetworkRuleName.Trim(),
-                VirtualNetworkSubnetId = this.VirtualNetworkSubnetId.Trim(),
-                IgnoreMissingVnetServiceEndpoint = this.IgnoreMissingVnetServiceEndpoint
+                ResourceGroupName = ResourceGroupName.Trim(),
+                ServerName = ServerName.Trim(),
+                VirtualNetworkRuleName = VirtualNetworkRuleName.Trim(),
+                VirtualNetworkSubnetId = VirtualNetworkSubnetId.Trim(),
+                IgnoreMissingVnetServiceEndpoint = IgnoreMissingVnetServiceEndpoint
             });
             return newEntity;
         }
@@ -110,7 +110,8 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         /// <returns>The created server</returns>
         protected override IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> PersistChanges(IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> entity)
         {
-            return new List<Model.AzureSqlServerVirtualNetworkRuleModel>() {
+            return new List<Model.AzureSqlServerVirtualNetworkRuleModel>
+            {
                 ModelAdapter.UpsertVirtualNetworkRule(entity.First())
             };
         }

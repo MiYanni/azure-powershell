@@ -37,23 +37,23 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override void ExecuteCmdlet()
         {
-            if (this.Name != null)
+            if (Name != null)
             {
-                if (this.Name.EndsWith("."))
+                if (Name.EndsWith("."))
                 {
-                    this.Name = this.Name.TrimEnd('.');
-                    this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", this.Name));
+                    Name = Name.TrimEnd('.');
+                    WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", Name));
                 }
 
-                this.WriteObject(this.DnsClient.GetDnsZone(this.Name, this.ResourceGroupName));
+                WriteObject(DnsClient.GetDnsZone(Name, ResourceGroupName));
             }
-            else if (!string.IsNullOrEmpty(this.ResourceGroupName))
+            else if (!string.IsNullOrEmpty(ResourceGroupName))
             {
-                WriteObject(this.DnsClient.ListDnsZonesInResourceGroup(this.ResourceGroupName), true);
+                WriteObject(DnsClient.ListDnsZonesInResourceGroup(ResourceGroupName), true);
             }
             else
             {
-                WriteObject(this.DnsClient.ListDnsZonesInSubscription(), true);
+                WriteObject(DnsClient.ListDnsZonesInSubscription(), true);
             }
         }
     }

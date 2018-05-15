@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.Namespace
         public override void ExecuteCmdlet()
         {
             // delete a EventHub namespace 
-            if(ShouldProcess(target: Name, action:string.Format(Resources.RemoveNamespaces, Name, ResourceGroupName)))
+            if(ShouldProcess(Name, string.Format(Resources.RemoveNamespaces, Name, ResourceGroupName)))
             {
                 Client.BeginDeleteNamespace(ResourceGroupName, Name);
             }            

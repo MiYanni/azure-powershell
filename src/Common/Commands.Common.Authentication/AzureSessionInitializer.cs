@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
                 OldProfileFile = "WindowsAzureProfile.xml",
                 OldProfileFileBackup = "WindowsAzureProfile.xml.bak",
                 ProfileDirectory = profilePath,
-                ProfileFile = "AzureProfile.json",
+                ProfileFile = "AzureProfile.json"
             };
 
             var autoSave = InitializeSessionSettings(dataStore, profilePath, ContextAutosaveSettings.AutoSaveSettingsFile);

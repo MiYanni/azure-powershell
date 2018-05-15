@@ -42,16 +42,15 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
             {
                 if (!string.IsNullOrEmpty(Id))
                     return Id;
-                else if (!string.IsNullOrEmpty(UPN))
+                if (!string.IsNullOrEmpty(UPN))
                     return UPN;
-                else if (!string.IsNullOrEmpty(SPN))
+                if (!string.IsNullOrEmpty(SPN))
                     return SPN;
-                else if (!string.IsNullOrEmpty(Mail))
+                if (!string.IsNullOrEmpty(Mail))
                     return Mail;
-                else if (!string.IsNullOrEmpty(SearchString))
+                if (!string.IsNullOrEmpty(SearchString))
                     return SearchString;
-                else
-                    return null;
+                return null;
             }
         }
     }

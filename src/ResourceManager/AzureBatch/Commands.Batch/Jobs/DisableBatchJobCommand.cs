@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            DisableJobParameters parameters = new DisableJobParameters(this.BatchContext, this.Id, null, this.DisableJobOption, this.AdditionalBehaviors);
+            DisableJobParameters parameters = new DisableJobParameters(BatchContext, Id, null, DisableJobOption, AdditionalBehaviors);
             BatchClient.DisableJob(parameters);
         }
     }

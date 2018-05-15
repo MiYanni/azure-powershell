@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            this.WriteObject(new ASRVaultSettings(PSRecoveryServicesClient.asrVaultCreds));
+            WriteObject(new ASRVaultSettings(PSRecoveryServicesClient.asrVaultCreds));
         }
     }
 }

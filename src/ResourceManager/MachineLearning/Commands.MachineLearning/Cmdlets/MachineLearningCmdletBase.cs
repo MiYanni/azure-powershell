@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
         {
             get
             {
-                return this.cancellationSource == null ? null : (CancellationToken?)this.cancellationSource.Token;
+                return cancellationSource == null ? null : (CancellationToken?)cancellationSource.Token;
             }
         }
 
@@ -51,17 +51,17 @@ namespace Microsoft.Azure.Commands.MachineLearning
         {
             try
             {
-                if (this.cancellationSource == null)
+                if (cancellationSource == null)
                 {
-                    this.cancellationSource = new CancellationTokenSource();
+                    cancellationSource = new CancellationTokenSource();
                 }
 
                 base.BeginProcessing();
             }
             catch (Exception ex)
             {
-                this.WriteVersionInfoToDebugChannel();
-                if (this.IsFatalException(ex))
+                WriteVersionInfoToDebugChannel();
+                if (IsFatalException(ex))
                 {
                     ThrowTerminatingError(
                         new ErrorRecord(
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
                 }
 
                 var capturedException = ExceptionDispatchInfo.Capture(ex);
-                this.HandleException(capturedException: capturedException);
+                HandleException(capturedException);
             }
         }
 
@@ -84,8 +84,8 @@ namespace Microsoft.Azure.Commands.MachineLearning
             }
             catch (Exception ex)
             {
-                this.WriteVersionInfoToDebugChannel();
-                if (this.IsFatalException(ex))
+                WriteVersionInfoToDebugChannel();
+                if (IsFatalException(ex))
                 {
                     ThrowTerminatingError(
                             new ErrorRecord(
@@ -96,11 +96,11 @@ namespace Microsoft.Azure.Commands.MachineLearning
                 }
 
                 var capturedException = ExceptionDispatchInfo.Capture(ex);
-                this.HandleException(capturedException: capturedException);
+                HandleException(capturedException);
             }
             finally
             {
-                this.DisposeOfCancellationSource();
+                DisposeOfCancellationSource();
             }
         }
 
@@ -108,28 +108,28 @@ namespace Microsoft.Azure.Commands.MachineLearning
         {
             try
             {
-                if (this.cancellationSource != null &&
-                    !this.cancellationSource.IsCancellationRequested)
+                if (cancellationSource != null &&
+                    !cancellationSource.IsCancellationRequested)
                 {
-                    this.cancellationSource.Cancel();
+                    cancellationSource.Cancel();
                 }
 
                 base.StopProcessing();
             }
             catch (Exception ex)
             {
-                this.WriteVersionInfoToDebugChannel();
-                if (this.IsFatalException(ex))
+                WriteVersionInfoToDebugChannel();
+                if (IsFatalException(ex))
                 {
                     throw;
                 }
 
                 var capturedException = ExceptionDispatchInfo.Capture(ex);
-                this.HandleException(capturedException: capturedException);
+                HandleException(capturedException);
             }
             finally
             {
-                this.DisposeOfCancellationSource();
+                DisposeOfCancellationSource();
             }
         }
 
@@ -146,19 +146,19 @@ namespace Microsoft.Azure.Commands.MachineLearning
             try
             {
                 base.ExecuteCmdlet();
-                this.RunCmdlet();
+                RunCmdlet();
             }
             catch (Exception ex)
             {
-               this.WriteVersionInfoToDebugChannel();
+               WriteVersionInfoToDebugChannel();
 
-                if (this.IsFatalException(ex))
+                if (IsFatalException(ex))
                 {
                     throw;
                 }
 
                 var capturedException = ExceptionDispatchInfo.Capture(ex);
-                this.HandleException(capturedException: capturedException);
+                HandleException(capturedException);
             }
         }
 
@@ -166,15 +166,15 @@ namespace Microsoft.Azure.Commands.MachineLearning
 
         private void DisposeOfCancellationSource()
         {
-            if (this.cancellationSource != null)
+            if (cancellationSource != null)
             {
-                if (!this.cancellationSource.IsCancellationRequested)
+                if (!cancellationSource.IsCancellationRequested)
                 {
-                    this.cancellationSource.Cancel();
+                    cancellationSource.Cancel();
                 }
 
-                this.cancellationSource.Dispose();
-                this.cancellationSource = null;
+                cancellationSource.Dispose();
+                cancellationSource = null;
             }
         }
 
@@ -190,7 +190,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
                 var cloudException = capturedException.SourceException as CloudException;
                 if (cloudException != null)
                 {
-                    errorRecord = this.CreateErrorRecordForCloudException(cloudException);
+                    errorRecord = CreateErrorRecordForCloudException(cloudException);
                 }
                 else
                 {
@@ -232,11 +232,11 @@ namespace Microsoft.Azure.Commands.MachineLearning
                     }
                 }
 
-                this.WriteError(errorRecord);
+                WriteError(errorRecord);
             }
             finally
             {
-                this.DisposeOfCancellationSource();
+                DisposeOfCancellationSource();
             }
         }
 
@@ -300,10 +300,10 @@ namespace Microsoft.Azure.Commands.MachineLearning
         {
             if (ex is AggregateException)
             {
-                return ((AggregateException)ex).Flatten().InnerExceptions.Any(exception => this.IsFatalException(exception));
+                return ((AggregateException)ex).Flatten().InnerExceptions.Any(exception => IsFatalException(exception));
             }
 
-            if (ex.InnerException != null && this.IsFatalException(ex.InnerException))
+            if (ex.InnerException != null && IsFatalException(ex.InnerException))
             {
                 return true;
             }
@@ -324,8 +324,8 @@ namespace Microsoft.Azure.Commands.MachineLearning
 
         private void WriteVersionInfoToDebugChannel()
         {
-            var versionInfo = this.MyInvocation.MyCommand.Module.Version;
-            this.WriteDebug(Resources.VersionInfo.FormatInvariant(versionInfo.ToString(3)));
+            var versionInfo = MyInvocation.MyCommand.Module.Version;
+            WriteDebug(Resources.VersionInfo.FormatInvariant(versionInfo.ToString(3)));
         }
     }
 }

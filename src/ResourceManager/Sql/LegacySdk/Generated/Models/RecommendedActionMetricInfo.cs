@@ -36,20 +36,20 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string MetricName
         {
-            get { return this._metricName; }
-            set { this._metricName = value; }
+            get { return _metricName; }
+            set { _metricName = value; }
         }
         
-        private System.DateTime? _startTime;
+        private DateTime? _startTime;
         
         /// <summary>
         /// Optional. Gets the start time of time interval given by this
         /// MetricInfo
         /// </summary>
-        public System.DateTime? StartTime
+        public DateTime? StartTime
         {
-            get { return this._startTime; }
-            set { this._startTime = value; }
+            get { return _startTime; }
+            set { _startTime = value; }
         }
         
         private string _timeGrain;
@@ -60,8 +60,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string TimeGrain
         {
-            get { return this._timeGrain; }
-            set { this._timeGrain = value; }
+            get { return _timeGrain; }
+            set { _timeGrain = value; }
         }
         
         private string _unit;
@@ -72,8 +72,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Unit
         {
-            get { return this._unit; }
-            set { this._unit = value; }
+            get { return _unit; }
+            set { _unit = value; }
         }
         
         private double? _value;
@@ -84,8 +84,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double? Value
         {
-            get { return this._value; }
-            set { this._value = value; }
+            get { return _value; }
+            set { _value = value; }
         }
         
         /// <summary>

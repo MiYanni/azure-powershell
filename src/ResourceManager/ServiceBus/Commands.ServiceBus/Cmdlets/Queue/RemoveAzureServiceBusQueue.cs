@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Queue
         public override void ExecuteCmdlet()
         {
             // delete a Queue 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.RemoveQueue, Name, Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.RemoveQueue, Name, Namespace)))
             {
                 WriteObject(Client.DeleteQueue(ResourceGroupName, Namespace, Name));
             }

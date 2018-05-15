@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                     resourceGroupName,
                     dataFactoryName,
                     pipelineName,
-                    new PipelineCreateOrUpdateWithRawJsonContentParameters() { Content = rawJsonContent });
+                    new PipelineCreateOrUpdateWithRawJsonContentParameters { Content = rawJsonContent });
 
             return response.Pipeline;
         }
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 resourceGroupName,
                 dataFactoryName,
                 pipelineName,
-                new PipelineSetActivePeriodParameters()
+                new PipelineSetActivePeriodParameters
                 {
                     ActivePeriodStartTime = startTime.ConvertToISO8601DateTimeString(),
                     ActivePeriodEndTime = endTime.ConvertToISO8601DateTimeString(),
@@ -223,10 +223,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 {
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
     }

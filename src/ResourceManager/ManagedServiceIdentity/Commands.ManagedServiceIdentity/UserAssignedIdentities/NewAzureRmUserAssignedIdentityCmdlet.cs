@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
             Position = 0,
             HelpMessage = "The resource group name.",
             ValueFromPipelineByPropertyName = true)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
             Mandatory = false,
             HelpMessage = "The Azure region name where the Identity should be created.",
             ValueFromPipelineByPropertyName = true)]
-        [LocationCompleter()]
+        [LocationCompleter]
         [ValidateNotNullOrEmpty]
         public string Location { get; set; }
 
@@ -54,21 +54,21 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
         {
             base.ExecuteCmdlet();
 
-            if (this.ShouldProcess(Name,
+            if (ShouldProcess(Name,
                 string.Format(CultureInfo.CurrentCulture,
                     Properties.Resources.NewUserAssignedIdentity_ProcessMessage,
-                    this.ResourceGroupName,
-                    this.Name)))
+                    ResourceGroupName,
+                    Name)))
             {
-                var tagsDictionary = this.Tag?.Cast<DictionaryEntry>()
+                var tagsDictionary = Tag?.Cast<DictionaryEntry>()
                     .ToDictionary(ht => (string) ht.Key, ht => (string) ht.Value);
                 var location = GetLocation();
                 Identity identityProperties = new Identity(location: location, tags: tagsDictionary);
                 var result =
-                    this.MsiClient.UserAssignedIdentities
+                    MsiClient.UserAssignedIdentities
                         .CreateOrUpdateWithHttpMessagesAsync(
-                            this.ResourceGroupName,
-                            this.Name,
+                            ResourceGroupName,
+                            Name,
                             identityProperties).GetAwaiter().GetResult();
 
                 WriteIdentity(result.Body);
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
 
         private string GetLocation()
         {
-            return this.Location ?? GetResourceGroupLocation(this.ResourceGroupName);
+            return Location ?? GetResourceGroupLocation(ResourceGroupName);
         }
 
         private string GetResourceGroupLocation(string resourceGroupName)

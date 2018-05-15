@@ -37,14 +37,14 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var backendAddressPool = this.LoadBalancer.BackendAddressPools.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var backendAddressPool = LoadBalancer.BackendAddressPools.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (backendAddressPool != null)
             {
-                this.LoadBalancer.BackendAddressPools.Remove(backendAddressPool);
+                LoadBalancer.BackendAddressPools.Remove(backendAddressPool);
             }
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

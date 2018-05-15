@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
     /// Regnerate Location Based Services Account Key (Primary or Secondary)
     /// </summary>
     [Cmdlet(VerbsCommon.New, LocationBasedServicesAccountKeyNounStr, SupportsShouldProcess = true, DefaultParameterSetName = NameParameterSet), 
-     OutputType(typeof(LocationBasedServicesModels.LocationBasedServicesAccountKeys))]
+     OutputType(typeof(LocationBasedServicesAccountKeys))]
     public class NewAzureLocationBasedServicesAccountKeyCommand : LocationBasedServicesAccountBaseCmdlet
     {
         protected const string NameParameterSet = "NameParameterSet";
@@ -94,26 +94,25 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
                     }
                     case NameParameterSet:
                     {
-                        rgName = this.ResourceGroupName;
-                        name = this.Name;
+                        rgName = ResourceGroupName;
+                        name = Name;
                         break;
                     }
                     case ResourceIdParameterSet:
                     {
-                        ValidateAndExtractName(this.ResourceId, out rgName, out name);
+                        ValidateAndExtractName(ResourceId, out rgName, out name);
                         break;
                     }
                 }
 
                 if (!string.IsNullOrEmpty(rgName)
                     && !string.IsNullOrEmpty(name)
-                    && ShouldProcess(name, string.Format(CultureInfo.CurrentCulture, Resources.NewAccountKey_ProcessMessage, this.KeyName, name)))
+                    && ShouldProcess(name, string.Format(CultureInfo.CurrentCulture, Resources.NewAccountKey_ProcessMessage, KeyName, name)))
                 {
-                    var keys = this.LocationBasedServicesClient.Accounts.RegenerateKeys(
+                    var keys = LocationBasedServicesClient.Accounts.RegenerateKeys(
                         rgName,
                         name,
-                        new LocationBasedServicesKeySpecification()
-                            { KeyType = this.KeyName }
+                        new LocationBasedServicesKeySpecification { KeyType = KeyName }
                     );
 
                     WriteObject(keys);

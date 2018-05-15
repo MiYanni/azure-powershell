@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 {
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
+    using Commands.Common.Authentication.Abstractions;
+    using Extensions;
     using System;
     using System.Linq;
     using System.Text;
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 
             if (!string.IsNullOrWhiteSpace(extensionResourceType))
             {
-                resourceIdBuilder.Append(ResourceIdUtility.ProcessResourceTypeAndName(resourceType: extensionResourceType, resourceName: extensionResourceName));
+                resourceIdBuilder.Append(ProcessResourceTypeAndName(extensionResourceType, extensionResourceName));
             }
 
             return resourceIdBuilder.ToString();
@@ -74,12 +74,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 
             if (!string.IsNullOrWhiteSpace(resourceType))
             {
-                resourceId.Append(ResourceIdUtility.ProcessResourceTypeAndName(resourceType: resourceType, resourceName: resourceName));
+                resourceId.Append(ProcessResourceTypeAndName(resourceType, resourceName));
             }
 
             if (!string.IsNullOrWhiteSpace(extensionResourceType))
             {
-                resourceId.Append(ResourceIdUtility.ProcessResourceTypeAndName(resourceType: extensionResourceType, resourceName: extensionResourceName));
+                resourceId.Append(ProcessResourceTypeAndName(extensionResourceType, extensionResourceName));
             }
 
             return resourceId.ToString();
@@ -110,8 +110,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <returns></returns>
         public static string GetResourceId(Guid subscriptionId, string resourceGroupName, string parentResource, string resourceType, string resourceName)
         {
-            var provider = ResourceIdUtility.GetProviderFromLegacyResourceTypeString(resourceType);
-            resourceType = ResourceIdUtility.GetTypeFromLegacyResourceTypeString(resourceType);
+            var provider = GetProviderFromLegacyResourceTypeString(resourceType);
+            resourceType = GetTypeFromLegacyResourceTypeString(resourceType);
 
             var parameters = new[]
             {
@@ -159,12 +159,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 
             if (!string.IsNullOrWhiteSpace(resourceType))
             {
-                resourceId.Append(ResourceIdUtility.ProcessResourceTypeAndName(resourceType: resourceType, resourceName: null));
+                resourceId.Append(ProcessResourceTypeAndName(resourceType, null));
             }
 
             if (!string.IsNullOrWhiteSpace(extensionResourceType))
             {
-                resourceId.Append(ResourceIdUtility.ProcessResourceTypeAndName(resourceType: extensionResourceType, resourceName: null));
+                resourceId.Append(ProcessResourceTypeAndName(extensionResourceType, null));
             }
 
             return resourceId.ToString();
@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="resourceId">The resource id.</param>
         public static string GetProviderNamespace(string resourceId)
         {
-            return ResourceIdUtility.GetNextSegmentAfter(resourceId: resourceId, segmentName: Constants.Providers);
+            return GetNextSegmentAfter(resourceId, Constants.Providers);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="resourceId">The resource id.</param>
         public static string GetSubscriptionId(string resourceId)
         {
-            return ResourceIdUtility.GetNextSegmentAfter(resourceId: resourceId, segmentName: Constants.Subscriptions);
+            return GetNextSegmentAfter(resourceId, Constants.Subscriptions);
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="resourceId">The resource id.</param>
         public static string GetResourceGroupName(string resourceId)
         {
-            return ResourceIdUtility.GetNextSegmentAfter(resourceId: resourceId, segmentName: Constants.ResourceGroups);
+            return GetNextSegmentAfter(resourceId, Constants.ResourceGroups);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="resourceId">The resource id.</param>
         public static string GetResourceGroupId(string resourceId)
         {
-            var subscriptionId = ResourceIdUtility.GetSubscriptionId(resourceId);
+            var subscriptionId = GetSubscriptionId(resourceId);
             if (string.IsNullOrWhiteSpace(subscriptionId))
             {
                 return null;
@@ -215,17 +215,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
                 return null;
             }
 
-            var resourceGroupName = ResourceIdUtility.GetResourceGroupName(resourceId);
+            var resourceGroupName = GetResourceGroupName(resourceId);
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
                 return null;
             }
 
-            return ResourceIdUtility.GetResourceId(
-                subscriptionId: subscriptionGuid,
-                resourceGroupName: resourceGroupName,
-                resourceType: null,
-                resourceName: null);
+            return GetResourceId(
+                subscriptionGuid,
+                resourceGroupName,
+                null,
+                null);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="includeProviderNamespace">Indicates if the provider namespace should be included in the resource name.</param>
         public static string GetResourceType(string resourceId, bool includeProviderNamespace = true)
         {
-            return ResourceIdUtility.GetResourceTypeOrName(resourceId: resourceId, includeProviderNamespace: includeProviderNamespace, getResourceName: false);
+            return GetResourceTypeOrName(resourceId, includeProviderNamespace: includeProviderNamespace, getResourceName: false);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="resourceId">The resource Id.</param>
         public static string GetResourceName(string resourceId)
         {
-            return ResourceIdUtility.GetResourceTypeOrName(resourceId: resourceId, getResourceName: true);
+            return GetResourceTypeOrName(resourceId, true);
         }
 
         /// <summary>
@@ -253,8 +253,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="resourceId">The resource id.</param>
         public static string GetExtensionProviderNamespace(string resourceId)
         {
-            return ResourceIdUtility.IsExtensionResourceId(resourceId)
-                ? ResourceIdUtility.GetNextSegmentAfter(resourceId: resourceId, segmentName: Constants.Providers, selectLastSegment: true)
+            return IsExtensionResourceId(resourceId)
+                ? GetNextSegmentAfter(resourceId, Constants.Providers, true)
                 : null;
         }
 
@@ -265,7 +265,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="includeProviderNamespace">Indicates if the provider namespace should be included in the resource name.</param>
         public static string GetExtensionResourceType(string resourceId, bool includeProviderNamespace = true)
         {
-            return ResourceIdUtility.GetExtensionResourceTypeOrName(resourceId: resourceId, includeProviderNamespace: includeProviderNamespace, getResourceName: false);
+            return GetExtensionResourceTypeOrName(resourceId, includeProviderNamespace: includeProviderNamespace, getResourceName: false);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="resourceId">The resource Id.</param>
         public static string GetExtensionResourceName(string resourceId)
         {
-            return ResourceIdUtility.GetExtensionResourceTypeOrName(resourceId: resourceId, getResourceName: true);
+            return GetExtensionResourceTypeOrName(resourceId, true);
         }
 
         /// <summary>
@@ -285,8 +285,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="includeProviderNamespace">Indicates if the provider namespace should be included in the resource name.</param>
         private static string GetExtensionResourceTypeOrName(string resourceId, bool getResourceName, bool includeProviderNamespace = true)
         {
-            return ResourceIdUtility.IsExtensionResourceId(resourceId)
-                ? ResourceIdUtility.GetResourceTypeOrName(resourceId: resourceId, getResourceName: getResourceName, includeProviderNamespace: includeProviderNamespace, useLastSegment: true)
+            return IsExtensionResourceId(resourceId)
+                ? GetResourceTypeOrName(resourceId, getResourceName, includeProviderNamespace, true)
                 : null;
         }
 
@@ -310,10 +310,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="useLastSegment">Seek the last segment instead of the first match.</param>
         private static string GetResourceTypeOrName(string resourceId, bool getResourceName, bool includeProviderNamespace = true, bool useLastSegment = false)
         {
-            var substring = ResourceIdUtility.GetSubstringAfterSegment(
-                resourceId: resourceId,
-                segmentName: Constants.Providers,
-                selectLastSegment: useLastSegment);
+            var substring = GetSubstringAfterSegment(
+                resourceId,
+                Constants.Providers,
+                useLastSegment);
 
             var segments = substring.CoalesceString().SplitRemoveEmpty('/');
 
@@ -344,11 +344,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="selectLastSegment">When set to true, gets the last segment (default) otherwise gets the first one.</param>
         private static string GetNextSegmentAfter(string resourceId, string segmentName, bool selectLastSegment = false)
         {
-            var segment = ResourceIdUtility
-                .GetSubstringAfterSegment(
-                    resourceId: resourceId,
-                    segmentName: segmentName,
-                    selectLastSegment: selectLastSegment)
+            var segment = GetSubstringAfterSegment(
+                    resourceId,
+                    segmentName,
+                    selectLastSegment)
                 .SplitRemoveEmpty('/')
                 .FirstOrDefault();
 
@@ -418,10 +417,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 return string.Empty;
             }
-            else
-            {
-                return legacyResourceType.Substring(0, indexOfSlash);
-            }
+            return legacyResourceType.Substring(0, indexOfSlash);
         }
 
         /// <summary>
@@ -440,10 +436,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 return string.Empty;
             }
-            else
-            {
-                return legacyResourceType.Substring(lastIndexOfSlash + 1);
-            }
+            return legacyResourceType.Substring(lastIndexOfSlash + 1);
         }
     }
 }

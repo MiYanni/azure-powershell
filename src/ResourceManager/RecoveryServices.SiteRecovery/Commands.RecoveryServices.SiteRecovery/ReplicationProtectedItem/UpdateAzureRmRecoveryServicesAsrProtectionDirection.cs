@@ -261,40 +261,40 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Protected item or Recovery plan",
                 "Update protection direction"))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByRPIObject:
                     case ASRParameterSets.AzureToVMware:
                     case ASRParameterSets.VMwareToAzure:
                     case ASRParameterSets.HyperVToAzure:
                     case ASRParameterSets.EnterpriseToEnterprise:
-                        this.protectionContainerName = Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                        protectionContainerName = Utilities.GetValueFromArmId(
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationProtectionContainers);
-                        this.fabricName = Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                        fabricName = Utilities.GetValueFromArmId(
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationFabrics);
-                        this.SetRPIReprotect();
+                        SetRPIReprotect();
                         break;
                     case ASRParameterSets.AzureToAzure:
                     case ASRParameterSets.AzureToAzureWithMultipleStorageAccount:
-                        this.protectionContainerName = Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                        protectionContainerName = Utilities.GetValueFromArmId(
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationProtectionContainers);
-                        this.fabricName = Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                        fabricName = Utilities.GetValueFromArmId(
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationFabrics);
-                        this.A2ARPIReprotect();
+                        A2ARPIReprotect();
                         break;
                     case ASRParameterSets.ByRPObject:
-                        this.SetRPReprotect();
+                        SetRPReprotect();
                         break;
                     case ASRParameterSets.ByPEObject:
-                        this.WriteWarning(
+                        WriteWarning(
                         Resources.UnsupportedReplicationReprotectScenerio);
                         break;
                 }
@@ -308,25 +308,25 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var plannedFailoverInputProperties = new ReverseReplicationInputProperties
             {
-                FailoverDirection = this.Direction,
+                FailoverDirection = Direction,
                 ProviderSpecificDetails = new ReverseReplicationProviderSpecificInput()
             };
 
             var input = new ReverseReplicationInput { Properties = plannedFailoverInputProperties };
 
             // fetch the latest Protectable item objects
-            var replicationProtectedItemResponse = this.RecoveryServicesClient
+            var replicationProtectedItemResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryReplicationProtectedItem(
-                    this.fabricName,
-                    this.protectionContainerName,
-                    this.ReplicationProtectedItem.Name);
+                    fabricName,
+                    protectionContainerName,
+                    ReplicationProtectedItem.Name);
 
             validateRPISwitchParam();
 
-            var protectableItemResponse = this.RecoveryServicesClient
+            var protectableItemResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryProtectableItem(
-                    this.fabricName,
-                    this.protectionContainerName,
+                    fabricName,
+                    protectionContainerName,
                     Utilities.GetValueFromArmId(
                         replicationProtectedItemResponse.Properties.ProtectableItemId,
                         ARMResourceTypeConstants.ProtectableItems));
@@ -335,11 +335,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             if (0 ==
                 string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.HyperVReplicaAzure,
                     StringComparison.OrdinalIgnoreCase))
             {
-                if (this.Direction == Constants.PrimaryToRecovery)
+                if (Direction == Constants.PrimaryToRecovery)
                 {
                     var reprotectInput = new HyperVReplicaAzureReprotectInput
                     {
@@ -362,38 +362,38 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         (HyperVReplicaAzureReplicationDetails)replicationProtectedItemResponse
                             .Properties.ProviderSpecificDetails;
 
-                    reprotectInput.StorageAccountId = this.RecoveryAzureStorageAccountId == null ?
+                    reprotectInput.StorageAccountId = RecoveryAzureStorageAccountId == null ?
                         providerSpecificDetails.RecoveryAzureStorageAccount
-                        : this.RecoveryAzureStorageAccountId;
+                        : RecoveryAzureStorageAccountId;
 
-                    reprotectInput.LogStorageAccountId = this.LogStorageAccountId == null ?
+                    reprotectInput.LogStorageAccountId = LogStorageAccountId == null ?
                         providerSpecificDetails.RecoveryAzureLogStorageAccountId
-                        : this.LogStorageAccountId;
+                        : LogStorageAccountId;
 
                     input.Properties.ProviderSpecificDetails = reprotectInput;
                 }
             }
             else if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMageAzureV2,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
             {
                 // Validate the direction as RecoveryToPrimary.
-                if (this.Direction == Constants.RecoveryToPrimary)
+                if (Direction == Constants.RecoveryToPrimary)
                 {
                     // Set the InMage Provider specific input in the Reprotect Input.
                     var reprotectInput = new InMageReprotectInput
                     {
-                        ProcessServerId = this.ProcessServer.Id,
-                        MasterTargetId = this.MasterTarget != null
-                            ? this.MasterTarget.Id
-                            : this.ProcessServer
+                        ProcessServerId = ProcessServer.Id,
+                        MasterTargetId = MasterTarget != null
+                            ? MasterTarget.Id
+                            : ProcessServer
                                 .Id, // Assumption: PS and MT may or may not be same.
-                        RunAsAccountId = this.Account != null ? this.Account.AccountId : null,
-                        RetentionDrive = this.RetentionVolume.VolumeName,
-                        DatastoreName = this.DataStore.SymbolicName,
-                        ProfileId = this.ProtectionContainerMapping.PolicyId,
+                        RunAsAccountId = Account != null ? Account.AccountId : null,
+                        RetentionDrive = RetentionVolume.VolumeName,
+                        DatastoreName = DataStore.SymbolicName,
+                        ProfileId = ProtectionContainerMapping.PolicyId,
                         DiskExclusionInput = new InMageDiskExclusionInput
                         {
                             VolumeOptions = new List<InMageVolumeExclusionOptions>(),
@@ -419,26 +419,26 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 }
             }
             else if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMage,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
             {
                 // Validate the Direction as RecoveryToPrimary.
-                if (this.Direction == Constants.RecoveryToPrimary)
+                if (Direction == Constants.RecoveryToPrimary)
                 {
                     // Set the InMageAzureV2 Provider specific input in the Reprotect Input.
                     var reprotectInput = new InMageAzureV2ReprotectInput
                     {
-                        ProcessServerId = this.ProcessServer.Id,
-                        MasterTargetId = this.MasterTarget != null
-                            ? this.MasterTarget.Id
-                            : this.ProcessServer
+                        ProcessServerId = ProcessServer.Id,
+                        MasterTargetId = MasterTarget != null
+                            ? MasterTarget.Id
+                            : ProcessServer
                                 .Id, // Assumption: PS and MT are same. 
-                        RunAsAccountId = this.Account.AccountId,
-                        PolicyId = this.ProtectionContainerMapping.PolicyId,
-                        StorageAccountId = this.RecoveryAzureStorageAccountId,
-                        LogStorageAccountId = this.LogStorageAccountId,
+                        RunAsAccountId = Account.AccountId,
+                        PolicyId = ProtectionContainerMapping.PolicyId,
+                        StorageAccountId = RecoveryAzureStorageAccountId,
+                        LogStorageAccountId = LogStorageAccountId,
                         DisksToInclude = null
                     };
                     input.Properties.ProviderSpecificDetails = reprotectInput;
@@ -450,16 +450,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 }
             }
 
-            var response = this.RecoveryServicesClient.StartAzureSiteRecoveryReprotection(
-                this.fabricName,
-                this.protectionContainerName,
-                this.ReplicationProtectedItem.Name,
+            var response = RecoveryServicesClient.StartAzureSiteRecoveryReprotection(
+                fabricName,
+                protectionContainerName,
+                ReplicationProtectedItem.Name,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -468,8 +468,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void SetRPReprotect()
         {
             // Check if the Recovery Plan contains any InMageAzureV2 and InMage Replication Provider Entities.
-            var rp = this.RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(
-                this.RecoveryPlan
+            var rp = RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(
+                RecoveryPlan
                     .Name);
 
             foreach (var replicationProvider in rp.Properties.ReplicationProviders)
@@ -486,13 +486,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             }
 
             var response =
-                this.RecoveryServicesClient.UpdateAzureSiteRecoveryProtection(
-                    this.RecoveryPlan.Name);
+                RecoveryServicesClient.UpdateAzureSiteRecoveryProtection(
+                    RecoveryPlan.Name);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -502,54 +502,54 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var switchProtectionInputProperties = new SwitchProtectionInputProperties()
             {
-                ReplicationProtectedItemName = this.ReplicationProtectedItem.Name,
+                ReplicationProtectedItemName = ReplicationProtectedItem.Name,
                 ProviderSpecificDetails = new SwitchProtectionProviderSpecificInput()
             };
             var fabricFriendlyName =
-                        this.ReplicationProtectedItem.PrimaryFabricFriendlyName;
+                        ReplicationProtectedItem.PrimaryFabricFriendlyName;
             SwitchProtectionInput input = new SwitchProtectionInput()
             {
                 Properties = switchProtectionInputProperties
             };
 
             if (0 == string.Compare(
-                this.ReplicationProtectedItem.ReplicationProvider,
+                ReplicationProtectedItem.ReplicationProvider,
                 Constants.A2A,
                 StringComparison.OrdinalIgnoreCase))
             {
                 var a2aSwitchInput = new A2ASwitchProtectionInput()
                 {
-                    PolicyId = this.ProtectionContainerMapping.PolicyId,
+                    PolicyId = ProtectionContainerMapping.PolicyId,
                     RecoveryContainerId =
-                        this.ProtectionContainerMapping.TargetProtectionContainerId,
+                        ProtectionContainerMapping.TargetProtectionContainerId,
                     VmDisks = new List<A2AVmDiskInputDetails>(),
-                    RecoveryResourceGroupId = this.RecoveryResourceGroupId,
-                    RecoveryCloudServiceId = this.RecoveryCloudServiceId,
-                    RecoveryAvailabilitySetId = this.RecoveryAvailabilitySetId
+                    RecoveryResourceGroupId = RecoveryResourceGroupId,
+                    RecoveryCloudServiceId = RecoveryCloudServiceId,
+                    RecoveryAvailabilitySetId = RecoveryAvailabilitySetId
                 };
 
                 // Fetch the latest Protected item objects
                 var replicationProtectedItemResponse =
                     RecoveryServicesClient.GetAzureSiteRecoveryReplicationProtectedItem(
-                        this.fabricName,
-                        this.protectionContainerName,
-                        this.ReplicationProtectedItem.Name);
+                        fabricName,
+                        protectionContainerName,
+                        ReplicationProtectedItem.Name);
 
-                if (fabricFriendlyName != this.ProtectionContainerMapping.TargetFabricFriendlyName)
+                if (fabricFriendlyName != ProtectionContainerMapping.TargetFabricFriendlyName)
                 {
                     throw new ArgumentException(
                         string.Format(Resources.InvalidSwitchParamRPIAndProtectionContainerMapping,
                         fabricFriendlyName,
-                        this.ProtectionContainerMapping.TargetFabricFriendlyName));
+                        ProtectionContainerMapping.TargetFabricFriendlyName));
                 }
 
                 // At a time only Disk or managedDisk details will be present.
                 // Will check with retieved protectedItem weather correct disk mapping is passed and then create the relevant object 
                 // and pass as input to service.
-                if (this.AzureToAzureDiskReplicationConfiguration == null || this.AzureToAzureDiskReplicationConfiguration.Length == 0)
+                if (AzureToAzureDiskReplicationConfiguration == null || AzureToAzureDiskReplicationConfiguration.Length == 0)
                 {
                     if (fabricFriendlyName !=
-                        this.ProtectionContainerMapping.TargetFabricFriendlyName &&
+                        ProtectionContainerMapping.TargetFabricFriendlyName &&
                         RecoveryAzureStorageAccountId == null)
                     {
                         throw new ArgumentException(Resources.InvalidRecoveryAzureStorageAccountId);
@@ -564,24 +564,24 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                             DiskUri = disk.RecoveryDiskUri,
                             RecoveryAzureStorageAccountId =
                                 fabricFriendlyName ==
-                                    this.ProtectionContainerMapping.TargetFabricFriendlyName &&
-                                this.RecoveryAzureStorageAccountId == null ?
+                                    ProtectionContainerMapping.TargetFabricFriendlyName &&
+                                RecoveryAzureStorageAccountId == null ?
                                     disk.PrimaryDiskAzureStorageAccountId :
-                                    this.RecoveryAzureStorageAccountId,
+                                    RecoveryAzureStorageAccountId,
                             PrimaryStagingAzureStorageAccountId =
-                                this.LogStorageAccountId,
+                                LogStorageAccountId,
                         });
                     }
                 }
                 else
                 {
-                    foreach (ASRAzuretoAzureDiskReplicationConfig disk in this.AzureToAzureDiskReplicationConfiguration)
+                    foreach (ASRAzuretoAzureDiskReplicationConfig disk in AzureToAzureDiskReplicationConfiguration)
                     {
                         if (string.IsNullOrEmpty(disk.LogStorageAccountId))
                         {
                             throw new PSArgumentException(
                                 string.Format(
-                                    Properties.Resources.InvalidPrimaryStagingAzureStorageAccountIdDiskInput,
+                                    Resources.InvalidPrimaryStagingAzureStorageAccountIdDiskInput,
                                     disk.VhdUri));
                         }
 
@@ -589,7 +589,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         {
                             throw new PSArgumentException(
                                 string.Format(
-                                    Properties.Resources.InvalidRecoveryAzureStorageAccountIdDiskInput,
+                                    Resources.InvalidRecoveryAzureStorageAccountIdDiskInput,
                                     disk.VhdUri));
                         }
 
@@ -608,8 +608,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             var response =
                 RecoveryServicesClient.StartSwitchProtection(
-                this.fabricName,
-                this.protectionContainerName,
+                fabricName,
+                protectionContainerName,
                 input);
 
             var jobResponse =
@@ -625,15 +625,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void validateRPISwitchParam()
         {
-            if ((this.AzureToVMware.IsPresent
-                && !this.ReplicationProtectedItem.ReplicationProvider.Equals(Constants.InMageAzureV2))
-                || (this.VMwareToAzure.IsPresent
-                && !this.ReplicationProtectedItem.ReplicationProvider.Equals(Constants.InMage))
-                || (this.HyperVToAzure.IsPresent
-                && !this.ReplicationProtectedItem.ReplicationProvider.Equals(Constants.HyperVReplicaAzure))
-                || (this.VmmToVmm.IsPresent
-                && !(this.ReplicationProtectedItem.ReplicationProvider.Equals(Constants.HyperVReplica2012)
-                || this.ReplicationProtectedItem.ReplicationProvider.Equals(Constants.HyperVReplica2012R2))))
+            if (AzureToVMware.IsPresent
+                && !ReplicationProtectedItem.ReplicationProvider.Equals(Constants.InMageAzureV2)
+                || VMwareToAzure.IsPresent
+                && !ReplicationProtectedItem.ReplicationProvider.Equals(Constants.InMage)
+                || HyperVToAzure.IsPresent
+                && !ReplicationProtectedItem.ReplicationProvider.Equals(Constants.HyperVReplicaAzure)
+                || VmmToVmm.IsPresent
+                && !(ReplicationProtectedItem.ReplicationProvider.Equals(Constants.HyperVReplica2012)
+                     || ReplicationProtectedItem.ReplicationProvider.Equals(Constants.HyperVReplica2012R2)))
             {
                 throw new PSInvalidOperationException(Resources.InvalidParameterSet);
             }
@@ -644,11 +644,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void validateRPSwitchParam(RecoveryPlan rp, string replicationProvider)
         {
-            if ((this.HyperVToAzure.IsPresent
-                && !replicationProvider.Equals(Constants.HyperVReplicaAzure))
-                || (this.VmmToVmm.IsPresent
-                && !(this.ReplicationProtectedItem.ReplicationProvider.Equals(Constants.HyperVReplica2012)
-                || replicationProvider.Equals(Constants.HyperVReplica2012R2))))
+            if (HyperVToAzure.IsPresent
+                && !replicationProvider.Equals(Constants.HyperVReplicaAzure)
+                || VmmToVmm.IsPresent
+                && !(ReplicationProtectedItem.ReplicationProvider.Equals(Constants.HyperVReplica2012)
+                     || replicationProvider.Equals(Constants.HyperVReplica2012R2)))
             {
                 throw new PSInvalidOperationException(Resources.InvalidParameterSet);
             }

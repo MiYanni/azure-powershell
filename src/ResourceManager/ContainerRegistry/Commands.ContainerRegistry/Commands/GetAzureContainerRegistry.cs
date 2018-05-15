@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
     {
         [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ListRegistriesParameterSet, HelpMessage = "Resource Group Name.")]
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = RegistryNameParameterSet, HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

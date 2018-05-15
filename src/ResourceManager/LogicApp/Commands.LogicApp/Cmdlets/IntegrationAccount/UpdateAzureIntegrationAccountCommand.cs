@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System;
     using System.Globalization;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Utilities;
+    using Management.Logic.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -66,32 +66,32 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
-            if (!string.IsNullOrEmpty(this.Location))
+            if (!string.IsNullOrEmpty(Location))
             {
-                integrationAccount.Location = this.Location;
+                integrationAccount.Location = Location;
             }
 
-            if (!string.IsNullOrEmpty(this.Sku))
+            if (!string.IsNullOrEmpty(Sku))
             {
                 integrationAccount.Sku = new IntegrationAccountSku
                 {
-                    Name = (IntegrationAccountSkuName) Enum.Parse(typeof(IntegrationAccountSkuName), this.Sku),
+                    Name = (IntegrationAccountSkuName) Enum.Parse(typeof(IntegrationAccountSkuName), Sku),
 
                 };
             }
 
             ConfirmAction(Force.IsPresent,
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceWarning,
-                    "Microsoft.Logic/integrationAccounts", this.Name),
+                    "Microsoft.Logic/integrationAccounts", Name),
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceMessage,
-                    "Microsoft.Logic/integrationAccounts", this.Name),
+                    "Microsoft.Logic/integrationAccounts", Name),
                 Name,
                 () =>
                 {
-                    this.WriteObject(
-                        IntegrationAccountClient.UpdateIntegrationAccount(this.ResourceGroupName, this.Name,
+                    WriteObject(
+                        IntegrationAccountClient.UpdateIntegrationAccount(ResourceGroupName, Name,
                             integrationAccount), true);
                 },
                 null);

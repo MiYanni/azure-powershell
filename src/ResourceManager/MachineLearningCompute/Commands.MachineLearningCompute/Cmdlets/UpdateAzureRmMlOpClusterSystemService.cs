@@ -60,15 +60,15 @@ namespace Microsoft.Azure.Commands.MachineLearningCompute.Cmdlets
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(this.Name, @"Updating operationalization cluster's system service..."))
+            if (ShouldProcess(Name, @"Updating operationalization cluster's system service..."))
             {
-                if (string.Equals(this.ParameterSetName, ObjectParameterSet, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(ParameterSetName, ObjectParameterSet, StringComparison.OrdinalIgnoreCase))
                 {
                     var resourceInfo = new ResourceIdentifier(InputObject.Id);
                     ResourceGroupName = resourceInfo.ResourceGroupName;
                     Name = resourceInfo.ResourceName;
                 }
-                else if (string.Equals(this.ParameterSetName, ResourceIdParameterSet, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(ParameterSetName, ResourceIdParameterSet, StringComparison.OrdinalIgnoreCase))
                 {
                     var resourceInfo = new ResourceIdentifier(ResourceId);
                     ResourceGroupName = resourceInfo.ResourceGroupName;

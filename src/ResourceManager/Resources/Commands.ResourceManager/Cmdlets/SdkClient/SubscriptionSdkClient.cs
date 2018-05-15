@@ -49,14 +49,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         /// <param name="subscriptionClient">The subscription client instance</param>
         public SubscriptionSdkClient(ISubscriptionClient subscriptionClient)
         {
-            this.SubscriptionClient = subscriptionClient;
+            SubscriptionClient = subscriptionClient;
         }
 
         public List<Location> ListLocations(string subscriptionId)
         {
             var locationList = new List<Location>();
 
-            var tempResult = this.SubscriptionClient.Subscriptions.ListLocations(subscriptionId);
+            var tempResult = SubscriptionClient.Subscriptions.ListLocations(subscriptionId);
             locationList.AddRange(tempResult);
 
             return locationList;

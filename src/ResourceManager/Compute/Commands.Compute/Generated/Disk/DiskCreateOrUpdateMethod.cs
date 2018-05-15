@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Disk disk = new Disk();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "DiskName", "Disk" },
+                 new[] { "ResourceGroupName", "DiskName", "Disk" },
                  new object[] { resourceGroupName, diskName, disk });
         }
     }
@@ -119,12 +119,12 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.DiskName, VerbsCommon.New))
+                if (ShouldProcess(DiskName, VerbsCommon.New))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string diskName = this.DiskName;
+                    string resourceGroupName = ResourceGroupName;
+                    string diskName = DiskName;
                     Disk disk = new Disk();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSDisk, Disk>(this.Disk, disk);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSDisk, Disk>(Disk, disk);
 
                     var result = DisksClient.CreateOrUpdate(resourceGroupName, diskName, disk);
                     var psObject = new PSDisk();
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

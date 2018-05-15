@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.HDInsight.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanCreateNewConfigForRServer()
         {
-            CreateNewConfig(setEdgeNodeVmSize: true);
+            CreateNewConfig(true);
         }
 
         [Fact]

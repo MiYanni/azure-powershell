@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
     {
         public override string ToString()
         {
-            return this.PortProperty.ToString();
+            return PortProperty.ToString();
         }
     }
 }

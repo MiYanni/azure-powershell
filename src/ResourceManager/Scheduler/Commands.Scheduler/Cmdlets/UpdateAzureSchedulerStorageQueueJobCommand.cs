@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Commands.Scheduler.Utilities;
-    using SchedulerModels = Microsoft.Azure.Management.Scheduler.Models;
+    using Models;
+    using Properties;
+    using Utilities;
+    using SchedulerModels = Management.Scheduler.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -95,46 +95,46 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var storageJobAction = new PSStorageJobActionParams()
+            var storageJobAction = new PSStorageJobActionParams
             {
-                StorageAccount = this.StorageQueueAccount,
-                StorageQueueMessage = this.StorageQueueMessage,
-                StorageQueueName = this.StorageQueueName,
-                StorageSasToken = this.StorageSASToken
+                StorageAccount = StorageQueueAccount,
+                StorageQueueMessage = StorageQueueMessage,
+                StorageQueueName = StorageQueueName,
+                StorageSasToken = StorageSASToken
             };
 
-            var jobAction = new PSJobActionParams()
+            var jobAction = new PSJobActionParams
             {
                 JobActionType = SchedulerModels.JobActionType.StorageQueue,
                 StorageJobAction = storageJobAction
             };
 
-            var jobRecurrence = new PSJobRecurrenceParams()
+            var jobRecurrence = new PSJobRecurrenceParams
             {
-                Interval = this.Interval,
-                Frequency = this.Frequency,
-                EndTime = this.EndTime,
-                ExecutionCount = this.ExecutionCount
+                Interval = Interval,
+                Frequency = Frequency,
+                EndTime = EndTime,
+                ExecutionCount = ExecutionCount
             };
 
-            var jobParams = new PSJobParams()
+            var jobParams = new PSJobParams
             {
-                ResourceGroupName = this.ResourceGroupName,
-                JobCollectionName = this.JobCollectionName,
-                JobName = this.JobName,
-                JobState = this.JobState,
-                StartTime = this.StartTime,
+                ResourceGroupName = ResourceGroupName,
+                JobCollectionName = JobCollectionName,
+                JobName = JobName,
+                JobState = JobState,
+                StartTime = StartTime,
                 JobAction = jobAction,
                 JobRecurrence = jobRecurrence,
-                JobErrorAction = this.GetErrorActionParamsValue(this.ErrorActionType)
+                JobErrorAction = GetErrorActionParamsValue(ErrorActionType)
             };
 
-            this.ConfirmAction(
-                processMessage: string.Format(Resources.UpdateStorageQueueJobResourceDescription, this.JobName),
-                target: this.JobCollectionName,
-                action: () =>
+            ConfirmAction(
+                string.Format(Resources.UpdateStorageQueueJobResourceDescription, JobName),
+                JobCollectionName,
+                () =>
                 {
-                    this.WriteObject(this.SchedulerClient.UpdateJob(jobParams));
+                    WriteObject(SchedulerClient.UpdateJob(jobParams));
                 }
             ); 
         }
@@ -147,9 +147,9 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
 
-            if (!string.IsNullOrWhiteSpace(this.ErrorActionType))
+            if (!string.IsNullOrWhiteSpace(ErrorActionType))
             {
-                runtimeDefinedParameterDictionary.AddRange(this.AddErrorActionParameters(this.ErrorActionType, create: false));
+                runtimeDefinedParameterDictionary.AddRange(AddErrorActionParameters(ErrorActionType, false));
             }
 
             return runtimeDefinedParameterDictionary;

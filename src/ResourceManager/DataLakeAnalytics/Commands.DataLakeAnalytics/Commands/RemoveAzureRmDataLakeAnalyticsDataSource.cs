@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics
             ParameterSetName = BlobParameterSetName,
             HelpMessage =
                 "Name of resource group under which the Data Lake Analytics account exists to add a data source to.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

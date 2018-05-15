@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<Database> Databases
         {
-            get { return this._databases; }
-            set { this._databases = value; }
+            get { return _databases; }
+            set { _databases = value; }
         }
         
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DatabaseListResponse()
         {
-            this.Databases = new LazyList<Database>();
+            Databases = new LazyList<Database>();
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<Database> GetEnumerator()
         {
-            return this.Databases.GetEnumerator();
+            return Databases.GetEnumerator();
         }
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

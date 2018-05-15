@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Compute
         SupportsShouldProcess = true),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class RemoveAzureVMDataDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class RemoveAzureVMDataDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Alias("VMProfile")]
         [Parameter(
@@ -49,9 +49,9 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess("DataDisk", VerbsCommon.Remove))
+            if (ShouldProcess("DataDisk", VerbsCommon.Remove))
             {
-                var storageProfile = this.VM.StorageProfile;
+                var storageProfile = VM.StorageProfile;
 
                 if (storageProfile != null && storageProfile.DataDisks != null)
                 {
@@ -72,9 +72,9 @@ namespace Microsoft.Azure.Commands.Compute
                     storageProfile.DataDisks = disks;
                 }
 
-                this.VM.StorageProfile = storageProfile;
+                VM.StorageProfile = storageProfile;
 
-                WriteObject(this.VM);
+                WriteObject(VM);
             }
         }
     }

@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
 
             set
             {
-                this.Deserialize(value);
+                Deserialize(value);
             }
         }
 

@@ -20,9 +20,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                 string result;
                 string resourceIdentifier = ResourceIdentifier.ToString();
 
-                if (!string.IsNullOrEmpty(this.scope))
+                if (!string.IsNullOrEmpty(scope))
                 {
-                    result = this.scope;
+                    result = scope;
                 }
                 else if (!string.IsNullOrEmpty(resourceIdentifier))
                 {
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             }
             set
             {
-                this.scope = value;
+                scope = value;
             }
         }
 

@@ -14,19 +14,19 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
+    using Extensions;
+    using Common;
     using Newtonsoft.Json.Linq;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
     using System.Linq;
     using System.Management.Automation;
     using System.Threading.Tasks;
     using System;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using WindowsAzure.Commands.Utilities.Common;
     using System.IO;
-    using Microsoft.WindowsAzure.Commands.Common;
+    using WindowsAzure.Commands.Common;
     using System.Collections.Generic;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Application;
+    using Entities.Application;
     using Commands.Common.Authentication.Abstractions;
 
     /// <summary>
@@ -40,9 +40,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <param name="nextLink">The next link.</param>
         protected Task<ResponseWithContinuation<TType[]>> GetNextLink<TType>(string nextLink)
         {
-            return this
-                .GetResourcesClient()
-                .ListNextBatch<TType>(nextLink: nextLink, cancellationToken: this.CancellationToken.Value);
+            return GetResourcesClient()
+                .ListNextBatch<TType>(nextLink, CancellationToken.Value);
         }
 
         /// <summary>
@@ -67,13 +66,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         protected async Task<JObject> GetExistingResource(string resourceId, string apiVersion)
         {
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .GetResource<JObject>(
-                    resourceId: resourceId,
-                    apiVersion: apiVersion,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    resourceId,
+                    apiVersion,
+                    CancellationToken.Value)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -115,28 +113,22 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                     {
                         return JToken.FromObject(FileUtilities.DataStore.ReadFileAsText(filePath));
                     }
-                    else
-                    {
-                        throw new PSInvalidOperationException(string.Format(ProjectResources.InvalidFilePath, parameter));
-                    }
+                    throw new PSInvalidOperationException(string.Format(ProjectResources.InvalidFilePath, parameter));
                 }
-                else if (outUri.Scheme != Uri.UriSchemeHttp && outUri.Scheme != Uri.UriSchemeHttps)
+                if (outUri.Scheme != Uri.UriSchemeHttp && outUri.Scheme != Uri.UriSchemeHttps)
                 {
                     throw new PSInvalidOperationException(ProjectResources.InvalidUriScheme);
                 }
-                else if (!Uri.IsWellFormedUriString(outUri.AbsoluteUri, UriKind.Absolute))
+                if (!Uri.IsWellFormedUriString(outUri.AbsoluteUri, UriKind.Absolute))
                 {
                     throw new PSInvalidOperationException(string.Format(ProjectResources.InvalidUriString, parameter));
                 }
-                else
+                string contents = GeneralUtilities.DownloadFile(outUri.AbsoluteUri);
+                if (string.IsNullOrEmpty(contents))
                 {
-                    string contents = GeneralUtilities.DownloadFile(outUri.AbsoluteUri);
-                    if (string.IsNullOrEmpty(contents))
-                    {
-                        throw new PSInvalidOperationException(string.Format(ProjectResources.InvalidUriContent, parameter));
-                    }
-                    return JToken.FromObject(contents);
+                    throw new PSInvalidOperationException(string.Format(ProjectResources.InvalidUriContent, parameter));
                 }
+                return JToken.FromObject(contents);
             }
 
             //for non absolute file paths

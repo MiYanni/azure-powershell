@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Compute
         SupportsShouldProcess = true),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class RemoveAzureVMSecretCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class RemoveAzureVMSecretCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Alias("VMProfile")]
         [Parameter(
@@ -47,22 +47,22 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess("SourceVault", VerbsCommon.Remove))
+            if (ShouldProcess("SourceVault", VerbsCommon.Remove))
             {
-                var osProfile = this.VM.OSProfile;
+                var osProfile = VM.OSProfile;
 
                 if (osProfile != null && osProfile.Secrets != null)
                 {
                     var secrets = osProfile.Secrets.ToList();
                     var comp = StringComparison.OrdinalIgnoreCase;
 
-                    if (this.SourceVaultId == null)
+                    if (SourceVaultId == null)
                     {
                         secrets.Clear();
                     }
                     else
                     {
-                        foreach (var id in this.SourceVaultId)
+                        foreach (var id in SourceVaultId)
                         {
                             secrets.RemoveAll(d => string.Equals(d.SourceVault.Id, id, comp));
                         }
@@ -70,9 +70,9 @@ namespace Microsoft.Azure.Commands.Compute
                     osProfile.Secrets = secrets;
                 }
 
-                this.VM.OSProfile = osProfile;
+                VM.OSProfile = osProfile;
 
-                WriteObject(this.VM);
+                WriteObject(VM);
             }
         }
     }

@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ElasticPool> ElasticPools
         {
-            get { return this._elasticPools; }
-            set { this._elasticPools = value; }
+            get { return _elasticPools; }
+            set { _elasticPools = value; }
         }
         
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ElasticPoolListResponse()
         {
-            this.ElasticPools = new LazyList<ElasticPool>();
+            ElasticPools = new LazyList<ElasticPool>();
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<ElasticPool> GetEnumerator()
         {
-            return this.ElasticPools.GetEnumerator();
+            return ElasticPools.GetEnumerator();
         }
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

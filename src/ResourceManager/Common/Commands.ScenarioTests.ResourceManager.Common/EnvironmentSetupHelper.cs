@@ -111,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
             TestExecutionHelpers.SetUpSessionAndProfile();
             IDataStore datastore = new MemoryDataStore();
-            if (AzureSession.Instance.DataStore != null && (AzureSession.Instance.DataStore is MemoryDataStore))
+            if (AzureSession.Instance.DataStore != null && AzureSession.Instance.DataStore is MemoryDataStore)
             {
                 datastore = AzureSession.Instance.DataStore;
             }
@@ -170,7 +170,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
         private void LogIfNotNull(string message)
         {
-            if (this.TracingInterceptor != null)
+            if (TracingInterceptor != null)
             {
                 TracingInterceptor.Information($"[EnvironmentSetupHelper]: {message}");
             }
@@ -211,13 +211,13 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         private static string GetRMModuleDirectory(string targetDirectory = "Package")
         {
             string configDirectory = GetConfigDirectory(targetDirectory);
-            return (string.IsNullOrEmpty(configDirectory)) ? null : Path.Combine(configDirectory, "ResourceManager", "AzureResourceManager");
+            return string.IsNullOrEmpty(configDirectory) ? null : Path.Combine(configDirectory, "ResourceManager", "AzureResourceManager");
         }
 
         private static string GetStorageDirectory(string targetDirectory = "Package")
         {
             string configDirectory = GetConfigDirectory(targetDirectory);
-            return (string.IsNullOrEmpty(configDirectory)) ? null : Path.Combine(configDirectory, "Storage");
+            return string.IsNullOrEmpty(configDirectory) ? null : Path.Combine(configDirectory, "Storage");
         }
         
         private static string GetModuleManifest(string baseDirectory, string desktopModuleName)
@@ -450,10 +450,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
             if (currentEnvironment.SubscriptionId != null)
             {
-                testSubscription = new AzureSubscription()
+                testSubscription = new AzureSubscription
                 {
                     Id = currentEnvironment.SubscriptionId,
-                    Name = testSubscriptionName,
+                    Name = testSubscriptionName
                 };
 
                 testSubscription.SetEnvironment(testEnvironmentName);
@@ -461,10 +461,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 testSubscription.SetDefault();
                 testSubscription.SetStorageAccount(Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT"));
 
-                testAccount = new AzureAccount()
+                testAccount = new AzureAccount
                 {
                     Id = currentEnvironment.UserName,
-                    Type = AzureAccount.AccountType.User,
+                    Type = AzureAccount.AccountType.User
                 };
 
                 testAccount.SetSubscriptions(currentEnvironment.SubscriptionId);
@@ -473,7 +473,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 ProfileClient.Profile.AccountTable[testAccount.Id] = testAccount;
                 ProfileClient.SetSubscriptionAsDefault(testSubscription.Name, testSubscription.GetAccount());
 #endif
-                var testTenant = new AzureTenant() { Id = Guid.NewGuid().ToString() };
+                var testTenant = new AzureTenant { Id = Guid.NewGuid().ToString() };
                 if (!string.IsNullOrEmpty(currentEnvironment.Tenant))
                 {
                     Guid tenant;
@@ -649,9 +649,9 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             }
 #endif
             powershell.AddScript("$error.clear()");
-            powershell.AddScript(string.Format("Write-Debug \"current directory: {0}\"", System.AppDomain.CurrentDomain.BaseDirectory));
+            powershell.AddScript(string.Format("Write-Debug \"current directory: {0}\"", AppDomain.CurrentDomain.BaseDirectory));
             powershell.AddScript(string.Format("Write-Debug \"current executing assembly: {0}\"", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
-            powershell.AddScript(string.Format("cd \"{0}\"", System.AppDomain.CurrentDomain.BaseDirectory));
+            powershell.AddScript(string.Format("cd \"{0}\"", AppDomain.CurrentDomain.BaseDirectory));
 
             foreach (string moduleName in modules)
             {
@@ -659,8 +659,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             }
 
             powershell.AddScript(
-                string.Format("set-location \"{0}\"", System.AppDomain.CurrentDomain.BaseDirectory));
-            powershell.AddScript(string.Format(@"$TestOutputRoot='{0}'", System.AppDomain.CurrentDomain.BaseDirectory));
+                string.Format("set-location \"{0}\"", AppDomain.CurrentDomain.BaseDirectory));
+            powershell.AddScript(string.Format(@"$TestOutputRoot='{0}'", AppDomain.CurrentDomain.BaseDirectory));
             powershell.AddScript("$VerbosePreference='Continue'");
             powershell.AddScript("$DebugPreference='Continue'");
             powershell.AddScript("$ErrorActionPreference='Stop'");

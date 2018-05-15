@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// <summary>
     /// A cmdlet that removes an azure resource.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureRmResource", SupportsShouldProcess = true, DefaultParameterSetName = ResourceManipulationCmdletBase.ResourceIdParameterSet), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureRmResource", SupportsShouldProcess = true, DefaultParameterSetName = ResourceIdParameterSet), OutputType(typeof(bool))]
     public class RemoveAzureResourceCmdlet : ResourceManipulationCmdletBase
     {
         [Parameter(Mandatory = false, HelpMessage = "Run cmdlet in the background")]
@@ -32,37 +32,37 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            var resourceId = this.GetResourceId();
+            var resourceId = GetResourceId();
 
-            this.ConfirmAction(
-                this.Force,
+            ConfirmAction(
+                Force,
                 string.Format("Are you sure you want to delete the following resource: {0}", resourceId),
                 "Deleting the resource...",
                 resourceId,
                 () =>
                 {
-                    var apiVersion = this.DetermineApiVersion(resourceId: resourceId).Result;
+                    var apiVersion = DetermineApiVersion(resourceId).Result;
 
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .DeleteResource(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            cancellationToken: this.CancellationToken.Value,
-                            odataQuery: this.ODataQuery)
+                            resourceId,
+                            apiVersion,
+                            CancellationToken.Value,
+                            ODataQuery)
                         .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                         .GetResourceManagementRequestUri(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            odataQuery: this.ODataQuery);
+                            resourceId,
+                            apiVersion,
+                            odataQuery: ODataQuery);
 
                     var activity = string.Format("DELETE {0}", managementUri.PathAndQuery);
 
-                    this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: false)
-                        .WaitOnOperation(operationResult: operationResult);
+                    GetLongRunningOperationTracker(activity, false)
+                        .WaitOnOperation(operationResult);
 
-                    this.WriteObject(true);
+                    WriteObject(true);
                 });
         }
     }

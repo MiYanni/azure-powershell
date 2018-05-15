@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public virtual string ResourceGroupName { get; set; }
 
         #region Key Vault Property 
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             {
                 throw new PSArgumentException(string.Format(
                     ServiceFabricProperties.Resources.NoneNodeTypeFound,
-                    this.ResourceGroupName));
+                    ResourceGroupName));
             }
 
             var vmss = result.FirstOrDefault(
@@ -268,8 +268,8 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         protected string GetResourceGroupName(string vaultName)
         {
             string rg = null;
-            var resourcesByName = this.ResourcesClient.FilterResources(
-                new FilterResourcesOptions()
+            var resourcesByName = ResourcesClient.FilterResources(
+                new FilterResourcesOptions
                 {
                     ResourceType = Constants.KeyVaultType
                 });
@@ -302,7 +302,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             if (!string.IsNullOrWhiteSpace(userObjectId))
             {
-                accessPolicy = new AccessPolicyEntry()
+                accessPolicy = new AccessPolicyEntry
                 {
                     TenantId = GetTenantId(DefaultContext),
                     ObjectId = userObjectId,
@@ -315,7 +315,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 };
             }
 
-            var keyVaultParameter = new VaultCreateOrUpdateParameters()
+            var keyVaultParameter = new VaultCreateOrUpdateParameters
             {
                 Location = vaultLocation,
                 Properties = new VaultProperties
@@ -331,7 +331,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                         new AccessPolicyEntry[] { } :
                         new[] { accessPolicy }
                 },
-                Tags = new Dictionary<string, string>()
+                Tags = new Dictionary<string, string>
                 {
                     { "clusterName",clusterName },
                     { "resourceType" ,Constants.ServieFabricTag }
@@ -390,7 +390,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             var vault = KeyVaultManageClient.Vaults.CreateOrUpdate(
                ResourceGroupName,
                vaultName,
-               new VaultCreateOrUpdateParameters()
+               new VaultCreateOrUpdateParameters
                {
                    Location = keyVault.Location,
                    Properties = keyVault.Properties,
@@ -402,7 +402,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         protected CertificateBundle ImportCertificateToAzureKeyVault(string keyVaultName, string certificateName, string pfxFilePath, SecureString password, out string thumbprint)
         {
-            var keyFile = new FileInfo(this.GetUnresolvedProviderPathFromPSPath(pfxFilePath));
+            var keyFile = new FileInfo(GetUnresolvedProviderPathFromPSPath(pfxFilePath));
             if (!keyFile.Exists)
             {
                 throw new FileNotFoundException(
@@ -427,7 +427,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             var fileContentEncoded = Convert.ToBase64String(clearBytes);
 
             WriteVerboseWithTimestamp(string.Format("Importing certificate to Azure KeyVault {0}", certificateName));
-            var certificateBundle = this.KeyVaultClient.ImportCertificateAsync(
+            var certificateBundle = KeyVaultClient.ImportCertificateAsync(
                 CreateVaultUri(keyVaultName).ToString(),
                 certificateName,
                 fileContentEncoded,

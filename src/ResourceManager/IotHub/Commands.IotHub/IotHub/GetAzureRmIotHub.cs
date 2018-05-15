@@ -17,11 +17,11 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
-    using Microsoft.Rest.Azure;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
+    using Rest.Azure;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIotHub", DefaultParameterSetName = "ListIotHubsByResourceGroup")]
@@ -61,20 +61,20 @@ namespace Microsoft.Azure.Commands.Management.IotHub
             switch (ParameterSetName)
             {
                 case GetIotHubParameterSet:
-                    IotHubDescription iotHubDescription = this.IotHubClient.IotHubResource.Get(this.ResourceGroupName, this.Name);
-                    this.WriteObject(IotHubUtils.ToPSIotHub(iotHubDescription), false);
+                    IotHubDescription iotHubDescription = IotHubClient.IotHubResource.Get(ResourceGroupName, Name);
+                    WriteObject(IotHubUtils.ToPSIotHub(iotHubDescription), false);
                     break;
                 case ListIotHubsByRGParameterSet:
-                    if (string.IsNullOrEmpty(this.ResourceGroupName))
+                    if (string.IsNullOrEmpty(ResourceGroupName))
                     {
-                        IEnumerable<IotHubDescription> iotHubDescriptionsBySubscription = this.IotHubClient.IotHubResource.ListBySubscription();
-                        this.WriteObject(IotHubUtils.ToPSIotHubs(iotHubDescriptionsBySubscription), true);
+                        IEnumerable<IotHubDescription> iotHubDescriptionsBySubscription = IotHubClient.IotHubResource.ListBySubscription();
+                        WriteObject(IotHubUtils.ToPSIotHubs(iotHubDescriptionsBySubscription), true);
                         break;
                     }
                     else
                     {
-                        IEnumerable<IotHubDescription> iotHubDescriptions = this.IotHubClient.IotHubResource.ListByResourceGroup(this.ResourceGroupName);
-                        this.WriteObject(IotHubUtils.ToPSIotHubs(iotHubDescriptions), true);
+                        IEnumerable<IotHubDescription> iotHubDescriptions = IotHubClient.IotHubResource.ListByResourceGroup(ResourceGroupName);
+                        WriteObject(IotHubUtils.ToPSIotHubs(iotHubDescriptions), true);
                         break;
                     }
                 default:

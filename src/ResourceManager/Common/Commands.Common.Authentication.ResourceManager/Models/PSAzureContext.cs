@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.Profile.Models
                 Subscription = context.Subscription == null ? null : new PSAzureSubscription(context.Subscription);
                 Tenant = context.Tenant == null ? null : new PSAzureTenant(context.Tenant);
                 TokenCache = context.TokenCache;
-                this.VersionProfile = context.VersionProfile;
+                VersionProfile = context.VersionProfile;
                 this.CopyPropertiesFrom(context);
             }
         }

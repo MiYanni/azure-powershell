@@ -37,15 +37,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var httpListener = this.ApplicationGateway.HttpListeners.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var httpListener = ApplicationGateway.HttpListeners.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (httpListener != null)
             {
-                this.ApplicationGateway.HttpListeners.Remove(httpListener);
+                ApplicationGateway.HttpListeners.Remove(httpListener);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

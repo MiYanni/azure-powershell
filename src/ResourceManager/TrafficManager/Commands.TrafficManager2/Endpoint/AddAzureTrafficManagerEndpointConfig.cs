@@ -75,33 +75,33 @@ namespace Microsoft.Azure.Commands.TrafficManager
 
         public override void ExecuteCmdlet()
         {
-            if (this.TrafficManagerProfile.Endpoints == null)
+            if (TrafficManagerProfile.Endpoints == null)
             {
-                this.TrafficManagerProfile.Endpoints = new List<TrafficManagerEndpoint>();
+                TrafficManagerProfile.Endpoints = new List<TrafficManagerEndpoint>();
             }
 
-            if (this.TrafficManagerProfile.Endpoints.Any(endpoint => string.Equals(this.EndpointName, endpoint.Name)))
+            if (TrafficManagerProfile.Endpoints.Any(endpoint => string.Equals(EndpointName, endpoint.Name)))
             {
-                throw new PSArgumentException(string.Format(ProjectResources.Error_AddExistingEndpoint, this.EndpointName));
+                throw new PSArgumentException(string.Format(ProjectResources.Error_AddExistingEndpoint, EndpointName));
             }
 
-            this.TrafficManagerProfile.Endpoints.Add(
+            TrafficManagerProfile.Endpoints.Add(
                 new TrafficManagerEndpoint
                 {
-                    Name = this.EndpointName,
-                    Type = this.Type,
-                    TargetResourceId = this.TargetResourceId,
-                    Target = this.Target,
-                    EndpointStatus = this.EndpointStatus,
-                    Weight = this.Weight,
-                    Priority = this.Priority,
-                    Location = this.EndpointLocation,
-                    MinChildEndpoints = this.MinChildEndpoints,
-                    GeoMapping = this.GeoMapping,
+                    Name = EndpointName,
+                    Type = Type,
+                    TargetResourceId = TargetResourceId,
+                    Target = Target,
+                    EndpointStatus = EndpointStatus,
+                    Weight = Weight,
+                    Priority = Priority,
+                    Location = EndpointLocation,
+                    MinChildEndpoints = MinChildEndpoints,
+                    GeoMapping = GeoMapping,
                 });
 
-            this.WriteVerbose(ProjectResources.Success);
-            this.WriteObject(this.TrafficManagerProfile);
+            WriteVerbose(ProjectResources.Success);
+            WriteObject(TrafficManagerProfile);
         }
     }
 }

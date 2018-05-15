@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string RetentionPolicyText
         {
-            get { return JsonConvert.SerializeObject(RetentionPolicy, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(RetentionPolicy, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

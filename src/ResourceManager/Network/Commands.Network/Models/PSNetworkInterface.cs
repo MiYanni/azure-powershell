@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.Network.Models
 {
-    using Microsoft.Azure.Management.Internal.Network.Common;
+    using Management.Internal.Network.Common;
     using Newtonsoft.Json;
     using System.Collections.Generic;
 
@@ -41,30 +41,30 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string VirtualMachineText
         {
-            get { return JsonConvert.SerializeObject(VirtualMachine, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(VirtualMachine, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string IpConfigurationsText
         {
-            get { return JsonConvert.SerializeObject(IpConfigurations, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(IpConfigurations, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string DnsSettingsText
         {
-            get { return JsonConvert.SerializeObject(this.DnsSettings, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DnsSettings, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string NetworkSecurityGroupText
         {
-            get { return JsonConvert.SerializeObject(NetworkSecurityGroup, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(NetworkSecurityGroup, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         public bool ShouldSerializeIpConfigurations()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }

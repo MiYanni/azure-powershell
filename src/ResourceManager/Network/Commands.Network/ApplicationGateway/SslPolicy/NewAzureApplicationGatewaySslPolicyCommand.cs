@@ -24,10 +24,10 @@ namespace Microsoft.Azure.Commands.Network
     {
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess("AzureApplicationGatewaySslPolicy", Microsoft.Azure.Commands.Network.Properties.Resources.CreatingResourceMessage))
+            if (ShouldProcess("AzureApplicationGatewaySslPolicy", Properties.Resources.CreatingResourceMessage))
             {
                 base.ExecuteCmdlet();
-                WriteObject(this.NewObject());
+                WriteObject(NewObject());
             }
         }
     }

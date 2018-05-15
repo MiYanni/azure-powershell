@@ -33,8 +33,8 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("thumbprint");
             }
 
-            this.ThumbprintAlgorithm = thumbprintAlgorithm;
-            this.Thumbprint = thumbprint;
+            ThumbprintAlgorithm = thumbprintAlgorithm;
+            Thumbprint = thumbprint;
         }
 
         /// <summary>

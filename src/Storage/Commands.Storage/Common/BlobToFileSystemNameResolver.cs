@@ -31,7 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <summary>
         /// Chars invalid for path name.
         /// </summary>
-        private static char[] invalidPathChars = BlobToFileSystemNameResolver.GetInvalidPathChars();
+        private static char[] invalidPathChars = GetInvalidPathChars();
 
         protected override string DirSeparator
         {
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         {
             get
             {
-                return BlobToFileSystemNameResolver.invalidPathChars;
+                return invalidPathChars;
             }
         }
 

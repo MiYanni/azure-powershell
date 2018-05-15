@@ -141,11 +141,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             {
                 return Regex.Replace(requestUri, @"([\?&])api-version=[^&]+", string.Format("$1api-version={0}", version));
             }
-            else
-            {
-                var result = Regex.Replace(requestUri, @"&api-version=[^&]+", string.Empty);
-                return Regex.Replace(result, @"\?api-version=[^&]+[&]*", "?");
-            }
+            var result = Regex.Replace(requestUri, @"&api-version=[^&]+", string.Empty);
+            return Regex.Replace(result, @"\?api-version=[^&]+[&]*", "?");
         }
     }
 }

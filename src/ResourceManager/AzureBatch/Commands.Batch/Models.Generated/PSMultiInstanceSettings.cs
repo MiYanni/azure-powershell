@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSMultiInstanceSettings
     {
         
-        internal Microsoft.Azure.Batch.MultiInstanceSettings omObject;
+        internal MultiInstanceSettings omObject;
         
         private IList<PSResourceFile> commonResourceFiles;
         
-        public PSMultiInstanceSettings(string coordinationCommandLine, System.Nullable<int> numberOfInstances = null)
+        public PSMultiInstanceSettings(string coordinationCommandLine, Nullable<int> numberOfInstances = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.MultiInstanceSettings(coordinationCommandLine, numberOfInstances);
+            omObject = new MultiInstanceSettings(coordinationCommandLine, numberOfInstances);
         }
         
-        internal PSMultiInstanceSettings(Microsoft.Azure.Batch.MultiInstanceSettings omObject)
+        internal PSMultiInstanceSettings(MultiInstanceSettings omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,34 +54,34 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.commonResourceFiles == null) 
-                            && (this.omObject.CommonResourceFiles != null)))
+                if (commonResourceFiles == null 
+                    && omObject.CommonResourceFiles != null)
                 {
                     List<PSResourceFile> list;
                     list = new List<PSResourceFile>();
-                    IEnumerator<Microsoft.Azure.Batch.ResourceFile> enumerator;
-                    enumerator = this.omObject.CommonResourceFiles.GetEnumerator();
+                    IEnumerator<ResourceFile> enumerator;
+                    enumerator = omObject.CommonResourceFiles.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSResourceFile(enumerator.Current));
                     }
-                    this.commonResourceFiles = list;
+                    commonResourceFiles = list;
                 }
-                return this.commonResourceFiles;
+                return commonResourceFiles;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.CommonResourceFiles = null;
+                    omObject.CommonResourceFiles = null;
                 }
                 else
                 {
-                    this.omObject.CommonResourceFiles = new List<Microsoft.Azure.Batch.ResourceFile>();
+                    omObject.CommonResourceFiles = new List<ResourceFile>();
                 }
-                this.commonResourceFiles = value;
+                commonResourceFiles = value;
             }
         }
         
@@ -89,23 +89,23 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.CoordinationCommandLine;
+                return omObject.CoordinationCommandLine;
             }
             set
             {
-                this.omObject.CoordinationCommandLine = value;
+                omObject.CoordinationCommandLine = value;
             }
         }
         
-        public System.Int32? NumberOfInstances
+        public Int32? NumberOfInstances
         {
             get
             {
-                return this.omObject.NumberOfInstances;
+                return omObject.NumberOfInstances;
             }
             set
             {
-                this.omObject.NumberOfInstances = value;
+                omObject.NumberOfInstances = value;
             }
         }
     }

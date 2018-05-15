@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Set, "AzureRmIotHub", DefaultParameterSetName = "UpdateSku", SupportsShouldProcess = true)]
@@ -153,94 +153,94 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (ShouldProcess(Name, Properties.Resources.UpdateIotHub))
             {
-                IotHubDescription iotHubDescription = this.IotHubClient.IotHubResource.Get(this.ResourceGroupName, this.Name);
+                IotHubDescription iotHubDescription = IotHubClient.IotHubResource.Get(ResourceGroupName, Name);
 
                 switch (ParameterSetName)
                 {
                     case UpdateSkuParameterSet:
 
-                        var psIotHubSku = new PSIotHubSkuInfo()
+                        var psIotHubSku = new PSIotHubSkuInfo
                         {
-                            Name = this.SkuName,
-                            Capacity = this.Units
+                            Name = SkuName,
+                            Capacity = Units
                         };
 
                         iotHubDescription.Sku = IotHubUtils.ToIotHubSku(psIotHubSku);
                         break;
                     case UpdateEventHubEndpointPropertiesParameterSet:
 
-                        iotHubDescription.Properties.EventHubEndpoints["events"].RetentionTimeInDays = this.EventHubRetentionTimeInDays;
-                        iotHubDescription.Properties.EventHubEndpoints["operationsMonitoringEvents"].RetentionTimeInDays = this.EventHubRetentionTimeInDays;
+                        iotHubDescription.Properties.EventHubEndpoints["events"].RetentionTimeInDays = EventHubRetentionTimeInDays;
+                        iotHubDescription.Properties.EventHubEndpoints["operationsMonitoringEvents"].RetentionTimeInDays = EventHubRetentionTimeInDays;
                         break;
                     case UpdateFileUploadPropertiesParameterSet:
 
-                        iotHubDescription.Properties.EnableFileUploadNotifications = this.EnableFileUploadNotifications;
+                        iotHubDescription.Properties.EnableFileUploadNotifications = EnableFileUploadNotifications;
 
-                        if (this.FileUploadStorageConnectionString != null)
+                        if (FileUploadStorageConnectionString != null)
                         {
-                            iotHubDescription.Properties.StorageEndpoints["$default"].ConnectionString = this.FileUploadStorageConnectionString;
+                            iotHubDescription.Properties.StorageEndpoints["$default"].ConnectionString = FileUploadStorageConnectionString;
                         }
 
-                        if (this.FileUploadContainerName != null)
+                        if (FileUploadContainerName != null)
                         {
-                            iotHubDescription.Properties.StorageEndpoints["$default"].ContainerName = this.FileUploadContainerName;
+                            iotHubDescription.Properties.StorageEndpoints["$default"].ContainerName = FileUploadContainerName;
                         }
 
-                        if (this.FileUploadSasUriTtl != null)
+                        if (FileUploadSasUriTtl != null)
                         {
-                            iotHubDescription.Properties.StorageEndpoints["$default"].SasTtlAsIso8601 = this.FileUploadSasUriTtl;
+                            iotHubDescription.Properties.StorageEndpoints["$default"].SasTtlAsIso8601 = FileUploadSasUriTtl;
                         }
 
-                        if (this.FileUploadNotificationTtl != null)
+                        if (FileUploadNotificationTtl != null)
                         {
-                            iotHubDescription.Properties.MessagingEndpoints["fileNotifications"].TtlAsIso8601 = this.FileUploadNotificationTtl;
+                            iotHubDescription.Properties.MessagingEndpoints["fileNotifications"].TtlAsIso8601 = FileUploadNotificationTtl;
                         }
 
-                        if (this.FileUploadNotificationMaxDeliveryCount != null)
+                        if (FileUploadNotificationMaxDeliveryCount != null)
                         {
-                            iotHubDescription.Properties.MessagingEndpoints["fileNotifications"].MaxDeliveryCount = (int)this.FileUploadNotificationMaxDeliveryCount;
+                            iotHubDescription.Properties.MessagingEndpoints["fileNotifications"].MaxDeliveryCount = (int)FileUploadNotificationMaxDeliveryCount;
                         }
 
                         break;
                     case UpdateCloudToDevicePropertiesParameterSet:
 
-                        if (this.CloudToDevice != null)
+                        if (CloudToDevice != null)
                         {
-                            iotHubDescription.Properties.CloudToDevice = IotHubUtils.ToCloudToDeviceProperties(this.CloudToDevice);
+                            iotHubDescription.Properties.CloudToDevice = IotHubUtils.ToCloudToDeviceProperties(CloudToDevice);
                         }
 
                         break;
                     case UpdateOperationsMonitoringPropertiesParameterSet:
 
-                        if (this.OperationsMonitoringProperties != null)
+                        if (OperationsMonitoringProperties != null)
                         {
-                            iotHubDescription.Properties.OperationsMonitoringProperties = IotHubUtils.ToOperationsMonitoringProperties(this.OperationsMonitoringProperties);
+                            iotHubDescription.Properties.OperationsMonitoringProperties = IotHubUtils.ToOperationsMonitoringProperties(OperationsMonitoringProperties);
                         }
 
                         break;
                     case UpdateRoutingPropertiesParameterSet:
 
-                        if (this.RoutingProperties != null)
+                        if (RoutingProperties != null)
                         {
-                            iotHubDescription.Properties.Routing = IotHubUtils.ToRoutingProperties(this.RoutingProperties);
+                            iotHubDescription.Properties.Routing = IotHubUtils.ToRoutingProperties(RoutingProperties);
                         }
 
                         break;
 
                     case UpdateRoutePropertiesParameterSet:
 
-                        if (this.Routes != null)
+                        if (Routes != null)
                         {
-                            iotHubDescription.Properties.Routing.Routes = IotHubUtils.ToRouteProperties(this.Routes);
+                            iotHubDescription.Properties.Routing.Routes = IotHubUtils.ToRouteProperties(Routes);
                         }
 
                         break;
 
                     case UpdateFallbackRoutePropertyParameterSet:
 
-                        if (this.FallbackRoute != null)
+                        if (FallbackRoute != null)
                         {
-                            iotHubDescription.Properties.Routing.FallbackRoute = IotHubUtils.ToFallbackRouteProperty(this.FallbackRoute);
+                            iotHubDescription.Properties.Routing.FallbackRoute = IotHubUtils.ToFallbackRouteProperty(FallbackRoute);
                         }
 
                         break;
@@ -250,9 +250,9 @@ namespace Microsoft.Azure.Commands.Management.IotHub
                         throw new ArgumentException("BadParameterSetName");
                 }
 
-                this.IotHubClient.IotHubResource.CreateOrUpdate(this.ResourceGroupName, this.Name, iotHubDescription);
-                IotHubDescription updatedIotHubDescription = this.IotHubClient.IotHubResource.Get(this.ResourceGroupName, this.Name);
-                this.WriteObject(IotHubUtils.ToPSIotHub(updatedIotHubDescription), false);
+                IotHubClient.IotHubResource.CreateOrUpdate(ResourceGroupName, Name, iotHubDescription);
+                IotHubDescription updatedIotHubDescription = IotHubClient.IotHubResource.Get(ResourceGroupName, Name);
+                WriteObject(IotHubUtils.ToPSIotHub(updatedIotHubDescription), false);
             }
         }
     }

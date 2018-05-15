@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             SetObjectIdentifier(vaultUriHelper, managedStorageAccountBundleListItem.Identifier);
 
-            AccountName = this.Name;
+            AccountName = Name;
             AccountResourceId = managedStorageAccountBundleListItem.ResourceId;
             Attributes = managedStorageAccountBundleListItem.Attributes == null 
                 ? null 
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             SetObjectIdentifier(managedStorageAccountBundle);
 
-            AccountName = this.Name;
+            AccountName = Name;
             AccountResourceId = managedStorageAccountBundle.AccountResourceId;
             Attributes = managedStorageAccountBundle.Attributes;
             Tags = managedStorageAccountBundle.Tags;
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return ( Tags == null ) ? null : Tags.ConvertToTagsTable();
+                return Tags == null ? null : Tags.ConvertToTagsTable();
             }
         }
 
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return ( Tags == null ) ? null : Tags.ConvertToDictionary();
+                return Tags == null ? null : Tags.ConvertToDictionary();
             }
         }
     }

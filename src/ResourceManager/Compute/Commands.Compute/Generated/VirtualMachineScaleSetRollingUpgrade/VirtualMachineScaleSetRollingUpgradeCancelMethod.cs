@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string vmScaleSetName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName" },
+                 new[] { "ResourceGroupName", "VMScaleSetName" },
                  new object[] { resourceGroupName, vmScaleSetName });
         }
     }
@@ -105,13 +105,13 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.VMScaleSetName, VerbsLifecycle.Stop)
-                    && (this.Force.IsPresent ||
-                        this.ShouldContinue(Properties.Resources.ResourceStoppingConfirmation,
+                if (ShouldProcess(VMScaleSetName, VerbsLifecycle.Stop)
+                    && (Force.IsPresent ||
+                        ShouldContinue(Properties.Resources.ResourceStoppingConfirmation,
                                             "Stop-AzureRmVmssRollingUpgrade operation")))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string vmScaleSetName = this.VMScaleSetName;
+                    string resourceGroupName = ResourceGroupName;
+                    string vmScaleSetName = VMScaleSetName;
 
                     var result = VirtualMachineScaleSetRollingUpgradesClient.Cancel(resourceGroupName, vmScaleSetName);
                     var psObject = new PSOperationStatusResponse();
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

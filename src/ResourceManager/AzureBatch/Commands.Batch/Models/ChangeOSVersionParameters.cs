@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("targetOSVersion");
             }
 
-            this.TargetOSVersion = targetOSVersion;
+            TargetOSVersion = targetOSVersion;
         }
 
         /// <summary>

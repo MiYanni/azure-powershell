@@ -88,10 +88,10 @@ namespace Microsoft.Azure.Commands.OperationalInsights
         {
             var dsProperties = new PSWindowsPerformanceCounterDataSourceProperties
             {
-                ObjectName = this.ObjectName,
-                InstanceName = this.InstanceName,
-                IntervalSeconds = this.IntervalSeconds,
-                CounterName = this.CounterName,
+                ObjectName = ObjectName,
+                InstanceName = InstanceName,
+                IntervalSeconds = IntervalSeconds,
+                CounterName = CounterName,
                 CollectorType = CollectorType.Default
             };
 

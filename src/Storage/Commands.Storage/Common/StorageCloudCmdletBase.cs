@@ -208,14 +208,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                     throw new ArgumentException(Resources.InvalidStorageServiceType, "type");
             }
 
-            if (this.ServerTimeoutPerRequest.HasValue)
+            if (ServerTimeoutPerRequest.HasValue)
             {
-                options.ServerTimeout = ConvertToTimeSpan(this.ServerTimeoutPerRequest.Value);
+                options.ServerTimeout = ConvertToTimeSpan(ServerTimeoutPerRequest.Value);
             }
 
-            if (this.ClientTimeoutPerRequest.HasValue)
+            if (ClientTimeoutPerRequest.HasValue)
             {
-                options.MaximumExecutionTime = ConvertToTimeSpan(this.ClientTimeoutPerRequest.Value);
+                options.MaximumExecutionTime = ConvertToTimeSpan(ClientTimeoutPerRequest.Value);
             }
 
             return options;
@@ -227,8 +227,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <returns>Storage account</returns>
         internal AzureStorageContext GetCmdletStorageContext()
         {
-            var context = this.GetCmdletStorageContext(this.Context);
-            this.Context = context;
+            var context = GetCmdletStorageContext(Context);
+            Context = context;
             return context;
         }
 
@@ -347,19 +347,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 {
                     return null;
                 }
-                else
-                {
-                    return timeSpan;
-                }
+                return timeSpan;
             }
-            else if (timeoutInSeconds == Timeout.Infinite)
+            if (timeoutInSeconds == Timeout.Infinite)
             {
                 return null;
             }
-            else
-            {
-                throw new ArgumentOutOfRangeException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidTimeoutValue, timeoutInSeconds));
-            }
+            throw new ArgumentOutOfRangeException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidTimeoutValue, timeoutInSeconds));
         }
 
 
@@ -369,7 +363,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <returns>Cloud storage account</returns>
         private bool TryGetStorageAccountFromEnvironmentVariable(out string connectionString)
         {
-            connectionString = System.Environment.GetEnvironmentVariable(Resources.EnvConnectionString);
+            connectionString = Environment.GetEnvironmentVariable(Resources.EnvConnectionString);
 
             if (String.IsNullOrEmpty(connectionString))
             {
@@ -385,19 +379,16 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 throw new ArgumentException(Resources.DefaultStorageCredentialsNotFound);
             }
-            else
-            {
-                WriteDebugLog(Resources.GetStorageAccountFromEnvironmentVariable);
+            WriteDebugLog(Resources.GetStorageAccountFromEnvironmentVariable);
 
-                try
-                {
-                    return CloudStorageAccount.Parse(connectionString);
-                }
-                catch
-                {
-                    WriteVerboseWithTimestamp(Resources.CannotGetStorageAccountFromEnvironmentVariable);
-                    throw;
-                }
+            try
+            {
+                return CloudStorageAccount.Parse(connectionString);
+            }
+            catch
+            {
+                WriteVerboseWithTimestamp(Resources.CannotGetStorageAccountFromEnvironmentVariable);
+                throw;
             }
         }
 
@@ -508,7 +499,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             int summaryRecordId = 0;
             string summary = String.Format(Resources.TransmitActiveSummary, taskScheduler.TotalTaskCount,
                 taskScheduler.FinishedTaskCount, taskScheduler.FailedTaskCount, taskScheduler.ActiveTaskCount);
-            string activity = string.Format(Resources.TransmitActivity, this.MyInvocation.MyCommand);
+            string activity = string.Format(Resources.TransmitActivity, MyInvocation.MyCommand);
             summaryRecord = new ProgressRecord(summaryRecordId, activity, summary);
             CmdletCancellationToken.Register(() => OutputStream.CancelConfirmRequest());
         }
@@ -579,7 +570,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         {
             CmdletOperationContext.Init();
             CmdletCancellationToken = cancellationTokenSource.Token;
-            WriteDebugLog(String.Format(Resources.InitOperationContextLog, this.GetType().Name, CmdletOperationContext.ClientRequestId));
+            WriteDebugLog(String.Format(Resources.InitOperationContextLog, GetType().Name, CmdletOperationContext.ClientRequestId));
 
             if (enableMultiThread)
             {
@@ -610,7 +601,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
 
             double timespan = CmdletOperationContext.GetRunningMilliseconds();
             string message = string.Format(Resources.EndProcessingLog,
-                this.GetType().Name, CmdletOperationContext.StartedRemoteCallCounter, CmdletOperationContext.FinishedRemoteCallCounter, timespan, CmdletOperationContext.ClientRequestId);
+                GetType().Name, CmdletOperationContext.StartedRemoteCallCounter, CmdletOperationContext.FinishedRemoteCallCounter, timespan, CmdletOperationContext.ClientRequestId);
             WriteDebugLog(message);
             base.EndProcessing();
         }

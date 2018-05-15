@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string NetworkInterfacesText
         {
-            get { return JsonConvert.SerializeObject(this.NetworkInterfaces, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(NetworkInterfaces, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

@@ -27,12 +27,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public VhdFile(VhdFooter footer, VhdHeader header, BlockAllocationTable bat, VhdFile parent, Stream stream)
         {
-            this.Footer = footer;
-            this.Header = header;
-            this.BlockAllocationTable = bat;
-            this.Parent = parent;
-            this.reader = new BinaryReader(stream, Encoding.Unicode);
-            DataReader = new VhdDataReader(this.reader);
+            Footer = footer;
+            Header = header;
+            BlockAllocationTable = bat;
+            Parent = parent;
+            reader = new BinaryReader(stream, Encoding.Unicode);
+            DataReader = new VhdDataReader(reader);
         }
 
         // These properties, and all others on this object, must remain immutable for certain FxCop suppressions to be allowed. 
@@ -47,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public IEnumerable<Block> GetBlocks()
         {
-            var blockFactory = this.GetBlockFactory();
+            var blockFactory = GetBlockFactory();
             for (long index = 0; index < blockFactory.BlockCount; index++)
             {
                 yield return blockFactory.Create((uint)index);
@@ -56,7 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public IBlockFactory GetBlockFactory()
         {
-            switch (this.DiskType)
+            switch (DiskType)
             {
                 case DiskType.Fixed:
                     return new FixedDiskBlockFactory(this);
@@ -65,14 +65,14 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
                 case DiskType.Differencing:
                     return new DifferencingDiskBlockFactory(this);
                 default:
-                    throw new InvalidOperationException(String.Format("Unsupported DiskType:{0}", this.DiskType));
+                    throw new InvalidOperationException(String.Format("Unsupported DiskType:{0}", DiskType));
             }
         }
 
         public IEnumerable<Guid> GetIdentityChain()
         {
-            var identities = new List<Guid> { this.Footer.UniqueId };
-            var currentFile = this.Parent;
+            var identities = new List<Guid> { Footer.UniqueId };
+            var currentFile = Parent;
             while (currentFile != null)
             {
                 identities.Add(currentFile.Footer.UniqueId);
@@ -93,7 +93,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
             {
                 if (disposing)
                 {
-                    this.reader.Close();
+                    reader.Close();
                 }
                 if (Parent != null)
                 {

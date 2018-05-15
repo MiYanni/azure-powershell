@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             string resourceGroupName = (string)ParseParameter(invokeMethodInputParameters[0]);
             string vmScaleSetName = (string)ParseParameter(invokeMethodInputParameters[1]);
-            System.Collections.Generic.IList<string> instanceIds = null;
+            IList<string> instanceIds = null;
             if (invokeMethodInputParameters[2] != null)
             {
                 var inputArray2 = Array.ConvertAll((object[]) ParseParameter(invokeMethodInputParameters[2]), e => e.ToString());
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             var instanceIds = new string[0];
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName", "InstanceIds" },
+                 new[] { "ResourceGroupName", "VMScaleSetName", "InstanceIds" },
                  new object[] { resourceGroupName, vmScaleSetName, instanceIds });
         }
     }
@@ -131,14 +131,14 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.VMScaleSetName, VerbsCommon.Remove)
-                    && (this.Force.IsPresent ||
-                        this.ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
+                if (ShouldProcess(VMScaleSetName, VerbsCommon.Remove)
+                    && (Force.IsPresent ||
+                        ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
                                             "Remove-AzureRmVmss operation")))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string vmScaleSetName = this.VMScaleSetName;
-                    System.Collections.Generic.IList<string> instanceIds = this.InstanceId;
+                    string resourceGroupName = ResourceGroupName;
+                    string vmScaleSetName = VMScaleSetName;
+                    IList<string> instanceIds = InstanceId;
 
                     if (!string.IsNullOrEmpty(resourceGroupName) && !string.IsNullOrEmpty(vmScaleSetName) && instanceIds != null)
                     {
@@ -158,7 +158,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

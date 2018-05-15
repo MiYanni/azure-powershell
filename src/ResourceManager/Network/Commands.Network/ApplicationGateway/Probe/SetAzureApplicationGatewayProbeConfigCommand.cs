@@ -33,19 +33,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var oldProbe = this.ApplicationGateway.Probes.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var oldProbe = ApplicationGateway.Probes.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (oldProbe == null)
             {
                 throw new ArgumentException("Probe with the specified name does not exist");
             }
 
-            var newProbe = base.NewObject();
+            var newProbe = NewObject();
 
-            this.ApplicationGateway.Probes.Remove(oldProbe);
-            this.ApplicationGateway.Probes.Add(newProbe);
+            ApplicationGateway.Probes.Remove(oldProbe);
+            ApplicationGateway.Probes.Add(newProbe);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.Profile
 
                         ModifyContext((localProfile, profileClient) =>
                        {
-                           var matchingContexts = localProfile.Contexts?.Values?.Where((c) => c != null && c.Account != null && string.Equals(c.Account.Id, azureAccount.Id, StringComparison.CurrentCultureIgnoreCase));
+                           var matchingContexts = localProfile.Contexts?.Values?.Where(c => c != null && c.Account != null && string.Equals(c.Account.Id, azureAccount.Id, StringComparison.CurrentCultureIgnoreCase));
                            foreach (var context in matchingContexts)
                            {
                                profileClient.TryRemoveContext(context);

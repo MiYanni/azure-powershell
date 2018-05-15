@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
             string storageAccountId = null,
             IDictionary<string, string> tags = null)
         {
-            var parameters = new RegistryUpdateParameters()
+            var parameters = new RegistryUpdateParameters
             {
                 AdminUserEnabled = adminUserEnabled
             };
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
 
             if (storageAccountId != null)
             {
-                parameters.StorageAccount = new StorageAccountProperties()
+                parameters.StorageAccount = new StorageAccountProperties
                 {
                     Id = storageAccountId
                 };
@@ -90,22 +90,16 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
             {
                 return _client.Registries.List();
             }
-            else
-            {
-                return _client.Registries.ListByResourceGroup(resourceGroupName);
-            }
+            return _client.Registries.ListByResourceGroup(resourceGroupName);
         }
 
         public IPage<Registry> ListRegistriesUsingNextLink(string resourceGroupName, string nextLink)
         {
             if (string.IsNullOrEmpty(resourceGroupName))
             {
-                return _client.Registries.ListNext(nextPageLink: nextLink);
+                return _client.Registries.ListNext(nextLink);
             }
-            else
-            {
-                return _client.Registries.ListByResourceGroupNext(nextPageLink: nextLink);
-            }
+            return _client.Registries.ListByResourceGroupNext(nextLink);
         }
 
         public IList<PSContainerRegistry> ListAllRegistries(string resourceGroupName)

@@ -44,11 +44,11 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("DatabaseName"))
             {
                 results = new List<AzureSqlDatabaseModel>();
-                results.Add(ModelAdapter.GetDatabase(this.ResourceGroupName, this.ServerName, this.DatabaseName));
+                results.Add(ModelAdapter.GetDatabase(ResourceGroupName, ServerName, DatabaseName));
             }
             else
             {
-                results = ModelAdapter.ListDatabases(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListDatabases(ResourceGroupName, ServerName);
             }
 
             return results;

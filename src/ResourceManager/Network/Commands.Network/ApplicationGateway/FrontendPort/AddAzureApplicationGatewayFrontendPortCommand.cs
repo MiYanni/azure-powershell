@@ -32,17 +32,17 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var frontendPort = this.ApplicationGateway.FrontendPorts.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var frontendPort = ApplicationGateway.FrontendPorts.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (frontendPort != null)
             {
                 throw new ArgumentException("Frontend port with the specified name already exists");
             }
 
-            frontendPort = base.NewObject();
-            this.ApplicationGateway.FrontendPorts.Add(frontendPort);
+            frontendPort = NewObject();
+            ApplicationGateway.FrontendPorts.Add(frontendPort);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

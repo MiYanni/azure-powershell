@@ -14,9 +14,9 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using ResourceManager.Common.ArgumentCompleters;
     using System;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [ValidateNotNullOrEmpty]
         public string State
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The definition of the workflow.",
@@ -96,35 +96,35 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (this.Definition != null)
+            if (Definition != null)
             {
-                this.Definition = JToken.Parse(this.Definition.ToString());
+                Definition = JToken.Parse(Definition.ToString());
             }
 
-            if (!string.IsNullOrEmpty(this.DefinitionFilePath))
+            if (!string.IsNullOrEmpty(DefinitionFilePath))
             {
-                this.Definition = CmdletHelper.GetDefinitionFromFile(this.TryResolvePath(this.DefinitionFilePath));
+                Definition = CmdletHelper.GetDefinitionFromFile(this.TryResolvePath(DefinitionFilePath));
             }
 
-            if (this.Parameters != null)
+            if (Parameters != null)
             {
-                this.Parameters = CmdletHelper.ConvertToWorkflowParameterDictionary(this.Parameters);
+                Parameters = CmdletHelper.ConvertToWorkflowParameterDictionary(Parameters);
             }
 
-            if (!string.IsNullOrEmpty(this.ParameterFilePath))
+            if (!string.IsNullOrEmpty(ParameterFilePath))
             {
-                this.Parameters = CmdletHelper.GetParametersFromFile(this.TryResolvePath(this.ParameterFilePath));
+                Parameters = CmdletHelper.GetParametersFromFile(this.TryResolvePath(ParameterFilePath));
             }
 
-            this.WriteObject(LogicAppClient.CreateWorkflow(this.ResourceGroupName, this.Name, new Workflow
+            WriteObject(LogicAppClient.CreateWorkflow(ResourceGroupName, Name, new Workflow
             {
-                Location = this.Location,
-                Definition = this.Definition,
-                Parameters = this.Parameters as Dictionary<string, WorkflowParameter>,
-                IntegrationAccount = string.IsNullOrEmpty(this.IntegrationAccountId)
+                Location = Location,
+                Definition = Definition,
+                Parameters = Parameters as Dictionary<string, WorkflowParameter>,
+                IntegrationAccount = string.IsNullOrEmpty(IntegrationAccountId)
                     ? null
-                    : new ResourceReference(this.IntegrationAccountId),
-                State = (WorkflowState)Enum.Parse(typeof(WorkflowState), this.State)
+                    : new ResourceReference(IntegrationAccountId),
+                State = (WorkflowState)Enum.Parse(typeof(WorkflowState), State)
             }), true);
         }
     }

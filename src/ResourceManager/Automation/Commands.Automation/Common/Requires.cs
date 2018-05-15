@@ -56,8 +56,8 @@ namespace Microsoft.Azure.Commands.Automation.Common
             /// <param name="value">The value</param>
             public ArgumentRequirements(string name, T value)
             {
-                this.Name = name;
-                this.Value = value;
+                Name = name;
+                Value = value;
             }
 
             /// <summary>
@@ -66,9 +66,9 @@ namespace Microsoft.Azure.Commands.Automation.Common
             /// <returns>The not null requirement</returns>
             public ArgumentRequirements<T> NotNull()
             {
-                if (this.Value == null)
+                if (Value == null)
                 {
-                    throw new ArgumentNullException(this.Name);
+                    throw new ArgumentNullException(Name);
                 }
 
                 return this;
@@ -80,13 +80,13 @@ namespace Microsoft.Azure.Commands.Automation.Common
             /// <returns>The not null requirement</returns>
             public ArgumentRequirements<T> NotNullOrEmpty()
             {
-                if (this.Value == null)
+                if (Value == null)
                 {
-                    throw new ArgumentNullException(this.Name);
+                    throw new ArgumentNullException(Name);
                 }
-                else if (string.IsNullOrEmpty(this.Value.ToString()))
+                if (string.IsNullOrEmpty(Value.ToString()))
                 {
-                    throw new ArgumentNullException(this.Name);
+                    throw new ArgumentNullException(Name);
                 }
 
                 return this;

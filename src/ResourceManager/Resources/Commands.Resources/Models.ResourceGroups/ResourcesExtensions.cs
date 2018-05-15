@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public static PSPermission ToPSPermission(this Permission permission)
         {
-            return new PSPermission()
+            return new PSPermission
             {
                 Actions = new List<string>(permission.Actions),
                 NotActions = new List<string>(permission.NotActions)
@@ -99,10 +99,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 return null;
             }
-            else
-            {
-                return claims[name];
-            }
+            return claims[name];
         }
 
         public static string ConstructDeploymentVariableTable(Dictionary<string, DeploymentVariable> dictionary)
@@ -193,7 +190,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             get
             {
-                return new PSPermission()
+                return new PSPermission
                 {
                     Actions = new List<string>(),
                     NotActions = new List<string>()

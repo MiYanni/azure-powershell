@@ -11,6 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
 #if !NETSTANDARD
 
 using Microsoft.Azure.Management.Storage.Models;
@@ -66,8 +67,6 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Commands.Compute
 {
@@ -85,12 +84,12 @@ namespace Microsoft.Azure.Commands.Compute
 
         public static bool IsPremiumLrs(this StorageAccount account)
         {
-            return account.Sku.Name == Microsoft.Azure.Management.Storage.Models.SkuName.PremiumLRS;
+            return account.Sku.Name == Azure.Management.Storage.Models.SkuName.PremiumLRS;
         }
 
         public static void SetAsStandardGRS(this StorageAccountCreateParameters createParams)
         {
-            createParams.Sku = new Sku(Microsoft.Azure.Management.Storage.Models.SkuName.StandardGRS);
+            createParams.Sku = new Sku(Azure.Management.Storage.Models.SkuName.StandardGRS);
         }
 
         public static string GetFirstAvailableKey(this StorageAccountListKeysResult listKeyResult)
@@ -244,47 +243,35 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string SecurityRulesText
-        {
-            get { return JsonConvert.SerializeObject(SecurityRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string SecurityRulesText => JsonConvert.SerializeObject(SecurityRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string DefaultSecurityRulesText
-        {
-            get { return JsonConvert.SerializeObject(DefaultSecurityRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string DefaultSecurityRulesText => JsonConvert.SerializeObject(DefaultSecurityRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string NetworkInterfacesText
-        {
-            get { return JsonConvert.SerializeObject(NetworkInterfaces, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string NetworkInterfacesText => JsonConvert.SerializeObject(NetworkInterfaces, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string SubnetsText
-        {
-            get { return JsonConvert.SerializeObject(Subnets, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string SubnetsText => JsonConvert.SerializeObject(Subnets, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeSecurityRules()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeDefaultSecurityRules()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeNetworkInterfaces()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeSubnets()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }
@@ -322,25 +309,19 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string RoutesText
-        {
-            get { return JsonConvert.SerializeObject(Routes, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string RoutesText => JsonConvert.SerializeObject(Routes, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string SubnetsText
-        {
-            get { return JsonConvert.SerializeObject(Subnets, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string SubnetsText => JsonConvert.SerializeObject(Subnets, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeSubnets()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeRoutes()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }
@@ -371,32 +352,20 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string IpConfigurationsText
-        {
-            get { return JsonConvert.SerializeObject(IpConfigurations, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string IpConfigurationsText => JsonConvert.SerializeObject(IpConfigurations, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string ResourceNavigationLinksText
-        {
-            get { return JsonConvert.SerializeObject(ResourceNavigationLinks, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string ResourceNavigationLinksText => JsonConvert.SerializeObject(ResourceNavigationLinks, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string NetworkSecurityGroupText
-        {
-            get { return JsonConvert.SerializeObject(NetworkSecurityGroup, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string NetworkSecurityGroupText => JsonConvert.SerializeObject(NetworkSecurityGroup, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string RouteTableText
-        {
-            get { return JsonConvert.SerializeObject(RouteTable, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string RouteTableText => JsonConvert.SerializeObject(RouteTable, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeIpConfigurations()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }
@@ -415,10 +384,7 @@ namespace Microsoft.Azure.Commands.Network.Models
 
         public Hashtable Tag { get; set; }
 
-        public string TagsTable
-        {
-            get { return ConstructTagsTable(Tag); }
-        }
+        public string TagsTable => ConstructTagsTable(Tag);
 
         public static string ConstructTagsTable(Hashtable tags)
         {
@@ -427,7 +393,7 @@ namespace Microsoft.Azure.Commands.Network.Models
                 return null;
             }
 
-            StringBuilder resourcesTable = new StringBuilder();
+            var resourcesTable = new StringBuilder();
             resourcesTable.AppendLine("Surprise! No tag available for now...");
             return resourcesTable.ToString();
         }
@@ -466,16 +432,10 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string IpConfigurationText
-        {
-            get { return JsonConvert.SerializeObject(IpConfiguration, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string IpConfigurationText => JsonConvert.SerializeObject(IpConfiguration, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string DnsSettingsText
-        {
-            get { return JsonConvert.SerializeObject(DnsSettings, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string DnsSettingsText => JsonConvert.SerializeObject(DnsSettings, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     }
 }
 
@@ -501,16 +461,10 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string SubnetText
-        {
-            get { return JsonConvert.SerializeObject(Subnet, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string SubnetText => JsonConvert.SerializeObject(Subnet, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string PublicIpAddressText
-        {
-            get { return JsonConvert.SerializeObject(PublicIpAddress, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string PublicIpAddressText => JsonConvert.SerializeObject(PublicIpAddress, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     }
 }
 
@@ -531,25 +485,19 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string BackendIpConfigurationsText
-        {
-            get { return JsonConvert.SerializeObject(BackendIpConfigurations, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string BackendIpConfigurationsText => JsonConvert.SerializeObject(BackendIpConfigurations, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string LoadBalancingRulesText
-        {
-            get { return JsonConvert.SerializeObject(LoadBalancingRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string LoadBalancingRulesText => JsonConvert.SerializeObject(LoadBalancingRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeBackendIpConfigurations()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeLoadBalancingRules()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }
@@ -572,14 +520,11 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string FrontendIPConfigurationText
-        {
-            get { return JsonConvert.SerializeObject(FrontendIPConfiguration, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string FrontendIPConfigurationText => JsonConvert.SerializeObject(FrontendIPConfiguration, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeBackendPort()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }
@@ -603,14 +548,11 @@ namespace Microsoft.Azure.Commands.Network.Models
         public PSNetworkInterfaceIPConfiguration BackendIPConfiguration { get; set; }
 
         [JsonIgnore]
-        public string BackendIPConfigurationText
-        {
-            get { return JsonConvert.SerializeObject(BackendIPConfiguration, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string BackendIPConfigurationText => JsonConvert.SerializeObject(BackendIPConfiguration, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeFrontendPort()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }
@@ -635,25 +577,19 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string BackendAddressesText
-        {
-            get { return JsonConvert.SerializeObject(BackendAddresses, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string BackendAddressesText => JsonConvert.SerializeObject(BackendAddresses, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string BackendIpConfigurationsText
-        {
-            get { return JsonConvert.SerializeObject(BackendIpConfigurations, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string BackendIpConfigurationsText => JsonConvert.SerializeObject(BackendIpConfigurations, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeBackendAddresses()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeBackendIpConfigurations()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }
@@ -681,36 +617,27 @@ namespace Microsoft.Azure.Commands.Network.Models
         public List<PSApplicationGatewayBackendAddressPool> ApplicationGatewayBackendAddressPools { get; set; }
 
         [JsonIgnore]
-        public string LoadBalancerBackendAddressPoolsText
-        {
-            get { return JsonConvert.SerializeObject(LoadBalancerBackendAddressPools, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string LoadBalancerBackendAddressPoolsText => JsonConvert.SerializeObject(LoadBalancerBackendAddressPools, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string LoadBalancerInboundNatRulesText
-        {
-            get { return JsonConvert.SerializeObject(LoadBalancerInboundNatRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string LoadBalancerInboundNatRulesText => JsonConvert.SerializeObject(LoadBalancerInboundNatRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string ApplicationGatewayBackendAddressPoolsText
-        {
-            get { return JsonConvert.SerializeObject(ApplicationGatewayBackendAddressPools, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string ApplicationGatewayBackendAddressPoolsText => JsonConvert.SerializeObject(ApplicationGatewayBackendAddressPools, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeLoadBalancerBackendAddressPools()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeLoadBalancerInboundNatRules()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
 
         public bool ShouldSerializeApplicationGatewayBackendAddressPools()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }
@@ -732,7 +659,7 @@ namespace Microsoft.Azure.Commands.Network.Models
 
 namespace Microsoft.Azure.Commands.Network.Models
 {
-    using Microsoft.Azure.Management.Internal.Network.Common;
+    using Azure.Management.Internal.Network.Common;
     using Newtonsoft.Json;
     using System.Collections.Generic;
 
@@ -757,32 +684,20 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string ProvisioningState { get; set; }
 
         [JsonIgnore]
-        public string VirtualMachineText
-        {
-            get { return JsonConvert.SerializeObject(VirtualMachine, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string VirtualMachineText => JsonConvert.SerializeObject(VirtualMachine, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string IpConfigurationsText
-        {
-            get { return JsonConvert.SerializeObject(IpConfigurations, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string IpConfigurationsText => JsonConvert.SerializeObject(IpConfigurations, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string DnsSettingsText
-        {
-            get { return JsonConvert.SerializeObject(this.DnsSettings, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string DnsSettingsText => JsonConvert.SerializeObject(DnsSettings, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         [JsonIgnore]
-        public string NetworkSecurityGroupText
-        {
-            get { return JsonConvert.SerializeObject(NetworkSecurityGroup, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
-        }
+        public string NetworkSecurityGroupText => JsonConvert.SerializeObject(NetworkSecurityGroup, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
         public bool ShouldSerializeIpConfigurations()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }

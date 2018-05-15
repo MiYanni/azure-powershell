@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -63,10 +63,10 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                if (string.IsNullOrEmpty(this.Name))
+                if (string.IsNullOrEmpty(Name))
                 {
                     VirtualMachine virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(
-                        this.ResourceGroupName, this.VMName);
+                        ResourceGroupName, VMName);
                     var diagnosticsExtension = virtualMachine.Resources != null
                             ? virtualMachine.Resources.FirstOrDefault(extension =>
                                 extension.Publisher.Equals(DiagnosticsExtensionConstants.ExtensionPublisher, StringComparison.InvariantCultureIgnoreCase) &&
@@ -75,19 +75,16 @@ namespace Microsoft.Azure.Commands.Compute
 
                     if (diagnosticsExtension == null)
                     {
-                        WriteWarning(string.Format(CultureInfo.InvariantCulture, Properties.Resources.DiagnosticsExtensionNotFound, this.ResourceGroupName, this.VMName));
+                        WriteWarning(string.Format(CultureInfo.InvariantCulture, Properties.Resources.DiagnosticsExtensionNotFound, ResourceGroupName, VMName));
                         return;
                     }
-                    else
-                    {
-                        this.Name = diagnosticsExtension.Name;
-                    }
+                    Name = diagnosticsExtension.Name;
                 }
 
-                var op = this.VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(
-                    this.ResourceGroupName,
-                    this.VMName,
-                    this.Name).GetAwaiter().GetResult();
+                var op = VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(
+                    ResourceGroupName,
+                    VMName,
+                    Name).GetAwaiter().GetResult();
                 var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
                 WriteObject(result);
             });

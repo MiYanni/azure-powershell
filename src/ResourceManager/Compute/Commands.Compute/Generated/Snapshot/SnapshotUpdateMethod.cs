@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             SnapshotUpdate snapshot = (SnapshotUpdate)ParseParameter(invokeMethodInputParameters[2]);
             Snapshot snapshotOrg = (Snapshot)ParseParameter(invokeMethodInputParameters[3]);
 
-            var result = (snapshot == null)
+            var result = snapshot == null
                          ? SnapshotsClient.CreateOrUpdate(resourceGroupName, snapshotName, snapshotOrg)
                          : SnapshotsClient.Update(resourceGroupName, snapshotName, snapshot);
             WriteObject(result);
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             SnapshotUpdate snapshot = new SnapshotUpdate();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "SnapshotName", "Snapshot" },
+                 new[] { "ResourceGroupName", "SnapshotName", "Snapshot" },
                  new object[] { resourceGroupName, snapshotName, snapshot });
         }
     }
@@ -122,16 +122,16 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.SnapshotName, VerbsData.Update))
+                if (ShouldProcess(SnapshotName, VerbsData.Update))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string snapshotName = this.SnapshotName;
+                    string resourceGroupName = ResourceGroupName;
+                    string snapshotName = SnapshotName;
                     SnapshotUpdate snapshotupdate = new SnapshotUpdate();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSSnapshotUpdate, SnapshotUpdate>(this.SnapshotUpdate, snapshotupdate);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSSnapshotUpdate, SnapshotUpdate>(SnapshotUpdate, snapshotupdate);
                     Snapshot snapshot = new Snapshot();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSSnapshot, Snapshot>(this.Snapshot, snapshot);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSSnapshot, Snapshot>(Snapshot, snapshot);
 
-                    var result = (this.SnapshotUpdate == null)
+                    var result = SnapshotUpdate == null
                                  ? SnapshotsClient.CreateOrUpdate(resourceGroupName, snapshotName, snapshot)
                                  : SnapshotsClient.Update(resourceGroupName, snapshotName, snapshotupdate);
                     var psObject = new PSSnapshot();
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

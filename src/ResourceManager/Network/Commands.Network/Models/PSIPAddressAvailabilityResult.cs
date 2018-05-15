@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string AvailableIPAddressesText
         {
-            get { return JsonConvert.SerializeObject(AvailableIPAddresses, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(AvailableIPAddresses, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

@@ -43,24 +43,24 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var vnetGateway = this.GetVirtualNetworkGateway(this.ResourceGroupName, this.Name);
+                var vnetGateway = GetVirtualNetworkGateway(ResourceGroupName, Name);
 
                 WriteObject(vnetGateway);
             }
-            else if (!string.IsNullOrEmpty(this.ResourceGroupName))
+            else if (!string.IsNullOrEmpty(ResourceGroupName))
             {
-                var vnetGatewayPage = this.VirtualNetworkGatewayClient.List(this.ResourceGroupName);
+                var vnetGatewayPage = VirtualNetworkGatewayClient.List(ResourceGroupName);
 
                 // Get all resources by polling on next page link
-                var vnetGatewayList = ListNextLink<Management.Network.Models.VirtualNetworkGateway>.GetAllResourcesByPollingNextLink(vnetGatewayPage, this.VirtualNetworkGatewayClient.ListNext);
+                var vnetGatewayList = ListNextLink<Management.Network.Models.VirtualNetworkGateway>.GetAllResourcesByPollingNextLink(vnetGatewayPage, VirtualNetworkGatewayClient.ListNext);
 
                 var psVnetGateways = new List<PSVirtualNetworkGateway>();
                 foreach (var virtualNetworkGateway in vnetGatewayList)
                 {
-                    var psVnetGateway = this.ToPsVirtualNetworkGateway(virtualNetworkGateway);
-                    psVnetGateway.ResourceGroupName = this.ResourceGroupName;
+                    var psVnetGateway = ToPsVirtualNetworkGateway(virtualNetworkGateway);
+                    psVnetGateway.ResourceGroupName = ResourceGroupName;
                     psVnetGateways.Add(psVnetGateway);
                 }
 

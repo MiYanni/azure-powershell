@@ -84,22 +84,22 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            this.ConfirmAction(
+            ConfirmAction(
                 Force.IsPresent,
                 string.Format(Resources.WebhookOneTimeURL, "Webhook"),
                 string.Format(Resources.WebhookOneTimeURL, "Webhook"),
                 Name,
                 () =>
-                this.WriteObject(
-                    this.AutomationClient.CreateWebhook(
-                        this.ResourceGroupName,
-                        this.AutomationAccountName,
-                        this.Name,
-                        this.RunbookName,
-                        this.IsEnabled,
-                        this.ExpiryTime,
-                        this.Parameters,
-                        this.RunOn)));
+                WriteObject(
+                    AutomationClient.CreateWebhook(
+                        ResourceGroupName,
+                        AutomationAccountName,
+                        Name,
+                        RunbookName,
+                        IsEnabled,
+                        ExpiryTime,
+                        Parameters,
+                        RunOn)));
 
         }
     }

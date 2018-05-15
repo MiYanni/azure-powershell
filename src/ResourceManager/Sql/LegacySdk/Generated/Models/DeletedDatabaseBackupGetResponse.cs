@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DeletedDatabaseBackup DeletedDatabaseBackup
         {
-            get { return this._deletedDatabaseBackup; }
-            set { this._deletedDatabaseBackup = value; }
+            get { return _deletedDatabaseBackup; }
+            set { _deletedDatabaseBackup = value; }
         }
         
         /// <summary>

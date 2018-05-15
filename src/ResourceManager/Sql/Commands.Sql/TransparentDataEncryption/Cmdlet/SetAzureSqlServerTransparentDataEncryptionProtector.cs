@@ -63,9 +63,9 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
         /// Get the Transparent Data Encryption to update
         /// </summary>
         /// <returns>The Transparent Data Encryption being updated</returns>
-        protected override IEnumerable<Model.AzureSqlServerTransparentDataEncryptionProtectorModel> GetEntity()
+        protected override IEnumerable<AzureSqlServerTransparentDataEncryptionProtectorModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerTransparentDataEncryptionProtectorModel>() { ModelAdapter.GetEncryptionProtector(this.ResourceGroupName, this.ServerName) };
+            return new List<AzureSqlServerTransparentDataEncryptionProtectorModel> { ModelAdapter.GetEncryptionProtector(ResourceGroupName, ServerName) };
         }
 
         /// <summary>
@@ -73,17 +73,17 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
         /// </summary>
         /// <param name="model">The result of the get operation</param>
         /// <returns>The model to send to the update</returns>
-        protected override IEnumerable<Model.AzureSqlServerTransparentDataEncryptionProtectorModel> ApplyUserInputToModel(IEnumerable<Model.AzureSqlServerTransparentDataEncryptionProtectorModel> model)
+        protected override IEnumerable<AzureSqlServerTransparentDataEncryptionProtectorModel> ApplyUserInputToModel(IEnumerable<AzureSqlServerTransparentDataEncryptionProtectorModel> model)
         {
-            List<Model.AzureSqlServerTransparentDataEncryptionProtectorModel> newEntity = new List<Model.AzureSqlServerTransparentDataEncryptionProtectorModel>();
+            List<AzureSqlServerTransparentDataEncryptionProtectorModel> newEntity = new List<AzureSqlServerTransparentDataEncryptionProtectorModel>();
 
-            newEntity.Add(new Model.AzureSqlServerTransparentDataEncryptionProtectorModel()
+            newEntity.Add(new AzureSqlServerTransparentDataEncryptionProtectorModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                Type = this.Type,
-                ServerKeyVaultKeyName = AzureSqlServerKeyVaultKeyModel.CreateServerKeyNameFromKeyId(this.KeyId),
-                KeyId = this.KeyId
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                Type = Type,
+                ServerKeyVaultKeyName = AzureSqlServerKeyVaultKeyModel.CreateServerKeyNameFromKeyId(KeyId),
+                KeyId = KeyId
             });
             return newEntity;
         }
@@ -93,9 +93,10 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
         /// </summary>
         /// <param name="entity">The update parameters</param>
         /// <returns>The response object from the service</returns>
-        protected override IEnumerable<Model.AzureSqlServerTransparentDataEncryptionProtectorModel> PersistChanges(IEnumerable<Model.AzureSqlServerTransparentDataEncryptionProtectorModel> entity)
+        protected override IEnumerable<AzureSqlServerTransparentDataEncryptionProtectorModel> PersistChanges(IEnumerable<AzureSqlServerTransparentDataEncryptionProtectorModel> entity)
         {
-            return new List<Model.AzureSqlServerTransparentDataEncryptionProtectorModel>() {
+            return new List<AzureSqlServerTransparentDataEncryptionProtectorModel>
+            {
                 ModelAdapter.CreateOrUpdateEncryptionProtector(entity.First())
             };
         }
@@ -105,10 +106,10 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(this.KeyId))
+            if (ShouldProcess(KeyId))
             {
-                if (Force || this.Type == EncryptionProtectorType.ServiceManaged || ShouldContinue(
-                    string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.SetAzureSqlServerTransparentDataEncryptionProtectorWarning, this.KeyId), ""))
+                if (Force || Type == EncryptionProtectorType.ServiceManaged || ShouldContinue(
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAzureSqlServerTransparentDataEncryptionProtectorWarning, KeyId), ""))
                 {
                     base.ExecuteCmdlet();
                 }

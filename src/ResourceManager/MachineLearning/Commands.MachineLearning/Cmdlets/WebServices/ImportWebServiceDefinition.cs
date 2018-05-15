@@ -21,7 +21,7 @@ using Microsoft.Azure.Management.MachineLearning.WebServices.Util;
 
 namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 {
-    [Cmdlet(VerbsData.Import, WebServicesCmdletBase.CommandletSuffix)]
+    [Cmdlet(VerbsData.Import, CommandletSuffix)]
     [OutputType(typeof(WebService))]
     public class ImportWebServiceDefinition : WebServicesCmdletBase
     {
@@ -29,14 +29,14 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
         private const string ImportFromStringParamSet = "ImportFromJSONString.";
 
         [Parameter(
-            ParameterSetName = ImportWebServiceDefinition.ImportFromFileParamSet, 
+            ParameterSetName = ImportFromFileParamSet, 
             Mandatory = true, 
             HelpMessage = "Path to a file on disk containing the web service definition in JSON format.")]
         [ValidateNotNullOrEmpty]
         public string InputFile { get; set; }
 
         [Parameter(
-            ParameterSetName = ImportWebServiceDefinition.ImportFromStringParamSet, 
+            ParameterSetName = ImportFromStringParamSet, 
             Mandatory = true, 
             HelpMessage = "The actual web service definition as a JSON string.")]
         [ValidateNotNullOrEmpty]
@@ -44,19 +44,19 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 
         protected override void RunCmdlet()
         {
-            string jsonDefinition = this.JsonString;
+            string jsonDefinition = JsonString;
             if (string.Equals(
-                        this.ParameterSetName, 
-                        ImportWebServiceDefinition.ImportFromFileParamSet, 
+                        ParameterSetName, 
+                        ImportFromFileParamSet, 
                         StringComparison.OrdinalIgnoreCase))
             {
                 jsonDefinition = CmdletHelpers.GetWebServiceDefinitionFromFile(
-                                        this.SessionState.Path.CurrentFileSystemLocation.Path, 
-                                        this.InputFile);
+                                        SessionState.Path.CurrentFileSystemLocation.Path, 
+                                        InputFile);
             }
 
             WebService serviceDefinition = ModelsSerializationUtil.GetAzureMLWebServiceFromJsonDefinition(jsonDefinition);
-            this.WriteObject(serviceDefinition);
+            WriteObject(serviceDefinition);
         }
     }
 }

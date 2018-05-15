@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncAgentKey
         {
-            get { return this._syncAgentKey; }
-            set { this._syncAgentKey = value; }
+            get { return _syncAgentKey; }
+            set { _syncAgentKey = value; }
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("syncAgentKey");
             }
-            this.SyncAgentKey = syncAgentKey;
+            SyncAgentKey = syncAgentKey;
         }
     }
 }

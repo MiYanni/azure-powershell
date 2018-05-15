@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSPoolInformation
     {
         
-        internal Microsoft.Azure.Batch.PoolInformation omObject;
+        internal PoolInformation omObject;
         
         private PSAutoPoolSpecification autoPoolSpecification;
         
         public PSPoolInformation()
         {
-            this.omObject = new Microsoft.Azure.Batch.PoolInformation();
+            omObject = new PoolInformation();
         }
         
-        internal PSPoolInformation(Microsoft.Azure.Batch.PoolInformation omObject)
+        internal PSPoolInformation(PoolInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,24 +54,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.autoPoolSpecification == null) 
-                            && (this.omObject.AutoPoolSpecification != null)))
+                if (autoPoolSpecification == null 
+                    && omObject.AutoPoolSpecification != null)
                 {
-                    this.autoPoolSpecification = new PSAutoPoolSpecification(this.omObject.AutoPoolSpecification);
+                    autoPoolSpecification = new PSAutoPoolSpecification(omObject.AutoPoolSpecification);
                 }
-                return this.autoPoolSpecification;
+                return autoPoolSpecification;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.AutoPoolSpecification = null;
+                    omObject.AutoPoolSpecification = null;
                 }
                 else
                 {
-                    this.omObject.AutoPoolSpecification = value.omObject;
+                    omObject.AutoPoolSpecification = value.omObject;
                 }
-                this.autoPoolSpecification = value;
+                autoPoolSpecification = value;
             }
         }
         
@@ -79,11 +79,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PoolId;
+                return omObject.PoolId;
             }
             set
             {
-                this.omObject.PoolId = value;
+                omObject.PoolId = value;
             }
         }
     }

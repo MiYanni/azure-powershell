@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights
 
         public override void ExecuteCmdlet()
         {
-            CreatePSWorkspaceParameters parameters = new CreatePSWorkspaceParameters()
+            CreatePSWorkspaceParameters parameters = new CreatePSWorkspaceParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 WorkspaceName = Name,

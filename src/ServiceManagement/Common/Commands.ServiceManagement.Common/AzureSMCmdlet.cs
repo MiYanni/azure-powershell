@@ -66,36 +66,36 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         protected override void InitializeQosEvent()
         {
-            var commandAlias = this.GetType().Name;
-            if (this.MyInvocation != null && this.MyInvocation.MyCommand != null)
+            var commandAlias = GetType().Name;
+            if (MyInvocation != null && MyInvocation.MyCommand != null)
             {
-                commandAlias = this.MyInvocation.MyCommand.Name;
+                commandAlias = MyInvocation.MyCommand.Name;
             }
 
-            _qosEvent = new AzurePSQoSEvent()
+            _qosEvent = new AzurePSQoSEvent
             {
                 CommandName = commandAlias,
-                ModuleName = this.GetType().Assembly.GetName().Name,
-                ModuleVersion = this.GetType().Assembly.GetName().Version.ToString(),
-                ClientRequestId = this._clientRequestId,
+                ModuleName = GetType().Assembly.GetName().Name,
+                ModuleVersion = GetType().Assembly.GetName().Version.ToString(),
+                ClientRequestId = _clientRequestId,
                 SessionId = _sessionId,
-                IsSuccess = true,
+                IsSuccess = true
             };
 
-            if (this.MyInvocation != null && this.MyInvocation.BoundParameters != null 
-                && this.MyInvocation.BoundParameters.Keys != null)
+            if (MyInvocation != null && MyInvocation.BoundParameters != null 
+                && MyInvocation.BoundParameters.Keys != null)
             {
                 _qosEvent.Parameters = string.Join(" ",
-                    this.MyInvocation.BoundParameters.Keys.Select(
+                    MyInvocation.BoundParameters.Keys.Select(
                         s => string.Format(CultureInfo.InvariantCulture, "-{0} ***", s)));
             }
 
-            if (this.DefaultContext != null &&
-                this.DefaultContext.Account != null &&
-                !string.IsNullOrEmpty(this.DefaultContext.Account.Id))
+            if (DefaultContext != null &&
+                DefaultContext.Account != null &&
+                !string.IsNullOrEmpty(DefaultContext.Account.Id))
             {
                 _qosEvent.Uid = MetricHelper.GenerateSha256HashString(
-                    this.DefaultContext.Account.Id.ToString());
+                    DefaultContext.Account.Id);
             }
             else
             {
@@ -141,7 +141,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         protected override void LogCmdletEndInvocationInfo()
         {
             base.LogCmdletEndInvocationInfo();
-            string message = string.Format("{0} end processing.", this.GetType().Name);
+            string message = string.Format("{0} end processing.", GetType().Name);
             WriteDebugWithTimestamp(message);
         }
     }

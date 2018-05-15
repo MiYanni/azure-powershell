@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
         [JsonProperty(Order = 1)]
         public string Kind => "Storage";
         [JsonProperty(Order = 1)]
-        public IDictionary<string, object> Properties => new Dictionary<string, object>()
+        public IDictionary<string, object> Properties => new Dictionary<string, object>
         {
             { "encryption", new Dictionary<string, object> {
                 { "services", new Dictionary<string, object> {
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
                         {
                             Name = registrySku
                         },
-                        DependsOn = new string[]
+                        DependsOn = new[]
                         {
                             $"[resourceId('Microsoft.Storage/storageAccounts', '{storageAccountName}')]"
                         },

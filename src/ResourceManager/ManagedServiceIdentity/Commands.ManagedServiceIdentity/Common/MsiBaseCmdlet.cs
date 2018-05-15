@@ -20,15 +20,15 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.Common
         {
             get
             {
-                return this._msiClient ??
-                       (this._msiClient =
+                return _msiClient ??
+                       (_msiClient =
                            AzureSession.Instance.ClientFactory.CreateArmClient<ManagedServiceIdentityClient>(
-                               context: this.DefaultContext,
-                               endpoint: AzureEnvironment.Endpoint.ResourceManager));
+                               DefaultContext,
+                               AzureEnvironment.Endpoint.ResourceManager));
             }
             set
             {
-                this._msiClient = value;
+                _msiClient = value;
             }
         }
 
@@ -36,14 +36,14 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.Common
         {
             get
             {
-                return this._armClient ??
-                       (this._armClient = AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(
-                           context: this.DefaultContext,
-                           endpoint: AzureEnvironment.Endpoint.ResourceManager));
+                return _armClient ??
+                       (_armClient = AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(
+                           DefaultContext,
+                           AzureEnvironment.Endpoint.ResourceManager));
             }
             set
             {
-                this._armClient = value;
+                _armClient = value;
             }
         }
 

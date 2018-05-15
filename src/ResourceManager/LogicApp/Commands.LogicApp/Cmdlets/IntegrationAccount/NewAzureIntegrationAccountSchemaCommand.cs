@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -75,16 +75,16 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [ValidateNotNullOrEmpty]
         public string SchemaType
         {
-            get { return this.schemaType; }
-            set { value = this.schemaType; }
+            get { return schemaType; }
+            set { value = schemaType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account schema content type.")]
         [ValidateNotNullOrEmpty]
         public string ContentType
         {
-            get { return this.contentType; }
-            set { value = this.contentType; }
+            get { return contentType; }
+            set { value = contentType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account schema metadata.",
@@ -101,27 +101,27 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                this.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
-            if (string.IsNullOrEmpty(this.SchemaDefinition))
+            if (string.IsNullOrEmpty(SchemaDefinition))
             {
-                this.SchemaDefinition = CmdletHelper.GetContentFromFile(this.TryResolvePath(this.SchemaFilePath));
+                SchemaDefinition = CmdletHelper.GetContentFromFile(this.TryResolvePath(SchemaFilePath));
             }
 
-            this.WriteObject(
-                IntegrationAccountClient.CreateIntegrationAccountSchema(this.ResourceGroupName, integrationAccount.Name,
-                    this.SchemaName,
+            WriteObject(
+                IntegrationAccountClient.CreateIntegrationAccountSchema(ResourceGroupName, integrationAccount.Name,
+                    SchemaName,
                     new IntegrationAccountSchema
                     {
-                        ContentType = this.contentType,
-                        SchemaType = (SchemaType) Enum.Parse(typeof(SchemaType), this.schemaType),                        
-                        Content = this.SchemaDefinition,
-                        Metadata = this.Metadata
+                        ContentType = contentType,
+                        SchemaType = (SchemaType) Enum.Parse(typeof(SchemaType), schemaType),                        
+                        Content = SchemaDefinition,
+                        Metadata = Metadata
                     }), true);
         }
     }

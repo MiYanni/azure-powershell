@@ -51,8 +51,9 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
         /// <returns>A list of entities</returns>
         protected override IEnumerable<AzureSqlServerAdvisorModel> GetEntity()
         {
-            return new List<AzureSqlServerAdvisorModel>() {
-                ModelAdapter.GetServerAdvisor(this.ResourceGroupName, this.ServerName, this.AdvisorName, expandRecommendedActions: false)
+            return new List<AzureSqlServerAdvisorModel>
+            {
+                ModelAdapter.GetServerAdvisor(ResourceGroupName, ServerName, AdvisorName, false)
             };
         }
 
@@ -64,7 +65,7 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
         protected override IEnumerable<AzureSqlServerAdvisorModel> ApplyUserInputToModel(IEnumerable<AzureSqlServerAdvisorModel> model)
         {
             List<AzureSqlServerAdvisorModel> newEntity = new List<AzureSqlServerAdvisorModel>();
-            newEntity.Add(new AzureSqlServerAdvisorModel()
+            newEntity.Add(new AzureSqlServerAdvisorModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
@@ -82,7 +83,8 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlServerAdvisorModel> PersistChanges(IEnumerable<AzureSqlServerAdvisorModel> entity)
         {
-            return new List<AzureSqlServerAdvisorModel>() {
+            return new List<AzureSqlServerAdvisorModel>
+            {
                 ModelAdapter.UpdateAutoExecuteStatus(entity.Single())
             };
         }
@@ -93,8 +95,8 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!ShouldProcess(
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAdvisorAutoExecuteStatusDescription, this.AdvisorName, this.AutoExecuteStatus),
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAdvisorAutoExecuteStatusWarning, this.AdvisorName, this.AutoExecuteStatus),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAdvisorAutoExecuteStatusDescription, AdvisorName, AutoExecuteStatus),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAdvisorAutoExecuteStatusWarning, AdvisorName, AutoExecuteStatus),
                     Properties.Resources.ShouldProcessCaption))
             {
                 return;

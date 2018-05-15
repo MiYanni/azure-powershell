@@ -69,49 +69,49 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                ResourceIdentifier identifier = new ResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = identifier.ResourceGroupName;
-                this.Name = identifier.ResourceName;
+                ResourceIdentifier identifier = new ResourceIdentifier(ResourceId);
+                ResourceGroupName = identifier.ResourceGroupName;
+                Name = identifier.ResourceName;
             }
 
-            if (string.IsNullOrEmpty(this.ResourceGroupName))
+            if (string.IsNullOrEmpty(ResourceGroupName))
             {
-                var components = Utilities.GetComponents(this.AppInsightsManagementClient);
+                var components = Utilities.GetComponents(AppInsightsManagementClient);
 
                 WriteComponentList(components);
             }
-            else if (string.IsNullOrEmpty(this.Name))
+            else if (string.IsNullOrEmpty(Name))
             {
-                var components = Utilities.GetComponents(this.AppInsightsManagementClient, this.ResourceGroupName);
+                var components = Utilities.GetComponents(AppInsightsManagementClient, ResourceGroupName);
 
                 WriteComponentList(components);
             }
             else
             {
-                var response = this.AppInsightsManagementClient
+                var response = AppInsightsManagementClient
                                     .Components
                                     .GetWithHttpMessagesAsync(
-                                        this.ResourceGroupName,
-                                        this.Name)
+                                        ResourceGroupName,
+                                        Name)
                                     .GetAwaiter()
                                     .GetResult();
-                if (this.Full)
+                if (Full)
                 {
-                    var pricingPlanResponse = this.AppInsightsManagementClient
+                    var pricingPlanResponse = AppInsightsManagementClient
                                                     .ComponentCurrentBillingFeatures
                                                     .GetWithHttpMessagesAsync(
-                                                        this.ResourceGroupName,
-                                                        this.Name)
+                                                        ResourceGroupName,
+                                                        Name)
                                                     .GetAwaiter()
                                                     .GetResult();
 
-                    var dailyCapStatusResponse = this.AppInsightsManagementClient
+                    var dailyCapStatusResponse = AppInsightsManagementClient
                                                     .ComponentQuotaStatus
                                                     .GetWithHttpMessagesAsync(
-                                                        this.ResourceGroupName,
-                                                        this.Name)
+                                                        ResourceGroupName,
+                                                        Name)
                                                     .GetAwaiter()
                                                     .GetResult();
 

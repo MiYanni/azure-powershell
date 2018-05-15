@@ -15,7 +15,7 @@
 namespace Microsoft.Azure.Commands.Management.IotHub.Models
 {
     using System.Collections.Generic;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Azure.Management.IotHub.Models;
     using Newtonsoft.Json;
 
     public class PSRoutingEndpoints

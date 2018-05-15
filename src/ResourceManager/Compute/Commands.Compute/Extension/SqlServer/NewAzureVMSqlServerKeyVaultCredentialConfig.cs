@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Compute
             Position = 0,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -94,13 +94,13 @@ namespace Microsoft.Azure.Commands.Compute
             if (ShouldProcess(target, action))
             {
                 KeyVaultCredentialSettings settings = new KeyVaultCredentialSettings();
-                settings.ResourceGroupName = (this.ResourceGroupName == null) ? null : this.ResourceGroupName;
-                settings.Enable = (this.Enable.IsPresent) ? this.Enable.ToBool() : false;
-                settings.CredentialName = (this.CredentialName == null) ? null : this.CredentialName;
-                settings.ServicePrincipalName = (this.ServicePrincipalName == null) ? null : this.ServicePrincipalName;
-                settings.ServicePrincipalSecret = (this.ServicePrincipalSecret == null) ?
+                settings.ResourceGroupName = ResourceGroupName == null ? null : ResourceGroupName;
+                settings.Enable = Enable.IsPresent ? Enable.ToBool() : false;
+                settings.CredentialName = CredentialName == null ? null : CredentialName;
+                settings.ServicePrincipalName = ServicePrincipalName == null ? null : ServicePrincipalName;
+                settings.ServicePrincipalSecret = ServicePrincipalSecret == null ?
                                                   null : ConversionUtilities.SecureStringToString(ServicePrincipalSecret);
-                settings.AzureKeyVaultUrl = (this.AzureKeyVaultUrl == null) ? null : this.AzureKeyVaultUrl;
+                settings.AzureKeyVaultUrl = AzureKeyVaultUrl == null ? null : AzureKeyVaultUrl;
                 WriteObject(settings);
             }
         }

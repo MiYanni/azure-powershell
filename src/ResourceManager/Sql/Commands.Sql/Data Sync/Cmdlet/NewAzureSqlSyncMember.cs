@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
             // We try to get the sync member.  Since this is a create, we don't want the sync member to exist
             try
             {
-                ModelAdapter.GetSyncMember(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName, this.Name);
+                ModelAdapter.GetSyncMember(ResourceGroupName, ServerName, DatabaseName, SyncGroupName, Name);
             }
             catch (CloudException ex)
             {
@@ -173,7 +173,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
 
             // The sync member already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.SyncMemberNameExists, this.Name, this.SyncGroupName),
+                string.Format(Resources.SyncMemberNameExists, Name, SyncGroupName),
                 "SyncMemberName");
         }
 
@@ -185,35 +185,35 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         protected override IEnumerable<AzureSqlSyncMemberModel> ApplyUserInputToModel(IEnumerable<AzureSqlSyncMemberModel> model)
         {
             List<AzureSqlSyncMemberModel> newEntity = new List<AzureSqlSyncMemberModel>();
-            AzureSqlSyncMemberModel newModel = new AzureSqlSyncMemberModel()
+            AzureSqlSyncMemberModel newModel = new AzureSqlSyncMemberModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                DatabaseName = this.DatabaseName,
-                SyncGroupName = this.SyncGroupName,
-                SyncMemberName = this.Name,
-                SyncDirection = this.SyncDirection,
-                MemberDatabaseType = this.MemberDatabaseType
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                DatabaseName = DatabaseName,
+                SyncGroupName = SyncGroupName,
+                SyncMemberName = Name,
+                SyncDirection = SyncDirection,
+                MemberDatabaseType = MemberDatabaseType
             };
             
             if(ParameterSetName == AzureSqlSet) 
             {
-                newModel.MemberDatabaseName = this.MemberDatabaseName;
-                newModel.MemberServerName = this.MemberServerName;
-                newModel.MemberDatabaseUserName = this.MemberDatabaseCredential.UserName;
-                newModel.MemberDatabasePassword = this.MemberDatabaseCredential.Password;
+                newModel.MemberDatabaseName = MemberDatabaseName;
+                newModel.MemberServerName = MemberServerName;
+                newModel.MemberDatabaseUserName = MemberDatabaseCredential.UserName;
+                newModel.MemberDatabasePassword = MemberDatabaseCredential.Password;
             } 
             else
             {
-                newModel.SqlServerDatabaseId = this.SqlServerDatabaseId;
+                newModel.SqlServerDatabaseId = SqlServerDatabaseId;
                 if (ParameterSetName == OnPremisesSyncAgentResourceIDSet)
                 {
-                    newModel.SyncAgentId = this.SyncAgentResourceID;
+                    newModel.SyncAgentId = SyncAgentResourceID;
                 }
                 else
                 {
                     // "/subscriptions/{id}/" will be added in AzureSqlDataSyncCommunicator
-                    this.syncAgentId = string.Format("resourceGroups/{0}/providers/Microsoft.Sql/servers/{1}/syncAgents/{2}", this.SyncAgentResourceGroupName, this.SyncAgentServerName, this.SyncAgentName);
+                    syncAgentId = string.Format("resourceGroups/{0}/providers/Microsoft.Sql/servers/{1}/syncAgents/{2}", SyncAgentResourceGroupName, SyncAgentServerName, SyncAgentName);
                 }
             }
             newEntity.Add(newModel);
@@ -227,8 +227,9 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlSyncMemberModel> PersistChanges(IEnumerable<AzureSqlSyncMemberModel> entity)
         {
-            return new List<AzureSqlSyncMemberModel>() {
-                ModelAdapter.CreateSyncMember(entity.First(), this.syncAgentId)
+            return new List<AzureSqlSyncMemberModel>
+            {
+                ModelAdapter.CreateSyncMember(entity.First(), syncAgentId)
             };
         }
     }

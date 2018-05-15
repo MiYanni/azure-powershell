@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetNetworkInterface(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSNetworkInterface GetNetworkInterface(string resourceGroupName, string name, string expandResource = null)
         {
-            var nic = this.NetworkInterfaceClient.Get(resourceGroupName, name, expandResource);
+            var nic = NetworkInterfaceClient.Get(resourceGroupName, name, expandResource);
 
             var psNetworkInterface = NetworkResourceManagerProfile.Mapper.Map<PSNetworkInterface>(nic);
             psNetworkInterface.ResourceGroupName = resourceGroupName;
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSNetworkInterface GetScaleSetNetworkInterface(string resourceGroupName, string scaleSetName, string vmIndex, string name, string expandResource = null)
         {
-            var nic = this.NetworkInterfaceClient.GetVirtualMachineScaleSetNetworkInterface(resourceGroupName, scaleSetName, vmIndex, name, expandResource);
+            var nic = NetworkInterfaceClient.GetVirtualMachineScaleSetNetworkInterface(resourceGroupName, scaleSetName, vmIndex, name, expandResource);
 
             var psNetworkInterface = NetworkResourceManagerProfile.Mapper.Map<PSNetworkInterface>(nic);
             psNetworkInterface.ResourceGroupName = resourceGroupName;

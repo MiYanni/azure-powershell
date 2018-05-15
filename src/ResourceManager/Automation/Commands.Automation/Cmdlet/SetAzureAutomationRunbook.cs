@@ -67,16 +67,16 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
             // ByRunbookName
-            var runbook = this.AutomationClient.UpdateRunbook(
-                  this.ResourceGroupName,
-                  this.AutomationAccountName,
-                  this.Name,
-                  this.Description,
-                  this.Tag,
-                  this.LogProgress,
-                  this.LogVerbose);
+            var runbook = AutomationClient.UpdateRunbook(
+                  ResourceGroupName,
+                  AutomationAccountName,
+                  Name,
+                  Description,
+                  Tag,
+                  LogProgress,
+                  LogVerbose);
 
-            this.WriteObject(runbook);
+            WriteObject(runbook);
         }
     }
 }

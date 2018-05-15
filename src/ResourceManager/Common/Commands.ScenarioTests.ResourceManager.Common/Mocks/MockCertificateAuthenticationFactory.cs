@@ -75,25 +75,25 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(IAzureContext context)
         {
-            return new CertificateCloudCredentials(context.Subscription.Id.ToString(), Certificate);
+            return new CertificateCloudCredentials(context.Subscription.Id, Certificate);
         }
 
 
-        public Microsoft.Rest.ServiceClientCredentials GetServiceClientCredentials(IAzureContext context)
+        public Rest.ServiceClientCredentials GetServiceClientCredentials(IAzureContext context)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
 
         public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(IAzureContext context, string targetEndpoint)
         {
-            return new CertificateCloudCredentials(context.Subscription.Id.ToString(), Certificate);
+            return new CertificateCloudCredentials(context.Subscription.Id, Certificate);
         }
 
 
         public Rest.ServiceClientCredentials GetServiceClientCredentials(IAzureContext context, string targetEndpoint)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void RemoveUser(IAzureAccount account, IAzureTokenCache tokenCache)

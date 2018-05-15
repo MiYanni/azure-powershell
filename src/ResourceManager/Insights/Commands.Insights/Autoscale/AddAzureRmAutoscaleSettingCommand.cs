@@ -108,14 +108,14 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                target: string.Format("Create/update an autoscale setting: {0} from resource group: {1}", this.Name, this.ResourceGroupName),
-                action: "Create/update an autoscale setting"))
+                string.Format("Create/update an autoscale setting: {0} from resource group: {1}", Name, ResourceGroupName),
+                "Create/update an autoscale setting"))
             {
-                AutoscaleSettingResource parameters = this.CreateAutoscaleSettingResource();
+                AutoscaleSettingResource parameters = CreateAutoscaleSettingResource();
 
                 // The result of this operation is operation (AutoscaleSettingResource) is being discarded for backwards compatibility
-                var result = this.MonitorManagementClient.AutoscaleSettings.CreateOrUpdateWithHttpMessagesAsync(resourceGroupName: this.ResourceGroupName, autoscaleSettingName: this.Name, parameters: parameters).Result;
-                var response = new PSAddAutoscaleSettingOperationResponse()
+                var result = MonitorManagementClient.AutoscaleSettings.CreateOrUpdateWithHttpMessagesAsync(ResourceGroupName, Name, parameters).Result;
+                var response = new PSAddAutoscaleSettingOperationResponse
                 {
                     RequestId = result.RequestId,
                     StatusCode = result.Response != null ? result.Response.StatusCode : HttpStatusCode.OK,
@@ -128,41 +128,41 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
 
         private AutoscaleSettingResource CreateAutoscaleSettingResource()
         {
-            bool enableSetting = !this.DisableSetting.IsPresent || !this.DisableSetting;
+            bool enableSetting = !DisableSetting.IsPresent || !DisableSetting;
 
-            if (this.InputObject != null)
+            if (InputObject != null)
             {
 
                 // Receiving a single parameter with the whole spec for an autoscale setting
-                var property = this.InputObject;
+                var property = InputObject;
 
                 if (property == null)
                 {
                     throw new ArgumentException(ResourcesForAutoscaleCmdlets.PropertiresCannotBeNull);
                 }
 
-                this.Location = this.InputObject.Location;
-                this.Name = this.InputObject.Name;
+                Location = InputObject.Location;
+                Name = InputObject.Name;
 
                 // The semantics is if AutoscaleProfiles is given it will replace the existing Profiles
-                this.AutoscaleProfile = this.AutoscaleProfile ?? property.Profiles.ToList();
-                this.TargetResourceId = property.TargetResourceUri;
+                AutoscaleProfile = AutoscaleProfile ?? property.Profiles.ToList();
+                TargetResourceId = property.TargetResourceUri;
 
-                enableSetting = !this.DisableSetting.IsPresent && property.Enabled.HasValue && property.Enabled.Value;
+                enableSetting = !DisableSetting.IsPresent && property.Enabled.HasValue && property.Enabled.Value;
 
                 // The semantics is if Notifications is given it will replace the existing ones
-                this.Notification = this.Notification ?? (this.InputObject.Notifications != null ? this.InputObject.Notifications.ToList() : null);
+                Notification = Notification ?? (InputObject.Notifications != null ? InputObject.Notifications.ToList() : null);
             }
 
             return new AutoscaleSettingResource(
-                profiles: this.AutoscaleProfile,
-                location: this.Location,
-                name: this.Name)
+                profiles: AutoscaleProfile,
+                location: Location,
+                name: Name)
             {
                 Enabled = enableSetting,
-                TargetResourceUri = this.TargetResourceId,
-                Notifications = this.Notification,
-                Tags = this.InputObject != null ? new Dictionary<string, string>(this.InputObject.Tags) : new Dictionary<string, string>()
+                TargetResourceUri = TargetResourceId,
+                Notifications = Notification,
+                Tags = InputObject != null ? new Dictionary<string, string>(InputObject.Tags) : new Dictionary<string, string>()
             };
         }
     }

@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
     {
         public virtual PSPipelineRun GetPipelineRun(string resourceGroup, string datafactoryName, string pipelineRunId)
         {
-            PipelineRun pipelineRun = this.DataFactoryManagementClient.PipelineRuns.Get(resourceGroup, datafactoryName, pipelineRunId);
+            PipelineRun pipelineRun = DataFactoryManagementClient.PipelineRuns.Get(resourceGroup, datafactoryName, pipelineRunId);
             return new PSPipelineRun(pipelineRun, resourceGroup, datafactoryName);
         }
 
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         {
             var pipelineRuns = new List<PSPipelineRun>();
 
-            var runFilters = new PipelineRunFilterParameters()
+            var runFilters = new PipelineRunFilterParameters
             {
                 LastUpdatedAfter = pipelineRunFilter.LastUpdatedAfter,
                 LastUpdatedBefore = pipelineRunFilter.LastUpdatedBefore,
@@ -46,11 +46,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             if (pipelineRunFilter.PipelineName != null)
             {
                 runFilters.Filters.Add(
-                    new PipelineRunQueryFilter()
+                    new PipelineRunQueryFilter
                     {
                         Operand = PipelineRunQueryFilterOperand.PipelineName,
                         OperatorProperty = PipelineRunQueryFilterOperator.Equals,
-                        Values = new List<string>() { pipelineRunFilter.PipelineName }
+                        Values = new List<string> { pipelineRunFilter.PipelineName }
                     });
             }
             else if (pipelineRunFilter.Filters != null)
@@ -65,14 +65,14 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             else
             {
                 runFilters.OrderBy.Add(
-                    new PipelineRunQueryOrderBy()
+                    new PipelineRunQueryOrderBy
                     {
                         Order = PipelineRunQueryOrder.DESC,
                         OrderBy = PipelineRunQueryOrderByField.RunEnd
                     });
             }
 
-            PipelineRunQueryResponse response = this.DataFactoryManagementClient.PipelineRuns.QueryByFactory(pipelineRunFilter.ResourceGroupName, pipelineRunFilter.DataFactoryName, runFilters);
+            PipelineRunQueryResponse response = DataFactoryManagementClient.PipelineRuns.QueryByFactory(pipelineRunFilter.ResourceGroupName, pipelineRunFilter.DataFactoryName, runFilters);
 
             pipelineRuns.AddRange(response.Value.Select(pr =>
                  new PSPipelineRun(pr, pipelineRunFilter.ResourceGroupName, pipelineRunFilter.DataFactoryName)));
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             while (!string.IsNullOrWhiteSpace(continuationToken))
             {
                 runFilters.ContinuationToken = continuationToken;
-                response = this.DataFactoryManagementClient.PipelineRuns.QueryByFactory(pipelineRunFilter.ResourceGroupName, pipelineRunFilter.DataFactoryName, runFilters);
+                response = DataFactoryManagementClient.PipelineRuns.QueryByFactory(pipelineRunFilter.ResourceGroupName, pipelineRunFilter.DataFactoryName, runFilters);
 
                 pipelineRuns.AddRange(response.Value.Select(pr =>
                      new PSPipelineRun(pr, pipelineRunFilter.ResourceGroupName, pipelineRunFilter.DataFactoryName)));
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         public virtual List<PSTriggerRun> ListTriggerRuns(TriggerRunFilterOptions triggerRunFilter)
         {
             List<PSTriggerRun> triggerRuns = new List<PSTriggerRun>();
-            IPage<TriggerRun> response = this.DataFactoryManagementClient.Triggers.ListRuns(
+            IPage<TriggerRun> response = DataFactoryManagementClient.Triggers.ListRuns(
                     triggerRunFilter.ResourceGroupName,
                     triggerRunFilter.DataFactoryName,
                     triggerRunFilter.TriggerName,
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string nextLink = response.NextPageLink;
             while (nextLink.IsNextPageLink())
             {
-                response = this.DataFactoryManagementClient.Triggers.ListRunsNext(nextLink);
+                response = DataFactoryManagementClient.Triggers.ListRunsNext(nextLink);
                 triggerRuns.AddRange(response.Select(tr =>
                      new PSTriggerRun(tr, triggerRunFilter.ResourceGroupName, triggerRunFilter.DataFactoryName)));
                 nextLink = response.NextPageLink;
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         public virtual List<PSActivityRun> ListActivityRuns(ActivityRunFilterOptions activityRunFilter)
         {
             List<PSActivityRun> activityRuns = new List<PSActivityRun>();
-            IPage<ActivityRun> response = this.DataFactoryManagementClient.ActivityRuns.ListByPipelineRun(
+            IPage<ActivityRun> response = DataFactoryManagementClient.ActivityRuns.ListByPipelineRun(
                     activityRunFilter.ResourceGroupName,
                     activityRunFilter.DataFactoryName,
                     activityRunFilter.PipelineRunId,
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string nextLink = response.NextPageLink;
             while (nextLink.IsNextPageLink())
             {
-                response = this.DataFactoryManagementClient.ActivityRuns.ListByPipelineRunNext(nextLink);
+                response = DataFactoryManagementClient.ActivityRuns.ListByPipelineRunNext(nextLink);
                 activityRuns.AddRange(response.Select(ar => 
                      new PSActivityRun(ar, activityRunFilter.ResourceGroupName, activityRunFilter.DataFactoryName)));
                 nextLink = response.NextPageLink;

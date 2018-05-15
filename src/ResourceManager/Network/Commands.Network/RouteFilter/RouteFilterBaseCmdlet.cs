@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Network
 {
     using System.Net;
     using AutoMapper;
-    using Microsoft.Azure.Commands.Network.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.Tags;
-    using Microsoft.Azure.Management.Network;
-    using Microsoft.Azure.Management.Network.Models;
+    using Models;
+    using ResourceManager.Common.Tags;
+    using Management.Network;
+    using Management.Network.Models;
 
     public abstract class RouteFilterBaseCmdlet : NetworkBaseCmdlet
     {
@@ -35,9 +35,9 @@ namespace Microsoft.Azure.Commands.Network
         {
             try
             {
-                this.GetRouteFilter(resourceGroupName, name);
+                GetRouteFilter(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSRouteFilter GetRouteFilter(string resourceGroupName, string name, string expandResource = null)
         {
-            var routeFilter = this.RouteFilterClient.Get(resourceGroupName, name, expandResource);
+            var routeFilter = RouteFilterClient.Get(resourceGroupName, name, expandResource);
 
             var psRouteFilter = NetworkResourceManagerProfile.Mapper.Map<PSRouteFilter>(routeFilter);
             psRouteFilter.ResourceGroupName = resourceGroupName;

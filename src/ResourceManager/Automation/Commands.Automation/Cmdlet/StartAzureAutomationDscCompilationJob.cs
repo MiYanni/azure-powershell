@@ -65,21 +65,21 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
             {
                 CompilationJob job = null;
 
-                if (this.Parameters != null && this.Parameters.Contains("ConfigurationData"))
+                if (Parameters != null && Parameters.Contains("ConfigurationData"))
                 {
                     throw new ArgumentException(string.Format(
                         CultureInfo.CurrentCulture, Resources.ConfigurationDataShouldNotBeInJobParameters,
                         "-ConfigurationData"));
                 }
 
-                job = this.AutomationClient.StartCompilationJob(this.ResourceGroupName,
-                    this.AutomationAccountName,
-                    this.ConfigurationName,
-                    this.Parameters,
-                    this.ConfigurationData,
-                    this.IncrementNodeConfigurationBuild.IsPresent);
+                job = AutomationClient.StartCompilationJob(ResourceGroupName,
+                    AutomationAccountName,
+                    ConfigurationName,
+                    Parameters,
+                    ConfigurationData,
+                    IncrementNodeConfigurationBuild.IsPresent);
 
-                this.WriteObject(job);
+                WriteObject(job);
             }
         }
     }

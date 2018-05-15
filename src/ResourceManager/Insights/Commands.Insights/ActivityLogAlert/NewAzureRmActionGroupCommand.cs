@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
         {
             WriteObject(
                 new ActivityLogAlertActionGroup(
-                    actionGroupId: this.ActionGroupId,
-                    webhookProperties: this.WebhookProperty));
+                    ActionGroupId,
+                    WebhookProperty));
         }
     }
 }

@@ -15,10 +15,10 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.Cmdlet
 {
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -42,10 +42,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Cmdlet
             HelpMessage = "Permission string Off/Blob/Container")]
         public BlobContainerPublicAccessType Permission
         {
-            get { return accessLevel; }
-            set { accessLevel = value; }
+            get { return _accessLevel; }
+            set { _accessLevel = value; }
         }
-        private BlobContainerPublicAccessType accessLevel = BlobContainerPublicAccessType.Off;
+        private BlobContainerPublicAccessType _accessLevel = BlobContainerPublicAccessType.Off;
 
         [Parameter(Mandatory = false, HelpMessage = "Display Container Information")]
         public SwitchParameter PassThru { get; set; }
@@ -108,7 +108,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Cmdlet
         {
             string localName = Name;
             IStorageBlobManagement localChannel = Channel;
-            Func<long, Task> taskGenerator = (taskId) => SetContainerAcl(taskId, localChannel, localName, accessLevel);
+            Func<long, Task> taskGenerator = taskId => SetContainerAcl(taskId, localChannel, localName, _accessLevel);
             RunTask(taskGenerator);
         }
     }

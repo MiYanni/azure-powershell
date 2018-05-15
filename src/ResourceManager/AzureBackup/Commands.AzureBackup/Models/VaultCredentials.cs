@@ -171,9 +171,9 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
         /// <param name="resourceProviderRealm">rp realm</param>
         public AcsNamespace(string hostName, string acsNmespace, string resourceProviderRealm)
         {
-            this.HostName = hostName;
-            this.Namespace = acsNmespace;
-            this.ResourceProviderRealm = resourceProviderRealm;
+            HostName = hostName;
+            Namespace = acsNmespace;
+            ResourceProviderRealm = resourceProviderRealm;
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                 Name,
                 () =>
                 {
-                    this.AutomationClient.DeleteVariable(this.ResourceGroupName, this.AutomationAccountName, this.Name);
+                    AutomationClient.DeleteVariable(ResourceGroupName, AutomationAccountName, Name);
                 });
         }
     }

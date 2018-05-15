@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.PowerBI
             string capacityName = Name;
             string resourceGroupName = ResourceGroupName;
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
                 PowerBIUtils.GetResourceGroupNameAndCapacityName(ResourceId, out resourceGroupName, out capacityName);
             }
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.PowerBI
                 PSPowerBIEmbeddedCapacity capacity = null;
                 if (!PowerBIClient.TestCapacity(resourceGroupName, capacityName, out capacity))
                 {
-                    throw new InvalidOperationException(string.Format(Properties.Resources.CapacityDoesNotExist, capacityName));
+                    throw new InvalidOperationException(string.Format(Resources.CapacityDoesNotExist, capacityName));
                 }
 
                 PowerBIClient.ResumeCapacity(resourceGroupName, capacityName);
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.PowerBI
                     // Update the capacity current state 
                     if (!PowerBIClient.TestCapacity(resourceGroupName, capacityName, out capacity))
                     {
-                        throw new InvalidOperationException(string.Format(Properties.Resources.CapacityDoesNotExist, capacityName));
+                        throw new InvalidOperationException(string.Format(Resources.CapacityDoesNotExist, capacityName));
                     }
                     WriteObject(capacity);
                 }

@@ -15,11 +15,11 @@
 namespace Microsoft.WindowsAzure.Commands.Storage
 {
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using Commands.Common.Storage;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -231,9 +231,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage
 
         protected void ValidateBlobType(CloudBlob blob)
         {
-            if ((BlobType.BlockBlob != blob.BlobType)
-                && (BlobType.PageBlob != blob.BlobType)
-                && (BlobType.AppendBlob != blob.BlobType))
+            if (BlobType.BlockBlob != blob.BlobType
+                && BlobType.PageBlob != blob.BlobType
+                && BlobType.AppendBlob != blob.BlobType)
             {
                 throw new InvalidOperationException(string.Format(
                     CultureInfo.CurrentCulture,
@@ -245,8 +245,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage
 
         protected void ValidateBlobTier(BlobType type, PremiumPageBlobTier? pageBlobTier)
         {
-            if ((pageBlobTier != null)
-                && (type != BlobType.PageBlob))
+            if (pageBlobTier != null
+                && type != BlobType.PageBlob)
             {
                 throw new ArgumentOutOfRangeException("BlobType, PageBlobTier", String.Format("PremiumPageBlobTier can only be set to Page Blob. The Current BlobType is: {0}", type));
             }

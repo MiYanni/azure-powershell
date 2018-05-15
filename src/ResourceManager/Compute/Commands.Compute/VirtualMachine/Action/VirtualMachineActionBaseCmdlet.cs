@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Compute
            ParameterSetName = ResourceGroupNameParameterSet,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -48,9 +48,9 @@ namespace Microsoft.Azure.Commands.Compute
         {
             base.ExecuteCmdlet();
 
-            if (this.ParameterSetName.Equals(IdParameterSet))
+            if (ParameterSetName.Equals(IdParameterSet))
             {
-                this.ResourceGroupName = GetResourceGroupNameFromId(this.Id);
+                ResourceGroupName = GetResourceGroupNameFromId(Id);
             }
         }
     }

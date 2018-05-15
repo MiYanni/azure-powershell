@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerAuditingPolicy AuditingPolicy
         {
-            get { return this._auditingPolicy; }
-            set { this._auditingPolicy = value; }
+            get { return _auditingPolicy; }
+            set { _auditingPolicy = value; }
         }
         
         /// <summary>

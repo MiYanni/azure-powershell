@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int Limit
         {
-            get { return this._limit; }
-            set { this._limit = value; }
+            get { return _limit; }
+            set { _limit = value; }
         }
         
         private string _status;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         private string _unit;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Unit
         {
-            get { return this._unit; }
-            set { this._unit = value; }
+            get { return _unit; }
+            set { _unit = value; }
         }
         
         /// <summary>

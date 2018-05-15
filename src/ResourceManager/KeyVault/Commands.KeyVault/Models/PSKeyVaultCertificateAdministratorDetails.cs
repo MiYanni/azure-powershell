@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 return null;
             }
 
-            return administratorDetails.Select(adminDetails => PSKeyVaultCertificateAdministratorDetails.FromAdministratorDetails(adminDetails)).ToList();
+            return administratorDetails.Select(adminDetails => FromAdministratorDetails(adminDetails)).ToList();
         }
 
         internal static List<AdministratorDetails> ToAdministratorDetails(IEnumerable<PSKeyVaultCertificateAdministratorDetails> administratorDetails)

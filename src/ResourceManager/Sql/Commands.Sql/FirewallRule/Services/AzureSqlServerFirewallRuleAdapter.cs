@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Adapter
         public List<AzureSqlServerFirewallRuleModel> ListFirewallRules(string resourceGroupName, string serverName)
         {
             var resp = Communicator.List(resourceGroupName, serverName);
-            return resp.Select((s) =>
+            return resp.Select(s =>
             {
                 return CreateFirewallRuleModelFromResponse(resourceGroupName, serverName, s);
             }).ToList();
@@ -86,9 +86,9 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Adapter
         /// <returns>The updated server model</returns>
         public AzureSqlServerFirewallRuleModel UpsertFirewallRule(AzureSqlServerFirewallRuleModel model)
         {
-            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.FirewallRuleName, new FirewallRuleCreateOrUpdateParameters()
+            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.FirewallRuleName, new FirewallRuleCreateOrUpdateParameters
             {
-                Properties = new FirewallRuleCreateOrUpdateProperties()
+                Properties = new FirewallRuleCreateOrUpdateProperties
                 {
                     EndIpAddress = model.EndIpAddress,
                     StartIpAddress = model.StartIpAddress

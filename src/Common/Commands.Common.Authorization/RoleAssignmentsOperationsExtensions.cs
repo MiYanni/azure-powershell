@@ -8,12 +8,12 @@
 
 namespace Microsoft.Azure.Management.Authorization.Version2015_07_01
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Management;
-    using Microsoft.Azure.Management.Authorization;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
-    using Microsoft.Rest.Azure.OData;
+    using Azure;
+    using Management;
+    using Authorization;
+    using Rest;
+    using Rest.Azure;
+    using Rest.Azure.OData;
     using Models;
     using System.Threading;
     using System.Threading.Tasks;
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Management.Authorization.Version2015_07_01
             /// </param>
             public static IPage<RoleAssignment> ListForResource(this IRoleAssignmentsOperations operations, string resourceGroupName, string resourceProviderNamespace, string parentResourcePath, string resourceType, string resourceName, ODataQuery<RoleAssignmentFilter> odataQuery = default(ODataQuery<RoleAssignmentFilter>))
             {
-                return ((IRoleAssignmentsOperations)operations).ListForResourceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, odataQuery).GetAwaiter().GetResult();
+                return operations.ListForResourceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, odataQuery).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Management.Authorization.Version2015_07_01
             /// </param>
             public static IPage<RoleAssignment> ListForResourceGroup(this IRoleAssignmentsOperations operations, string resourceGroupName, ODataQuery<RoleAssignmentFilter> odataQuery = default(ODataQuery<RoleAssignmentFilter>))
             {
-                return ((IRoleAssignmentsOperations)operations).ListForResourceGroupAsync(resourceGroupName, odataQuery).GetAwaiter().GetResult();
+                return operations.ListForResourceGroupAsync(resourceGroupName, odataQuery).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -384,7 +384,7 @@ namespace Microsoft.Azure.Management.Authorization.Version2015_07_01
             /// </param>
             public static IPage<RoleAssignment> List(this IRoleAssignmentsOperations operations, ODataQuery<RoleAssignmentFilter> odataQuery = default(ODataQuery<RoleAssignmentFilter>))
             {
-                return ((IRoleAssignmentsOperations)operations).ListAsync(odataQuery).GetAwaiter().GetResult();
+                return operations.ListAsync(odataQuery).GetAwaiter().GetResult();
             }
 
             /// <summary>

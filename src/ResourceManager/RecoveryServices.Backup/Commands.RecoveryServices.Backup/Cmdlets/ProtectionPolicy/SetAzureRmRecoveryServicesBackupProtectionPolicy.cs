@@ -79,11 +79,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 }
 
                 PsBackupProviderManager providerManager = new PsBackupProviderManager(
-                    new Dictionary<System.Enum, object>()
-                {
+                    new Dictionary<Enum, object>
+                    {
                     {PolicyParams.ProtectionPolicy, Policy},
                     {PolicyParams.RetentionPolicy, RetentionPolicy},
-                    {PolicyParams.SchedulePolicy, SchedulePolicy},
+                    {PolicyParams.SchedulePolicy, SchedulePolicy}
                 }, ServiceClientAdapter);
 
                 IPsBackupProvider psBackupProvider = providerManager.GetProviderInstance(
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 AzureOperationResponse<ProtectionPolicyResource> policyResponse =
                     psBackupProvider.ModifyPolicy();
                 WriteDebug("ModifyPolicy http response from service: " +
-                    policyResponse.Response.StatusCode.ToString());
+                    policyResponse.Response.StatusCode);
 
                 if (policyResponse.Response.StatusCode == System.Net.HttpStatusCode.Accepted)
                 {
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 {
                     // ServiceClient will return OK if NO datasources are associated with this policy
                     WriteDebug("No datasources are associated with Policy, http response code: " +
-                                policyResponse.Response.StatusCode.ToString());
+                                policyResponse.Response.StatusCode);
                 }
             }, ShouldProcess(Policy.Name, VerbsCommon.Set));
         }

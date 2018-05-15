@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncMember SyncMember
         {
-            get { return this._syncMember; }
-            set { this._syncMember = value; }
+            get { return _syncMember; }
+            set { _syncMember = value; }
         }
         
         /// <summary>

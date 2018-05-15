@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Test.ScenarioTests
 
         public TestController()
         {
-            this.helper = new EnvironmentSetupHelper();
+            helper = new EnvironmentSetupHelper();
         }
 
         protected void SetupManagementClients(RestTestFramework.MockContext context)
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Test.ScenarioTests
         private ResourceManagementNS.ResourceManagementClient GetRmClient()
         {
             return LegacyTest.TestBase.GetServiceClient<ResourceManagementNS.ResourceManagementClient>(
-                this.csmTestFactory);
+                csmTestFactory);
         }
 
         public void RunPsTest(params string[] scripts)

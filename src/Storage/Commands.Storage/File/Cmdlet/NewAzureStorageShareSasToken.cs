@@ -15,11 +15,11 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
     using Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.File;
+    using Commands.Common.Storage;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.File;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -98,16 +98,16 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (String.IsNullOrEmpty(ShareName)) return;
-            CloudFileShare fileShare = Channel.GetShareReference(this.ShareName);
+            CloudFileShare fileShare = Channel.GetShareReference(ShareName);
             SharedAccessFilePolicy accessPolicy = new SharedAccessFilePolicy();
 
             bool shouldSetExpiryTime = SasTokenHelper.ValidateShareAccessPolicy(
                 Channel,
-                this.ShareName,
+                ShareName,
                 accessPolicyIdentifier,
-                !string.IsNullOrEmpty(this.Permission),
-                this.StartTime.HasValue,
-                this.ExpiryTime.HasValue);
+                !string.IsNullOrEmpty(Permission),
+                StartTime.HasValue,
+                ExpiryTime.HasValue);
 
             SetupAccessPolicy(accessPolicy, shouldSetExpiryTime);
             string sasToken = fileShare.GetSharedAccessSignature(accessPolicy, accessPolicyIdentifier, Protocol, Util.SetupIPAddressOrRangeForSAS(IPAddressOrRange));
@@ -126,12 +126,12 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
         protected override IStorageFileManagement CreateChannel()
         {
-            if (this.Channel == null || !this.ShareChannel)
+            if (Channel == null || !ShareChannel)
             {
-                this.Channel = new StorageFileManagement(this.GetCmdletStorageContext());
+                Channel = new StorageFileManagement(GetCmdletStorageContext());
             }
 
-            return this.Channel;
+            return Channel;
         }
 
         /// <summary>

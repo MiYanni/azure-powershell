@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Commands.Network
 {
     using System.Management.Automation;
 
-    using Microsoft.Azure.Management.Network;
+    using Management.Network;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Remove, "AzureRmRouteFilter", SupportsShouldProcess = true)]
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.RouteFilterClient.Delete(this.ResourceGroupName, this.Name);
+                    RouteFilterClient.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

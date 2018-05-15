@@ -39,9 +39,9 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
         /// Get the Transparent Data Encryption to update
         /// </summary>
         /// <returns>The Transparent Data Encryption being updated</returns>
-        protected override IEnumerable<Model.AzureSqlDatabaseTransparentDataEncryptionModel> GetEntity()
+        protected override IEnumerable<AzureSqlDatabaseTransparentDataEncryptionModel> GetEntity()
         {
-            return new List<Model.AzureSqlDatabaseTransparentDataEncryptionModel>() { ModelAdapter.GetTransparentDataEncryption(this.ResourceGroupName, this.ServerName, this.DatabaseName) };
+            return new List<AzureSqlDatabaseTransparentDataEncryptionModel> { ModelAdapter.GetTransparentDataEncryption(ResourceGroupName, ServerName, DatabaseName) };
         }
 
         /// <summary>
@@ -49,16 +49,16 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
         /// </summary>
         /// <param name="model">The result of the get operation</param>
         /// <returns>The model to send to the update</returns>
-        protected override IEnumerable<Model.AzureSqlDatabaseTransparentDataEncryptionModel> ApplyUserInputToModel(IEnumerable<Model.AzureSqlDatabaseTransparentDataEncryptionModel> model)
+        protected override IEnumerable<AzureSqlDatabaseTransparentDataEncryptionModel> ApplyUserInputToModel(IEnumerable<AzureSqlDatabaseTransparentDataEncryptionModel> model)
         {
             // Construct a new entity so we only send the relevant data to the server
-            List<Model.AzureSqlDatabaseTransparentDataEncryptionModel> updateData = new List<Model.AzureSqlDatabaseTransparentDataEncryptionModel>();
-            updateData.Add(new Model.AzureSqlDatabaseTransparentDataEncryptionModel()
+            List<AzureSqlDatabaseTransparentDataEncryptionModel> updateData = new List<AzureSqlDatabaseTransparentDataEncryptionModel>();
+            updateData.Add(new AzureSqlDatabaseTransparentDataEncryptionModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                DatabaseName = this.DatabaseName,
-                State = this.State
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                DatabaseName = DatabaseName,
+                State = State
             });
             return updateData;
         }
@@ -68,9 +68,10 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
         /// </summary>
         /// <param name="entity">The update parameters</param>
         /// <returns>The response object from the service</returns>
-        protected override IEnumerable<Model.AzureSqlDatabaseTransparentDataEncryptionModel> PersistChanges(IEnumerable<Model.AzureSqlDatabaseTransparentDataEncryptionModel> entity)
+        protected override IEnumerable<AzureSqlDatabaseTransparentDataEncryptionModel> PersistChanges(IEnumerable<AzureSqlDatabaseTransparentDataEncryptionModel> entity)
         {
-            return new List<Model.AzureSqlDatabaseTransparentDataEncryptionModel>() {
+            return new List<AzureSqlDatabaseTransparentDataEncryptionModel>
+            {
                 ModelAdapter.UpsertTransparentDataEncryption(entity.First())
             };
         }

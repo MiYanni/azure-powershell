@@ -26,44 +26,44 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSComputeNodeUser
     {
         
-        internal Microsoft.Azure.Batch.ComputeNodeUser omObject;
+        internal ComputeNodeUser omObject;
         
-        internal PSComputeNodeUser(Microsoft.Azure.Batch.ComputeNodeUser omObject)
+        internal PSComputeNodeUser(ComputeNodeUser omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.DateTime ExpiryTime
+        public DateTime ExpiryTime
         {
             get
             {
-                return this.omObject.ExpiryTime;
+                return omObject.ExpiryTime;
             }
             set
             {
-                this.omObject.ExpiryTime = value;
+                omObject.ExpiryTime = value;
             }
         }
         
-        public System.Boolean? IsAdmin
+        public Boolean? IsAdmin
         {
             get
             {
-                return this.omObject.IsAdmin;
+                return omObject.IsAdmin;
             }
             set
             {
-                this.omObject.IsAdmin = value;
+                omObject.IsAdmin = value;
             }
         }
         
@@ -71,11 +71,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Name;
+                return omObject.Name;
             }
             set
             {
-                this.omObject.Name = value;
+                omObject.Name = value;
             }
         }
         
@@ -83,11 +83,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Password;
+                return omObject.Password;
             }
             set
             {
-                this.omObject.Password = value;
+                omObject.Password = value;
             }
         }
         
@@ -95,11 +95,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.SshPublicKey;
+                return omObject.SshPublicKey;
             }
             set
             {
-                this.omObject.SshPublicKey = value;
+                omObject.SshPublicKey = value;
             }
         }
     }

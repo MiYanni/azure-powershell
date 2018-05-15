@@ -57,11 +57,11 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="actionGroup">The action group to wrap.</param>
         public PSActionGroupProperty(ActionGroupResource actionGroup)
         {
-            this.Status = actionGroup.Enabled ? "Enabled" : "Disabled";
-            this.GroupShortName = actionGroup.GroupShortName;
-            this.EmailReceivers = actionGroup.EmailReceivers.Select(e => new PSEmailReceiver(e)).ToList();
-            this.SmsReceivers = actionGroup.SmsReceivers.Select(s => new PSSmsReceiver(s)).ToList();
-            this.WebhookReceivers = actionGroup.WebhookReceivers.Select(w => new PSWebhookReceiver(w)).ToList();
+            Status = actionGroup.Enabled ? "Enabled" : "Disabled";
+            GroupShortName = actionGroup.GroupShortName;
+            EmailReceivers = actionGroup.EmailReceivers.Select(e => new PSEmailReceiver(e)).ToList();
+            SmsReceivers = actionGroup.SmsReceivers.Select(s => new PSSmsReceiver(s)).ToList();
+            WebhookReceivers = actionGroup.WebhookReceivers.Select(w => new PSWebhookReceiver(w)).ToList();
         }
     }
 }

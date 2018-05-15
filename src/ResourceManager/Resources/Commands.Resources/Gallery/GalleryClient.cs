@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string ApiVersion
         {
-            get { return this._apiVersion; }
+            get { return _apiVersion; }
         }
 
         private Uri _baseUri;
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public Uri BaseUri
         {
-            get { return this._baseUri; }
+            get { return _baseUri; }
         }
 
         private SubscriptionCloudCredentials _credentials;
@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public SubscriptionCloudCredentials Credentials
         {
-            get { return this._credentials; }
+            get { return _credentials; }
         }
 
         private int _longRunningOperationInitialTimeout;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public int LongRunningOperationInitialTimeout
         {
-            get { return this._longRunningOperationInitialTimeout; }
-            set { this._longRunningOperationInitialTimeout = value; }
+            get { return _longRunningOperationInitialTimeout; }
+            set { _longRunningOperationInitialTimeout = value; }
         }
 
         private int _longRunningOperationRetryTimeout;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public int LongRunningOperationRetryTimeout
         {
-            get { return this._longRunningOperationRetryTimeout; }
-            set { this._longRunningOperationRetryTimeout = value; }
+            get { return _longRunningOperationRetryTimeout; }
+            set { _longRunningOperationRetryTimeout = value; }
         }
 
         private IItemOperations _items;
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public virtual IItemOperations Items
         {
-            get { return this._items; }
+            get { return _items; }
         }
 
         /// <summary>
@@ -81,11 +81,11 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         public GalleryClient()
             : base()
         {
-            this._items = new ItemOperations(this);
-            this._apiVersion = "2015-04-01";
-            this._longRunningOperationInitialTimeout = -1;
-            this._longRunningOperationRetryTimeout = -1;
-            this.HttpClient.Timeout = TimeSpan.FromSeconds(300);
+            _items = new ItemOperations(this);
+            _apiVersion = "2015-04-01";
+            _longRunningOperationInitialTimeout = -1;
+            _longRunningOperationRetryTimeout = -1;
+            HttpClient.Timeout = TimeSpan.FromSeconds(300);
         }
 
         /// <summary>
@@ -111,10 +111,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
             {
                 throw new ArgumentNullException("baseUri");
             }
-            this._credentials = credentials;
-            this._baseUri = baseUri;
+            _credentials = credentials;
+            _baseUri = baseUri;
 
-            this.Credentials.InitializeServiceClient(this);
+            Credentials.InitializeServiceClient(this);
         }
 
         /// <summary>
@@ -132,10 +132,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
             {
                 throw new ArgumentNullException("credentials");
             }
-            this._credentials = credentials;
-            this._baseUri = new Uri("https://gallery.azure.com/");
+            _credentials = credentials;
+            _baseUri = new Uri("https://gallery.azure.com/");
 
-            this.Credentials.InitializeServiceClient(this);
+            Credentials.InitializeServiceClient(this);
         }
 
         /// <summary>
@@ -147,11 +147,11 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         public GalleryClient(HttpClient httpClient)
             : base(httpClient)
         {
-            this._items = new ItemOperations(this);
-            this._apiVersion = "2015-04-01";
-            this._longRunningOperationInitialTimeout = -1;
-            this._longRunningOperationRetryTimeout = -1;
-            this.HttpClient.Timeout = TimeSpan.FromSeconds(300);
+            _items = new ItemOperations(this);
+            _apiVersion = "2015-04-01";
+            _longRunningOperationInitialTimeout = -1;
+            _longRunningOperationRetryTimeout = -1;
+            HttpClient.Timeout = TimeSpan.FromSeconds(300);
         }
 
         /// <summary>
@@ -180,10 +180,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
             {
                 throw new ArgumentNullException("baseUri");
             }
-            this._credentials = credentials;
-            this._baseUri = baseUri;
+            _credentials = credentials;
+            _baseUri = baseUri;
 
-            this.Credentials.InitializeServiceClient(this);
+            Credentials.InitializeServiceClient(this);
         }
 
         /// <summary>
@@ -204,10 +204,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
             {
                 throw new ArgumentNullException("credentials");
             }
-            this._credentials = credentials;
-            this._baseUri = new Uri("https://gallery.azure.com/");
+            _credentials = credentials;
+            _baseUri = new Uri("https://gallery.azure.com/");
 
-            this.Credentials.InitializeServiceClient(this);
+            Credentials.InitializeServiceClient(this);
         }
 
         /// <summary>
@@ -223,13 +223,13 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
 
             if (client is GalleryClient)
             {
-                GalleryClient clonedClient = ((GalleryClient)client);
+                GalleryClient clonedClient = (GalleryClient)client;
 
-                clonedClient._credentials = this._credentials;
-                clonedClient._baseUri = this._baseUri;
-                clonedClient._apiVersion = this._apiVersion;
-                clonedClient._longRunningOperationInitialTimeout = this._longRunningOperationInitialTimeout;
-                clonedClient._longRunningOperationRetryTimeout = this._longRunningOperationRetryTimeout;
+                clonedClient._credentials = _credentials;
+                clonedClient._baseUri = _baseUri;
+                clonedClient._apiVersion = _apiVersion;
+                clonedClient._longRunningOperationInitialTimeout = _longRunningOperationInitialTimeout;
+                clonedClient._longRunningOperationRetryTimeout = _longRunningOperationRetryTimeout;
 
                 clonedClient.Credentials.InitializeServiceClient(clonedClient);
             }

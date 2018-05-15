@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<FirewallRule> FirewallRules
         {
-            get { return this._firewallRules; }
-            set { this._firewallRules = value; }
+            get { return _firewallRules; }
+            set { _firewallRules = value; }
         }
         
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public FirewallRuleListResponse()
         {
-            this.FirewallRules = new LazyList<FirewallRule>();
+            FirewallRules = new LazyList<FirewallRule>();
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<FirewallRule> GetEnumerator()
         {
-            return this.FirewallRules.GetEnumerator();
+            return FirewallRules.GetEnumerator();
         }
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

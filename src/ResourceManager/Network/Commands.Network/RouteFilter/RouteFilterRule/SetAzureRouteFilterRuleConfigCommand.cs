@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Commands.Network
     using System.Linq;
     using System.Management.Automation;
 
-    using Microsoft.Azure.Commands.Network.Models;
-    using Microsoft.Azure.Management.Network.Models;
+    using Models;
+    using Management.Network.Models;
 
     [Cmdlet(VerbsCommon.Set, "AzureRmRouteFilterRuleConfig", SupportsShouldProcess = true), OutputType(typeof(PSRouteFilter))]
     public class SetAzureRouteFilterRuleConfigCommand : AzureRouteFilterRuleConfigBase
@@ -46,19 +46,19 @@ namespace Microsoft.Azure.Commands.Network
                Name,
                () =>
                {
-                   var rule = this.RouteFilter.Rules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                   var rule = RouteFilter.Rules.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
                    if (rule == null)
                    {
                        throw new ArgumentException("rule with the specified name does not exist");
                    }
 
-                   rule.Name = this.Name;
-                   rule.Access = this.Access;
-                   rule.RouteFilterRuleType = this.RouteFilterRuleType;
-                   rule.Communities = this.CommunityList;
+                   rule.Name = Name;
+                   rule.Access = Access;
+                   rule.RouteFilterRuleType = RouteFilterRuleType;
+                   rule.Communities = CommunityList;
 
-                   WriteObject(this.RouteFilter);
+                   WriteObject(RouteFilter);
                });
             
         }

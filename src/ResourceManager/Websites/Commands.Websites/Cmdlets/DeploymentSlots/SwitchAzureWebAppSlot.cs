@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.DeploymentSlots
 
             GetConfirmActionMessages(out actionMessage, out processMessage);
 
-            this.ConfirmAction(
+            ConfirmAction(
                 true,
                 actionMessage,
                 processMessage,

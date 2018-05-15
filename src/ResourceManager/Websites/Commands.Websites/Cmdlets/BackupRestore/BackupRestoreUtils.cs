@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
                 keepAtLeastOneBackup = schedule.KeepAtLeastOneBackup;
             }
 
-            return new AzureWebAppBackupConfiguration()
+            return new AzureWebAppBackupConfiguration
             {
                 Name = name,
                 ResourceGroupName = resourceGroupName,

@@ -75,33 +75,33 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 TargetProcessServer.FriendlyName,
                 "Switch the process server"))
             {
                 // Set the Fabric Name and Protection Container Name.
-                this.fabricName = this.Fabric.Name;
-                var protectionContainerList = this.RecoveryServicesClient
-                    .GetAzureSiteRecoveryProtectionContainer(this.fabricName);
-                this.protectionContainerName = protectionContainerList[0].Name;
+                fabricName = Fabric.Name;
+                var protectionContainerList = RecoveryServicesClient
+                    .GetAzureSiteRecoveryProtectionContainer(fabricName);
+                protectionContainerName = protectionContainerList[0].Name;
 
                 var failoverPSRequestProperties = new FailoverProcessServerRequestProperties();
-                failoverPSRequestProperties.SourceProcessServerId = this.SourceProcessServer.Id;
-                failoverPSRequestProperties.TargetProcessServerId = this.TargetProcessServer.Id;
-                failoverPSRequestProperties.ContainerName = this.protectionContainerName;
+                failoverPSRequestProperties.SourceProcessServerId = SourceProcessServer.Id;
+                failoverPSRequestProperties.TargetProcessServerId = TargetProcessServer.Id;
+                failoverPSRequestProperties.ContainerName = protectionContainerName;
 
-                if (this.ReplicationProtectedItem!= null)
+                if (ReplicationProtectedItem!= null)
                 {
-                    this.protectedItemsIdsForRpi = new List<string>();
-                    foreach (var replicationProtectedItem in this.ReplicationProtectedItem)
+                    protectedItemsIdsForRpi = new List<string>();
+                    foreach (var replicationProtectedItem in ReplicationProtectedItem)
                     {
-                        this.protectedItemsIdsForRpi.Add(
+                        protectedItemsIdsForRpi.Add(
                             Utilities.GetValueFromArmId(
                                 replicationProtectedItem.ProtectableItemId,
                                 ARMResourceTypeConstants.ProtectableItems));
                     }
 
-                    failoverPSRequestProperties.VmsToMigrate = this.protectedItemsIdsForRpi;
+                    failoverPSRequestProperties.VmsToMigrate = protectedItemsIdsForRpi;
                     failoverPSRequestProperties.UpdateType =
                         ProcessServerFailoverType.ServerLevel.ToString();
                 }
@@ -117,14 +117,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 };
 
                 // Switch the process server.
-                var response = this.RecoveryServicesClient.ReassociateProcessServer(
-                    this.fabricName,
+                var response = RecoveryServicesClient.ReassociateProcessServer(
+                    fabricName,
                     failoverPSRequest);
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
 

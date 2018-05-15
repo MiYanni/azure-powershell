@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Edition
         {
-            get { return this._edition; }
-            set { this._edition = value; }
+            get { return _edition; }
+            set { _edition = value; }
         }
         
         private string _elasticPoolName;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ElasticPoolName
         {
-            get { return this._elasticPoolName; }
-            set { this._elasticPoolName = value; }
+            get { return _elasticPoolName; }
+            set { _elasticPoolName = value; }
         }
         
         private DateTime _lastAvailableBackupDate;
@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime LastAvailableBackupDate
         {
-            get { return this._lastAvailableBackupDate; }
-            set { this._lastAvailableBackupDate = value; }
+            get { return _lastAvailableBackupDate; }
+            set { _lastAvailableBackupDate = value; }
         }
         
         private string _serviceLevelObjective;
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServiceLevelObjective
         {
-            get { return this._serviceLevelObjective; }
-            set { this._serviceLevelObjective = value; }
+            get { return _serviceLevelObjective; }
+            set { _serviceLevelObjective = value; }
         }
         
         /// <summary>

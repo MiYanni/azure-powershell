@@ -36,18 +36,18 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var backendAddressPool =
-                    this.LoadBalancer.BackendAddressPools.First(
+                    LoadBalancer.BackendAddressPools.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(backendAddressPool);
             }
             else
             {
-                var backendAddressPools = this.LoadBalancer.BackendAddressPools;
+                var backendAddressPools = LoadBalancer.BackendAddressPools;
                 WriteObject(backendAddressPools, true);
             }
 

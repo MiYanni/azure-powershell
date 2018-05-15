@@ -45,8 +45,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlServerCommunicationLinkModel> GetEntity()
         {
-            return new List<AzureSqlServerCommunicationLinkModel>() {
-                ModelAdapter.GetServerCommunicationLink(this.ResourceGroupName, this.ServerName, this.LinkName)
+            return new List<AzureSqlServerCommunicationLinkModel>
+            {
+                ModelAdapter.GetServerCommunicationLink(ResourceGroupName, ServerName, LinkName)
             };
         }
 
@@ -67,7 +68,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlServerCommunicationLinkModel> PersistChanges(IEnumerable<AzureSqlServerCommunicationLinkModel> entity)
         {
-            ModelAdapter.RemoveServerCommunicationLink(this.ResourceGroupName, this.ServerName, this.LinkName);
+            ModelAdapter.RemoveServerCommunicationLink(ResourceGroupName, ServerName, LinkName);
             return entity;
         }
 
@@ -77,9 +78,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Cmdlet
         protected override void ProcessRecord()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerCommunicationLinkDescription, this.LinkName, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerCommunicationLinkWarning, this.LinkName, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerCommunicationLinkDescription, LinkName, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerCommunicationLinkWarning, LinkName, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }

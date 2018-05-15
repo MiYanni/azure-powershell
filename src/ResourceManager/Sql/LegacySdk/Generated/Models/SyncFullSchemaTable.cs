@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SyncFullSchemaColumn> Columns
         {
-            get { return this._columns; }
-            set { this._columns = value; }
+            get { return _columns; }
+            set { _columns = value; }
         }
         
         private string _errorId;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ErrorId
         {
-            get { return this._errorId; }
-            set { this._errorId = value; }
+            get { return _errorId; }
+            set { _errorId = value; }
         }
         
         private bool _hasError;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool HasError
         {
-            get { return this._hasError; }
-            set { this._hasError = value; }
+            get { return _hasError; }
+            set { _hasError = value; }
         }
         
         private string _name;
@@ -72,8 +72,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private string _quotedName;
@@ -83,8 +83,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string QuotedName
         {
-            get { return this._quotedName; }
-            set { this._quotedName = value; }
+            get { return _quotedName; }
+            set { _quotedName = value; }
         }
         
         /// <summary>
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncFullSchemaTable()
         {
-            this.Columns = new LazyList<SyncFullSchemaColumn>();
+            Columns = new LazyList<SyncFullSchemaColumn>();
         }
     }
 }

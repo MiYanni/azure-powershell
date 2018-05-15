@@ -32,17 +32,17 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var sslCertificate = this.ApplicationGateway.SslCertificates.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var sslCertificate = ApplicationGateway.SslCertificates.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (sslCertificate != null)
             {
                 throw new ArgumentException("Ssl certificate with the specified name already exists");
             }
 
-            sslCertificate = base.NewObject();
-            this.ApplicationGateway.SslCertificates.Add(sslCertificate);
+            sslCertificate = NewObject();
+            ApplicationGateway.SslCertificates.Add(sslCertificate);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

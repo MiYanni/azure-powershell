@@ -32,11 +32,11 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
             }
 
             SearchMetadata m = searchResponse.Metadata;
-            this.Metadata = new PSSearchMetadata(searchResponse.Metadata);
-            this.Value = new List<PSSavedSearchValue>();
+            Metadata = new PSSearchMetadata(searchResponse.Metadata);
+            Value = new List<PSSavedSearchValue>();
             foreach (SavedSearch v in searchResponse.Value)
             {
-                this.Value.Add(new PSSavedSearchValue(v));
+                Value.Add(new PSSavedSearchValue(v));
             }
         }
 

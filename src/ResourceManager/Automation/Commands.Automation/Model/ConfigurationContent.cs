@@ -48,15 +48,15 @@ namespace Microsoft.Azure.Commands.Automation.Model
             Requires.Argument("resourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("slot", slot).NotNull();
 
-            this.AutomationAccountName = accountName;
-            this.Name = configuration.Name;
-            this.Content = content;
+            AutomationAccountName = accountName;
+            Name = configuration.Name;
+            Content = content;
 
             if (configuration.Properties == null) return;
 
-            this.CreationTime = configuration.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = configuration.Properties.LastModifiedTime.ToLocalTime();
-            this.Slot = slot;
+            CreationTime = configuration.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = configuration.Properties.LastModifiedTime.ToLocalTime();
+            Slot = slot;
         }
 
         /// <summary>

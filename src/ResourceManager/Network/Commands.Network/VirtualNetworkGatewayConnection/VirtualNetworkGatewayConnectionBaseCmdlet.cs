@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetVirtualNetworkGatewayConnection(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSVirtualNetworkGatewayConnection GetVirtualNetworkGatewayConnection(string resourceGroupName, string name)
         {
-            var connection = this.VirtualNetworkGatewayConnectionClient.Get(resourceGroupName, name);
+            var connection = VirtualNetworkGatewayConnectionClient.Get(resourceGroupName, name);
 
             var psVirtualNetworkGatewayConnection = ToPsVirtualNetworkGatewayConnection(connection);
             psVirtualNetworkGatewayConnection.ResourceGroupName = resourceGroupName;
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public string GetVirtualNetworkGatewayConnectionSharedKey(string resourceGroupName, string name)
         {
-            var getVirtualNetworkGatewayConnectionSharedKeyResponse = this.VirtualNetworkGatewayConnectionClient.GetSharedKey(resourceGroupName, name);
+            var getVirtualNetworkGatewayConnectionSharedKeyResponse = VirtualNetworkGatewayConnectionClient.GetSharedKey(resourceGroupName, name);
             var psVirtualNetworkGatewayConnectionSharedKey = NetworkResourceManagerProfile.Mapper.Map<string>(getVirtualNetworkGatewayConnectionSharedKeyResponse.Value);
             return psVirtualNetworkGatewayConnectionSharedKey;
         }
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetVirtualNetworkGatewayConnectionSharedKey(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {

@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Network
     using System.Collections.Generic;
     using System.Management.Automation;
 
-    using Microsoft.Azure.Commands.Network.Models;
-    using Microsoft.Azure.Management.Network;
-    using Microsoft.Azure.Management.Network.Models;
-    using Microsoft.Rest.Azure;
+    using Models;
+    using Management.Network;
+    using Management.Network.Models;
+    using Rest.Azure;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmRouteFilter"), OutputType(typeof(PSRouteFilter))]
@@ -65,33 +65,33 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var routeFilter = this.GetRouteFilter(this.ResourceGroupName, this.Name, this.ExpandResource);
+                var routeFilter = GetRouteFilter(ResourceGroupName, Name, ExpandResource);
 
                 WriteObject(routeFilter);
             }
             else
             {
                 IPage<RouteFilter> routeFilterPage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    routeFilterPage = this.RouteFilterClient.ListByResourceGroup(this.ResourceGroupName);
+                    routeFilterPage = RouteFilterClient.ListByResourceGroup(ResourceGroupName);
                 }
                 else
                 {
-                    routeFilterPage = this.RouteFilterClient.List();
+                    routeFilterPage = RouteFilterClient.List();
                 }
 
                 // Get all resources by polling on next page link
-                var routeFilterList = ListNextLink<RouteFilter>.GetAllResourcesByPollingNextLink(routeFilterPage, this.RouteFilterClient.ListNext);
+                var routeFilterList = ListNextLink<RouteFilter>.GetAllResourcesByPollingNextLink(routeFilterPage, RouteFilterClient.ListNext);
 
                 var psRouteFilters = new List<PSRouteFilter>();
 
                 foreach (var routeFilter in routeFilterList)
                 {
-                    var psRouteFilter = this.ToPsRouteFilter(routeFilter);
-                    psRouteFilter.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(routeFilter.Id);
+                    var psRouteFilter = ToPsRouteFilter(routeFilter);
+                    psRouteFilter.ResourceGroupName = GetResourceGroup(routeFilter.Id);
                     psRouteFilters.Add(psRouteFilter);
                 }
 

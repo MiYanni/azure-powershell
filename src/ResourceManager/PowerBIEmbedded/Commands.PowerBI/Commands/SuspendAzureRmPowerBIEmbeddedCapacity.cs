@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.PowerBI
                 PSPowerBIEmbeddedCapacity capacity = null;
                 if (!PowerBIClient.TestCapacity(resourceGroupName, capacityName, out capacity))
                 {
-                    throw new InvalidOperationException(string.Format(Properties.Resources.CapacityDoesNotExist, capacityName));
+                    throw new InvalidOperationException(string.Format(Resources.CapacityDoesNotExist, capacityName));
                 }
 
                 PowerBIClient.SuspendCapacity(resourceGroupName, capacityName);
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.PowerBI
                     // Update the capacity current state 
                     if (!PowerBIClient.TestCapacity(resourceGroupName, capacityName, out capacity))
                     {
-                        throw new InvalidOperationException(string.Format(Properties.Resources.CapacityDoesNotExist, capacityName));
+                        throw new InvalidOperationException(string.Format(Resources.CapacityDoesNotExist, capacityName));
                     }
                     WriteObject(capacity);
                 }

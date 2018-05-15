@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     c,
                     s) =>
                 {
-                    if ((c != null) &&
-                        (s != null))
+                    if (c != null &&
+                        s != null)
                     {
                         foreach (var t in c)
                         {

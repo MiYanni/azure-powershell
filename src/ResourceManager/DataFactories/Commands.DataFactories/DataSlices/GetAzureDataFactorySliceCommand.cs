@@ -58,11 +58,11 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName = DataFactory.ResourceGroupName;
             }
 
-            DataSliceFilterOptions filterOptions = new DataSliceFilterOptions()
+            DataSliceFilterOptions filterOptions = new DataSliceFilterOptions
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = DataFactoryName,
-                DatasetName = this.DatasetName,
+                DatasetName = DatasetName,
                 DataSliceRangeStartTime = StartDateTime,
                 DataSliceRangeEndTime = EndDateTime
             };

@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery.Models
         /// </summary>
         public string Filter
         {
-            get { return this._filter; }
-            set { this._filter = value; }
+            get { return _filter; }
+            set { _filter = value; }
         }
 
         private int? _top;
@@ -29,8 +29,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery.Models
         /// </summary>
         public int? Top
         {
-            get { return this._top; }
-            set { this._top = value; }
+            get { return _top; }
+            set { _top = value; }
         }
 
         /// <summary>

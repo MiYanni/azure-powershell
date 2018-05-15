@@ -69,13 +69,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ServiceClient
                     }
                     else if (genericArguments.Any(type => type.IsEnum))
                     {
-                        rightHandSide = (property.GetValue(queryObject) != null) ?
+                        rightHandSide = property.GetValue(queryObject) != null ?
                         string.Format("'{0}'", property.GetValue(queryObject).ToString()) : null;
                     }
                 }
                 else
                 {
-                    rightHandSide = (property.GetValue(queryObject) != null) ?
+                    rightHandSide = property.GetValue(queryObject) != null ?
                         string.Format("'{0}'", property.GetValue(queryObject).ToString()) : null;
                 }
 

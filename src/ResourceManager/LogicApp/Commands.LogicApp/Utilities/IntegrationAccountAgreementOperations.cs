@@ -14,11 +14,11 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.Azure.Management.Logic;
+    using Management.Logic.Models;
+    using Management.Logic;
     using System.Management.Automation;
     using System.Globalization;
-    using Microsoft.Rest.Azure;
+    using Rest.Azure;
     using System.Collections.Generic;
 
     /// <summary>
@@ -36,15 +36,12 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Newly created integration account agreement object.</returns>
         public IntegrationAccountAgreement CreateIntegrationAccountAgreement(string resourceGroupName, string integrationAccountName, string integrationAccountAgreementName, IntegrationAccountAgreement integrationAccountAgreement)
         {
-            if (!this.DoesIntegrationAccountAgreementExist(resourceGroupName, integrationAccountName, integrationAccountAgreementName))
+            if (!DoesIntegrationAccountAgreementExist(resourceGroupName, integrationAccountName, integrationAccountAgreementName))
             {
-                return this.LogicManagementClient.Agreements.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountAgreementName, integrationAccountAgreement);
+                return LogicManagementClient.Agreements.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountAgreementName, integrationAccountAgreement);
             }
-            else
-            {
-                throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    Properties.Resource.ResourceAlreadyExists, integrationAccountAgreementName, resourceGroupName));
-            }
+            throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
+                Properties.Resource.ResourceAlreadyExists, integrationAccountAgreementName, resourceGroupName));
         }
 
         /// <summary>
@@ -59,7 +56,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
             bool result = false;
             try
             {
-                var agreement = this.LogicManagementClient.Agreements.Get(resourceGroupName, integrationAccountName, integrationAccountAgreementName);
+                var agreement = LogicManagementClient.Agreements.Get(resourceGroupName, integrationAccountName, integrationAccountAgreementName);
                 result = agreement != null;
             }
             catch
@@ -79,7 +76,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Updated integration account agreement</returns>
         public IntegrationAccountAgreement UpdateIntegrationAccountAgreement(string resourceGroupName, string integrationAccountName, string integrationAccountAgreementName, IntegrationAccountAgreement integrationAccountAgreement)
         {
-            return this.LogicManagementClient.Agreements.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountAgreementName, integrationAccountAgreement);
+            return LogicManagementClient.Agreements.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountAgreementName, integrationAccountAgreement);
         }
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Integration account agreement object.</returns>
         public IntegrationAccountAgreement GetIntegrationAccountAgreement(string resourceGroupName, string integrationAccountName, string integrationAccountAgreementName)
         {
-            return this.LogicManagementClient.Agreements.Get(resourceGroupName, integrationAccountName, integrationAccountAgreementName);
+            return LogicManagementClient.Agreements.Get(resourceGroupName, integrationAccountName, integrationAccountAgreementName);
         }
 
         /// <summary>
@@ -103,7 +100,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         public IList<IntegrationAccountAgreement> ListIntegrationAccountAgreements(string resourceGroupName, string integrationAccountName)
         {
             var compositeList = new List<IntegrationAccountAgreement>();
-            var firstPage = this.LogicManagementClient.Agreements.ListByIntegrationAccounts(resourceGroupName, integrationAccountName);
+            var firstPage = LogicManagementClient.Agreements.ListByIntegrationAccounts(resourceGroupName, integrationAccountName);
 
             if (firstPage != null)
             {
@@ -115,7 +112,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
                 var page = firstPage;
                 while (!string.IsNullOrEmpty(page.NextPageLink))
                 {
-                    page = this.LogicManagementClient.Agreements.ListByIntegrationAccountsNext(page.NextPageLink);
+                    page = LogicManagementClient.Agreements.ListByIntegrationAccountsNext(page.NextPageLink);
                     compositeList.AddRange(page);
                 }
             }
@@ -130,7 +127,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="integrationAccountAgreementName">The integration account agreement name.</param>
         public void RemoveIntegrationAccountAgreement(string resourceGroupName, string integrationAccountName, string integrationAccountAgreementName)
         {
-            this.LogicManagementClient.Agreements.Delete(resourceGroupName, integrationAccountName, integrationAccountAgreementName);
+            LogicManagementClient.Agreements.Delete(resourceGroupName, integrationAccountName, integrationAccountAgreementName);
         }
     }
 }

@@ -141,22 +141,22 @@ namespace Microsoft.Azure.Commands.Management.Storage
         {
             base.ExecuteCmdlet();
 
-            CheckNameAvailabilityResult checkNameAvailabilityResult = this.StorageClient.StorageAccounts.CheckNameAvailability(this.Name);
+            CheckNameAvailabilityResult checkNameAvailabilityResult = StorageClient.StorageAccounts.CheckNameAvailability(Name);
             if (!checkNameAvailabilityResult.NameAvailable.Value)
             {
-                throw new System.ArgumentException(checkNameAvailabilityResult.Message, "Name");
+                throw new ArgumentException(checkNameAvailabilityResult.Message, "Name");
             }
 
-            StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters()
+            StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters
             {
-                Location = this.Location,
-                Sku = new Sku(ParseSkuName(this.SkuName)),
+                Location = Location,
+                Sku = new Sku(ParseSkuName(SkuName)),
                 Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true),
             };
 
-            if (this.CustomDomainName != null)
+            if (CustomDomainName != null)
             {
-                createParameters.CustomDomain = new CustomDomain()
+                createParameters.CustomDomain = new CustomDomain
                 {
                     Name = CustomDomainName,
                     UseSubDomain = UseSubDomain
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Commands.Management.Storage
             }
             else if (UseSubDomain != null)
             {
-                throw new System.ArgumentException(string.Format("UseSubDomain must be set together with CustomDomainName."));
+                throw new ArgumentException(string.Format("UseSubDomain must be set together with CustomDomainName."));
             }
 
             if (Kind != null)
@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Commands.Management.Storage
                 createParameters.Kind = ParseAccountKind(Kind);
             }
 
-            if (this.AccessTier != null)
+            if (AccessTier != null)
             {
                 createParameters.AccessTier = ParseAccessTier(AccessTier);
             }
@@ -190,14 +190,14 @@ namespace Microsoft.Azure.Commands.Management.Storage
                 createParameters.NetworkRuleSet = PSNetworkRuleSet.ParseStorageNetworkRule(NetworkRuleSet);
             }
 
-            var createAccountResponse = this.StorageClient.StorageAccounts.Create(
-                this.ResourceGroupName,
-                this.Name,
+            var createAccountResponse = StorageClient.StorageAccounts.Create(
+                ResourceGroupName,
+                Name,
                 createParameters);
 
-            var storageAccount = this.StorageClient.StorageAccounts.GetProperties(this.ResourceGroupName, this.Name);
+            var storageAccount = StorageClient.StorageAccounts.GetProperties(ResourceGroupName, Name);
 
-            this.WriteStorageAccount(storageAccount);
+            WriteStorageAccount(storageAccount);
         }
     }
 }

@@ -15,9 +15,9 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
+    using Components;
+    using Extensions;
+    using Common;
     using Newtonsoft.Json.Linq;
     using System.Management.Automation;
     using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// <summary>
     /// Gets the managed application.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRmManagedApplication", DefaultParameterSetName = GetAzureManagedApplicationCmdlet.ParameterlessSet), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsCommon.Get, "AzureRmManagedApplication", DefaultParameterSetName = ParameterlessSet), OutputType(typeof(PSObject))]
     public class GetAzureManagedApplicationCmdlet : ManagedApplicationCmdletBase
     {
         /// <summary>
@@ -46,14 +46,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the managed application name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = GetAzureManagedApplicationCmdlet.ManagedApplicationNameParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The managed application name.")]
+        [Parameter(ParameterSetName = ManagedApplicationNameParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The managed application name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the managed application resource group parameter
         /// </summary>
-        [Parameter(ParameterSetName = GetAzureManagedApplicationCmdlet.ManagedApplicationNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
+        [Parameter(ParameterSetName = ManagedApplicationNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the managed application id parameter
         /// </summary>
         [Alias("ResourceId", "ManagedApplicationId")]
-        [Parameter(ParameterSetName = GetAzureManagedApplicationCmdlet.ManagedApplicationIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified managed application Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
+        [Parameter(ParameterSetName = ManagedApplicationIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified managed application Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
         [ValidateNotNullOrEmpty]
         public string Id { get; set; }
 
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            this.RunCmdlet();
+            RunCmdlet();
         }
 
         /// <summary>
@@ -82,10 +82,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private void RunCmdlet()
         {
             PaginatedResponseHelper.ForEach(
-                getFirstPage: () => this.GetResources(),
-                getNextPage: nextLink => this.GetNextLink<JObject>(nextLink),
-                cancellationToken: this.CancellationToken,
-                action: resources => this.WriteObject(sendToPipeline: this.GetOutputObjects("ManagedApplicationId", resources), enumerateCollection: true));
+                () => GetResources(),
+                nextLink => GetNextLink<JObject>(nextLink),
+                CancellationToken,
+                resources => WriteObject(GetOutputObjects("ManagedApplicationId", resources), true));
         }
 
         /// <summary>
@@ -93,34 +93,29 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private async Task<ResponseWithContinuation<JObject[]>> GetResources()
         {
-            string resourceId = this.Id ?? this.GetResourceId();
+            string resourceId = Id ?? GetResourceId();
 
-            var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.ApplicationApiVersion : this.ApiVersion;
+            var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.ApplicationApiVersion : ApiVersion;
 
             if (!string.IsNullOrEmpty(ResourceIdUtility.GetResourceName(resourceId)))
             {
-                var resource = await this
-                    .GetResourcesClient()
+                var resource = await GetResourcesClient()
                     .GetResource<JObject>(
-                        resourceId: resourceId,
-                        apiVersion: apiVersion,
-                        cancellationToken: this.CancellationToken.Value)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                        resourceId,
+                        apiVersion,
+                        CancellationToken.Value)
+                    .ConfigureAwait(false);
                 ResponseWithContinuation<JObject[]> retVal;
                 return resource.TryConvertTo(out retVal) && retVal.Value != null
                     ? retVal
                     : new ResponseWithContinuation<JObject[]> { Value = resource.AsArray() };
             }
-            else
-            {
-                return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .ListObjectColleciton<JObject>(
-                    resourceCollectionId: resourceId,
-                    apiVersion: apiVersion,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
-            }
+                    resourceId,
+                    apiVersion,
+                    CancellationToken.Value)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -129,28 +124,28 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private string GetResourceId()
         {
             var subscriptionId = DefaultContext.Subscription.Id;
-            if (string.IsNullOrEmpty(this.Name) && string.IsNullOrEmpty(this.ResourceGroupName))
+            if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(ResourceGroupName))
             {
                 return string.Format("/subscriptions/{0}/providers/{1}",
                     subscriptionId.ToString(),
                     Constants.MicrosoftApplicationType);
             }
-            else if (string.IsNullOrEmpty(this.Name) && !string.IsNullOrEmpty(this.ResourceGroupName))
+            if (string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(ResourceGroupName))
             {
                 return string.Format("/subscriptions/{0}/resourcegroups/{1}/providers/{2}",
                     subscriptionId.ToString(),
-                    this.ResourceGroupName,
+                    ResourceGroupName,
                     Constants.MicrosoftApplicationType);
             }
-            else if (!string.IsNullOrEmpty(this.Name) && !string.IsNullOrEmpty(this.ResourceGroupName))
+            if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(ResourceGroupName))
             {
                 return string.Format("/subscriptions/{0}/resourcegroups/{1}/providers/{2}/{3}",
                     subscriptionId.ToString(),
-                    this.ResourceGroupName,
+                    ResourceGroupName,
                     Constants.MicrosoftApplicationType,
-                    this.Name);
+                    Name);
             }
-            return this.Id;
+            return Id;
         }
     }
 }

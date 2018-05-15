@@ -37,15 +37,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var urlPathMap = this.ApplicationGateway.UrlPathMaps.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var urlPathMap = ApplicationGateway.UrlPathMaps.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (urlPathMap != null)
             {
-                this.ApplicationGateway.UrlPathMaps.Remove(urlPathMap);
+                ApplicationGateway.UrlPathMaps.Remove(urlPathMap);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

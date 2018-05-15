@@ -35,14 +35,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 throw new ArgumentNullException("exception");
             }
 
-            return (
-                (exception is AccessViolationException) ||
-                (exception is InsufficientMemoryException) ||
-                (exception is OutOfMemoryException) ||
-                (exception is SEHException) ||
-                (exception is StackOverflowException) ||
-                (exception is ThreadAbortException)
-                );
+            return exception is AccessViolationException ||
+                   exception is InsufficientMemoryException ||
+                   exception is OutOfMemoryException ||
+                   exception is SEHException ||
+                   exception is StackOverflowException ||
+                   exception is ThreadAbortException;
         }
 
         public static Exception PrepareServerStackForRethrow(

@@ -14,9 +14,9 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using ResourceManager.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient;
+    using Common;
+    using WindowsAzure.Commands.Utilities.Common;
+    using SdkClient;
 
     /// <summary>
     /// Base class for all feature cmdlets
@@ -35,15 +35,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             get
             {
-                if (this.providerFeatureClient == null)
+                if (providerFeatureClient == null)
                 {
-                    this.providerFeatureClient = new ProviderFeatureClient(DefaultContext);
+                    providerFeatureClient = new ProviderFeatureClient(DefaultContext);
                 }
 
-                return this.providerFeatureClient;
+                return providerFeatureClient;
             }
 
-            set { this.providerFeatureClient = value; }
+            set { providerFeatureClient = value; }
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         public virtual string DetermineParameterSetName()
         {
-            return this.ParameterSetName;
+            return ParameterSetName;
         }
     }
 }

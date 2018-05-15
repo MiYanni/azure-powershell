@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.ConsumerGroup
             if (!string.IsNullOrEmpty(UserMetadata))
                 consumerGroup.UserMetadata = UserMetadata;
 
-            if(ShouldProcess(target: consumerGroup.Name, action: string.Format(Resources.UpdateConsumerGroup,consumerGroup.Name,EventHub)))
+            if(ShouldProcess(consumerGroup.Name, string.Format(Resources.UpdateConsumerGroup,consumerGroup.Name,EventHub)))
             {
                 WriteObject(Client.CreateOrUpdateConsumerGroup(ResourceGroupName, Namespace, EventHub, consumerGroup.Name, consumerGroup));
             }

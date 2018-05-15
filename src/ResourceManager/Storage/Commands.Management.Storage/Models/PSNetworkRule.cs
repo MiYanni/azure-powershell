@@ -69,14 +69,14 @@ namespace Microsoft.Azure.Commands.Management.Storage.Models
 
 
         //Parse NetworkRule property Action in SDK to wrapped property PSNetworkRuleActionEnum
-        public static PSNetworkRuleActionEnum? ParsePSNetworkRuleAction(Microsoft.Azure.Management.Storage.Models.Action? action)
+        public static PSNetworkRuleActionEnum? ParsePSNetworkRuleAction(Azure.Management.Storage.Models.Action? action)
         {
             if (action == null)
             {
                 return null;
             }
 
-            if (action.Value == Microsoft.Azure.Management.Storage.Models.Action.Allow)
+            if (action.Value == Azure.Management.Storage.Models.Action.Allow)
             {
                 return PSNetworkRuleActionEnum.Allow;
             }
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Management.Storage.Models
 
 
         //Parse wrapped property PSNetworkRuleActionEnum to NetworkRule rule property Action in SDK 
-        public static Microsoft.Azure.Management.Storage.Models.Action? ParseStorageNetworkRuleAction(PSNetworkRuleActionEnum? action)
+        public static Azure.Management.Storage.Models.Action? ParseStorageNetworkRuleAction(PSNetworkRuleActionEnum? action)
         {
             if (action == null)
             {
@@ -95,9 +95,9 @@ namespace Microsoft.Azure.Commands.Management.Storage.Models
 
             if (action == PSNetworkRuleActionEnum.Allow)
             {
-                return Microsoft.Azure.Management.Storage.Models.Action.Allow;
+                return Azure.Management.Storage.Models.Action.Allow;
             }
-            return Microsoft.Azure.Management.Storage.Models.Action.Allow;
+            return Azure.Management.Storage.Models.Action.Allow;
         }
 
         //Parse NetworkRule property Bypass in SDK to wrapped property PSNetworkRuleBypassEnum
@@ -160,14 +160,11 @@ namespace Microsoft.Azure.Commands.Management.Storage.Models
         //Parse NetworkRule property DefaultAction in SDK to wrapped property PSNetworkRuleDefaultActionEnum
         public static PSNetWorkRuleDefaultActionEnum ParsePSNetworkRuleDefaultAction(DefaultAction defaultAction)
         {
-            if (defaultAction == Microsoft.Azure.Management.Storage.Models.DefaultAction.Allow)
+            if (defaultAction == Azure.Management.Storage.Models.DefaultAction.Allow)
             {
                 return PSNetWorkRuleDefaultActionEnum.Allow;
             }
-            else
-            {
-                return PSNetWorkRuleDefaultActionEnum.Deny;
-            }
+            return PSNetWorkRuleDefaultActionEnum.Deny;
         }
 
         //Parse wrapped property PSNetworkRuleDefaultActionEnum to NetworkRule property DefaultAction in SDK
@@ -175,12 +172,9 @@ namespace Microsoft.Azure.Commands.Management.Storage.Models
         {
             if (defaultAction == PSNetWorkRuleDefaultActionEnum.Allow)
             {
-                return Microsoft.Azure.Management.Storage.Models.DefaultAction.Allow;
+                return Azure.Management.Storage.Models.DefaultAction.Allow;
             }
-            else
-            {
-                return Microsoft.Azure.Management.Storage.Models.DefaultAction.Deny;
-            }
+            return Azure.Management.Storage.Models.DefaultAction.Deny;
         }
 
         //Parse single NetworkRule IpRule in SDK to wrapped property PSIpRule

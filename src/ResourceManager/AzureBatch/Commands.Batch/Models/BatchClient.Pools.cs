@@ -41,9 +41,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 WriteVerbose(string.Format(Resources.GetPoolById, options.PoolId));
                 PoolOperations poolOperations = options.Context.BatchOMClient.PoolOperations;
                 ODATADetailLevel getDetailLevel = new ODATADetailLevel(selectClause: options.Select, expandClause: options.Expand);
-                CloudPool pool = poolOperations.GetPool(options.PoolId, detailLevel: getDetailLevel, additionalBehaviors: options.AdditionalBehaviors);
+                CloudPool pool = poolOperations.GetPool(options.PoolId, getDetailLevel, options.AdditionalBehaviors);
                 PSCloudPool psPool = new PSCloudPool(pool);
-                return new PSCloudPool[] { psPool };
+                return new[] { psPool };
             }
             // List pools using the specified filter
             else
@@ -345,7 +345,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
             if (!string.IsNullOrEmpty(options.Filter))
             {
                 verboseLogString = Resources.GetPoolUsageMetricsByFilter;
-                detailLevel = new ODATADetailLevel(filterClause: options.Filter);
+                detailLevel = new ODATADetailLevel(options.Filter);
             }
             else
             {

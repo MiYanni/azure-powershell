@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSApplicationPackageReference
     {
         
-        internal Microsoft.Azure.Batch.ApplicationPackageReference omObject;
+        internal ApplicationPackageReference omObject;
         
         public PSApplicationPackageReference()
         {
-            this.omObject = new Microsoft.Azure.Batch.ApplicationPackageReference();
+            omObject = new ApplicationPackageReference();
         }
         
-        internal PSApplicationPackageReference(Microsoft.Azure.Batch.ApplicationPackageReference omObject)
+        internal PSApplicationPackageReference(ApplicationPackageReference omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,11 +52,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ApplicationId;
+                return omObject.ApplicationId;
             }
             set
             {
-                this.omObject.ApplicationId = value;
+                omObject.ApplicationId = value;
             }
         }
         
@@ -64,11 +64,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Version;
+                return omObject.Version;
             }
             set
             {
-                this.omObject.Version = value;
+                omObject.Version = value;
             }
         }
     }

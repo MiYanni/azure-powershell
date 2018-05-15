@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public long DatabaseMaxSize
         {
-            get { return this._databaseMaxSize; }
-            set { this._databaseMaxSize = value; }
+            get { return _databaseMaxSize; }
+            set { _databaseMaxSize = value; }
         }
         
         private string _databaseName;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseName
         {
-            get { return this._databaseName; }
-            set { this._databaseName = value; }
+            get { return _databaseName; }
+            set { _databaseName = value; }
         }
         
         private string _edition;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Edition
         {
-            get { return this._edition; }
-            set { this._edition = value; }
+            get { return _edition; }
+            set { _edition = value; }
         }
         
         private string _serviceObjectiveName;
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServiceObjectiveName
         {
-            get { return this._serviceObjectiveName; }
-            set { this._serviceObjectiveName = value; }
+            get { return _serviceObjectiveName; }
+            set { _serviceObjectiveName = value; }
         }
         
         /// <summary>

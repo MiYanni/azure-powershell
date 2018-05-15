@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string snapshotName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "SnapshotName" },
+                 new[] { "ResourceGroupName", "SnapshotName" },
                  new object[] { resourceGroupName, snapshotName });
         }
     }
@@ -105,10 +105,10 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.SnapshotName, VerbsSecurity.Revoke))
+                if (ShouldProcess(SnapshotName, VerbsSecurity.Revoke))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string snapshotName = this.SnapshotName;
+                    string resourceGroupName = ResourceGroupName;
+                    string snapshotName = SnapshotName;
 
                     var result = SnapshotsClient.RevokeAccess(resourceGroupName, snapshotName);
                     var psObject = new PSOperationStatusResponse();
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

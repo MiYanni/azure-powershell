@@ -37,14 +37,14 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var ipconfig = this.NetworkInterface.IpConfigurations.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var ipconfig = NetworkInterface.IpConfigurations.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (ipconfig != null)
             {
-                this.NetworkInterface.IpConfigurations.Remove(ipconfig);
+                NetworkInterface.IpConfigurations.Remove(ipconfig);
             }
 
-            WriteObject(this.NetworkInterface);
+            WriteObject(NetworkInterface);
         }
     }
 }

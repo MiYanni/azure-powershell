@@ -43,11 +43,11 @@ namespace Microsoft.Azure.Commands.Network.Automation
         {
             base.Execute();
 
-            var vAvailableEndpointServiceList = this.NetworkClient.NetworkManagementClient.AvailableEndpointServices.List(Location);
+            var vAvailableEndpointServiceList = NetworkClient.NetworkManagementClient.AvailableEndpointServices.List(Location);
             List<PSEndpointServiceResult> psAvailableServiceEndpoints = new List<PSEndpointServiceResult>();
             foreach (var vAvailableEndpointService in vAvailableEndpointServiceList)
             {
-                psAvailableServiceEndpoints.Add(NetworkResourceManagerProfile.Mapper.Map<CNM.PSEndpointServiceResult>(vAvailableEndpointService));
+                psAvailableServiceEndpoints.Add(NetworkResourceManagerProfile.Mapper.Map<PSEndpointServiceResult>(vAvailableEndpointService));
             }
             WriteObject(psAvailableServiceEndpoints, true);
         }

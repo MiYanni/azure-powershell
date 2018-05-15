@@ -32,13 +32,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         {
             this.vhdFile = vhdFile;
             this.blockSize = blockSize;
-            this.BlockCount = CalculateBlockCount();
-            this.sectorFactory = new SectorFactory(vhdFile, this);
+            BlockCount = CalculateBlockCount();
+            sectorFactory = new SectorFactory(vhdFile, this);
         }
 
         private int CalculateBlockCount()
         {
-            var count = this.vhdFile.Footer.VirtualSize * 1.0m / this.GetBlockSize();
+            var count = vhdFile.Footer.VirtualSize * 1.0m / GetBlockSize();
             if (Math.Floor(count) < Math.Ceiling(count))
             {
                 extraBlockIndex = (long)Math.Floor(count);
@@ -50,21 +50,21 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public Block Create(uint block)
         {
-            if (!this.HasData(block))
+            if (!HasData(block))
             {
                 if (cachedBlock == null || cachedBlock.BlockIndex != block)
                 {
-                    IndexRange logicalRange = IndexRange.FromLength(block * GetBlockSize(), this.GetBlockSize());
+                    IndexRange logicalRange = IndexRange.FromLength(block * GetBlockSize(), GetBlockSize());
                     if (extraBlockIndex.HasValue && block == extraBlockIndex)
                     {
                         long startIndex = block * GetBlockSize();
-                        long size = this.vhdFile.DataReader.Size - startIndex - VhdConstants.VHD_FOOTER_SIZE;
+                        long size = vhdFile.DataReader.Size - startIndex - VhdConstants.VHD_FOOTER_SIZE;
                         logicalRange = IndexRange.FromLength(startIndex, size);
                     }
                     cachedBlock = new Block(this)
                     {
                         BlockIndex = block,
-                        VhdUniqueId = this.vhdFile.Footer.UniqueId,
+                        VhdUniqueId = vhdFile.Footer.UniqueId,
                         LogicalRange = logicalRange,
                         BitMap = null,
                         Empty = true
@@ -74,17 +74,17 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
             }
             if (cachedBlock == null || cachedBlock.BlockIndex != block)
             {
-                IndexRange logicalRange = IndexRange.FromLength(block * GetBlockSize(), this.GetBlockSize());
+                IndexRange logicalRange = IndexRange.FromLength(block * GetBlockSize(), GetBlockSize());
                 if (extraBlockIndex.HasValue && block == extraBlockIndex)
                 {
                     long startIndex = block * GetBlockSize();
-                    long size = this.vhdFile.DataReader.Size - startIndex - VhdConstants.VHD_FOOTER_SIZE;
+                    long size = vhdFile.DataReader.Size - startIndex - VhdConstants.VHD_FOOTER_SIZE;
                     logicalRange = IndexRange.FromLength(startIndex, size);
                 }
                 cachedBlock = new Block(this)
                 {
                     BlockIndex = block,
-                    VhdUniqueId = this.vhdFile.Footer.UniqueId,
+                    VhdUniqueId = vhdFile.Footer.UniqueId,
                     LogicalRange = logicalRange,
                     Empty = false
                 };
@@ -102,14 +102,14 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         {
             if (block.Empty)
             {
-                return this.sectorFactory.CreateEmptySector(block.BlockIndex, sector);
+                return sectorFactory.CreateEmptySector(block.BlockIndex, sector);
             }
-            return this.sectorFactory.Create(block, sector);
+            return sectorFactory.Create(block, sector);
         }
 
         public IndexRange GetFooterRange()
         {
-            long startIndex = this.vhdFile.DataReader.Size - VhdConstants.VHD_FOOTER_SIZE;
+            long startIndex = vhdFile.DataReader.Size - VhdConstants.VHD_FOOTER_SIZE;
             var logicalRange = IndexRange.FromLength(startIndex, VhdConstants.VHD_FOOTER_SIZE);
             return logicalRange;
         }
@@ -121,12 +121,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public long GetBlockAddress(uint blockIndex)
         {
-            return blockIndex * this.blockSize;
+            return blockIndex * blockSize;
         }
 
         public long GetBlockSize()
         {
-            return this.blockSize;
+            return blockSize;
         }
     }
 }

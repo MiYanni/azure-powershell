@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.Profile.Context
             if (TryGetExistingContextNameParameter(SourceParameterName, NameParameterSet, out sourceNameParameter))
             {
                 parameters.Add(sourceNameParameter.Name, sourceNameParameter);
-                var attributes = new Collection<Attribute>()
+                var attributes = new Collection<Attribute>
                 {
                     new ParameterAttribute { Position=1, Mandatory=true, HelpMessage="The new name of the context" },
                     new ValidateNotNullOrEmptyAttribute()

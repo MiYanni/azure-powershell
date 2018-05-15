@@ -17,9 +17,9 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices.Models;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIoTDeviceProvisioningServiceAccessPolicy", DefaultParameterSetName = ResourceParameterSet)]
     [Alias("Get-AzureRmIoTDpsAccessPolicy")]
@@ -76,19 +76,19 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
             switch (ParameterSetName)
             {
                 case InputObjectParameterSet:
-                    this.ResourceGroupName = this.DpsObject.ResourceGroupName;
-                    this.Name = this.DpsObject.Name;
-                    this.GetIotDpsAccessPolicy();
+                    ResourceGroupName = DpsObject.ResourceGroupName;
+                    Name = DpsObject.Name;
+                    GetIotDpsAccessPolicy();
                     break;
 
                 case ResourceIdParameterSet:
-                    this.ResourceGroupName = IotDpsUtils.GetResourceGroupName(this.ResourceId);
-                    this.Name = IotDpsUtils.GetIotDpsName(this.ResourceId);
-                    this.GetIotDpsAccessPolicy();
+                    ResourceGroupName = IotDpsUtils.GetResourceGroupName(ResourceId);
+                    Name = IotDpsUtils.GetIotDpsName(ResourceId);
+                    GetIotDpsAccessPolicy();
                     break;
 
                 case ResourceParameterSet:
-                    this.GetIotDpsAccessPolicy();
+                    GetIotDpsAccessPolicy();
                     break;
 
                 default:
@@ -98,30 +98,30 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 
         private void WritePSObject(SharedAccessSignatureAuthorizationRuleAccessRightsDescription iotDpsAccessPolicy)
         {
-            this.WriteObject(IotDpsUtils.ToPSSharedAccessSignatureAuthorizationRuleAccessRightsDescription(iotDpsAccessPolicy, this.ResourceGroupName, this.Name), false);
+            WriteObject(IotDpsUtils.ToPSSharedAccessSignatureAuthorizationRuleAccessRightsDescription(iotDpsAccessPolicy, ResourceGroupName, Name), false);
         }
 
         private void WritePSObjects(IList<SharedAccessSignatureAuthorizationRuleAccessRightsDescription> iotDpsAccessPolicies)
         {
-            this.WriteObject(IotDpsUtils.ToPSSharedAccessSignatureAuthorizationRuleAccessRightsCollection(iotDpsAccessPolicies), true);
+            WriteObject(IotDpsUtils.ToPSSharedAccessSignatureAuthorizationRuleAccessRightsCollection(iotDpsAccessPolicies), true);
         }
 
         private void GetIotDpsAccessPolicy()
         {
-            if (!string.IsNullOrEmpty(this.KeyName))
+            if (!string.IsNullOrEmpty(KeyName))
             {
-                this.WritePSObject(GetIotDpsAccessPolicy(this.ResourceGroupName, this.Name, this.KeyName));
+                WritePSObject(GetIotDpsAccessPolicy(ResourceGroupName, Name, KeyName));
             }
             else
             {
-                IList<SharedAccessSignatureAuthorizationRuleAccessRightsDescription> iotDpsAccessPolicyList = GetIotDpsAccessPolicy(this.ResourceGroupName, this.Name);
+                IList<SharedAccessSignatureAuthorizationRuleAccessRightsDescription> iotDpsAccessPolicyList = GetIotDpsAccessPolicy(ResourceGroupName, Name);
                 if (iotDpsAccessPolicyList.Count == 1)
                 {
-                    this.WritePSObject(iotDpsAccessPolicyList[0]);
+                    WritePSObject(iotDpsAccessPolicyList[0]);
                 }
                 else
                 {
-                    this.WritePSObjects(iotDpsAccessPolicyList);
+                    WritePSObjects(iotDpsAccessPolicyList);
                 }
             }
         }

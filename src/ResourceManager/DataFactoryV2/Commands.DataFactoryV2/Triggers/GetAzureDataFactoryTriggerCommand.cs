@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             ByResourceId();
             ByFactoryObject();
 
-            AdfEntityFilterOptions filterOptions = new AdfEntityFilterOptions()
+            AdfEntityFilterOptions filterOptions = new AdfEntityFilterOptions
             {
                 Name = Name,
                 ResourceGroupName = ResourceGroupName,

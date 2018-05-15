@@ -126,16 +126,16 @@ namespace Microsoft.Azure.Commands.Management.Storage
         {
             base.ExecuteCmdlet();
 
-            if (ShouldProcess(this.Name, "Update Storage Account NetworkRule"))
+            if (ShouldProcess(Name, "Update Storage Account NetworkRule"))
             {
                 if (IPRule == null && VirtualNetworkRule == null && bypass == null && defaultAction == null)
                 {
                     throw new System.ArgumentNullException("IPRules, VirtualNetworkRules, Bypass, DefaultAction", "Request must specify an account NetworkRule property to update.");
                 }
 
-                var storageAccount = this.StorageClient.StorageAccounts.GetProperties(
-                    this.ResourceGroupName,
-                    this.Name);
+                var storageAccount = StorageClient.StorageAccounts.GetProperties(
+                    ResourceGroupName,
+                    Name);
                 NetworkRuleSet storageACL = storageAccount.NetworkRuleSet;
 
                 if (storageACL == null)
@@ -168,12 +168,12 @@ namespace Microsoft.Azure.Commands.Management.Storage
                 StorageAccountUpdateParameters updateParameters = new StorageAccountUpdateParameters();
                 updateParameters.NetworkRuleSet = PSNetworkRuleSet.ParseStorageNetworkRule(psNetworkRule);
 
-                var updatedAccountResponse = this.StorageClient.StorageAccounts.Update(
-                    this.ResourceGroupName,
-                    this.Name,
+                var updatedAccountResponse = StorageClient.StorageAccounts.Update(
+                    ResourceGroupName,
+                    Name,
                 updateParameters);
 
-                storageAccount = this.StorageClient.StorageAccounts.GetProperties(this.ResourceGroupName, this.Name);
+                storageAccount = StorageClient.StorageAccounts.GetProperties(ResourceGroupName, Name);
 
                 WriteObject(PSNetworkRuleSet.ParsePSNetworkRule(storageAccount.NetworkRuleSet));
             }

@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
     public class NewAzureContainerRegistryReplication : ContainerRegistryCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = NameResourceGroupParameterSet, HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
                 RegistryName = registryName;
             }
 
-            var tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
+            var tags = TagsConversionHelper.CreateTagDictionary(Tag, true);
             if (string.IsNullOrEmpty(Name))
             {
                 Name = Location.Replace(" ", string.Empty).ToLower();

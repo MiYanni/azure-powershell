@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             Created = deletedKeyBundle.Attributes.Created;
             Updated = deletedKeyBundle.Attributes.Updated;
             RecoveryLevel = deletedKeyBundle.Attributes.RecoveryLevel;
-            Tags = (deletedKeyBundle.Tags == null) ? null : deletedKeyBundle.Tags.ConvertToHashtable();
+            Tags = deletedKeyBundle.Tags == null ? null : deletedKeyBundle.Tags.ConvertToHashtable();
 
             ScheduledPurgeDate = deletedKeyBundle.ScheduledPurgeDate;
             DeletedDate = deletedKeyBundle.DeletedDate;

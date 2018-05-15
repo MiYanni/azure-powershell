@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Adapter
         public List<AzureSqlServerVirtualNetworkRuleModel> ListVirtualNetworkRules(string resourceGroupName, string serverName)
         {
             var resp = Communicator.List(resourceGroupName, serverName);
-            return resp.Select((s) =>
+            return resp.Select(s =>
             {
                 return CreateVirtualNetworkRuleModelFromResponse(resourceGroupName, serverName, s);
             }).ToList();
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Adapter
         /// <returns>The updated virtual network rule model</returns>
         public AzureSqlServerVirtualNetworkRuleModel UpsertVirtualNetworkRule(AzureSqlServerVirtualNetworkRuleModel model)
         {
-            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.VirtualNetworkRuleName, new Management.Sql.Models.VirtualNetworkRule()
+            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.VirtualNetworkRuleName, new Management.Sql.Models.VirtualNetworkRule
             {
                 VirtualNetworkSubnetId = model.VirtualNetworkSubnetId,
                 IgnoreMissingVnetServiceEndpoint = model.IgnoreMissingVnetServiceEndpoint

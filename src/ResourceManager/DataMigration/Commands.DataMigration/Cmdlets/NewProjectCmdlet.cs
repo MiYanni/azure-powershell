@@ -110,21 +110,21 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(this.Name, Resources.createProject))
+            if (ShouldProcess(Name, Resources.createProject))
             {
                 base.ExecuteCmdlet();
 
-                if (this.ParameterSetName.Equals(ComponentObjectParameterSet))
+                if (ParameterSetName.Equals(ComponentObjectParameterSet))
                 {
-                    this.ResourceGroupName = InputObject.ResourceGroupName;
-                    this.ServiceName = InputObject.Name;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    ServiceName = InputObject.Name;
                 }
 
-                if (this.ParameterSetName.Equals(ResourceIdParameterSet))
+                if (ParameterSetName.Equals(ResourceIdParameterSet))
                 {
-                    DmsResourceIdentifier ids = new DmsResourceIdentifier(this.ResourceId);
-                    this.ResourceGroupName = ids.ResourceGroupName;
-                    this.ServiceName = ids.ServiceName;
+                    DmsResourceIdentifier ids = new DmsResourceIdentifier(ResourceId);
+                    ResourceGroupName = ids.ResourceGroupName;
+                    ServiceName = ids.ServiceName;
                 }
 
                 WriteObject(new PSProject(CreateProject()));

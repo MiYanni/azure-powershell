@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
 
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ParentResource != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: Name, action: string.Format(Resources.DRRemoveAlias, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                    if (ShouldProcess(Name, string.Format(Resources.DRRemoveAlias, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                     {
                         Client.DeleteEventHubDRConfiguration(getParamGeoDR.ResourceGroupName, getParamGeoDR.ParentResource, getParamGeoDR.ResourceName);
                         if (PassThru)
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
 
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ParentResource != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: Name, action: string.Format(Resources.DRRemoveAlias, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                    if (ShouldProcess(Name, string.Format(Resources.DRRemoveAlias, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                     {
                         Client.DeleteEventHubDRConfiguration(getParamGeoDR.ResourceGroupName, getParamGeoDR.ParentResource, getParamGeoDR.ResourceName);
                         if (PassThru)
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
 
             if (ParameterSetName == GeoDRParameterSet)
             {
-                if (ShouldProcess(target: Name, action: string.Format(Resources.DRRemoveAlias, Name, Namespace)))
+                if (ShouldProcess(Name, string.Format(Resources.DRRemoveAlias, Name, Namespace)))
                 {
                     Client.DeleteEventHubDRConfiguration(ResourceGroupName, Namespace, Name);
                     if (PassThru)

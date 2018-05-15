@@ -61,14 +61,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByObject:
-                    this.ByObject();
+                    ByObject();
                     break;
 
                 case ASRParameterSets.ByFabricObject:
-                    this.GetNetworkMappingByFabric();
+                    GetNetworkMappingByFabric();
                     break;
             }
         }
@@ -79,32 +79,32 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void ByObject()
         {
             var tokens =
-                    this.Network.ID.UnFormatArmId(ARMResourceIdPaths.NetworkResourceIdPath);
+                    Network.ID.UnFormatArmId(ARMResourceIdPaths.NetworkResourceIdPath);
 
-            if (this.Network.FabricType.Equals(Constants.Azure))
+            if (Network.FabricType.Equals(Constants.Azure))
             {
-                this.PrimaryFabric = new ASRFabric(this.RecoveryServicesClient.GetAzureSiteRecoveryFabric(tokens[0]));
-                this.GetNetworkMappingByFabric();
+                PrimaryFabric = new ASRFabric(RecoveryServicesClient.GetAzureSiteRecoveryFabric(tokens[0]));
+                GetNetworkMappingByFabric();
             }
             else
             {
-                if (this.Name == null)
+                if (Name == null)
                 {
                     var networkMappingList =
-                    this.RecoveryServicesClient.GetAzureSiteRecoveryNetworkMappings(
+                    RecoveryServicesClient.GetAzureSiteRecoveryNetworkMappings(
                         tokens[0],
-                        this.Network.Name);
+                        Network.Name);
 
-                    this.WriteNetworkMappings(networkMappingList);
+                    WriteNetworkMappings(networkMappingList);
                 }
                 else
                 {
-                    var networkMapping = this.RecoveryServicesClient.GetAzureSiteRecoveryNetworkMappings(
+                    var networkMapping = RecoveryServicesClient.GetAzureSiteRecoveryNetworkMappings(
                             tokens[0],
-                            this.Network.Name,
-                            this.Name);
+                            Network.Name,
+                            Name);
 
-                    this.WriteNetworkMapping(networkMapping);
+                    WriteNetworkMapping(networkMapping);
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteNetworkMapping(
             NetworkMapping networkMapping)
         {
-            this.WriteObject(new ASRNetworkMapping(networkMapping));
+            WriteObject(new ASRNetworkMapping(networkMapping));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteNetworkMappings(
             IList<NetworkMapping> networkMappings)
         {
-            this.WriteObject(
+            WriteObject(
                 networkMappings.Select(nm => new ASRNetworkMapping(nm)),
                 true);
         }
@@ -137,34 +137,34 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void GetNetworkMappingByFabric()
         {
             if (string.Equals(
-                this.PrimaryFabric.FabricType,
+                PrimaryFabric.FabricType,
                 Constants.Azure,
                 StringComparison.InvariantCultureIgnoreCase))
             {
-                if (string.IsNullOrEmpty(this.Name))
+                if (string.IsNullOrEmpty(Name))
                 {
                     var networkMappingList = RecoveryServicesClient.GetAzureSiteRecoveryNetworkMappings(
-                        this.PrimaryFabric.Name,
+                        PrimaryFabric.Name,
                         ARMResourceTypeConstants.AzureNetwork);
-                    this.WriteNetworkMappings(networkMappingList);
+                    WriteNetworkMappings(networkMappingList);
                 }
                 else
                 {
                     var networkMapping =
                     RecoveryServicesClient.GetAzureSiteRecoveryNetworkMappings(
-                        this.PrimaryFabric.Name,
+                        PrimaryFabric.Name,
                         ARMResourceTypeConstants.AzureNetwork,
-                        this.Name);
-                    this.WriteNetworkMapping(networkMapping);
+                        Name);
+                    WriteNetworkMapping(networkMapping);
                 }
             }
             else
             {
-                var networks = this.RecoveryServicesClient.GetAzureSiteRecoveryNetworks(this.PrimaryFabric.Name);
+                var networks = RecoveryServicesClient.GetAzureSiteRecoveryNetworks(PrimaryFabric.Name);
                 foreach (var network in networks)
                 {
-                    this.Network = new ASRNetwork(network);
-                    this.ByObject();
+                    Network = new ASRNetwork(network);
+                    ByObject();
                 }
             }
         }

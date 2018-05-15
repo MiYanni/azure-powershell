@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Add", "AzureRmVmssNetworkInterfaceConfiguration", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class AddAzureRmVmssNetworkInterfaceConfigurationCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class AddAzureRmVmssNetworkInterfaceConfigurationCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -94,45 +94,45 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // VirtualMachineProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
             }
 
             // NetworkProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetNetworkProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile = new VirtualMachineScaleSetNetworkProfile();
             }
 
             // NetworkInterfaceConfigurations
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations = new List<Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetNetworkConfiguration>();
+                VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations = new List<VirtualMachineScaleSetNetworkConfiguration>();
             }
 
-            var vNetworkInterfaceConfigurations = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetNetworkConfiguration();
+            var vNetworkInterfaceConfigurations = new VirtualMachineScaleSetNetworkConfiguration();
 
-            vNetworkInterfaceConfigurations.Name = this.MyInvocation.BoundParameters.ContainsKey("Name") ? this.Name : null;
-            vNetworkInterfaceConfigurations.Primary = this.MyInvocation.BoundParameters.ContainsKey("Primary") ? this.Primary : (bool?) null;
-            vNetworkInterfaceConfigurations.EnableAcceleratedNetworking = this.EnableAcceleratedNetworking.IsPresent;
-            vNetworkInterfaceConfigurations.EnableIPForwarding = this.EnableIPForwarding.IsPresent;
-            vNetworkInterfaceConfigurations.Id = this.MyInvocation.BoundParameters.ContainsKey("Id") ? this.Id : null;
-            if (this.MyInvocation.BoundParameters.ContainsKey("NetworkSecurityGroupId"))
+            vNetworkInterfaceConfigurations.Name = MyInvocation.BoundParameters.ContainsKey("Name") ? Name : null;
+            vNetworkInterfaceConfigurations.Primary = MyInvocation.BoundParameters.ContainsKey("Primary") ? Primary : null;
+            vNetworkInterfaceConfigurations.EnableAcceleratedNetworking = EnableAcceleratedNetworking.IsPresent;
+            vNetworkInterfaceConfigurations.EnableIPForwarding = EnableIPForwarding.IsPresent;
+            vNetworkInterfaceConfigurations.Id = MyInvocation.BoundParameters.ContainsKey("Id") ? Id : null;
+            if (MyInvocation.BoundParameters.ContainsKey("NetworkSecurityGroupId"))
             {
                 // NetworkSecurityGroup
-                vNetworkInterfaceConfigurations.NetworkSecurityGroup = new Microsoft.Azure.Management.Compute.Models.SubResource();
-                vNetworkInterfaceConfigurations.NetworkSecurityGroup.Id = this.NetworkSecurityGroupId;
+                vNetworkInterfaceConfigurations.NetworkSecurityGroup = new SubResource();
+                vNetworkInterfaceConfigurations.NetworkSecurityGroup.Id = NetworkSecurityGroupId;
             }
-            if (this.MyInvocation.BoundParameters.ContainsKey("DnsSettingsDnsServer"))
+            if (MyInvocation.BoundParameters.ContainsKey("DnsSettingsDnsServer"))
             {
                 // DnsSettings
-                vNetworkInterfaceConfigurations.DnsSettings = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetNetworkConfigurationDnsSettings();
-                vNetworkInterfaceConfigurations.DnsSettings.DnsServers = this.DnsSettingsDnsServer;
+                vNetworkInterfaceConfigurations.DnsSettings = new VirtualMachineScaleSetNetworkConfigurationDnsSettings();
+                vNetworkInterfaceConfigurations.DnsSettings.DnsServers = DnsSettingsDnsServer;
             }
-            vNetworkInterfaceConfigurations.IpConfigurations = this.MyInvocation.BoundParameters.ContainsKey("IpConfiguration") ? this.IpConfiguration : null;
-            this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations.Add(vNetworkInterfaceConfigurations);
-            WriteObject(this.VirtualMachineScaleSet);
+            vNetworkInterfaceConfigurations.IpConfigurations = MyInvocation.BoundParameters.ContainsKey("IpConfiguration") ? IpConfiguration : null;
+            VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations.Add(vNetworkInterfaceConfigurations);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

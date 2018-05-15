@@ -76,40 +76,40 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             string vCenterName = null;
             string fabricName = null;
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByResourceId:
                     vCenterName = Utilities.GetValueFromArmId(
-                    this.ResourceId,
+                    ResourceId,
                     ARMResourceTypeConstants.vCenters);
 
                     fabricName = Utilities.GetValueFromArmId(
-                    this.ResourceId,
+                    ResourceId,
                     ARMResourceTypeConstants.ReplicationFabrics);
                     break;
 
                 case ASRParameterSets.ByName:
-                    vCenterName = this.Name;
-                    fabricName = this.Fabric.Name;
+                    vCenterName = Name;
+                    fabricName = Fabric.Name;
                     break;
 
                 case ASRParameterSets.Default:
-                    vCenterName = this.InputObject.Name;
-                    fabricName = this.InputObject.FabricArmResourceName;
+                    vCenterName = InputObject.Name;
+                    fabricName = InputObject.FabricArmResourceName;
                     break;
 
             }
 
-            if (this.ShouldProcess(vCenterName, VerbsCommon.Remove))
+            if (ShouldProcess(vCenterName, VerbsCommon.Remove))
             {
-                var response = this.RecoveryServicesClient.RemoveAzureRmSiteRecoveryvCenter(
+                var response = RecoveryServicesClient.RemoveAzureRmSiteRecoveryvCenter(
                     fabricName,
                     vCenterName);
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
 
             }
         }

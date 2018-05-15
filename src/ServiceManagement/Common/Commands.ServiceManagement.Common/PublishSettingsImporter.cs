@@ -70,7 +70,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             var subscription = new AzureSubscription
             {
                 Id = s.Id,
-                Name = s.Name,
+                Name = s.Name
             };
             subscription.SetEnvironment(environment);
             subscription.SetAccount(certificate.Thumbprint);

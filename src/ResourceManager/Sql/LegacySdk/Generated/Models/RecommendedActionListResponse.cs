@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedAction> RecommendedActions
         {
-            get { return this._recommendedActions; }
-            set { this._recommendedActions = value; }
+            get { return _recommendedActions; }
+            set { _recommendedActions = value; }
         }
         
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedActionListResponse()
         {
-            this.RecommendedActions = new LazyList<RecommendedAction>();
+            RecommendedActions = new LazyList<RecommendedAction>();
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<RecommendedAction> GetEnumerator()
         {
-            return this.RecommendedActions.GetEnumerator();
+            return RecommendedActions.GetEnumerator();
         }
         
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

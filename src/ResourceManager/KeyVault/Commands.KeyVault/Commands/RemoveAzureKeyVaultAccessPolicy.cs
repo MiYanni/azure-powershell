@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ParameterSetName = ForVault,
             HelpMessage = "Specifies the name of the resource group associated with the key vault whose permissions you want to remove.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         [Parameter(Mandatory = true,
             ParameterSetName = ResourceIdByServicePrincipalName,
             HelpMessage = "Specifies the service principal name of the application whose permissions you want to remove. Specify the application ID, also known as client ID, registered for the application in Azure Active Directory.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("SPN")]
         public string ServicePrincipalName { get; set; }
 
@@ -195,7 +195,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         [Parameter(Mandatory = true,
             ParameterSetName = ResourceIdByUserPrincipalName,
             HelpMessage = "Specifies the user principal name of the user whose access you want to remove.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("UPN")]
         public string UserPrincipalName { get; set; }
 
@@ -211,7 +211,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         [Parameter(Mandatory = true,
             ParameterSetName = ResourceIdByObjectId,
             HelpMessage = "Specifies the object ID of the user or service principal in Azure Active Directory for which to remove permissions.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ObjectId { get; set; }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         [Parameter(Mandatory = true,
             ParameterSetName = ResourceIdByEmail,
             HelpMessage = "Specifies the email address of the user in Azure Active Directory whose permissions should be deleted.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string EmailAddress { get; set; }
 
         /// <summary>
@@ -288,7 +288,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(VaultName, Properties.Resources.RemoveVaultAccessPolicy))
+            if (ShouldProcess(VaultName, Resources.RemoveVaultAccessPolicy))
             {
                 if (InputObject != null)
                 {
@@ -319,7 +319,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                 if (ApplicationId.HasValue && ApplicationId.Value == Guid.Empty)
                     throw new ArgumentException(Resources.InvalidApplicationId);
 
-                if (!string.IsNullOrWhiteSpace(this.ObjectId) && !this.IsValidObjectIdSyntax(this.ObjectId))
+                if (!string.IsNullOrWhiteSpace(ObjectId) && !IsValidObjectIdSyntax(ObjectId))
                 {
                     throw new ArgumentException(Resources.InvalidObjectIdSyntax);
                 }
@@ -328,14 +328,14 @@ namespace Microsoft.Azure.Commands.KeyVault
                 var updatedPolicies = existingVault.AccessPolicies;
                 if (!string.IsNullOrEmpty(UserPrincipalName)
                     || !string.IsNullOrEmpty(ServicePrincipalName)
-                    || !string.IsNullOrWhiteSpace(this.ObjectId)
-                    || !string.IsNullOrWhiteSpace(this.EmailAddress))
+                    || !string.IsNullOrWhiteSpace(ObjectId)
+                    || !string.IsNullOrWhiteSpace(EmailAddress))
                 {
-                    if (string.IsNullOrWhiteSpace(this.ObjectId))
+                    if (string.IsNullOrWhiteSpace(ObjectId))
                     {
-                        ObjectId = GetObjectId(this.ObjectId, this.UserPrincipalName, this.EmailAddress, this.ServicePrincipalName);
+                        ObjectId = GetObjectId(ObjectId, UserPrincipalName, EmailAddress, ServicePrincipalName);
                     }
-                    updatedPolicies = existingVault.AccessPolicies.Where(ap => !ShallBeRemoved(ap, ObjectId, this.ApplicationId)).ToArray();
+                    updatedPolicies = existingVault.AccessPolicies.Where(ap => !ShallBeRemoved(ap, ObjectId, ApplicationId)).ToArray();
                 }
 
                 // Update the vault
@@ -359,7 +359,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             // If both object id and application id are specified, remove the compound identity policy only.
             // If only object id is specified, remove all policies refer to the object id including the compound identity policies.
             var sameObjectId = string.Equals(ap.ObjectId, objectId, StringComparison.OrdinalIgnoreCase);
-            return applicationId.HasValue ? (ap.ApplicationId == applicationId && sameObjectId) : sameObjectId;
+            return applicationId.HasValue ? ap.ApplicationId == applicationId && sameObjectId : sameObjectId;
         }
     }
 }

@@ -76,13 +76,13 @@ namespace Microsoft.Azure.Commands.KeyVault
                 Name = InputObject.Name.ToString();
             }
 
-            var certificateOperation = this.DataServiceClient.GetCertificateOperation(VaultName, Name);
+            var certificateOperation = DataServiceClient.GetCertificateOperation(VaultName, Name);
             if (certificateOperation != null)
             {
                 certificateOperation.VaultName = VaultName;
                 certificateOperation.Name = Name;
             }
-            this.WriteObject(certificateOperation);
+            WriteObject(certificateOperation);
         }
     }
 }

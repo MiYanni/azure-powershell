@@ -52,8 +52,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 base.ExecuteCmdlet();
 
                 PsBackupProviderManager providerManager = new PsBackupProviderManager(
-                    new Dictionary<Enum, object>()
-                {
+                    new Dictionary<Enum, object>
+                    {
                     {RestoreBackupItemParams.RecoveryPoint, RecoveryPoint},
                         { RecoveryPointParams.FileDownloadLocation, Path }
                 }, ServiceClientAdapter);
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     RecoveryPoint.WorkloadType, RecoveryPoint.BackupManagementType);
                 var response = psBackupProvider.ProvisionItemLevelRecoveryAccess();
 
-                WriteDebug(string.Format("Mount Script download completed"));
+                WriteDebug("Mount Script download completed");
 
                 WriteObject(response);
             }, ShouldProcess(RecoveryPoint.ItemName, "Downloading script"));

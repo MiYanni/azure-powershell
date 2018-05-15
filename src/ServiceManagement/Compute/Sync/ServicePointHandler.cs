@@ -26,8 +26,8 @@ namespace Microsoft.WindowsAzure.Commands.Sync
 
         public ServicePointHandler(Uri uri, int connectionLimit)
         {
-            this.servicePoint = ServicePointManager.FindServicePoint(uri, GetWebProxy());
-            this.originalConnectionLimit = servicePoint.ConnectionLimit;
+            servicePoint = ServicePointManager.FindServicePoint(uri, GetWebProxy());
+            originalConnectionLimit = servicePoint.ConnectionLimit;
             servicePoint.ConnectionLimit = connectionLimit;
         }
 
@@ -40,7 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync
             {
                 if (disposing)
                 {
-                    this.servicePoint.ConnectionLimit = originalConnectionLimit;
+                    servicePoint.ConnectionLimit = originalConnectionLimit;
                 }
                 disposed = true;
             }

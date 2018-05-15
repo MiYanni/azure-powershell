@@ -32,14 +32,14 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
             Func<TModel, int> createTime)
             where TModel : Resource
             => ResourceStrategy.Create(
-                type: new ResourceType(Namespace, provider),
-                getOperations: getOperations,
-                getAsync: getAsync,
-                createOrUpdateAsync: createOrUpdateAsync,
-                getLocation: config => config.Location,
-                setLocation: (config, location) => config.Location = location,
-                createTime: createTime,
-                compulsoryLocation: true);
+                new ResourceType(Namespace, provider),
+                getOperations,
+                getAsync,
+                createOrUpdateAsync,
+                config => config.Location,
+                (config, location) => config.Location = location,
+                createTime,
+                true);
 
         public static string GetConnectionString(
             this ImageAndOsType imageAndOsType, string fqdn, string user, string port = null)

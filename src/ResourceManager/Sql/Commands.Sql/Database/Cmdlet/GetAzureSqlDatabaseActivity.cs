@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
         /// <returns>List of Database activity</returns>
         protected override IEnumerable<AzureSqlDatabaseActivityModel> GetEntity()
         {
-            return ModelAdapter.ListDatabaseActivity(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.DatabaseName, this.OperationId);
+            return ModelAdapter.ListDatabaseActivity(ResourceGroupName, ServerName, ElasticPoolName, DatabaseName, OperationId);
         }
 
         /// <summary>

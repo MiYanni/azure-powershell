@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             DiskUpdate disk = (DiskUpdate)ParseParameter(invokeMethodInputParameters[2]);
             Disk diskOrg = (Disk)ParseParameter(invokeMethodInputParameters[3]);
 
-            var result = (disk == null)
+            var result = disk == null
                          ? DisksClient.CreateOrUpdate(resourceGroupName, diskName, diskOrg)
                          : DisksClient.Update(resourceGroupName, diskName, disk);
             WriteObject(result);
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             DiskUpdate disk = new DiskUpdate();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "DiskName", "Disk" },
+                 new[] { "ResourceGroupName", "DiskName", "Disk" },
                  new object[] { resourceGroupName, diskName, disk });
         }
     }
@@ -122,16 +122,16 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.DiskName, VerbsData.Update))
+                if (ShouldProcess(DiskName, VerbsData.Update))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string diskName = this.DiskName;
+                    string resourceGroupName = ResourceGroupName;
+                    string diskName = DiskName;
                     DiskUpdate diskupdate = new DiskUpdate();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSDiskUpdate, DiskUpdate>(this.DiskUpdate, diskupdate);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSDiskUpdate, DiskUpdate>(DiskUpdate, diskupdate);
                     Disk disk = new Disk();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSDisk, Disk>(this.Disk, disk);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSDisk, Disk>(Disk, disk);
 
-                    var result = (this.DiskUpdate == null)
+                    var result = DiskUpdate == null
                                  ? DisksClient.CreateOrUpdate(resourceGroupName, diskName, disk)
                                  : DisksClient.Update(resourceGroupName, diskName, diskupdate);
                     var psObject = new PSDisk();
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

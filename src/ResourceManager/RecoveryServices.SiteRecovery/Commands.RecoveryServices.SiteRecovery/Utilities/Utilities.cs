@@ -91,8 +91,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var result = new List<IPage<T>>();
 
-            while ((NextPageLink != null) &&
-                   (getNextPage != null))
+            while (NextPageLink != null &&
+                   getNextPage != null)
             {
                 var page = getNextPage(
                         NextPageLink,
@@ -259,8 +259,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 {
                     // IList is the only one we are handling
                     var elems = propValue as IList;
-                    if ((elems != null) &&
-                        (elems.Count != 0))
+                    if (elems != null &&
+                        elems.Count != 0)
                     {
                         var itemCount = 0;
                         var multiPropQuery = new string[elems.Count];
@@ -562,7 +562,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var jObject = JObject.Load(reader);
 
             // Create target object based on JObject 
-            var target = this.Create(
+            var target = Create(
                 objectType,
                 jObject);
 

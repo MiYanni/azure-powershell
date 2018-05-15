@@ -15,10 +15,10 @@
 namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Commands.Scheduler.Utilities;
-    using Microsoft.Azure.Management.Scheduler.Models;
+    using Models;
+    using Properties;
+    using Utilities;
+    using Management.Scheduler.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -64,23 +64,23 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
  	        base.ExecuteCmdlet();
             
-            var createJobCollectionParams = new PSJobCollectionsParams()
+            var createJobCollectionParams = new PSJobCollectionsParams
             {
-                ResourceGroupName = this.ResourceGroupName,
-                JobCollectionName = this.JobCollectionName,
-                Plan = this.Plan,
-                Region = this.Location,
-                Frequency = this.Frequency,
-                Interval = this.Interval,  
-                MaxJobCount = this.MaxJobCount,                                                            
+                ResourceGroupName = ResourceGroupName,
+                JobCollectionName = JobCollectionName,
+                Plan = Plan,
+                Region = Location,
+                Frequency = Frequency,
+                Interval = Interval,  
+                MaxJobCount = MaxJobCount,                                                            
             };
 
-            this.ConfirmAction(
-                processMessage: string.Format(Resources.NewJobCollectionResourceDescription, this.JobCollectionName),
-                target: this.JobCollectionName,
-                action: () => 
+            ConfirmAction(
+                string.Format(Resources.NewJobCollectionResourceDescription, JobCollectionName),
+                JobCollectionName,
+                () => 
                     {
-                        this.WriteObject(this.SchedulerClient.CreateJobCollection(createJobCollectionParams));
+                        WriteObject(SchedulerClient.CreateJobCollection(createJobCollectionParams));
                     }
             );
         }

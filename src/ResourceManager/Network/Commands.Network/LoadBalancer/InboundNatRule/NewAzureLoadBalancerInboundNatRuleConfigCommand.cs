@@ -31,26 +31,26 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
 
             var inboundNatRule = new PSInboundNatRule();
-            inboundNatRule.Name = this.Name;
-            inboundNatRule.Protocol = this.Protocol;
-            inboundNatRule.FrontendPort = this.FrontendPort;
-            inboundNatRule.BackendPort = this.BackendPort;
-            if (this.IdleTimeoutInMinutes > 0)
+            inboundNatRule.Name = Name;
+            inboundNatRule.Protocol = Protocol;
+            inboundNatRule.FrontendPort = FrontendPort;
+            inboundNatRule.BackendPort = BackendPort;
+            if (IdleTimeoutInMinutes > 0)
             {
-                inboundNatRule.IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
+                inboundNatRule.IdleTimeoutInMinutes = IdleTimeoutInMinutes;
             }
-            inboundNatRule.EnableFloatingIP = this.EnableFloatingIP.IsPresent;
+            inboundNatRule.EnableFloatingIP = EnableFloatingIP.IsPresent;
 
-            if (!string.IsNullOrEmpty(this.FrontendIpConfigurationId))
+            if (!string.IsNullOrEmpty(FrontendIpConfigurationId))
             {
-                inboundNatRule.FrontendIPConfiguration = new PSResourceId() { Id = this.FrontendIpConfigurationId };
+                inboundNatRule.FrontendIPConfiguration = new PSResourceId { Id = FrontendIpConfigurationId };
             }
 
             inboundNatRule.Id =
                 ChildResourceHelper.GetResourceNotSetId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerInBoundNatRuleName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    Properties.Resources.LoadBalancerInBoundNatRuleName,
+                    Name);
 
             WriteObject(inboundNatRule);
         }

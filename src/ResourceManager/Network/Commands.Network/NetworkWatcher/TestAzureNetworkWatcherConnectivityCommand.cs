@@ -96,22 +96,22 @@ namespace Microsoft.Azure.Commands.Network
             MNM.ConnectivityParameters parameters = new MNM.ConnectivityParameters();
 
             parameters.Source = new MNM.ConnectivitySource();
-            parameters.Source.ResourceId = this.SourceId;
-            parameters.Source.Port = this.SourcePort;
+            parameters.Source.ResourceId = SourceId;
+            parameters.Source.Port = SourcePort;
 
             parameters.Destination = new MNM.ConnectivityDestination();
-            parameters.Destination.ResourceId = this.DestinationId;
-            parameters.Destination.Address = this.DestinationAddress;
-            parameters.Destination.Port = this.DestinationPort;
+            parameters.Destination.ResourceId = DestinationId;
+            parameters.Destination.Address = DestinationAddress;
+            parameters.Destination.Port = DestinationPort;
 
             MNM.ConnectivityInformation result = new MNM.ConnectivityInformation();
             if (ParameterSetName.Contains("SetByResource"))
             {
-                result = this.NetworkWatcherClient.CheckConnectivity(this.NetworkWatcher.ResourceGroupName, this.NetworkWatcher.Name, parameters);
+                result = NetworkWatcherClient.CheckConnectivity(NetworkWatcher.ResourceGroupName, NetworkWatcher.Name, parameters);
             }
             else
             {
-                result = this.NetworkWatcherClient.CheckConnectivity(this.ResourceGroupName, this.NetworkWatcherName, parameters);
+                result = NetworkWatcherClient.CheckConnectivity(ResourceGroupName, NetworkWatcherName, parameters);
             }
 
             PSConnectivityInformation psResult = NetworkResourceManagerProfile.Mapper.Map<PSConnectivityInformation>(result);

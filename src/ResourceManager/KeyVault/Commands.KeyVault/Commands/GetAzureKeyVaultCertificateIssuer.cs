@@ -99,12 +99,12 @@ namespace Microsoft.Azure.Commands.KeyVault
             }
             else
             {
-                var issuer = this.DataServiceClient.GetCertificateIssuer(VaultName, Name);
+                var issuer = DataServiceClient.GetCertificateIssuer(VaultName, Name);
                 if (issuer != null)
                 {
                     issuer.VaultName = VaultName;
                 }
-                this.WriteObject(issuer);
+                WriteObject(issuer);
             }
         }
 
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
             do
             {
-                var pageResults = this.DataServiceClient.GetCertificateIssuers(options);
+                var pageResults = DataServiceClient.GetCertificateIssuers(options);
                 var psPageResults = new List<PSKeyVaultCertificateIssuerIdentityItem>();
                 foreach (var page in pageResults)
                 {

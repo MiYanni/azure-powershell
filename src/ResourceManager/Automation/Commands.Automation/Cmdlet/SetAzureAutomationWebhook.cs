@@ -55,13 +55,13 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            var updatedWebhook = this.AutomationClient.UpdateWebhook(
-                this.ResourceGroupName,
-                this.AutomationAccountName,
-                this.Name,
-                this.Parameters,
-                this.IsEnabled);
-            this.WriteObject(updatedWebhook);
+            var updatedWebhook = AutomationClient.UpdateWebhook(
+                ResourceGroupName,
+                AutomationAccountName,
+                Name,
+                Parameters,
+                IsEnabled);
+            WriteObject(updatedWebhook);
         }
     }
 }

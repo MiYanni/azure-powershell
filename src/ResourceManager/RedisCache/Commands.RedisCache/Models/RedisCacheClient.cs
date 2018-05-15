@@ -18,12 +18,12 @@ using Microsoft.Azure.Commands.Common.Authentication.Models;
 namespace Microsoft.Azure.Commands.RedisCache
 {
     using Common.Authentication.Abstractions;
-    using Microsoft.Azure.Management.Insights;
-    using Microsoft.Azure.Management.Insights.Models;
-    using Microsoft.Azure.Management.Redis;
-    using Microsoft.Azure.Management.Redis.Models;
-    using Microsoft.Azure.Management.Internal.Resources;
-    using Microsoft.Rest.Azure;
+    using Management.Insights;
+    using Management.Insights.Models;
+    using Management.Redis;
+    using Management.Redis.Models;
+    using Management.Internal.Resources;
+    using Rest.Azure;
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.RedisCache
             var parameters = new RedisCreateParameters
             {
                 Location = location,
-                Sku = new Microsoft.Azure.Management.Redis.Models.Sku
+                Sku = new Management.Redis.Models.Sku
                 {
                     Name = skuName,
                     Family = skuFamily,
@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.RedisCache
                 parameters.StaticIP = staticIP;
             }
 
-            RedisResource response = _client.Redis.BeginCreate(resourceGroupName: resourceGroupName, name: cacheName, parameters: parameters);
+            RedisResource response = _client.Redis.BeginCreate(resourceGroupName, cacheName, parameters);
             return response;
         }
 
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.RedisCache
             _resourceManagementClient.Providers.Register("Microsoft.Cache");
             var parameters = new RedisUpdateParameters
             {
-                Sku = new Microsoft.Azure.Management.Redis.Models.Sku
+                Sku = new Management.Redis.Models.Sku
                 {
                     Name = skuName,
                     Family = skuFamily,
@@ -167,18 +167,18 @@ namespace Microsoft.Azure.Commands.RedisCache
             
             parameters.ShardCount = shardCount;
             
-            RedisResource response = _client.Redis.Update(resourceGroupName: resourceGroupName, name: cacheName, parameters: parameters);
+            RedisResource response = _client.Redis.Update(resourceGroupName, cacheName, parameters);
             return response;
         }
 
         public void DeleteCache(string resourceGroupName, string cacheName)
         {
-            _client.Redis.Delete(resourceGroupName: resourceGroupName, name: cacheName);
+            _client.Redis.Delete(resourceGroupName, cacheName);
         }
 
         public RedisResource GetCache(string resourceGroupName, string cacheName)
         {
-            return _client.Redis.Get(resourceGroupName: resourceGroupName, name: cacheName);
+            return _client.Redis.Get(resourceGroupName, cacheName);
         }
 
         public RedisResource GetCache(string cacheName)
@@ -210,40 +210,34 @@ namespace Microsoft.Azure.Commands.RedisCache
             {
                 return _client.Redis.List();
             }
-            else
-            {
-                return _client.Redis.ListByResourceGroup(resourceGroupName: resourceGroupName);
-            }
+            return _client.Redis.ListByResourceGroup(resourceGroupName);
         }
 
         public IPage<RedisResource> ListCachesUsingNextLink(string resourceGroupName, string nextLink)
         {
             if (string.IsNullOrEmpty(resourceGroupName))
             {
-                return _client.Redis.ListNext(nextPageLink: nextLink);
+                return _client.Redis.ListNext(nextLink);
             }
-            else
-            {
-                return _client.Redis.ListByResourceGroupNext(nextPageLink: nextLink);
-            }
+            return _client.Redis.ListByResourceGroupNext(nextLink);
         }
 
         public RedisAccessKeys RegenerateAccessKeys(string resourceGroupName, string cacheName, RedisKeyType keyType)
         {
-            return _client.Redis.RegenerateKey(resourceGroupName: resourceGroupName, name: cacheName, parameters: new RedisRegenerateKeyParameters() { KeyType = keyType });
+            return _client.Redis.RegenerateKey(resourceGroupName, cacheName, new RedisRegenerateKeyParameters { KeyType = keyType });
         }
 
         public RedisAccessKeys GetAccessKeys(string resourceGroupName, string cacheName)
         {
-            return _client.Redis.ListKeys(resourceGroupName: resourceGroupName, name: cacheName);
+            return _client.Redis.ListKeys(resourceGroupName, cacheName);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal void SetDiagnostics(string cacheId, string storageAccountName)
         {
             _insightsClient.ServiceDiagnosticSettingsOperations.Put(
-                resourceUri: cacheId,
-                parameters: new ServiceDiagnosticSettingsPutParameters
+                cacheId,
+                new ServiceDiagnosticSettingsPutParameters
                 {
                     Properties = new ServiceDiagnosticSettings
                     {
@@ -261,7 +255,7 @@ namespace Microsoft.Azure.Commands.RedisCache
             {
                 parameters.Format = format;
             }
-            _client.Redis.ImportData(resourceGroupName: resourceGroupName, name: cacheName, parameters: parameters);
+            _client.Redis.ImportData(resourceGroupName, cacheName, parameters);
         }
 
         public void ExportToCache(string resourceGroupName, string cacheName, string containerUrisWithSasTokens, string prefix, string format)
@@ -273,7 +267,7 @@ namespace Microsoft.Azure.Commands.RedisCache
             {
                 parameters.Format = format;
             }
-            _client.Redis.ExportData(resourceGroupName: resourceGroupName, name: cacheName, parameters: parameters);
+            _client.Redis.ExportData(resourceGroupName, cacheName, parameters);
         }
 
         public void RebootCache(string resourceGroupName, string cacheName, string rebootType, int? shardId)
@@ -284,7 +278,7 @@ namespace Microsoft.Azure.Commands.RedisCache
             {
                 parameters.ShardId = shardId;
             }
-            _client.Redis.ForceReboot(resourceGroupName: resourceGroupName, name: cacheName, parameters: parameters);
+            _client.Redis.ForceReboot(resourceGroupName, cacheName, parameters);
         }
 
         public IList<ScheduleEntry> SetPatchSchedules(string resourceGroupName, string cacheName, List<ScheduleEntry> schedules)

@@ -20,7 +20,7 @@ using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 
 namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 {
-    [Cmdlet(VerbsCommon.Get, WebServicesCmdletBase.CommandletSuffix + "Keys")]
+    [Cmdlet(VerbsCommon.Get, CommandletSuffix + "Keys")]
     [OutputType(typeof(WebServiceKeys))]
     public class GetAzureMLWebServiceKeys : WebServicesCmdletBase
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
         private const string GetKeysByInstance = "GetByInstance";
 
         [Parameter(
-            ParameterSetName = GetAzureMLWebServiceKeys.GetKeysByGroupAndName, 
+            ParameterSetName = GetKeysByGroupAndName, 
             Mandatory = true, 
             HelpMessage = "The name of the resource group for the Azure ML web services.")]
         [ResourceGroupCompleter]
@@ -36,14 +36,14 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
         public string ResourceGroupName { get; set; }
 
         [Parameter(
-            ParameterSetName = GetAzureMLWebServiceKeys.GetKeysByGroupAndName, 
+            ParameterSetName = GetKeysByGroupAndName, 
             Mandatory = true, 
             HelpMessage = "The name of the web service.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         [Parameter(
-            ParameterSetName = GetAzureMLWebServiceKeys.GetKeysByInstance, 
+            ParameterSetName = GetKeysByInstance, 
             Mandatory = true, 
             HelpMessage = "The web service instance to get the keys for.", 
             ValueFromPipeline = true)]
@@ -53,13 +53,13 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
         protected override void RunCmdlet()
         {
             if (string.Equals(
-                        this.ParameterSetName, 
-                        GetAzureMLWebServiceKeys.GetKeysByInstance, 
+                        ParameterSetName, 
+                        GetKeysByInstance, 
                         StringComparison.OrdinalIgnoreCase))
             {
                 string subscriptionId, resourceGroup, webServiceName;
                 if (!CmdletHelpers.TryParseMlResourceMetadataFromResourceId(
-                                    this.MlWebService.Id, 
+                                    MlWebService.Id, 
                                     out subscriptionId, 
                                     out resourceGroup, 
                                     out webServiceName))
@@ -67,13 +67,13 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
                     throw new ValidationMetadataException(Resources.InvalidWebServiceIdOnObject);
                 }
 
-                this.ResourceGroupName = resourceGroup;
-                this.Name = webServiceName;
+                ResourceGroupName = resourceGroup;
+                Name = webServiceName;
             }
 
             WebServiceKeys storageKeys = 
-                this.WebServicesClient.GetAzureMlWebServiceKeys(this.ResourceGroupName, this.Name);
-            this.WriteObject(storageKeys);
+                WebServicesClient.GetAzureMlWebServiceKeys(ResourceGroupName, Name);
+            WriteObject(storageKeys);
         }
     }
 }

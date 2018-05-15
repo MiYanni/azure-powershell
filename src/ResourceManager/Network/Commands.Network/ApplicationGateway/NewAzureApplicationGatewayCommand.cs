@@ -168,11 +168,11 @@ namespace Microsoft.Azure.Commands.Network
             base.ExecuteCmdlet();
 
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsApplicationGatewayPresent(this.ResourceGroupName, this.Name);
+            var present = IsApplicationGatewayPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Microsoft.Azure.Commands.Network.Properties.Resources.OverwritingResource, Name),
-                Microsoft.Azure.Commands.Network.Properties.Resources.OverwritingResourceMessage,
+                string.Format(Properties.Resources.OverwritingResource, Name),
+                Properties.Resources.OverwritingResourceMessage,
                 Name,
                 () =>
                 {
@@ -185,83 +185,83 @@ namespace Microsoft.Azure.Commands.Network
         private PSApplicationGateway CreateApplicationGateway()
         {
             var applicationGateway = new PSApplicationGateway();
-            applicationGateway.Name = this.Name;
-            applicationGateway.ResourceGroupName = this.ResourceGroupName;
-            applicationGateway.Location = this.Location;
-            applicationGateway.Sku = this.Sku;
+            applicationGateway.Name = Name;
+            applicationGateway.ResourceGroupName = ResourceGroupName;
+            applicationGateway.Location = Location;
+            applicationGateway.Sku = Sku;
 
-            if (this.SslPolicy != null)
+            if (SslPolicy != null)
             {
                 applicationGateway.SslPolicy = new PSApplicationGatewaySslPolicy();
-                applicationGateway.SslPolicy = this.SslPolicy;
+                applicationGateway.SslPolicy = SslPolicy;
             }
 
-            if (this.GatewayIPConfigurations != null)
+            if (GatewayIPConfigurations != null)
             {
-                applicationGateway.GatewayIPConfigurations = this.GatewayIPConfigurations;
+                applicationGateway.GatewayIPConfigurations = GatewayIPConfigurations;
             }
 
-            if (this.SslCertificates != null)
+            if (SslCertificates != null)
             {
-                applicationGateway.SslCertificates = this.SslCertificates;
+                applicationGateway.SslCertificates = SslCertificates;
             }
 
-            if (this.AuthenticationCertificates != null)
+            if (AuthenticationCertificates != null)
             {
-                applicationGateway.AuthenticationCertificates = this.AuthenticationCertificates;
+                applicationGateway.AuthenticationCertificates = AuthenticationCertificates;
             }
 
-            if (this.FrontendIPConfigurations != null)
+            if (FrontendIPConfigurations != null)
             {
-                applicationGateway.FrontendIPConfigurations = this.FrontendIPConfigurations;
+                applicationGateway.FrontendIPConfigurations = FrontendIPConfigurations;
             }
 
-            if (this.FrontendPorts != null)
+            if (FrontendPorts != null)
             {
-                applicationGateway.FrontendPorts = this.FrontendPorts;
+                applicationGateway.FrontendPorts = FrontendPorts;
             }
 
-            if (this.Probes != null)
+            if (Probes != null)
             {
-                applicationGateway.Probes = this.Probes;
+                applicationGateway.Probes = Probes;
             }
 
-            if (this.BackendAddressPools != null)
+            if (BackendAddressPools != null)
             {
-                applicationGateway.BackendAddressPools = this.BackendAddressPools;
+                applicationGateway.BackendAddressPools = BackendAddressPools;
             }
 
-            if (this.BackendHttpSettingsCollection != null)
+            if (BackendHttpSettingsCollection != null)
             {
-                applicationGateway.BackendHttpSettingsCollection = this.BackendHttpSettingsCollection;
+                applicationGateway.BackendHttpSettingsCollection = BackendHttpSettingsCollection;
             }
 
-            if (this.HttpListeners != null)
+            if (HttpListeners != null)
             {
-                applicationGateway.HttpListeners = this.HttpListeners;
+                applicationGateway.HttpListeners = HttpListeners;
             }
 
-            if (this.UrlPathMaps != null)
+            if (UrlPathMaps != null)
             {
-                applicationGateway.UrlPathMaps = this.UrlPathMaps;
+                applicationGateway.UrlPathMaps = UrlPathMaps;
             }
 
-            if (this.RequestRoutingRules != null)
+            if (RequestRoutingRules != null)
             {
-                applicationGateway.RequestRoutingRules = this.RequestRoutingRules;
+                applicationGateway.RequestRoutingRules = RequestRoutingRules;
             }
 
-            if (this.RedirectConfigurations != null)
+            if (RedirectConfigurations != null)
             {
-                applicationGateway.RedirectConfigurations = this.RedirectConfigurations;
+                applicationGateway.RedirectConfigurations = RedirectConfigurations;
             }
 
-            if (this.WebApplicationFirewallConfiguration != null)
+            if (WebApplicationFirewallConfiguration != null)
             {
-                applicationGateway.WebApplicationFirewallConfiguration = this.WebApplicationFirewallConfiguration;
+                applicationGateway.WebApplicationFirewallConfiguration = WebApplicationFirewallConfiguration;
             }
 
-            if (this.EnableHttp2.IsPresent)
+            if (EnableHttp2.IsPresent)
             {
                 applicationGateway.EnableHttp2 = true;
             }
@@ -271,12 +271,12 @@ namespace Microsoft.Azure.Commands.Network
 
             // Map to the sdk object
             var appGwModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ApplicationGateway>(applicationGateway);
-            appGwModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            appGwModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
             // Execute the Create ApplicationGateway call
-            this.ApplicationGatewayClient.CreateOrUpdate(this.ResourceGroupName, this.Name, appGwModel);
+            ApplicationGatewayClient.CreateOrUpdate(ResourceGroupName, Name, appGwModel);
 
-            var getApplicationGateway = this.GetApplicationGateway(this.ResourceGroupName, this.Name);
+            var getApplicationGateway = GetApplicationGateway(ResourceGroupName, Name);
 
             return getApplicationGateway;
         }

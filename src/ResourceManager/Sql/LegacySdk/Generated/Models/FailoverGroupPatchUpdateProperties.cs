@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<string> Databases
         {
-            get { return this._databases; }
-            set { this._databases = value; }
+            get { return _databases; }
+            set { _databases = value; }
         }
         
         private ReadOnlyEndpoint _readOnlyEndpoint;
@@ -52,8 +52,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ReadOnlyEndpoint ReadOnlyEndpoint
         {
-            get { return this._readOnlyEndpoint; }
-            set { this._readOnlyEndpoint = value; }
+            get { return _readOnlyEndpoint; }
+            set { _readOnlyEndpoint = value; }
         }
         
         private ReadWriteEndpoint _readWriteEndpoint;
@@ -64,8 +64,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ReadWriteEndpoint ReadWriteEndpoint
         {
-            get { return this._readWriteEndpoint; }
-            set { this._readWriteEndpoint = value; }
+            get { return _readWriteEndpoint; }
+            set { _readWriteEndpoint = value; }
         }
         
         /// <summary>
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public FailoverGroupPatchUpdateProperties()
         {
-            this.Databases = new LazyList<string>();
+            Databases = new LazyList<string>();
         }
     }
 }

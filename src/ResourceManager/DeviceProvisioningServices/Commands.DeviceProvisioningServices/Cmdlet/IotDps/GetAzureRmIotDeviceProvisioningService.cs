@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices;
+    using Azure.Management.DeviceProvisioningServices.Models;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIoTDeviceProvisioningService", DefaultParameterSetName = ListIotDpsByRGParameterSet)]
     [Alias("Get-AzureRmIoTDps")]
@@ -56,19 +56,19 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
             switch(ParameterSetName)
             {
                 case GetIotDpsParameterSet:
-                    this.GetIotDps();
+                    GetIotDps();
                     break;
 
                 case ListIotDpsByRGParameterSet:
-                    if (string.IsNullOrEmpty(this.ResourceGroupName))
+                    if (string.IsNullOrEmpty(ResourceGroupName))
                     {
-                        IEnumerable<ProvisioningServiceDescription> iotprovisioningServiceDescriptionsBySubscription = this.IotDpsClient.IotDpsResource.ListBySubscription();
-                        this.GetIotDpsCollection(iotprovisioningServiceDescriptionsBySubscription);
+                        IEnumerable<ProvisioningServiceDescription> iotprovisioningServiceDescriptionsBySubscription = IotDpsClient.IotDpsResource.ListBySubscription();
+                        GetIotDpsCollection(iotprovisioningServiceDescriptionsBySubscription);
                     }
                     else
                     {
-                        IEnumerable<ProvisioningServiceDescription> provisioningServiceDescriptions = this.IotDpsClient.IotDpsResource.ListByResourceGroup(this.ResourceGroupName);
-                        this.GetIotDpsCollection(provisioningServiceDescriptions);
+                        IEnumerable<ProvisioningServiceDescription> provisioningServiceDescriptions = IotDpsClient.IotDpsResource.ListByResourceGroup(ResourceGroupName);
+                        GetIotDpsCollection(provisioningServiceDescriptions);
                     }
                     break;
                 
@@ -79,17 +79,17 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 
         private void WritePSObject(ProvisioningServiceDescription provisioningServiceDescription)
         {
-            this.WriteObject(IotDpsUtils.ToPSProvisioningServiceDescription(provisioningServiceDescription), false);
+            WriteObject(IotDpsUtils.ToPSProvisioningServiceDescription(provisioningServiceDescription), false);
         }
 
         private void WritePSObjects(IEnumerable<ProvisioningServiceDescription> provisioningServicesDescription)
         {
-            this.WriteObject(IotDpsUtils.ToPSProvisioningServicesDescription(provisioningServicesDescription), true);
+            WriteObject(IotDpsUtils.ToPSProvisioningServicesDescription(provisioningServicesDescription), true);
         }
 
         private void GetIotDps()
         {
-            this.WritePSObject(GetIotDpsResource(this.ResourceGroupName, this.Name));
+            WritePSObject(GetIotDpsResource(ResourceGroupName, Name));
         }
 
         private void GetIotDpsCollection(IEnumerable<ProvisioningServiceDescription> provisioningServicesDescription)
@@ -97,11 +97,11 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
             List<ProvisioningServiceDescription> iotDpsList = new List<ProvisioningServiceDescription>(provisioningServicesDescription);
             if (iotDpsList.Count == 1)
             {
-                this.WritePSObject(iotDpsList[0]);
+                WritePSObject(iotDpsList[0]);
             }
             else
             {
-                this.WritePSObjects(provisioningServicesDescription);
+                WritePSObjects(provisioningServicesDescription);
             }
         }
     }

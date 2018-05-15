@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string FailoverPolicy
         {
-            get { return this._failoverPolicy; }
-            set { this._failoverPolicy = value; }
+            get { return _failoverPolicy; }
+            set { _failoverPolicy = value; }
         }
         
         /// <summary>

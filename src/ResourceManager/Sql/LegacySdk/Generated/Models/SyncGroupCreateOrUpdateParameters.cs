@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncGroupCreateOrUpdateProperties Properties
         {
-            get { return this._properties; }
-            set { this._properties = value; }
+            get { return _properties; }
+            set { _properties = value; }
         }
         
         private string _syncGroupName;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncGroupName
         {
-            get { return this._syncGroupName; }
-            set { this._syncGroupName = value; }
+            get { return _syncGroupName; }
+            set { _syncGroupName = value; }
         }
         
         /// <summary>
@@ -75,8 +75,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("properties");
             }
-            this.SyncGroupName = syncGroupName;
-            this.Properties = properties;
+            SyncGroupName = syncGroupName;
+            Properties = properties;
         }
     }
 }

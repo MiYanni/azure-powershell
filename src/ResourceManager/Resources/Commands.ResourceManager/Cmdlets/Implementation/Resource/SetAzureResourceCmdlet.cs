@@ -14,10 +14,10 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Resources;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.WindowsAzure.Commands.Common;
+    using Components;
+    using Entities.Resources;
+    using Extensions;
+    using WindowsAzure.Commands.Common;
     using Newtonsoft.Json.Linq;
     using System.Collections;
     using System.Linq;
@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// <summary>
     /// A cmdlet that creates a new azure resource.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureRmResource", SupportsShouldProcess = true, DefaultParameterSetName = ResourceManipulationCmdletBase.ResourceIdParameterSet), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsCommon.Set, "AzureRmResource", SupportsShouldProcess = true, DefaultParameterSetName = ResourceIdParameterSet), OutputType(typeof(PSObject))]
     public sealed class SetAzureResourceCmdlet : ResourceManipulationCmdletBase
     {
         /// <summary>
@@ -85,46 +85,46 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            var resourceId = this.GetResourceId();
-            this.ConfirmAction(
-                this.Force,
+            var resourceId = GetResourceId();
+            ConfirmAction(
+                Force,
                 "Are you sure you want to update the following resource: " + resourceId,
                 "Updating the resource...",
                 resourceId,
                 () =>
                 {
-                    var apiVersion = this.DetermineApiVersion(resourceId: resourceId).Result;
-                    var resourceBody = this.GetResourceBody();
+                    var apiVersion = DetermineApiVersion(resourceId).Result;
+                    var resourceBody = GetResourceBody();
 
-                    var operationResult = this.ShouldUsePatchSemantics()
-                        ? this.GetResourcesClient()
+                    var operationResult = ShouldUsePatchSemantics()
+                        ? GetResourcesClient()
                             .PatchResource(
-                                resourceId: resourceId,
-                                apiVersion: apiVersion,
-                                resource: resourceBody,
-                                cancellationToken: this.CancellationToken.Value,
-                                odataQuery: this.ODataQuery)
+                                resourceId,
+                                apiVersion,
+                                resourceBody,
+                                CancellationToken.Value,
+                                ODataQuery)
                             .Result
-                        : this.GetResourcesClient()
+                        : GetResourcesClient()
                             .PutResource(
-                                resourceId: resourceId,
-                                apiVersion: apiVersion,
-                                resource: resourceBody,
-                                cancellationToken: this.CancellationToken.Value,
-                                odataQuery: this.ODataQuery)
+                                resourceId,
+                                apiVersion,
+                                resourceBody,
+                                CancellationToken.Value,
+                                ODataQuery)
                             .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                         .GetResourceManagementRequestUri(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            odataQuery: this.ODataQuery);
+                            resourceId,
+                            apiVersion,
+                            odataQuery: ODataQuery);
 
-                    var activity = string.Format("{0} {1}", this.ShouldUsePatchSemantics() ? "PATCH" : "PUT", managementUri.PathAndQuery);
-                    var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: true)
-                        .WaitOnOperation(operationResult: operationResult);
+                    var activity = string.Format("{0} {1}", ShouldUsePatchSemantics() ? "PATCH" : "PUT", managementUri.PathAndQuery);
+                    var result = GetLongRunningOperationTracker(activity, true)
+                        .WaitOnOperation(operationResult);
 
-                    this.TryConvertToResourceAndWriteObject(result);
+                    TryConvertToResourceAndWriteObject(result);
                 });
         }
 
@@ -133,35 +133,28 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private JToken GetResourceBody()
         {
-            if (this.ShouldUsePatchSemantics())
+            if (ShouldUsePatchSemantics())
             {
-                var resourceBody = this.GetPatchResourceBody();
+                var resourceBody = GetPatchResourceBody();
 
                 return resourceBody == null ? null : resourceBody.ToJToken();
             }
-            else
+            var getResult = GetResource().Result;
+
+            if (getResult.CanConvertTo<Resource<JToken>>())
             {
-                var getResult = this.GetResource().Result;
-
-                if (getResult.CanConvertTo<Resource<JToken>>())
+                var resource = getResult.ToResource();
+                return new Resource<JToken>
                 {
-                    var resource = getResult.ToResource();
-                    return new Resource<JToken>()
-                    {
-                        Kind = this.Kind ?? resource.Kind,
-                        Plan = this.Plan.ToDictionary(addValueLayer: false).ToJson().FromJson<ResourcePlan>() ?? resource.Plan,
-                        Sku = this.Sku.ToDictionary(addValueLayer: false).ToJson().FromJson<ResourceSku>() ?? resource.Sku,
-                        Tags = TagsHelper.GetTagsDictionary(this.Tag) ?? resource.Tags,
-                        Location = resource.Location,
-                        Properties = this.Properties == null ? resource.Properties : this.Properties.ToResourcePropertiesBody()
-                    }.ToJToken();
-                }
-                else
-                {
-                    return this.Properties.ToJToken();
-                }
+                    Kind = Kind ?? resource.Kind,
+                    Plan = Plan.ToDictionary(false).ToJson().FromJson<ResourcePlan>() ?? resource.Plan,
+                    Sku = Sku.ToDictionary(false).ToJson().FromJson<ResourceSku>() ?? resource.Sku,
+                    Tags = TagsHelper.GetTagsDictionary(Tag) ?? resource.Tags,
+                    Location = resource.Location,
+                    Properties = Properties == null ? resource.Properties : Properties.ToResourcePropertiesBody()
+                }.ToJToken();
             }
-
+            return Properties.ToJToken();
         }
 
         /// <summary>
@@ -169,36 +162,36 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private Resource<JToken> GetPatchResourceBody()
         {
-            if (this.Properties == null && this.Plan == null && this.Kind == null && this.Sku == null && this.Tag == null)
+            if (Properties == null && Plan == null && Kind == null && Sku == null && Tag == null)
             {
                 return null;
             }
 
             Resource<JToken> resourceBody = new Resource<JToken>();
 
-            if (this.Properties != null)
+            if (Properties != null)
             {
-                resourceBody.Properties = this.Properties.ToResourcePropertiesBody();
+                resourceBody.Properties = Properties.ToResourcePropertiesBody();
             }
 
-            if (this.Plan != null)
+            if (Plan != null)
             {
-                resourceBody.Plan = this.Plan.ToDictionary(addValueLayer: false).ToJson().FromJson<ResourcePlan>();
+                resourceBody.Plan = Plan.ToDictionary(false).ToJson().FromJson<ResourcePlan>();
             }
 
-            if (this.Kind != null)
+            if (Kind != null)
             {
-                resourceBody.Kind = this.Kind;
+                resourceBody.Kind = Kind;
             }
 
-            if (this.Sku != null)
+            if (Sku != null)
             {
-                resourceBody.Sku = this.Sku.ToDictionary(addValueLayer: false).ToJson().FromJson<ResourceSku>();
+                resourceBody.Sku = Sku.ToDictionary(false).ToJson().FromJson<ResourceSku>();
             }
 
-            if (this.Tag != null)
+            if (Tag != null)
             {
-                resourceBody.Tags = TagsHelper.GetTagsDictionary(this.Tag);
+                resourceBody.Tags = TagsHelper.GetTagsDictionary(Tag);
             }
 
             return resourceBody;
@@ -209,7 +202,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool ShouldUsePatchSemantics()
         {
-            return this.UsePatchSemantics || ((this.Tag != null || this.Sku != null) && this.Plan == null && this.Properties == null && this.Kind == null);
+            return UsePatchSemantics || (Tag != null || Sku != null) && Plan == null && Properties == null && Kind == null;
         }
 
         /// <summary>
@@ -217,18 +210,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private async Task<JObject> GetResource()
         {
-            var resourceId = this.GetResourceId();
-            var apiVersion = await this
-                .DetermineApiVersion(resourceId: resourceId)
-                .ConfigureAwait(continueOnCapturedContext: false);
+            var resourceId = GetResourceId();
+            var apiVersion = await DetermineApiVersion(resourceId)
+                .ConfigureAwait(false);
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .GetResource<JObject>(
-                    resourceId: resourceId,
-                    apiVersion: apiVersion,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    resourceId,
+                    apiVersion,
+                    CancellationToken.Value)
+                .ConfigureAwait(false);
         }
     }
 }

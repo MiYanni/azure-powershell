@@ -106,66 +106,66 @@ namespace Microsoft.Azure.Commands.Network
 
             if (Probe != null)
             {
-                this.ProbeId = this.Probe.Id;
+                ProbeId = Probe.Id;
             }
         }
         public PSApplicationGatewayBackendHttpSettings NewObject()
         {
             var backendHttpSettings = new PSApplicationGatewayBackendHttpSettings();
-            backendHttpSettings.Name = this.Name;
-            backendHttpSettings.Port = this.Port;
-            backendHttpSettings.Protocol = this.Protocol;
-            backendHttpSettings.CookieBasedAffinity = this.CookieBasedAffinity;
-            if (0 == this.RequestTimeout)
+            backendHttpSettings.Name = Name;
+            backendHttpSettings.Port = Port;
+            backendHttpSettings.Protocol = Protocol;
+            backendHttpSettings.CookieBasedAffinity = CookieBasedAffinity;
+            if (0 == RequestTimeout)
             {
                 backendHttpSettings.RequestTimeout = 30;
             }
             else
             {
-                backendHttpSettings.RequestTimeout = this.RequestTimeout;
+                backendHttpSettings.RequestTimeout = RequestTimeout;
             }
-            if(this.ConnectionDraining != null)
+            if(ConnectionDraining != null)
             {
-                backendHttpSettings.ConnectionDraining = this.ConnectionDraining;
+                backendHttpSettings.ConnectionDraining = ConnectionDraining;
             }
-            if (!string.IsNullOrEmpty(this.ProbeId))
+            if (!string.IsNullOrEmpty(ProbeId))
             {
                 backendHttpSettings.Probe = new PSResourceId();
-                backendHttpSettings.Probe.Id = this.ProbeId;
+                backendHttpSettings.Probe.Id = ProbeId;
             }
-            if (this.AuthenticationCertificates != null && this.AuthenticationCertificates.Count > 0)
+            if (AuthenticationCertificates != null && AuthenticationCertificates.Count > 0)
             {
                 backendHttpSettings.AuthenticationCertificates = new List<PSResourceId>();
-                foreach (var authcert in this.AuthenticationCertificates)
+                foreach (var authcert in AuthenticationCertificates)
                 {
                     backendHttpSettings.AuthenticationCertificates.Add(
-                        new PSResourceId()
+                        new PSResourceId
                         {
                             Id = authcert.Id
                         });
                 }
             }
-            if(this.PickHostNameFromBackendAddress.IsPresent)
+            if(PickHostNameFromBackendAddress.IsPresent)
             {
                 backendHttpSettings.PickHostNameFromBackendAddress = true;
             }
-            if(this.HostName != null)
+            if(HostName != null)
             {
-                backendHttpSettings.HostName = this.HostName;
+                backendHttpSettings.HostName = HostName;
             }
-            if (this.AffinityCookieName != null)
+            if (AffinityCookieName != null)
             {
-                backendHttpSettings.AffinityCookieName = this.AffinityCookieName;
+                backendHttpSettings.AffinityCookieName = AffinityCookieName;
             }
-            if (this.Path != null)
+            if (Path != null)
             {
-                backendHttpSettings.Path = this.Path;
+                backendHttpSettings.Path = Path;
             }
 
             backendHttpSettings.Id = ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                                    Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewaybackendHttpSettingsName,
-                                    this.Name);
+                                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                                    Properties.Resources.ApplicationGatewaybackendHttpSettingsName,
+                                    Name);
 
             return backendHttpSettings;
         }

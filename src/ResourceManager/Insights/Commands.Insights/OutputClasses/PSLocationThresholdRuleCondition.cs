@@ -46,15 +46,15 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
             var dataSource = ruleCondition.DataSource as RuleMetricDataSource;
             if (dataSource != null)
             {
-                this.DataSource = dataSource;
+                DataSource = dataSource;
             }
             else
             {
                 throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, ResourcesForAlertCmdlets.RuleDataSourceTypeNotSupported, ruleCondition.DataSource.GetType().Name));
             }
 
-            this.FailedLocationCount = ruleCondition.FailedLocationCount;
-            this.WindowSize = ruleCondition.WindowSize;
+            FailedLocationCount = ruleCondition.FailedLocationCount;
+            WindowSize = ruleCondition.WindowSize;
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         {
             StringBuilder output = new StringBuilder();
             output.AppendLine();
-            output.AppendLine("    DataSource          : " + this.DataSource.ToString(indentationTabs: 2));
-            output.AppendLine("    FailedLocationCount : " + this.FailedLocationCount);
-            output.Append("    WindowSize          : " + this.WindowSize);
+            output.AppendLine("    DataSource          : " + DataSource.ToString(2));
+            output.AppendLine("    FailedLocationCount : " + FailedLocationCount);
+            output.Append("    WindowSize          : " + WindowSize);
             return output.ToString();
         }
     }

@@ -46,8 +46,9 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         /// <returns>The entity going to be deleted</returns>
         protected override IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerVirtualNetworkRuleModel>() {
-                ModelAdapter.GetVirtualNetworkRule(this.ResourceGroupName, this.ServerName, this.VirtualNetworkRuleName)
+            return new List<Model.AzureSqlServerVirtualNetworkRuleModel>
+            {
+                ModelAdapter.GetVirtualNetworkRule(ResourceGroupName, ServerName, VirtualNetworkRuleName)
             };
         }
 
@@ -68,7 +69,7 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         /// <returns>The input model</returns>
         protected override IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> PersistChanges(IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> entity)
         {
-            ModelAdapter.RemoveVirtualNetworkRule(this.ResourceGroupName, this.ServerName, this.VirtualNetworkRuleName);
+            ModelAdapter.RemoveVirtualNetworkRule(ResourceGroupName, ServerName, VirtualNetworkRuleName);
             entity.First().State = "Deleted";
             return entity;
         }

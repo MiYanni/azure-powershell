@@ -22,7 +22,7 @@ using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 
 namespace Microsoft.Azure.Commands.MachineLearning
 {
-    [Cmdlet(VerbsCommon.Get, WebServicesCmdletBase.CommandletSuffix)]
+    [Cmdlet(VerbsCommon.Get, CommandletSuffix)]
     [OutputType(typeof(WebService), typeof(WebService[]))]
     public class GetAzureMLWebService : WebServicesCmdletBase
     {
@@ -48,40 +48,40 @@ namespace Microsoft.Azure.Commands.MachineLearning
 
         protected override void RunCmdlet()
         {
-            if (!string.IsNullOrWhiteSpace(this.Name))
+            if (!string.IsNullOrWhiteSpace(Name))
             {
-                if (string.IsNullOrWhiteSpace(this.ResourceGroupName))
+                if (string.IsNullOrWhiteSpace(ResourceGroupName))
                 {
                     // If there is only web service name but no resource group name, it is invalid input.
                     throw new PSArgumentNullException(ResourceGroupName, Resources.MissingResourceGroupName);
                 }
 
                 // If this is a simple get web service by name operation, resolve it as such
-                WebService service = this.WebServicesClient.GetAzureMlWebService(this.ResourceGroupName, this.Name, this.Region);
-                this.WriteObject(service);
+                WebService service = WebServicesClient.GetAzureMlWebService(ResourceGroupName, Name, Region);
+                WriteObject(service);
             }
             else
             {
                 // This is a collection of web services get call, so determine which flavor it is
-                Func<Task<ResponseWithContinuation<WebService[]>>> getFirstServicesPageCall = () => this.WebServicesClient.GetAzureMlWebServicesBySubscriptionAsync(null, this.CancellationToken);
-                Func<string, Task<ResponseWithContinuation<WebService[]>>> getNextPageCall = nextLink => this.WebServicesClient.GetAzureMlWebServicesBySubscriptionAsync(nextLink, this.CancellationToken);
+                Func<Task<ResponseWithContinuation<WebService[]>>> getFirstServicesPageCall = () => WebServicesClient.GetAzureMlWebServicesBySubscriptionAsync(null, CancellationToken);
+                Func<string, Task<ResponseWithContinuation<WebService[]>>> getNextPageCall = nextLink => WebServicesClient.GetAzureMlWebServicesBySubscriptionAsync(nextLink, CancellationToken);
 
-                if (!string.IsNullOrWhiteSpace(this.ResourceGroupName))
+                if (!string.IsNullOrWhiteSpace(ResourceGroupName))
                 {
                     // This is a call for resource retrieval within a resource group
-                    getFirstServicesPageCall = () => this.WebServicesClient.GetAzureMlWebServicesBySubscriptionAndGroupAsync(this.ResourceGroupName, null, this.CancellationToken);
-                    getNextPageCall = nextLink => this.WebServicesClient.GetAzureMlWebServicesBySubscriptionAndGroupAsync(this.ResourceGroupName, nextLink, this.CancellationToken);
+                    getFirstServicesPageCall = () => WebServicesClient.GetAzureMlWebServicesBySubscriptionAndGroupAsync(ResourceGroupName, null, CancellationToken);
+                    getNextPageCall = nextLink => WebServicesClient.GetAzureMlWebServicesBySubscriptionAndGroupAsync(ResourceGroupName, nextLink, CancellationToken);
                 }
 
                 PaginatedResponseHelper.ForEach<WebService>(
-                    getFirstPage: getFirstServicesPageCall,
-                    getNextPage: getNextPageCall,
-                    cancellationToken: this.CancellationToken,
-                    action: webServices =>
+                    getFirstServicesPageCall,
+                    getNextPageCall,
+                    CancellationToken,
+                    webServices =>
                     {
                         foreach (var service in webServices)
                         {
-                            this.WriteObject(service, true);
+                            WriteObject(service, true);
                         }
                     });
             }

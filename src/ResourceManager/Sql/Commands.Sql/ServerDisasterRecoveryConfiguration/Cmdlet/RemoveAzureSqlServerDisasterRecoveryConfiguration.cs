@@ -44,8 +44,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlServerDisasterRecoveryConfigurationModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerDisasterRecoveryConfigurationModel>() {
-                ModelAdapter.GetServerDisasterRecoveryConfiguration(this.ResourceGroupName, this.ServerName, this.VirtualEndpointName)
+            return new List<AzureSqlServerDisasterRecoveryConfigurationModel>
+            {
+                ModelAdapter.GetServerDisasterRecoveryConfiguration(ResourceGroupName, ServerName, VirtualEndpointName)
             };
         }
 
@@ -66,7 +67,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlServerDisasterRecoveryConfigurationModel> PersistChanges(IEnumerable<AzureSqlServerDisasterRecoveryConfigurationModel> entity)
         {
-            ModelAdapter.RemoveServerDisasterRecoveryConfiguration(this.ResourceGroupName, this.ServerName, this.VirtualEndpointName);
+            ModelAdapter.RemoveServerDisasterRecoveryConfiguration(ResourceGroupName, ServerName, VirtualEndpointName);
             return entity;
         }
 
@@ -76,9 +77,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
         public override void ExecuteCmdlet()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerDisasterRecoveryConfigurationDescription, this.VirtualEndpointName, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerDisasterRecoveryConfigurationWarning, this.VirtualEndpointName, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerDisasterRecoveryConfigurationDescription, VirtualEndpointName, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerDisasterRecoveryConfigurationWarning, VirtualEndpointName, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }

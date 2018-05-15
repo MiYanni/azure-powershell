@@ -43,13 +43,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
             int monthlyLimit = PolicyConstants.MaxAllowedRetentionDurationCountMonthlySql;
             int yearlyLimit = PolicyConstants.MaxAllowedRetentionDurationCountYearlySql;
 
-            if ((RetentionDurationType == RetentionDurationType.Days) ||
-                (RetentionDurationType == RetentionDurationType.Weeks &&
-                    (RetentionCount <= 0 || RetentionCount > weeklyLimit)) ||
-                (RetentionDurationType == RetentionDurationType.Months &&
-                    (RetentionCount <= 0 || RetentionCount > monthlyLimit)) ||
-                (RetentionDurationType == RetentionDurationType.Years &&
-                    (RetentionCount <= 0 || RetentionCount > yearlyLimit)))
+            if (RetentionDurationType == RetentionDurationType.Days ||
+                RetentionDurationType == RetentionDurationType.Weeks &&
+                (RetentionCount <= 0 || RetentionCount > weeklyLimit) ||
+                RetentionDurationType == RetentionDurationType.Months &&
+                (RetentionCount <= 0 || RetentionCount > monthlyLimit) ||
+                RetentionDurationType == RetentionDurationType.Years &&
+                (RetentionCount <= 0 || RetentionCount > yearlyLimit))
             {
                 throw new ArgumentException(Resources.AllowedSqlRetentionRange);
             }
@@ -128,10 +128,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
                 {
                     throw new ArgumentException(Resources.DailyScheduleEnabledButScheduleIsNullException);
                 }
-                else
-                {
-                    DailySchedule.Validate();
-                }
+                DailySchedule.Validate();
             }
 
             if (IsWeeklyScheduleEnabled)
@@ -140,10 +137,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
                 {
                     throw new ArgumentException(Resources.WeeklyScheduleEnabledButScheduleIsNullException);
                 }
-                else
-                {
-                    WeeklySchedule.Validate();
-                }
+                WeeklySchedule.Validate();
             }
 
             if (IsMonthlyScheduleEnabled)
@@ -152,10 +146,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
                 {
                     throw new ArgumentException(Resources.MonthlyScheduleEnabledButScheduleIsNullException);
                 }
-                else
-                {
-                    MonthlySchedule.Validate();
-                }
+                MonthlySchedule.Validate();
             }
 
             if (IsYearlyScheduleEnabled)
@@ -164,10 +155,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
                 {
                     throw new ArgumentException(Resources.YearlyScheduleEnabledButScheduleIsNullException);
                 }
-                else
-                {
-                    YearlySchedule.Validate();
-                }
+                YearlySchedule.Validate();
             }
         }
 

@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands.HybridConnection
 
             }
 
-            if(ShouldProcess(target: Name, action:string.Format("Creating new HybridConnections:{0} under NameSpace:{1} ", Name, Namespace)))
+            if(ShouldProcess(Name, string.Format("Creating new HybridConnections:{0} under NameSpace:{1} ", Name, Namespace)))
             {
                 WriteObject(Client.CreateOrUpdateHybridConnections(ResourceGroupName, Namespace, Name, hybridConnections));
             }

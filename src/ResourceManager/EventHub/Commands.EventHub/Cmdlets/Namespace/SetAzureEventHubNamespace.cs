@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.Namespace
 
         [Parameter(Mandatory = false, ParameterSetName = NamespaceParameterSet, ValueFromPipelineByPropertyName = true, Position = 5, HelpMessage = "Disable/Enable Namespace.")]
         [Parameter(Mandatory = false, ParameterSetName = AutoInflateParameterSet, ValueFromPipelineByPropertyName = true, Position = 5, HelpMessage = "Disable/Enable Namespace.")]
-        public Models.NamespaceState? State { get; set; }
+        public NamespaceState? State { get; set; }
 
         [Parameter(Mandatory = false, ParameterSetName = NamespaceParameterSet, ValueFromPipelineByPropertyName = true, Position = 6, HelpMessage = "Hashtables which represents resource Tag.")]
         [Parameter(Mandatory = false, ParameterSetName = AutoInflateParameterSet, ValueFromPipelineByPropertyName = true, Position = 6, HelpMessage = "Hashtables which represents resource Tag.")]
@@ -80,9 +80,9 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.Namespace
         public override void ExecuteCmdlet()
         {
             // Update a EventHub namespace 
-            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, true);
 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.UpdateNamespace, Name, ResourceGroupName)))
+            if (ShouldProcess(Name, string.Format(Resources.UpdateNamespace, Name, ResourceGroupName)))
             {
                 if(EnableAutoInflate.IsPresent)
                     WriteObject(Client.UpdateNamespace(ResourceGroupName, Name, Location, SkuName, SkuCapacity, State, tagDictionary, true, MaximumThroughputUnits));

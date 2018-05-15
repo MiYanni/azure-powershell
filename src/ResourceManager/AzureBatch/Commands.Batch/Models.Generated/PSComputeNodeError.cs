@@ -26,21 +26,21 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSComputeNodeError
     {
         
-        internal Microsoft.Azure.Batch.ComputeNodeError omObject;
+        internal ComputeNodeError omObject;
         
         private IReadOnlyList<PSNameValuePair> errorDetails;
         
-        internal PSComputeNodeError(Microsoft.Azure.Batch.ComputeNodeError omObject)
+        internal PSComputeNodeError(ComputeNodeError omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Code;
+                return omObject.Code;
             }
         }
         
@@ -57,22 +57,22 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.errorDetails == null) 
-                            && (this.omObject.ErrorDetails != null)))
+                if (errorDetails == null 
+                    && omObject.ErrorDetails != null)
                 {
                     List<PSNameValuePair> list;
                     list = new List<PSNameValuePair>();
-                    IEnumerator<Microsoft.Azure.Batch.NameValuePair> enumerator;
-                    enumerator = this.omObject.ErrorDetails.GetEnumerator();
+                    IEnumerator<NameValuePair> enumerator;
+                    enumerator = omObject.ErrorDetails.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSNameValuePair(enumerator.Current));
                     }
-                    this.errorDetails = list.AsReadOnly();
+                    errorDetails = list.AsReadOnly();
                 }
-                return this.errorDetails;
+                return errorDetails;
             }
         }
         
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Message;
+                return omObject.Message;
             }
         }
     }

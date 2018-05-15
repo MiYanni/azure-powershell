@@ -43,10 +43,10 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidAzureEnvironment);
 
             var credential = new DataServiceCredential(authFactory, context, AzureEnvironment.Endpoint.AzureKeyVaultServiceEndpointResourceId);
-            this.keyVaultClient = new KeyVaultClient(credential.OnAuthentication);
+            keyVaultClient = new KeyVaultClient(credential.OnAuthentication);
 
 
-            this.vaultUriHelper = new VaultUriHelper(
+            vaultUriHelper = new VaultUriHelper(
                 context.Environment.GetEndpoint(AzureEnvironment.Endpoint.AzureKeyVaultDnsSuffix));
         }
 
@@ -66,27 +66,27 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (keyAttributes == null)
                 throw new ArgumentNullException(nameof(keyAttributes));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
-            var attributes = (Azure.KeyVault.Models.KeyAttributes)keyAttributes;
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
+            var attributes = (KeyAttributes)keyAttributes;
 
-            Azure.KeyVault.Models.KeyBundle keyBundle;
+            KeyBundle keyBundle;
             try
             {
-                keyBundle = this.keyVaultClient.CreateKeyAsync(
-                    vaultBaseUrl: vaultAddress,
-                    keyName: keyName,
-                    kty: keyAttributes.KeyType,
-                    keySize: size,
-                    keyOps: keyAttributes.KeyOps == null ? null : new List<string> (keyAttributes.KeyOps),
-                    keyAttributes: attributes,
-                    tags: keyAttributes.TagsDirectionary).GetAwaiter().GetResult();
+                keyBundle = keyVaultClient.CreateKeyAsync(
+                    vaultAddress,
+                    keyName,
+                    keyAttributes.KeyType,
+                    size,
+                    keyAttributes.KeyOps == null ? null : new List<string> (keyAttributes.KeyOps),
+                    attributes,
+                    keyAttributes.TagsDirectionary).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultKey(keyBundle, this.vaultUriHelper);
+            return new PSKeyVaultKey(keyBundle, vaultUriHelper);
         }        
 
         public PSKeyVaultCertificate MergeCertificate(string vaultName, string certName, X509Certificate2Collection certs, IDictionary<string, string> tags)
@@ -100,11 +100,11 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             CertificateBundle certBundle;
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             try
             {
-                certBundle = this.keyVaultClient.MergeCertificateAsync(vaultAddress, certName, certs, null, tags).GetAwaiter().GetResult();
+                certBundle = keyVaultClient.MergeCertificateAsync(vaultAddress, certName, certs, null, tags).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -126,14 +126,14 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             CertificateBundle certBundle;
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            var password = (certPassword == null) ? string.Empty : certPassword.ConvertToString();
+            var password = certPassword == null ? string.Empty : certPassword.ConvertToString();
 
 
             try
             {
-                certBundle = this.keyVaultClient.ImportCertificateAsync(vaultAddress, certName, base64CertColl, password, new CertificatePolicy
+                certBundle = keyVaultClient.ImportCertificateAsync(vaultAddress, certName, base64CertColl, password, new CertificatePolicy
                 {
                     SecretProperties = new SecretProperties
                     {
@@ -159,11 +159,11 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw new ArgumentNullException(nameof(certificateCollection));
 
             CertificateBundle certBundle;
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            var vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             try
             {
-                certBundle = this.keyVaultClient.ImportCertificateAsync(vaultAddress, certName, certificateCollection, new CertificatePolicy
+                certBundle = keyVaultClient.ImportCertificateAsync(vaultAddress, certName, certificateCollection, new CertificatePolicy
                 {
                     SecretProperties = new SecretProperties
                     {
@@ -189,29 +189,29 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw new ArgumentNullException(nameof(keyAttributes));
             if (webKey == null)
                 throw new ArgumentNullException(nameof(webKey));
-            if (webKey.Kty == JsonWebKeyType.RsaHsm && (importToHsm.HasValue && !importToHsm.Value))
+            if (webKey.Kty == JsonWebKeyType.RsaHsm && importToHsm.HasValue && !importToHsm.Value)
                 throw new ArgumentException(KeyVaultProperties.Resources.ImportByokAsSoftkeyError);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
             
             webKey.KeyOps = keyAttributes.KeyOps;            
-            var keyBundle = new Azure.KeyVault.Models.KeyBundle()
+            var keyBundle = new KeyBundle
             {
-                Attributes = (Azure.KeyVault.Models.KeyAttributes)keyAttributes,
+                Attributes = (KeyAttributes)keyAttributes,
                 Key = webKey,
                 Tags = keyAttributes.TagsDirectionary
             };
 
             try
             {
-                keyBundle = this.keyVaultClient.ImportKeyAsync(vaultAddress, keyName, keyBundle, importToHsm).GetAwaiter().GetResult();
+                keyBundle = keyVaultClient.ImportKeyAsync(vaultAddress, keyName, keyBundle, importToHsm).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultKey(keyBundle, this.vaultUriHelper);
+            return new PSKeyVaultKey(keyBundle, vaultUriHelper);
         }
 
         public PSKeyVaultKey UpdateKey(string vaultName, string keyName, string keyVersion, PSKeyVaultKeyAttributes keyAttributes)
@@ -223,21 +223,21 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (keyAttributes == null)
                 throw new ArgumentNullException(nameof(keyAttributes));
             
-            var attributes = (Azure.KeyVault.Models.KeyAttributes)keyAttributes;
-            var keyIdentifier = new KeyIdentifier(this.vaultUriHelper.CreateVaultAddress(vaultName), keyName, keyVersion);
+            var attributes = (KeyAttributes)keyAttributes;
+            var keyIdentifier = new KeyIdentifier(vaultUriHelper.CreateVaultAddress(vaultName), keyName, keyVersion);
 
-            Azure.KeyVault.Models.KeyBundle keyBundle;
+            KeyBundle keyBundle;
             try
             {
-                keyBundle = this.keyVaultClient.UpdateKeyAsync(
-                    keyIdentifier.Identifier, keyAttributes.KeyOps, attributes: attributes, tags: keyAttributes.TagsDirectionary).GetAwaiter().GetResult();
+                keyBundle = keyVaultClient.UpdateKeyAsync(
+                    keyIdentifier.Identifier, keyAttributes.KeyOps, attributes, keyAttributes.TagsDirectionary).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultKey(keyBundle, this.vaultUriHelper);
+            return new PSKeyVaultKey(keyBundle, vaultUriHelper);
         }
 
         public IEnumerable<PSKeyVaultCertificateContact> GetCertificateContacts(string vaultName)
@@ -245,20 +245,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(vaultName))
                 throw new ArgumentNullException(nameof(vaultName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             Contacts contacts;
 
             try
             {
-                contacts = this.keyVaultClient.GetCertificateContactsAsync(vaultAddress).GetAwaiter().GetResult();
+                contacts = keyVaultClient.GetCertificateContactsAsync(vaultAddress).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
@@ -288,20 +287,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(certName))
                 throw new ArgumentNullException(nameof(certName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             CertificateBundle certBundle;
 
             try
             {
-                certBundle = this.keyVaultClient.GetCertificateAsync(vaultAddress, certName, certificateVersion).GetAwaiter().GetResult();
+                certBundle = keyVaultClient.GetCertificateAsync(vaultAddress, certName, certificateVersion).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
@@ -318,26 +316,25 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(keyName))
                 throw new ArgumentNullException(nameof(keyName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.KeyBundle keyBundle;
+            KeyBundle keyBundle;
             try
             {
-                keyBundle = this.keyVaultClient.GetKeyAsync(vaultAddress, keyName, keyVersion).GetAwaiter().GetResult();
+                keyBundle = keyVaultClient.GetKeyAsync(vaultAddress, keyName, keyVersion).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultKey(keyBundle, this.vaultUriHelper);
+            return new PSKeyVaultKey(keyBundle, vaultUriHelper);
         }
 
         public IEnumerable<PSKeyVaultCertificateIdentityItem> GetCertificates(KeyVaultObjectFilterOptions options)
@@ -348,20 +345,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.VaultName))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidVaultName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<CertificateItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetCertificatesAsync(vaultAddress).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetCertificatesAsync(vaultAddress).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetCertificatesNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetCertificatesNextAsync(options.NextLink).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return (result == null) ? new List<PSKeyVaultCertificateIdentityItem>() :
-                    result.Select((certItem) => { return new PSKeyVaultCertificateIdentityItem(certItem, this.vaultUriHelper); });
+                return result == null ? new List<PSKeyVaultCertificateIdentityItem>() :
+                    result.Select(certItem => { return new PSKeyVaultCertificateIdentityItem(certItem, vaultUriHelper); });
             }
             catch (Exception ex)
             {
@@ -380,19 +377,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.Name))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidKeyName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<CertificateItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetCertificateVersionsAsync(vaultAddress, options.Name).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetCertificateVersionsAsync(vaultAddress, options.Name).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetCertificateVersionsNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetCertificateVersionsNextAsync(options.NextLink).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return result.Select((certificateItem) => new PSKeyVaultCertificateIdentityItem(certificateItem, this.vaultUriHelper));
+                return result.Select(certificateItem => new PSKeyVaultCertificateIdentityItem(certificateItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -408,20 +405,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.VaultName))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidVaultName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<KeyItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetKeysAsync(vaultAddress).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetKeysAsync(vaultAddress).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetKeysNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetKeysNextAsync(options.NextLink).GetAwaiter().GetResult();
                 
                 options.NextLink = result.NextPageLink;
-                return (result == null) ? new List<PSKeyVaultKeyIdentityItem>() :
-                    result.Select((keyItem) => new PSKeyVaultKeyIdentityItem(keyItem, this.vaultUriHelper));
+                return result == null ? new List<PSKeyVaultKeyIdentityItem>() :
+                    result.Select(keyItem => new PSKeyVaultKeyIdentityItem(keyItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -440,19 +437,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.Name))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidKeyName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<KeyItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetKeyVersionsAsync(vaultAddress, options.Name).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetKeyVersionsAsync(vaultAddress, options.Name).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetKeyVersionsNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetKeyVersionsNextAsync(options.NextLink).GetAwaiter().GetResult();
                
                 options.NextLink = result.NextPageLink;
-                return result.Select((keyItem) => new PSKeyVaultKeyIdentityItem(keyItem, this.vaultUriHelper));
+                return result.Select(keyItem => new PSKeyVaultKeyIdentityItem(keyItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -467,19 +464,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(keyName))
                 throw new ArgumentNullException(nameof(keyName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.DeletedKeyBundle keyBundle;
+            DeletedKeyBundle keyBundle;
             try
             {
-                keyBundle = this.keyVaultClient.DeleteKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
+                keyBundle = keyVaultClient.DeleteKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSDeletedKeyVaultKey(keyBundle, this.vaultUriHelper);
+            return new PSDeletedKeyVaultKey(keyBundle, vaultUriHelper);
         }
 
         public IEnumerable<PSKeyVaultCertificateContact> SetCertificateContacts(string vaultName, IEnumerable<PSKeyVaultCertificateContact> contacts)
@@ -487,7 +484,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(vaultName))
                 throw new ArgumentNullException(nameof(vaultName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             List<Contact> contactList = null;
             if (contacts != null)
@@ -504,7 +501,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             try
             {
-                outputContacts = this.keyVaultClient.SetCertificateContactsAsync(vaultAddress, inputContacts).GetAwaiter().GetResult();
+                outputContacts = keyVaultClient.SetCertificateContactsAsync(vaultAddress, inputContacts).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -539,13 +536,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw new ArgumentNullException(nameof(secretAttributes));
 
             string value = secretValue.ConvertToString();
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
-            var attributes = (Azure.KeyVault.Models.SecretAttributes)secretAttributes;
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
+            var attributes = (SecretAttributes)secretAttributes;
 
-            Azure.KeyVault.Models.SecretBundle secret;
+            SecretBundle secret;
             try
             {
-                secret = this.keyVaultClient.SetSecretAsync(vaultAddress, secretName, value,
+                secret = keyVaultClient.SetSecretAsync(vaultAddress, secretName, value,
                     secretAttributes.TagsDictionary, secretAttributes.ContentType, attributes).GetAwaiter().GetResult();
             }
             catch (Exception ex)
@@ -553,7 +550,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultSecret(secret, this.vaultUriHelper);
+            return new PSKeyVaultSecret(secret, vaultUriHelper);
         }
 
         public PSKeyVaultSecret UpdateSecret(string vaultName, string secretName, string secretVersion, PSKeyVaultSecretAttributes secretAttributes)
@@ -565,14 +562,14 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (secretAttributes == null)
                 throw new ArgumentNullException(nameof(secretAttributes));
 
-            var secretIdentifier = new SecretIdentifier(this.vaultUriHelper.CreateVaultAddress(vaultName), secretName, secretVersion);
+            var secretIdentifier = new SecretIdentifier(vaultUriHelper.CreateVaultAddress(vaultName), secretName, secretVersion);
 
-            Azure.KeyVault.Models.SecretAttributes attributes = (Azure.KeyVault.Models.SecretAttributes)secretAttributes;
+            SecretAttributes attributes = (SecretAttributes)secretAttributes;
 
             SecretBundle secret;
             try
             {
-                secret = this.keyVaultClient.UpdateSecretAsync(secretIdentifier.Identifier,
+                secret = keyVaultClient.UpdateSecretAsync(secretIdentifier.Identifier,
                     secretAttributes.ContentType, attributes, secretAttributes.TagsDictionary).GetAwaiter().GetResult();
             }
             catch (Exception ex)
@@ -580,7 +577,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultSecret(secret, this.vaultUriHelper);
+            return new PSKeyVaultSecret(secret, vaultUriHelper);
         }
 
         public PSKeyVaultSecret GetSecret(string vaultName, string secretName, string secretVersion)
@@ -590,25 +587,24 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(secretName))
                 throw new ArgumentNullException(nameof(secretName));
 
-            var secretIdentifier = new SecretIdentifier(this.vaultUriHelper.CreateVaultAddress(vaultName), secretName, secretVersion);
+            var secretIdentifier = new SecretIdentifier(vaultUriHelper.CreateVaultAddress(vaultName), secretName, secretVersion);
             SecretBundle secret;
             try
             {
-                secret = this.keyVaultClient.GetSecretAsync(secretIdentifier.Identifier).GetAwaiter().GetResult();
+                secret = keyVaultClient.GetSecretAsync(secretIdentifier.Identifier).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultSecret(secret, this.vaultUriHelper);
+            return new PSKeyVaultSecret(secret, vaultUriHelper);
         }
 
         public IEnumerable<PSKeyVaultSecretIdentityItem> GetSecrets(KeyVaultObjectFilterOptions options)
@@ -618,20 +614,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.VaultName))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidVaultName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<SecretItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetSecretsAsync(vaultAddress).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetSecretsAsync(vaultAddress).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetSecretsNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetSecretsNextAsync(options.NextLink).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return (result == null) ? new List<PSKeyVaultSecretIdentityItem>() :
-                    result.Select((secretItem) => new PSKeyVaultSecretIdentityItem(secretItem, this.vaultUriHelper));            
+                return result == null ? new List<PSKeyVaultSecretIdentityItem>() :
+                    result.Select(secretItem => new PSKeyVaultSecretIdentityItem(secretItem, vaultUriHelper));            
             }
             catch (Exception ex)
             {
@@ -648,19 +644,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.Name))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidSecretName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<SecretItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetSecretVersionsAsync(vaultAddress, options.Name).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetSecretVersionsAsync(vaultAddress, options.Name).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetSecretVersionsNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetSecretVersionsNextAsync(options.NextLink).GetAwaiter().GetResult();
                 
                 options.NextLink = result.NextPageLink;
-                return result.Select((secretItem) => new PSKeyVaultSecretIdentityItem(secretItem, this.vaultUriHelper));
+                return result.Select(secretItem => new PSKeyVaultSecretIdentityItem(secretItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -675,13 +671,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(certificateName))
                 throw new ArgumentNullException(nameof(certificateName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             CertificateOperation certificateOperation;
 
             try
             {
-                certificateOperation = this.keyVaultClient.CreateCertificateAsync(vaultAddress, certificateName, certificatePolicy, null, tags).GetAwaiter().GetResult();
+                certificateOperation = keyVaultClient.CreateCertificateAsync(vaultAddress, certificateName, certificatePolicy, null, tags).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -698,12 +694,12 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(certificateName))
                 throw new ArgumentNullException(nameof(certificateName));
 
-            var certificateIdentifier = new CertificateIdentifier(this.vaultUriHelper.CreateVaultAddress(vaultName), certificateName, certificateVersion);
+            var certificateIdentifier = new CertificateIdentifier(vaultUriHelper.CreateVaultAddress(vaultName), certificateName, certificateVersion);
 
             CertificateBundle certificateBundle;
             try
             {
-                certificateBundle = this.keyVaultClient.UpdateCertificateAsync(
+                certificateBundle = keyVaultClient.UpdateCertificateAsync(
                     certificateIdentifier.Identifier, null, certificateAttributes, tags).GetAwaiter().GetResult();
             }
             catch (Exception ex)
@@ -721,13 +717,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(certName))
                 throw new ArgumentNullException(nameof(certName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             DeletedCertificateBundle certBundle;
 
             try
             {
-                certBundle = this.keyVaultClient.DeleteCertificateAsync(vaultAddress, certName).GetAwaiter().GetResult();
+                certBundle = keyVaultClient.DeleteCertificateAsync(vaultAddress, certName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -744,11 +740,11 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( certName ) )
                 throw new ArgumentNullException( "certName" );
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             try
             {
-                this.keyVaultClient.PurgeDeletedCertificateAsync( vaultAddress, certName ).GetAwaiter( ).GetResult( );
+                keyVaultClient.PurgeDeletedCertificateAsync( vaultAddress, certName ).GetAwaiter( ).GetResult( );
             }
             catch (Exception ex)
             {
@@ -763,20 +759,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(certificateName))
                 throw new ArgumentNullException(nameof(certificateName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             CertificateOperation certificateOperation;
 
             try
             {
-                certificateOperation = this.keyVaultClient.GetCertificateOperationAsync(vaultAddress, certificateName).GetAwaiter().GetResult();
+                certificateOperation = keyVaultClient.GetCertificateOperationAsync(vaultAddress, certificateName).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
@@ -793,13 +788,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(certificateName))
                 throw new ArgumentNullException(nameof(certificateName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             CertificateOperation certificateOperation;
 
             try
             {
-                certificateOperation = this.keyVaultClient.UpdateCertificateOperationAsync(vaultAddress, certificateName, true).GetAwaiter().GetResult();
+                certificateOperation = keyVaultClient.UpdateCertificateOperationAsync(vaultAddress, certificateName, true).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -816,13 +811,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(certificateName))
                 throw new ArgumentNullException(nameof(certificateName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             CertificateOperation certificateOperation;
 
             try
             {
-                certificateOperation = this.keyVaultClient.DeleteCertificateOperationAsync(vaultAddress, certificateName).GetAwaiter().GetResult();
+                certificateOperation = keyVaultClient.DeleteCertificateOperationAsync(vaultAddress, certificateName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -839,19 +834,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(secretName))
                 throw new ArgumentNullException(nameof(secretName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             DeletedSecretBundle secret;
             try
             {
-                secret = this.keyVaultClient.DeleteSecretAsync(vaultAddress, secretName).GetAwaiter().GetResult();
+                secret = keyVaultClient.DeleteSecretAsync(vaultAddress, secretName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSDeletedKeyVaultSecret(secret, this.vaultUriHelper);
+            return new PSDeletedKeyVaultSecret(secret, vaultUriHelper);
         }
 
         public string BackupKey(string vaultName, string keyName, string outputBlobPath)
@@ -863,12 +858,12 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(outputBlobPath))
                 throw new ArgumentNullException(nameof(outputBlobPath));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             BackupKeyResult backupKeyResult;
             try
             {
-                backupKeyResult = this.keyVaultClient.BackupKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
+                backupKeyResult = keyVaultClient.BackupKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -889,19 +884,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             var backupBlob = File.ReadAllBytes(inputBlobPath);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.KeyBundle keyBundle;
+            KeyBundle keyBundle;
             try
             {
-                keyBundle = this.keyVaultClient.RestoreKeyAsync(vaultAddress, backupBlob).GetAwaiter().GetResult();
+                keyBundle = keyVaultClient.RestoreKeyAsync(vaultAddress, backupBlob).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultKey(keyBundle, this.vaultUriHelper);
+            return new PSKeyVaultKey(keyBundle, vaultUriHelper);
         }
 
         public string BackupSecret( string vaultName, string secretName, string outputBlobPath )
@@ -913,12 +908,12 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( outputBlobPath ) )
                 throw new ArgumentNullException(nameof(outputBlobPath));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             BackupSecretResult backupSecretResult;
             try
             {
-                backupSecretResult = this.keyVaultClient.BackupSecretAsync( vaultAddress, secretName ).GetAwaiter( ).GetResult( );
+                backupSecretResult = keyVaultClient.BackupSecretAsync( vaultAddress, secretName ).GetAwaiter( ).GetResult( );
             }
             catch ( Exception ex )
             {
@@ -939,19 +934,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             var backupBlob = File.ReadAllBytes(inputBlobPath);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.SecretBundle secretBundle;
+            SecretBundle secretBundle;
             try
             {
-                secretBundle = this.keyVaultClient.RestoreSecretAsync( vaultAddress, backupBlob ).GetAwaiter( ).GetResult( );
+                secretBundle = keyVaultClient.RestoreSecretAsync( vaultAddress, backupBlob ).GetAwaiter( ).GetResult( );
             }
             catch ( Exception ex )
             {
                 throw GetInnerException( ex );
             }
 
-            return new PSKeyVaultSecret( secretBundle, this.vaultUriHelper );
+            return new PSKeyVaultSecret( secretBundle, vaultUriHelper );
         }
 
         public PSKeyVaultCertificatePolicy GetCertificatePolicy(string vaultName, string certificateName)
@@ -961,19 +956,18 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(certificateName))
                 throw new ArgumentNullException(nameof(certificateName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             CertificatePolicy certificatePolicy;
             try
             {
-                certificatePolicy = this.keyVaultClient.GetCertificatePolicyAsync(vaultAddress, certificateName).GetAwaiter().GetResult();
+                certificatePolicy = keyVaultClient.GetCertificatePolicyAsync(vaultAddress, certificateName).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
@@ -992,12 +986,12 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (certificatePolicy == null)
                 throw new ArgumentNullException(nameof(certificatePolicy));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
             CertificatePolicy resultantCertificatePolicy;
 
             try
             {
-                resultantCertificatePolicy = this.keyVaultClient.UpdateCertificatePolicyAsync(vaultAddress, certificateName, certificatePolicy).GetAwaiter().GetResult();
+                resultantCertificatePolicy = keyVaultClient.UpdateCertificatePolicyAsync(vaultAddress, certificateName, certificatePolicy).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -1014,19 +1008,18 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(issuerName))
                 throw new ArgumentNullException(nameof(issuerName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             IssuerBundle certificateIssuer;
             try
             {
-                certificateIssuer = this.keyVaultClient.GetCertificateIssuerAsync(vaultAddress, issuerName).GetAwaiter().GetResult();
+                certificateIssuer = keyVaultClient.GetCertificateIssuerAsync(vaultAddress, issuerName).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
@@ -1044,20 +1037,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.VaultName))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidVaultName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<CertificateIssuerItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetCertificateIssuersAsync(vaultAddress).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetCertificateIssuersAsync(vaultAddress).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetCertificateIssuersNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetCertificateIssuersNextAsync(options.NextLink).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return (result == null) ? new List<PSKeyVaultCertificateIssuerIdentityItem>() :
-                    result.Select(issuerItem => new PSKeyVaultCertificateIssuerIdentityItem(issuerItem, this.vaultUriHelper));
+                return result == null ? new List<PSKeyVaultCertificateIssuerIdentityItem>() :
+                    result.Select(issuerItem => new PSKeyVaultCertificateIssuerIdentityItem(issuerItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -1080,7 +1073,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(issuerProvider))
                 throw new ArgumentNullException(nameof(issuerProvider));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
             var issuer = new IssuerBundle
             {
                 Provider = issuerProvider,
@@ -1099,7 +1092,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             IssuerBundle resultantIssuer;
             try
             {
-                resultantIssuer = this.keyVaultClient.SetCertificateIssuerAsync(
+                resultantIssuer = keyVaultClient.SetCertificateIssuerAsync(
                     vaultAddress,
                     issuerName,
                     issuer.Provider,
@@ -1122,13 +1115,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(issuerName))
                 throw new ArgumentNullException(nameof(issuerName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             IssuerBundle issuer;
 
             try
             {
-                issuer = this.keyVaultClient.DeleteCertificateIssuerAsync(vaultAddress, issuerName).GetAwaiter().GetResult();
+                issuer = keyVaultClient.DeleteCertificateIssuerAsync(vaultAddress, issuerName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -1146,19 +1139,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( options.VaultName ) )
                 throw new ArgumentException( KeyVaultProperties.Resources.InvalidVaultName );
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress( options.VaultName );
+            string vaultAddress = vaultUriHelper.CreateVaultAddress( options.VaultName );
 
             try
             {
                 IPage<StorageAccountItem> result;
 
                 if ( string.IsNullOrEmpty( options.NextLink ) )
-                    result = this.keyVaultClient.GetStorageAccountsAsync( vaultAddress ).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetStorageAccountsAsync( vaultAddress ).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetStorageAccountsNextAsync( options.NextLink ).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetStorageAccountsNextAsync( options.NextLink ).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return result.Select( ( storageAccountItem ) => new PSKeyVaultManagedStorageAccountIdentityItem( storageAccountItem, this.vaultUriHelper ) );
+                return result.Select(storageAccountItem => new PSKeyVaultManagedStorageAccountIdentityItem( storageAccountItem, vaultUriHelper ) );
             }
             catch ( Exception ex )
             {
@@ -1173,18 +1166,18 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             StorageBundle storageBundle;
 
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress( vaultName );
+            var vaultAddress = vaultUriHelper.CreateVaultAddress( vaultName );
 
             try
             {
-                storageBundle = this.keyVaultClient.GetStorageAccountAsync( vaultAddress, managedStorageAccountName ).GetAwaiter().GetResult();
+                storageBundle = keyVaultClient.GetStorageAccountAsync( vaultAddress, managedStorageAccountName ).GetAwaiter().GetResult();
             }
             catch ( Exception ex )
             {
                 throw GetInnerException( ex );
             }
 
-            return new PSKeyVaultManagedStorageAccount( storageBundle, this.vaultUriHelper );
+            return new PSKeyVaultManagedStorageAccount( storageBundle, vaultUriHelper );
         }
 
         public PSKeyVaultManagedStorageAccount SetManagedStorageAccount( string vaultName, string managedStorageAccountName, string storageResourceId,
@@ -1200,17 +1193,17 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( activeKeyName ) )
                 throw new ArgumentNullException( "activeKeyName" );
 
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress( vaultName );
-            var attributes = managedStorageAccountAttributes == null ? null : new Azure.KeyVault.Models.StorageAccountAttributes
+            var vaultAddress = vaultUriHelper.CreateVaultAddress( vaultName );
+            var attributes = managedStorageAccountAttributes == null ? null : new StorageAccountAttributes
             {
                 Enabled = managedStorageAccountAttributes.Enabled,
             };
 
-            Azure.KeyVault.Models.StorageBundle storageBundle;
+            StorageBundle storageBundle;
             try
             {
                 storageBundle =
-                    this.keyVaultClient.SetStorageAccountAsync( vaultAddress, managedStorageAccountName,
+                    keyVaultClient.SetStorageAccountAsync( vaultAddress, managedStorageAccountName,
                         storageResourceId, activeKeyName,
                         autoRegenerateKey ?? true,
                         regenerationPeriod == null ? null : XmlConvert.ToString( regenerationPeriod.Value ), attributes,
@@ -1221,7 +1214,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw GetInnerException( ex );
             }
 
-            return new PSKeyVaultManagedStorageAccount( storageBundle, this.vaultUriHelper );
+            return new PSKeyVaultManagedStorageAccount( storageBundle, vaultUriHelper );
         }
 
         public PSKeyVaultManagedStorageAccount UpdateManagedStorageAccount( string vaultName, string managedStorageAccountName, string activeKeyName,
@@ -1233,17 +1226,17 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( managedStorageAccountName ) )
                 throw new ArgumentNullException( "managedStorageAccountName" );
 
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress( vaultName );
-            var attributes = managedStorageAccountAttributes == null ? null : new Azure.KeyVault.Models.StorageAccountAttributes
+            var vaultAddress = vaultUriHelper.CreateVaultAddress( vaultName );
+            var attributes = managedStorageAccountAttributes == null ? null : new StorageAccountAttributes
             {
                 Enabled = managedStorageAccountAttributes.Enabled,
             };
 
-            Azure.KeyVault.Models.StorageBundle storageBundle;
+            StorageBundle storageBundle;
             try
             {
                 storageBundle =
-                    this.keyVaultClient.UpdateStorageAccountAsync( vaultAddress, managedStorageAccountName,
+                    keyVaultClient.UpdateStorageAccountAsync( vaultAddress, managedStorageAccountName,
                         activeKeyName,
                         autoRegenerateKey,
                         regenerationPeriod == null ? null : XmlConvert.ToString( regenerationPeriod.Value ), attributes,
@@ -1254,7 +1247,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw GetInnerException( ex );
             }
 
-            return new PSKeyVaultManagedStorageAccount( storageBundle, this.vaultUriHelper );
+            return new PSKeyVaultManagedStorageAccount( storageBundle, vaultUriHelper );
         }
 
         public PSDeletedKeyVaultManagedStorageAccount DeleteManagedStorageAccount( string vaultName, string managedStorageAccountName )
@@ -1264,19 +1257,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( managedStorageAccountName ) )
                 throw new ArgumentNullException( "managedStorageAccountName" );
 
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress( vaultName );
+            var vaultAddress = vaultUriHelper.CreateVaultAddress( vaultName );
 
-            Azure.KeyVault.Models.DeletedStorageBundle storageBundle;
+            DeletedStorageBundle storageBundle;
             try
             {
-                storageBundle = this.keyVaultClient.DeleteStorageAccountAsync( vaultAddress, managedStorageAccountName ).GetAwaiter().GetResult();
+                storageBundle = keyVaultClient.DeleteStorageAccountAsync( vaultAddress, managedStorageAccountName ).GetAwaiter().GetResult();
             }
             catch ( Exception ex )
             {
                 throw GetInnerException( ex );
             }
 
-            return new PSDeletedKeyVaultManagedStorageAccount( storageBundle, this.vaultUriHelper );
+            return new PSDeletedKeyVaultManagedStorageAccount( storageBundle, vaultUriHelper );
         }
 
         public PSKeyVaultManagedStorageAccount RegenerateManagedStorageAccountKey( string vaultName, string managedStorageAccountName, string keyName )
@@ -1288,19 +1281,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( keyName ) )
                 throw new ArgumentNullException( "keyName" );
 
-            Azure.KeyVault.Models.StorageBundle storageBundle;
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress( vaultName );
+            StorageBundle storageBundle;
+            var vaultAddress = vaultUriHelper.CreateVaultAddress( vaultName );
 
             try
             {
-                storageBundle = this.keyVaultClient.RegenerateStorageAccountKeyAsync( vaultAddress, managedStorageAccountName, keyName ).GetAwaiter().GetResult();
+                storageBundle = keyVaultClient.RegenerateStorageAccountKeyAsync( vaultAddress, managedStorageAccountName, keyName ).GetAwaiter().GetResult();
             }
             catch ( Exception ex )
             {
                 throw GetInnerException( ex );
             }
 
-            return new PSKeyVaultManagedStorageAccount( storageBundle, this.vaultUriHelper );
+            return new PSKeyVaultManagedStorageAccount( storageBundle, vaultUriHelper );
         }
 
         public PSKeyVaultManagedStorageSasDefinition GetManagedStorageSasDefinition( string vaultName, string managedStorageAccountName, string sasDefinitionName )
@@ -1311,18 +1304,18 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             SasDefinitionBundle storagesasDefinitionBundle;
 
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress( vaultName );
+            var vaultAddress = vaultUriHelper.CreateVaultAddress( vaultName );
 
             try
             {
-                storagesasDefinitionBundle = this.keyVaultClient.GetSasDefinitionAsync( vaultAddress, managedStorageAccountName, sasDefinitionName ).GetAwaiter().GetResult();
+                storagesasDefinitionBundle = keyVaultClient.GetSasDefinitionAsync( vaultAddress, managedStorageAccountName, sasDefinitionName ).GetAwaiter().GetResult();
             }
             catch ( Exception ex )
             {
                 throw GetInnerException( ex );
             }
 
-            return new PSKeyVaultManagedStorageSasDefinition( storagesasDefinitionBundle, this.vaultUriHelper );
+            return new PSKeyVaultManagedStorageSasDefinition( storagesasDefinitionBundle, vaultUriHelper );
         }
 
         public IEnumerable<PSKeyVaultManagedStorageSasDefinitionIdentityItem> GetManagedStorageSasDefinitions( KeyVaultStorageSasDefinitiontFilterOptions options )
@@ -1334,19 +1327,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( options.AccountName ) )
                 throw new ArgumentException( KeyVaultProperties.Resources.InvalidManagedStorageAccountName );
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress( options.VaultName );
+            string vaultAddress = vaultUriHelper.CreateVaultAddress( options.VaultName );
 
             try
             {
                 IPage<SasDefinitionItem> result;
 
                 if ( string.IsNullOrEmpty( options.NextLink ) )
-                    result = this.keyVaultClient.GetSasDefinitionsAsync( vaultAddress, options.AccountName ).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetSasDefinitionsAsync( vaultAddress, options.AccountName ).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetSasDefinitionsNextAsync( options.NextLink ).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetSasDefinitionsNextAsync( options.NextLink ).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return result.Select( ( storageAccountItem ) => new PSKeyVaultManagedStorageSasDefinitionIdentityItem( storageAccountItem, this.vaultUriHelper ) );
+                return result.Select(storageAccountItem => new PSKeyVaultManagedStorageSasDefinitionIdentityItem( storageAccountItem, vaultUriHelper ) );
             }
             catch ( Exception ex )
             {
@@ -1377,32 +1370,32 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( sasDefinitionName ) )
                 throw new ArgumentNullException(nameof(sasDefinitionName));
 
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress( vaultName );
-            var attributes = sasDefinitionAttributes == null ? null : new Azure.KeyVault.Models.SasDefinitionAttributes
+            var vaultAddress = vaultUriHelper.CreateVaultAddress( vaultName );
+            var attributes = sasDefinitionAttributes == null ? null : new SasDefinitionAttributes
             {
                 Enabled = sasDefinitionAttributes.Enabled,
             };
 
-            Azure.KeyVault.Models.SasDefinitionBundle sasDefinitionBundle;
+            SasDefinitionBundle sasDefinitionBundle;
             try
             {
                 sasDefinitionBundle =
-                    this.keyVaultClient.SetSasDefinitionAsync( 
-                        vaultBaseUrl: vaultAddress, 
-                        storageAccountName: managedStorageAccountName,
-                        sasDefinitionName: sasDefinitionName,
-                        templateUri: templateUri,
-                        sasType: sasType,
-                        validityPeriod:validityPeriod,
-                        sasDefinitionAttributes: attributes,
-                        tags: tags == null ? null : tags.ConvertToDictionary() ).GetAwaiter().GetResult();
+                    keyVaultClient.SetSasDefinitionAsync( 
+                        vaultAddress, 
+                        managedStorageAccountName,
+                        sasDefinitionName,
+                        templateUri,
+                        sasType,
+                        validityPeriod,
+                        attributes,
+                        tags == null ? null : tags.ConvertToDictionary() ).GetAwaiter().GetResult();
             }
             catch ( Exception ex )
             {
                 throw GetInnerException( ex );
             }
 
-            return new PSKeyVaultManagedStorageSasDefinition( sasDefinitionBundle, this.vaultUriHelper );
+            return new PSKeyVaultManagedStorageSasDefinition( sasDefinitionBundle, vaultUriHelper );
         }
 
         public PSDeletedKeyVaultManagedStorageSasDefinition DeleteManagedStorageSasDefinition( string vaultName, string managedStorageAccountName, string sasDefinitionName )
@@ -1414,13 +1407,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( sasDefinitionName ) )
                 throw new ArgumentNullException( "sasDefinitionName" );
 
-            var vaultAddress = this.vaultUriHelper.CreateVaultAddress( vaultName );
+            var vaultAddress = vaultUriHelper.CreateVaultAddress( vaultName );
 
-            Azure.KeyVault.Models.DeletedSasDefinitionBundle sasDefinitionBundle;
+            DeletedSasDefinitionBundle sasDefinitionBundle;
             try
             {
                 sasDefinitionBundle =
-                    this.keyVaultClient.DeleteSasDefinitionAsync( vaultAddress,
+                    keyVaultClient.DeleteSasDefinitionAsync( vaultAddress,
                         managedStorageAccountName,
                         sasDefinitionName ).GetAwaiter().GetResult();
             }
@@ -1429,7 +1422,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 throw GetInnerException( ex );
             }
 
-            return new PSDeletedKeyVaultManagedStorageSasDefinition( sasDefinitionBundle, this.vaultUriHelper );
+            return new PSDeletedKeyVaultManagedStorageSasDefinition( sasDefinitionBundle, vaultUriHelper );
         }
 
         #endregion
@@ -1448,26 +1441,25 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(keyName))
                 throw new ArgumentNullException("keyName");
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.DeletedKeyBundle deletedKeyBundle;
+            DeletedKeyBundle deletedKeyBundle;
             try
             {
-                deletedKeyBundle = this.keyVaultClient.GetDeletedKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
+                deletedKeyBundle = keyVaultClient.GetDeletedKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if(ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSDeletedKeyVaultKey(deletedKeyBundle, this.vaultUriHelper);
+            return new PSDeletedKeyVaultKey(deletedKeyBundle, vaultUriHelper);
         }
 
         public IEnumerable<PSDeletedKeyVaultKeyIdentityItem> GetDeletedKeys(KeyVaultObjectFilterOptions options)
@@ -1478,20 +1470,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.VaultName))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidVaultName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<DeletedKeyItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetDeletedKeysAsync(vaultAddress).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetDeletedKeysAsync(vaultAddress).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetDeletedKeysNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetDeletedKeysNextAsync(options.NextLink).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return (result == null) ? new List<PSDeletedKeyVaultKeyIdentityItem>() :
-                    result.Select((deletedKeyItem) => new PSDeletedKeyVaultKeyIdentityItem(deletedKeyItem, this.vaultUriHelper));
+                return result == null ? new List<PSDeletedKeyVaultKeyIdentityItem>() :
+                    result.Select(deletedKeyItem => new PSDeletedKeyVaultKeyIdentityItem(deletedKeyItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -1506,26 +1498,25 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(secretName))
                 throw new ArgumentNullException("secretName");
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             DeletedSecretBundle deletedSecret;
             try
             {
-                deletedSecret = this.keyVaultClient.GetDeletedSecretAsync(vaultAddress, secretName).GetAwaiter().GetResult();
+                deletedSecret = keyVaultClient.GetDeletedSecretAsync(vaultAddress, secretName).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSDeletedKeyVaultSecret(deletedSecret, this.vaultUriHelper);
+            return new PSDeletedKeyVaultSecret(deletedSecret, vaultUriHelper);
         }
 
         public IEnumerable<PSDeletedKeyVaultSecretIdentityItem> GetDeletedSecrets(KeyVaultObjectFilterOptions options)
@@ -1535,20 +1526,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.VaultName))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidVaultName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<DeletedSecretItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetDeletedSecretsAsync(vaultAddress).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetDeletedSecretsAsync(vaultAddress).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetDeletedSecretsNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetDeletedSecretsNextAsync(options.NextLink).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return (result == null) ? new List<PSDeletedKeyVaultSecretIdentityItem>() :
-                    result.Select((deletedSecretItem) => new PSDeletedKeyVaultSecretIdentityItem(deletedSecretItem, this.vaultUriHelper));
+                return result == null ? new List<PSDeletedKeyVaultSecretIdentityItem>() :
+                    result.Select(deletedSecretItem => new PSDeletedKeyVaultSecretIdentityItem(deletedSecretItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -1563,11 +1554,11 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(keyName))
                 throw new ArgumentNullException("keyName");
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             try
             {
-                this.keyVaultClient.PurgeDeletedKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
+                keyVaultClient.PurgeDeletedKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -1582,11 +1573,11 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(secretName))
                 throw new ArgumentNullException("secretName");
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             try
             {
-                this.keyVaultClient.PurgeDeletedSecretAsync(vaultAddress, secretName).GetAwaiter().GetResult();
+                keyVaultClient.PurgeDeletedSecretAsync(vaultAddress, secretName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -1601,19 +1592,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(keyName))
                 throw new ArgumentNullException("keyName");
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Microsoft.Azure.KeyVault.Models.KeyBundle recoveredKey;
+            KeyBundle recoveredKey;
             try
             {
-                recoveredKey = this.keyVaultClient.RecoverDeletedKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
+                recoveredKey = keyVaultClient.RecoverDeletedKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultKey(recoveredKey, this.vaultUriHelper);
+            return new PSKeyVaultKey(recoveredKey, vaultUriHelper);
         }
 
         public PSKeyVaultSecret RecoverSecret(string vaultName, string secretName)
@@ -1623,19 +1614,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(secretName))
                 throw new ArgumentNullException("secretName");
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             SecretBundle recoveredSecret;
             try
             {
-                recoveredSecret = this.keyVaultClient.RecoverDeletedSecretAsync(vaultAddress, secretName).GetAwaiter().GetResult();
+                recoveredSecret = keyVaultClient.RecoverDeletedSecretAsync(vaultAddress, secretName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultSecret(recoveredSecret, this.vaultUriHelper);
+            return new PSKeyVaultSecret(recoveredSecret, vaultUriHelper);
         }
 
         public PSDeletedKeyVaultCertificate GetDeletedCertificate( string vaultName, string certName )
@@ -1645,19 +1636,18 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( certName ) )
                 throw new ArgumentNullException( nameof(certName) );
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             DeletedCertificateBundle deletedCertificate;
             try
             {
-                deletedCertificate = this.keyVaultClient.GetDeletedCertificateAsync( vaultAddress, certName ).GetAwaiter( ).GetResult( );
+                deletedCertificate = keyVaultClient.GetDeletedCertificateAsync( vaultAddress, certName ).GetAwaiter( ).GetResult( );
             }
             catch ( KeyVaultErrorException ex )
             {
                 if ( ex.Response.StatusCode == HttpStatusCode.NotFound )
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch ( Exception ex )
             {
@@ -1674,20 +1664,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( options.VaultName ) )
                 throw new ArgumentException( KeyVaultProperties.Resources.InvalidVaultName );
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<DeletedCertificateItem> result;
 
                 if ( string.IsNullOrEmpty( options.NextLink ) )
-                    result = this.keyVaultClient.GetDeletedCertificatesAsync( vaultAddress ).GetAwaiter( ).GetResult( );
+                    result = keyVaultClient.GetDeletedCertificatesAsync( vaultAddress ).GetAwaiter( ).GetResult( );
                 else
-                    result = this.keyVaultClient.GetDeletedCertificatesNextAsync( options.NextLink ).GetAwaiter( ).GetResult( );
+                    result = keyVaultClient.GetDeletedCertificatesNextAsync( options.NextLink ).GetAwaiter( ).GetResult( );
 
                 options.NextLink = result.NextPageLink;
-                return ( result == null ) ? new List<PSDeletedKeyVaultCertificateIdentityItem>( ) :
-                    result.Select( ( deletedItem ) => new PSDeletedKeyVaultCertificateIdentityItem( deletedItem, this.vaultUriHelper ) );
+                return result == null ? new List<PSDeletedKeyVaultCertificateIdentityItem>( ) :
+                    result.Select(deletedItem => new PSDeletedKeyVaultCertificateIdentityItem( deletedItem, vaultUriHelper ) );
             }
             catch ( Exception ex )
             {
@@ -1702,12 +1692,12 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if ( string.IsNullOrEmpty( certName ) )
                 throw new ArgumentNullException( nameof( certName ) );
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             CertificateBundle recoveredCertificate;
             try
             {
-                recoveredCertificate = this.keyVaultClient.RecoverDeletedCertificateAsync( vaultAddress, certName ).GetAwaiter( ).GetResult( );
+                recoveredCertificate = keyVaultClient.RecoverDeletedCertificateAsync( vaultAddress, certName ).GetAwaiter( ).GetResult( );
             }
             catch ( Exception ex )
             {
@@ -1726,12 +1716,12 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(outputBlobPath))
                 throw new ArgumentNullException(nameof(outputBlobPath));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             BackupCertificateResult backupCertificateResult;
             try
             {
-                backupCertificateResult = this.keyVaultClient.BackupCertificateAsync(vaultAddress, certificateName).GetAwaiter().GetResult();
+                backupCertificateResult = keyVaultClient.BackupCertificateAsync(vaultAddress, certificateName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -1752,19 +1742,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             var backupBlob = File.ReadAllBytes(inputBlobPath);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.CertificateBundle certificateBundle;
+            CertificateBundle certificateBundle;
             try
             {
-                certificateBundle = this.keyVaultClient.RestoreCertificateAsync(vaultAddress, backupBlob).GetAwaiter().GetResult();
+                certificateBundle = keyVaultClient.RestoreCertificateAsync(vaultAddress, backupBlob).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultCertificate(certificateBundle, this.vaultUriHelper);
+            return new PSKeyVaultCertificate(certificateBundle, vaultUriHelper);
         }
 
         public PSDeletedKeyVaultManagedStorageAccount GetDeletedManagedStorageAccount(string vaultName, string managedStorageAccountName)
@@ -1774,26 +1764,25 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(managedStorageAccountName))
                 throw new ArgumentNullException(nameof(managedStorageAccountName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.DeletedStorageBundle deletedStorageBundle;
+            DeletedStorageBundle deletedStorageBundle;
             try
             {
-                deletedStorageBundle = this.keyVaultClient.GetDeletedStorageAccountAsync(vaultAddress, managedStorageAccountName).GetAwaiter().GetResult();
+                deletedStorageBundle = keyVaultClient.GetDeletedStorageAccountAsync(vaultAddress, managedStorageAccountName).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSDeletedKeyVaultManagedStorageAccount(deletedStorageBundle, this.vaultUriHelper);
+            return new PSDeletedKeyVaultManagedStorageAccount(deletedStorageBundle, vaultUriHelper);
         }
 
         public PSDeletedKeyVaultManagedStorageSasDefinition GetDeletedManagedStorageSasDefinition(string vaultName, string managedStorageAccountName, string sasDefinitionName)
@@ -1805,26 +1794,25 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrWhiteSpace(sasDefinitionName))
                 throw new ArgumentNullException(nameof(sasDefinitionName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.DeletedSasDefinitionBundle deletedSasDefinitionBundle;
+            DeletedSasDefinitionBundle deletedSasDefinitionBundle;
             try
             {
-                deletedSasDefinitionBundle = this.keyVaultClient.GetDeletedSasDefinitionAsync(vaultAddress, managedStorageAccountName, sasDefinitionName).GetAwaiter().GetResult();
+                deletedSasDefinitionBundle = keyVaultClient.GetDeletedSasDefinitionAsync(vaultAddress, managedStorageAccountName, sasDefinitionName).GetAwaiter().GetResult();
             }
             catch (KeyVaultErrorException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                else
-                    throw;
+                throw;
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSDeletedKeyVaultManagedStorageSasDefinition(deletedSasDefinitionBundle, this.vaultUriHelper);
+            return new PSDeletedKeyVaultManagedStorageSasDefinition(deletedSasDefinitionBundle, vaultUriHelper);
         }
 
         public IEnumerable<PSDeletedKeyVaultManagedStorageAccountIdentityItem> GetDeletedManagedStorageAccounts(KeyVaultObjectFilterOptions options)
@@ -1835,20 +1823,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(options.VaultName))
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidVaultName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<DeletedStorageAccountItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetDeletedStorageAccountsAsync(vaultAddress).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetDeletedStorageAccountsAsync(vaultAddress).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetDeletedStorageAccountsNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetDeletedStorageAccountsNextAsync(options.NextLink).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return (result == null) ? new List<PSDeletedKeyVaultManagedStorageAccountIdentityItem>() :
-                    result.Select((deletedItem) => new PSDeletedKeyVaultManagedStorageAccountIdentityItem(deletedItem, this.vaultUriHelper));
+                return result == null ? new List<PSDeletedKeyVaultManagedStorageAccountIdentityItem>() :
+                    result.Select(deletedItem => new PSDeletedKeyVaultManagedStorageAccountIdentityItem(deletedItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -1867,20 +1855,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (String.IsNullOrWhiteSpace(options.Name))
                 throw new ArgumentNullException(KeyVaultProperties.Resources.InvalidManagedStorageAccountName);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(options.VaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(options.VaultName);
 
             try
             {
                 IPage<DeletedSasDefinitionItem> result;
 
                 if (string.IsNullOrEmpty(options.NextLink))
-                    result = this.keyVaultClient.GetDeletedSasDefinitionsAsync(vaultAddress, options.Name).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetDeletedSasDefinitionsAsync(vaultAddress, options.Name).GetAwaiter().GetResult();
                 else
-                    result = this.keyVaultClient.GetDeletedSasDefinitionsNextAsync(options.NextLink).GetAwaiter().GetResult();
+                    result = keyVaultClient.GetDeletedSasDefinitionsNextAsync(options.NextLink).GetAwaiter().GetResult();
 
                 options.NextLink = result.NextPageLink;
-                return (result == null) ? new List<PSDeletedKeyVaultManagedStorageSasDefinitionIdentityItem>() :
-                    result.Select((deletedItem) => new PSDeletedKeyVaultManagedStorageSasDefinitionIdentityItem(deletedItem, this.vaultUriHelper));
+                return result == null ? new List<PSDeletedKeyVaultManagedStorageSasDefinitionIdentityItem>() :
+                    result.Select(deletedItem => new PSDeletedKeyVaultManagedStorageSasDefinitionIdentityItem(deletedItem, vaultUriHelper));
             }
             catch (Exception ex)
             {
@@ -1895,19 +1883,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(deletedManagedStorageAccountName))
                 throw new ArgumentNullException(nameof(deletedManagedStorageAccountName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             StorageBundle recoveredStorageBundle;
             try
             {
-                recoveredStorageBundle = this.keyVaultClient.RecoverDeletedStorageAccountAsync(vaultAddress, deletedManagedStorageAccountName).GetAwaiter().GetResult();
+                recoveredStorageBundle = keyVaultClient.RecoverDeletedStorageAccountAsync(vaultAddress, deletedManagedStorageAccountName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultManagedStorageAccount(recoveredStorageBundle, this.vaultUriHelper);
+            return new PSKeyVaultManagedStorageAccount(recoveredStorageBundle, vaultUriHelper);
         }
 
         public PSKeyVaultManagedStorageSasDefinition RecoverManagedStorageSasDefinition(string vaultName, string managedStorageAccountName, string sasDefinitionName)
@@ -1919,19 +1907,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrWhiteSpace(sasDefinitionName))
                 throw new ArgumentNullException(nameof(sasDefinitionName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             SasDefinitionBundle recoveredSasDefinitionBundle;
             try
             {
-                recoveredSasDefinitionBundle = this.keyVaultClient.RecoverDeletedSasDefinitionAsync(vaultAddress, managedStorageAccountName, sasDefinitionName).GetAwaiter().GetResult();
+                recoveredSasDefinitionBundle = keyVaultClient.RecoverDeletedSasDefinitionAsync(vaultAddress, managedStorageAccountName, sasDefinitionName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultManagedStorageSasDefinition(recoveredSasDefinitionBundle, this.vaultUriHelper);
+            return new PSKeyVaultManagedStorageSasDefinition(recoveredSasDefinitionBundle, vaultUriHelper);
         }
 
         public void PurgeManagedStorageAccount(string vaultName, string managedStorageAccountName)
@@ -1941,11 +1929,11 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(managedStorageAccountName))
                 throw new ArgumentNullException(nameof(managedStorageAccountName));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             try
             {
-                this.keyVaultClient.PurgeDeletedStorageAccountAsync(vaultAddress, managedStorageAccountName).GetAwaiter().GetResult();
+                keyVaultClient.PurgeDeletedStorageAccountAsync(vaultAddress, managedStorageAccountName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -1962,12 +1950,12 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(outputBlobPath))
                 throw new ArgumentNullException(nameof(outputBlobPath));
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
             BackupStorageResult backupStorageAccountResult;
             try
             {
-                backupStorageAccountResult = this.keyVaultClient.BackupStorageAccountAsync(vaultAddress, managedStorageAccountName).GetAwaiter().GetResult();
+                backupStorageAccountResult = keyVaultClient.BackupStorageAccountAsync(vaultAddress, managedStorageAccountName).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -1988,19 +1976,19 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             var backupBlob = File.ReadAllBytes(inputBlobPath);
 
-            string vaultAddress = this.vaultUriHelper.CreateVaultAddress(vaultName);
+            string vaultAddress = vaultUriHelper.CreateVaultAddress(vaultName);
 
-            Azure.KeyVault.Models.StorageBundle storageAccountBundle;
+            StorageBundle storageAccountBundle;
             try
             {
-                storageAccountBundle = this.keyVaultClient.RestoreStorageAccountAsync(vaultAddress, backupBlob).GetAwaiter().GetResult();
+                storageAccountBundle = keyVaultClient.RestoreStorageAccountAsync(vaultAddress, backupBlob).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw GetInnerException(ex);
             }
 
-            return new PSKeyVaultManagedStorageAccount(storageAccountBundle, this.vaultUriHelper);
+            return new PSKeyVaultManagedStorageAccount(storageAccountBundle, vaultUriHelper);
         }
 
         private VaultUriHelper vaultUriHelper;

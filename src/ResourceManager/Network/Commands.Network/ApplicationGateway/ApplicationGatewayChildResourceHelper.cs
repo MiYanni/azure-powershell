@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Network
             string resourceName)
         {
             return string.Format(
-                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayChildResourceId,
+                Properties.Resources.ApplicationGatewayChildResourceId,
                 subscriptionId,
                 resourceGroupName,
                 applicationGatewayName,
@@ -38,10 +38,10 @@ namespace Microsoft.Azure.Commands.Network
         public static string GetResourceNotSetId(string subscriptionId, string resource, string resourceName)
         {
             return string.Format(
-                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayChildResourceId,
+                Properties.Resources.ApplicationGatewayChildResourceId,
                 subscriptionId,
-                Microsoft.Azure.Commands.Network.Properties.Resources.ResourceGroupNotSet,
-                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayNameNotSet,
+                Properties.Resources.ResourceGroupNotSet,
+                Properties.Resources.ApplicationGatewayNameNotSet,
                 resource,
                 resourceName);
         }

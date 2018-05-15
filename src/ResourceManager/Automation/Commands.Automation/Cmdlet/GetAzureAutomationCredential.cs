@@ -41,14 +41,14 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
             IEnumerable<CredentialInfo> ret = null;
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 ret = new List<CredentialInfo>
                 {
-                   this.AutomationClient.GetCredential(this.ResourceGroupName, this.AutomationAccountName, this.Name)
+                   AutomationClient.GetCredential(ResourceGroupName, AutomationAccountName, Name)
                 };
 
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
             else
             {
@@ -56,8 +56,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
                 do
                 {
-                    ret = this.AutomationClient.ListCredentials(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
-                    this.GenerateCmdletOutput(ret);
+                    ret = AutomationClient.ListCredentials(ResourceGroupName, AutomationAccountName, ref nextLink);
+                    GenerateCmdletOutput(ret);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

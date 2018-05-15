@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DatabaseBackupLongTermRetentionPolicy DatabaseBackupLongTermRetentionPolicy
         {
-            get { return this._databaseBackupLongTermRetentionPolicy; }
-            set { this._databaseBackupLongTermRetentionPolicy = value; }
+            get { return _databaseBackupLongTermRetentionPolicy; }
+            set { _databaseBackupLongTermRetentionPolicy = value; }
         }
         
         /// <summary>

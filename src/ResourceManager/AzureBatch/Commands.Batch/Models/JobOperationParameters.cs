@@ -29,8 +29,8 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException(Resources.NoJob);
             }
 
-            this.JobId = jobId;
-            this.Job = job;
+            JobId = jobId;
+            Job = job;
         }
 
         /// <summary>

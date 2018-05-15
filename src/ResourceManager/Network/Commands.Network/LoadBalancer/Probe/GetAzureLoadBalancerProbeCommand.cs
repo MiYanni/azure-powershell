@@ -36,18 +36,18 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var lbProbe =
-                    this.LoadBalancer.Probes.First(
+                    LoadBalancer.Probes.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(lbProbe);
             }
             else
             {
-                var lbProbes = this.LoadBalancer.Probes;
+                var lbProbes = LoadBalancer.Probes;
                 WriteObject(lbProbes, true);
             }
 

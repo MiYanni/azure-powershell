@@ -37,14 +37,14 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var frontendipConfiguration = this.LoadBalancer.FrontendIpConfigurations.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var frontendipConfiguration = LoadBalancer.FrontendIpConfigurations.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (frontendipConfiguration != null)
             {
-                this.LoadBalancer.FrontendIpConfigurations.Remove(frontendipConfiguration);
+                LoadBalancer.FrontendIpConfigurations.Remove(frontendipConfiguration);
             }
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

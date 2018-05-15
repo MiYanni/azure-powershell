@@ -14,9 +14,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.File;
+    using Common;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.File;
     using System.Globalization;
     using System.Management.Automation;
 
@@ -73,23 +73,23 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         public override void ExecuteCmdlet()
         {
             CloudFileShare share;
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case Constants.ShareParameterSetName:
-                    share = this.Share;
+                    share = Share;
                     break;
 
                 case Constants.ShareNameParameterSetName:
-                    share = this.BuildFileShareObjectFromName(this.Name);
+                    share = BuildFileShareObjectFromName(Name);
                     break;
 
                 default:
-                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", this.ParameterSetName));
+                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", ParameterSetName));
             }
 
             if (ShouldProcess(share.Name, "Remove share"))
             {
-                this.RunTask(async taskId =>
+                RunTask(async taskId =>
                 {
                     if (share.IsSnapshot && IncludeAllSnapshot.IsPresent)
                     {
@@ -114,7 +114,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
                         try
                         {
-                            await this.Channel.DeleteShareAsync(share, deleteShareSnapshotsOption, null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
+                            await Channel.DeleteShareAsync(share, deleteShareSnapshotsOption, null, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
                             retryDeleteSnapshot = false;
                         }
                         catch (StorageException e)
@@ -131,7 +131,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                             if (force || await OutputStream.ConfirmAsync(string.Format("This share might have snapshots, remove the share and all snapshots?: {0}", share.Name)).ConfigureAwait(false))
                             {
                                 deleteShareSnapshotsOption = DeleteShareSnapshotsOption.IncludeSnapshots;
-                                await this.Channel.DeleteShareAsync(share, deleteShareSnapshotsOption, null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
+                                await Channel.DeleteShareAsync(share, deleteShareSnapshotsOption, null, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
                             }
                             else
                             {
@@ -141,9 +141,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                         }
                     }
 
-                    if (this.PassThru)
+                    if (PassThru)
                     {
-                        this.OutputStream.WriteObject(taskId, share);
+                        OutputStream.WriteObject(taskId, share);
                     }
                 });
             }

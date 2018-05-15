@@ -14,7 +14,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
 
         public void Report(TransferStatus value)
         {
-            this.progressHandler(value);
+            progressHandler(value);
         }
     }
 }

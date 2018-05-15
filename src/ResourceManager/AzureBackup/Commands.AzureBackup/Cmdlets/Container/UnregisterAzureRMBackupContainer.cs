@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
 
                 WriteObject(GetCreatedJobs(Container.ResourceGroupName,
                     Container.ResourceName,
-                    new Models.AzureRMBackupVault(Container.ResourceGroupName, Container.ResourceName,
+                    new AzureRMBackupVault(Container.ResourceGroupName, Container.ResourceName,
                         Container.Location),
                     GetOperationStatus(Container.ResourceGroupName, Container.ResourceName, operationId).JobList)
                     .FirstOrDefault());

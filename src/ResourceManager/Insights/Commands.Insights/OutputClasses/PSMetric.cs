@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// </summary>
         /// <param name="metric">The input Metric object</param>
         public PSMetric(Metric metric)
-            : base(name: new PSLocalizableString(metric.Name), unit: metric.Unit, data: new PSMetricValuesCollection(metric.Data), id: metric.Id, type: metric.Type)
+            : base(new PSLocalizableString(metric.Name), metric.Unit, new PSMetricValuesCollection(metric.Data), metric.Id, metric.Type)
         {
         }
     }

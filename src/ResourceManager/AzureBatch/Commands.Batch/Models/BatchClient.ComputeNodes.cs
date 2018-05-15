@@ -41,9 +41,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 WriteVerbose(string.Format(Resources.GetComputeNodeById, options.ComputeNodeId, poolId));
                 PoolOperations poolOperations = options.Context.BatchOMClient.PoolOperations;
                 ODATADetailLevel getDetailLevel = new ODATADetailLevel(selectClause: options.Select);
-                ComputeNode computeNode = poolOperations.GetComputeNode(poolId, options.ComputeNodeId, detailLevel: getDetailLevel, additionalBehaviors: options.AdditionalBehaviors);
+                ComputeNode computeNode = poolOperations.GetComputeNode(poolId, options.ComputeNodeId, getDetailLevel, options.AdditionalBehaviors);
                 PSComputeNode psComputeNode = new PSComputeNode(computeNode);
-                return new PSComputeNode[] { psComputeNode };
+                return new[] { psComputeNode };
             }
             // List compute nodes using the specified filter
             else

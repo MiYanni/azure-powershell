@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         {
             using (var stream = await message.Content
                 .ReadAsStreamAsync()
-                .ConfigureAwait(continueOnCapturedContext: false))
+                .ConfigureAwait(false))
             {
                 var streamPosition = stream.Position;
                 try
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         {
             using (var stream = await message.Content
                 .ReadAsStreamAsync()
-                .ConfigureAwait(continueOnCapturedContext: false))
+                .ConfigureAwait(false))
             using (var streamReader = new StreamReader(stream))
             {
                 var streamPosition = stream.Position;

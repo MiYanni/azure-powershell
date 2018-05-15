@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var backendHttpSettings =
-                    this.ApplicationGateway.BackendHttpSettingsCollection.First(
+                    ApplicationGateway.BackendHttpSettingsCollection.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(backendHttpSettings);
             }
             else
             {
-                var backendHttpSettings = this.ApplicationGateway.BackendHttpSettingsCollection;
+                var backendHttpSettings = ApplicationGateway.BackendHttpSettingsCollection;
                 WriteObject(backendHttpSettings, true);
             }
 

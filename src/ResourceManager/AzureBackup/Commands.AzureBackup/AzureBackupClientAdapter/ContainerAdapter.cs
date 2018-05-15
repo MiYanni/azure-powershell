@@ -59,9 +59,9 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         /// <returns></returns>
         public void EnableMachineContainerReregistration(string resourceGroupName, string resourceName, long containerId)
         {
-            EnableReregistrationRequest request = new EnableReregistrationRequest()
+            EnableReregistrationRequest request = new EnableReregistrationRequest
             {
-                ContainerReregistrationState = new ContainerReregistrationState()
+                ContainerReregistrationState = new ContainerReregistrationState
                 {
                     EnableReregistration = true,
                 },

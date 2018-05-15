@@ -48,10 +48,10 @@ namespace Microsoft.Azure.Commands.Network.Automation
         {
             base.Execute();
 
-            var vUsageList = this.NetworkClient.NetworkManagementClient.Usages.List(Location);
+            var vUsageList = NetworkClient.NetworkManagementClient.Usages.List(Location);
             foreach (var vUsage in vUsageList)
             {
-                var vUsageModel = NetworkResourceManagerProfile.Mapper.Map<CNM.PSUsage>(vUsage);
+                var vUsageModel = NetworkResourceManagerProfile.Mapper.Map<PSUsage>(vUsage);
                 WriteObject(vUsageModel);
             }
         }

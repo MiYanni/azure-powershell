@@ -49,9 +49,9 @@ namespace Microsoft.Azure.Commands.Management.Storage
         {
             base.ExecuteCmdlet();
 
-            var storageAccount = this.StorageClient.StorageAccounts.GetProperties(
-                this.ResourceGroupName,
-                this.Name);
+            var storageAccount = StorageClient.StorageAccounts.GetProperties(
+                ResourceGroupName,
+                Name);
             if (storageAccount.NetworkRuleSet != null)
             {
                 WriteObject(PSNetworkRuleSet.ParsePSNetworkRule(storageAccount.NetworkRuleSet));

@@ -15,8 +15,8 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
     using Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.File;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.File;
     using System;
     using System.Globalization;
     using System.Management.Automation;
@@ -60,15 +60,15 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         {
             if (String.IsNullOrEmpty(ShareName) || String.IsNullOrEmpty(Policy)) return;
 
-            NamingUtil.ValidateShareName(this.ShareName, false);
+            NamingUtil.ValidateShareName(ShareName, false);
 
-            if (!NameUtil.IsValidStoredAccessPolicyName(this.Policy))
+            if (!NameUtil.IsValidStoredAccessPolicyName(Policy))
             {
-                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, Resources.InvalidAccessPolicyName, this.Policy));
+                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, Resources.InvalidAccessPolicyName, Policy));
             }
 
             //Get existing permissions
-            CloudFileShare fileShare = this.Channel.GetShareReference(this.ShareName);
+            CloudFileShare fileShare = Channel.GetShareReference(ShareName);
 
             FileSharePermissions fileSharePermissions;
             try
@@ -81,14 +81,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             }
 
             //Add new policy
-            if (fileSharePermissions.SharedAccessPolicies.Keys.Contains(this.Policy))
+            if (fileSharePermissions.SharedAccessPolicies.Keys.Contains(Policy))
             {
-                throw new ResourceAlreadyExistException(String.Format(CultureInfo.CurrentCulture, Resources.PolicyAlreadyExists, this.Policy));
+                throw new ResourceAlreadyExistException(String.Format(CultureInfo.CurrentCulture, Resources.PolicyAlreadyExists, Policy));
             }
 
             SharedAccessFilePolicy policy = new SharedAccessFilePolicy();
-            AccessPolicyHelper.SetupAccessPolicy<SharedAccessFilePolicy>(policy, this.StartTime, this.ExpiryTime, this.Permission);
-            fileSharePermissions.SharedAccessPolicies.Add(this.Policy, policy);
+            AccessPolicyHelper.SetupAccessPolicy<SharedAccessFilePolicy>(policy, StartTime, ExpiryTime, Permission);
+            fileSharePermissions.SharedAccessPolicies.Add(Policy, policy);
 
             //Set permissions back to container
             try

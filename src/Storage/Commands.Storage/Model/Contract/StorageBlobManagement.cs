@@ -14,15 +14,15 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.File;
-    using Microsoft.WindowsAzure.Storage.File.Protocol;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Shared.Protocol;
-    using Microsoft.WindowsAzure.Storage.Table;
+    using Commands.Common.Storage;
+    using Common;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.File;
+    using WindowsAzure.Storage.File.Protocol;
+    using WindowsAzure.Storage.Queue;
+    using WindowsAzure.Storage.Shared.Protocol;
+    using WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
     using System.Threading;
@@ -47,19 +47,16 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
         {
             get
             {
-                if (this.blobClient == null)
+                if (blobClient == null)
                 {
-                    if (this.StorageContext.StorageAccount == null)
+                    if (StorageContext.StorageAccount == null)
                     {
                         throw new ArgumentException(Resources.DefaultStorageCredentialsNotFound);
                     }
-                    else
-                    {
-                        this.blobClient = this.StorageContext.StorageAccount.CreateCloudBlobClient();
-                    }
+                    blobClient = StorageContext.StorageAccount.CreateCloudBlobClient();
                 }
 
-                return this.blobClient;
+                return blobClient;
             }
         }
 
@@ -139,7 +136,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
         /// <returns>A CloudBlobContainer in local memory</returns>
         public CloudBlobContainer GetContainerReference(string name)
         {
-            return this.BlobClient.GetContainerReference(name);
+            return BlobClient.GetContainerReference(name);
         }
 
         /// <summary>
@@ -222,10 +219,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
                 {
                     return null;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
 
@@ -266,16 +260,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
             {
                 return false;
             }
-            else
+            try
             {
-                try
-                {
-                    return container.ExistsAsync(options, operationContext).Result;
-                }
-                catch (AggregateException e) when (e.InnerException is StorageException)
-                {
-                    throw e.InnerException;
-                }
+                return container.ExistsAsync(options, operationContext).Result;
+            }
+            catch (AggregateException e) when (e.InnerException is StorageException)
+            {
+                throw e.InnerException;
             }
         }
 
@@ -292,16 +283,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
             {
                 return false;
             }
-            else
+            try
             {
-                try
-                {
-                    return blob.ExistsAsync(options, operationContext).Result;
-                }
-                catch (AggregateException e) when (e.InnerException is StorageException)
-                {
-                    throw e.InnerException;
-                }
+                return blob.ExistsAsync(options, operationContext).Result;
+            }
+            catch (AggregateException e) when (e.InnerException is StorageException)
+            {
+                throw e.InnerException;
             }
         }
 
@@ -420,10 +408,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
                     //The abort operation is successful, although get an exception
                     return;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
             catch (AggregateException e) when (e.InnerException is StorageException)
             {
@@ -432,10 +417,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
                     //The abort operation is successful, although get an exception
                     return;
                 }
-                else
-                {
-                    throw e.InnerException;
-                }
+                throw e.InnerException;
             }
         }
 
@@ -588,10 +570,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
                 {
                     return null;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
 
@@ -783,7 +762,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
         {
             try
             {
-                return this.BlobClient.ListContainersSegmentedAsync(prefix, detailsIncluded, maxResults, currentToken, options, operationContext).Result;
+                return BlobClient.ListContainersSegmentedAsync(prefix, detailsIncluded, maxResults, currentToken, options, operationContext).Result;
             }
             catch (AggregateException e) when (e.InnerException is StorageException)
             {

@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("New", "AzureRmDiskConfig", SupportsShouldProcess = true)]
     [OutputType(typeof(PSDisk))]
-    public partial class NewAzureRmDiskConfigCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class NewAzureRmDiskConfigCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = false,
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Mandatory = false,
             Position = 3,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.LocationCompleter("Microsoft.Compute/disks")]
+        [LocationCompleter("Microsoft.Compute/disks")]
         public string Location { get; set; }
 
         [Parameter(
@@ -124,102 +124,102 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // Sku
-            Microsoft.Azure.Management.Compute.Models.DiskSku vSku = null;
+            DiskSku vSku = null;
 
             // CreationData
-            Microsoft.Azure.Management.Compute.Models.CreationData vCreationData = null;
+            CreationData vCreationData = null;
 
             // EncryptionSettings
-            Microsoft.Azure.Management.Compute.Models.EncryptionSettings vEncryptionSettings = null;
+            EncryptionSettings vEncryptionSettings = null;
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SkuName"))
+            if (MyInvocation.BoundParameters.ContainsKey("SkuName"))
             {
                if (vSku == null)
                 {
-                    vSku = new Microsoft.Azure.Management.Compute.Models.DiskSku();
+                    vSku = new DiskSku();
                 }
-                vSku.Name = this.SkuName;
+                vSku.Name = SkuName;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("CreateOption"))
+            if (MyInvocation.BoundParameters.ContainsKey("CreateOption"))
             {
                 if (vCreationData == null)
                 {
-                    vCreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    vCreationData = new CreationData();
                 }
-                vCreationData.CreateOption = this.CreateOption;
+                vCreationData.CreateOption = CreateOption;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("StorageAccountId"))
+            if (MyInvocation.BoundParameters.ContainsKey("StorageAccountId"))
             {
                 if (vCreationData == null)
                 {
-                    vCreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    vCreationData = new CreationData();
                 }
-                vCreationData.StorageAccountId = this.StorageAccountId;
+                vCreationData.StorageAccountId = StorageAccountId;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("ImageReference"))
+            if (MyInvocation.BoundParameters.ContainsKey("ImageReference"))
             {
                 if (vCreationData == null)
                 {
-                    vCreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    vCreationData = new CreationData();
                 }
-                vCreationData.ImageReference = this.ImageReference;
+                vCreationData.ImageReference = ImageReference;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SourceUri"))
+            if (MyInvocation.BoundParameters.ContainsKey("SourceUri"))
             {
                 if (vCreationData == null)
                 {
-                    vCreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    vCreationData = new CreationData();
                 }
-                vCreationData.SourceUri = this.SourceUri;
+                vCreationData.SourceUri = SourceUri;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SourceResourceId"))
+            if (MyInvocation.BoundParameters.ContainsKey("SourceResourceId"))
             {
                 if (vCreationData == null)
                 {
-                    vCreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    vCreationData = new CreationData();
                 }
-                vCreationData.SourceResourceId = this.SourceResourceId;
+                vCreationData.SourceResourceId = SourceResourceId;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("EncryptionSettingsEnabled"))
+            if (MyInvocation.BoundParameters.ContainsKey("EncryptionSettingsEnabled"))
             {
                 if (vEncryptionSettings == null)
                 {
-                    vEncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    vEncryptionSettings = new EncryptionSettings();
                 }
-                vEncryptionSettings.Enabled = this.EncryptionSettingsEnabled;
+                vEncryptionSettings.Enabled = EncryptionSettingsEnabled;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("DiskEncryptionKey"))
+            if (MyInvocation.BoundParameters.ContainsKey("DiskEncryptionKey"))
             {
                 if (vEncryptionSettings == null)
                 {
-                    vEncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    vEncryptionSettings = new EncryptionSettings();
                 }
-                vEncryptionSettings.DiskEncryptionKey = this.DiskEncryptionKey;
+                vEncryptionSettings.DiskEncryptionKey = DiskEncryptionKey;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("KeyEncryptionKey"))
+            if (MyInvocation.BoundParameters.ContainsKey("KeyEncryptionKey"))
             {
                 if (vEncryptionSettings == null)
                 {
-                    vEncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    vEncryptionSettings = new EncryptionSettings();
                 }
-                vEncryptionSettings.KeyEncryptionKey = this.KeyEncryptionKey;
+                vEncryptionSettings.KeyEncryptionKey = KeyEncryptionKey;
             }
 
             var vDisk = new PSDisk
             {
-                Zones = this.MyInvocation.BoundParameters.ContainsKey("Zone") ? this.Zone : null,
-                OsType = this.MyInvocation.BoundParameters.ContainsKey("OsType") ? this.OsType : (OperatingSystemTypes?) null,
-                DiskSizeGB = this.MyInvocation.BoundParameters.ContainsKey("DiskSizeGB") ? this.DiskSizeGB : (int?) null,
-                Location = this.MyInvocation.BoundParameters.ContainsKey("Location") ? this.Location : null,
-                Tags = this.MyInvocation.BoundParameters.ContainsKey("Tag") ? this.Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
+                Zones = MyInvocation.BoundParameters.ContainsKey("Zone") ? Zone : null,
+                OsType = MyInvocation.BoundParameters.ContainsKey("OsType") ? OsType : null,
+                DiskSizeGB = MyInvocation.BoundParameters.ContainsKey("DiskSizeGB") ? DiskSizeGB : (int?) null,
+                Location = MyInvocation.BoundParameters.ContainsKey("Location") ? Location : null,
+                Tags = MyInvocation.BoundParameters.ContainsKey("Tag") ? Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
                 Sku = vSku,
                 CreationData = vCreationData,
                 EncryptionSettings = vEncryptionSettings,

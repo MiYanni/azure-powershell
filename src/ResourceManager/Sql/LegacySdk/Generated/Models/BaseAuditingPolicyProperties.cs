@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AuditingState
         {
-            get { return this._auditingState; }
-            set { this._auditingState = value; }
+            get { return _auditingState; }
+            set { _auditingState = value; }
         }
         
         private string _auditLogsTableName;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AuditLogsTableName
         {
-            get { return this._auditLogsTableName; }
-            set { this._auditLogsTableName = value; }
+            get { return _auditLogsTableName; }
+            set { _auditLogsTableName = value; }
         }
         
         private string _eventTypesToAudit;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string EventTypesToAudit
         {
-            get { return this._eventTypesToAudit; }
-            set { this._eventTypesToAudit = value; }
+            get { return _eventTypesToAudit; }
+            set { _eventTypesToAudit = value; }
         }
         
         private string _fullAuditLogsTableName;
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string FullAuditLogsTableName
         {
-            get { return this._fullAuditLogsTableName; }
-            set { this._fullAuditLogsTableName = value; }
+            get { return _fullAuditLogsTableName; }
+            set { _fullAuditLogsTableName = value; }
         }
         
         private string _retentionDays;
@@ -85,8 +85,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RetentionDays
         {
-            get { return this._retentionDays; }
-            set { this._retentionDays = value; }
+            get { return _retentionDays; }
+            set { _retentionDays = value; }
         }
         
         private string _storageAccountKey;
@@ -97,8 +97,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageAccountKey
         {
-            get { return this._storageAccountKey; }
-            set { this._storageAccountKey = value; }
+            get { return _storageAccountKey; }
+            set { _storageAccountKey = value; }
         }
         
         private string _storageAccountName;
@@ -109,8 +109,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageAccountName
         {
-            get { return this._storageAccountName; }
-            set { this._storageAccountName = value; }
+            get { return _storageAccountName; }
+            set { _storageAccountName = value; }
         }
         
         private string _storageAccountResourceGroupName;
@@ -121,8 +121,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageAccountResourceGroupName
         {
-            get { return this._storageAccountResourceGroupName; }
-            set { this._storageAccountResourceGroupName = value; }
+            get { return _storageAccountResourceGroupName; }
+            set { _storageAccountResourceGroupName = value; }
         }
         
         private string _storageAccountSecondaryKey;
@@ -133,8 +133,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageAccountSecondaryKey
         {
-            get { return this._storageAccountSecondaryKey; }
-            set { this._storageAccountSecondaryKey = value; }
+            get { return _storageAccountSecondaryKey; }
+            set { _storageAccountSecondaryKey = value; }
         }
         
         private string _storageAccountSubscriptionId;
@@ -145,8 +145,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageAccountSubscriptionId
         {
-            get { return this._storageAccountSubscriptionId; }
-            set { this._storageAccountSubscriptionId = value; }
+            get { return _storageAccountSubscriptionId; }
+            set { _storageAccountSubscriptionId = value; }
         }
         
         private string _storageTableEndpoint;
@@ -157,8 +157,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageTableEndpoint
         {
-            get { return this._storageTableEndpoint; }
-            set { this._storageTableEndpoint = value; }
+            get { return _storageTableEndpoint; }
+            set { _storageTableEndpoint = value; }
         }
         
         /// <summary>

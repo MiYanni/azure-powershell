@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
 
         public PSTriggerRun()
         {
-            this.triggerRun = new TriggerRun();
+            triggerRun = new TriggerRun();
         }
 
         public PSTriggerRun(TriggerRun triggerRun, string resourceGroupName, string factoryName)
@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
             }
 
             this.triggerRun = triggerRun;
-            this.ResourceGroupName = resourceGroupName;
-            this.DataFactoryName = factoryName;
+            ResourceGroupName = resourceGroupName;
+            DataFactoryName = factoryName;
         }
 
         public string ResourceGroupName { get; private set; }
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.triggerRun.TriggerName;
+                return triggerRun.TriggerName;
             }
         }
 
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.triggerRun.TriggerRunId;
+                return triggerRun.TriggerRunId;
             }
         }
 
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.triggerRun.TriggerType;
+                return triggerRun.TriggerType;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.triggerRun.TriggerRunTimestamp;
+                return triggerRun.TriggerRunTimestamp;
             }
         }
 
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.triggerRun.Status;
+                return triggerRun.Status;
             }
         }
     }

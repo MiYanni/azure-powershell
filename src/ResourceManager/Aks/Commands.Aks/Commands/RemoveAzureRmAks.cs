@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Aks
             Mandatory = true,
             ParameterSetName = GroupNameParameterSet,
             HelpMessage = "Resource group name")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

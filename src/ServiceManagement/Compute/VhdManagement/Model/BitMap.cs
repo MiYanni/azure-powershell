@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
     {
         public BitMap(BitArray data)
         {
-            this.Data = data;
+            Data = data;
             Covered = CheckIfCovered();
         }
 

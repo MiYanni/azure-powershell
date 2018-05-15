@@ -20,7 +20,7 @@ using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 namespace Microsoft.Azure.Commands.MachineLearning
 {
 
-    [Cmdlet(VerbsCommon.Get, CommitmentPlansCmdletBase.CommitmentAssociationCommandletSuffix)]
+    [Cmdlet(VerbsCommon.Get, CommitmentAssociationCommandletSuffix)]
     [OutputType(typeof(CommitmentPlan), typeof(CommitmentPlan[]))]
     public class GetAzureMLCommitmentAssociation : CommitmentPlansCmdletBase
     {
@@ -40,25 +40,25 @@ namespace Microsoft.Azure.Commands.MachineLearning
         protected override void RunCmdlet()
         {
             // If this is a simple get commitment association by name operation, resolve it as such
-            if (!string.IsNullOrWhiteSpace(this.ResourceGroupName) &&
-                !string.IsNullOrWhiteSpace(this.Name))
+            if (!string.IsNullOrWhiteSpace(ResourceGroupName) &&
+                !string.IsNullOrWhiteSpace(Name))
             {
                 CommitmentAssociation commitmentAssociation =
-                    this.CommitmentPlansClient.GetAzureMlCommitmentAssociation(this.ResourceGroupName, this.CommitmentPlanName, this.Name);
-                this.WriteObject(commitmentAssociation);
+                    CommitmentPlansClient.GetAzureMlCommitmentAssociation(ResourceGroupName, CommitmentPlanName, Name);
+                WriteObject(commitmentAssociation);
             }
             else
             {
                 IPage<CommitmentAssociation> commitmentAssociations =
-                    this.CommitmentPlansClient.ListAzureMlCommitmentAssociationsAsync(
-                        this.ResourceGroupName,
-                        this.CommitmentPlanName,
+                    CommitmentPlansClient.ListAzureMlCommitmentAssociationsAsync(
+                        ResourceGroupName,
+                        CommitmentPlanName,
                         null,
-                        this.CancellationToken).Result;
+                        CancellationToken).Result;
 
                 foreach (var commitmentAssociation in commitmentAssociations)
                 {
-                    this.WriteObject(commitmentAssociation, true);
+                    WriteObject(commitmentAssociation, true);
                 }
             }
         }

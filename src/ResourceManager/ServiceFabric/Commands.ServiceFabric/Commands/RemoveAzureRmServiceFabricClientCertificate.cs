@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         {
             var cluster = GetCurrentCluster();
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Remove a client certificate")))
+            if (ShouldProcess(Name, string.Format("Remove a client certificate")))
             {
                 switch (ParameterSetName)
                 {

@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public string ApiVersion
         {
-            get { return this._apiVersion; }
+            get { return _apiVersion; }
         }
         
         private Uri _baseUri;
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public Uri BaseUri
         {
-            get { return this._baseUri; }
+            get { return _baseUri; }
         }
         
         private SubscriptionCloudCredentials _credentials;
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public SubscriptionCloudCredentials Credentials
         {
-            get { return this._credentials; }
+            get { return _credentials; }
         }
         
         private int _longRunningOperationInitialTimeout;
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public int LongRunningOperationInitialTimeout
         {
-            get { return this._longRunningOperationInitialTimeout; }
-            set { this._longRunningOperationInitialTimeout = value; }
+            get { return _longRunningOperationInitialTimeout; }
+            set { _longRunningOperationInitialTimeout = value; }
         }
         
         private int _longRunningOperationRetryTimeout;
@@ -92,8 +92,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public int LongRunningOperationRetryTimeout
         {
-            get { return this._longRunningOperationRetryTimeout; }
-            set { this._longRunningOperationRetryTimeout = value; }
+            get { return _longRunningOperationRetryTimeout; }
+            set { _longRunningOperationRetryTimeout = value; }
         }
         
         private IAuditingPolicyOperations _auditingPolicy;
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IAuditingPolicyOperations AuditingPolicy
         {
-            get { return this._auditingPolicy; }
+            get { return _auditingPolicy; }
         }
         
         private IBlobAuditingOperations _blobAuditing;
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IBlobAuditingOperations BlobAuditing
         {
-            get { return this._blobAuditing; }
+            get { return _blobAuditing; }
         }
         
         private ICapabilitiesOperations _capabilities;
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual ICapabilitiesOperations Capabilities
         {
-            get { return this._capabilities; }
+            get { return _capabilities; }
         }
         
         private IDatabaseActivationOperations _databaseActivation;
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IDatabaseActivationOperations DatabaseActivation
         {
-            get { return this._databaseActivation; }
+            get { return _databaseActivation; }
         }
         
         private IDatabaseAdvisorOperations _databaseAdvisors;
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IDatabaseAdvisorOperations DatabaseAdvisors
         {
-            get { return this._databaseAdvisors; }
+            get { return _databaseAdvisors; }
         }
         
         private IDatabaseBackupOperations _databaseBackup;
@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IDatabaseBackupOperations DatabaseBackup
         {
-            get { return this._databaseBackup; }
+            get { return _databaseBackup; }
         }
         
         private IDatabaseOperations _databases;
@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IDatabaseOperations Databases
         {
-            get { return this._databases; }
+            get { return _databases; }
         }
         
         private IDatabaseRecommendedActionOperations _databaseRecommendedActions;
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IDatabaseRecommendedActionOperations DatabaseRecommendedActions
         {
-            get { return this._databaseRecommendedActions; }
+            get { return _databaseRecommendedActions; }
         }
         
         private IDataMaskingOperations _dataMasking;
@@ -201,7 +201,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IDataMaskingOperations DataMasking
         {
-            get { return this._dataMasking; }
+            get { return _dataMasking; }
         }
         
         private IDataSyncOperations _dataSync;
@@ -214,7 +214,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IDataSyncOperations DataSync
         {
-            get { return this._dataSync; }
+            get { return _dataSync; }
         }
         
         private IElasticPoolAdvisorOperations _elasticPoolAdvisors;
@@ -226,7 +226,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IElasticPoolAdvisorOperations ElasticPoolAdvisors
         {
-            get { return this._elasticPoolAdvisors; }
+            get { return _elasticPoolAdvisors; }
         }
         
         private IElasticPoolOperations _elasticPools;
@@ -238,7 +238,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IElasticPoolOperations ElasticPools
         {
-            get { return this._elasticPools; }
+            get { return _elasticPools; }
         }
         
         private IElasticPoolRecommendedActionOperations _elasticPoolRecommendedActions;
@@ -250,7 +250,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IElasticPoolRecommendedActionOperations ElasticPoolRecommendedActions
         {
-            get { return this._elasticPoolRecommendedActions; }
+            get { return _elasticPoolRecommendedActions; }
         }
         
         private IFailoverGroupOperations _failoverGroups;
@@ -262,7 +262,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IFailoverGroupOperations FailoverGroups
         {
-            get { return this._failoverGroups; }
+            get { return _failoverGroups; }
         }
         
         private IFirewallRuleOperations _firewallRules;
@@ -274,7 +274,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IFirewallRuleOperations FirewallRules
         {
-            get { return this._firewallRules; }
+            get { return _firewallRules; }
         }
         
         private IImportExportOperations _importExport;
@@ -286,7 +286,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IImportExportOperations ImportExport
         {
-            get { return this._importExport; }
+            get { return _importExport; }
         }
         
         private IJobAccountOperations _jobAccounts;
@@ -298,7 +298,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IJobAccountOperations JobAccounts
         {
-            get { return this._jobAccounts; }
+            get { return _jobAccounts; }
         }
         
         private IRecommendedElasticPoolOperations _recommendedElasticPools;
@@ -309,7 +309,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IRecommendedElasticPoolOperations RecommendedElasticPools
         {
-            get { return this._recommendedElasticPools; }
+            get { return _recommendedElasticPools; }
         }
         
         private IRecommendedIndexOperations _recommendedIndexes;
@@ -321,7 +321,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IRecommendedIndexOperations RecommendedIndexes
         {
-            get { return this._recommendedIndexes; }
+            get { return _recommendedIndexes; }
         }
         
         private IReplicationLinkOperations _databaseReplicationLinks;
@@ -333,7 +333,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IReplicationLinkOperations DatabaseReplicationLinks
         {
-            get { return this._databaseReplicationLinks; }
+            get { return _databaseReplicationLinks; }
         }
         
         private ISecureConnectionPolicyOperations _secureConnection;
@@ -345,7 +345,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual ISecureConnectionPolicyOperations SecureConnection
         {
-            get { return this._secureConnection; }
+            get { return _secureConnection; }
         }
         
         private ISecurityAlertPolicyOperations _securityAlertPolicy;
@@ -357,7 +357,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual ISecurityAlertPolicyOperations SecurityAlertPolicy
         {
-            get { return this._securityAlertPolicy; }
+            get { return _securityAlertPolicy; }
         }
         
         private IServerAdministratorOperations _serverAdministrators;
@@ -370,7 +370,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServerAdministratorOperations ServerAdministrators
         {
-            get { return this._serverAdministrators; }
+            get { return _serverAdministrators; }
         }
         
         private IServerAdvisorOperations _serverAdvisors;
@@ -382,7 +382,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServerAdvisorOperations ServerAdvisors
         {
-            get { return this._serverAdvisors; }
+            get { return _serverAdvisors; }
         }
         
         private IServerCommunicationLinkOperations _communicationLinks;
@@ -394,7 +394,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServerCommunicationLinkOperations CommunicationLinks
         {
-            get { return this._communicationLinks; }
+            get { return _communicationLinks; }
         }
         
         private IServerDisasterRecoveryConfigurationOperations _serverDisasterRecoveryConfigurations;
@@ -406,7 +406,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServerDisasterRecoveryConfigurationOperations ServerDisasterRecoveryConfigurations
         {
-            get { return this._serverDisasterRecoveryConfigurations; }
+            get { return _serverDisasterRecoveryConfigurations; }
         }
         
         private IServerKeyOperations _serverKey;
@@ -418,7 +418,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServerKeyOperations ServerKey
         {
-            get { return this._serverKey; }
+            get { return _serverKey; }
         }
         
         private IServerOperations _servers;
@@ -430,7 +430,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServerOperations Servers
         {
-            get { return this._servers; }
+            get { return _servers; }
         }
         
         private IServerRecommendedActionOperations _serverRecommendedActions;
@@ -442,7 +442,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServerRecommendedActionOperations ServerRecommendedActions
         {
-            get { return this._serverRecommendedActions; }
+            get { return _serverRecommendedActions; }
         }
         
         private IServerUpgradeOperations _serverUpgrades;
@@ -452,7 +452,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServerUpgradeOperations ServerUpgrades
         {
-            get { return this._serverUpgrades; }
+            get { return _serverUpgrades; }
         }
         
         private IServiceObjectiveOperations _serviceObjectives;
@@ -464,7 +464,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServiceObjectiveOperations ServiceObjectives
         {
-            get { return this._serviceObjectives; }
+            get { return _serviceObjectives; }
         }
         
         private IServiceTierAdvisorOperations _serviceTierAdvisors;
@@ -475,7 +475,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual IServiceTierAdvisorOperations ServiceTierAdvisors
         {
-            get { return this._serviceTierAdvisors; }
+            get { return _serviceTierAdvisors; }
         }
         
         private ITransparentDataEncryptionOperations _transparentDataEncryption;
@@ -487,7 +487,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public virtual ITransparentDataEncryptionOperations TransparentDataEncryption
         {
-            get { return this._transparentDataEncryption; }
+            get { return _transparentDataEncryption; }
         }
         
         /// <summary>
@@ -496,43 +496,43 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         public SqlManagementClient()
             : base()
         {
-            this._auditingPolicy = new AuditingPolicyOperations(this);
-            this._blobAuditing = new BlobAuditingOperations(this);
-            this._capabilities = new CapabilitiesOperations(this);
-            this._databaseActivation = new DatabaseActivationOperations(this);
-            this._databaseAdvisors = new DatabaseAdvisorOperations(this);
-            this._databaseBackup = new DatabaseBackupOperations(this);
-            this._databases = new DatabaseOperations(this);
-            this._databaseRecommendedActions = new DatabaseRecommendedActionOperations(this);
-            this._dataMasking = new DataMaskingOperations(this);
-            this._dataSync = new DataSyncOperations(this);
-            this._elasticPoolAdvisors = new ElasticPoolAdvisorOperations(this);
-            this._elasticPools = new ElasticPoolOperations(this);
-            this._elasticPoolRecommendedActions = new ElasticPoolRecommendedActionOperations(this);
-            this._failoverGroups = new FailoverGroupOperations(this);
-            this._firewallRules = new FirewallRuleOperations(this);
-            this._importExport = new ImportExportOperations(this);
-            this._jobAccounts = new JobAccountOperations(this);
-            this._recommendedElasticPools = new RecommendedElasticPoolOperations(this);
-            this._recommendedIndexes = new RecommendedIndexOperations(this);
-            this._databaseReplicationLinks = new ReplicationLinkOperations(this);
-            this._secureConnection = new SecureConnectionPolicyOperations(this);
-            this._securityAlertPolicy = new SecurityAlertPolicyOperations(this);
-            this._serverAdministrators = new ServerAdministratorOperations(this);
-            this._serverAdvisors = new ServerAdvisorOperations(this);
-            this._communicationLinks = new ServerCommunicationLinkOperations(this);
-            this._serverDisasterRecoveryConfigurations = new ServerDisasterRecoveryConfigurationOperations(this);
-            this._serverKey = new ServerKeyOperations(this);
-            this._servers = new ServerOperations(this);
-            this._serverRecommendedActions = new ServerRecommendedActionOperations(this);
-            this._serverUpgrades = new ServerUpgradeOperations(this);
-            this._serviceObjectives = new ServiceObjectiveOperations(this);
-            this._serviceTierAdvisors = new ServiceTierAdvisorOperations(this);
-            this._transparentDataEncryption = new TransparentDataEncryptionOperations(this);
-            this._apiVersion = "2014-04-01";
-            this._longRunningOperationInitialTimeout = -1;
-            this._longRunningOperationRetryTimeout = -1;
-            this.HttpClient.Timeout = TimeSpan.FromSeconds(300);
+            _auditingPolicy = new AuditingPolicyOperations(this);
+            _blobAuditing = new BlobAuditingOperations(this);
+            _capabilities = new CapabilitiesOperations(this);
+            _databaseActivation = new DatabaseActivationOperations(this);
+            _databaseAdvisors = new DatabaseAdvisorOperations(this);
+            _databaseBackup = new DatabaseBackupOperations(this);
+            _databases = new DatabaseOperations(this);
+            _databaseRecommendedActions = new DatabaseRecommendedActionOperations(this);
+            _dataMasking = new DataMaskingOperations(this);
+            _dataSync = new DataSyncOperations(this);
+            _elasticPoolAdvisors = new ElasticPoolAdvisorOperations(this);
+            _elasticPools = new ElasticPoolOperations(this);
+            _elasticPoolRecommendedActions = new ElasticPoolRecommendedActionOperations(this);
+            _failoverGroups = new FailoverGroupOperations(this);
+            _firewallRules = new FirewallRuleOperations(this);
+            _importExport = new ImportExportOperations(this);
+            _jobAccounts = new JobAccountOperations(this);
+            _recommendedElasticPools = new RecommendedElasticPoolOperations(this);
+            _recommendedIndexes = new RecommendedIndexOperations(this);
+            _databaseReplicationLinks = new ReplicationLinkOperations(this);
+            _secureConnection = new SecureConnectionPolicyOperations(this);
+            _securityAlertPolicy = new SecurityAlertPolicyOperations(this);
+            _serverAdministrators = new ServerAdministratorOperations(this);
+            _serverAdvisors = new ServerAdvisorOperations(this);
+            _communicationLinks = new ServerCommunicationLinkOperations(this);
+            _serverDisasterRecoveryConfigurations = new ServerDisasterRecoveryConfigurationOperations(this);
+            _serverKey = new ServerKeyOperations(this);
+            _servers = new ServerOperations(this);
+            _serverRecommendedActions = new ServerRecommendedActionOperations(this);
+            _serverUpgrades = new ServerUpgradeOperations(this);
+            _serviceObjectives = new ServiceObjectiveOperations(this);
+            _serviceTierAdvisors = new ServiceTierAdvisorOperations(this);
+            _transparentDataEncryption = new TransparentDataEncryptionOperations(this);
+            _apiVersion = "2014-04-01";
+            _longRunningOperationInitialTimeout = -1;
+            _longRunningOperationRetryTimeout = -1;
+            HttpClient.Timeout = TimeSpan.FromSeconds(300);
         }
         
         /// <summary>
@@ -558,10 +558,10 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 throw new ArgumentNullException("baseUri");
             }
-            this._credentials = credentials;
-            this._baseUri = baseUri;
+            _credentials = credentials;
+            _baseUri = baseUri;
             
-            this.Credentials.InitializeServiceClient(this);
+            Credentials.InitializeServiceClient(this);
         }
         
         /// <summary>
@@ -579,10 +579,10 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 throw new ArgumentNullException("credentials");
             }
-            this._credentials = credentials;
-            this._baseUri = new Uri("https://management.azure.com");
+            _credentials = credentials;
+            _baseUri = new Uri("https://management.azure.com");
             
-            this.Credentials.InitializeServiceClient(this);
+            Credentials.InitializeServiceClient(this);
         }
         
         /// <summary>
@@ -594,43 +594,43 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         public SqlManagementClient(HttpClient httpClient)
             : base(httpClient)
         {
-            this._auditingPolicy = new AuditingPolicyOperations(this);
-            this._blobAuditing = new BlobAuditingOperations(this);
-            this._capabilities = new CapabilitiesOperations(this);
-            this._databaseActivation = new DatabaseActivationOperations(this);
-            this._databaseAdvisors = new DatabaseAdvisorOperations(this);
-            this._databaseBackup = new DatabaseBackupOperations(this);
-            this._databases = new DatabaseOperations(this);
-            this._databaseRecommendedActions = new DatabaseRecommendedActionOperations(this);
-            this._dataMasking = new DataMaskingOperations(this);
-            this._dataSync = new DataSyncOperations(this);
-            this._elasticPoolAdvisors = new ElasticPoolAdvisorOperations(this);
-            this._elasticPools = new ElasticPoolOperations(this);
-            this._elasticPoolRecommendedActions = new ElasticPoolRecommendedActionOperations(this);
-            this._failoverGroups = new FailoverGroupOperations(this);
-            this._firewallRules = new FirewallRuleOperations(this);
-            this._importExport = new ImportExportOperations(this);
-            this._jobAccounts = new JobAccountOperations(this);
-            this._recommendedElasticPools = new RecommendedElasticPoolOperations(this);
-            this._recommendedIndexes = new RecommendedIndexOperations(this);
-            this._databaseReplicationLinks = new ReplicationLinkOperations(this);
-            this._secureConnection = new SecureConnectionPolicyOperations(this);
-            this._securityAlertPolicy = new SecurityAlertPolicyOperations(this);
-            this._serverAdministrators = new ServerAdministratorOperations(this);
-            this._serverAdvisors = new ServerAdvisorOperations(this);
-            this._communicationLinks = new ServerCommunicationLinkOperations(this);
-            this._serverDisasterRecoveryConfigurations = new ServerDisasterRecoveryConfigurationOperations(this);
-            this._serverKey = new ServerKeyOperations(this);
-            this._servers = new ServerOperations(this);
-            this._serverRecommendedActions = new ServerRecommendedActionOperations(this);
-            this._serverUpgrades = new ServerUpgradeOperations(this);
-            this._serviceObjectives = new ServiceObjectiveOperations(this);
-            this._serviceTierAdvisors = new ServiceTierAdvisorOperations(this);
-            this._transparentDataEncryption = new TransparentDataEncryptionOperations(this);
-            this._apiVersion = "2014-04-01";
-            this._longRunningOperationInitialTimeout = -1;
-            this._longRunningOperationRetryTimeout = -1;
-            this.HttpClient.Timeout = TimeSpan.FromSeconds(300);
+            _auditingPolicy = new AuditingPolicyOperations(this);
+            _blobAuditing = new BlobAuditingOperations(this);
+            _capabilities = new CapabilitiesOperations(this);
+            _databaseActivation = new DatabaseActivationOperations(this);
+            _databaseAdvisors = new DatabaseAdvisorOperations(this);
+            _databaseBackup = new DatabaseBackupOperations(this);
+            _databases = new DatabaseOperations(this);
+            _databaseRecommendedActions = new DatabaseRecommendedActionOperations(this);
+            _dataMasking = new DataMaskingOperations(this);
+            _dataSync = new DataSyncOperations(this);
+            _elasticPoolAdvisors = new ElasticPoolAdvisorOperations(this);
+            _elasticPools = new ElasticPoolOperations(this);
+            _elasticPoolRecommendedActions = new ElasticPoolRecommendedActionOperations(this);
+            _failoverGroups = new FailoverGroupOperations(this);
+            _firewallRules = new FirewallRuleOperations(this);
+            _importExport = new ImportExportOperations(this);
+            _jobAccounts = new JobAccountOperations(this);
+            _recommendedElasticPools = new RecommendedElasticPoolOperations(this);
+            _recommendedIndexes = new RecommendedIndexOperations(this);
+            _databaseReplicationLinks = new ReplicationLinkOperations(this);
+            _secureConnection = new SecureConnectionPolicyOperations(this);
+            _securityAlertPolicy = new SecurityAlertPolicyOperations(this);
+            _serverAdministrators = new ServerAdministratorOperations(this);
+            _serverAdvisors = new ServerAdvisorOperations(this);
+            _communicationLinks = new ServerCommunicationLinkOperations(this);
+            _serverDisasterRecoveryConfigurations = new ServerDisasterRecoveryConfigurationOperations(this);
+            _serverKey = new ServerKeyOperations(this);
+            _servers = new ServerOperations(this);
+            _serverRecommendedActions = new ServerRecommendedActionOperations(this);
+            _serverUpgrades = new ServerUpgradeOperations(this);
+            _serviceObjectives = new ServiceObjectiveOperations(this);
+            _serviceTierAdvisors = new ServiceTierAdvisorOperations(this);
+            _transparentDataEncryption = new TransparentDataEncryptionOperations(this);
+            _apiVersion = "2014-04-01";
+            _longRunningOperationInitialTimeout = -1;
+            _longRunningOperationRetryTimeout = -1;
+            HttpClient.Timeout = TimeSpan.FromSeconds(300);
         }
         
         /// <summary>
@@ -659,10 +659,10 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 throw new ArgumentNullException("baseUri");
             }
-            this._credentials = credentials;
-            this._baseUri = baseUri;
+            _credentials = credentials;
+            _baseUri = baseUri;
             
-            this.Credentials.InitializeServiceClient(this);
+            Credentials.InitializeServiceClient(this);
         }
         
         /// <summary>
@@ -683,10 +683,10 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 throw new ArgumentNullException("credentials");
             }
-            this._credentials = credentials;
-            this._baseUri = new Uri("https://management.azure.com");
+            _credentials = credentials;
+            _baseUri = new Uri("https://management.azure.com");
             
-            this.Credentials.InitializeServiceClient(this);
+            Credentials.InitializeServiceClient(this);
         }
         
         /// <summary>
@@ -702,13 +702,13 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             
             if (client is SqlManagementClient)
             {
-                SqlManagementClient clonedClient = ((SqlManagementClient)client);
+                SqlManagementClient clonedClient = (SqlManagementClient)client;
                 
-                clonedClient._credentials = this._credentials;
-                clonedClient._baseUri = this._baseUri;
-                clonedClient._apiVersion = this._apiVersion;
-                clonedClient._longRunningOperationInitialTimeout = this._longRunningOperationInitialTimeout;
-                clonedClient._longRunningOperationRetryTimeout = this._longRunningOperationRetryTimeout;
+                clonedClient._credentials = _credentials;
+                clonedClient._baseUri = _baseUri;
+                clonedClient._apiVersion = _apiVersion;
+                clonedClient._longRunningOperationInitialTimeout = _longRunningOperationInitialTimeout;
+                clonedClient._longRunningOperationRetryTimeout = _longRunningOperationRetryTimeout;
                 
                 clonedClient.Credentials.InitializeServiceClient(clonedClient);
             }
@@ -764,7 +764,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -775,7 +775,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -814,21 +814,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                         }

@@ -39,16 +39,16 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(this.ApplicationId))
+            if (string.IsNullOrEmpty(ApplicationId))
             {
-                foreach (PSApplication context in BatchClient.ListApplications(this.ResourceGroupName, this.AccountName))
+                foreach (PSApplication context in BatchClient.ListApplications(ResourceGroupName, AccountName))
                 {
                     WriteObject(context);
                 }
             }
             else
             {
-                PSApplication context = BatchClient.GetApplication(this.ResourceGroupName, this.AccountName, this.ApplicationId);
+                PSApplication context = BatchClient.GetApplication(ResourceGroupName, AccountName, ApplicationId);
                 WriteObject(context);
             }
         }

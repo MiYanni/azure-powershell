@@ -37,11 +37,11 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            ListPoolUsageOptions options = new ListPoolUsageOptions(this.BatchContext, this.AdditionalBehaviors)
+            ListPoolUsageOptions options = new ListPoolUsageOptions(BatchContext, AdditionalBehaviors)
             {
-                StartTime = this.StartTime,
-                EndTime = this.EndTime,
-                Filter = this.Filter,
+                StartTime = StartTime,
+                EndTime = EndTime,
+                Filter = Filter,
             };
 
             foreach (PSPoolUsageMetrics poolUsageMetrics in BatchClient.ListPoolUsageMetrics(options))

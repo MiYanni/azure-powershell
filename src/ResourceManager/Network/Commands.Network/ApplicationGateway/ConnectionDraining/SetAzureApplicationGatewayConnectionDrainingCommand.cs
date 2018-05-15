@@ -31,15 +31,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if(this.BackendHttpSettings.ConnectionDraining == null)
+            if(BackendHttpSettings.ConnectionDraining == null)
             {
-                this.BackendHttpSettings.ConnectionDraining = new PSApplicationGatewayConnectionDraining();
+                BackendHttpSettings.ConnectionDraining = new PSApplicationGatewayConnectionDraining();
             }
 
-            this.BackendHttpSettings.ConnectionDraining.Enabled = this.Enabled;
-            this.BackendHttpSettings.ConnectionDraining.DrainTimeoutInSec = this.DrainTimeoutInSec;
+            BackendHttpSettings.ConnectionDraining.Enabled = Enabled;
+            BackendHttpSettings.ConnectionDraining.DrainTimeoutInSec = DrainTimeoutInSec;
 
-            WriteObject(this.BackendHttpSettings);
+            WriteObject(BackendHttpSettings);
         }
     }
 }

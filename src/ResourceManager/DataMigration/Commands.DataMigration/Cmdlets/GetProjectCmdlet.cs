@@ -71,17 +71,17 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void ExecuteCmdlet()
         {
-            if (this.ParameterSetName.Equals(ComponentObjectParameterSet))
+            if (ParameterSetName.Equals(ComponentObjectParameterSet))
             {
-                this.ResourceGroupName = InputObject.ResourceGroupName;
-                this.ServiceName = InputObject.Name;
+                ResourceGroupName = InputObject.ResourceGroupName;
+                ServiceName = InputObject.Name;
             }
 
-            if (this.ParameterSetName.Equals(ResourceIdParameterSet))
+            if (ParameterSetName.Equals(ResourceIdParameterSet))
             {
-                DmsResourceIdentifier ids = new DmsResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = ids.ResourceGroupName;
-                this.ServiceName = ids.ServiceName;
+                DmsResourceIdentifier ids = new DmsResourceIdentifier(ResourceId);
+                ResourceGroupName = ids.ResourceGroupName;
+                ServiceName = ids.ServiceName;
             }
 
             IList<PSProject> results = new List<PSProject>();
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
                 && (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName") || !string.IsNullOrEmpty(ResourceGroupName))
                 && (MyInvocation.BoundParameters.ContainsKey("Name") || !string.IsNullOrEmpty(Name)))
             {
-                results.Add(new PSProject(DataMigrationClient.Projects.Get(this.ResourceGroupName, this.ServiceName, this.Name)));
+                results.Add(new PSProject(DataMigrationClient.Projects.Get(ResourceGroupName, ServiceName, Name)));
             }
             else if ((MyInvocation.BoundParameters.ContainsKey("ServiceName") || !string.IsNullOrEmpty(ServiceName))
                 && (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName") || !string.IsNullOrEmpty(ResourceGroupName)))

@@ -59,22 +59,22 @@ namespace Microsoft.Azure.Commands.MachineLearningCompute.Models
 
         public PSOperationalizationCluster(OperationalizationCluster cluster)
         {
-            this.Id = cluster.Id;
-            this.Name = cluster.Name;
-            this.Type = cluster.Type;
-            this.Tags = cluster.Tags;
-            this.Location = cluster.Location;
-            this.Description = cluster.Description;
-            this.CreatedOn = cluster.CreatedOn;
-            this.ModifiedOn = cluster.ModifiedOn;
-            this.ProvisioningState = cluster.ProvisioningState;
-            this.ProvisioningErrors = cluster.ProvisioningErrors;
-            this.ClusterType = cluster.ClusterType;
-            this.StorageAccount = cluster.StorageAccount;
-            this.ContainerRegistry = cluster.ContainerRegistry;
-            this.ContainerService = cluster.ContainerService;
-            this.AppInsights = cluster.AppInsights;
-            this.GlobalServiceConfiguration = cluster.GlobalServiceConfiguration;
+            Id = cluster.Id;
+            Name = cluster.Name;
+            Type = cluster.Type;
+            Tags = cluster.Tags;
+            Location = cluster.Location;
+            Description = cluster.Description;
+            CreatedOn = cluster.CreatedOn;
+            ModifiedOn = cluster.ModifiedOn;
+            ProvisioningState = cluster.ProvisioningState;
+            ProvisioningErrors = cluster.ProvisioningErrors;
+            ClusterType = cluster.ClusterType;
+            StorageAccount = cluster.StorageAccount;
+            ContainerRegistry = cluster.ContainerRegistry;
+            ContainerService = cluster.ContainerService;
+            AppInsights = cluster.AppInsights;
+            GlobalServiceConfiguration = cluster.GlobalServiceConfiguration;
         }
 
         public OperationalizationCluster ConvertToOperationalizationCluster()

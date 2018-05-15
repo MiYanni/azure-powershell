@@ -15,8 +15,8 @@
 namespace Microsoft.Azure.Commands.Management.IotHub
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Management.IotHub;
+    using Common;
+    using Azure.Management.IotHub;
     using ResourceManager.Common.ArgumentCompleters;
     using Models;
 
@@ -94,32 +94,32 @@ namespace Microsoft.Azure.Commands.Management.IotHub
             {
                 if (ParameterSetName.Equals(InputObjectParameterSet))
                 {
-                    this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                    this.Name = this.InputObject.Name;
-                    this.CertificateName = this.InputObject.CertificateName;
-                    this.Etag = this.InputObject.Etag;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    Name = InputObject.Name;
+                    CertificateName = InputObject.CertificateName;
+                    Etag = InputObject.Etag;
                 }
 
                 if (ParameterSetName.Equals(ResourceIdParameterSet))
                 {
-                    this.ResourceGroupName = IotHubUtils.GetResourceGroupName(this.ResourceId);
-                    this.Name = IotHubUtils.GetIotHubName(this.ResourceId);
-                    this.CertificateName = IotHubUtils.GetIotHubCertificateName(this.ResourceId);
+                    ResourceGroupName = IotHubUtils.GetResourceGroupName(ResourceId);
+                    Name = IotHubUtils.GetIotHubName(ResourceId);
+                    CertificateName = IotHubUtils.GetIotHubCertificateName(ResourceId);
                 }
                 try
                 {
-                    this.IotHubClient.Certificates.Delete(this.ResourceGroupName, this.Name, this.CertificateName, this.Etag);
+                    IotHubClient.Certificates.Delete(ResourceGroupName, Name, CertificateName, Etag);
 
                     if (PassThru.IsPresent)
                     {
-                        this.WriteObject(true);
+                        WriteObject(true);
                     }
                 }
                 catch
                 {
                     if (PassThru.IsPresent)
                     {
-                        this.WriteObject(false);
+                        WriteObject(false);
                     }
                 }
             }

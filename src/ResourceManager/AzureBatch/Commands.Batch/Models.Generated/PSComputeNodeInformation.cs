@@ -26,19 +26,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSComputeNodeInformation
     {
         
-        internal Microsoft.Azure.Batch.ComputeNodeInformation omObject;
+        internal ComputeNodeInformation omObject;
         
-        internal PSComputeNodeInformation(Microsoft.Azure.Batch.ComputeNodeInformation omObject)
+        internal PSComputeNodeInformation(ComputeNodeInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.AffinityId;
+                return omObject.AffinityId;
             }
         }
         
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ComputeNodeId;
+                return omObject.ComputeNodeId;
             }
         }
         
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ComputeNodeUrl;
+                return omObject.ComputeNodeUrl;
             }
         }
         
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PoolId;
+                return omObject.PoolId;
             }
         }
         
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.TaskRootDirectory;
+                return omObject.TaskRootDirectory;
             }
         }
         
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.TaskRootDirectoryUrl;
+                return omObject.TaskRootDirectoryUrl;
             }
         }
     }

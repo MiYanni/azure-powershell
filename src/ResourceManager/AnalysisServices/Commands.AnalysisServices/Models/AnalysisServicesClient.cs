@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Models
                 resourceGroupName = GetResourceGroupByServer(serverName);
             }
 
-            var tags = (customTags != null)
+            var tags = customTags != null
                 ? TagsConversionHelper.CreateTagDictionary(customTags, true)
                 : null;
 
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Models
             AnalysisServicesServer newOrUpdatedServer = null;
             if (existingServer != null)
             {
-                var updateParameters = new AnalysisServicesServerUpdateParameters()
+                var updateParameters = new AnalysisServicesServerUpdateParameters
                 {
                     Sku = skuName == null ? existingServer.Sku : GetResourceSkuFromName(skuName),
                     Tags = tags,
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Models
                 newOrUpdatedServer = _client.Servers.Create(
                     resourceGroupName, 
                     serverName, 
-                    new AnalysisServicesServer()
+                    new AnalysisServicesServer
                     {
                         AsAdministrators = new ServerAdministrators(adminList),
                         BackupBlobContainerUri = backupBlobContainerUri,
@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Models
             }
             catch (CloudException ex)
             {
-                if ((ex.Response != null && ex.Response.StatusCode == HttpStatusCode.NotFound) || ex.Message.Contains(string.Format(Properties.Resources.FailedToDiscoverResourceGroup, serverName,
+                if (ex.Response != null && ex.Response.StatusCode == HttpStatusCode.NotFound || ex.Message.Contains(string.Format(Resources.FailedToDiscoverResourceGroup, serverName,
                     _subscriptionId)))
                 {
                     server = null;
@@ -225,13 +225,13 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Models
                         .Find(x => x.Name.Equals(serverName, StringComparison.InvariantCultureIgnoreCase))
                         .Id;
                 var rgStart = acctId.IndexOf("resourceGroups/", StringComparison.InvariantCultureIgnoreCase) +
-                              ("resourceGroups/".Length);
-                var rgLength = (acctId.IndexOf("/providers/", StringComparison.InvariantCultureIgnoreCase)) - rgStart;
+                              "resourceGroups/".Length;
+                var rgLength = acctId.IndexOf("/providers/", StringComparison.InvariantCultureIgnoreCase) - rgStart;
                 return acctId.Substring(rgStart, rgLength);
             }
             catch
             {
-                throw new CloudException(string.Format(Properties.Resources.FailedToDiscoverResourceGroup, serverName, _subscriptionId));
+                throw new CloudException(string.Format(Resources.FailedToDiscoverResourceGroup, serverName, _subscriptionId));
             }
         }
 

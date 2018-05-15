@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands
             // Generate new Namespace List Keys for the specified AuthorizationRule
             if (ParameterSetName.Equals(NamespaceAuthoRuleParameterSet))
             {
-                if (ShouldProcess(target: RegenerateKey, action: string.Format(Resources.RegenerateKeyNamesapce, Name, Namespace)))
+                if (ShouldProcess(RegenerateKey, string.Format(Resources.RegenerateKeyNamesapce, Name, Namespace)))
                 {
                     WriteObject(Client.SetRegenerateKeys(ResourceGroupName, Namespace, Name, RegenerateKey));
                 }
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands
             // Generate new EventHub List Keys for the specified AuthorizationRule
             if (ParameterSetName.Equals(EventhubAuthoRuleParameterSet))
             {
-                if (ShouldProcess(target: RegenerateKey, action: string.Format(Resources.RegenerateKeyEventHub, Name, EventHub)))
+                if (ShouldProcess(RegenerateKey, string.Format(Resources.RegenerateKeyEventHub, Name, EventHub)))
                 {
                     WriteObject(Client.SetRegenerateKeys(ResourceGroupName, Namespace, EventHub, Name, RegenerateKey));
                 }

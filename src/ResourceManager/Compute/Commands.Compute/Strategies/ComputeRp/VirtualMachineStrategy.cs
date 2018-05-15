@@ -25,13 +25,13 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
     {
         public static ResourceStrategy<VirtualMachine> Strategy { get; }
             = ComputeStrategy.Create(
-                provider: "virtualMachines",
-                getOperations: client => client.VirtualMachines,
-                getAsync: (o, p) => o.GetAsync(
+                "virtualMachines",
+                client => client.VirtualMachines,
+                (o, p) => o.GetAsync(
                     p.ResourceGroupName, p.Name, null, p.CancellationToken),
-                createOrUpdateAsync: (o, p) => o.CreateOrUpdateAsync(
+                (o, p) => o.CreateOrUpdateAsync(
                     p.ResourceGroupName, p.Name, p.Model, p.CancellationToken),
-                createTime: c =>
+                c =>
                     c != null && c.OsProfile != null && c.OsProfile.WindowsConfiguration != null
                         ? 240
                         : 120);
@@ -49,9 +49,9 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
             IEnumerable<int> dataDisks,
             IList<string> zones)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: engine => new VirtualMachine
+                resourceGroup,
+                name,
+                engine => new VirtualMachine
                 {
                     OsProfile = new OSProfile
                     {
@@ -95,9 +95,9 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
             IEnumerable<int> dataDisks,
             IList<string> zones)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: engine => new VirtualMachine
+                resourceGroup,
+                name,
+                engine => new VirtualMachine
                 {
                     NetworkProfile = new NetworkProfile
                     {

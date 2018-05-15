@@ -39,10 +39,10 @@ namespace Microsoft.Azure.Commands.Network
 
         protected PSApplicationGatewayFirewallDisabledRuleGroup NewObject()
         {
-            return new PSApplicationGatewayFirewallDisabledRuleGroup()
+            return new PSApplicationGatewayFirewallDisabledRuleGroup
             {
-                RuleGroupName = this.RuleGroupName,
-                Rules = this.Rules
+                RuleGroupName = RuleGroupName,
+                Rules = Rules
             };
         }
     }

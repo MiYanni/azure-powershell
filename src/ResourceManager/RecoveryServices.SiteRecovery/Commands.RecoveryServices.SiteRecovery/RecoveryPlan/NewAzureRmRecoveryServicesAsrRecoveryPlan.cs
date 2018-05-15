@@ -138,39 +138,39 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Recovery plan",
                 VerbsCommon.New))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.EnterpriseToEnterprise:
-                        this.failoverDeploymentModel = Constants.NotApplicable;
-                        this.primaryserver = this.PrimaryFabric.ID;
-                        this.recoveryserver = this.RecoveryFabric.ID;
+                        failoverDeploymentModel = Constants.NotApplicable;
+                        primaryserver = PrimaryFabric.ID;
+                        recoveryserver = RecoveryFabric.ID;
                         break;
                     case ASRParameterSets.EnterpriseToAzure:
-                        this.failoverDeploymentModel = this.FailoverDeploymentModel;
-                        this.primaryserver = this.PrimaryFabric.ID;
-                        this.recoveryserver = Constants.AzureContainer;
+                        failoverDeploymentModel = FailoverDeploymentModel;
+                        primaryserver = PrimaryFabric.ID;
+                        recoveryserver = Constants.AzureContainer;
                         break;
                     case ASRParameterSets.ByRPFile:
 
-                        if (!File.Exists(this.Path))
+                        if (!File.Exists(Path))
                         {
                             throw new FileNotFoundException(
                                 string.Format(
                                     Resources.FileNotFound,
-                                    this.Path));
+                                    Path));
 
                             ;
                         }
 
-                        var filePath = this.Path;
+                        var filePath = Path;
 
                         using (var file = new StreamReader(filePath))
                         {
-                            this.recoveryPlan = JsonConvert.DeserializeObject<RecoveryPlan>(
+                            recoveryPlan = JsonConvert.DeserializeObject<RecoveryPlan>(
                                 file.ReadToEnd(),
                                 new RecoveryPlanActionDetailsConverter());
                         }
@@ -179,16 +179,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 }
 
                 if (string.Compare(
-                        this.ParameterSetName,
+                        ParameterSetName,
                         ASRParameterSets.ByRPFile,
                         StringComparison.OrdinalIgnoreCase) ==
                     0)
                 {
-                    this.CreateRecoveryPlan(this.recoveryPlan);
+                    CreateRecoveryPlan(recoveryPlan);
                 }
                 else
                 {
-                    this.CreateRecoveryPlan();
+                    CreateRecoveryPlan();
                 }
             }
         }
@@ -202,10 +202,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             {
                 FailoverDeploymentModel = (FailoverDeploymentModel)Enum.Parse(
                     typeof(FailoverDeploymentModel),
-                    this.failoverDeploymentModel),
+                    failoverDeploymentModel),
                 Groups = new List<RecoveryPlanGroup>(),
-                PrimaryFabricId = this.primaryserver,
-                RecoveryFabricId = this.recoveryserver
+                PrimaryFabricId = primaryserver,
+                RecoveryFabricId = recoveryserver
             };
 
             var recoveryPlanGroup = new RecoveryPlanGroup
@@ -216,13 +216,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 EndGroupActions = new List<RecoveryPlanAction>()
             };
 
-            foreach (var rpi in this.ReplicationProtectedItem)
+            foreach (var rpi in ReplicationProtectedItem)
             {
                 var fabricName = Utilities.GetValueFromArmId(
                     rpi.ID,
                     ARMResourceTypeConstants.ReplicationFabrics);
 
-                var replicationProtectedItemResponse = this.RecoveryServicesClient
+                var replicationProtectedItemResponse = RecoveryServicesClient
                     .GetAzureSiteRecoveryReplicationProtectedItem(
                         fabricName,
                         Utilities.GetValueFromArmId(
@@ -269,9 +269,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 else if (replicationProtectedItemResponse.Properties.ProviderSpecificDetails.GetType() == typeof(A2AReplicationDetails))
                 {
                     A2AReplicationDetails a2aReplicationDetails =
-                        ((A2AReplicationDetails)replicationProtectedItemResponse
-                        .Properties
-                        .ProviderSpecificDetails);
+                        (A2AReplicationDetails)replicationProtectedItemResponse
+                            .Properties
+                            .ProviderSpecificDetails;
                     if (a2aReplicationDetails.FabricObjectId.IndexOf(
                         Constants.ClassicCompute,
                         StringComparison.OrdinalIgnoreCase) >= 0)
@@ -299,8 +299,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var createRecoveryPlanInput =
                 new CreateRecoveryPlanInput { Properties = createRecoveryPlanInputProperties };
 
-            this.CreateRecoveryPlan(
-                this.Name,
+            CreateRecoveryPlan(
+                Name,
                 createRecoveryPlanInput);
         }
 
@@ -323,7 +323,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var createRecoveryPlanInput =
                 new CreateRecoveryPlanInput { Properties = createRecoveryPlanInputProperties };
 
-            this.CreateRecoveryPlan(
+            CreateRecoveryPlan(
                 recoveryPlan.Name,
                 createRecoveryPlanInput);
         }
@@ -335,14 +335,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string recoveryPlanName,
             CreateRecoveryPlanInput createRecoveryPlanInput)
         {
-            var response = this.RecoveryServicesClient.CreateAzureSiteRecoveryRecoveryPlan(
+            var response = RecoveryServicesClient.CreateAzureSiteRecoveryRecoveryPlan(
                 recoveryPlanName,
                 createRecoveryPlanInput);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
     }
 }

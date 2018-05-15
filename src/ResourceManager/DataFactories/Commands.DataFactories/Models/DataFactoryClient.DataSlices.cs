@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                     filterOptions.ResourceGroupName,
                     filterOptions.DataFactoryName,
                     filterOptions.DatasetName,
-                    new DataSliceRunListParameters()
+                    new DataSliceRunListParameters
                     {
                         DataSliceStartTime = filterOptions.StartDateTime.ConvertToISO8601DateTimeString()
                     });
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                     filterOptions.ResourceGroupName,
                     filterOptions.DataFactoryName,
                     filterOptions.DatasetName,
-                    new DataSliceListParameters()
+                    new DataSliceListParameters
                     {
                         DataSliceRangeStartTime = filterOptions.DataSliceRangeStartTime.ConvertToISO8601DateTimeString(),
                         DataSliceRangeEndTime = filterOptions.DataSliceRangeEndTime.ConvertToISO8601DateTimeString()
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 resourceGroupName,
                 dataFactoryName,
                 datasetName,
-                new DataSliceSetStatusParameters()
+                new DataSliceSetStatusParameters
                 {
                     SliceState = sliceState,
                     UpdateType = updateType,

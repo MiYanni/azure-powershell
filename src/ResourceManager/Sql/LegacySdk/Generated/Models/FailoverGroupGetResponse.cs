@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public FailoverGroup FailoverGroup
         {
-            get { return this._failoverGroup; }
-            set { this._failoverGroup = value; }
+            get { return _failoverGroup; }
+            set { _failoverGroup = value; }
         }
         
         /// <summary>

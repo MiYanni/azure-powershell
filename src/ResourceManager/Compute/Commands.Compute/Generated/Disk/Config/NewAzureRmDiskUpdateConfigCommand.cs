@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("New", "AzureRmDiskUpdateConfig", SupportsShouldProcess = true)]
     [OutputType(typeof(PSDiskUpdate))]
-    public partial class NewAzureRmDiskUpdateConfigCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class NewAzureRmDiskUpdateConfigCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = false,
@@ -88,52 +88,52 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // EncryptionSettings
-            Microsoft.Azure.Management.Compute.Models.EncryptionSettings vEncryptionSettings = null;
+            EncryptionSettings vEncryptionSettings = null;
 
             // Sku
-            Microsoft.Azure.Management.Compute.Models.DiskSku vSku = null;
+            DiskSku vSku = null;
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("EncryptionSettingsEnabled"))
+            if (MyInvocation.BoundParameters.ContainsKey("EncryptionSettingsEnabled"))
             {
                 if (vEncryptionSettings == null)
                 {
-                    vEncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    vEncryptionSettings = new EncryptionSettings();
                 }
-                vEncryptionSettings.Enabled = this.EncryptionSettingsEnabled;
+                vEncryptionSettings.Enabled = EncryptionSettingsEnabled;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("DiskEncryptionKey"))
+            if (MyInvocation.BoundParameters.ContainsKey("DiskEncryptionKey"))
             {
                 if (vEncryptionSettings == null)
                 {
-                    vEncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    vEncryptionSettings = new EncryptionSettings();
                 }
-                vEncryptionSettings.DiskEncryptionKey = this.DiskEncryptionKey;
+                vEncryptionSettings.DiskEncryptionKey = DiskEncryptionKey;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("KeyEncryptionKey"))
+            if (MyInvocation.BoundParameters.ContainsKey("KeyEncryptionKey"))
             {
                 if (vEncryptionSettings == null)
                 {
-                    vEncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    vEncryptionSettings = new EncryptionSettings();
                 }
-                vEncryptionSettings.KeyEncryptionKey = this.KeyEncryptionKey;
+                vEncryptionSettings.KeyEncryptionKey = KeyEncryptionKey;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SkuName"))
+            if (MyInvocation.BoundParameters.ContainsKey("SkuName"))
             {
                 if (vSku == null)
                 {
-                    vSku = new Microsoft.Azure.Management.Compute.Models.DiskSku();
+                    vSku = new DiskSku();
                 }
-                vSku.Name = this.SkuName;
+                vSku.Name = SkuName;
             }
 
             var vDiskUpdate = new PSDiskUpdate
             {
-                OsType = this.MyInvocation.BoundParameters.ContainsKey("OsType") ? this.OsType : (OperatingSystemTypes?) null,
-                DiskSizeGB = this.MyInvocation.BoundParameters.ContainsKey("DiskSizeGB") ? this.DiskSizeGB : (int?) null,
-                Tags = this.MyInvocation.BoundParameters.ContainsKey("Tag") ? this.Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
+                OsType = MyInvocation.BoundParameters.ContainsKey("OsType") ? OsType : null,
+                DiskSizeGB = MyInvocation.BoundParameters.ContainsKey("DiskSizeGB") ? DiskSizeGB : (int?) null,
+                Tags = MyInvocation.BoundParameters.ContainsKey("Tag") ? Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
                 EncryptionSettings = vEncryptionSettings,
                 Sku = vSku,
             };

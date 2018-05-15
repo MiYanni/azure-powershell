@@ -15,10 +15,10 @@
 namespace Microsoft.Azure.Commands.Scheduler.Utilities
 {
     using System;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Management.Scheduler;
-    using Microsoft.Azure.Management.Scheduler.Models;
+    using Models;
+    using Properties;
+    using Management.Scheduler;
+    using Management.Scheduler.Models;
     using PSManagement = System.Management.Automation;
 
     public partial class SchedulerClient
@@ -32,29 +32,29 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(updateJobParams.ResourceGroupName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSManagement.PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(updateJobParams.JobCollectionName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSManagement.PSArgumentNullException("JobCollectionName");
             }
 
             if (string.IsNullOrWhiteSpace(updateJobParams.JobName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobName");
+                throw new PSManagement.PSArgumentNullException("JobName");
             }
 
-            JobDefinition existingJobDefinition = this.GetJob(updateJobParams.ResourceGroupName, updateJobParams.JobCollectionName, updateJobParams.JobName);
+            JobDefinition existingJobDefinition = GetJob(updateJobParams.ResourceGroupName, updateJobParams.JobCollectionName, updateJobParams.JobName);
 
             if (existingJobDefinition == null)
             {
                 throw new PSManagement.PSArgumentException(string.Format(Resources.JobDoesnotExist, updateJobParams.ResourceGroupName, updateJobParams.JobCollectionName, updateJobParams.JobName));
             }
 
-            this.PopulateExistingJobParams(updateJobParams, existingJobDefinition);
+            PopulateExistingJobParams(updateJobParams, existingJobDefinition);
 
-            var jobDefinitionResult = this.SchedulerManagementClient.Jobs.Patch(updateJobParams.ResourceGroupName, updateJobParams.JobCollectionName, updateJobParams.JobName, existingJobDefinition);
+            var jobDefinitionResult = SchedulerManagementClient.Jobs.Patch(updateJobParams.ResourceGroupName, updateJobParams.JobCollectionName, updateJobParams.JobName, existingJobDefinition);
 
             return Converter.ConvertJobDefinitionToPS(jobDefinitionResult);
         }
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <param name="existingJobDefinition">Existing job definition.</param>
         private void PopulateExistingJobParams(PSJobParams updateJobParams, JobDefinition existingJobDefinition)
         {
-            JobProperties jobProperties = this.GetExistingJobPropertiesParams(updateJobParams, existingJobDefinition.Properties);
+            JobProperties jobProperties = GetExistingJobPropertiesParams(updateJobParams, existingJobDefinition.Properties);
             existingJobDefinition.Properties = jobProperties;
         }
 
@@ -78,16 +78,16 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <returns></returns>
         private JobProperties GetExistingJobPropertiesParams(PSJobParams updateJobParams, JobProperties existingJobProperties)
         {
-            var newJobProperties = new JobProperties()
+            var newJobProperties = new JobProperties
             {
-                Action = this.GetExistingJobAction(updateJobParams.JobAction, existingJobProperties.Action),
-                Recurrence = this.GetExistingJobRecurrence(updateJobParams.JobRecurrence, existingJobProperties.Recurrence),
+                Action = GetExistingJobAction(updateJobParams.JobAction, existingJobProperties.Action),
+                Recurrence = GetExistingJobRecurrence(updateJobParams.JobRecurrence, existingJobProperties.Recurrence),
                 StartTime = updateJobParams.StartTime ?? existingJobProperties.StartTime,
             };
 
-            newJobProperties.Action.ErrorAction = this.GetExistingJobErrorAction(updateJobParams.JobErrorAction, existingJobProperties.Action.ErrorAction);
+            newJobProperties.Action.ErrorAction = GetExistingJobErrorAction(updateJobParams.JobErrorAction, existingJobProperties.Action.ErrorAction);
 
-            newJobProperties.State = updateJobParams.JobState.GetValueOrDefaultEnum<JobState?>(defaultValue: null);
+            newJobProperties.State = updateJobParams.JobState.GetValueOrDefaultEnum<JobState?>(null);
 
             return newJobProperties;
         }
@@ -104,8 +104,8 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 if (existingJobAction != null &&
                     (existingJobAction.Type == updateJobActionParams.JobActionType ||
-                    ((existingJobAction.Type == JobActionType.Http || existingJobAction.Type == JobActionType.Https) &&
-                    (updateJobActionParams.JobActionType == JobActionType.Http || updateJobActionParams.JobActionType == JobActionType.Https))))
+                    (existingJobAction.Type == JobActionType.Http || existingJobAction.Type == JobActionType.Https) &&
+                    (updateJobActionParams.JobActionType == JobActionType.Http || updateJobActionParams.JobActionType == JobActionType.Https)))
                 {
                     switch (updateJobActionParams.JobActionType)
                     {
@@ -119,39 +119,39 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                                 existingJobAction.Type = updateJobActionParams.JobActionType;
                             }
 
-                            existinghHttpRequest.Method = httpJobAction.RequestMethod.GetValueOrDefault(defaultValue: existinghHttpRequest.Method);
-                            existinghHttpRequest.Body = httpJobAction.RequestBody.GetValueOrDefault(defaultValue: existinghHttpRequest.Body);
+                            existinghHttpRequest.Method = httpJobAction.RequestMethod.GetValueOrDefault(existinghHttpRequest.Method);
+                            existinghHttpRequest.Body = httpJobAction.RequestBody.GetValueOrDefault(existinghHttpRequest.Body);
                             existinghHttpRequest.Headers = httpJobAction.RequestHeaders != null ? httpJobAction.RequestHeaders.ToDictionary() : existinghHttpRequest.Headers;
-                            existinghHttpRequest.Authentication = this.GetExistingAuthentication(httpJobAction.RequestAuthentication, existinghHttpRequest.Authentication);
+                            existinghHttpRequest.Authentication = GetExistingAuthentication(httpJobAction.RequestAuthentication, existinghHttpRequest.Authentication);
                             break;
 
                         case JobActionType.StorageQueue:
                             PSStorageJobActionParams storageJobAction = updateJobActionParams.StorageJobAction;
                             StorageQueueMessage existingStorageQueue = existingJobAction.QueueMessage;
-                            storageJobAction.StorageAccount = storageJobAction.StorageAccount.GetValueOrDefault(defaultValue: existingStorageQueue.StorageAccount);
-                            storageJobAction.StorageQueueMessage = storageJobAction.StorageQueueMessage.GetValueOrDefault(defaultValue: existingStorageQueue.Message);
-                            storageJobAction.StorageQueueName = storageJobAction.StorageQueueName.GetValueOrDefault(defaultValue: existingStorageQueue.QueueName);
-                            storageJobAction.StorageSasToken = storageJobAction.StorageSasToken.GetValueOrDefault(defaultValue: existingStorageQueue.SasToken);
+                            storageJobAction.StorageAccount = storageJobAction.StorageAccount.GetValueOrDefault(existingStorageQueue.StorageAccount);
+                            storageJobAction.StorageQueueMessage = storageJobAction.StorageQueueMessage.GetValueOrDefault(existingStorageQueue.Message);
+                            storageJobAction.StorageQueueName = storageJobAction.StorageQueueName.GetValueOrDefault(existingStorageQueue.QueueName);
+                            storageJobAction.StorageSasToken = storageJobAction.StorageSasToken.GetValueOrDefault(existingStorageQueue.SasToken);
                             break;
 
                         case JobActionType.ServiceBusQueue:
                             PSServiceBusParams serviceBusQueueParams = updateJobActionParams.ServiceBusAction;
                             ServiceBusQueueMessage existingServiceBusQueueMessage = existingJobAction.ServiceBusQueueMessage;
-                            this.UpdateServiceBus(serviceBusQueueParams, existingServiceBusQueueMessage);
-                            existingServiceBusQueueMessage.QueueName = serviceBusQueueParams.QueueName.GetValueOrDefault(defaultValue: existingServiceBusQueueMessage.QueueName);
+                            UpdateServiceBus(serviceBusQueueParams, existingServiceBusQueueMessage);
+                            existingServiceBusQueueMessage.QueueName = serviceBusQueueParams.QueueName.GetValueOrDefault(existingServiceBusQueueMessage.QueueName);
                             break;
 
                         case JobActionType.ServiceBusTopic:
                             PSServiceBusParams serviceBusTopicParams = updateJobActionParams.ServiceBusAction;
                             ServiceBusTopicMessage existingServiceBusTopicMessage = existingJobAction.ServiceBusTopicMessage;
-                            this.UpdateServiceBus(serviceBusTopicParams, existingServiceBusTopicMessage);
-                            existingServiceBusTopicMessage.TopicPath = serviceBusTopicParams.TopicPath.GetValueOrDefault(defaultValue: existingServiceBusTopicMessage.TopicPath);
+                            UpdateServiceBus(serviceBusTopicParams, existingServiceBusTopicMessage);
+                            existingServiceBusTopicMessage.TopicPath = serviceBusTopicParams.TopicPath.GetValueOrDefault(existingServiceBusTopicMessage.TopicPath);
                             break;
                     }
                 }
                 else
                 {
-                    this.PopulateJobAction(updateJobActionParams, ref existingJobAction);
+                    PopulateJobAction(updateJobActionParams, ref existingJobAction);
                 }
             }
 
@@ -170,8 +170,8 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 if (existingJobErrorAction != null &&
                     (existingJobErrorAction.Type == updateJobErrorActionParams.JobActionType ||
-                    ((existingJobErrorAction.Type == JobActionType.Http || existingJobErrorAction.Type == JobActionType.Https) &&
-                    (updateJobErrorActionParams.JobActionType == JobActionType.Http || updateJobErrorActionParams.JobActionType == JobActionType.Https))))
+                    (existingJobErrorAction.Type == JobActionType.Http || existingJobErrorAction.Type == JobActionType.Https) &&
+                    (updateJobErrorActionParams.JobActionType == JobActionType.Http || updateJobErrorActionParams.JobActionType == JobActionType.Https)))
                 {
                     switch (updateJobErrorActionParams.JobActionType)
                     {
@@ -180,17 +180,17 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                             PSHttpJobActionParams httpJobAction = updateJobErrorActionParams.HttpJobAction;
                             HttpRequest existinghHttpRequest = existingJobErrorAction.Request;
                             existingJobErrorAction.Type = updateJobErrorActionParams.JobActionType;
-                            existinghHttpRequest.Method = httpJobAction.RequestMethod.GetValueOrDefault(defaultValue: existinghHttpRequest.Method);
+                            existinghHttpRequest.Method = httpJobAction.RequestMethod.GetValueOrDefault(existinghHttpRequest.Method);
                             existinghHttpRequest.Uri = httpJobAction.Uri != null ? httpJobAction.Uri.OriginalString : existinghHttpRequest.Uri;
-                            existinghHttpRequest.Body = httpJobAction.RequestBody.GetValueOrDefault(defaultValue: existinghHttpRequest.Body);
-                            existinghHttpRequest.Authentication = this.GetExistingAuthentication(httpJobAction.RequestAuthentication, existinghHttpRequest.Authentication);
+                            existinghHttpRequest.Body = httpJobAction.RequestBody.GetValueOrDefault(existinghHttpRequest.Body);
+                            existinghHttpRequest.Authentication = GetExistingAuthentication(httpJobAction.RequestAuthentication, existinghHttpRequest.Authentication);
                             break;
 
                         case JobActionType.StorageQueue:
                             PSStorageJobActionParams storageJobAction = updateJobErrorActionParams.StorageJobAction;
                             StorageQueueMessage existingStorageQueue = existingJobErrorAction.QueueMessage;
-                            existingStorageQueue.StorageAccount = storageJobAction.StorageAccount.GetValueOrDefault(defaultValue: existingStorageQueue.StorageAccount);
-                            existingStorageQueue.Message = storageJobAction.StorageQueueMessage.GetValueOrDefault(defaultValue: existingStorageQueue.Message);
+                            existingStorageQueue.StorageAccount = storageJobAction.StorageAccount.GetValueOrDefault(existingStorageQueue.StorageAccount);
+                            existingStorageQueue.Message = storageJobAction.StorageQueueMessage.GetValueOrDefault(existingStorageQueue.Message);
                             existingStorageQueue.QueueName = storageJobAction.StorageQueueName.GetValueOrDefault(existingStorageQueue.QueueName);
                             existingStorageQueue.SasToken = storageJobAction.StorageSasToken.GetValueOrDefault(existingStorageQueue.SasToken);
                             break;
@@ -198,21 +198,21 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                         case JobActionType.ServiceBusQueue:
                             PSServiceBusParams serviceBusParams = updateJobErrorActionParams.ServiceBusAction;
                             ServiceBusQueueMessage existingServiceBusQueueMessage = existingJobErrorAction.ServiceBusQueueMessage;
-                            this.UpdateServiceBus(serviceBusParams, existingServiceBusQueueMessage);
-                            existingServiceBusQueueMessage.QueueName = serviceBusParams.QueueName.GetValueOrDefault(defaultValue: existingServiceBusQueueMessage.QueueName);
+                            UpdateServiceBus(serviceBusParams, existingServiceBusQueueMessage);
+                            existingServiceBusQueueMessage.QueueName = serviceBusParams.QueueName.GetValueOrDefault(existingServiceBusQueueMessage.QueueName);
                             break;
 
                         case JobActionType.ServiceBusTopic:
                             PSServiceBusParams serviceBusTopicParams = updateJobErrorActionParams.ServiceBusAction;
                             ServiceBusTopicMessage existingServiceBusTopicMessage = existingJobErrorAction.ServiceBusTopicMessage;
-                            this.UpdateServiceBus(serviceBusTopicParams, existingServiceBusTopicMessage);
-                            existingServiceBusTopicMessage.TopicPath = serviceBusTopicParams.TopicPath.GetValueOrDefault(defaultValue: existingServiceBusTopicMessage.TopicPath);
+                            UpdateServiceBus(serviceBusTopicParams, existingServiceBusTopicMessage);
+                            existingServiceBusTopicMessage.TopicPath = serviceBusTopicParams.TopicPath.GetValueOrDefault(existingServiceBusTopicMessage.TopicPath);
                             break;
                     }
                 }
                 else
                 {
-                    this.PopulateJobErrorAction(updateJobErrorActionParams, ref existingJobErrorAction);
+                    PopulateJobErrorAction(updateJobErrorActionParams, ref existingJobErrorAction);
                 }
             }
 
@@ -228,11 +228,11 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (existingServiceBusMessage != null)
             {
-                existingServiceBusMessage.TransportType = serviceBusParams.TransportType.GetValueOrDefaultEnum<ServiceBusTransportType?>(defaultValue: existingServiceBusMessage.TransportType);
-                existingServiceBusMessage.NamespaceProperty = serviceBusParams.NamespaceProperty.GetValueOrDefault(defaultValue: existingServiceBusMessage.NamespaceProperty);
-                existingServiceBusMessage.Message = serviceBusParams.Message.GetValueOrDefault(defaultValue: existingServiceBusMessage.Message);
+                existingServiceBusMessage.TransportType = serviceBusParams.TransportType.GetValueOrDefaultEnum<ServiceBusTransportType?>(existingServiceBusMessage.TransportType);
+                existingServiceBusMessage.NamespaceProperty = serviceBusParams.NamespaceProperty.GetValueOrDefault(existingServiceBusMessage.NamespaceProperty);
+                existingServiceBusMessage.Message = serviceBusParams.Message.GetValueOrDefault(existingServiceBusMessage.Message);
                 
-                this.PopulateServiceBusAuthentication(serviceBusParams.Authentication, existingServiceBusMessage.Authentication);
+                PopulateServiceBusAuthentication(serviceBusParams.Authentication, existingServiceBusMessage.Authentication);
             }
         }
 
@@ -245,9 +245,9 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (serviceBusAuthentication != null)
             {
-                existingServiceBusAuthentication.SasKey = serviceBusAuthentication.SasKey.GetValueOrDefault(defaultValue: existingServiceBusAuthentication.SasKey);
-                existingServiceBusAuthentication.SasKeyName = serviceBusAuthentication.SasKeyName.GetValueOrDefault(defaultValue: existingServiceBusAuthentication.SasKeyName);
-                existingServiceBusAuthentication.Type = serviceBusAuthentication.Type.GetValueOrDefaultEnum<ServiceBusAuthenticationType?>(defaultValue: existingServiceBusAuthentication.Type);
+                existingServiceBusAuthentication.SasKey = serviceBusAuthentication.SasKey.GetValueOrDefault(existingServiceBusAuthentication.SasKey);
+                existingServiceBusAuthentication.SasKeyName = serviceBusAuthentication.SasKeyName.GetValueOrDefault(existingServiceBusAuthentication.SasKeyName);
+                existingServiceBusAuthentication.Type = serviceBusAuthentication.Type.GetValueOrDefaultEnum<ServiceBusAuthenticationType?>(existingServiceBusAuthentication.Type);
             }
         }
 
@@ -263,12 +263,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 if (recurrence == null)
                 {
-                    return this.GetJobRecurrence(updateRecurrenceParams);
+                    return GetJobRecurrence(updateRecurrenceParams);
                 }
 
                 recurrence.Count = updateRecurrenceParams.ExecutionCount ?? recurrence.Count;
                 recurrence.EndTime = updateRecurrenceParams.EndTime ?? recurrence.EndTime;
-                recurrence.Frequency = updateRecurrenceParams.Frequency.GetValueOrDefaultEnum<RecurrenceFrequency?>(defaultValue: recurrence.Frequency);
+                recurrence.Frequency = updateRecurrenceParams.Frequency.GetValueOrDefaultEnum<RecurrenceFrequency?>(recurrence.Frequency);
                 recurrence.Interval = updateRecurrenceParams.Interval ?? recurrence.Interval;
             }
 
@@ -287,7 +287,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             // In order for user to update Authentication params, the user must enter the credentials again.
             if (updateJobAuthenticationParams != null && updateJobAuthenticationParams.HttpAuthType != null)
             {
-                return this.PopulateHttpAuthentication(updateJobAuthenticationParams);
+                return PopulateHttpAuthentication(updateJobAuthenticationParams);
             }
 
             return null;

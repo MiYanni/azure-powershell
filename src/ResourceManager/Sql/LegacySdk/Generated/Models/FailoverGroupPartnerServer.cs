@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Id
         {
-            get { return this._id; }
-            set { this._id = value; }
+            get { return _id; }
+            set { _id = value; }
         }
         
         private string _location;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Location
         {
-            get { return this._location; }
-            set { this._location = value; }
+            get { return _location; }
+            set { _location = value; }
         }
         
         private string _replicationRole;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ReplicationRole
         {
-            get { return this._replicationRole; }
-            set { this._replicationRole = value; }
+            get { return _replicationRole; }
+            set { _replicationRole = value; }
         }
         
         /// <summary>

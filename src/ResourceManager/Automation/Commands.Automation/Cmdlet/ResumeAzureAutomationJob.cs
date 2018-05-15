@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            this.AutomationClient.ResumeJob(this.ResourceGroupName, this.AutomationAccountName, this.Id);
+            AutomationClient.ResumeJob(ResourceGroupName, AutomationAccountName, Id);
         }
     }
 }

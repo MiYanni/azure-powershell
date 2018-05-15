@@ -35,25 +35,25 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string NetworkInterfaceAssociationText
         {
-            get { return JsonConvert.SerializeObject(this.NetworkInterfaceAssociation, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(NetworkInterfaceAssociation, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string SubnetAssociationText
         {
-            get { return JsonConvert.SerializeObject(this.SubnetAssociation, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(SubnetAssociation, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string DefaultSecurityRuleText
         {
-            get { return JsonConvert.SerializeObject(this.DefaultSecurityRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DefaultSecurityRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string EffectiveSecurityRuleText
         {
-            get { return JsonConvert.SerializeObject(this.EffectiveSecurityRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(EffectiveSecurityRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

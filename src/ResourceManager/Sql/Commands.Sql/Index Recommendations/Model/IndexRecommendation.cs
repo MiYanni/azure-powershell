@@ -30,19 +30,19 @@ namespace Microsoft.Azure.Commands.Sql.Model
                 throw new ArgumentNullException("other");
             }
 
-            this.Action = other.Action;
-            this.Columns = other.Columns;
-            this.Created = other.Created;
-            this.EstimatedImpact = other.EstimatedImpact;
-            this.IncludedColumns = other.IncludedColumns;
-            this.IndexScript = other.IndexScript;
-            this.IndexType = other.IndexType;
-            this.LastModified = other.LastModified;
-            this.ReportedImpact = other.ReportedImpact;
-            this.Schema = other.Schema;
-            this.State = other.State;
-            this.Table = other.Table;
-            this.Columns = other.Columns;
+            Action = other.Action;
+            Columns = other.Columns;
+            Created = other.Created;
+            EstimatedImpact = other.EstimatedImpact;
+            IncludedColumns = other.IncludedColumns;
+            IndexScript = other.IndexScript;
+            IndexType = other.IndexType;
+            LastModified = other.LastModified;
+            ReportedImpact = other.ReportedImpact;
+            Schema = other.Schema;
+            State = other.State;
+            Table = other.Table;
+            Columns = other.Columns;
         }
 
         /// <summary>

@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
         /// <returns></returns>
         public static string GetString<T>(IEnumerable<T> objList)
         {
-            return (objList == null) ? "null" : "{" + string.Join(", ", objList.Select(e => e.ToString())) + "}";
+            return objList == null ? "null" : "{" + string.Join(", ", objList.Select(e => e.ToString())) + "}";
         }
     }
 
@@ -111,14 +111,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
                     {
                         return vmNameInfo[1];
                     }
-                    else if (vmNameInfo.Length == 4)
+                    if (vmNameInfo.Length == 4)
                     {
                         return vmNameInfo[2];
                     }
-                    else
-                    {
-                        throw new Exception("Container name not in the expected format");
-                    }
+                    throw new Exception("Container name not in the expected format");
                 }
             }
 
@@ -232,19 +229,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
             {
                 return ContainerType.AzureVM;
             }
-            else if (containerType == ServiceClientModel.MabServerType.Windows.ToString())
+            if (containerType == ServiceClientModel.MabServerType.Windows)
             {
                 return ContainerType.Windows;
             }
-            else if (containerType ==
-                ServiceClientModel.MabServerType.AzureSqlContainer.ToString())
+            if (containerType ==
+                ServiceClientModel.MabServerType.AzureSqlContainer)
             {
                 return ContainerType.AzureSQL;
             }
-            else
-            {
-                throw new Exception("Unsupported ContainerType: " + containerType);
-            }
+            throw new Exception("Unsupported ContainerType: " + containerType);
         }
 
         /// <summary>
@@ -254,18 +248,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
         /// <returns>PowerShell workload type</returns>
         public static WorkloadType GetPsWorkloadType(string workloadType)
         {
-            if (workloadType == ServiceClientModel.WorkloadType.VM.ToString())
+            if (workloadType == ServiceClientModel.WorkloadType.VM)
             {
                 return WorkloadType.AzureVM;
             }
-            if (workloadType == ServiceClientModel.WorkloadType.AzureSqlDb.ToString())
+            if (workloadType == ServiceClientModel.WorkloadType.AzureSqlDb)
             {
                 return WorkloadType.AzureSQLDatabase;
             }
-            else
-            {
-                throw new Exception("Unsupported WorkloadType: " + workloadType);
-            }
+            throw new Exception("Unsupported WorkloadType: " + workloadType);
         }
     }
 }

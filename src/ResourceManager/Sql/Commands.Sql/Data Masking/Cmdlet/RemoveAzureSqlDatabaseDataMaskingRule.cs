@@ -45,11 +45,11 @@ namespace Microsoft.Azure.Commands.Sql.DataMasking.Cmdlet
         protected override IEnumerable<DatabaseDataMaskingRuleModel> PersistChanges(IEnumerable<DatabaseDataMaskingRuleModel> rules)
         {
             if (!Force.IsPresent && !ShouldProcess(
-                string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveDatabaseDataMaskingRuleDescription,
+                string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveDatabaseDataMaskingRuleDescription,
                                     ColumnName, TableName, SchemaName, DatabaseName),
-                string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveDatabaseDataMaskingRuleWarning,
+                string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveDatabaseDataMaskingRuleWarning,
                                     ColumnName, TableName, SchemaName, DatabaseName),
-                Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+                Properties.Resources.ShouldProcessCaption))
             {
                 return null;
             }

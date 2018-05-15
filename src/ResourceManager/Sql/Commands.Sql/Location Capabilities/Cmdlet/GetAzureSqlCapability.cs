@@ -105,17 +105,17 @@ namespace Microsoft.Azure.Commands.Sql.Location_Capabilities.Cmdlet
                     break;
                 case _filtered:
                     {
-                        if (this.MyInvocation.BoundParameters.ContainsKey("ServerVersionName"))
+                        if (MyInvocation.BoundParameters.ContainsKey("ServerVersionName"))
                         {
                             FilterByServerVersion(model);
                             depth = 1;
                         }
-                        if (this.MyInvocation.BoundParameters.ContainsKey("EditionName"))
+                        if (MyInvocation.BoundParameters.ContainsKey("EditionName"))
                         {
                             FilterByEditionName(model);
                             depth = 2;
                         }
-                        if (this.MyInvocation.BoundParameters.ContainsKey("ServiceObjectiveName"))
+                        if (MyInvocation.BoundParameters.ContainsKey("ServiceObjectiveName"))
                         {
                             FilterByServiceObjectiveName(model);
                             depth = 3;
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.Commands.Sql.Location_Capabilities.Cmdlet
                 model.ExpandedDetails = CreateExpandedDetails(model, depth);
             }
 
-            this.WriteObject(model, true);
+            WriteObject(model, true);
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace Microsoft.Azure.Commands.Sql.Location_Capabilities.Cmdlet
                     // Remove all service objectives with a name that does not match the desired value
                     edition.SupportedServiceObjectives =
                         edition.SupportedServiceObjectives
-                            .Where(slo => { return slo.ServiceObjectiveName == this.ServiceObjectiveName; })
+                            .Where(slo => { return slo.ServiceObjectiveName == ServiceObjectiveName; })
                             .ToList();
                 }
 
@@ -291,7 +291,7 @@ namespace Microsoft.Azure.Commands.Sql.Location_Capabilities.Cmdlet
                 // Remove all editions that do not match the desired edition name
                 version.SupportedEditions =
                     version.SupportedEditions
-                        .Where(e => { return e.EditionName == this.EditionName; })
+                        .Where(e => { return e.EditionName == EditionName; })
                         .ToList();
             }
 
@@ -308,7 +308,7 @@ namespace Microsoft.Azure.Commands.Sql.Location_Capabilities.Cmdlet
             // Remove all server versions that don't match the desired name
             model.SupportedServerVersions =
                 model.SupportedServerVersions
-                    .Where(obj => { return obj.ServerVersionName == this.ServerVersionName; })
+                    .Where(obj => { return obj.ServerVersionName == ServerVersionName; })
                     .ToList();
         }
     }

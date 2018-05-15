@@ -32,23 +32,23 @@ namespace Microsoft.Azure.Commands.Automation.Model
 
         }
 
-        public HybridRunbookWorkerGroup(string resourceGroupName, string accountName, Azure.Management.Automation.Models.HybridRunbookWorkerGroup hybridRunbookWorkerGroup)
+        public HybridRunbookWorkerGroup(string resourceGroupName, string accountName, Management.Automation.Models.HybridRunbookWorkerGroup hybridRunbookWorkerGroup)
         {
 
             Requires.Argument("accountName", accountName).NotNull();
             Requires.Argument("hybridRunbookWorkerGroup", hybridRunbookWorkerGroup).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = accountName;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = accountName;
             
-            this.Name = hybridRunbookWorkerGroup.Name;
+            Name = hybridRunbookWorkerGroup.Name;
             
             
             RunbookWorker = new List<HybridRunbookWorker>();
             foreach (var worker in hybridRunbookWorkerGroup.HybridRunbookWorkers)
             {
                 var hbworker = new HybridRunbookWorker(worker.IpAddress, worker.Name, worker.RegistrationDateTime);                
-                this.RunbookWorker.Add(hbworker);
+                RunbookWorker.Add(hbworker);
             }
         }
         /// <summary>

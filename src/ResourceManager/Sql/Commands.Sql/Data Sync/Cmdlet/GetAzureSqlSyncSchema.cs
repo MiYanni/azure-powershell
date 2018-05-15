@@ -28,10 +28,11 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlSyncFullSchemaModel> GetEntity()
         {
-            return new List<AzureSqlSyncFullSchemaModel>() { 
+            return new List<AzureSqlSyncFullSchemaModel>
+            { 
                 MyInvocation.BoundParameters.ContainsKey("SyncMemberName") 
-                    ? ModelAdapter.GetSyncMemberSchema(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName, this.SyncMemberName)
-                        : ModelAdapter.GetSyncHubSchema(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName) 
+                    ? ModelAdapter.GetSyncMemberSchema(ResourceGroupName, ServerName, DatabaseName, SyncGroupName, SyncMemberName)
+                        : ModelAdapter.GetSyncHubSchema(ResourceGroupName, ServerName, DatabaseName, SyncGroupName) 
             };
         }
 

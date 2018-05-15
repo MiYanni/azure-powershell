@@ -191,25 +191,25 @@ namespace Microsoft.Azure.Commands.Management.Storage
         {
             base.ExecuteCmdlet();
 
-            if (ShouldProcess(this.Name, "Set Storage Account"))
+            if (ShouldProcess(Name, "Set Storage Account"))
             {
-                if (this.force || this.AccessTier == null || ShouldContinue("Changing the access tier may result in additional charges. See (http://go.microsoft.com/fwlink/?LinkId=786482) to learn more.", ""))
+                if (force || AccessTier == null || ShouldContinue("Changing the access tier may result in additional charges. See (http://go.microsoft.com/fwlink/?LinkId=786482) to learn more.", ""))
                 {
                     StorageAccountUpdateParameters updateParameters = new StorageAccountUpdateParameters();
-                    if (this.SkuName != null)
+                    if (SkuName != null)
                     {
-                        updateParameters.Sku = new Sku(ParseSkuName(this.SkuName));
+                        updateParameters.Sku = new Sku(ParseSkuName(SkuName));
                     }
 
-                    if (this.Tag != null)
+                    if (Tag != null)
                     {
                         Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
                         updateParameters.Tags = tagDictionary ?? new Dictionary<string, string>();
                     }
 
-                    if (this.CustomDomainName != null)
+                    if (CustomDomainName != null)
                     {
-                        updateParameters.CustomDomain = new CustomDomain()
+                        updateParameters.CustomDomain = new CustomDomain
                         {
                             Name = CustomDomainName,
                             UseSubDomain = UseSubDomain
@@ -217,10 +217,10 @@ namespace Microsoft.Azure.Commands.Management.Storage
                     }
                     else if (UseSubDomain != null)
                     {
-                        throw new System.ArgumentException(string.Format("UseSubDomain must be set together with CustomDomainName."));
+                        throw new ArgumentException(string.Format("UseSubDomain must be set together with CustomDomainName."));
                     }
 
-                    if (this.AccessTier != null)
+                    if (AccessTier != null)
                     {
                         updateParameters.AccessTier = ParseAccessTier(AccessTier);
                     }
@@ -234,7 +234,7 @@ namespace Microsoft.Azure.Commands.Management.Storage
                         updateParameters.Identity = new Identity();
                     }
 
-                    if (StorageEncryption || (ParameterSetName == KeyvaultEncryptionParameterSet))
+                    if (StorageEncryption || ParameterSetName == KeyvaultEncryptionParameterSet)
                     {
                         if (ParameterSetName == KeyvaultEncryptionParameterSet)
                         {
@@ -252,12 +252,12 @@ namespace Microsoft.Azure.Commands.Management.Storage
                         updateParameters.Kind = Kind.StorageV2;
                     }
 
-                    var updatedAccountResponse = this.StorageClient.StorageAccounts.Update(
-                        this.ResourceGroupName,
-                        this.Name,
+                    var updatedAccountResponse = StorageClient.StorageAccounts.Update(
+                        ResourceGroupName,
+                        Name,
                         updateParameters);
 
-                    var storageAccount = this.StorageClient.StorageAccounts.GetProperties(this.ResourceGroupName, this.Name);
+                    var storageAccount = StorageClient.StorageAccounts.GetProperties(ResourceGroupName, Name);
 
                     WriteStorageAccount(storageAccount);
                 }

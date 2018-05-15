@@ -46,23 +46,21 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string automationAccountName,
             ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
 
-                var dscConfigurations = new List<AutomationManagement.Models.DscConfiguration>();
-
                 DscConfigurationListResponse response;
                 if (string.IsNullOrEmpty(nextLink))
                 {
-                    response = this.automationManagementClient.Configurations.List(
+                    response = automationManagementClient.Configurations.List(
                                     resourceGroupName,
                                     automationAccountName);
                 }
                 else
                 {
-                    response = this.automationManagementClient.Configurations.ListNext(nextLink);
+                    response = automationManagementClient.Configurations.ListNext(nextLink);
                 }
                     
                 
@@ -76,14 +74,14 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string automationAccountName,
             string configurationName)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
                 Requires.Argument("ConfigurationName", configurationName).NotNull();
 
                 var configuration =
-                            this.automationManagementClient.Configurations.Get(
+                            automationManagementClient.Configurations.Get(
                                 resourceGroupName,
                                 automationAccountName,
                                 configurationName).Configuration;
@@ -94,7 +92,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
         public DirectoryInfo GetConfigurationContent(string resourceGroupName, string automationAccountName, string configurationName, bool? isDraft, string outputFolder, bool overwriteExistingFile)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 if (isDraft != null)
                 {
@@ -103,21 +101,21 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
                 try
                 {
-                    var configuration = this.automationManagementClient.Configurations.GetContent(resourceGroupName, automationAccountName, configurationName);
+                    var configuration = automationManagementClient.Configurations.GetContent(resourceGroupName, automationAccountName, configurationName);
                     if (configuration == null)
                     {
                         throw new ResourceNotFoundException(typeof(ConfigurationContent),
                             string.Format(CultureInfo.CurrentCulture, Resources.ConfigurationContentNotFound, configurationName));
                     }
 
-                    string outputFolderFullPath = this.GetCurrentDirectory();
+                    string outputFolderFullPath = GetCurrentDirectory();
 
                     if (!string.IsNullOrEmpty(outputFolder))
                     {
-                        outputFolderFullPath = this.ValidateAndGetFullPath(outputFolder);
+                        outputFolderFullPath = ValidateAndGetFullPath(outputFolder);
                     }
 
-                    var slot = (isDraft == null) ? Constants.Published : Constants.Draft;
+                    var slot = isDraft == null ? Constants.Published : Constants.Draft;
 
                     const string FileExtension = ".ps1";
 
@@ -131,7 +129,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
 
                     // Write to the file
-                    this.WriteFile(outputFilePath, configuration.Content);
+                    WriteFile(outputFilePath, configuration.Content);
 
                     return new DirectoryInfo(configurationName + FileExtension);
                 }
@@ -158,7 +156,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             bool published,
             bool overWrite)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
@@ -171,7 +169,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 {
                     if (File.Exists(Path.GetFullPath(sourcePath)))
                     {
-                        fileContent = System.IO.File.ReadAllText(sourcePath);
+                        fileContent = File.ReadAllText(sourcePath);
                     }
                 }
                 catch (Exception)
@@ -197,7 +195,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
 
                 // if configuration already exists, ensure overwrite flag is specified
-                var configurationModel = this.TryGetConfigurationModel(
+                var configurationModel = TryGetConfigurationModel(
                     resourceGroupName,
                     automationAccountName,
                     configurationName);
@@ -211,21 +209,21 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
 
                 // location of the configuration is set to same as that of automation account
-                string location = this.GetAutomationAccount(resourceGroupName, automationAccountName).Location;
+                string location = GetAutomationAccount(resourceGroupName, automationAccountName).Location;
 
                 IDictionary<string, string> configurationTags = null;
                 if (tags != null) configurationTags = tags.Cast<DictionaryEntry>().ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value.ToString());
 
-                var configurationCreateParameters = new DscConfigurationCreateOrUpdateParameters()
+                var configurationCreateParameters = new DscConfigurationCreateOrUpdateParameters
                 {
                     Name = configurationName,
                     Location = location,
                     Tags = configurationTags,
-                    Properties = new DscConfigurationCreateOrUpdateProperties()
+                    Properties = new DscConfigurationCreateOrUpdateProperties
                     {
                         Description = String.IsNullOrEmpty(description) ? String.Empty : description,
-                        LogVerbose = (logVerbose.HasValue) ? logVerbose.Value : false,
-                        Source = new Microsoft.Azure.Management.Automation.Models.ContentSource()
+                        LogVerbose = logVerbose.HasValue ? logVerbose.Value : false,
+                        Source = new Management.Automation.Models.ContentSource
                         {
                             // only embeddedContent supported for now
                             ContentType = Model.ContentSourceType.embeddedContent.ToString(),
@@ -235,7 +233,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 };
 
                 var configuration =
-                    this.automationManagementClient.Configurations.CreateOrUpdate(
+                    automationManagementClient.Configurations.CreateOrUpdate(
                         resourceGroupName,
                         automationAccountName,
                         configurationCreateParameters).Configuration;
@@ -249,7 +247,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             Model.DscConfiguration configuration = null;
             try
             {
-                configuration = this.GetConfiguration(
+                configuration = GetConfiguration(
                                                 resourceGroupName,
                                                 automationAccountName,
                                                 configurationName);
@@ -278,21 +276,21 @@ namespace Microsoft.Azure.Commands.Automation.Common
             configurationContent = configurationContent.Replace("#configrationName#", configrationName);
             configurationContent = configurationContent.Replace("#nodeName#", nodeName);
 
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
 
                 // location of the configuration is set to same as that of automation account
-                string location = this.GetAutomationAccount(resourceGroupName, automationAccountName).Location;
+                string location = GetAutomationAccount(resourceGroupName, automationAccountName).Location;
 
-                var configurationCreateParameters = new DscConfigurationCreateOrUpdateParameters()
+                var configurationCreateParameters = new DscConfigurationCreateOrUpdateParameters
                 {
                     Name = configrationName,
                     Location = location,
-                    Properties = new DscConfigurationCreateOrUpdateProperties()
+                    Properties = new DscConfigurationCreateOrUpdateProperties
                     {
                         Description = String.Empty,
                         LogVerbose = false,
-                        Source = new Microsoft.Azure.Management.Automation.Models.ContentSource()
+                        Source = new Management.Automation.Models.ContentSource
                         {
                             // only embeddedContent supported for now
                             ContentType = Model.ContentSourceType.embeddedContent.ToString(),
@@ -302,7 +300,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 };
 
                 var configuration =
-                    this.automationManagementClient.Configurations.CreateOrUpdate(
+                    automationManagementClient.Configurations.CreateOrUpdate(
                         resourceGroupName,
                         automationAccountName,
                         configurationCreateParameters).Configuration;
@@ -315,11 +313,11 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 try
                 {
-                    this.automationManagementClient.Configurations.Delete(resourceGroupName, automationAccountName, name);
+                    automationManagementClient.Configurations.Delete(resourceGroupName, automationAccountName, name);
                 }
                 catch (CloudException cloudException)
                 {
@@ -339,19 +337,19 @@ namespace Microsoft.Azure.Commands.Automation.Common
         #region DscMetaConfig Operations
         public DirectoryInfo GetDscMetaConfig(string resourceGroupName, string automationAccountName, string outputFolder, string[] computerNames, bool overwriteExistingFile)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
 
-                string outputFolderFullPath = this.GetCurrentDirectory(); // initialize with current directory;
+                string outputFolderFullPath = GetCurrentDirectory(); // initialize with current directory;
 
                 if (!String.IsNullOrEmpty(outputFolder))
                 {
-                    outputFolderFullPath = this.ValidateAndGetFullPath(outputFolder);
+                    outputFolderFullPath = ValidateAndGetFullPath(outputFolder);
                 }
 
-                var dscMetaConfig = this.automationManagementClient.AgentRegistrationInformation.Get(
+                var dscMetaConfig = automationManagementClient.AgentRegistrationInformation.Get(
                     resourceGroupName,
                     automationAccountName).AgentRegistration;
 
@@ -367,9 +365,9 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 const string FileExtension = ".meta.mof"; // this will be .meta.mof
                 const string DscMetaConfigsFolder = "DscMetaConfigs"; // Folder name where metaconfigs are stored
 
-                outputFolderFullPath = System.IO.Path.Combine(outputFolderFullPath, DscMetaConfigsFolder);
+                outputFolderFullPath = Path.Combine(outputFolderFullPath, DscMetaConfigsFolder);
 
-                this.CreateOutputFolder(outputFolderFullPath);
+                CreateOutputFolder(outputFolderFullPath);
 
                 foreach (string computerName in computerNames)
                 {
@@ -383,7 +381,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
 
                     // Write to the file
-                    this.WriteFile(outputFilePath, dscMetaConfigValue);
+                    WriteFile(outputFilePath, dscMetaConfigValue);
                 }
 
                 return new DirectoryInfo(outputFolderFullPath);
@@ -396,7 +394,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             {
                 if (!Directory.Exists(folderPath))
                 {
-                    System.IO.Directory.CreateDirectory(folderPath);
+                    Directory.CreateDirectory(folderPath);
                 }
             }
             catch (UnauthorizedAccessException)
@@ -473,12 +471,12 @@ namespace Microsoft.Azure.Commands.Automation.Common
         #region AgentRegistration Operations
         public Model.AgentRegistration GetAgentRegistration(string resourceGroupName, string automationAccountName)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
 
-                var agentRegistration = this.automationManagementClient.AgentRegistrationInformation.Get(
+                var agentRegistration = automationManagementClient.AgentRegistrationInformation.Get(
                     resourceGroupName,
                     automationAccountName).AgentRegistration;
 
@@ -491,15 +489,15 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string automationAccountName,
             string keyType)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
                 Requires.Argument("KeyType", keyType).NotNull();
 
-                AgentRegistrationRegenerateKeyParameter keyName = new AgentRegistrationRegenerateKeyParameter() { KeyName = keyType };
+                AgentRegistrationRegenerateKeyParameter keyName = new AgentRegistrationRegenerateKeyParameter { KeyName = keyType };
 
-                var agentRegistration = this.automationManagementClient.AgentRegistrationInformation.RegenerateKey(
+                var agentRegistration = automationManagementClient.AgentRegistrationInformation.RegenerateKey(
                     resourceGroupName,
                     automationAccountName,
                     keyName).AgentRegistration;
@@ -515,7 +513,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string automationAccountName,
             Guid nodeId)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
@@ -524,7 +522,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 try
                 {
                     var node =
-                                this.automationManagementClient.Nodes.Get(
+                                automationManagementClient.Nodes.Get(
                                     resourceGroupName,
                                     automationAccountName,
                                     nodeId).Node;
@@ -550,7 +548,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string status,
             ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
@@ -561,14 +559,14 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 {
                     if (!string.IsNullOrEmpty(status))
                     {
-                        response = this.automationManagementClient.Nodes.List(
+                        response = automationManagementClient.Nodes.List(
                                     resourceGroupName,
                                     automationAccountName,
                                     new DscNodeListParameters { Status = status, Name = nodeName });
                     }
                     else
                     {
-                        response = this.automationManagementClient.Nodes.List(
+                        response = automationManagementClient.Nodes.List(
                                     resourceGroupName,
                                     automationAccountName,
                                     new DscNodeListParameters { Name = nodeName });
@@ -576,7 +574,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
                 else
                 {
-                    response = this.automationManagementClient.Nodes.ListNext(nextLink);
+                    response = automationManagementClient.Nodes.ListNext(nextLink);
                 }
 
                 nextLink = response.NextLink;
@@ -592,7 +590,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string status,
             ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
@@ -603,7 +601,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 {
                     if (!string.IsNullOrEmpty(status))
                     {
-                        response = this.automationManagementClient.Nodes.List(
+                        response = automationManagementClient.Nodes.List(
                                             resourceGroupName,
                                             automationAccountName,
                                             new DscNodeListParameters
@@ -614,7 +612,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else
                     {
-                        response = this.automationManagementClient.Nodes.List(
+                        response = automationManagementClient.Nodes.List(
                                             resourceGroupName,
                                             automationAccountName,
                                             new DscNodeListParameters { NodeConfigurationName = nodeConfigurationName });
@@ -622,7 +620,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
                 else
                 {
-                    response = this.automationManagementClient.Nodes.ListNext(nextLink);
+                    response = automationManagementClient.Nodes.ListNext(nextLink);
                 }
                 nextLink = response.NextLink;
                 
@@ -637,7 +635,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string status,
             ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
@@ -646,7 +644,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 IEnumerable<Model.DscNode> listOfNodes = Enumerable.Empty<Model.DscNode>();
 
                 // first get the list of node configurations for the given configuration
-                IEnumerable<Model.NodeConfiguration> listOfNodeConfigurations = this.EnumerateNodeConfigurationsByConfigurationName(
+                IEnumerable<NodeConfiguration> listOfNodeConfigurations = EnumerateNodeConfigurationsByConfigurationName(
                     resourceGroupName,
                     automationAccountName,
                     configurationName);
@@ -657,7 +655,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 foreach (var nodeConfiguration in listOfNodeConfigurations)
                 {
                     listOfNodesForGivenNodeConfiguration =
-                        this.ListDscNodesByNodeConfiguration(
+                        ListDscNodesByNodeConfiguration(
                             resourceGroupName,
                             automationAccountName,
                             nodeConfiguration.Name,
@@ -680,7 +678,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string status,
             ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
@@ -691,14 +689,14 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 {
                     if (!string.IsNullOrEmpty(status))
                     {
-                        response = this.automationManagementClient.Nodes.List(
+                        response = automationManagementClient.Nodes.List(
                             resourceGroupName,
                             automationAccountName,
                             new DscNodeListParameters { Status = status });
                     }
                     else
                     {
-                        response = this.automationManagementClient.Nodes.List(
+                        response = automationManagementClient.Nodes.List(
                                 resourceGroupName,
                                 automationAccountName,
                                 new DscNodeListParameters { });
@@ -706,7 +704,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
                 else
                 {
-                    response = this.automationManagementClient.Nodes.ListNext(nextLink);
+                    response = automationManagementClient.Nodes.ListNext(nextLink);
                 }
 
                 nextLink = response.NextLink;
@@ -723,7 +721,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             string nodeConfigurationName
             )
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
@@ -732,7 +730,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
                 try
                 {
-                    var getNode = this.automationManagementClient.Nodes.Get(
+                    var getNode = automationManagementClient.Nodes.Get(
                             resourceGroupName,
                             automationAccountName,
                             nodeId).Node;
@@ -754,7 +752,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 var nodeConfiguration = new DscNodeConfigurationAssociationProperty { Name = nodeConfigurationName };
 
                 var node =
-                    this.automationManagementClient.Nodes.Patch(
+                    automationManagementClient.Nodes.Patch(
                         resourceGroupName,
                         automationAccountName,
                         new DscNodePatchParameters
@@ -771,9 +769,9 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
             try
             {
-                using (var request = new RequestSettings(this.automationManagementClient))
+                using (var request = new RequestSettings(automationManagementClient))
                 {
-                    this.automationManagementClient.Nodes.Delete(
+                    automationManagementClient.Nodes.Delete(
                         resourceGroupName,
                         automationAccountName,
                         nodeId);
@@ -805,7 +803,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                                             string azureVmLocation)
         {
             // get the location from AutomationAccountName. This will validate the account too
-            string location = this.GetAutomationAccount(resourceGroupName, automationAccountName).Location;
+            string location = GetAutomationAccount(resourceGroupName, automationAccountName).Location;
 
             // if vm location is specified, use that
             if (!String.IsNullOrEmpty(azureVmLocation))
@@ -819,10 +817,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 azureVmResourceGroup = resourceGroupName;
             }
 
-            string deploymentName = System.DateTimeOffset.Now.LocalDateTime.ToString("yyyyMMddhhmmss");
+            string deploymentName = DateTimeOffset.Now.LocalDateTime.ToString("yyyyMMddhhmmss");
 
             // get the endpoint and keys
-            Model.AgentRegistration agentRegistrationInfo = this.GetAgentRegistration(
+            Model.AgentRegistration agentRegistrationInfo = GetAgentRegistration(
                 resourceGroupName,
                 automationAccountName);
 
@@ -864,20 +862,20 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
         #region compilationjob
 
-        public Model.CompilationJob GetCompilationJob(string resourceGroupName, string automationAccountName, Guid Id)
+        public CompilationJob GetCompilationJob(string resourceGroupName, string automationAccountName, Guid Id)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 try
                 {
-                    var job = this.automationManagementClient.CompilationJobs.Get(resourceGroupName, automationAccountName, Id).DscCompilationJob;
+                    var job = automationManagementClient.CompilationJobs.Get(resourceGroupName, automationAccountName, Id).DscCompilationJob;
                     if (job == null)
                     {
                         throw new ResourceNotFoundException(typeof(DscCompilationJob),
                             string.Format(CultureInfo.CurrentCulture, Resources.CompilationJobNotFound, Id));
                     }
 
-                    return new Model.CompilationJob(resourceGroupName, automationAccountName, job);
+                    return new CompilationJob(resourceGroupName, automationAccountName, job);
                 }
                 catch (CloudException cloudException)
                 {
@@ -892,9 +890,9 @@ namespace Microsoft.Azure.Commands.Automation.Common
             }
         }
 
-        public IEnumerable<Model.CompilationJob> ListCompilationJobsByConfigurationName(string resourceGroupName, string automationAccountName, string configurationName, DateTimeOffset? startTime, DateTimeOffset? endTime, string jobStatus, ref string nextLink)
+        public IEnumerable<CompilationJob> ListCompilationJobsByConfigurationName(string resourceGroupName, string automationAccountName, string configurationName, DateTimeOffset? startTime, DateTimeOffset? endTime, string jobStatus, ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 DscCompilationJobListResponse response;
 
@@ -902,10 +900,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 { 
                     if (startTime.HasValue && endTime.HasValue)
                     {
-                        response = this.automationManagementClient.CompilationJobs.List(
+                        response = automationManagementClient.CompilationJobs.List(
                                         resourceGroupName,
                                         automationAccountName,
-                                        new AutomationManagement.Models.DscCompilationJobListParameters
+                                        new DscCompilationJobListParameters
                                         {
                                             StartTime = FormatDateTime(startTime.Value),
                                             EndTime = FormatDateTime(endTime.Value),
@@ -915,10 +913,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else if (startTime.HasValue)
                     {
-                        response = this.automationManagementClient.CompilationJobs.List(
+                        response = automationManagementClient.CompilationJobs.List(
                                         resourceGroupName,
                                         automationAccountName,
-                                        new AutomationManagement.Models.DscCompilationJobListParameters
+                                        new DscCompilationJobListParameters
                                         {
                                             StartTime = FormatDateTime(startTime.Value),
                                             ConfigurationName = configurationName,
@@ -927,10 +925,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else if (endTime.HasValue)
                     {
-                        response = this.automationManagementClient.CompilationJobs.List(
+                        response = automationManagementClient.CompilationJobs.List(
                                     resourceGroupName,
                                     automationAccountName,
-                                    new AutomationManagement.Models.DscCompilationJobListParameters
+                                    new DscCompilationJobListParameters
                                     {
                                         EndTime = FormatDateTime(endTime.Value),
                                         ConfigurationName = configurationName,
@@ -939,10 +937,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else
                     {
-                        response = this.automationManagementClient.CompilationJobs.List(
+                        response = automationManagementClient.CompilationJobs.List(
                                     resourceGroupName,
                                     automationAccountName,
-                                    new AutomationManagement.Models.DscCompilationJobListParameters
+                                    new DscCompilationJobListParameters
                                     {
                                         Status = jobStatus,
                                         ConfigurationName = configurationName
@@ -951,18 +949,18 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
                 else
                 {
-                    response = this.automationManagementClient.CompilationJobs.ListNext(nextLink);
+                    response = automationManagementClient.CompilationJobs.ListNext(nextLink);
                 }
 
                 nextLink = response.NextLink;
 
-                return response.DscCompilationJobs.Select(jobModel => new Model.CompilationJob(resourceGroupName, automationAccountName, jobModel));
+                return response.DscCompilationJobs.Select(jobModel => new CompilationJob(resourceGroupName, automationAccountName, jobModel));
             }
         }
 
-        public IEnumerable<Model.CompilationJob> ListCompilationJobs(string resourceGroupName, string automationAccountName, DateTimeOffset? startTime, DateTimeOffset? endTime, string jobStatus, ref string nextLink)
+        public IEnumerable<CompilationJob> ListCompilationJobs(string resourceGroupName, string automationAccountName, DateTimeOffset? startTime, DateTimeOffset? endTime, string jobStatus, ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 DscCompilationJobListResponse response;
 
@@ -970,10 +968,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 {
                     if (startTime.HasValue && endTime.HasValue)
                     {
-                        response = this.automationManagementClient.CompilationJobs.List(
+                        response = automationManagementClient.CompilationJobs.List(
                                         resourceGroupName,
                                         automationAccountName,
-                                        new AutomationManagement.Models.DscCompilationJobListParameters
+                                        new DscCompilationJobListParameters
                                         {
                                             StartTime = FormatDateTime(startTime.Value),
                                             EndTime = FormatDateTime(endTime.Value),
@@ -983,10 +981,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else if (startTime.HasValue)
                     {
-                        response = this.automationManagementClient.CompilationJobs.List(
+                        response = automationManagementClient.CompilationJobs.List(
                                            resourceGroupName,
                                            automationAccountName,
-                                           new AutomationManagement.Models.DscCompilationJobListParameters
+                                           new DscCompilationJobListParameters
                                            {
                                                StartTime = FormatDateTime(startTime.Value),
                                                Status = jobStatus,
@@ -994,10 +992,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else if (endTime.HasValue)
                     {
-                        response = this.automationManagementClient.CompilationJobs.List(
+                        response = automationManagementClient.CompilationJobs.List(
                                         resourceGroupName,
                                         automationAccountName,
-                                        new AutomationManagement.Models.DscCompilationJobListParameters
+                                        new DscCompilationJobListParameters
                                         {
                                             EndTime = FormatDateTime(endTime.Value),
                                             Status = jobStatus,
@@ -1005,55 +1003,55 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else
                     {
-                        response = this.automationManagementClient.CompilationJobs.List(
+                        response = automationManagementClient.CompilationJobs.List(
                                     resourceGroupName,
                                     automationAccountName,
-                                    new AutomationManagement.Models.DscCompilationJobListParameters { Status = jobStatus });
+                                    new DscCompilationJobListParameters { Status = jobStatus });
                     }
                 }
                 else
                 {
-                    response = this.automationManagementClient.CompilationJobs.ListNext(nextLink);
+                    response = automationManagementClient.CompilationJobs.ListNext(nextLink);
                 }
 
                 nextLink = response.NextLink;
 
-                return response.DscCompilationJobs.Select(jobModel => new Model.CompilationJob(resourceGroupName, automationAccountName, jobModel));
+                return response.DscCompilationJobs.Select(jobModel => new CompilationJob(resourceGroupName, automationAccountName, jobModel));
             }
         }
 
         public CompilationJob StartCompilationJob(string resourceGroupName, string automationAccountName, string configurationName, IDictionary parameters, IDictionary configurationData, bool incrementNodeConfigurationBuild)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
-                var createJobParameters = new DscCompilationJobCreateParameters()
+                var createJobParameters = new DscCompilationJobCreateParameters
                 {
-                    Properties = new DscCompilationJobCreateProperties()
+                    Properties = new DscCompilationJobCreateProperties
                     {
-                        Configuration = new DscConfigurationAssociationProperty()
+                        Configuration = new DscConfigurationAssociationProperty
                         {
                             Name = configurationName
                         },
-                        Parameters = this.ProcessConfigurationParameters(parameters, configurationData),
+                        Parameters = ProcessConfigurationParameters(parameters, configurationData),
                         IncrementNodeConfigurationBuild = incrementNodeConfigurationBuild
                     }
                 };
 
-                var job = this.automationManagementClient.CompilationJobs.Create(resourceGroupName, automationAccountName, createJobParameters);
+                var job = automationManagementClient.CompilationJobs.Create(resourceGroupName, automationAccountName, createJobParameters);
 
-                return new Model.CompilationJob(resourceGroupName, automationAccountName, job.DscCompilationJob);
+                return new CompilationJob(resourceGroupName, automationAccountName, job.DscCompilationJob);
             }
         }
 
         public IEnumerable<Model.JobStream> GetDscCompilationJobStream(string resourceGroupName, string automationAccountName, Guid jobId, DateTimeOffset? time, string streamType)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
-                var listParams = new AutomationManagement.Models.JobStreamListParameters();
+                var listParams = new JobStreamListParameters();
 
                 if (time.HasValue)
                 {
-                    listParams.Time = this.FormatDateTime(time.Value);
+                    listParams.Time = FormatDateTime(time.Value);
                 }
 
                 if (streamType != null)
@@ -1065,17 +1063,17 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     listParams.StreamType = CompilationJobStreamType.Any.ToString();
                 }
 
-                var jobStreams = this.automationManagementClient.JobStreams.List(resourceGroupName, automationAccountName, jobId, listParams).JobStreams;
-                return jobStreams.Select(stream => this.CreateJobStreamFromJobStreamModel(stream, resourceGroupName, automationAccountName, jobId)).ToList();
+                var jobStreams = automationManagementClient.JobStreams.List(resourceGroupName, automationAccountName, jobId, listParams).JobStreams;
+                return jobStreams.Select(stream => CreateJobStreamFromJobStreamModel(stream, resourceGroupName, automationAccountName, jobId)).ToList();
             }
         }
 
         #endregion
 
         #region node configuration
-        public Model.NodeConfiguration TryGetNodeConfiguration(string resourceGroupName, string automationAccountName, string nodeConfigurationName, string rollupStatus)
+        public NodeConfiguration TryGetNodeConfiguration(string resourceGroupName, string automationAccountName, string nodeConfigurationName, string rollupStatus)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 try
                 {
@@ -1088,19 +1086,19 @@ namespace Microsoft.Azure.Commands.Automation.Common
             }
         }
 
-        public Model.NodeConfiguration GetNodeConfiguration(string resourceGroupName, string automationAccountName, string nodeConfigurationName, string rollupStatus)
+        public NodeConfiguration GetNodeConfiguration(string resourceGroupName, string automationAccountName, string nodeConfigurationName, string rollupStatus)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 try
                 {
-                    var nodeConfiguration = this.automationManagementClient.NodeConfigurations.Get(resourceGroupName, automationAccountName, nodeConfigurationName).NodeConfiguration;
+                    var nodeConfiguration = automationManagementClient.NodeConfigurations.Get(resourceGroupName, automationAccountName, nodeConfigurationName).NodeConfiguration;
 
                     string computedRollupStatus = GetRollupStatus(resourceGroupName, automationAccountName, nodeConfigurationName);
 
-                    if (string.IsNullOrEmpty(rollupStatus) || (rollupStatus != null && computedRollupStatus.Equals(rollupStatus)))
+                    if (string.IsNullOrEmpty(rollupStatus) || rollupStatus != null && computedRollupStatus.Equals(rollupStatus))
                     {
-                        return new Model.NodeConfiguration(resourceGroupName, automationAccountName, nodeConfiguration, computedRollupStatus);
+                        return new NodeConfiguration(resourceGroupName, automationAccountName, nodeConfiguration, computedRollupStatus);
                     }
 
                     return null;
@@ -1117,78 +1115,78 @@ namespace Microsoft.Azure.Commands.Automation.Common
             }
         }
 
-        public IEnumerable<Model.NodeConfiguration> ListNodeConfigurationsByConfigurationName(string resourceGroupName, string automationAccountName, string configurationName, string rollupStatus, ref string nextLink)
+        public IEnumerable<NodeConfiguration> ListNodeConfigurationsByConfigurationName(string resourceGroupName, string automationAccountName, string configurationName, string rollupStatus, ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 DscNodeConfigurationListResponse response;
                 if (string.IsNullOrEmpty(nextLink))
                 {
-                    response = this.automationManagementClient.NodeConfigurations.List(
+                    response = automationManagementClient.NodeConfigurations.List(
                                        resourceGroupName,
                                        automationAccountName,
-                                       new AutomationManagement.Models.DscNodeConfigurationListParameters
+                                       new DscNodeConfigurationListParameters
                                        {
                                            ConfigurationName = configurationName
                                        });
                 }
                 else
                 {
-                    response = this.automationManagementClient.NodeConfigurations.ListNext(nextLink);
+                    response = automationManagementClient.NodeConfigurations.ListNext(nextLink);
                 }
 
                 nextLink = response.NextLink;
 
-                var nodeConfigurations = new List<Model.NodeConfiguration>();
+                var nodeConfigurations = new List<NodeConfiguration>();
                 foreach (var nodeConfiguration in response.DscNodeConfigurations)
                 {
                     string computedRollupStatus = GetRollupStatus(resourceGroupName, automationAccountName, nodeConfiguration.Name);
 
-                    if (string.IsNullOrEmpty(rollupStatus) || (rollupStatus != null && computedRollupStatus.Equals(rollupStatus)))
+                    if (string.IsNullOrEmpty(rollupStatus) || rollupStatus != null && computedRollupStatus.Equals(rollupStatus))
                     {
-                        nodeConfigurations.Add(new Model.NodeConfiguration(resourceGroupName, automationAccountName, nodeConfiguration, computedRollupStatus));
+                        nodeConfigurations.Add(new NodeConfiguration(resourceGroupName, automationAccountName, nodeConfiguration, computedRollupStatus));
                     }
                 }
 
-                return nodeConfigurations.AsEnumerable<Model.NodeConfiguration>();
+                return nodeConfigurations.AsEnumerable<NodeConfiguration>();
             }
         }
 
-        public IEnumerable<Model.NodeConfiguration> ListNodeConfigurations(string resourceGroupName, string automationAccountName, string rollupStatus, ref string nextLink)
+        public IEnumerable<NodeConfiguration> ListNodeConfigurations(string resourceGroupName, string automationAccountName, string rollupStatus, ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 DscNodeConfigurationListResponse response;
                 if (string.IsNullOrEmpty(nextLink))
                 {
-                    response = this.automationManagementClient.NodeConfigurations.List(
+                    response = automationManagementClient.NodeConfigurations.List(
                                         resourceGroupName,
                                         automationAccountName,
-                                        new AutomationManagement.Models.DscNodeConfigurationListParameters());
+                                        new DscNodeConfigurationListParameters());
                 }
                 else
                 {
-                    response = this.automationManagementClient.NodeConfigurations.ListNext(nextLink);
+                    response = automationManagementClient.NodeConfigurations.ListNext(nextLink);
                 }
 
                 nextLink = response.NextLink;
 
-                var nodeConfigurations = new List<Model.NodeConfiguration>();
+                var nodeConfigurations = new List<NodeConfiguration>();
                 foreach (var nodeConfiguration in response.DscNodeConfigurations)
                 {
                     string computedRollupStatus = GetRollupStatus(resourceGroupName, automationAccountName, nodeConfiguration.Configuration.Name);
 
-                    if (string.IsNullOrEmpty(rollupStatus) || (rollupStatus != null && computedRollupStatus.Equals(rollupStatus)))
+                    if (string.IsNullOrEmpty(rollupStatus) || rollupStatus != null && computedRollupStatus.Equals(rollupStatus))
                     {
-                        nodeConfigurations.Add(new Model.NodeConfiguration(resourceGroupName, automationAccountName, nodeConfiguration, computedRollupStatus));
+                        nodeConfigurations.Add(new NodeConfiguration(resourceGroupName, automationAccountName, nodeConfiguration, computedRollupStatus));
                     }
                 }
 
-                return nodeConfigurations.AsEnumerable<Model.NodeConfiguration>();
+                return nodeConfigurations.AsEnumerable<NodeConfiguration>();
             }
         }
 
-        public Model.NodeConfiguration CreateNodeConfiguration(
+        public NodeConfiguration CreateNodeConfiguration(
             string resourceGroupName,
             string automationAccountName,
             string sourcePath,
@@ -1196,7 +1194,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             bool incrementNodeConfigurationBuild,
             bool overWrite)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 Requires.Argument("ResourceGroupName", resourceGroupName).NotNullOrEmpty();
                 Requires.Argument("AutomationAccountName", automationAccountName).NotNullOrEmpty();
@@ -1209,8 +1207,8 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
                 if (File.Exists(Path.GetFullPath(sourcePath)))
                 {
-                    fileContent = System.IO.File.ReadAllText(sourcePath);
-                    nodeName = System.IO.Path.GetFileNameWithoutExtension(sourcePath);
+                    fileContent = File.ReadAllText(sourcePath);
+                    nodeName = Path.GetFileNameWithoutExtension(sourcePath);
                     nodeConfigurationName = configurationName + "." + nodeName;
                 }
                 else
@@ -1223,26 +1221,26 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
 
                 // if configuration already exists, ensure overwrite flag is specified
-                var configurationModel = this.TryGetConfigurationModel(
+                var configurationModel = TryGetConfigurationModel(
                     resourceGroupName,
                     automationAccountName,
                     configurationName);
                 if (configurationModel == null)
                 {
                     //create empty configuration if its empty
-                    this.CreateConfiguration(resourceGroupName, automationAccountName, configurationName, nodeName);
+                    CreateConfiguration(resourceGroupName, automationAccountName, configurationName, nodeName);
                 }
 
-                var nodeConfigurationCreateParameters = new DscNodeConfigurationCreateOrUpdateParameters()
+                var nodeConfigurationCreateParameters = new DscNodeConfigurationCreateOrUpdateParameters
                 {
                     Name = nodeConfigurationName,
-                    Source = new Microsoft.Azure.Management.Automation.Models.ContentSource()
+                    Source = new Management.Automation.Models.ContentSource
                     {
                         // only embeddedContent supported for now
                         ContentType = Model.ContentSourceType.embeddedContent.ToString(),
                         Value = fileContent
                     },
-                    Configuration = new DscConfigurationAssociationProperty()
+                    Configuration = new DscConfigurationAssociationProperty
                     {
                         Name = configurationName
                     }
@@ -1250,13 +1248,13 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 nodeConfigurationCreateParameters.IncrementNodeConfigurationBuild = incrementNodeConfigurationBuild;
 
                 var nodeConfiguration =
-                    this.automationManagementClient.NodeConfigurations.CreateOrUpdate(
+                    automationManagementClient.NodeConfigurations.CreateOrUpdate(
                         resourceGroupName,
                         automationAccountName,
                         nodeConfigurationCreateParameters).NodeConfiguration;
 
 
-                return new Model.NodeConfiguration(resourceGroupName, automationAccountName, nodeConfiguration, null);
+                return new NodeConfiguration(resourceGroupName, automationAccountName, nodeConfiguration, null);
             }
         }
 
@@ -1266,13 +1264,13 @@ namespace Microsoft.Azure.Commands.Automation.Common
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
             Requires.Argument("NodeConfigurationName", name).NotNull();
 
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 try
                 {
                     if (ignoreNodeMappings)
                     {
-                        this.automationManagementClient.NodeConfigurations.Delete(resourceGroupName, automationAccountName, name);
+                        automationManagementClient.NodeConfigurations.Delete(resourceGroupName, automationAccountName, name);
                     }
                     else
                     {
@@ -1280,19 +1278,16 @@ namespace Microsoft.Azure.Commands.Automation.Common
                         List<Model.DscNode> nodeList = new List<Model.DscNode>();
                         do
                         {
-                            nodeList.AddRange(this.ListDscNodesByNodeConfiguration(resourceGroupName, automationAccountName, name, null, ref nextLink));
+                            nodeList.AddRange(ListDscNodesByNodeConfiguration(resourceGroupName, automationAccountName, name, null, ref nextLink));
                         } while (!string.IsNullOrEmpty(nextLink));
                         
                         if (nodeList.Any())
                         {
                             throw new ResourceCommonException(
-                                typeof(Model.NodeConfiguration),
+                                typeof(NodeConfiguration),
                                 string.Format(CultureInfo.CurrentCulture, Resources.CannotDeleteNodeConfiguration, name));
                         }
-                        else
-                        {
-                            this.automationManagementClient.NodeConfigurations.Delete(resourceGroupName, automationAccountName, name);
-                        }
+                        automationManagementClient.NodeConfigurations.Delete(resourceGroupName, automationAccountName, name);
                     }
                 }
                 catch (CloudException cloudException)
@@ -1300,7 +1295,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     if (cloudException.Response.StatusCode == HttpStatusCode.NotFound)
                     {
                         throw new ResourceNotFoundException(
-                            typeof(Model.NodeConfiguration),
+                            typeof(NodeConfiguration),
                             string.Format(CultureInfo.CurrentCulture, Resources.NodeConfigurationNotFound, name));
                     }
                     throw;
@@ -1318,7 +1313,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             const string runbookName = "Deploy-NodeConfigurationToAutomationDscNodesV1";
 
             IDictionary<string, string> processedParameters =
-                    this.ProcessRunbookParameters(BuildParametersForNodeConfigurationDeploymentRunbook(),
+                    ProcessRunbookParameters(BuildParametersForNodeConfigurationDeploymentRunbook(),
                         ProcessParametersFornodeConfigurationRunbook(resourceGroupName, automationAccountName,
                             nodeConfiguraionName, nodeNames));
 
@@ -1327,7 +1322,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
             if (schedule == null)
             {
-                job = this.automationManagementClient.Jobs.Create(
+                job = automationManagementClient.Jobs.Create(
                     resourceGroupName,
                     automationAccountName,
                     new JobCreateParameters
@@ -1344,7 +1339,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             }
             else
             {
-                jobSchedule = this.automationManagementClient.JobSchedules.Create(
+                jobSchedule = automationManagementClient.JobSchedules.Create(
                     resourceGroupName,
                     automationAccountName,
                     new JobScheduleCreateParameters
@@ -1373,7 +1368,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
             if (jobId != Guid.Empty)
             {
-                job = this.automationManagementClient.Jobs.Get(resourceGroupName, automationAccountName, jobId).Job;
+                job = automationManagementClient.Jobs.Get(resourceGroupName, automationAccountName, jobId).Job;
 
                 nodeConfigurationName = PowerShellJsonConverter
                     .Deserialize(job.Properties.Parameters["NodeConfigurationName"]).ToString();
@@ -1395,7 +1390,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                         IEnumerable<Model.DscNode> dscNodes;
                         do
                         {
-                            dscNodes = this.ListDscNodesByName(resourceGroupName, automationAccountName, node, null,
+                            dscNodes = ListDscNodesByName(resourceGroupName, automationAccountName, node, null,
                                 ref nextLink);
                         } while (!string.IsNullOrEmpty(nextLink));
                         dscNodeGroup.Add(node, dscNodes.First().Status);
@@ -1416,12 +1411,12 @@ namespace Microsoft.Azure.Commands.Automation.Common
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNullOrEmpty();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNullOrEmpty().ValidAutomationAccountName();
 
-            AutomationManagement.Models.JobSchedule jobSchedule = null;
+            JobSchedule jobSchedule = null;
 
             if (jobScheduleId != Guid.Empty)
             {
                 try {
-                    jobSchedule = this.automationManagementClient.JobSchedules.Get(
+                    jobSchedule = automationManagementClient.JobSchedules.Get(
                     resourceGroupName,
                     automationAccountName,
                     jobScheduleId).JobSchedule;
@@ -1450,20 +1445,20 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
             if (string.IsNullOrEmpty(nextLink))
             {
-                response = this.automationManagementClient.Jobs.List(
+                response = automationManagementClient.Jobs.List(
                     resourceGroupName,
                     automationAccountName,
                     new JobListParameters
                     {
-                        StartTime = (startTime.HasValue) ? FormatDateTime(startTime.Value) : null,
-                        EndTime = (endTime.HasValue) ? FormatDateTime(endTime.Value) : null,
+                        StartTime = startTime.HasValue ? FormatDateTime(startTime.Value) : null,
+                        EndTime = endTime.HasValue ? FormatDateTime(endTime.Value) : null,
                         RunbookName = runbookName,
                         Status = jobStatus,
                     });
             }
             else
             {
-                response = this.automationManagementClient.Jobs.ListNext(nextLink);
+                response = automationManagementClient.Jobs.ListNext(nextLink);
             }
 
             nextLink = response.NextLink;
@@ -1474,7 +1469,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
             const string runbookName = "Deploy-NodeConfigurationToAutomationDscNodesV1";
 
-            var response = string.IsNullOrEmpty(nextLink) ? this.automationManagementClient.JobSchedules.List(resourceGroupName, automationAccountName) : this.automationManagementClient.JobSchedules.ListNext(nextLink);
+            var response = string.IsNullOrEmpty(nextLink) ? automationManagementClient.JobSchedules.List(resourceGroupName, automationAccountName) : automationManagementClient.JobSchedules.ListNext(nextLink);
 
             nextLink = response.NextLink;
 
@@ -1484,7 +1479,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
         public void StopNodeConfigurationDeployment(string resourceGroupName, string automationAccountName, Guid jobId)
         {
-            this.StopJob(resourceGroupName, automationAccountName, jobId);
+            StopJob(resourceGroupName, automationAccountName, jobId);
         }
 
         #endregion
@@ -1497,10 +1492,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
             Requires.Argument("NodeId", nodeId).NotNull();
             Requires.Argument("ReportId", reportId).NotNull();
 
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 var nodeReport =
-                    this.automationManagementClient.NodeReports.Get(
+                    automationManagementClient.NodeReports.Get(
                         resourceGroupName,
                         automationAccountName,
                         nodeId,
@@ -1517,20 +1512,20 @@ namespace Microsoft.Azure.Commands.Automation.Common
             Requires.Argument("NodeId", nodeId).NotNull();
             Requires.Argument("ReportId", reportId).NotNull();
 
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 var nodeReportContent =
-                    this.automationManagementClient.NodeReports.GetContent(
+                    automationManagementClient.NodeReports.GetContent(
                         resourceGroupName,
                         automationAccountName,
                         nodeId,
                         reportId).Content;
 
-                string outputFolderFullPath = this.GetCurrentDirectory();
+                string outputFolderFullPath = GetCurrentDirectory();
 
                 if (!string.IsNullOrEmpty(outputFolder))
                 {
-                    outputFolderFullPath = this.ValidateAndGetFullPath(outputFolder);
+                    outputFolderFullPath = ValidateAndGetFullPath(outputFolder);
                 }
 
                 const string FileExtension = ".txt";
@@ -1545,7 +1540,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
 
                 // Write to the file
-                this.WriteFile(outputFilePath, nodeReportContent);
+                WriteFile(outputFilePath, nodeReportContent);
 
                 return new DirectoryInfo(outputFilePath);
             }
@@ -1557,10 +1552,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
             Requires.Argument("NodeId", nodeId).NotNull();
 
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 var nodeReport =
-                    this.automationManagementClient.NodeReports.List(
+                    automationManagementClient.NodeReports.List(
                         resourceGroupName,
                         automationAccountName,
                         new DscNodeReportListParameters { NodeId = nodeId }
@@ -1572,7 +1567,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
         public IEnumerable<Model.DscNodeReport> ListDscNodeReports(string resourceGroupName, string automationAccountName, Guid nodeId, DateTimeOffset? startTime, DateTimeOffset? endTime, ref string nextLink)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 DscNodeReportListResponse response;
 
@@ -1580,10 +1575,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 {
                     if (startTime.HasValue && endTime.HasValue)
                     {
-                        response = this.automationManagementClient.NodeReports.List(
+                        response = automationManagementClient.NodeReports.List(
                                         resourceGroupName,
                                         automationAccountName,
-                                        new AutomationManagement.Models.DscNodeReportListParameters
+                                        new DscNodeReportListParameters
                                         {
                                             NodeId = nodeId,
                                             StartTime = FormatDateTime(startTime.Value),
@@ -1592,10 +1587,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else if (startTime.HasValue)
                     {
-                        response = this.automationManagementClient.NodeReports.List(
+                        response = automationManagementClient.NodeReports.List(
                                          resourceGroupName,
                                          automationAccountName,
-                                         new AutomationManagement.Models.DscNodeReportListParameters
+                                         new DscNodeReportListParameters
                                          {
                                              NodeId = nodeId,
                                              StartTime = FormatDateTime(startTime.Value)
@@ -1603,10 +1598,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else if (endTime.HasValue)
                     {
-                        response = this.automationManagementClient.NodeReports.List(
+                        response = automationManagementClient.NodeReports.List(
                             resourceGroupName,
                             automationAccountName,
-                            new AutomationManagement.Models.DscNodeReportListParameters
+                            new DscNodeReportListParameters
                             {
                                 NodeId = nodeId,
                                 EndTime = FormatDateTime(endTime.Value)
@@ -1614,10 +1609,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     }
                     else
                     {
-                        response = this.automationManagementClient.NodeReports.List(
+                        response = automationManagementClient.NodeReports.List(
                             resourceGroupName,
                             automationAccountName,
-                            new AutomationManagement.Models.DscNodeReportListParameters
+                            new DscNodeReportListParameters
                             {
                                 NodeId = nodeId
                             });
@@ -1625,12 +1620,12 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
                 else
                 {
-                    response = this.automationManagementClient.NodeReports.ListNext(nextLink);
+                    response = automationManagementClient.NodeReports.ListNext(nextLink);
                 }
 
                 nextLink = response.NextLink;
 
-                return response.NodeReports.Select(report => new Commands.Automation.Model.DscNodeReport(resourceGroupName, automationAccountName, nodeId.ToString("D"), report));
+                return response.NodeReports.Select(report => new Model.DscNodeReport(resourceGroupName, automationAccountName, nodeId.ToString("D"), report));
             }
         }
         #endregion 
@@ -1645,26 +1640,26 @@ namespace Microsoft.Azure.Commands.Automation.Common
         /// <param name="automationAccountName">Automation account</param>
         /// <param name="configurationName">Name of configuration</param>
         /// <returns>List of NodeConfigurations</returns>
-        private IEnumerable<Model.NodeConfiguration> EnumerateNodeConfigurationsByConfigurationName(string resourceGroupName, string automationAccountName, string configurationName)
+        private IEnumerable<NodeConfiguration> EnumerateNodeConfigurationsByConfigurationName(string resourceGroupName, string automationAccountName, string configurationName)
         {
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
-                IEnumerable<AutomationManagement.Models.DscNodeConfiguration> nodeConfigModels;
+                IEnumerable<DscNodeConfiguration> nodeConfigModels;
 
                 nodeConfigModels = AutomationManagementClient.ContinuationTokenHandler(
                     skipToken =>
                     {
-                        var response = this.automationManagementClient.NodeConfigurations.List(
+                        var response = automationManagementClient.NodeConfigurations.List(
                             resourceGroupName,
                             automationAccountName,
-                            new AutomationManagement.Models.DscNodeConfigurationListParameters
+                            new DscNodeConfigurationListParameters
                             {
                                 ConfigurationName = configurationName
                             });
-                        return new ResponseWithSkipToken<AutomationManagement.Models.DscNodeConfiguration>(response, response.DscNodeConfigurations);
+                        return new ResponseWithSkipToken<DscNodeConfiguration>(response, response.DscNodeConfigurations);
                     });
 
-                return nodeConfigModels.Select(nodeConfigModel => new Commands.Automation.Model.NodeConfiguration(resourceGroupName, automationAccountName, nodeConfigModel, null));
+                return nodeConfigModels.Select(nodeConfigModel => new NodeConfiguration(resourceGroupName, automationAccountName, nodeConfigModel, null));
             }
         }
 
@@ -1674,7 +1669,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             List<Model.DscNode> nodes = new List<Model.DscNode>();
             do
             {
-                nodes.AddRange(this.ListDscNodesByNodeConfiguration(resourceGroupName, automationAccountName, nodeConfigurationName, null, ref nextLink));
+                nodes.AddRange(ListDscNodesByNodeConfiguration(resourceGroupName, automationAccountName, nodeConfigurationName, null, ref nextLink));
             } while (!string.IsNullOrEmpty(nextLink));
             
             foreach (var node in nodes)
@@ -1718,7 +1713,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
         private IEnumerable<KeyValuePair<string, DscConfigurationParameter>> ListConfigurationParameters(string resourceGroupName, string automationAccountName, string configurationName)
         {
-            Model.DscConfiguration configuration = this.GetConfiguration(resourceGroupName, automationAccountName, configurationName);
+            Model.DscConfiguration configuration = GetConfiguration(resourceGroupName, automationAccountName, configurationName);
             if (configuration == null || 0 == String.Compare(configuration.State, RunbookState.New, CultureInfo.InvariantCulture,
                      CompareOptions.IgnoreCase))
             {

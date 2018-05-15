@@ -52,9 +52,9 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
             storageAccountName += DateTime.UtcNow.ToString("hhmmss");
 
             var deploymentName = $"ContainerRegistry_{registryName}";
-            Deployment deployment = new Deployment()
+            Deployment deployment = new Deployment
             {
-                Properties = new DeploymentProperties()
+                Properties = new DeploymentProperties
                 {
                     Template = DeploymentTemplateHelper.DeploymentTemplateNewStorage(
                         registryName, location, SkuName.Classic, storageAccountName, adminUserEnabled),
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
         public string GetStorageAccountId(string storageAccountName)
         {
             var filterExpression = $"ResourceType eq 'Microsoft.Storage/storageAccounts' AND name eq '{storageAccountName}'";
-            var odataQuery = new ODataQuery<GenericResourceFilter>() { Filter = filterExpression };
+            var odataQuery = new ODataQuery<GenericResourceFilter> { Filter = filterExpression };
             var result = _client.Resources.List(odataQuery);
 
             var resource = result.FirstOrDefault();

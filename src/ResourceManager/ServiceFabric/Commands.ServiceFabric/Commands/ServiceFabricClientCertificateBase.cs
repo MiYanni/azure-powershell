@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ParameterSetName = MultipleUpdatesWithThumbprintSet,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true, ParameterSetName = SingleUpdateWithCommonNameSet,
@@ -51,40 +51,40 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             HelpMessage = "Specify the name of the cluster")]
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true, ParameterSetName = MultipleUpdatesWithThumbprintSet,
             HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = MultipleUpdatesWithThumbprintSet,
                    HelpMessage = "Specify client certificate thumbprint which only has admin permission")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string[] AdminClientThumbprint { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = MultipleUpdatesWithThumbprintSet,
                   HelpMessage = "Specify client certificate thumbprint which only has read only permission")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string[] ReadonlyClientThumbprint { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = MultipleUpdatesWithCommonNameSet,
                    HelpMessage = "Specify client common name , issuer thumbprint and authentication type")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("CertCommonName")]
         public PSClientCertificateCommonName[] ClientCertificateCommonName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = SingleUpdateWithThumbprintSet,
                    HelpMessage = "Specify client certificate thumbprint")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClientCertificateThumbprint")]
         public string Thumbprint { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = SingleUpdateWithCommonNameSet,
                    HelpMessage = "Specify client certificate common name")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string CommonName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = SingleUpdateWithCommonNameSet,
                    HelpMessage = "Specify thumbprint of client certificate's issuer")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string IssuerThumbprint { get; set; }
 
         protected virtual bool IsAdmin { get; }
@@ -97,27 +97,27 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 case MultipleUpdatesWithThumbprintSet:
                     {
 
-                        if ((this.AdminClientThumbprint == null || !this.AdminClientThumbprint.Any()) &&
-                           (this.ReadonlyClientThumbprint == null || !this.ReadonlyClientThumbprint.Any()))
+                        if ((AdminClientThumbprint == null || !AdminClientThumbprint.Any()) &&
+                           (ReadonlyClientThumbprint == null || !ReadonlyClientThumbprint.Any()))
                         {
                             throw new PSArgumentException(
                                 "Both AdminClientThumbprints and ReadonlyClientThumbprints are empty");
                         }
 
-                        if (this.AdminClientThumbprint != null && this.AdminClientThumbprint.Any())
+                        if (AdminClientThumbprint != null && AdminClientThumbprint.Any())
                         {
                             allCertThumbprints.AddRange(
-                                this.AdminClientThumbprint.Select(t => new ClientCertificateThumbprint()
+                                AdminClientThumbprint.Select(t => new ClientCertificateThumbprint
                                 {
                                     CertificateThumbprint = t,
                                     IsAdmin = true
                                 }));
                         }
 
-                        if (this.ReadonlyClientThumbprint != null && this.ReadonlyClientThumbprint.Any())
+                        if (ReadonlyClientThumbprint != null && ReadonlyClientThumbprint.Any())
                         {
                             allCertThumbprints.AddRange(
-                                this.ReadonlyClientThumbprint.Select(t => new ClientCertificateThumbprint()
+                                ReadonlyClientThumbprint.Select(t => new ClientCertificateThumbprint
                                 {
                                     CertificateThumbprint = t,
                                     IsAdmin = false
@@ -130,10 +130,10 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 case SingleUpdateWithThumbprintSet:
 
                     {
-                        allCertThumbprints.Add(new ClientCertificateThumbprint()
+                        allCertThumbprints.Add(new ClientCertificateThumbprint
                         {
-                            CertificateThumbprint = this.Thumbprint,
-                            IsAdmin = this.IsAdmin
+                            CertificateThumbprint = Thumbprint,
+                            IsAdmin = IsAdmin
                         });
                         return allCertThumbprints;
                     }
@@ -150,7 +150,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             {
                 case MultipleUpdatesWithCommonNameSet:
                     {
-                        allCommonNames = this.ClientCertificateCommonName.Select(
+                        allCommonNames = ClientCertificateCommonName.Select(
                             c => new ClientCertificateCommonName(
                                 c.IsAdmin,
                                 c.CertificateCommonName,
@@ -161,11 +161,11 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
                     {
                         allCommonNames.Add(
-                            new ClientCertificateCommonName()
+                            new ClientCertificateCommonName
                             {
-                                CertificateCommonName = this.CommonName,
-                                CertificateIssuerThumbprint = this.IssuerThumbprint,
-                                IsAdmin = this.IsAdmin
+                                CertificateCommonName = CommonName,
+                                CertificateIssuerThumbprint = IssuerThumbprint,
+                                IsAdmin = IsAdmin
                             });
                         break;
                     }

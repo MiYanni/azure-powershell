@@ -41,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync
             this.progress = progress;
             this.complete = complete;
             this.progressInterval = progressInterval;
-            this.stopWatch = new Stopwatch();
+            stopWatch = new Stopwatch();
             InitilizeProgressTimer();
         }
 
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync
                     ProgressRecord pr;
                     if (progressStatus.TryGetProgressRecord(out pr))
                     {
-                        this.progress(pr);
+                        progress(pr);
                     }
                     progressTimer.Enabled = true;
                 };
@@ -106,10 +106,10 @@ namespace Microsoft.WindowsAzure.Commands.Sync
                 stopWatch.Stop();
                 if (stopWatch.Elapsed != TimeSpan.Zero)
                 {
-                    this.complete(stopWatch.Elapsed);
+                    complete(stopWatch.Elapsed);
                 }
                 progressTimer.Dispose();
-                this.isDisposed = true;
+                isDisposed = true;
             }
         }
 

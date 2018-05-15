@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
             var authorization = new PSExpressRouteCircuitAuthorization();
 
-            authorization.Name = this.Name;
+            authorization.Name = Name;
 
             WriteObject(authorization);
         }

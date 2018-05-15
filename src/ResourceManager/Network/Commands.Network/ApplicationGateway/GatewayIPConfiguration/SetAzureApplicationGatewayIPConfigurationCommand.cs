@@ -31,20 +31,20 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var oldGatewayIPConfiguration = this.ApplicationGateway.GatewayIPConfigurations.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var oldGatewayIPConfiguration = ApplicationGateway.GatewayIPConfigurations.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (oldGatewayIPConfiguration == null)
             {
                 throw new ArgumentException("Application gateway IP configuration with the specified name does not exist");
             }
 
-            var newGatewayIPConfiguration = base.NewObject();
+            var newGatewayIPConfiguration = NewObject();
 
-            this.ApplicationGateway.GatewayIPConfigurations.Remove(oldGatewayIPConfiguration);
-            this.ApplicationGateway.GatewayIPConfigurations.Add(newGatewayIPConfiguration);
+            ApplicationGateway.GatewayIPConfigurations.Remove(oldGatewayIPConfiguration);
+            ApplicationGateway.GatewayIPConfigurations.Add(newGatewayIPConfiguration);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

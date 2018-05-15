@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Commands.Management.PowerBIEmbedded.WorkspaceCollectio
                 throw new ArgumentException("At least one of Key1 or Key2 switch required");
             }
 
-            var description = string.Format(Resources.ResetWorkspaceCollectionAccessKeyDescription, keys[0], this.WorkspaceCollectionName);
-            var warning = string.Format(Resources.ResetWorkspaceCollectionAccessKeyWarning, keys[0], this.WorkspaceCollectionName);
+            var description = string.Format(Resources.ResetWorkspaceCollectionAccessKeyDescription, keys[0], WorkspaceCollectionName);
+            var warning = string.Format(Resources.ResetWorkspaceCollectionAccessKeyWarning, keys[0], WorkspaceCollectionName);
 
             if (!ShouldProcess(description, warning, Resources.ShouldProcessCaption))
             {
@@ -85,12 +85,12 @@ namespace Microsoft.Azure.Commands.Management.PowerBIEmbedded.WorkspaceCollectio
             {
                 var accessKeyRequest = new WorkspaceCollectionAccessKey((AccessKeyName)Enum.Parse(typeof(AccessKeyName), key));
 
-                var accessKeys = this.PowerBIClient.WorkspaceCollections.RegenerateKey(
-                    this.ResourceGroupName,
-                    this.WorkspaceCollectionName,
+                var accessKeys = PowerBIClient.WorkspaceCollections.RegenerateKey(
+                    ResourceGroupName,
+                    WorkspaceCollectionName,
                     accessKeyRequest);
 
-                this.WriteWorkspaceCollectionAccessKeys(accessKeys);
+                WriteWorkspaceCollectionAccessKeys(accessKeys);
             }
         }
     }

@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string instanceId = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName", "InstanceId" },
+                 new[] { "ResourceGroupName", "VMScaleSetName", "InstanceId" },
                  new object[] { resourceGroupName, vmScaleSetName, instanceId });
         }
     }

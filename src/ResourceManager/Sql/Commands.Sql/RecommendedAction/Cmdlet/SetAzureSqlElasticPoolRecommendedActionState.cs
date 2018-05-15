@@ -52,8 +52,9 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
         /// <returns>A list of entities</returns>
         protected override IEnumerable<AzureSqlElasticPoolRecommendedActionModel> GetEntity()
         {
-            return new List<AzureSqlElasticPoolRecommendedActionModel>() {
-                ModelAdapter.GetElasticPoolRecommendedAction(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.AdvisorName, this.RecommendedActionName)
+            return new List<AzureSqlElasticPoolRecommendedActionModel>
+            {
+                ModelAdapter.GetElasticPoolRecommendedAction(ResourceGroupName, ServerName, ElasticPoolName, AdvisorName, RecommendedActionName)
             };
         }
 
@@ -65,14 +66,14 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
         protected override IEnumerable<AzureSqlElasticPoolRecommendedActionModel> ApplyUserInputToModel(IEnumerable<AzureSqlElasticPoolRecommendedActionModel> model)
         {
             List<AzureSqlElasticPoolRecommendedActionModel> newEntity = new List<AzureSqlElasticPoolRecommendedActionModel>();
-            newEntity.Add(new AzureSqlElasticPoolRecommendedActionModel()
+            newEntity.Add(new AzureSqlElasticPoolRecommendedActionModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
                 ElasticPoolName = ElasticPoolName,
                 AdvisorName = AdvisorName,
                 RecommendedActionName = RecommendedActionName,
-                State = new RecommendedActionStateInfo()
+                State = new RecommendedActionStateInfo
                 {
                     CurrentValue = State.ToString()
                 }
@@ -88,7 +89,8 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlElasticPoolRecommendedActionModel> PersistChanges(IEnumerable<AzureSqlElasticPoolRecommendedActionModel> entity)
         {
-            return new List<AzureSqlElasticPoolRecommendedActionModel>() {
+            return new List<AzureSqlElasticPoolRecommendedActionModel>
+            {
                 ModelAdapter.UpdateState(entity.Single())
             };
         }
@@ -99,8 +101,8 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!ShouldProcess(
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetRecommendedActionStateDescription, this.RecommendedActionName, this.State),
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetRecommendedActionStateWarning, this.RecommendedActionName, this.State),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetRecommendedActionStateDescription, RecommendedActionName, State),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetRecommendedActionStateWarning, RecommendedActionName, State),
                     Properties.Resources.ShouldProcessCaption))
             {
                 return;

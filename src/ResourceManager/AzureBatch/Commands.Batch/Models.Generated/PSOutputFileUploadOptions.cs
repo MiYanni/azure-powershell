@@ -26,33 +26,33 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSOutputFileUploadOptions
     {
         
-        internal Microsoft.Azure.Batch.OutputFileUploadOptions omObject;
+        internal OutputFileUploadOptions omObject;
         
-        public PSOutputFileUploadOptions(Microsoft.Azure.Batch.Common.OutputFileUploadCondition uploadCondition)
+        public PSOutputFileUploadOptions(Azure.Batch.Common.OutputFileUploadCondition uploadCondition)
         {
-            this.omObject = new Microsoft.Azure.Batch.OutputFileUploadOptions(uploadCondition);
+            omObject = new OutputFileUploadOptions(uploadCondition);
         }
         
-        internal PSOutputFileUploadOptions(Microsoft.Azure.Batch.OutputFileUploadOptions omObject)
+        internal PSOutputFileUploadOptions(OutputFileUploadOptions omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.OutputFileUploadCondition UploadCondition
+        public Azure.Batch.Common.OutputFileUploadCondition UploadCondition
         {
             get
             {
-                return this.omObject.UploadCondition;
+                return omObject.UploadCondition;
             }
         }
     }

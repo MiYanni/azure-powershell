@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     /// <summary>
     /// ARM exception class.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    [SuppressMessage(
         "Microsoft.StyleCop.CSharp.MaintainabilityRules",
         "SA1402:FileMayOnlyContainASingleClass",
         Justification = "Keeping all related classes together.")]
@@ -252,10 +252,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("NotBeforeTimestamp: " + this.NotBeforeTimestamp);
-            sb.AppendLine("NotAfterTimestamp: " + this.NotAfterTimestamp);
-            sb.AppendLine("ClientRequestId: " + this.ClientRequestId);
-            sb.AppendLine("Hmac: " + this.Hmac);
+            sb.AppendLine("NotBeforeTimestamp: " + NotBeforeTimestamp);
+            sb.AppendLine("NotAfterTimestamp: " + NotAfterTimestamp);
+            sb.AppendLine("ClientRequestId: " + ClientRequestId);
+            sb.AppendLine("Hmac: " + Hmac);
             return sb.ToString();
         }
     }
@@ -313,11 +313,11 @@ namespace Microsoft.Azure.Portal.RecoveryServices.Models.Common
         /// <param name="resourceType">resource type backup vault or ASR vault</param>
         public VaultCreds(string subscriptionId, string resourceName, string managementCert, AcsNamespace acsNamespace, string resourceType = null)
         {
-            this.SubscriptionId = subscriptionId;
-            this.ResourceType = string.IsNullOrEmpty(resourceType) ? Constants.VaultType : resourceType;
-            this.ResourceName = resourceName;
-            this.ManagementCert = managementCert;
-            this.AcsNamespace = acsNamespace;
+            SubscriptionId = subscriptionId;
+            ResourceType = string.IsNullOrEmpty(resourceType) ? Constants.VaultType : resourceType;
+            ResourceName = resourceName;
+            ManagementCert = managementCert;
+            AcsNamespace = acsNamespace;
         }
 
         #endregion
@@ -399,16 +399,16 @@ namespace Microsoft.Azure.Portal.RecoveryServices.Models.Common
             string location)
             : base(subscriptionId, resourceName, managementCert, acsNamespace)
         {
-            this.ChannelIntegrityKey = channelIntegrityKey;
-            this.ResourceGroupName = resourceGroupName;
-            this.Version = Constants.VaultCredentialVersion;
+            ChannelIntegrityKey = channelIntegrityKey;
+            ResourceGroupName = resourceGroupName;
+            Version = Constants.VaultCredentialVersion;
 
-            this.SiteId = siteId != null ? siteId : string.Empty;
-            this.SiteName = siteName != null ? siteName : string.Empty;
+            SiteId = siteId != null ? siteId : string.Empty;
+            SiteName = siteName != null ? siteName : string.Empty;
 
-            this.ResourceNamespace = resourceNamespace;
-            this.ARMResourceType = resourceType;
-            this.Location = location;
+            ResourceNamespace = resourceNamespace;
+            ARMResourceType = resourceType;
+            Location = location;
         }
 
         #endregion
@@ -481,9 +481,9 @@ namespace Microsoft.Azure.Portal.RecoveryServices.Models.Common
         /// <param name="acsDetails">authenticating service Details name</param>
         public AcsNamespace(ResourceCertificateAndAcsDetails acsDetails)
         {
-            this.HostName = acsDetails.GlobalAcsHostName;
-            this.Namespace = acsDetails.GlobalAcsNamespace;
-            this.ResourceProviderRealm = acsDetails.GlobalAcsRPRealm;
+            HostName = acsDetails.GlobalAcsHostName;
+            Namespace = acsDetails.GlobalAcsNamespace;
+            ResourceProviderRealm = acsDetails.GlobalAcsRPRealm;
         }
 
         /// <summary>

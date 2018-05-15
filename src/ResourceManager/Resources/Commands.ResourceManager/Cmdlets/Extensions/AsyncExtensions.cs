@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         {
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
             task.ContinueWith(
-                continuationAction: ignored => AsyncExtensions.CompleteTaskAndWrapMultipleExceptions(task, tcs),
+                ignored => CompleteTaskAndWrapMultipleExceptions(task, tcs),
                 continuationOptions: TaskContinuationOptions.ExecuteSynchronously,
                 cancellationToken: CancellationToken.None,
                 scheduler: TaskScheduler.Default);
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         {
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
             task.ContinueWith(
-                continuationAction: ignored => AsyncExtensions.CompleteTaskAndWrapMultipleExceptions(task, tcs),
+                ignored => CompleteTaskAndWrapMultipleExceptions(task, tcs),
                 continuationOptions: TaskContinuationOptions.ExecuteSynchronously,
                 cancellationToken: CancellationToken.None,
                 scheduler: TaskScheduler.Default);

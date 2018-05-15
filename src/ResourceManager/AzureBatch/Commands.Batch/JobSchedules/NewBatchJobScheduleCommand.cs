@@ -46,12 +46,12 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            NewJobScheduleParameters parameters = new NewJobScheduleParameters(this.BatchContext, this.Id, this.AdditionalBehaviors)
+            NewJobScheduleParameters parameters = new NewJobScheduleParameters(BatchContext, Id, AdditionalBehaviors)
             {
-                DisplayName = this.DisplayName,
-                Schedule = this.Schedule,
-                JobSpecification = this.JobSpecification,
-                Metadata = this.Metadata
+                DisplayName = DisplayName,
+                Schedule = Schedule,
+                JobSpecification = JobSpecification,
+                Metadata = Metadata
             };
 
             BatchClient.CreateJobSchedule(parameters);

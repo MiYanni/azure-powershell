@@ -36,12 +36,12 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
             ret = new List<AgentRegistration>
                           {
-                              this.AutomationClient.GetAgentRegistration(
-                                  this.ResourceGroupName,
-                                  this.AutomationAccountName)
+                              AutomationClient.GetAgentRegistration(
+                                  ResourceGroupName,
+                                  AutomationAccountName)
                           };
 
-            this.GenerateCmdletOutput(ret);
+            GenerateCmdletOutput(ret);
         }
 
     }

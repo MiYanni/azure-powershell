@@ -91,33 +91,33 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            if (this.ParameterSetName == ByFactoryObject)
+            if (ParameterSetName == ByFactoryObject)
             {
-                if (this.DataFactory == null)
+                if (DataFactory == null)
                 {
                     throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
                 }
 
-                this.DataFactoryName = DataFactory.DataFactoryName;
-                this.ResourceGroupName = DataFactory.ResourceGroupName;
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
             }
 
-            ActivityWindowFilterOptions filterOptions = new ActivityWindowFilterOptions()
+            ActivityWindowFilterOptions filterOptions = new ActivityWindowFilterOptions
             {
-                ResourceGroupName = this.ResourceGroupName,
-                DataFactoryName = this.DataFactoryName,
-                ActivityName = this.ActivityName,
-                DatasetName = this.DatasetName,
-                PipelineName = this.PipelineName,
+                ResourceGroupName = ResourceGroupName,
+                DataFactoryName = DataFactoryName,
+                ActivityName = ActivityName,
+                DatasetName = DatasetName,
+                PipelineName = PipelineName,
                 Filter = Filter,
-                OrderBy = this.OrderBy,
-                RunEnd = this.RunEnd,
-                RunStart = this.RunStart,
-                Top = this.Top,
-                WindowEnd = this.WindowEnd,
-                WindowStart = this.WindowStart,
-                WindowState = this.WindowState,
-                WindowSubstate = this.WindowSubstate
+                OrderBy = OrderBy,
+                RunEnd = RunEnd,
+                RunStart = RunStart,
+                Top = Top,
+                WindowEnd = WindowEnd,
+                WindowStart = WindowStart,
+                WindowState = WindowState,
+                WindowSubstate = WindowSubstate
             };
 
             try

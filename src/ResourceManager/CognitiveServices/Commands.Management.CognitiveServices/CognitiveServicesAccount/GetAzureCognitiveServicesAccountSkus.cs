@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -49,9 +49,9 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             base.ExecuteCmdlet();
             RunCmdLet(() =>
             {
-                var cognitiveServicesKeys = this.CognitiveServicesClient.Accounts.ListSkus(
-                     this.ResourceGroupName,
-                     this.Name);
+                var cognitiveServicesKeys = CognitiveServicesClient.Accounts.ListSkus(
+                     ResourceGroupName,
+                     Name);
 
                 WriteObject(cognitiveServicesKeys);
             });

@@ -14,17 +14,17 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.WindowsAzure.Commands.Common;
+    using Extensions;
+    using WindowsAzure.Commands.Common;
     using Newtonsoft.Json.Linq;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
     using System.Collections;
     using System.Management.Automation;
 
     /// <summary>
     /// A cmdlet that invokes a resource action.
     /// </summary>
-    [Cmdlet(VerbsLifecycle.Invoke, "AzureRmResourceAction", SupportsShouldProcess = true, DefaultParameterSetName = ResourceManipulationCmdletBase.ResourceIdParameterSet), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsLifecycle.Invoke, "AzureRmResourceAction", SupportsShouldProcess = true, DefaultParameterSetName = ResourceIdParameterSet), OutputType(typeof(PSObject))]
     public sealed class InvokAzureResourceActionCmdlet : ResourceManipulationCmdletBase
     {
         /// <summary>
@@ -50,40 +50,40 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            var resourceId = this.GetResourceId();
+            var resourceId = GetResourceId();
 
-            this.ConfirmAction(
-                this.Force,
-                string.Format(ProjectResources.ConfirmInvokeAction, this.Action, resourceId),
-                string.Format(ProjectResources.InvokingResourceAction, this.Action),
+            ConfirmAction(
+                Force,
+                string.Format(ProjectResources.ConfirmInvokeAction, Action, resourceId),
+                string.Format(ProjectResources.InvokingResourceAction, Action),
                 resourceId,
                 () =>
                 {
-                    var apiVersion = this.DetermineApiVersion(resourceId: resourceId).Result;
-                    var parameters = this.GetParameters();
+                    var apiVersion = DetermineApiVersion(resourceId).Result;
+                    var parameters = GetParameters();
 
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .InvokeActionOnResource<JObject>(
-                            resourceId: resourceId,
-                            action: this.Action,
-                            apiVersion: apiVersion,
+                            resourceId,
+                            Action,
+                            apiVersion,
                             parameters: parameters,
-                            cancellationToken: this.CancellationToken.Value,
-                            odataQuery: this.ODataQuery)
+                            cancellationToken: CancellationToken.Value,
+                            odataQuery: ODataQuery)
                         .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                         .GetResourceManagementRequestUri(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            action: this.Action,
-                            odataQuery: this.ODataQuery);
+                            resourceId,
+                            apiVersion,
+                            Action,
+                            ODataQuery);
 
                     var activity = string.Format("POST {0}", managementUri.PathAndQuery);
-                    var resultString = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: false)
-                        .WaitOnOperation(operationResult: operationResult);
+                    var resultString = GetLongRunningOperationTracker(activity, false)
+                        .WaitOnOperation(operationResult);
 
-                    this.TryConvertAndWriteObject(resultString);
+                    TryConvertAndWriteObject(resultString);
                 });
         }
 
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private JToken GetParameters()
         {
-            return this.Parameters.ToDictionary(addValueLayer: false).ToJToken();
+            return Parameters.ToDictionary(false).ToJToken();
         }
     }
 }

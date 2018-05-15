@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSInboundNatPool
     {
         
-        internal Microsoft.Azure.Batch.InboundNatPool omObject;
+        internal InboundNatPool omObject;
         
         private IReadOnlyList<PSNetworkSecurityGroupRule> networkSecurityGroupRules;
         
-        public PSInboundNatPool(string name, Microsoft.Azure.Batch.Common.InboundEndpointProtocol protocol, int backendPort, int frontendPortRangeStart, int frontendPortRangeEnd, System.Collections.Generic.IReadOnlyList<Microsoft.Azure.Batch.NetworkSecurityGroupRule> networkSecurityGroupRules = null)
+        public PSInboundNatPool(string name, Azure.Batch.Common.InboundEndpointProtocol protocol, int backendPort, int frontendPortRangeStart, int frontendPortRangeEnd, IReadOnlyList<NetworkSecurityGroupRule> networkSecurityGroupRules = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.InboundNatPool(name, protocol, backendPort, frontendPortRangeStart, frontendPortRangeEnd, networkSecurityGroupRules);
+            omObject = new InboundNatPool(name, protocol, backendPort, frontendPortRangeStart, frontendPortRangeEnd, networkSecurityGroupRules);
         }
         
-        internal PSInboundNatPool(Microsoft.Azure.Batch.InboundNatPool omObject)
+        internal PSInboundNatPool(InboundNatPool omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.BackendPort;
+                return omObject.BackendPort;
             }
         }
         
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.FrontendPortRangeEnd;
+                return omObject.FrontendPortRangeEnd;
             }
         }
         
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.FrontendPortRangeStart;
+                return omObject.FrontendPortRangeStart;
             }
         }
         
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Name;
+                return omObject.Name;
             }
         }
         
@@ -86,30 +86,30 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.networkSecurityGroupRules == null) 
-                            && (this.omObject.NetworkSecurityGroupRules != null)))
+                if (networkSecurityGroupRules == null 
+                    && omObject.NetworkSecurityGroupRules != null)
                 {
                     List<PSNetworkSecurityGroupRule> list;
                     list = new List<PSNetworkSecurityGroupRule>();
-                    IEnumerator<Microsoft.Azure.Batch.NetworkSecurityGroupRule> enumerator;
-                    enumerator = this.omObject.NetworkSecurityGroupRules.GetEnumerator();
+                    IEnumerator<NetworkSecurityGroupRule> enumerator;
+                    enumerator = omObject.NetworkSecurityGroupRules.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSNetworkSecurityGroupRule(enumerator.Current));
                     }
-                    this.networkSecurityGroupRules = list.AsReadOnly();
+                    networkSecurityGroupRules = list.AsReadOnly();
                 }
-                return this.networkSecurityGroupRules;
+                return networkSecurityGroupRules;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.InboundEndpointProtocol Protocol
+        public Azure.Batch.Common.InboundEndpointProtocol Protocol
         {
             get
             {
-                return this.omObject.Protocol;
+                return omObject.Protocol;
             }
         }
     }

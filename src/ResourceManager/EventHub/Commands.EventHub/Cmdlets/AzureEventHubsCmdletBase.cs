@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands
 
                     if (tag.Value != null && !(tag.Value is string))
                         throw new ArgumentException("Tag has invalid value");
-                    string value = (tag.Value == null) ? string.Empty : (string)tag.Value;
+                    string value = tag.Value == null ? string.Empty : (string)tag.Value;
                     tagsDictionary[key] = value;
                 }
                 return tagsDictionary;

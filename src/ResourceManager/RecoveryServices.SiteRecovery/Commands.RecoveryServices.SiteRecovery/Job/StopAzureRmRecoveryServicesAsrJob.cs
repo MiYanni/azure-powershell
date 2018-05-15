@@ -55,24 +55,24 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.InputObject != null)
+            if (InputObject != null)
             {
-                this.Name = this.InputObject.Name;
+                Name = InputObject.Name;
             }
 
-            if (this.ShouldProcess(
-                this.Name,
+            if (ShouldProcess(
+                Name,
                 VerbsLifecycle.Stop))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByObject:
-                        this.Name = this.InputObject.Name;
-                        this.StopByName();
+                        Name = InputObject.Name;
+                        StopByName();
                         break;
 
                     case ASRParameterSets.ByName:
-                        this.StopByName();
+                        StopByName();
                         break;
                 }
             }
@@ -83,12 +83,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void StopByName()
         {
-            var response = this.RecoveryServicesClient.CancelAzureSiteRecoveryJob(this.Name);
+            var response = RecoveryServicesClient.CancelAzureSiteRecoveryJob(Name);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
     }
 }

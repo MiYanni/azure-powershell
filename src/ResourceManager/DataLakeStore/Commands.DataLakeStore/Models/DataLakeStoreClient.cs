@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
 
             if (!TestAccount(resourceGroupName, accountName))
             {
-                throw new InvalidOperationException(string.Format(Properties.Resources.AccountDoesNotExist, accountName));
+                throw new InvalidOperationException(string.Format(Resources.AccountDoesNotExist, accountName));
             }
 
             _client.Account.Delete(resourceGroupName, accountName);
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
             }
             catch (CloudException ex)
             {
-                if ((ex.Response != null && ex.Response.StatusCode == HttpStatusCode.NotFound) || ex.Message.Contains(string.Format(Properties.Resources.FailedToDiscoverResourceGroup, accountName,
+                if (ex.Response != null && ex.Response.StatusCode == HttpStatusCode.NotFound || ex.Message.Contains(string.Format(Resources.FailedToDiscoverResourceGroup, accountName,
                     _subscriptionId)))
                 {
                     return false;
@@ -218,7 +218,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
 
             if (_client.Account.Get(resourceGroupName, accountName).FirewallState == FirewallState.Disabled)
             {
-                runningCommand.WriteWarning(string.Format(Properties.Resources.FirewallDisabledWarning, accountName));
+                runningCommand.WriteWarning(string.Format(Resources.FirewallDisabledWarning, accountName));
             }
 
             return _client.FirewallRules.CreateOrUpdate(
@@ -242,7 +242,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
 
             if (_client.Account.Get(resourceGroupName, accountName).FirewallState == FirewallState.Disabled)
             {
-                runningCommand.WriteWarning(string.Format(Properties.Resources.FirewallDisabledWarning, accountName));
+                runningCommand.WriteWarning(string.Format(Resources.FirewallDisabledWarning, accountName));
             }
 
             _client.FirewallRules.Delete(resourceGroupName, accountName, ruleName);
@@ -267,7 +267,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
 
             if (_client.Account.Get(resourceGroupName, accountName).TrustedIdProviderState == TrustedIdProviderState.Disabled)
             {
-                runningCommand.WriteWarning(string.Format(Properties.Resources.TrustedIdProviderDisabledWarning, accountName));
+                runningCommand.WriteWarning(string.Format(Resources.TrustedIdProviderDisabledWarning, accountName));
             }
 
             return _client.TrustedIdProviders.CreateOrUpdate(
@@ -289,7 +289,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
 
             if (_client.Account.Get(resourceGroupName, accountName).TrustedIdProviderState == TrustedIdProviderState.Disabled)
             {
-                runningCommand.WriteWarning(string.Format(Properties.Resources.TrustedIdProviderDisabledWarning, accountName));
+                runningCommand.WriteWarning(string.Format(Resources.TrustedIdProviderDisabledWarning, accountName));
             }
 
             _client.TrustedIdProviders.Delete(resourceGroupName, accountName, providerName);
@@ -396,13 +396,13 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
                         .Find(x => x.Name.Equals(accountName, StringComparison.InvariantCultureIgnoreCase))
                         .Id;
                 var rgStart = acctId.IndexOf("resourceGroups/", StringComparison.InvariantCultureIgnoreCase) +
-                              ("resourceGroups/".Length);
-                var rgLength = (acctId.IndexOf("/providers/", StringComparison.InvariantCultureIgnoreCase)) - rgStart;
+                              "resourceGroups/".Length;
+                var rgLength = acctId.IndexOf("/providers/", StringComparison.InvariantCultureIgnoreCase) - rgStart;
                 return acctId.Substring(rgStart, rgLength);
             }
             catch
             {
-                throw new CloudException(string.Format(Properties.Resources.FailedToDiscoverResourceGroup, accountName,
+                throw new CloudException(string.Format(Resources.FailedToDiscoverResourceGroup, accountName,
                     _subscriptionId));
             }
         }

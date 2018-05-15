@@ -66,24 +66,24 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.InputObject != null)
+            if (InputObject != null)
             {
-                this.Name = this.InputObject.Name;
+                Name = InputObject.Name;
             }
 
-            if (this.ShouldProcess(
-                this.Name,
+            if (ShouldProcess(
+                Name,
                 VerbsLifecycle.Resume))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByObject:
-                        this.Name = this.InputObject.Name;
-                        this.ResumesByName();
+                        Name = InputObject.Name;
+                        ResumesByName();
                         break;
 
                     case ASRParameterSets.ByName:
-                        this.ResumesByName();
+                        ResumesByName();
                         break;
                 }
             }
@@ -95,30 +95,30 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void ResumesByName()
         {
             var resumeJobParams = new ResumeJobParams();
-            if (string.IsNullOrEmpty(this.Comment))
+            if (string.IsNullOrEmpty(Comment))
             {
-                this.Comment = " ";
+                Comment = " ";
             }
 
             resumeJobParams.Properties = new ResumeJobParamsProperties();
-            resumeJobParams.Properties.Comments = this.Comment;
-            var job = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(this.Name);
+            resumeJobParams.Properties.Comments = Comment;
+            var job = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(Name);
             if (job != null)
             {
-                if (job.Properties.ScenarioName.Equals("TestFailover", System.StringComparison.CurrentCultureIgnoreCase))
+                if (job.Properties.ScenarioName.Equals("TestFailover", StringComparison.CurrentCultureIgnoreCase))
                 {
                     throw new InvalidOperationException(
                       string.Format(Resources.ResumeTFOJobNotSupported, job.Name));
                 }
             }
-            var response = this.RecoveryServicesClient.ResumeAzureSiteRecoveryJob(
-                this.Name,
+            var response = RecoveryServicesClient.ResumeAzureSiteRecoveryJob(
+                Name,
                 resumeJobParams);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
     }
 }

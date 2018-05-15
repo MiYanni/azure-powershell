@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ErrorResponses;
+    using Entities.ErrorResponses;
     using System;
     using System.Management.Automation;
 

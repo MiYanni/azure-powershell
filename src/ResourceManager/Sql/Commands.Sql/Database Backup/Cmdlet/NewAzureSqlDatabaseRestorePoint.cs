@@ -50,12 +50,12 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         protected override IEnumerable<AzureSqlDatabaseRestorePointModel> ApplyUserInputToModel(IEnumerable<AzureSqlDatabaseRestorePointModel> model)
         {
             List<AzureSqlDatabaseRestorePointModel> newEntity = new List<AzureSqlDatabaseRestorePointModel>();
-            newEntity.Add(new AzureSqlDatabaseRestorePointModel()
+            newEntity.Add(new AzureSqlDatabaseRestorePointModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                DatabaseName = this.DatabaseName,
-                RestorePointLabel = this.RestorePointLabel
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                DatabaseName = DatabaseName,
+                RestorePointLabel = RestorePointLabel
             });
 
             return newEntity;

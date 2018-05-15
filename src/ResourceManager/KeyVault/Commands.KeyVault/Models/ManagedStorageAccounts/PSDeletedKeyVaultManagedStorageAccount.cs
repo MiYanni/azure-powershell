@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models.ManagedStorageAccounts
 
             SetObjectIdentifier(vaultUriHelper, new Azure.KeyVault.StorageAccountIdentifier(deletedStorageAccountBundle.Id));
 
-            AccountName = this.Name;
+            AccountName = Name;
             AccountResourceId = deletedStorageAccountBundle.ResourceId;
             ActiveKeyName = deletedStorageAccountBundle.ActiveKeyName;
             AutoRegenerateKey = deletedStorageAccountBundle.AutoRegenerateKey;

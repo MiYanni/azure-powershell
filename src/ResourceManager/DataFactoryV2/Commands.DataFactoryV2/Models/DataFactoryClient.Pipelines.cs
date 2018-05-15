@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             PipelineResource pipeline;
             try
             {
-                pipeline = SafeJsonConvert.DeserializeObject<PipelineResource>(rawJsonContent, this.DataFactoryManagementClient.DeserializationSettings);
+                pipeline = SafeJsonConvert.DeserializeObject<PipelineResource>(rawJsonContent, DataFactoryManagementClient.DeserializationSettings);
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             }
 
             PipelineResource response =
-                this.DataFactoryManagementClient.Pipelines.CreateOrUpdate(
+                DataFactoryManagementClient.Pipelines.CreateOrUpdate(
                     resourceGroupName,
                     dataFactoryName,
                     pipelineName,
@@ -58,14 +58,14 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
         public virtual HttpStatusCode DeletePipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
         {
-            Rest.Azure.AzureOperationResponse response = this.DataFactoryManagementClient.Pipelines.DeleteWithHttpMessagesAsync(resourceGroupName, dataFactoryName, pipelineName).Result;
+            Rest.Azure.AzureOperationResponse response = DataFactoryManagementClient.Pipelines.DeleteWithHttpMessagesAsync(resourceGroupName, dataFactoryName, pipelineName).Result;
 
             return response.Response.StatusCode;
         }
 
         public virtual PSPipeline GetPipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
         {
-            PipelineResource response = this.DataFactoryManagementClient.Pipelines.Get(
+            PipelineResource response = DataFactoryManagementClient.Pipelines.Get(
                 resourceGroupName, dataFactoryName, pipelineName);
             if (response == null)
             {
@@ -82,11 +82,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             IPage<PipelineResource> response;
             if (filterOptions.NextLink.IsNextPageLink())
             {
-                response = this.DataFactoryManagementClient.Pipelines.ListByFactoryNext(filterOptions.NextLink);
+                response = DataFactoryManagementClient.Pipelines.ListByFactoryNext(filterOptions.NextLink);
             }
             else
             {
-                response = this.DataFactoryManagementClient.Pipelines.ListByFactory(filterOptions.ResourceGroupName,
+                response = DataFactoryManagementClient.Pipelines.ListByFactory(filterOptions.ResourceGroupName,
                     filterOptions.DataFactoryName);
             }
             filterOptions.NextLink = response != null ? response.NextPageLink : null;
@@ -102,14 +102,14 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
         public virtual string CreatePipelineRun(string resourceGroupName, string dataFactoryName, string pipelineName, Dictionary<string, object> paramDictionary)
         {
-            CreateRunResponse response = this.DataFactoryManagementClient.Pipelines.CreateRun(resourceGroupName, dataFactoryName, pipelineName, paramDictionary);
+            CreateRunResponse response = DataFactoryManagementClient.Pipelines.CreateRun(resourceGroupName, dataFactoryName, pipelineName, paramDictionary);
 
             return response.RunId;
         }
 
         public void StopPipelineRun(string resourceGroupName, string dataFactoryName, string pipelineRunId)
         {
-            this.DataFactoryManagementClient.Factories.CancelPipelineRun(resourceGroupName, dataFactoryName, pipelineRunId);
+            DataFactoryManagementClient.Factories.CancelPipelineRun(resourceGroupName, dataFactoryName, pipelineRunId);
         }
 
         public virtual List<PSPipeline> FilterPSPipelines(AdfEntityFilterOptions filterOptions)
@@ -188,10 +188,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 {
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
     }

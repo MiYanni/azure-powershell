@@ -70,32 +70,32 @@ namespace Microsoft.Azure.Commands.Network
                 VirtualNetworkGatewayConnection.Name,
                 () =>
                 {
-                    if (!this.IsVirtualNetworkGatewayConnectionPresent(this.VirtualNetworkGatewayConnection.ResourceGroupName, this.VirtualNetworkGatewayConnection.Name))
+                    if (!IsVirtualNetworkGatewayConnectionPresent(VirtualNetworkGatewayConnection.ResourceGroupName, VirtualNetworkGatewayConnection.Name))
                     {
                         throw new ArgumentException(Properties.Resources.ResourceNotFound);
                     }
 
-                    if (this.EnableBgp.HasValue)
+                    if (EnableBgp.HasValue)
                     {
-                        this.VirtualNetworkGatewayConnection.EnableBgp = this.EnableBgp.Value;
+                        VirtualNetworkGatewayConnection.EnableBgp = EnableBgp.Value;
                     }
 
-                    if (this.UsePolicyBasedTrafficSelectors.HasValue)
+                    if (UsePolicyBasedTrafficSelectors.HasValue)
                     {
-                        this.VirtualNetworkGatewayConnection.UsePolicyBasedTrafficSelectors = this.UsePolicyBasedTrafficSelectors.Value;
+                        VirtualNetworkGatewayConnection.UsePolicyBasedTrafficSelectors = UsePolicyBasedTrafficSelectors.Value;
                     }
 
-                    if (this.IpsecPolicies != null)
+                    if (IpsecPolicies != null)
                     {
-                        this.VirtualNetworkGatewayConnection.IpsecPolicies = this.IpsecPolicies;
+                        VirtualNetworkGatewayConnection.IpsecPolicies = IpsecPolicies;
                     }
 
-                    var vnetGatewayConnectionModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkGatewayConnection>(this.VirtualNetworkGatewayConnection);
-                    vnetGatewayConnectionModel.Tags = TagsConversionHelper.CreateTagDictionary(this.VirtualNetworkGatewayConnection.Tag, validate: true);
-                    this.VirtualNetworkGatewayConnectionClient.CreateOrUpdate(
-                        this.VirtualNetworkGatewayConnection.ResourceGroupName,
-                        this.VirtualNetworkGatewayConnection.Name, vnetGatewayConnectionModel);
-                    var getvnetGatewayConnection = this.GetVirtualNetworkGatewayConnection(this.VirtualNetworkGatewayConnection.ResourceGroupName, this.VirtualNetworkGatewayConnection.Name);
+                    var vnetGatewayConnectionModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkGatewayConnection>(VirtualNetworkGatewayConnection);
+                    vnetGatewayConnectionModel.Tags = TagsConversionHelper.CreateTagDictionary(VirtualNetworkGatewayConnection.Tag, validate: true);
+                    VirtualNetworkGatewayConnectionClient.CreateOrUpdate(
+                        VirtualNetworkGatewayConnection.ResourceGroupName,
+                        VirtualNetworkGatewayConnection.Name, vnetGatewayConnectionModel);
+                    var getvnetGatewayConnection = GetVirtualNetworkGatewayConnection(VirtualNetworkGatewayConnection.ResourceGroupName, VirtualNetworkGatewayConnection.Name);
                     WriteObject(getvnetGatewayConnection);
                 });
 

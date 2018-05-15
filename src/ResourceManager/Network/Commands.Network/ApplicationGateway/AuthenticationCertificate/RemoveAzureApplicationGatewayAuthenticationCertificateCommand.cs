@@ -36,18 +36,18 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(Name, Microsoft.Azure.Commands.Network.Properties.Resources.RemoveResourceMessage))
+            if (ShouldProcess(Name, Properties.Resources.RemoveResourceMessage))
             {
                 base.ExecuteCmdlet();
 
-                var authCertificate = this.ApplicationGateway.AuthenticationCertificates.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                var authCertificate = ApplicationGateway.AuthenticationCertificates.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 if (authCertificate != null)
                 {
-                    this.ApplicationGateway.AuthenticationCertificates.Remove(authCertificate);
+                    ApplicationGateway.AuthenticationCertificates.Remove(authCertificate);
                 }
 
-                WriteObject(this.ApplicationGateway);
+                WriteObject(ApplicationGateway);
             }
         }
     }

@@ -100,8 +100,8 @@ namespace Microsoft.Azure.Commands.KeyVault
                 Name,
                 () =>
                 {
-                    certificateOperation = this.DataServiceClient.CancelCertificateOperation(VaultName, Name);
-                    this.WriteObject(certificateOperation);
+                    certificateOperation = DataServiceClient.CancelCertificateOperation(VaultName, Name);
+                    WriteObject(certificateOperation);
                 });
         }
     }

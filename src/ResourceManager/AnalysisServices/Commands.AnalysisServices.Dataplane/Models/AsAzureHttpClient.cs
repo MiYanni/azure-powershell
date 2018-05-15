@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane.Models
 
         public AsAzureHttpClient(Func<HttpClient> httpClientProvider)
         {
-            this.HttpClientProvider = httpClientProvider;
-            this.HttpClient = this.HttpClientProvider();
+            HttpClientProvider = httpClientProvider;
+            HttpClient = HttpClientProvider();
         }
 
         public async Task<HttpResponseMessage> CallGetAsync(Uri baseURI, string requestURL, string accessToken)
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane.Models
 
         public void resetHttpClient()
         {
-            this.HttpClient = this.HttpClientProvider();
+            HttpClient = HttpClientProvider();
         }
 
         private async Task<HttpResponseMessage> CallAsync(HttpMethod method, Uri baseURI, string requestURL, string accessToken, Guid correlationId, HttpContent content = null)
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane.Models
                     correlationId = new Guid();
                 }
 
-                HttpClient.DefaultRequestHeaders.Add(ParentActivityId, new List<string>() { correlationId.ToString() });
+                HttpClient.DefaultRequestHeaders.Add(ParentActivityId, new List<string> { correlationId.ToString() });
 
                 HttpClient.BaseAddress = baseURI;
                 if (method == HttpMethod.Get)

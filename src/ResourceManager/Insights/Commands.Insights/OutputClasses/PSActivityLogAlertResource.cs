@@ -20,16 +20,16 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
     {
         public PSActivityLogAlertResource(ActivityLogAlertResource activityLogAlertResource)
             : base (
-                  location: activityLogAlertResource.Location,
-                  scopes: activityLogAlertResource.Scopes,
-                  condition: activityLogAlertResource.Condition,
-                  actions: activityLogAlertResource.Actions,
-                  id: activityLogAlertResource.Id,
-                  name: activityLogAlertResource.Name,
-                  type: activityLogAlertResource.Type,
-                  tags: activityLogAlertResource.Tags,
-                  enabled: activityLogAlertResource.Enabled,
-                  description: activityLogAlertResource.Description)
+                  activityLogAlertResource.Location,
+                  activityLogAlertResource.Scopes,
+                  activityLogAlertResource.Condition,
+                  activityLogAlertResource.Actions,
+                  activityLogAlertResource.Id,
+                  activityLogAlertResource.Name,
+                  activityLogAlertResource.Type,
+                  activityLogAlertResource.Tags,
+                  activityLogAlertResource.Enabled,
+                  activityLogAlertResource.Description)
         {}
     }
 }

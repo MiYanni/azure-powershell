@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
-    using Microsoft.WindowsAzure.Storage.File;
+    using WindowsAzure.Storage.File;
     using System.Globalization;
     using System.Management.Automation;
 
@@ -83,41 +83,41 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
         public override void ExecuteCmdlet()
         {
-            string[] path = NamingUtil.ValidatePath(this.Path, true);
+            string[] path = NamingUtil.ValidatePath(Path, true);
             CloudFile fileToBeRemoved;
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case Constants.FileParameterSetName:
-                    fileToBeRemoved = this.File;
+                    fileToBeRemoved = File;
                     break;
 
                 case Constants.ShareNameParameterSetName:
-                    var share = this.BuildFileShareObjectFromName(this.ShareName);
+                    var share = BuildFileShareObjectFromName(ShareName);
                     fileToBeRemoved = share.GetRootDirectoryReference().GetFileReferenceByPath(path);
                     break;
 
                 case Constants.ShareParameterSetName:
-                    fileToBeRemoved = this.Share.GetRootDirectoryReference().GetFileReferenceByPath(path);
+                    fileToBeRemoved = Share.GetRootDirectoryReference().GetFileReferenceByPath(path);
                     break;
 
                 case Constants.DirectoryParameterSetName:
-                    fileToBeRemoved = this.Directory.GetFileReferenceByPath(path);
+                    fileToBeRemoved = Directory.GetFileReferenceByPath(path);
                     break;
 
                 default:
-                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", this.ParameterSetName));
+                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", ParameterSetName));
             }
 
-            this.RunTask(async taskId =>
+            RunTask(async taskId =>
             {
-                if (this.ShouldProcess(fileToBeRemoved.GetFullPath(), "Remove file"))
+                if (ShouldProcess(fileToBeRemoved.GetFullPath(), "Remove file"))
                 {
-                    await this.Channel.DeleteFileAsync(fileToBeRemoved, null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
+                    await Channel.DeleteFileAsync(fileToBeRemoved, null, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
                 }
 
-                if (this.PassThru)
+                if (PassThru)
                 {
-                    this.OutputStream.WriteObject(taskId, fileToBeRemoved);
+                    OutputStream.WriteObject(taskId, fileToBeRemoved);
                 }
             });
         }

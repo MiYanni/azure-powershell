@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 resourceType));
 
             // Update vault settings with the working vault to generate file
-            Utilities.UpdateCurrentVaultContext(new ASRVaultCreds()
+            Utilities.UpdateCurrentVaultContext(new ASRVaultCreds
             {
                 ResourceGroupName = vault.ResourceGroupName,
                 ResourceName = vault.Name,
@@ -107,19 +107,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices
 
             // Get Channel Integrity key
             string channelIntegrityKey;
-            string getChannelIntegrityKey = this.GetCurrentVaultChannelIntegrityKey();
+            string getChannelIntegrityKey = GetCurrentVaultChannelIntegrityKey();
 
             // Making sure we can generate the file, once the SDK and portal are inter-operable
             // upload certificate and fetch of ACIK can be made parallel to improvve the performace.
 
             // Upload certificate
-            VaultCertificateResponse uploadCertificate = this.UpdateVaultCertificate(
+            VaultCertificateResponse uploadCertificate = UpdateVaultCertificate(
                 managementCert,
                 authType);
 
             channelIntegrityKey = getChannelIntegrityKey;
 
-            ASRVaultCreds arsVaultCreds = this.GenerateCredentialObject(
+            ASRVaultCreds arsVaultCreds = GenerateCredentialObject(
                 managementCert,
                 uploadCertificate,
                 channelIntegrityKey,
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             VaultExtendedInfoResource extendedInformation = null;
             try
             {
-                extendedInformation = this.GetExtendedInfo();
+                extendedInformation = GetExtendedInfo();
             }
             catch (Exception exception)
             {
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
 
             if (null == extendedInformation)
             {
-                extendedInformation = this.CreateVaultExtendedInformation();
+                extendedInformation = CreateVaultExtendedInformation();
             }
             else
             {
@@ -213,7 +213,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             string resourceProviderNamespace = string.Empty;
             string resourceType = string.Empty;
             Utilities.GetResourceProviderNamespaceAndType(vault.ID, out resourceProviderNamespace, out resourceType);
-            Utilities.UpdateCurrentVaultContext(new ASRVaultCreds()
+            Utilities.UpdateCurrentVaultContext(new ASRVaultCreds
             {
                 ResourceGroupName = vault.ResourceGroupName,
                 ResourceName = vault.Name,
@@ -222,10 +222,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             });
 
             // Get Channel Integrity key
-            string getChannelIntegrityKey = this.GetCurrentVaultChannelIntegrityKey();
+            string getChannelIntegrityKey = GetCurrentVaultChannelIntegrityKey();
 
             // Update vault settings along with Channel integrity key
-            Utilities.UpdateCurrentVaultContext(new ASRVaultCreds()
+            Utilities.UpdateCurrentVaultContext(new ASRVaultCreds
             {
                 ResourceGroupName = vault.ResourceGroupName,
                 ResourceName = vault.Name,
@@ -275,7 +275,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             certificateArgs.Properties.Certificate = cert.GetRawCertData();
             certificateArgs.Properties.AuthType = authType;
 
-            VaultCertificateResponse response = this.UpdateVaultCertificate(
+            VaultCertificateResponse response = UpdateVaultCertificate(
                 certificateArgs,
                 cert.FriendlyName);
 
@@ -293,7 +293,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             extendedInformation.IntegrityKey = Utilities.GenerateRandomKey(128);
             extendedInformation.Algorithm = CryptoAlgorithm.None.ToString();
 
-            this.CreateExtendedInfo(extendedInformation);
+            CreateExtendedInfo(extendedInformation);
 
             return extendedInformation;
         }

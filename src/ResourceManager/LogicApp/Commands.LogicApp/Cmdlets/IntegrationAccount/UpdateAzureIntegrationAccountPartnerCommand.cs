@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System;
     using System.Globalization;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Utilities;
+    using Management.Logic.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -63,8 +63,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [ValidateNotNullOrEmpty]
         public string PartnerType
         {
-            get { return this.partnerType; }
-            set { value = this.partnerType; }
+            get { return partnerType; }
+            set { value = partnerType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account partner business identities.",
@@ -89,40 +89,40 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
             var integrationAccountPartner = IntegrationAccountClient.GetIntegrationAccountPartner(
-                this.ResourceGroupName,
-                this.Name, this.PartnerName);
+                ResourceGroupName,
+                Name, PartnerName);
 
-            if (!string.IsNullOrEmpty(this.PartnerType))
+            if (!string.IsNullOrEmpty(PartnerType))
             {
-                integrationAccountPartner.PartnerType = (PartnerType) Enum.Parse(typeof(PartnerType), this.PartnerType);
+                integrationAccountPartner.PartnerType = (PartnerType) Enum.Parse(typeof(PartnerType), PartnerType);
             }
 
-            if (this.BusinessIdentities != null)
+            if (BusinessIdentities != null)
             {
                 integrationAccountPartner.Content.B2b.BusinessIdentities =
-                    CmdletHelper.ConvertToBusinessIdentityList(this.BusinessIdentities);
+                    CmdletHelper.ConvertToBusinessIdentityList(BusinessIdentities);
             }
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                integrationAccountPartner.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                integrationAccountPartner.Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
             ConfirmAction(Force.IsPresent,
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceWarning,
-                    "Microsoft.Logic/integrationAccounts/partners", this.Name),
+                    "Microsoft.Logic/integrationAccounts/partners", Name),
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceMessage,
-                    "Microsoft.Logic/integrationAccounts/partners", this.Name),
+                    "Microsoft.Logic/integrationAccounts/partners", Name),
                 Name,
                 () =>
                 {
-                    this.WriteObject(
-                        IntegrationAccountClient.UpdateIntegrationAccountPartner(this.ResourceGroupName,
+                    WriteObject(
+                        IntegrationAccountClient.UpdateIntegrationAccountPartner(ResourceGroupName,
                             integrationAccount.Name,
-                            this.PartnerName,
+                            PartnerName,
                             integrationAccountPartner), true);
                 },
                 null);

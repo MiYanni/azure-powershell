@@ -37,14 +37,14 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var probe = this.LoadBalancer.Probes.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var probe = LoadBalancer.Probes.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (probe != null)
             {
-                this.LoadBalancer.Probes.Remove(probe);
+                LoadBalancer.Probes.Remove(probe);
             }
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

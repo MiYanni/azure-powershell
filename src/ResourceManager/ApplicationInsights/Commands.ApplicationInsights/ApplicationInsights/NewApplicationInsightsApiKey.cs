@@ -81,33 +81,33 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
         {
             base.ExecuteCmdlet();
 
-            if (this.ApplicationInsightsComponent != null)
+            if (ApplicationInsightsComponent != null)
             {
-                this.ResourceGroupName = this.ApplicationInsightsComponent.ResourceGroupName;
-                this.Name = this.ApplicationInsightsComponent.Name;
+                ResourceGroupName = ApplicationInsightsComponent.ResourceGroupName;
+                Name = ApplicationInsightsComponent.Name;
             }
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                ResourceIdentifier identifier = new ResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = identifier.ResourceGroupName;
-                this.Name = identifier.ResourceName;
+                ResourceIdentifier identifier = new ResourceIdentifier(ResourceId);
+                ResourceGroupName = identifier.ResourceGroupName;
+                Name = identifier.ResourceName;
             }
 
             APIKeyRequest apiKeyRequest = new APIKeyRequest();
-            apiKeyRequest.Name = this.Description;
+            apiKeyRequest.Name = Description;
 
-            var access = PSApiKey.BuildApiKeyAccess(this.SubscriptionId, this.ResourceGroupName, this.Name, this.Permissions);
+            var access = PSApiKey.BuildApiKeyAccess(SubscriptionId, ResourceGroupName, Name, Permissions);
             apiKeyRequest.LinkedReadProperties = access.Item1;
             apiKeyRequest.LinkedWriteProperties = access.Item2;
 
-            if (this.ShouldProcess(this.Name, $"Create Api Key '{this.Description}'"))
+            if (ShouldProcess(Name, $"Create Api Key '{Description}'"))
             {
-                var apiKeyResponse = this.AppInsightsManagementClient
+                var apiKeyResponse = AppInsightsManagementClient
                                                         .APIKeys
                                                         .CreateWithHttpMessagesAsync(
-                                                            this.ResourceGroupName,
-                                                            this.Name,
+                                                            ResourceGroupName,
+                                                            Name,
                                                             apiKeyRequest)
                                                         .GetAwaiter()
                                                         .GetResult();

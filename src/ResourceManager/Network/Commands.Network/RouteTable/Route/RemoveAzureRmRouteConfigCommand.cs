@@ -48,26 +48,26 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             // Routes
-            if (this.RouteTable.Routes == null)
+            if (RouteTable.Routes == null)
             {
-                WriteObject(this.RouteTable);
+                WriteObject(RouteTable);
                 return;
             }
-            var vRoutes = this.RouteTable.Routes.First
+            var vRoutes = RouteTable.Routes.First
                 (e =>
-                    (this.Name != null && e.Name == this.Name)
+                    Name != null && e.Name == Name
                 );
 
             if (vRoutes != null)
             {
-                this.RouteTable.Routes.Remove(vRoutes);
+                RouteTable.Routes.Remove(vRoutes);
             }
 
-            if (this.RouteTable.Routes.Count == 0)
+            if (RouteTable.Routes.Count == 0)
             {
-                this.RouteTable.Routes = null;
+                RouteTable.Routes = null;
             }
-            WriteObject(this.RouteTable, true);
+            WriteObject(RouteTable, true);
         }
     }
 }

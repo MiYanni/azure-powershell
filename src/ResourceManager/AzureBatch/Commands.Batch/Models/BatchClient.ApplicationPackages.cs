@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 applicationId,
                 version);
 
-            return this.ConvertGetApplicationPackageResponseToApplicationPackage(response);
+            return ConvertGetApplicationPackageResponseToApplicationPackage(response);
         }
 
         public virtual PSApplicationPackage UploadAndActivateApplicationPackage(
@@ -211,7 +211,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
 
         private PSApplicationPackage ConvertGetApplicationPackageResponseToApplicationPackage(ApplicationPackage response)
         {
-            return new PSApplicationPackage()
+            return new PSApplicationPackage
             {
                 Format = response.Format,
                 StorageUrl = response.StorageUrl,

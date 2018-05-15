@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 resourceGroupName,
                 dataFactoryName,
                 hubName,
-                new HubCreateOrUpdateWithRawJsonContentParameters() { Content = rawJsonContent });
+                new HubCreateOrUpdateWithRawJsonContentParameters { Content = rawJsonContent });
 
             return response.Hub;
         }
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             {
                 hub =
                     new PSHub(
-                        this.CreateOrUpdateHub(
+                        CreateOrUpdateHub(
                             parameters.ResourceGroupName,
                             parameters.DataFactoryName,
                             parameters.Name,
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             }
             else
             {
-                bool hubExists = this.CheckHubExists(
+                bool hubExists = CheckHubExists(
                     parameters.ResourceGroupName,
                     parameters.DataFactoryName,
                     parameters.Name);
@@ -185,7 +185,7 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             try
             {
-                PSHub hub = this.GetHub(resourceGroupName, dataFactoryName, hubName);
+                PSHub hub = GetHub(resourceGroupName, dataFactoryName, hubName);
 
                 return true;
             }

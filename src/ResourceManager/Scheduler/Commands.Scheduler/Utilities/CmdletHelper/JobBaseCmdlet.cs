@@ -16,8 +16,8 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using SchedulerModels = Microsoft.Azure.Management.Scheduler.Models;
+    using Models;
+    using SchedulerModels = Management.Scheduler.Models;
 
     public class JobBaseCmdlet : SchedulerBaseCmdlet
     {
@@ -32,10 +32,10 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <returns></returns>
         private PSServiceBusAuthenticationParams GetServiceBusErrorActionAuthentication()
         {
-            return new PSServiceBusAuthenticationParams()
+            return new PSServiceBusAuthenticationParams
             {
-                SasKey = this.JobDynamicParameters.ErrorActionServiceBusSasKeyValue,
-                SasKeyName = this.JobDynamicParameters.ErrorActionServiceBusSasKeyName,
+                SasKey = JobDynamicParameters.ErrorActionServiceBusSasKeyValue,
+                SasKeyName = JobDynamicParameters.ErrorActionServiceBusSasKeyName,
                 Type = Constants.SharedAccessKey
             };
         }
@@ -46,12 +46,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <returns></returns>
         private PSServiceBusParams GetServiceBusErrorActionParams()
         {
-            return new PSServiceBusParams()
+            return new PSServiceBusParams
             {
-                Authentication = this.GetServiceBusErrorActionAuthentication(),
-                Message = this.JobDynamicParameters.ErrorActionServiceBusMessage,
-                NamespaceProperty = this.JobDynamicParameters.ErrorActionServiceBusNamespace,
-                TransportType = this.JobDynamicParameters.ErrorActionServiceBusTransportType
+                Authentication = GetServiceBusErrorActionAuthentication(),
+                Message = JobDynamicParameters.ErrorActionServiceBusMessage,
+                NamespaceProperty = JobDynamicParameters.ErrorActionServiceBusNamespace,
+                TransportType = JobDynamicParameters.ErrorActionServiceBusTransportType
             };
         }
 
@@ -64,9 +64,9 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (!string.IsNullOrWhiteSpace(errorActionType))
             {
-                var jobErrorActionType = (SchedulerModels.JobActionType)Enum.Parse(typeof(SchedulerModels.JobActionType), errorActionType, ignoreCase: true);
+                var jobErrorActionType = (SchedulerModels.JobActionType)Enum.Parse(typeof(SchedulerModels.JobActionType), errorActionType, true);
 
-                var jobErrorAction = new PSJobActionParams()
+                var jobErrorAction = new PSJobActionParams
                 {
                     JobActionType = jobErrorActionType,
                 };
@@ -75,25 +75,25 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 {
                     case SchedulerModels.JobActionType.Http:
                     case SchedulerModels.JobActionType.Https:
-                        var jobErrorActionAuthentication = new PSHttpJobAuthenticationParams()
+                        var jobErrorActionAuthentication = new PSHttpJobAuthenticationParams
                         {
-                            HttpAuthType = this.JobDynamicParameters.ErrorActionHttpAuthenticationType,
+                            HttpAuthType = JobDynamicParameters.ErrorActionHttpAuthenticationType,
                             ClientCertPfx = string.IsNullOrWhiteSpace(JobDynamicParameters.ErrorActionClientCertificatePfx) ? null : SchedulerUtility.GetCertData(this.ResolvePath(JobDynamicParameters.ErrorActionClientCertificatePfx), JobDynamicParameters.ErrorActionClientCertificatePassword),
-                            ClientCertPassword = this.JobDynamicParameters.ErrorActionClientCertificatePassword,
-                            Username = this.JobDynamicParameters.ErrorActionBasicUsername,
-                            Password = this.JobDynamicParameters.ErrorActionBasicPassword,
-                            Secret = this.JobDynamicParameters.ErrorActionOAuthSecret,
-                            Tenant = this.JobDynamicParameters.ErrorActionOAuthTenant,
-                            Audience = this.JobDynamicParameters.ErrorActionOAuthAudience,
-                            ClientId = this.JobDynamicParameters.ErrorActionOAuthClientId
+                            ClientCertPassword = JobDynamicParameters.ErrorActionClientCertificatePassword,
+                            Username = JobDynamicParameters.ErrorActionBasicUsername,
+                            Password = JobDynamicParameters.ErrorActionBasicPassword,
+                            Secret = JobDynamicParameters.ErrorActionOAuthSecret,
+                            Tenant = JobDynamicParameters.ErrorActionOAuthTenant,
+                            Audience = JobDynamicParameters.ErrorActionOAuthAudience,
+                            ClientId = JobDynamicParameters.ErrorActionOAuthClientId
                         };
 
-                        var httpJobErrorAction = new PSHttpJobActionParams()
+                        var httpJobErrorAction = new PSHttpJobActionParams
                         {
-                            RequestMethod = this.JobDynamicParameters.ErrorActionMethod,
-                            Uri = this.JobDynamicParameters.ErrorActionUri,
-                            RequestBody = this.JobDynamicParameters.ErrorActionRequestBody,
-                            RequestHeaders = this.JobDynamicParameters.ErrorActionHeaders,
+                            RequestMethod = JobDynamicParameters.ErrorActionMethod,
+                            Uri = JobDynamicParameters.ErrorActionUri,
+                            RequestBody = JobDynamicParameters.ErrorActionRequestBody,
+                            RequestHeaders = JobDynamicParameters.ErrorActionHeaders,
                             RequestAuthentication = jobErrorActionAuthentication
                         };
 
@@ -101,12 +101,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                         break;
 
                     case SchedulerModels.JobActionType.StorageQueue:
-                        var storageQueueErrorAction = new PSStorageJobActionParams()
+                        var storageQueueErrorAction = new PSStorageJobActionParams
                         {
-                            StorageAccount = this.JobDynamicParameters.ErrorActionStorageAccount,
-                            StorageQueueName = this.JobDynamicParameters.ErrorActionStorageQueue,
-                            StorageSasToken = this.JobDynamicParameters.ErrorActionStorageSASToken,
-                            StorageQueueMessage = this.JobDynamicParameters.ErrorActionQueueMessageBody,
+                            StorageAccount = JobDynamicParameters.ErrorActionStorageAccount,
+                            StorageQueueName = JobDynamicParameters.ErrorActionStorageQueue,
+                            StorageSasToken = JobDynamicParameters.ErrorActionStorageSASToken,
+                            StorageQueueMessage = JobDynamicParameters.ErrorActionQueueMessageBody,
                         };
 
                         jobErrorAction.StorageJobAction = storageQueueErrorAction;
@@ -114,13 +114,13 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
                     case SchedulerModels.JobActionType.ServiceBusQueue:
                         var serviceBusQueueErrorAction = GetServiceBusErrorActionParams();
-                        serviceBusQueueErrorAction.QueueName = this.JobDynamicParameters.ErrorActionServiceBusQueueName;
+                        serviceBusQueueErrorAction.QueueName = JobDynamicParameters.ErrorActionServiceBusQueueName;
                         jobErrorAction.ServiceBusAction = serviceBusQueueErrorAction;
                         break;
 
                     case SchedulerModels.JobActionType.ServiceBusTopic:
                         var serviceBusTopicErrorAction = GetServiceBusErrorActionParams();
-                        serviceBusTopicErrorAction.TopicPath = this.JobDynamicParameters.ErrorActionServiceBusTopicPath;
+                        serviceBusTopicErrorAction.TopicPath = JobDynamicParameters.ErrorActionServiceBusTopicPath;
                         jobErrorAction.ServiceBusAction = serviceBusTopicErrorAction;
                         break;
                 }
@@ -145,19 +145,19 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 if (errorActionType.Equals(Constants.HttpAction, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    runtimeDefinedParameterDictionary.AddRange(this.JobDynamicParameters.AddHttpErrorActionParameters(create));
+                    runtimeDefinedParameterDictionary.AddRange(JobDynamicParameters.AddHttpErrorActionParameters(create));
                 }
                 else if (errorActionType.Equals(Constants.StorageQueueAction, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    runtimeDefinedParameterDictionary.AddRange(this.JobDynamicParameters.AddStorageQueueErrorActionParameters(create));
+                    runtimeDefinedParameterDictionary.AddRange(JobDynamicParameters.AddStorageQueueErrorActionParameters(create));
                 }
                 else if (errorActionType.Equals(Constants.ServiceBusQueueAction, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    runtimeDefinedParameterDictionary.AddRange(this.JobDynamicParameters.AddServiceBusQueueErrorActionParameters(create));
+                    runtimeDefinedParameterDictionary.AddRange(JobDynamicParameters.AddServiceBusQueueErrorActionParameters(create));
                 }
                 else if (errorActionType.Equals(Constants.ServiceBusTopicAction, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    runtimeDefinedParameterDictionary.AddRange(this.JobDynamicParameters.AddServiceBusTopicErrorActionParameters(create));
+                    runtimeDefinedParameterDictionary.AddRange(JobDynamicParameters.AddServiceBusTopicErrorActionParameters(create));
                 }
             }
 

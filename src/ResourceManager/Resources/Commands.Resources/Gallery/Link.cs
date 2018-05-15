@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string DisplayName
         {
-            get { return this._displayName; }
-            set { this._displayName = value; }
+            get { return _displayName; }
+            set { _displayName = value; }
         }
 
         private string _identifier;
@@ -29,8 +29,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Identifier
         {
-            get { return this._identifier; }
-            set { this._identifier = value; }
+            get { return _identifier; }
+            set { _identifier = value; }
         }
 
         private string _uri;
@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Uri
         {
-            get { return this._uri; }
-            set { this._uri = value; }
+            get { return _uri; }
+            set { _uri = value; }
         }
 
         /// <summary>

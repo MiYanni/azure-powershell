@@ -104,20 +104,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override void ExecuteSiteRecoveryCmdlet()
         {
             base.ExecuteSiteRecoveryCmdlet();
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByObject:
-                    this.Name = this.Job.Name;
-                    this.GetByName();
+                    Name = Job.Name;
+                    GetByName();
                     break;
 
                 case ASRParameterSets.ByName:
-                    this.GetByName();
+                    GetByName();
                     break;
 
                 case ASRParameterSets.ByParam:
                 default:
-                    this.GetByParam();
+                    GetByParam();
                     break;
             }
         }
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetByName()
         {
-            this.WriteJob(this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(this.Name));
+            WriteJob(RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(Name));
         }
 
         /// <summary>
@@ -137,40 +137,40 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var jqp = new JobQueryParameter();
 
-            if (this.StartTime.HasValue)
+            if (StartTime.HasValue)
             {
-                jqp.StartTime = this.StartTime.Value.ToUniversalTime()
+                jqp.StartTime = StartTime.Value.ToUniversalTime()
                     .ToString("o");
             }
 
-            if (this.EndTime.HasValue)
+            if (EndTime.HasValue)
             {
-                jqp.EndTime = this.EndTime.Value.ToUniversalTime()
+                jqp.EndTime = EndTime.Value.ToUniversalTime()
                     .ToString("o");
             }
 
-            if (this.State != null)
+            if (State != null)
             {
                 jqp.JobStatus = new List<string>();
-                jqp.JobStatus.Add(this.State);
+                jqp.JobStatus.Add(State);
             }
 
-            var completeJobsList = this.RecoveryServicesClient.GetAzureSiteRecoveryJob(jqp);
+            var completeJobsList = RecoveryServicesClient.GetAzureSiteRecoveryJob(jqp);
 
             // Filtering TargetObjectId
             var filteredJobsList = completeJobsList.ToArray()
                 .AsEnumerable();
-            if (this.TargetObjectId != null)
+            if (TargetObjectId != null)
             {
                 filteredJobsList = filteredJobsList.Where(
                     j => 0 ==
                          string.Compare(
                              j.Properties.TargetObjectId.ToString(),
-                             this.TargetObjectId.ToString(),
+                             TargetObjectId.ToString(),
                              StringComparison.OrdinalIgnoreCase));
             }
 
-            this.WriteJobs(filteredJobsList.ToList());
+            WriteJobs(filteredJobsList.ToList());
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteJob(
             Job job)
         {
-            this.WriteObject(new ASRJob(job));
+            WriteObject(new ASRJob(job));
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteJobs(
             IList<Job> jobs)
         {
-            this.WriteObject(
+            WriteObject(
                 jobs.Select(j => new ASRJob(j)),
                 true);
         }

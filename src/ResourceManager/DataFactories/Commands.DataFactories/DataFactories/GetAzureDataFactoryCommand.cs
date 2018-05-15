@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 throw new PSArgumentNullException("Name");
             }
 
-            DataFactoryFilterOptions filterOptions = new DataFactoryFilterOptions()
+            DataFactoryFilterOptions filterOptions = new DataFactoryFilterOptions
             {
                 Name = Name,
                 ResourceGroupName = ResourceGroupName

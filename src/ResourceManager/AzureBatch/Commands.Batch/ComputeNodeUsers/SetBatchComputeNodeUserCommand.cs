@@ -49,13 +49,13 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            UpdateComputeNodeUserParameters parameters = new UpdateComputeNodeUserParameters(this.BatchContext,
-                this.PoolId, this.ComputeNodeId, this.Name, this.AdditionalBehaviors)
+            UpdateComputeNodeUserParameters parameters = new UpdateComputeNodeUserParameters(BatchContext,
+                PoolId, ComputeNodeId, Name, AdditionalBehaviors)
             {
-                Password = this.Password?.ConvertToString(),
-                ExpiryTime = this.ExpiryTime
+                Password = Password?.ConvertToString(),
+                ExpiryTime = ExpiryTime
             };
-            this.BatchClient.UpdateComputeNodeUser(parameters);
+            BatchClient.UpdateComputeNodeUser(parameters);
         }
     }
 }

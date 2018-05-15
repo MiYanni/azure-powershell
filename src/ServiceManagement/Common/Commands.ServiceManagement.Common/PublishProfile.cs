@@ -28,8 +28,8 @@ namespace Microsoft.Azure.ServiceManagement.Common.XmlSchema
 {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.SerializableAttribute]
+    [System.Diagnostics.DebuggerStepThroughAttribute]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [XmlType(AnonymousType = true)]
     [XmlRoot(Namespace = "", IsNullable = false)]
@@ -44,19 +44,19 @@ namespace Microsoft.Azure.ServiceManagement.Common.XmlSchema
         {
             get
             {
-                return this.itemsField;
+                return itemsField;
             }
             set
             {
-                this.itemsField = value;
+                itemsField = value;
             }
         }
     }
 
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.SerializableAttribute]
+    [System.Diagnostics.DebuggerStepThroughAttribute]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [XmlType(AnonymousType = true)]
     public partial class PublishDataPublishProfile
@@ -78,75 +78,75 @@ namespace Microsoft.Azure.ServiceManagement.Common.XmlSchema
         {
             get
             {
-                return this.subscriptionField;
+                return subscriptionField;
             }
             set
             {
-                this.subscriptionField = value;
+                subscriptionField = value;
             }
         }
 
         /// <remarks/>
-        [XmlAttribute()]
+        [XmlAttribute]
         public string PublishMethod
         {
             get
             {
-                return this.publishMethodField;
+                return publishMethodField;
             }
             set
             {
-                this.publishMethodField = value;
+                publishMethodField = value;
             }
         }
 
         /// <remarks/>
-        [XmlAttribute()]
+        [XmlAttribute]
         public string Url
         {
             get
             {
-                return this.urlField;
+                return urlField;
             }
             set
             {
-                this.urlField = value;
+                urlField = value;
             }
         }
 
         /// <remarks/>
-        [XmlAttribute()]
+        [XmlAttribute]
         public string ManagementCertificate
         {
             get
             {
-                return this.managementCertificateField;
+                return managementCertificateField;
             }
             set
             {
-                this.managementCertificateField = value;
+                managementCertificateField = value;
             }
         }
 
         /// <remarks/>
-        [XmlAttribute()]
+        [XmlAttribute]
         public string SchemaVersion
         {
             get
             {
-                return this.SchemaVersionField;
+                return SchemaVersionField;
             }
             set
             {
-                this.SchemaVersionField = value;
+                SchemaVersionField = value;
             }
         }
     }
 
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.SerializableAttribute]
+    [System.Diagnostics.DebuggerStepThroughAttribute]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [XmlType(AnonymousType = true)]
     public partial class PublishDataPublishProfileSubscription
@@ -161,58 +161,58 @@ namespace Microsoft.Azure.ServiceManagement.Common.XmlSchema
         private string managementCertificateField;
 
         /// <remarks/>
-        [XmlAttribute()]
+        [XmlAttribute]
         public string Id
         {
             get
             {
-                return this.idField;
+                return idField;
             }
             set
             {
-                this.idField = value;
+                idField = value;
             }
         }
 
         /// <remarks/>
-        [XmlAttribute()]
+        [XmlAttribute]
         public string Name
         {
             get
             {
-                return this.nameField;
+                return nameField;
             }
             set
             {
-                this.nameField = value;
+                nameField = value;
             }
         }
 
         /// <remarks/>
-        [XmlAttribute()]
+        [XmlAttribute]
         public string ServiceManagementUrl
         {
             get
             {
-                return this.serviceManagementUrlField;
+                return serviceManagementUrlField;
             }
             set
             {
-                this.serviceManagementUrlField = value;
+                serviceManagementUrlField = value;
             }
         }
 
         /// <remarks/>
-        [XmlAttribute()]
+        [XmlAttribute]
         public string ManagementCertificate
         {
             get
             {
-                return this.managementCertificateField;
+                return managementCertificateField;
             }
             set
             {
-                this.managementCertificateField = value;
+                managementCertificateField = value;
             }
         }
     }

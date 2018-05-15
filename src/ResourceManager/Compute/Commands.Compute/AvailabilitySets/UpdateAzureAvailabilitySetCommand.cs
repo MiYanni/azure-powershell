@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(AvailabilitySet.Name, VerbsData.Update))
+            if (ShouldProcess(AvailabilitySet.Name, VerbsData.Update))
             {
                 base.ExecuteCmdlet();
 
@@ -64,12 +64,12 @@ namespace Microsoft.Azure.Commands.Compute
                 {
                     var avSetParams = new AvailabilitySet
                     {
-                        Location = this.AvailabilitySet.Location,
-                        PlatformUpdateDomainCount = this.AvailabilitySet.PlatformUpdateDomainCount,
-                        PlatformFaultDomainCount = this.AvailabilitySet.PlatformFaultDomainCount
+                        Location = AvailabilitySet.Location,
+                        PlatformUpdateDomainCount = AvailabilitySet.PlatformUpdateDomainCount,
+                        PlatformFaultDomainCount = AvailabilitySet.PlatformFaultDomainCount
                     };
 
-                    if (this.ParameterSetName.Equals(ManagedParamterSetName))
+                    if (ParameterSetName.Equals(ManagedParamterSetName))
                     {
                         avSetParams.Sku = new Sku
                         {
@@ -80,13 +80,13 @@ namespace Microsoft.Azure.Commands.Compute
                     {
                         avSetParams.Sku = new Sku
                         {
-                            Name = this.Sku
+                            Name = Sku
                         };
                     }
 
-                    var result = this.AvailabilitySetClient.CreateOrUpdateWithHttpMessagesAsync(
-                        this.AvailabilitySet.ResourceGroupName,
-                        this.AvailabilitySet.Name,
+                    var result = AvailabilitySetClient.CreateOrUpdateWithHttpMessagesAsync(
+                        AvailabilitySet.ResourceGroupName,
+                        AvailabilitySet.Name,
                         avSetParams).GetAwaiter().GetResult();
 
                     var psResult = ComputeAutoMapperProfile.Mapper.Map<PSAvailabilitySet>(result);

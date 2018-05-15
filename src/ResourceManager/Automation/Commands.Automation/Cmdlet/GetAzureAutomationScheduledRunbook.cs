@@ -58,61 +58,61 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             IEnumerable<JobSchedule> jobSchedules = null;
 
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByJobScheduleId)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByJobScheduleId)
             {
                 jobSchedules = new List<JobSchedule>
                                 {
-                                    this.AutomationClient.GetJobSchedule(
-                                        this.ResourceGroupName, this.AutomationAccountName, this.JobScheduleId .Value)
+                                    AutomationClient.GetJobSchedule(
+                                        ResourceGroupName, AutomationAccountName, JobScheduleId .Value)
                                 };
-                this.GenerateCmdletOutput(jobSchedules);
+                GenerateCmdletOutput(jobSchedules);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByRunbookNameAndScheduleName)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByRunbookNameAndScheduleName)
             {
                 jobSchedules = new List<JobSchedule>
                                 {
-                                    this.AutomationClient.GetJobSchedule(
-                                        this.ResourceGroupName, this.AutomationAccountName, this.RunbookName, this.ScheduleName)
+                                    AutomationClient.GetJobSchedule(
+                                        ResourceGroupName, AutomationAccountName, RunbookName, ScheduleName)
                                 };
-                this.GenerateCmdletOutput(jobSchedules);
+                GenerateCmdletOutput(jobSchedules);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByRunbookName)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByRunbookName)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    var schedules = this.AutomationClient.ListJobSchedules(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
+                    var schedules = AutomationClient.ListJobSchedules(ResourceGroupName, AutomationAccountName, ref nextLink);
                     if (schedules != null)
                     {
-                        this.GenerateCmdletOutput(schedules.ToList().Where(js => String.Equals(js.RunbookName, this.RunbookName, StringComparison.OrdinalIgnoreCase)));
+                        GenerateCmdletOutput(schedules.ToList().Where(js => String.Equals(js.RunbookName, RunbookName, StringComparison.OrdinalIgnoreCase)));
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByScheduleName)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByScheduleName)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    var schedules = this.AutomationClient.ListJobSchedules(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
+                    var schedules = AutomationClient.ListJobSchedules(ResourceGroupName, AutomationAccountName, ref nextLink);
                     if (schedules != null)
                     {
-                        this.GenerateCmdletOutput(schedules.ToList().Where(js => String.Equals(js.ScheduleName, this.ScheduleName, StringComparison.OrdinalIgnoreCase)));
+                        GenerateCmdletOutput(schedules.ToList().Where(js => String.Equals(js.ScheduleName, ScheduleName, StringComparison.OrdinalIgnoreCase)));
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));
 
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByAll)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByAll)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    jobSchedules = this.AutomationClient.ListJobSchedules(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
-                    this.GenerateCmdletOutput(jobSchedules);
+                    jobSchedules = AutomationClient.ListJobSchedules(ResourceGroupName, AutomationAccountName, ref nextLink);
+                    GenerateCmdletOutput(jobSchedules);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

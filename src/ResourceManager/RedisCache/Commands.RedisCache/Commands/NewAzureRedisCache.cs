@@ -14,15 +14,15 @@
 
 namespace Microsoft.Azure.Commands.RedisCache
 {
-    using Microsoft.Azure.Commands.RedisCache.Models;
-    using Microsoft.Azure.Commands.RedisCache.Properties;
-    using Microsoft.Azure.Management.Redis.Models;
-    using Microsoft.Rest.Azure;
+    using Models;
+    using Properties;
+    using Management.Redis.Models;
+    using Rest.Azure;
     using ResourceManager.Common.ArgumentCompleters;
     using System;
     using System.Collections;
     using System.Management.Automation;
-    using SkuStrings = Microsoft.Azure.Management.Redis.Models.SkuName;
+    using SkuStrings = Management.Redis.Models.SkuName;
 
     [Cmdlet(VerbsCommon.New, "AzureRmRedisCache", SupportsShouldProcess = true), OutputType(typeof(RedisCacheAttributesWithAccessKeys))]
     public class NewAzureRedisCache : RedisCacheCmdletBase

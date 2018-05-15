@@ -15,7 +15,7 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
     using Common;
-    using Microsoft.WindowsAzure.Storage.File;
+    using WindowsAzure.Storage.File;
     using Model.Contract;
     using System;
     using System.Globalization;

@@ -41,10 +41,10 @@ namespace Microsoft.Azure.Commands.Insights.LogProfiles
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                target: string.Format("Remove a log profile: {0}", this.Name),
-                action: "Remove a log profile"))
+                string.Format("Remove a log profile: {0}", Name),
+                "Remove a log profile"))
             {
-                Rest.Azure.AzureOperationResponse result = this.MonitorManagementClient.LogProfiles.DeleteWithHttpMessagesAsync(logProfileName: this.Name, cancellationToken: CancellationToken.None).Result;
+                Rest.Azure.AzureOperationResponse result = MonitorManagementClient.LogProfiles.DeleteWithHttpMessagesAsync(Name, cancellationToken: CancellationToken.None).Result;
 
                 var response = new AzureOperationResponse
                 {
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Insights.LogProfiles
                     StatusCode = result.Response != null ? result.Response.StatusCode : HttpStatusCode.OK
                 };
 
-                if (this.PassThru)
+                if (PassThru)
                 {
                     WriteObject(response);
                 }

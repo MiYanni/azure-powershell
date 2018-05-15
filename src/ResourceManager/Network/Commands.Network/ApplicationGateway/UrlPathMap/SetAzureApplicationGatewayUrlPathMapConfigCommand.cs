@@ -31,20 +31,20 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var oldUrlPathMap = this.ApplicationGateway.UrlPathMaps.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var oldUrlPathMap = ApplicationGateway.UrlPathMaps.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (oldUrlPathMap == null)
             {
                 throw new ArgumentException("Url Path Map with the specified name does not exist");
             }
 
-            var newUrlPathMap = base.NewObject();
+            var newUrlPathMap = NewObject();
 
-            this.ApplicationGateway.UrlPathMaps.Remove(oldUrlPathMap);
-            this.ApplicationGateway.UrlPathMaps.Add(newUrlPathMap);
+            ApplicationGateway.UrlPathMaps.Remove(oldUrlPathMap);
+            ApplicationGateway.UrlPathMaps.Add(newUrlPathMap);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

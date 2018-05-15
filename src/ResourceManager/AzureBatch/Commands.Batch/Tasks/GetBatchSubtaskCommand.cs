@@ -42,16 +42,16 @@ namespace Microsoft.Azure.Commands.Batch
         [Parameter]
         public int MaxCount
         {
-            get { return this.maxCount; }
-            set { this.maxCount = value; }
+            get { return maxCount; }
+            set { maxCount = value; }
         }
 
         public override void ExecuteCmdlet()
         {
-            ListSubtaskOptions options = new ListSubtaskOptions(this.BatchContext, this.JobId,
-                this.TaskId, this.Task, this.AdditionalBehaviors)
+            ListSubtaskOptions options = new ListSubtaskOptions(BatchContext, JobId,
+                TaskId, Task, AdditionalBehaviors)
             {
-                MaxCount = this.MaxCount
+                MaxCount = MaxCount
             };
 
             foreach (PSSubtaskInformation subtask in BatchClient.ListSubtasks(options))

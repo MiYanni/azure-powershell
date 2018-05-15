@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskIdRange
     {
         
-        internal Microsoft.Azure.Batch.TaskIdRange omObject;
+        internal TaskIdRange omObject;
         
         public PSTaskIdRange(int start, int end)
         {
-            this.omObject = new Microsoft.Azure.Batch.TaskIdRange(start, end);
+            omObject = new TaskIdRange(start, end);
         }
         
-        internal PSTaskIdRange(Microsoft.Azure.Batch.TaskIdRange omObject)
+        internal PSTaskIdRange(TaskIdRange omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.End;
+                return omObject.End;
             }
         }
         
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Start;
+                return omObject.Start;
             }
         }
     }

@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Profile.Context
                     ModifyContext((profile, client) =>
                     {
                         ContextAutosaveSettings settings = null;
-                        AzureSession.Modify((session) => DisableAutosave(session, false, out settings));
+                        AzureSession.Modify(session => DisableAutosave(session, false, out settings));
                         ResourceManagerProfileProvider.InitializeResourceManagerProfile(true);
                         AzureRmProfileProvider.Instance.Profile = profile;
                         WriteObject(settings);
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.Profile.Context
                         ModifyContext((profile, client) =>
                         {
                             ContextAutosaveSettings settings = null;
-                            AzureSession.Modify((session) => DisableAutosave(session, true, out settings));
+                            AzureSession.Modify(session => DisableAutosave(session, true, out settings));
                             ResourceManagerProfileProvider.InitializeResourceManagerProfile(true);
                             AzureRmProfileProvider.Instance.Profile = profile;
                             WriteObject(settings);

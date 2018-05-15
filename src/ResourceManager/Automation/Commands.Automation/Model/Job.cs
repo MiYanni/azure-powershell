@@ -37,29 +37,29 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// </param>
         /// <exception cref="System.ArgumentException">
         /// </exception>
-        public Job(string resourceGroupName, string accountName, Azure.Management.Automation.Models.Job job)
+        public Job(string resourceGroupName, string accountName, Management.Automation.Models.Job job)
         {
             Requires.Argument("job", job).NotNull();
             Requires.Argument("accountName", accountName).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = accountName;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = accountName;
 
             if (job.Properties == null) return;
 
-            this.JobId = job.Properties.JobId;
-            this.CreationTime = job.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = job.Properties.LastModifiedTime.ToLocalTime();
-            this.StartTime = job.Properties.StartTime.HasValue ? job.Properties.StartTime.Value.ToLocalTime() : (DateTimeOffset?)null;
-            this.Status = job.Properties.Status;
-            this.StatusDetails = job.Properties.StatusDetails;
-            this.RunbookName = job.Properties.Runbook.Name;
-            this.Exception = job.Properties.Exception;
-            this.EndTime = job.Properties.EndTime.HasValue ? job.Properties.EndTime.Value.ToLocalTime() : (DateTimeOffset?)null;
-            this.LastStatusModifiedTime = job.Properties.LastStatusModifiedTime;
-            this.HybridWorker = job.Properties.RunOn;
-            this.StartedBy = job.Properties.StartedBy;
-            this.JobParameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            JobId = job.Properties.JobId;
+            CreationTime = job.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = job.Properties.LastModifiedTime.ToLocalTime();
+            StartTime = job.Properties.StartTime.HasValue ? job.Properties.StartTime.Value.ToLocalTime() : (DateTimeOffset?)null;
+            Status = job.Properties.Status;
+            StatusDetails = job.Properties.StatusDetails;
+            RunbookName = job.Properties.Runbook.Name;
+            Exception = job.Properties.Exception;
+            EndTime = job.Properties.EndTime.HasValue ? job.Properties.EndTime.Value.ToLocalTime() : (DateTimeOffset?)null;
+            LastStatusModifiedTime = job.Properties.LastStatusModifiedTime;
+            HybridWorker = job.Properties.RunOn;
+            StartedBy = job.Properties.StartedBy;
+            JobParameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in job.Properties.Parameters)
             {
                 if (0 != String.Compare(kvp.Key, Constants.JobStartedByParameterName, CultureInfo.InvariantCulture, CompareOptions.IgnoreCase) &&
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Automation.Model
                     object paramValue;
                     try
                     {
-                        paramValue = ((object)PowerShellJsonConverter.Deserialize(kvp.Value));
+                        paramValue = PowerShellJsonConverter.Deserialize(kvp.Value);
                     }
                     catch (CmdletInvocationException exception)
                     {
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.Automation.Model
 
                         paramValue = kvp.Value;
                     }
-                    this.JobParameters.Add(kvp.Key, paramValue);
+                    JobParameters.Add(kvp.Key, paramValue);
 
                 }
             }

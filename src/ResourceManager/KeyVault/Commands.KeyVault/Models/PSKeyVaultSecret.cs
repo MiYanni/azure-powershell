@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             Created = secret.Attributes.Created;
             Updated = secret.Attributes.Updated;
             ContentType = secret.ContentType;
-            Tags = (secret.Tags == null) ? null : secret.Tags.ConvertToHashtable();
+            Tags = secret.Tags == null ? null : secret.Tags.ConvertToHashtable();
         }
 
         public SecureString SecretValue { get; set; }

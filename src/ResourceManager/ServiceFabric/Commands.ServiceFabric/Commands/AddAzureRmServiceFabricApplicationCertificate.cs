@@ -30,20 +30,20 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         {
             base.ExecuteCmdlet();
 
-            var certInformations = base.GetOrCreateCertificateInformation();
+            var certInformations = GetOrCreateCertificateInformation();
 
             var certInformation = certInformations[0];
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Add application certificate")))
+            if (ShouldProcess(Name, string.Format("Add application certificate")))
             {
                 var allTasks = new List<Task>();
-                var vmssPages = this.ComputeClient.VirtualMachineScaleSets.List(this.ResourceGroupName);
+                var vmssPages = ComputeClient.VirtualMachineScaleSets.List(ResourceGroupName);
 
                 if (vmssPages == null || !vmssPages.Any())
                 {
                     throw new PSArgumentException(string.Format(
                         ServiceFabricProperties.Resources.NoneNodeTypeFound,
-                        this.ResourceGroupName));
+                        ResourceGroupName));
                 }
 
                 do
@@ -56,12 +56,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                     allTasks.AddRange(vmssPages.Select(vmss => AddCertToVmssTask(vmss, certInformation)));
 
                 } while (!string.IsNullOrEmpty(vmssPages.NextPageLink) &&
-                         (vmssPages = this.ComputeClient.VirtualMachineScaleSets.ListNext(vmssPages.NextPageLink)) != null);
+                         (vmssPages = ComputeClient.VirtualMachineScaleSets.ListNext(vmssPages.NextPageLink)) != null);
 
                 WriteClusterAndVmssVerboseWhenUpdate(allTasks, false);
             }
 
-            WriteObject(new PSKeyVault()
+            WriteObject(new PSKeyVault
             {
                 KeyVaultName = certInformation.KeyVault.Name,
                 KeyVaultId = certInformation.KeyVault.Id,

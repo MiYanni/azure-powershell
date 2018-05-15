@@ -14,10 +14,10 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Operations;
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
+    using Components;
+    using Entities.Operations;
+    using Commands.Common.Authentication.Abstractions;
+    using Common;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Linq;
@@ -42,10 +42,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
         /// </summary>
         /// <param name="endpointUri">The endpoint that this client will communicate with.</param>
         /// <param name="httpClientHelper">The azure http client wrapper to use.</param>
-        public ResourceManagerRestRestClient(Uri endpointUri, Components.HttpClientHelper httpClientHelper)
-            : base(httpClientHelper: httpClientHelper)
+        public ResourceManagerRestRestClient(Uri endpointUri, HttpClientHelper httpClientHelper)
+            : base(httpClientHelper)
         {
-            this.EndpointUri = endpointUri;
+            EndpointUri = endpointUri;
         }
 
         /// <summary>
@@ -61,15 +61,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             CancellationToken cancellationToken,
             string odataQuery = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceCollectionId,
-                apiVersion: apiVersion,
+            var requestUri = GetResourceManagementRequestUri(
+                resourceCollectionId,
+                apiVersion,
                 odataQuery: odataQuery);
 
-            return this.SendRequestAsync<ResponseWithContinuation<TType[]>>(
-                httpMethod: HttpMethod.Get,
-                requestUri: requestUri,
-                cancellationToken: cancellationToken);
+            return SendRequestAsync<ResponseWithContinuation<TType[]>>(
+                HttpMethod.Get,
+                requestUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -85,17 +85,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             int? top = null,
             string filter = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: string.Empty,
+            var requestUri = GetResourceManagementRequestUri(
+                string.Empty,
                 action: "resources",
                 top: top == null ? null : string.Format("$top={0}", top.Value),
                 odataQuery: string.IsNullOrWhiteSpace(filter) ? null : string.Format("$filter={0}", filter),
                 apiVersion: apiVersion);
 
-            return this.SendRequestAsync<ResponseWithContinuation<TType[]>>(
-                httpMethod: HttpMethod.Get,
-                requestUri: requestUri,
-                cancellationToken: cancellationToken);
+            return SendRequestAsync<ResponseWithContinuation<TType[]>>(
+                HttpMethod.Get,
+                requestUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -114,22 +114,22 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             string filter = null)
         {
             var resourceId = ResourceIdUtility.GetResourceId(
-                subscriptionId: subscriptionId,
-                resourceGroupName: null,
-                resourceType: null,
-                resourceName: null);
+                subscriptionId,
+                null,
+                null,
+                null);
 
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
                 action: "resources",
                 top: top == null ? null : string.Format("$top={0}", top.Value),
                 odataQuery: string.IsNullOrWhiteSpace(filter) ? null : string.Format("$filter={0}", filter),
                 apiVersion: apiVersion);
 
-            return this.SendRequestAsync<ResponseWithContinuation<TType[]>>(
-                httpMethod: HttpMethod.Get,
-                requestUri: requestUri,
-                cancellationToken: cancellationToken);
+            return SendRequestAsync<ResponseWithContinuation<TType[]>>(
+                HttpMethod.Get,
+                requestUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -150,22 +150,22 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             string filter = null)
         {
             var resourceId = ResourceIdUtility.GetResourceId(
-                subscriptionId: subscriptionId,
-                resourceGroupName: resourceGroupName,
-                resourceType: null,
-                resourceName: null);
+                subscriptionId,
+                resourceGroupName,
+                null,
+                null);
 
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
                 action: "resources",
                 top: top == null ? null : string.Format("$top={0}", top.Value),
                 odataQuery: string.IsNullOrWhiteSpace(filter) ? null : string.Format("$filter={0}", filter),
                 apiVersion: apiVersion);
 
-            return this.SendRequestAsync<ResponseWithContinuation<TType[]>>(
-                httpMethod: HttpMethod.Get,
-                requestUri: requestUri,
-                cancellationToken: cancellationToken);
+            return SendRequestAsync<ResponseWithContinuation<TType[]>>(
+                HttpMethod.Get,
+                requestUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -179,10 +179,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
         {
             var requestUri = new Uri(nextLink);
 
-            return this.SendRequestAsync<ResponseWithContinuation<TType[]>>(
-                httpMethod: HttpMethod.Get,
-                requestUri: requestUri,
-                cancellationToken: cancellationToken);
+            return SendRequestAsync<ResponseWithContinuation<TType[]>>(
+                HttpMethod.Get,
+                requestUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -198,17 +198,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             CancellationToken cancellationToken,
             string odataQuery = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
-                apiVersion: apiVersion,
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
+                apiVersion,
                 odataQuery: odataQuery);
 
-            var responseMessage = await this
-                .SendRequestAsync(
-                    httpMethod: HttpMethod.Head,
-                    requestUri: requestUri,
-                    cancellationToken: cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false);
+            var responseMessage = await SendRequestAsync(
+                    HttpMethod.Head,
+                    requestUri,
+                    cancellationToken)
+                .ConfigureAwait(false);
 
             return responseMessage.StatusCode;
         }
@@ -226,15 +225,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             CancellationToken cancellationToken,
             string odataQuery = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
-                apiVersion: apiVersion,
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
+                apiVersion,
                 odataQuery: odataQuery);
 
-            return this.SendRequestAsync<TType>(
-                httpMethod: HttpMethod.Get,
-                requestUri: requestUri,
-                cancellationToken: cancellationToken);
+            return SendRequestAsync<TType>(
+                HttpMethod.Get,
+                requestUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -246,10 +245,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             Uri operationUri,
             CancellationToken cancellationToken)
         {
-            return this.PerformOperationAsync(
-                httpMethod: HttpMethod.Get,
-                requestUri: operationUri,
-                cancellationToken: cancellationToken);
+            return PerformOperationAsync(
+                HttpMethod.Get,
+                operationUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -261,10 +260,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             Uri operationUri,
             CancellationToken cancellationToken)
         {
-            return this.SendRequestAsync<AzureAsyncOperationResource>(
-                 httpMethod: HttpMethod.Get,
-                 requestUri: operationUri,
-                 cancellationToken: cancellationToken);
+            return SendRequestAsync<AzureAsyncOperationResource>(
+                 HttpMethod.Get,
+                 operationUri,
+                 cancellationToken);
         }
 
         /// <summary>
@@ -276,10 +275,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             Uri operationUri,
             CancellationToken cancellationToken)
         {
-            return this.PerformOperationAsync(
-                httpMethod: HttpMethod.Get,
-                requestUri: operationUri,
-                cancellationToken: cancellationToken);
+            return PerformOperationAsync(
+                HttpMethod.Get,
+                operationUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -297,16 +296,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             CancellationToken cancellationToken,
             string odataQuery = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
-                apiVersion: apiVersion,
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
+                apiVersion,
                 odataQuery: odataQuery);
 
-            return this.PerformOperationAsync(
-                httpMethod: HttpMethod.Put,
-                requestUri: requestUri,
-                content: resource,
-                cancellationToken: cancellationToken);
+            return PerformOperationAsync(
+                HttpMethod.Put,
+                requestUri,
+                resource,
+                cancellationToken);
         }
 
         /// <summary>
@@ -324,16 +323,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             CancellationToken cancellationToken,
             string odataQuery = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
-                apiVersion: apiVersion,
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
+                apiVersion,
                 odataQuery: odataQuery);
 
-            return this.PerformOperationAsync(
-                httpMethod: HttpMethodExt.Patch,
-                requestUri: requestUri,
-                content: resource,
-                cancellationToken: cancellationToken);
+            return PerformOperationAsync(
+                HttpMethodExt.Patch,
+                requestUri,
+                resource,
+                cancellationToken);
         }
 
         /// <summary>
@@ -349,15 +348,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             CancellationToken cancellationToken,
             string odataQuery = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
-                apiVersion: apiVersion,
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
+                apiVersion,
                 odataQuery: odataQuery);
 
-            return this.PerformOperationAsync(
-                httpMethod: HttpMethod.Delete,
-                requestUri: requestUri,
-                cancellationToken: cancellationToken);
+            return PerformOperationAsync(
+                HttpMethod.Delete,
+                requestUri,
+                cancellationToken);
         }
 
         /// <summary>
@@ -377,17 +376,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             string odataQuery = null,
             JObject parameters = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
-                apiVersion: apiVersion,
-                action: action,
-                odataQuery: odataQuery);
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
+                apiVersion,
+                action,
+                odataQuery);
 
-            return this.PerformOperationAsync(
-                httpMethod: HttpMethod.Post,
-                requestUri: requestUri,
-                content: parameters,
-                cancellationToken: cancellationToken);
+            return PerformOperationAsync(
+                HttpMethod.Post,
+                requestUri,
+                parameters,
+                cancellationToken);
         }
 
         /// <summary>
@@ -408,17 +407,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             string odataQuery = null,
             JToken parameters = null)
         {
-            var requestUri = this.GetResourceManagementRequestUri(
-                resourceId: resourceId,
-                apiVersion: apiVersion,
-                action: action,
-                odataQuery: odataQuery);
+            var requestUri = GetResourceManagementRequestUri(
+                resourceId,
+                apiVersion,
+                action,
+                odataQuery);
 
-            return this.PerformOperationAsync(
-                httpMethod: HttpMethod.Post,
-                requestUri: requestUri,
-                content: parameters,
-                cancellationToken: cancellationToken);
+            return PerformOperationAsync(
+                HttpMethod.Post,
+                requestUri,
+                parameters,
+                cancellationToken);
         }
 
         /// <summary>
@@ -458,7 +457,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
                 .Select(character => char.IsWhiteSpace(character) ? "%20" : character.ToString())
                 .ConcatStrings();
 
-            return new Uri(baseUri: this.EndpointUri, relativeUri: relativeUri);
+            return new Uri(EndpointUri, relativeUri);
         }
     }
 }

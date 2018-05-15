@@ -44,13 +44,13 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// </exception>
         public JobStreamRecord(AutomationManagement.Models.JobStream jobStream, string resourceGroupName, string automationAccountName, Guid jobId) : base(jobStream, resourceGroupName, automationAccountName, jobId)
         {
-            this.Value = new Hashtable();
+            Value = new Hashtable();
             foreach (var kvp in jobStream.Properties.Value)
             {
                 object paramValue;
                 try
                 {
-                    paramValue = ((object)PowerShellJsonConverter.Deserialize(kvp.Value.ToString()));
+                    paramValue = PowerShellJsonConverter.Deserialize(kvp.Value.ToString());
                 }
                 catch (CmdletInvocationException exception)
                 {
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.Automation.Model
 
                     paramValue = kvp.Value;
                 }
-                this.Value.Add(kvp.Key, paramValue);
+                Value.Add(kvp.Key, paramValue);
             }
         }
 

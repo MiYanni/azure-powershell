@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Management.Internal.Network.Common
         public async Task<string> GeneratevpnclientpackageAsync(string resourceGroupName, string virtualNetworkGatewayName, VpnClientParameters parameters,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            AzureOperationResponse<string> result = await this.GeneratevpnclientpackageWithHttpMessagesAsync(resourceGroupName, virtualNetworkGatewayName,
+            AzureOperationResponse<string> result = await GeneratevpnclientpackageWithHttpMessagesAsync(resourceGroupName, virtualNetworkGatewayName,
                 parameters, null, cancellationToken).ConfigureAwait(false);
             return result.Body;
         }
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Management.Internal.Network.Common
             // Send Request
             cancellationToken.ThrowIfCancellationRequested();
 
-            var client = this.NetworkManagementClient as NetworkManagementClient;
+            var client = NetworkManagementClient as NetworkManagementClient;
             HttpClient httpClient = client.HttpClient;
             HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
@@ -206,11 +206,8 @@ namespace Microsoft.Azure.Management.Internal.Network.Common
                         throw new Exception(string.Format("Get-AzureRmVpnClientPackage Operation returned an invalid status code '{0}' with Exception:{1} while retrieving " +
                             "the Vpnclient PackageUrl!", newHttpResponse.StatusCode, string.IsNullOrEmpty(newResponseContent) ? "NotAvailable" : newResponseContent));
                     }
-                    else
-                    {
-                        // Wait for 15 seconds before retrying
-                        Microsoft.WindowsAzure.Commands.Utilities.Common.TestMockSupport.Delay(15000);
-                    }
+                    // Wait for 15 seconds before retrying
+                    WindowsAzure.Commands.Utilities.Common.TestMockSupport.Delay(15000);
                 }
                 else
                 {

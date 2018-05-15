@@ -26,64 +26,64 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSContainerConfiguration
     {
         
-        internal Microsoft.Azure.Batch.ContainerConfiguration omObject;
+        internal ContainerConfiguration omObject;
         
-        private IList<System.String> containerImageNames;
+        private IList<String> containerImageNames;
         
         private IList<PSContainerRegistry> containerRegistries;
         
         public PSContainerConfiguration()
         {
-            this.omObject = new Microsoft.Azure.Batch.ContainerConfiguration();
+            omObject = new ContainerConfiguration();
         }
         
-        internal PSContainerConfiguration(Microsoft.Azure.Batch.ContainerConfiguration omObject)
+        internal PSContainerConfiguration(ContainerConfiguration omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public IList<System.String> ContainerImageNames
+        public IList<String> ContainerImageNames
         {
             get
             {
-                if (((this.containerImageNames == null) 
-                            && (this.omObject.ContainerImageNames != null)))
+                if (containerImageNames == null 
+                    && omObject.ContainerImageNames != null)
                 {
-                    List<System.String> list;
-                    list = new List<System.String>();
-                    IEnumerator<System.String> enumerator;
-                    enumerator = this.omObject.ContainerImageNames.GetEnumerator();
+                    List<String> list;
+                    list = new List<String>();
+                    IEnumerator<String> enumerator;
+                    enumerator = omObject.ContainerImageNames.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(enumerator.Current);
                     }
-                    this.containerImageNames = list;
+                    containerImageNames = list;
                 }
-                return this.containerImageNames;
+                return containerImageNames;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.ContainerImageNames = null;
+                    omObject.ContainerImageNames = null;
                 }
                 else
                 {
-                    this.omObject.ContainerImageNames = new List<System.String>();
+                    omObject.ContainerImageNames = new List<String>();
                 }
-                this.containerImageNames = value;
+                containerImageNames = value;
             }
         }
         
@@ -91,34 +91,34 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.containerRegistries == null) 
-                            && (this.omObject.ContainerRegistries != null)))
+                if (containerRegistries == null 
+                    && omObject.ContainerRegistries != null)
                 {
                     List<PSContainerRegistry> list;
                     list = new List<PSContainerRegistry>();
-                    IEnumerator<Microsoft.Azure.Batch.ContainerRegistry> enumerator;
-                    enumerator = this.omObject.ContainerRegistries.GetEnumerator();
+                    IEnumerator<ContainerRegistry> enumerator;
+                    enumerator = omObject.ContainerRegistries.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSContainerRegistry(enumerator.Current));
                     }
-                    this.containerRegistries = list;
+                    containerRegistries = list;
                 }
-                return this.containerRegistries;
+                return containerRegistries;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.ContainerRegistries = null;
+                    omObject.ContainerRegistries = null;
                 }
                 else
                 {
-                    this.omObject.ContainerRegistries = new List<Microsoft.Azure.Batch.ContainerRegistry>();
+                    omObject.ContainerRegistries = new List<ContainerRegistry>();
                 }
-                this.containerRegistries = value;
+                containerRegistries = value;
             }
         }
     }

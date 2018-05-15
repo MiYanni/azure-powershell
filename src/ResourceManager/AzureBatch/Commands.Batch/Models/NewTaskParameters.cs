@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("taskId");
             }
 
-            this.TaskId = taskId;
+            TaskId = taskId;
         }
 
         /// <summary>

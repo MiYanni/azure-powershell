@@ -71,39 +71,39 @@ namespace Microsoft.Azure.Commands.Dns
         {
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
 
-            if (this.Name.EndsWith("."))
+            if (Name.EndsWith("."))
             {
-                this.Name = this.Name.TrimEnd('.');
-                this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", this.Name));
+                Name = Name.TrimEnd('.');
+                WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", Name));
             }
 
             ConfirmAction(
                 ProjectResources.Progress_CreatingNewZone,
-                this.Name,
+                Name,
                 () =>
                 {
-                    ZoneType zoneType = this.ZoneType != null ? this.ZoneType.Value : Management.Dns.Models.ZoneType.Public;
+                    ZoneType zoneType = ZoneType != null ? ZoneType.Value : Management.Dns.Models.ZoneType.Public;
 
-                    List<string> registrationVirtualNetworkIds = this.RegistrationVirtualNetworkId;
-                    List<string> resolutionVirtualNetworkIds = this.ResolutionVirtualNetworkId;
-                    if (this.ParameterSetName == ObjectsParameterSetName)
+                    List<string> registrationVirtualNetworkIds = RegistrationVirtualNetworkId;
+                    List<string> resolutionVirtualNetworkIds = ResolutionVirtualNetworkId;
+                    if (ParameterSetName == ObjectsParameterSetName)
                     {
-                        registrationVirtualNetworkIds = this.RegistrationVirtualNetwork?.Select(virtualNetwork => virtualNetwork.Id).ToList();
-                        resolutionVirtualNetworkIds = this.ResolutionVirtualNetwork?.Select(virtualNetwork => virtualNetwork.Id).ToList();
+                        registrationVirtualNetworkIds = RegistrationVirtualNetwork?.Select(virtualNetwork => virtualNetwork.Id).ToList();
+                        resolutionVirtualNetworkIds = ResolutionVirtualNetwork?.Select(virtualNetwork => virtualNetwork.Id).ToList();
                     }
 
-                    DnsZone result = this.DnsClient.CreateDnsZone(
-                        this.Name,
-                        this.ResourceGroupName,
-                        this.Tag,
+                    DnsZone result = DnsClient.CreateDnsZone(
+                        Name,
+                        ResourceGroupName,
+                        Tag,
                         zoneType,
                         registrationVirtualNetworkIds,
                         resolutionVirtualNetworkIds);
-                    this.WriteVerbose(ProjectResources.Success);
-                    this.WriteVerbose(zoneType == Management.Dns.Models.ZoneType.Private
-                        ? string.Format(ProjectResources.Success_NewPrivateZone, this.Name, this.ResourceGroupName)
-                        : string.Format(ProjectResources.Success_NewZone, this.Name, this.ResourceGroupName));
-                    this.WriteObject(result);
+                    WriteVerbose(ProjectResources.Success);
+                    WriteVerbose(zoneType == Management.Dns.Models.ZoneType.Private
+                        ? string.Format(ProjectResources.Success_NewPrivateZone, Name, ResourceGroupName)
+                        : string.Format(ProjectResources.Success_NewZone, Name, ResourceGroupName));
+                    WriteObject(result);
                 });
         }
     }

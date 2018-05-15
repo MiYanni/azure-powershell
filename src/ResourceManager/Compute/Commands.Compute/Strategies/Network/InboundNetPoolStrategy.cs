@@ -21,11 +21,11 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
     {
         public static NestedResourceStrategy<InboundNatPool, LoadBalancer> Strategy { get; }
             = NestedResourceStrategy.Create<InboundNatPool, LoadBalancer>(
-                provider: "inboundNatPools",
-                getList: b => b.InboundNatPools,
-                setList: (b, list) => b.InboundNatPools = list,
-                getName: p => p.Name,
-                setName: (p, name) => p.Name = name);
+                "inboundNatPools",
+                b => b.InboundNatPools,
+                (b, list) => b.InboundNatPools = list,
+                p => p.Name,
+                (p, name) => p.Name = name);
 
         public static NestedResourceConfig<InboundNatPool, LoadBalancer> CreateInboundNatPool(
             this ResourceConfig<LoadBalancer> loadBalancer,

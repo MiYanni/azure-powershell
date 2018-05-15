@@ -23,7 +23,7 @@ using Microsoft.Azure.Commands.ResourceManager.Common;
 namespace Microsoft.Azure.Commands.Profile.Errors
 {
     [Alias("Resolve-Error")]
-    [Cmdlet(VerbsDiagnostic.Resolve, "AzureRmError", DefaultParameterSetName = ResolveError.AnyErrorParameterSet)]
+    [Cmdlet(VerbsDiagnostic.Resolve, "AzureRmError", DefaultParameterSetName = AnyErrorParameterSet)]
     [OutputType(typeof(AzureErrorRecord))]
     [OutputType(typeof(AzureExceptionRecord))]
     [OutputType(typeof(AzureRestExceptionRecord))]
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Profile.Errors
                         var error = errors.FirstOrDefault();
                         if (error != null)
                         {
-                            records = new ErrorRecord[] { error };
+                            records = new[] { error };
                         }
                     }
                     break;
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.Profile.Errors
             {
                 foreach (var error in records)
                 {
-                    ErrorRecord record = error as ErrorRecord;
+                    ErrorRecord record = error;
                     HandleError(record);
                 }
             }
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Commands.Profile.Errors
         {
             var aggregate = exception as AggregateException;
             var hyakException = exception as Hyak.Common.CloudException;
-            var restException = exception as Microsoft.Rest.Azure.CloudException;
+            var restException = exception as Rest.Azure.CloudException;
             if (aggregate != null)
             {
                 foreach (var innerException in aggregate.InnerExceptions.Where(e => e!=null))

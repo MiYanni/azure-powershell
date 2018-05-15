@@ -53,11 +53,11 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("DatabaseName"))
             {
                 results = new List<AzureSqlDatabaseModel>();
-                results.Add(ModelAdapter.GetElasticPoolDatabase(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.DatabaseName));
+                results.Add(ModelAdapter.GetElasticPoolDatabase(ResourceGroupName, ServerName, ElasticPoolName, DatabaseName));
             }
             else
             {
-                results = ModelAdapter.ListElasticPoolDatabases(this.ResourceGroupName, this.ServerName, this.ElasticPoolName);
+                results = ModelAdapter.ListElasticPoolDatabases(ResourceGroupName, ServerName, ElasticPoolName);
             }
 
             return results;

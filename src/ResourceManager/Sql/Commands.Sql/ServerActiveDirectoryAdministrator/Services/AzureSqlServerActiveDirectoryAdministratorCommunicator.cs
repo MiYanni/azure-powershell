@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Servic
         /// <summary>
         /// Gets the Azure SQL Server Active Directory administrator
         /// </summary>
-        public Management.Sql.LegacySdk.Models.ServerAdministrator Get(string resourceGroupName, string serverName)
+        public ServerAdministrator Get(string resourceGroupName, string serverName)
         {
             return GetCurrentSqlClient().ServerAdministrators.Get(resourceGroupName, serverName, ActiveDirectoryDefaultName).Administrator;
         }
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Servic
         /// <summary>
         /// Lists Azure SQL Server Active Directory administrators
         /// </summary>
-        public IList<Management.Sql.LegacySdk.Models.ServerAdministrator> List(string resourceGroupName, string serverName)
+        public IList<ServerAdministrator> List(string resourceGroupName, string serverName)
         {
             return GetCurrentSqlClient().ServerAdministrators.List(resourceGroupName, serverName).Administrators;
         }
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Servic
         /// <summary>
         /// Creates or updates a Azure SQL Server Active Directory Administrator
         /// </summary>
-        public Management.Sql.LegacySdk.Models.ServerAdministrator CreateOrUpdate(string resourceGroupName, string serverName, ServerAdministratorCreateOrUpdateParameters parameters)
+        public ServerAdministrator CreateOrUpdate(string resourceGroupName, string serverName, ServerAdministratorCreateOrUpdateParameters parameters)
         {
             // Always set the type to active directory
             parameters.Properties.AdministratorType = ActiveDirectoryDefaultType;

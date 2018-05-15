@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var existingbackendAddressPool = this.LoadBalancer.BackendAddressPools.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var existingbackendAddressPool = LoadBalancer.BackendAddressPools.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (existingbackendAddressPool != null)
             {
@@ -46,19 +46,19 @@ namespace Microsoft.Azure.Commands.Network
             }
 
             var backendAddressPool = new PSBackendAddressPool();
-            backendAddressPool.Name = this.Name;
+            backendAddressPool.Name = Name;
 
             backendAddressPool.Id =
                 ChildResourceHelper.GetResourceId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    this.LoadBalancer.ResourceGroupName,
-                    this.LoadBalancer.Name,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerBackendAddressPoolName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    LoadBalancer.ResourceGroupName,
+                    LoadBalancer.Name,
+                    Properties.Resources.LoadBalancerBackendAddressPoolName,
+                    Name);
 
-            this.LoadBalancer.BackendAddressPools.Add(backendAddressPool);
+            LoadBalancer.BackendAddressPools.Add(backendAddressPool);
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

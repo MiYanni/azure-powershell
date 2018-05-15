@@ -18,7 +18,7 @@ using System.Collections;
 
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The automation account.
@@ -41,31 +41,31 @@ namespace Microsoft.Azure.Commands.Automation.Model
 
             if (!string.IsNullOrEmpty(resourceGroupName))
             {
-                this.ResourceGroupName = resourceGroupName;
+                ResourceGroupName = resourceGroupName;
             }
             else
             {
-                this.ResourceGroupName = automationAccount.Id.Substring(1).Split(Convert.ToChar("/"))[3];
+                ResourceGroupName = automationAccount.Id.Substring(1).Split(Convert.ToChar("/"))[3];
             }
 
-            this.SubscriptionId = automationAccount.Id.Substring(1).Split(Convert.ToChar("/"))[1];
+            SubscriptionId = automationAccount.Id.Substring(1).Split(Convert.ToChar("/"))[1];
 
-            this.AutomationAccountName = automationAccount.Name;
-            this.Location = automationAccount.Location;
+            AutomationAccountName = automationAccount.Name;
+            Location = automationAccount.Location;
 
-            this.Tags = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            Tags = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in automationAccount.Tags)
             {
-                this.Tags.Add(kvp.Key, kvp.Value);
+                Tags.Add(kvp.Key, kvp.Value);
             }
 
             if (automationAccount.Properties == null) return;
 
-            this.Plan = automationAccount.Properties.Sku != null ? automationAccount.Properties.Sku.Name : null;
-            this.CreationTime = automationAccount.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = automationAccount.Properties.LastModifiedTime.ToLocalTime();
-            this.State = automationAccount.Properties.State;
-            this.LastModifiedBy = automationAccount.Properties.LastModifiedBy;
+            Plan = automationAccount.Properties.Sku != null ? automationAccount.Properties.Sku.Name : null;
+            CreationTime = automationAccount.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = automationAccount.Properties.LastModifiedTime.ToLocalTime();
+            State = automationAccount.Properties.State;
+            LastModifiedBy = automationAccount.Properties.LastModifiedBy;
         }
 
         /// <summary>

@@ -23,17 +23,17 @@ namespace Microsoft.Azure.Commands.Network
     {
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess("AzureApplicationGatewayWebApplicationFirewallConfiguration", Microsoft.Azure.Commands.Network.Properties.Resources.CreatingResourceMessage))
+            if (ShouldProcess("AzureApplicationGatewayWebApplicationFirewallConfiguration", Properties.Resources.CreatingResourceMessage))
             {
                 base.ExecuteCmdlet();
 
-                PSApplicationGatewayWebApplicationFirewallConfiguration firewallConfiguration = new PSApplicationGatewayWebApplicationFirewallConfiguration()
+                PSApplicationGatewayWebApplicationFirewallConfiguration firewallConfiguration = new PSApplicationGatewayWebApplicationFirewallConfiguration
                 {
-                    Enabled = this.Enabled,
-                    FirewallMode = this.FirewallMode,
-                    RuleSetType = this.RuleSetType,
-                    RuleSetVersion = this.RuleSetVersion,
-                    DisabledRuleGroups = this.DisabledRuleGroups
+                    Enabled = Enabled,
+                    FirewallMode = FirewallMode,
+                    RuleSetType = RuleSetType,
+                    RuleSetVersion = RuleSetVersion,
+                    DisabledRuleGroups = DisabledRuleGroups
                 };
 
                 WriteObject(firewallConfiguration);

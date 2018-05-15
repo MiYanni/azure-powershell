@@ -43,10 +43,10 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            NewCertificateParameters parameters = new NewCertificateParameters(this.BatchContext, this.FilePath, this.RawData,
-                this.AdditionalBehaviors)
+            NewCertificateParameters parameters = new NewCertificateParameters(BatchContext, FilePath, RawData,
+                AdditionalBehaviors)
             {
-                Password = this.Password?.ConvertToString()
+                Password = Password?.ConvertToString()
             };
 
             BatchClient.AddCertificate(parameters);

@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, HelpMessage = "Forces the command to run without asking for user confirmation and overwrites an existing metaconfiguration with same name.")]
         public SwitchParameter Force
         {
-            get { return this.overwriteExistingFile; }
-            set { this.overwriteExistingFile = value; }
+            get { return overwriteExistingFile; }
+            set { overwriteExistingFile = value; }
         }
 
         /// <summary>
@@ -60,15 +60,15 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(CultureInfo.CurrentCulture, Resources.DscMetaMofHasKeysWarning),
                 string.Format(CultureInfo.CurrentCulture, Resources.DscMetaMofHasKeysDescription),
-                this.OutputFolder,
+                OutputFolder,
                 () =>
                 {
-                    var ret = this.AutomationClient.GetDscMetaConfig(this.ResourceGroupName, this.AutomationAccountName, this.OutputFolder, this.ComputerName, this.Force);
-                    this.WriteObject(ret, true);
+                    var ret = AutomationClient.GetDscMetaConfig(ResourceGroupName, AutomationAccountName, OutputFolder, ComputerName, Force);
+                    WriteObject(ret, true);
                 });
         }
     }

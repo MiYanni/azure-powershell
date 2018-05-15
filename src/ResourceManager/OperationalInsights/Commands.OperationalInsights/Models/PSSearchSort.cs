@@ -26,8 +26,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (sort != null)
             {
-                this.Name = sort.Name;
-                this.Order = sort.Order;
+                Name = sort.Name;
+                Order = sort.Order;
             }
         }
         public string Name { get; set; }

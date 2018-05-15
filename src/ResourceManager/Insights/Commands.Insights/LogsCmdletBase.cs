@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.Insights
         protected virtual void SetMaxEventsIfPresent(string currentQueryFilter, int value)
         {
             // If value is not acceptable this forces the use of the default value
-            this.MaxRecords = (value > 0 && value <= 100000) ? value : 0;
+            MaxRecords = value > 0 && value <= 100000 ? value : 0;
         }
 
         /// <summary>
@@ -120,10 +120,10 @@ namespace Microsoft.Azure.Commands.Insights
             var currentDateTime = DateTime.Now;
 
             // EndTime is optional.
-            DateTime endTime = this.EndTime ?? currentDateTime.AddDays(1).Date;
+            DateTime endTime = EndTime ?? currentDateTime.AddDays(1).Date;
 
             // StartTime is optional
-            DateTime startTime = this.StartTime ?? endTime.Subtract(this.GetDefaultQueryTimeRange());
+            DateTime startTime = StartTime ?? endTime.Subtract(GetDefaultQueryTimeRange());
 
             // Check the value of StartTime
             if (startTime > currentDateTime)
@@ -146,13 +146,13 @@ namespace Microsoft.Azure.Commands.Insights
         /// <returns>The query filter with the conditions for general parameters (i.e. defined by this class) added</returns>
         private string ProcessGeneralParameters()
         {
-            string queryFilter = this.ValidateDateTimeRangeAndAddDefaults();
+            string queryFilter = ValidateDateTimeRangeAndAddDefaults();
 
             // Include the status if present
-            queryFilter = this.AddConditionIfPResent(queryFilter, "status", this.Status);
+            queryFilter = AddConditionIfPResent(queryFilter, "status", Status);
 
             // Include the caller if present
-            queryFilter = this.AddConditionIfPResent(queryFilter, "caller", this.Caller);
+            queryFilter = AddConditionIfPResent(queryFilter, "caller", Caller);
 
             return queryFilter;
         }
@@ -163,12 +163,12 @@ namespace Microsoft.Azure.Commands.Insights
         /// <returns>The final query filter to be used by the cmdlet</returns>
         protected string ProcessParameters()
         {
-            string queryFilter = this.ProcessGeneralParameters();
-            var result = this.ProcessParticularParameters(queryFilter);
-            this.WriteIdentifiedWarning(
-                cmdletName: this.GetCmdletName(),
-                topic: "Output change",
-                message: "The field EventChannels from the EventData object is being deprecated in the release 5.0.0 - November 2017 - since it now returns a constant value (Admin,Operation)");
+            string queryFilter = ProcessGeneralParameters();
+            var result = ProcessParticularParameters(queryFilter);
+            WriteIdentifiedWarning(
+                GetCmdletName(),
+                "Output change",
+                "The field EventChannels from the EventData object is being deprecated in the release 5.0.0 - November 2017 - since it now returns a constant value (Admin,Operation)");
             return result;
         }
 
@@ -200,37 +200,37 @@ namespace Microsoft.Azure.Commands.Insights
         /// </summary>
         protected override void ProcessRecordInternal()
         {
-            this.WriteIdentifiedWarning(
-                cmdletName: this.GetCmdletName(),
-                topic: "Parameter deprecation",
-                message: "The DetailedOutput parameter will be deprecated in a future breaking change release.");
+            WriteIdentifiedWarning(
+                GetCmdletName(),
+                "Parameter deprecation",
+                "The DetailedOutput parameter will be deprecated in a future breaking change release.");
             WriteDebug("Processing parameters");
-            string queryFilter = this.ProcessParameters();
+            string queryFilter = ProcessParameters();
 
             // Retrieve the records
-            var fullDetails = this.DetailedOutput.IsPresent;
+            var fullDetails = DetailedOutput.IsPresent;
 
             //Number of records to retrieve
-            int maxNumberOfRecords = this.MaxRecords > 0 ? this.MaxRecords : MaxNumberOfReturnedRecords;
+            int maxNumberOfRecords = MaxRecords > 0 ? MaxRecords : MaxNumberOfReturnedRecords;
 
             // Call the proper API methods to return a list of raw records. In the future this pattern can be extended to include DigestRecords
             // If fullDetails is present do not select fields, if not present fetch only the SelectedFieldsForQuery
             WriteDebug("First call");
             var query = new ODataQuery<EventData>(queryFilter);
-            IPage<EventData> response = this.MonitorClient.ActivityLogs.ListAsync(odataQuery: query, cancellationToken: CancellationToken.None).Result;
+            IPage<EventData> response = MonitorClient.ActivityLogs.ListAsync(query, cancellationToken: CancellationToken.None).Result;
             var records = new List<PSEventData>();
             var enumerator = response.GetEnumerator();
-            enumerator.ExtractCollectionFromResult(fullDetails: fullDetails, records: records, keepTheRecord: this.KeepTheRecord);
+            enumerator.ExtractCollectionFromResult(fullDetails, records, KeepTheRecord);
             string nextLink = response.NextPageLink;
 
             // Adding a safety check to stop returning records if too many have been read already.
             while (!string.IsNullOrWhiteSpace(nextLink) && records.Count < maxNumberOfRecords)
             {
                 WriteDebug("Following continuation token");
-                response = this.MonitorClient.ActivityLogs.ListNextAsync(nextPageLink: nextLink, cancellationToken: CancellationToken.None).Result;
+                response = MonitorClient.ActivityLogs.ListNextAsync(nextLink, CancellationToken.None).Result;
                 enumerator = response.GetEnumerator();
                 WriteDebug(string.Format("Merging records with {0} records", records.Count));
-                enumerator.ExtractCollectionFromResult(fullDetails: fullDetails, records: records, keepTheRecord: this.KeepTheRecord);
+                enumerator.ExtractCollectionFromResult(fullDetails, records, KeepTheRecord);
                 WriteDebug(string.Format("Merged records. Now with {0} records", records.Count));
                 nextLink = response.NextPageLink;
             }
@@ -248,7 +248,7 @@ namespace Microsoft.Azure.Commands.Insights
             }
 
             // Returns an object that contains a link to the set of subsequent records or null if not more records are available, called Next, and an array of records, called Value
-            WriteObject(sendToPipeline: recordsReturned, enumerateCollection: true);
+            WriteObject(recordsReturned, true);
         }
     }
 }

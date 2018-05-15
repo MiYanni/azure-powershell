@@ -26,19 +26,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSFileProperties
     {
         
-        internal Microsoft.Azure.Batch.FileProperties omObject;
+        internal FileProperties omObject;
         
-        internal PSFileProperties(Microsoft.Azure.Batch.FileProperties omObject)
+        internal PSFileProperties(FileProperties omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ContentLength;
+                return omObject.ContentLength;
             }
         }
         
@@ -55,15 +55,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ContentType;
+                return omObject.ContentType;
             }
         }
         
-        public System.DateTime? CreationTime
+        public DateTime? CreationTime
         {
             get
             {
-                return this.omObject.CreationTime;
+                return omObject.CreationTime;
             }
         }
         
@@ -71,15 +71,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.FileMode;
+                return omObject.FileMode;
             }
         }
         
-        public System.DateTime LastModified
+        public DateTime LastModified
         {
             get
             {
-                return this.omObject.LastModified;
+                return omObject.LastModified;
             }
         }
     }

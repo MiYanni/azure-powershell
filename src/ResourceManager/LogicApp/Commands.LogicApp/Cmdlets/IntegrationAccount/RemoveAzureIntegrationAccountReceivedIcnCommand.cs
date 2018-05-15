@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System;
     using System.Globalization;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Utilities;
+    using Management.Logic.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -73,20 +73,20 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 
             if (string.IsNullOrEmpty(AgreementType))
             {
-                this.WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
+                WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
                 AgreementType = "X12";
             }
 
-            this.ConfirmAction(
-                processMessage: string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceMessage, "received control number", this.Name),
-                target: Name,
-                action : () => {
+            ConfirmAction(
+                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceMessage, "received control number", Name),
+                Name,
+                () => {
                     IntegrationAccountClient.RemoveIntegrationAccountReceivedControlNumber(
-                        resourceGroupName: this.ResourceGroupName,
-                        integrationAccountName: this.Name,
-                        integrationAccountAgreementName: this.AgreementName,
-                        agreementType: (AgreementType)Enum.Parse(enumType: typeof(AgreementType), value: AgreementType, ignoreCase: true),
-                        controlNumber: this.ControlNumberValue);
+                        ResourceGroupName,
+                        Name,
+                        AgreementName,
+                        (AgreementType)Enum.Parse(typeof(AgreementType), AgreementType, true),
+                        ControlNumberValue);
                 });
         }
     }

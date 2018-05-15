@@ -48,18 +48,18 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
             IEnumerable<Connection> ret = null;
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByConnectionName)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByConnectionName)
             {
                 ret = new List<Connection>
                 {
-                   this.AutomationClient.GetConnection(this.ResourceGroupName, this.AutomationAccountName, this.Name)
+                   AutomationClient.GetConnection(ResourceGroupName, AutomationAccountName, Name)
                 };
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByConnectionTypeName)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByConnectionTypeName)
             {
-                ret = this.AutomationClient.ListConnectionsByType(this.ResourceGroupName, this.AutomationAccountName, this.ConnectionTypeName);
-                this.GenerateCmdletOutput(ret);
+                ret = AutomationClient.ListConnectionsByType(ResourceGroupName, AutomationAccountName, ConnectionTypeName);
+                GenerateCmdletOutput(ret);
             }
             else
             {
@@ -67,8 +67,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
                 do
                 {
-                    ret = this.AutomationClient.ListConnections(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
-                    this.GenerateCmdletOutput(ret);
+                    ret = AutomationClient.ListConnections(ResourceGroupName, AutomationAccountName, ref nextLink);
+                    GenerateCmdletOutput(ret);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

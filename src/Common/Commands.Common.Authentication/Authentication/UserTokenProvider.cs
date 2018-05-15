@@ -103,10 +103,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
                 {
                     throw new AuthenticationException(Resources.ExpiredRefreshToken);
                 }
-                else
-                {
-                    token.AuthResult = result;
-                }
+                token.AuthResult = result;
             }
         }
 
@@ -177,7 +174,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
             try
             {
                 ex = null;
-                var promptBehavior = (PromptBehavior)Enum.Parse(typeof(PromptBehavior), showDialog.ToString());
+                var promptBehavior = (PromptBehavior)Enum.Parse(typeof(PromptBehavior), showDialog);
 
                 return DoAcquireToken(config, promptBehavior, promptAction, userId, password);
             }

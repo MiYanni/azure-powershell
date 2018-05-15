@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
                 getParamGeoDR = GetResourceDetailsFromId(InputObject.Id);
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ParentResource != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: Name, action: string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                    if (ShouldProcess(Name, string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                     {
                         Client.SetEventHubDRConfigurationBreakPairing(getParamGeoDR.ResourceGroupName, getParamGeoDR.ParentResource, getParamGeoDR.ResourceName);
                         if (PassThru)
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
                 getParamGeoDR = GetResourceDetailsFromId(ResourceId);
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ParentResource != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: Name, action: string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                    if (ShouldProcess(Name, string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                     {
                         Client.SetEventHubDRConfigurationBreakPairing(getParamGeoDR.ResourceGroupName, getParamGeoDR.ParentResource, getParamGeoDR.ResourceName);
                         if (PassThru)
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
 
             if (ParameterSetName == GeoDRParameterSet)
             {
-                if (ShouldProcess(target: Name, action: string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                if (ShouldProcess(Name, string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                 {
                     Client.SetEventHubDRConfigurationBreakPairing(ResourceGroupName, Namespace, Name);
                     if (PassThru)

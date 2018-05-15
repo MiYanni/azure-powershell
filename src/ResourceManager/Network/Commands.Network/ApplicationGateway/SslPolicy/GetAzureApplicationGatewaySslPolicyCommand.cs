@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            WriteObject(this.ApplicationGateway.SslPolicy, true);
+            WriteObject(ApplicationGateway.SslPolicy, true);
         }
     }
 }

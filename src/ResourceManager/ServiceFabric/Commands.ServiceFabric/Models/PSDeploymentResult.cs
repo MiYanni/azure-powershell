@@ -42,10 +42,10 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Models
             List<PSKeyVault> certificates
         )
         {
-            this.Deployment = deployment;
-            this.Cluster = cluster;
-            this.VmUserName = vmUserName;
-            this.Certificates = certificates;
+            Deployment = deployment;
+            Cluster = cluster;
+            VmUserName = vmUserName;
+            Certificates = certificates;
         }
 
         private string FormatCertificatesString(List<PSKeyVault> certificates)

@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Management.Storage
             }
             else
             {
-                account = (new ARMStorageProvider(StorageClient)).GetCloudStorageAccount(Name, ResourceGroupName);
+                account = new ARMStorageProvider(StorageClient).GetCloudStorageAccount(Name, ResourceGroupName);
             }
 
             // Clear the current storage account for both SM and RM

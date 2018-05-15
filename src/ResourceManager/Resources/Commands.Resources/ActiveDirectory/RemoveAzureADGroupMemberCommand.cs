@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
 
                 foreach (var memberObjectId in MemberObjectId)
                 {
-                    if (ShouldProcess(target: memberObjectId.ToString(), action: string.Format("Removing user with object id '{0}' from group with object id '{1}'.", memberObjectId, GroupObjectId)))
+                    if (ShouldProcess(memberObjectId.ToString(), string.Format("Removing user with object id '{0}' from group with object id '{1}'.", memberObjectId, GroupObjectId)))
                     {
                         ActiveDirectoryClient.RemoveGroupMember(GroupObjectId.ToString(), memberObjectId.ToString());
                     }

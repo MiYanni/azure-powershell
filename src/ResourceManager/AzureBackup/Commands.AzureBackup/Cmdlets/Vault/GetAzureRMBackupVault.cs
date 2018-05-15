@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
     public class GetAzureRMBackupVault : AzureBackupCmdletBase
     {
         [Parameter(Position = 0, Mandatory = false, HelpMessage = AzureBackupCmdletHelpMessage.ResourceGroupName)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

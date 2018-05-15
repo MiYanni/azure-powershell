@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Services
         {
             var resp = Communicator.List(resourceGroupName, serverName);
 
-            return resp.Select((db) =>
+            return resp.Select(db =>
             {
                 return CreateElasticPoolModelFromResponse(resourceGroupName, serverName, db);
             }).ToList();
@@ -150,7 +150,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Services
         {
             var resp = Communicator.ListDatabases(resourceGroupName, serverName, poolName);
 
-            return resp.Select((db) =>
+            return resp.Select(db =>
             {
                 return AzureSqlDatabaseAdapter.CreateDatabaseModelFromResponse(resourceGroupName, serverName, db);
             }).ToList();
@@ -194,9 +194,9 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Services
                            isCancellable = operation.IsCancellable
                        };
 
-            IEnumerable<AzureSqlElasticPoolActivityModel> listResponse = resp.Select((r) =>
+            IEnumerable<AzureSqlElasticPoolActivityModel> listResponse = resp.Select(r =>
             {
-                return new AzureSqlElasticPoolActivityModel()
+                return new AzureSqlElasticPoolActivityModel
                 {
                     ElasticPoolName = r.elasticPoolName,
                     ResourceGroupName = r.rgName,
@@ -235,7 +235,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Services
         {
             var resp = Communicator.ListDatabaseActivity(resourceGroupName, serverName, poolName);
 
-            return resp.Select((activity) =>
+            return resp.Select(activity =>
             {
                 return CreateDatabaseActivityModelFromResponse(activity);
             }).ToList();
@@ -253,7 +253,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Services
         {
             if (!operationId.HasValue)
             {
-                throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.OperationIdRequired));
+                throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.OperationIdRequired));
             }
 
             Communicator.CancelOperation(resourceGroupName, serverName, elasticPoolName, operationId.Value);

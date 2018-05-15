@@ -86,36 +86,36 @@ namespace Microsoft.Azure.Commands.EventGrid
 
         public override void ExecuteCmdlet()
         {
-            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(this.Tag, true);
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, true);
             string resourceGroupName = string.Empty;
             string topicName = string.Empty;
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                EventGridUtils.GetResourceGroupNameAndTopicName(this.ResourceId, out resourceGroupName, out topicName);
+                EventGridUtils.GetResourceGroupNameAndTopicName(ResourceId, out resourceGroupName, out topicName);
             }
-            else if (!string.IsNullOrEmpty(this.Name))
+            else if (!string.IsNullOrEmpty(Name))
             {
-                resourceGroupName = this.ResourceGroupName;
-                topicName = this.Name;
+                resourceGroupName = ResourceGroupName;
+                topicName = Name;
             }
-            else if (this.InputObject != null)
+            else if (InputObject != null)
             {
-                resourceGroupName = this.InputObject.ResourceGroupName;
-                topicName = this.InputObject.TopicName;
+                resourceGroupName = InputObject.ResourceGroupName;
+                topicName = InputObject.TopicName;
             }
 
-            if (this.ShouldProcess(topicName, $"Set topic {topicName} in Resource Group {resourceGroupName}"))
+            if (ShouldProcess(topicName, $"Set topic {topicName} in Resource Group {resourceGroupName}"))
             {
-                Topic existingTopic = this.Client.GetTopic(resourceGroupName, topicName);
+                Topic existingTopic = Client.GetTopic(resourceGroupName, topicName);
                 if (existingTopic == null)
                 {
                     throw new Exception($"Cannot find an existing topic {topicName} in resource group {resourceGroupName}");
                 }
 
-                Topic topic = this.Client.ReplaceTopic(resourceGroupName, topicName, existingTopic.Location, tagDictionary);
+                Topic topic = Client.ReplaceTopic(resourceGroupName, topicName, existingTopic.Location, tagDictionary);
                 PSTopic psTopic = new PSTopic(topic);
-                this.WriteObject(psTopic);
+                WriteObject(psTopic);
             }
         }
     }

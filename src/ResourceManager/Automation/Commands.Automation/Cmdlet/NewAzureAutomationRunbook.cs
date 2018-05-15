@@ -82,18 +82,18 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
             Runbook runbook = null;
 
             // ByRunbookName
-            runbook = this.AutomationClient.CreateRunbookByName(
-                    this.ResourceGroupName,
-                    this.AutomationAccountName,
-                    this.Name,
-                    this.Description,
-                    this.Tags,
-                    RunbookTypeSdkValue.Resolve(this.Type),
-                    this.LogProgress,
-                    this.LogVerbose,
+            runbook = AutomationClient.CreateRunbookByName(
+                    ResourceGroupName,
+                    AutomationAccountName,
+                    Name,
+                    Description,
+                    Tags,
+                    RunbookTypeSdkValue.Resolve(Type),
+                    LogProgress,
+                    LogVerbose,
                     false);
 
-            this.WriteObject(runbook);
+            WriteObject(runbook);
         }
     }
 }

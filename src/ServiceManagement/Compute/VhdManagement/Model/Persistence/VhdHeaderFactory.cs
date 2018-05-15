@@ -164,7 +164,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         private byte[] EndReadRawData(IAsyncResult result)
         {
             var value = dataReader.EndReadBytes(result);
-            return (byte[])value;
+            return value;
         }
 
         private IList<ParentLocator> ReadParentLocators(VhdPropertyAttribute attribute)
@@ -229,7 +229,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         private uint EndReadReserved1(IAsyncResult result)
         {
             var value = dataReader.EndReadUInt32(result);
-            return (uint)value;
+            return value;
         }
 
         private uint ReadCheckSum(VhdPropertyAttribute attribute)
@@ -245,7 +245,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         private uint EndReadCheckSum(IAsyncResult result)
         {
             var value = dataReader.EndReadUInt32(result);
-            return (uint)value;
+            return value;
         }
 
         private long ReadDataOffset(VhdPropertyAttribute attribute)
@@ -295,7 +295,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         private DateTime EndReadParentTimeStamp(IAsyncResult result)
         {
             var value = dataReader.EndReadDateTime(result);
-            return (DateTime)value;
+            return value;
         }
 
         private Guid ReadParentUniqueId(VhdPropertyAttribute attribute)
@@ -311,7 +311,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         private Guid EndReadParentUniqueId(IAsyncResult result)
         {
             var value = dataReader.EndReadGuid(result);
-            return (Guid)value;
+            return value;
         }
 
         private uint ReadBlockSize(VhdPropertyAttribute attribute)
@@ -327,7 +327,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         private uint EndReadBlockSize(IAsyncResult result)
         {
             var value = dataReader.EndReadUInt32(result);
-            return (uint)value;
+            return value;
         }
 
         private uint ReadMaxTableEntries(VhdPropertyAttribute attribute)
@@ -343,7 +343,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         private uint EndReadMaxTableEntries(IAsyncResult result)
         {
             var value = dataReader.EndReadUInt32(result);
-            return (uint)value;
+            return value;
         }
 
         private long ReadBATOffset(VhdPropertyAttribute attribute)

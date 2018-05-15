@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -52,15 +52,15 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             base.ExecuteCmdlet();
 
             if (ShouldProcess(
-                this.Name, string.Format(CultureInfo.CurrentCulture, Resources.RemoveAccount_ProcessMessage, this.Name))
+                Name, string.Format(CultureInfo.CurrentCulture, Resources.RemoveAccount_ProcessMessage, Name))
                 ||
                 Force.IsPresent)
             {
                 RunCmdLet(() =>
                 {
-                    this.CognitiveServicesClient.Accounts.Delete(
-                        this.ResourceGroupName,
-                        this.Name);
+                    CognitiveServicesClient.Accounts.Delete(
+                        ResourceGroupName,
+                        Name);
                 });
             }
         }

@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ElasticPool ElasticPool
         {
-            get { return this._elasticPool; }
-            set { this._elasticPool = value; }
+            get { return _elasticPool; }
+            set { _elasticPool = value; }
         }
         
         /// <summary>

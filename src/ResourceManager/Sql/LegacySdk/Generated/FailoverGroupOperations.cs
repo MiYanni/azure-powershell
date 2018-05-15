@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </param>
         internal FailoverGroupOperations(SqlManagementClient client)
         {
-            this._client = client;
+            _client = client;
         }
         
         private SqlManagementClient _client;
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public SqlManagementClient Client
         {
-            get { return this._client; }
+            get { return _client; }
         }
         
         /// <summary>
@@ -136,9 +136,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -154,7 +154,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Serialize Request
                 string requestContent = null;
@@ -290,7 +290,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -329,21 +329,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                             
@@ -365,7 +365,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue = readOnlyEndpointValue2["failoverPolicy"];
                                     if (failoverPolicyValue != null && failoverPolicyValue.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance = ((string)failoverPolicyValue);
+                                        string failoverPolicyInstance = (string)failoverPolicyValue;
                                         readOnlyEndpointInstance.FailoverPolicy = failoverPolicyInstance;
                                     }
                                 }
@@ -379,14 +379,14 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue2 = readWriteEndpointValue2["failoverPolicy"];
                                     if (failoverPolicyValue2 != null && failoverPolicyValue2.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance2 = ((string)failoverPolicyValue2);
+                                        string failoverPolicyInstance2 = (string)failoverPolicyValue2;
                                         readWriteEndpointInstance.FailoverPolicy = failoverPolicyInstance2;
                                     }
                                     
                                     JToken failoverWithDataLossGracePeriodMinutesValue = readWriteEndpointValue2["failoverWithDataLossGracePeriodMinutes"];
                                     if (failoverWithDataLossGracePeriodMinutesValue != null && failoverWithDataLossGracePeriodMinutesValue.Type != JTokenType.Null)
                                     {
-                                        int failoverWithDataLossGracePeriodMinutesInstance = ((int)failoverWithDataLossGracePeriodMinutesValue);
+                                        int failoverWithDataLossGracePeriodMinutesInstance = (int)failoverWithDataLossGracePeriodMinutesValue;
                                         readWriteEndpointInstance.FailoverWithDataLossGracePeriodMinutes = failoverWithDataLossGracePeriodMinutesInstance;
                                     }
                                 }
@@ -394,21 +394,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken replicationRoleValue = propertiesValue2["replicationRole"];
                                 if (replicationRoleValue != null && replicationRoleValue.Type != JTokenType.Null)
                                 {
-                                    string replicationRoleInstance = ((string)replicationRoleValue);
+                                    string replicationRoleInstance = (string)replicationRoleValue;
                                     propertiesInstance.ReplicationRole = replicationRoleInstance;
                                 }
                                 
                                 JToken replicationStateValue = propertiesValue2["replicationState"];
                                 if (replicationStateValue != null && replicationStateValue.Type != JTokenType.Null)
                                 {
-                                    string replicationStateInstance = ((string)replicationStateValue);
+                                    string replicationStateInstance = (string)replicationStateValue;
                                     propertiesInstance.ReplicationState = replicationStateInstance;
                                 }
                                 
                                 JToken partnerServersArray2 = propertiesValue2["partnerServers"];
                                 if (partnerServersArray2 != null && partnerServersArray2.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken partnerServersValue in ((JArray)partnerServersArray2))
+                                    foreach (JToken partnerServersValue in (JArray)partnerServersArray2)
                                     {
                                         FailoverGroupPartnerServer failoverGroupPartnerServerInstance = new FailoverGroupPartnerServer();
                                         propertiesInstance.PartnerServers.Add(failoverGroupPartnerServerInstance);
@@ -416,21 +416,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken idValue = partnerServersValue["id"];
                                         if (idValue != null && idValue.Type != JTokenType.Null)
                                         {
-                                            string idInstance = ((string)idValue);
+                                            string idInstance = (string)idValue;
                                             failoverGroupPartnerServerInstance.Id = idInstance;
                                         }
                                         
                                         JToken locationValue = partnerServersValue["location"];
                                         if (locationValue != null && locationValue.Type != JTokenType.Null)
                                         {
-                                            string locationInstance = ((string)locationValue);
+                                            string locationInstance = (string)locationValue;
                                             failoverGroupPartnerServerInstance.Location = locationInstance;
                                         }
                                         
                                         JToken replicationRoleValue2 = partnerServersValue["replicationRole"];
                                         if (replicationRoleValue2 != null && replicationRoleValue2.Type != JTokenType.Null)
                                         {
-                                            string replicationRoleInstance2 = ((string)replicationRoleValue2);
+                                            string replicationRoleInstance2 = (string)replicationRoleValue2;
                                             failoverGroupPartnerServerInstance.ReplicationRole = replicationRoleInstance2;
                                         }
                                     }
@@ -439,9 +439,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken databasesArray2 = propertiesValue2["databases"];
                                 if (databasesArray2 != null && databasesArray2.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken databasesValue in ((JArray)databasesArray2))
+                                    foreach (JToken databasesValue in (JArray)databasesArray2)
                                     {
-                                        propertiesInstance.Databases.Add(((string)databasesValue));
+                                        propertiesInstance.Databases.Add((string)databasesValue);
                                     }
                                 }
                             }
@@ -449,38 +449,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue2 = responseDoc["id"];
                             if (idValue2 != null && idValue2.Type != JTokenType.Null)
                             {
-                                string idInstance2 = ((string)idValue2);
+                                string idInstance2 = (string)idValue2;
                                 failoverGroupInstance.Id = idInstance2;
                             }
                             
                             JToken nameValue = responseDoc["name"];
                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                             {
-                                string nameInstance = ((string)nameValue);
+                                string nameInstance = (string)nameValue;
                                 failoverGroupInstance.Name = nameInstance;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 failoverGroupInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue2 = responseDoc["location"];
                             if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
                             {
-                                string locationInstance2 = ((string)locationValue2);
+                                string locationInstance2 = (string)locationValue2;
                                 failoverGroupInstance.Location = locationInstance2;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey2 = ((string)property.Name);
-                                    string tagsValue2 = ((string)property.Value);
+                                    string tagsKey2 = property.Name;
+                                    string tagsValue2 = (string)property.Value;
                                     failoverGroupInstance.Tags.Add(tagsKey2, tagsValue2);
                                 }
                             }
@@ -583,9 +583,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -601,7 +601,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -626,7 +626,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -637,7 +637,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -676,21 +676,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                         }
@@ -796,9 +796,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -815,7 +815,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -840,7 +840,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -851,7 +851,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -964,9 +964,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -983,7 +983,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -1008,7 +1008,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -1019,7 +1019,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -1146,9 +1146,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -1164,7 +1164,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -1189,7 +1189,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Serialize Request
                 string requestContent = null;
@@ -1271,7 +1271,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -1310,21 +1310,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                             
@@ -1346,7 +1346,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue = readOnlyEndpointValue2["failoverPolicy"];
                                     if (failoverPolicyValue != null && failoverPolicyValue.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance = ((string)failoverPolicyValue);
+                                        string failoverPolicyInstance = (string)failoverPolicyValue;
                                         readOnlyEndpointInstance.FailoverPolicy = failoverPolicyInstance;
                                     }
                                 }
@@ -1360,14 +1360,14 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue2 = readWriteEndpointValue2["failoverPolicy"];
                                     if (failoverPolicyValue2 != null && failoverPolicyValue2.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance2 = ((string)failoverPolicyValue2);
+                                        string failoverPolicyInstance2 = (string)failoverPolicyValue2;
                                         readWriteEndpointInstance.FailoverPolicy = failoverPolicyInstance2;
                                     }
                                     
                                     JToken failoverWithDataLossGracePeriodMinutesValue = readWriteEndpointValue2["failoverWithDataLossGracePeriodMinutes"];
                                     if (failoverWithDataLossGracePeriodMinutesValue != null && failoverWithDataLossGracePeriodMinutesValue.Type != JTokenType.Null)
                                     {
-                                        int failoverWithDataLossGracePeriodMinutesInstance = ((int)failoverWithDataLossGracePeriodMinutesValue);
+                                        int failoverWithDataLossGracePeriodMinutesInstance = (int)failoverWithDataLossGracePeriodMinutesValue;
                                         readWriteEndpointInstance.FailoverWithDataLossGracePeriodMinutes = failoverWithDataLossGracePeriodMinutesInstance;
                                     }
                                 }
@@ -1375,21 +1375,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken replicationRoleValue = propertiesValue2["replicationRole"];
                                 if (replicationRoleValue != null && replicationRoleValue.Type != JTokenType.Null)
                                 {
-                                    string replicationRoleInstance = ((string)replicationRoleValue);
+                                    string replicationRoleInstance = (string)replicationRoleValue;
                                     propertiesInstance.ReplicationRole = replicationRoleInstance;
                                 }
                                 
                                 JToken replicationStateValue = propertiesValue2["replicationState"];
                                 if (replicationStateValue != null && replicationStateValue.Type != JTokenType.Null)
                                 {
-                                    string replicationStateInstance = ((string)replicationStateValue);
+                                    string replicationStateInstance = (string)replicationStateValue;
                                     propertiesInstance.ReplicationState = replicationStateInstance;
                                 }
                                 
                                 JToken partnerServersArray = propertiesValue2["partnerServers"];
                                 if (partnerServersArray != null && partnerServersArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken partnerServersValue in ((JArray)partnerServersArray))
+                                    foreach (JToken partnerServersValue in (JArray)partnerServersArray)
                                     {
                                         FailoverGroupPartnerServer failoverGroupPartnerServerInstance = new FailoverGroupPartnerServer();
                                         propertiesInstance.PartnerServers.Add(failoverGroupPartnerServerInstance);
@@ -1397,21 +1397,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken idValue = partnerServersValue["id"];
                                         if (idValue != null && idValue.Type != JTokenType.Null)
                                         {
-                                            string idInstance = ((string)idValue);
+                                            string idInstance = (string)idValue;
                                             failoverGroupPartnerServerInstance.Id = idInstance;
                                         }
                                         
                                         JToken locationValue = partnerServersValue["location"];
                                         if (locationValue != null && locationValue.Type != JTokenType.Null)
                                         {
-                                            string locationInstance = ((string)locationValue);
+                                            string locationInstance = (string)locationValue;
                                             failoverGroupPartnerServerInstance.Location = locationInstance;
                                         }
                                         
                                         JToken replicationRoleValue2 = partnerServersValue["replicationRole"];
                                         if (replicationRoleValue2 != null && replicationRoleValue2.Type != JTokenType.Null)
                                         {
-                                            string replicationRoleInstance2 = ((string)replicationRoleValue2);
+                                            string replicationRoleInstance2 = (string)replicationRoleValue2;
                                             failoverGroupPartnerServerInstance.ReplicationRole = replicationRoleInstance2;
                                         }
                                     }
@@ -1420,9 +1420,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken databasesArray2 = propertiesValue2["databases"];
                                 if (databasesArray2 != null && databasesArray2.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken databasesValue in ((JArray)databasesArray2))
+                                    foreach (JToken databasesValue in (JArray)databasesArray2)
                                     {
-                                        propertiesInstance.Databases.Add(((string)databasesValue));
+                                        propertiesInstance.Databases.Add((string)databasesValue);
                                     }
                                 }
                             }
@@ -1430,38 +1430,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue2 = responseDoc["id"];
                             if (idValue2 != null && idValue2.Type != JTokenType.Null)
                             {
-                                string idInstance2 = ((string)idValue2);
+                                string idInstance2 = (string)idValue2;
                                 failoverGroupInstance.Id = idInstance2;
                             }
                             
                             JToken nameValue = responseDoc["name"];
                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                             {
-                                string nameInstance = ((string)nameValue);
+                                string nameInstance = (string)nameValue;
                                 failoverGroupInstance.Name = nameInstance;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 failoverGroupInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue2 = responseDoc["location"];
                             if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
                             {
-                                string locationInstance2 = ((string)locationValue2);
+                                string locationInstance2 = (string)locationValue2;
                                 failoverGroupInstance.Location = locationInstance2;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey2 = ((string)property.Name);
-                                    string tagsValue2 = ((string)property.Value);
+                                    string tagsKey2 = property.Name;
+                                    string tagsValue2 = (string)property.Value;
                                     failoverGroupInstance.Tags.Add(tagsKey2, tagsValue2);
                                 }
                             }
@@ -1538,7 +1538,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </returns>
         public async Task<FailoverGroupCreateOrUpdateResponse> CreateOrUpdateAsync(string resourceGroupName, string serverName, string failoverGroupName, FailoverGroupCreateOrUpdateParameters parameters, CancellationToken cancellationToken)
         {
-            SqlManagementClient client = this.Client;
+            SqlManagementClient client = Client;
             bool shouldTrace = TracingAdapter.IsEnabled;
             string invocationId = null;
             if (shouldTrace)
@@ -1618,7 +1618,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </returns>
         public async Task<FailoverGroupDeleteResponse> DeleteAsync(string resourceGroupName, string serverName, string failoverGroupName, CancellationToken cancellationToken)
         {
-            SqlManagementClient client = this.Client;
+            SqlManagementClient client = Client;
             bool shouldTrace = TracingAdapter.IsEnabled;
             string invocationId = null;
             if (shouldTrace)
@@ -1698,7 +1698,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </returns>
         public async Task<FailoverGroupFailoverResponse> FailoverAsync(string resourceGroupName, string serverName, string failoverGroupName, CancellationToken cancellationToken)
         {
-            SqlManagementClient client = this.Client;
+            SqlManagementClient client = Client;
             bool shouldTrace = TracingAdapter.IsEnabled;
             string invocationId = null;
             if (shouldTrace)
@@ -1778,7 +1778,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </returns>
         public async Task<FailoverGroupForceFailoverResponse> ForceFailoverAllowDataLossAsync(string resourceGroupName, string serverName, string failoverGroupName, CancellationToken cancellationToken)
         {
-            SqlManagementClient client = this.Client;
+            SqlManagementClient client = Client;
             bool shouldTrace = TracingAdapter.IsEnabled;
             string invocationId = null;
             if (shouldTrace)
@@ -1886,9 +1886,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -1904,7 +1904,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -1929,7 +1929,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -1940,7 +1940,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -1991,7 +1991,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue = readOnlyEndpointValue["failoverPolicy"];
                                     if (failoverPolicyValue != null && failoverPolicyValue.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance = ((string)failoverPolicyValue);
+                                        string failoverPolicyInstance = (string)failoverPolicyValue;
                                         readOnlyEndpointInstance.FailoverPolicy = failoverPolicyInstance;
                                     }
                                 }
@@ -2005,14 +2005,14 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue2 = readWriteEndpointValue["failoverPolicy"];
                                     if (failoverPolicyValue2 != null && failoverPolicyValue2.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance2 = ((string)failoverPolicyValue2);
+                                        string failoverPolicyInstance2 = (string)failoverPolicyValue2;
                                         readWriteEndpointInstance.FailoverPolicy = failoverPolicyInstance2;
                                     }
                                     
                                     JToken failoverWithDataLossGracePeriodMinutesValue = readWriteEndpointValue["failoverWithDataLossGracePeriodMinutes"];
                                     if (failoverWithDataLossGracePeriodMinutesValue != null && failoverWithDataLossGracePeriodMinutesValue.Type != JTokenType.Null)
                                     {
-                                        int failoverWithDataLossGracePeriodMinutesInstance = ((int)failoverWithDataLossGracePeriodMinutesValue);
+                                        int failoverWithDataLossGracePeriodMinutesInstance = (int)failoverWithDataLossGracePeriodMinutesValue;
                                         readWriteEndpointInstance.FailoverWithDataLossGracePeriodMinutes = failoverWithDataLossGracePeriodMinutesInstance;
                                     }
                                 }
@@ -2020,21 +2020,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken replicationRoleValue = propertiesValue["replicationRole"];
                                 if (replicationRoleValue != null && replicationRoleValue.Type != JTokenType.Null)
                                 {
-                                    string replicationRoleInstance = ((string)replicationRoleValue);
+                                    string replicationRoleInstance = (string)replicationRoleValue;
                                     propertiesInstance.ReplicationRole = replicationRoleInstance;
                                 }
                                 
                                 JToken replicationStateValue = propertiesValue["replicationState"];
                                 if (replicationStateValue != null && replicationStateValue.Type != JTokenType.Null)
                                 {
-                                    string replicationStateInstance = ((string)replicationStateValue);
+                                    string replicationStateInstance = (string)replicationStateValue;
                                     propertiesInstance.ReplicationState = replicationStateInstance;
                                 }
                                 
                                 JToken partnerServersArray = propertiesValue["partnerServers"];
                                 if (partnerServersArray != null && partnerServersArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken partnerServersValue in ((JArray)partnerServersArray))
+                                    foreach (JToken partnerServersValue in (JArray)partnerServersArray)
                                     {
                                         FailoverGroupPartnerServer failoverGroupPartnerServerInstance = new FailoverGroupPartnerServer();
                                         propertiesInstance.PartnerServers.Add(failoverGroupPartnerServerInstance);
@@ -2042,21 +2042,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken idValue = partnerServersValue["id"];
                                         if (idValue != null && idValue.Type != JTokenType.Null)
                                         {
-                                            string idInstance = ((string)idValue);
+                                            string idInstance = (string)idValue;
                                             failoverGroupPartnerServerInstance.Id = idInstance;
                                         }
                                         
                                         JToken locationValue = partnerServersValue["location"];
                                         if (locationValue != null && locationValue.Type != JTokenType.Null)
                                         {
-                                            string locationInstance = ((string)locationValue);
+                                            string locationInstance = (string)locationValue;
                                             failoverGroupPartnerServerInstance.Location = locationInstance;
                                         }
                                         
                                         JToken replicationRoleValue2 = partnerServersValue["replicationRole"];
                                         if (replicationRoleValue2 != null && replicationRoleValue2.Type != JTokenType.Null)
                                         {
-                                            string replicationRoleInstance2 = ((string)replicationRoleValue2);
+                                            string replicationRoleInstance2 = (string)replicationRoleValue2;
                                             failoverGroupPartnerServerInstance.ReplicationRole = replicationRoleInstance2;
                                         }
                                     }
@@ -2065,9 +2065,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken databasesArray = propertiesValue["databases"];
                                 if (databasesArray != null && databasesArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken databasesValue in ((JArray)databasesArray))
+                                    foreach (JToken databasesValue in (JArray)databasesArray)
                                     {
-                                        propertiesInstance.Databases.Add(((string)databasesValue));
+                                        propertiesInstance.Databases.Add((string)databasesValue);
                                     }
                                 }
                             }
@@ -2075,38 +2075,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue2 = responseDoc["id"];
                             if (idValue2 != null && idValue2.Type != JTokenType.Null)
                             {
-                                string idInstance2 = ((string)idValue2);
+                                string idInstance2 = (string)idValue2;
                                 failoverGroupInstance.Id = idInstance2;
                             }
                             
                             JToken nameValue = responseDoc["name"];
                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                             {
-                                string nameInstance = ((string)nameValue);
+                                string nameInstance = (string)nameValue;
                                 failoverGroupInstance.Name = nameInstance;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 failoverGroupInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue2 = responseDoc["location"];
                             if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
                             {
-                                string locationInstance2 = ((string)locationValue2);
+                                string locationInstance2 = (string)locationValue2;
                                 failoverGroupInstance.Location = locationInstance2;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey = ((string)property.Name);
-                                    string tagsValue = ((string)property.Value);
+                                    string tagsKey = property.Name;
+                                    string tagsValue = (string)property.Value;
                                     failoverGroupInstance.Tags.Add(tagsKey, tagsValue);
                                 }
                             }
@@ -2192,7 +2192,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -2203,7 +2203,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -2242,21 +2242,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                         }
@@ -2349,7 +2349,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -2360,7 +2360,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -2399,21 +2399,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                         }
@@ -2506,7 +2506,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -2517,7 +2517,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -2556,21 +2556,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                             
@@ -2592,7 +2592,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue = readOnlyEndpointValue["failoverPolicy"];
                                     if (failoverPolicyValue != null && failoverPolicyValue.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance = ((string)failoverPolicyValue);
+                                        string failoverPolicyInstance = (string)failoverPolicyValue;
                                         readOnlyEndpointInstance.FailoverPolicy = failoverPolicyInstance;
                                     }
                                 }
@@ -2606,14 +2606,14 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue2 = readWriteEndpointValue["failoverPolicy"];
                                     if (failoverPolicyValue2 != null && failoverPolicyValue2.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance2 = ((string)failoverPolicyValue2);
+                                        string failoverPolicyInstance2 = (string)failoverPolicyValue2;
                                         readWriteEndpointInstance.FailoverPolicy = failoverPolicyInstance2;
                                     }
                                     
                                     JToken failoverWithDataLossGracePeriodMinutesValue = readWriteEndpointValue["failoverWithDataLossGracePeriodMinutes"];
                                     if (failoverWithDataLossGracePeriodMinutesValue != null && failoverWithDataLossGracePeriodMinutesValue.Type != JTokenType.Null)
                                     {
-                                        int failoverWithDataLossGracePeriodMinutesInstance = ((int)failoverWithDataLossGracePeriodMinutesValue);
+                                        int failoverWithDataLossGracePeriodMinutesInstance = (int)failoverWithDataLossGracePeriodMinutesValue;
                                         readWriteEndpointInstance.FailoverWithDataLossGracePeriodMinutes = failoverWithDataLossGracePeriodMinutesInstance;
                                     }
                                 }
@@ -2621,21 +2621,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken replicationRoleValue = propertiesValue["replicationRole"];
                                 if (replicationRoleValue != null && replicationRoleValue.Type != JTokenType.Null)
                                 {
-                                    string replicationRoleInstance = ((string)replicationRoleValue);
+                                    string replicationRoleInstance = (string)replicationRoleValue;
                                     propertiesInstance.ReplicationRole = replicationRoleInstance;
                                 }
                                 
                                 JToken replicationStateValue = propertiesValue["replicationState"];
                                 if (replicationStateValue != null && replicationStateValue.Type != JTokenType.Null)
                                 {
-                                    string replicationStateInstance = ((string)replicationStateValue);
+                                    string replicationStateInstance = (string)replicationStateValue;
                                     propertiesInstance.ReplicationState = replicationStateInstance;
                                 }
                                 
                                 JToken partnerServersArray = propertiesValue["partnerServers"];
                                 if (partnerServersArray != null && partnerServersArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken partnerServersValue in ((JArray)partnerServersArray))
+                                    foreach (JToken partnerServersValue in (JArray)partnerServersArray)
                                     {
                                         FailoverGroupPartnerServer failoverGroupPartnerServerInstance = new FailoverGroupPartnerServer();
                                         propertiesInstance.PartnerServers.Add(failoverGroupPartnerServerInstance);
@@ -2643,21 +2643,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken idValue = partnerServersValue["id"];
                                         if (idValue != null && idValue.Type != JTokenType.Null)
                                         {
-                                            string idInstance = ((string)idValue);
+                                            string idInstance = (string)idValue;
                                             failoverGroupPartnerServerInstance.Id = idInstance;
                                         }
                                         
                                         JToken locationValue = partnerServersValue["location"];
                                         if (locationValue != null && locationValue.Type != JTokenType.Null)
                                         {
-                                            string locationInstance = ((string)locationValue);
+                                            string locationInstance = (string)locationValue;
                                             failoverGroupPartnerServerInstance.Location = locationInstance;
                                         }
                                         
                                         JToken replicationRoleValue2 = partnerServersValue["replicationRole"];
                                         if (replicationRoleValue2 != null && replicationRoleValue2.Type != JTokenType.Null)
                                         {
-                                            string replicationRoleInstance2 = ((string)replicationRoleValue2);
+                                            string replicationRoleInstance2 = (string)replicationRoleValue2;
                                             failoverGroupPartnerServerInstance.ReplicationRole = replicationRoleInstance2;
                                         }
                                     }
@@ -2666,9 +2666,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken databasesArray = propertiesValue["databases"];
                                 if (databasesArray != null && databasesArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken databasesValue in ((JArray)databasesArray))
+                                    foreach (JToken databasesValue in (JArray)databasesArray)
                                     {
-                                        propertiesInstance.Databases.Add(((string)databasesValue));
+                                        propertiesInstance.Databases.Add((string)databasesValue);
                                     }
                                 }
                             }
@@ -2676,38 +2676,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue2 = responseDoc["id"];
                             if (idValue2 != null && idValue2.Type != JTokenType.Null)
                             {
-                                string idInstance2 = ((string)idValue2);
+                                string idInstance2 = (string)idValue2;
                                 failoverGroupInstance.Id = idInstance2;
                             }
                             
                             JToken nameValue = responseDoc["name"];
                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                             {
-                                string nameInstance = ((string)nameValue);
+                                string nameInstance = (string)nameValue;
                                 failoverGroupInstance.Name = nameInstance;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 failoverGroupInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue2 = responseDoc["location"];
                             if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
                             {
-                                string locationInstance2 = ((string)locationValue2);
+                                string locationInstance2 = (string)locationValue2;
                                 failoverGroupInstance.Location = locationInstance2;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey = ((string)property.Name);
-                                    string tagsValue = ((string)property.Value);
+                                    string tagsKey = property.Name;
+                                    string tagsValue = (string)property.Value;
                                     failoverGroupInstance.Tags.Add(tagsKey, tagsValue);
                                 }
                             }
@@ -2801,7 +2801,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -2812,7 +2812,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -2851,21 +2851,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                             
@@ -2887,7 +2887,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue = readOnlyEndpointValue["failoverPolicy"];
                                     if (failoverPolicyValue != null && failoverPolicyValue.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance = ((string)failoverPolicyValue);
+                                        string failoverPolicyInstance = (string)failoverPolicyValue;
                                         readOnlyEndpointInstance.FailoverPolicy = failoverPolicyInstance;
                                     }
                                 }
@@ -2901,14 +2901,14 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken failoverPolicyValue2 = readWriteEndpointValue["failoverPolicy"];
                                     if (failoverPolicyValue2 != null && failoverPolicyValue2.Type != JTokenType.Null)
                                     {
-                                        string failoverPolicyInstance2 = ((string)failoverPolicyValue2);
+                                        string failoverPolicyInstance2 = (string)failoverPolicyValue2;
                                         readWriteEndpointInstance.FailoverPolicy = failoverPolicyInstance2;
                                     }
                                     
                                     JToken failoverWithDataLossGracePeriodMinutesValue = readWriteEndpointValue["failoverWithDataLossGracePeriodMinutes"];
                                     if (failoverWithDataLossGracePeriodMinutesValue != null && failoverWithDataLossGracePeriodMinutesValue.Type != JTokenType.Null)
                                     {
-                                        int failoverWithDataLossGracePeriodMinutesInstance = ((int)failoverWithDataLossGracePeriodMinutesValue);
+                                        int failoverWithDataLossGracePeriodMinutesInstance = (int)failoverWithDataLossGracePeriodMinutesValue;
                                         readWriteEndpointInstance.FailoverWithDataLossGracePeriodMinutes = failoverWithDataLossGracePeriodMinutesInstance;
                                     }
                                 }
@@ -2916,21 +2916,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken replicationRoleValue = propertiesValue["replicationRole"];
                                 if (replicationRoleValue != null && replicationRoleValue.Type != JTokenType.Null)
                                 {
-                                    string replicationRoleInstance = ((string)replicationRoleValue);
+                                    string replicationRoleInstance = (string)replicationRoleValue;
                                     propertiesInstance.ReplicationRole = replicationRoleInstance;
                                 }
                                 
                                 JToken replicationStateValue = propertiesValue["replicationState"];
                                 if (replicationStateValue != null && replicationStateValue.Type != JTokenType.Null)
                                 {
-                                    string replicationStateInstance = ((string)replicationStateValue);
+                                    string replicationStateInstance = (string)replicationStateValue;
                                     propertiesInstance.ReplicationState = replicationStateInstance;
                                 }
                                 
                                 JToken partnerServersArray = propertiesValue["partnerServers"];
                                 if (partnerServersArray != null && partnerServersArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken partnerServersValue in ((JArray)partnerServersArray))
+                                    foreach (JToken partnerServersValue in (JArray)partnerServersArray)
                                     {
                                         FailoverGroupPartnerServer failoverGroupPartnerServerInstance = new FailoverGroupPartnerServer();
                                         propertiesInstance.PartnerServers.Add(failoverGroupPartnerServerInstance);
@@ -2938,21 +2938,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken idValue = partnerServersValue["id"];
                                         if (idValue != null && idValue.Type != JTokenType.Null)
                                         {
-                                            string idInstance = ((string)idValue);
+                                            string idInstance = (string)idValue;
                                             failoverGroupPartnerServerInstance.Id = idInstance;
                                         }
                                         
                                         JToken locationValue = partnerServersValue["location"];
                                         if (locationValue != null && locationValue.Type != JTokenType.Null)
                                         {
-                                            string locationInstance = ((string)locationValue);
+                                            string locationInstance = (string)locationValue;
                                             failoverGroupPartnerServerInstance.Location = locationInstance;
                                         }
                                         
                                         JToken replicationRoleValue2 = partnerServersValue["replicationRole"];
                                         if (replicationRoleValue2 != null && replicationRoleValue2.Type != JTokenType.Null)
                                         {
-                                            string replicationRoleInstance2 = ((string)replicationRoleValue2);
+                                            string replicationRoleInstance2 = (string)replicationRoleValue2;
                                             failoverGroupPartnerServerInstance.ReplicationRole = replicationRoleInstance2;
                                         }
                                     }
@@ -2961,9 +2961,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken databasesArray = propertiesValue["databases"];
                                 if (databasesArray != null && databasesArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken databasesValue in ((JArray)databasesArray))
+                                    foreach (JToken databasesValue in (JArray)databasesArray)
                                     {
-                                        propertiesInstance.Databases.Add(((string)databasesValue));
+                                        propertiesInstance.Databases.Add((string)databasesValue);
                                     }
                                 }
                             }
@@ -2971,38 +2971,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue2 = responseDoc["id"];
                             if (idValue2 != null && idValue2.Type != JTokenType.Null)
                             {
-                                string idInstance2 = ((string)idValue2);
+                                string idInstance2 = (string)idValue2;
                                 failoverGroupInstance.Id = idInstance2;
                             }
                             
                             JToken nameValue = responseDoc["name"];
                             if (nameValue != null && nameValue.Type != JTokenType.Null)
                             {
-                                string nameInstance = ((string)nameValue);
+                                string nameInstance = (string)nameValue;
                                 failoverGroupInstance.Name = nameInstance;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 failoverGroupInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue2 = responseDoc["location"];
                             if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
                             {
-                                string locationInstance2 = ((string)locationValue2);
+                                string locationInstance2 = (string)locationValue2;
                                 failoverGroupInstance.Location = locationInstance2;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey = ((string)property.Name);
-                                    string tagsValue = ((string)property.Value);
+                                    string tagsKey = property.Name;
+                                    string tagsValue = (string)property.Value;
                                     failoverGroupInstance.Tags.Add(tagsKey, tagsValue);
                                 }
                             }
@@ -3090,9 +3090,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -3107,7 +3107,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -3132,7 +3132,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -3143,7 +3143,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -3179,7 +3179,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken valueArray = responseDoc["value"];
                             if (valueArray != null && valueArray.Type != JTokenType.Null)
                             {
-                                foreach (JToken valueValue in ((JArray)valueArray))
+                                foreach (JToken valueValue in (JArray)valueArray)
                                 {
                                     FailoverGroup failoverGroupInstance = new FailoverGroup();
                                     result.FailoverGroups.Add(failoverGroupInstance);
@@ -3199,7 +3199,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                             JToken failoverPolicyValue = readOnlyEndpointValue["failoverPolicy"];
                                             if (failoverPolicyValue != null && failoverPolicyValue.Type != JTokenType.Null)
                                             {
-                                                string failoverPolicyInstance = ((string)failoverPolicyValue);
+                                                string failoverPolicyInstance = (string)failoverPolicyValue;
                                                 readOnlyEndpointInstance.FailoverPolicy = failoverPolicyInstance;
                                             }
                                         }
@@ -3213,14 +3213,14 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                             JToken failoverPolicyValue2 = readWriteEndpointValue["failoverPolicy"];
                                             if (failoverPolicyValue2 != null && failoverPolicyValue2.Type != JTokenType.Null)
                                             {
-                                                string failoverPolicyInstance2 = ((string)failoverPolicyValue2);
+                                                string failoverPolicyInstance2 = (string)failoverPolicyValue2;
                                                 readWriteEndpointInstance.FailoverPolicy = failoverPolicyInstance2;
                                             }
                                             
                                             JToken failoverWithDataLossGracePeriodMinutesValue = readWriteEndpointValue["failoverWithDataLossGracePeriodMinutes"];
                                             if (failoverWithDataLossGracePeriodMinutesValue != null && failoverWithDataLossGracePeriodMinutesValue.Type != JTokenType.Null)
                                             {
-                                                int failoverWithDataLossGracePeriodMinutesInstance = ((int)failoverWithDataLossGracePeriodMinutesValue);
+                                                int failoverWithDataLossGracePeriodMinutesInstance = (int)failoverWithDataLossGracePeriodMinutesValue;
                                                 readWriteEndpointInstance.FailoverWithDataLossGracePeriodMinutes = failoverWithDataLossGracePeriodMinutesInstance;
                                             }
                                         }
@@ -3228,21 +3228,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken replicationRoleValue = propertiesValue["replicationRole"];
                                         if (replicationRoleValue != null && replicationRoleValue.Type != JTokenType.Null)
                                         {
-                                            string replicationRoleInstance = ((string)replicationRoleValue);
+                                            string replicationRoleInstance = (string)replicationRoleValue;
                                             propertiesInstance.ReplicationRole = replicationRoleInstance;
                                         }
                                         
                                         JToken replicationStateValue = propertiesValue["replicationState"];
                                         if (replicationStateValue != null && replicationStateValue.Type != JTokenType.Null)
                                         {
-                                            string replicationStateInstance = ((string)replicationStateValue);
+                                            string replicationStateInstance = (string)replicationStateValue;
                                             propertiesInstance.ReplicationState = replicationStateInstance;
                                         }
                                         
                                         JToken partnerServersArray = propertiesValue["partnerServers"];
                                         if (partnerServersArray != null && partnerServersArray.Type != JTokenType.Null)
                                         {
-                                            foreach (JToken partnerServersValue in ((JArray)partnerServersArray))
+                                            foreach (JToken partnerServersValue in (JArray)partnerServersArray)
                                             {
                                                 FailoverGroupPartnerServer failoverGroupPartnerServerInstance = new FailoverGroupPartnerServer();
                                                 propertiesInstance.PartnerServers.Add(failoverGroupPartnerServerInstance);
@@ -3250,21 +3250,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                                 JToken idValue = partnerServersValue["id"];
                                                 if (idValue != null && idValue.Type != JTokenType.Null)
                                                 {
-                                                    string idInstance = ((string)idValue);
+                                                    string idInstance = (string)idValue;
                                                     failoverGroupPartnerServerInstance.Id = idInstance;
                                                 }
                                                 
                                                 JToken locationValue = partnerServersValue["location"];
                                                 if (locationValue != null && locationValue.Type != JTokenType.Null)
                                                 {
-                                                    string locationInstance = ((string)locationValue);
+                                                    string locationInstance = (string)locationValue;
                                                     failoverGroupPartnerServerInstance.Location = locationInstance;
                                                 }
                                                 
                                                 JToken replicationRoleValue2 = partnerServersValue["replicationRole"];
                                                 if (replicationRoleValue2 != null && replicationRoleValue2.Type != JTokenType.Null)
                                                 {
-                                                    string replicationRoleInstance2 = ((string)replicationRoleValue2);
+                                                    string replicationRoleInstance2 = (string)replicationRoleValue2;
                                                     failoverGroupPartnerServerInstance.ReplicationRole = replicationRoleInstance2;
                                                 }
                                             }
@@ -3273,9 +3273,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken databasesArray = propertiesValue["databases"];
                                         if (databasesArray != null && databasesArray.Type != JTokenType.Null)
                                         {
-                                            foreach (JToken databasesValue in ((JArray)databasesArray))
+                                            foreach (JToken databasesValue in (JArray)databasesArray)
                                             {
-                                                propertiesInstance.Databases.Add(((string)databasesValue));
+                                                propertiesInstance.Databases.Add((string)databasesValue);
                                             }
                                         }
                                     }
@@ -3283,38 +3283,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                     JToken idValue2 = valueValue["id"];
                                     if (idValue2 != null && idValue2.Type != JTokenType.Null)
                                     {
-                                        string idInstance2 = ((string)idValue2);
+                                        string idInstance2 = (string)idValue2;
                                         failoverGroupInstance.Id = idInstance2;
                                     }
                                     
                                     JToken nameValue = valueValue["name"];
                                     if (nameValue != null && nameValue.Type != JTokenType.Null)
                                     {
-                                        string nameInstance = ((string)nameValue);
+                                        string nameInstance = (string)nameValue;
                                         failoverGroupInstance.Name = nameInstance;
                                     }
                                     
                                     JToken typeValue = valueValue["type"];
                                     if (typeValue != null && typeValue.Type != JTokenType.Null)
                                     {
-                                        string typeInstance = ((string)typeValue);
+                                        string typeInstance = (string)typeValue;
                                         failoverGroupInstance.Type = typeInstance;
                                     }
                                     
                                     JToken locationValue2 = valueValue["location"];
                                     if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
                                     {
-                                        string locationInstance2 = ((string)locationValue2);
+                                        string locationInstance2 = (string)locationValue2;
                                         failoverGroupInstance.Location = locationInstance2;
                                     }
                                     
-                                    JToken tagsSequenceElement = ((JToken)valueValue["tags"]);
+                                    JToken tagsSequenceElement = valueValue["tags"];
                                     if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                                     {
                                         foreach (JProperty property in tagsSequenceElement)
                                         {
-                                            string tagsKey = ((string)property.Name);
-                                            string tagsValue = ((string)property.Value);
+                                            string tagsKey = property.Name;
+                                            string tagsValue = (string)property.Value;
                                             failoverGroupInstance.Tags.Add(tagsKey, tagsValue);
                                         }
                                     }
@@ -3380,7 +3380,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </returns>
         public async Task<FailoverGroupPatchUpdateResponse> PatchUpdateAsync(string resourceGroupName, string serverName, string failoverGroupName, FailoverGroupPatchUpdateParameters parameters, CancellationToken cancellationToken)
         {
-            SqlManagementClient client = this.Client;
+            SqlManagementClient client = Client;
             bool shouldTrace = TracingAdapter.IsEnabled;
             string invocationId = null;
             if (shouldTrace)

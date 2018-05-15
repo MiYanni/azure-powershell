@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 {
     [Cmdlet(
         VerbsCommon.New, 
-        WebServicesCmdletBase.CommandletSuffix,
+        CommandletSuffix,
         SupportsShouldProcess = true)]
     [OutputType(typeof(WebService))]
     public class NewAzureMLWebService : WebServicesCmdletBase
@@ -50,14 +50,14 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
         public string Name { get; set; }
 
         [Parameter(
-            ParameterSetName = NewAzureMLWebService.CreateFromFileParameterSet, 
+            ParameterSetName = CreateFromFileParameterSet, 
             Mandatory = true, 
             HelpMessage = "The definition of the new web service.")]
         [ValidateNotNullOrEmpty]
         public string DefinitionFile { get; set; }
 
         [Parameter(
-            ParameterSetName = NewAzureMLWebService.CreateFromObjectParameterSet, 
+            ParameterSetName = CreateFromObjectParameterSet, 
             Mandatory = true, 
             HelpMessage = "The definition of the new web service.", 
             ValueFromPipeline = true)]
@@ -74,40 +74,40 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 
         protected override void RunCmdlet()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
-                Resources.NewServiceWarning.FormatInvariant(this.Name), 
+            ConfirmAction(
+                Force.IsPresent,
+                Resources.NewServiceWarning.FormatInvariant(Name), 
                 "Creating the new web service", 
-                this.Name, 
+                Name, 
                 () => {
                     if (string.Equals(
-                                this.ParameterSetName,
-                                NewAzureMLWebService.CreateFromFileParameterSet,
+                                ParameterSetName,
+                                CreateFromFileParameterSet,
                                 StringComparison.OrdinalIgnoreCase))
                     {
                         string jsonDefinition = 
                                 CmdletHelpers.GetWebServiceDefinitionFromFile(
-                                                this.SessionState.Path.CurrentFileSystemLocation.Path,
-                                                this.DefinitionFile);
+                                                SessionState.Path.CurrentFileSystemLocation.Path,
+                                                DefinitionFile);
                         var webServiceFromJson = 
                                 ModelsSerializationUtil.GetAzureMLWebServiceFromJsonDefinition(jsonDefinition);
 
                         // The name and location in command line parameters overwrite the content from 
                         // Web Service Definition json file.
-                        this.NewWebServiceDefinition = new WebService(
-                                                                this.Location, 
+                        NewWebServiceDefinition = new WebService(
+                                                                Location, 
                                                                 webServiceFromJson.Properties, 
                                                                 webServiceFromJson.Id, 
-                                                                this.Name, webServiceFromJson.Type, 
+                                                                Name, webServiceFromJson.Type, 
                                                                 webServiceFromJson.Tags);
                     }
 
                     WebService newWebService =
-                        this.WebServicesClient.CreateAzureMlWebService(
-                                                    this.ResourceGroupName,
-                                                    this.Name,
-                                                    this.NewWebServiceDefinition);
-                    this.WriteObject(newWebService);
+                        WebServicesClient.CreateAzureMlWebService(
+                                                    ResourceGroupName,
+                                                    Name,
+                                                    NewWebServiceDefinition);
+                    WriteObject(newWebService);
                 });
         }
     }

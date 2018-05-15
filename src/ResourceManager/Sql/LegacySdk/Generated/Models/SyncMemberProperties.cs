@@ -37,11 +37,11 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseName
         {
-            get { return this._databaseName; }
-            set { this._databaseName = value; }
+            get { return _databaseName; }
+            set { _databaseName = value; }
         }
         
-        private Microsoft.Azure.Management.Sql.LegacySdk.Models.DatabaseTypeEnum? _databaseType;
+        private DatabaseTypeEnum? _databaseType;
         
         /// <summary>
         /// Optional. The database type. Possible values: 'SqlServerDatabase',
@@ -50,10 +50,10 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// type is 'AzureSqlDatabase', MemberServerName, MemberDatabaseName
         /// and Credential should be specified.
         /// </summary>
-        public Microsoft.Azure.Management.Sql.LegacySdk.Models.DatabaseTypeEnum? DatabaseType
+        public DatabaseTypeEnum? DatabaseType
         {
-            get { return this._databaseType; }
-            set { this._databaseType = value; }
+            get { return _databaseType; }
+            set { _databaseType = value; }
         }
         
         private string _serverName;
@@ -63,8 +63,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServerName
         {
-            get { return this._serverName; }
-            set { this._serverName = value; }
+            get { return _serverName; }
+            set { _serverName = value; }
         }
         
         private string _sqlServerDatabaseId;
@@ -75,8 +75,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SqlServerDatabaseId
         {
-            get { return this._sqlServerDatabaseId; }
-            set { this._sqlServerDatabaseId = value; }
+            get { return _sqlServerDatabaseId; }
+            set { _sqlServerDatabaseId = value; }
         }
         
         private string _syncAgentId;
@@ -86,21 +86,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncAgentId
         {
-            get { return this._syncAgentId; }
-            set { this._syncAgentId = value; }
+            get { return _syncAgentId; }
+            set { _syncAgentId = value; }
         }
         
-        private Microsoft.Azure.Management.Sql.LegacySdk.Models.SyncDirectionEnum? _syncDirection;
+        private SyncDirectionEnum? _syncDirection;
         
         /// <summary>
         /// Optional. Specifies the sync direction of doing data
         /// synchronization for this sync member. The possible values:
         /// 'Bidirectional', 'OneWayMemberToHub' and 'OneWayHubToMember.
         /// </summary>
-        public Microsoft.Azure.Management.Sql.LegacySdk.Models.SyncDirectionEnum? SyncDirection
+        public SyncDirectionEnum? SyncDirection
         {
-            get { return this._syncDirection; }
-            set { this._syncDirection = value; }
+            get { return _syncDirection; }
+            set { _syncDirection = value; }
         }
         
         private string _syncState;
@@ -111,8 +111,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncState
         {
-            get { return this._syncState; }
-            set { this._syncState = value; }
+            get { return _syncState; }
+            set { _syncState = value; }
         }
         
         private string _userName;
@@ -122,8 +122,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string UserName
         {
-            get { return this._userName; }
-            set { this._userName = value; }
+            get { return _userName; }
+            set { _userName = value; }
         }
         
         /// <summary>

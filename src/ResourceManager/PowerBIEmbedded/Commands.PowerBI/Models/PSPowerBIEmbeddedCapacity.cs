@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.PowerBI.Models
         {
             get
             {
-                return (_capacity.Sku != null) ? _capacity.Sku.Name : null;
+                return _capacity.Sku != null ? _capacity.Sku.Name : null;
             }
         }
 
@@ -100,11 +100,11 @@ namespace Microsoft.Azure.Commands.PowerBI.Models
         {
             get
             {
-                return (_capacity.Sku != null) ? _capacity.Sku.Tier : null;
+                return _capacity.Sku != null ? _capacity.Sku.Tier : null;
             }
         }
 
-        public System.Collections.Generic.IDictionary<string, string> Tag
+        public IDictionary<string, string> Tag
         {
             get
             {

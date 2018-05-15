@@ -17,9 +17,9 @@ namespace Microsoft.Azure.Commands.RedisCache
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.RedisCache.Properties;
-    using Microsoft.Azure.Management.Redis.Models;
-    using RebootTypeStrings = Microsoft.Azure.Management.Redis.Models.RebootType;
+    using Properties;
+    using Management.Redis.Models;
+    using RebootTypeStrings = Management.Redis.Models.RebootType;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Reset, "AzureRmRedisCache", SupportsShouldProcess = true), OutputType(typeof(bool))]

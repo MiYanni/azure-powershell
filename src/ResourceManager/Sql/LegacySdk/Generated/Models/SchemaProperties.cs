@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<Table> Tables
         {
-            get { return this._tables; }
-            set { this._tables = value; }
+            get { return _tables; }
+            set { _tables = value; }
         }
         
         /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SchemaProperties()
         {
-            this.Tables = new LazyList<Table>();
+            Tables = new LazyList<Table>();
         }
     }
 }

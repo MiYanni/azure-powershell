@@ -87,16 +87,16 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                if (this.ParameterSetName.Equals(ListVMImageParamSetName))
+                if (ParameterSetName.Equals(ListVMImageParamSetName))
                 {
-                    var filter = new ODataQuery<VirtualMachineImageResource>(this.FilterExpression);
+                    var filter = new ODataQuery<VirtualMachineImageResource>(FilterExpression);
 
-                    var result = this.VirtualMachineImageClient.ListWithHttpMessagesAsync(
-                        this.Location.Canonicalize(),
-                        this.PublisherName,
-                        this.Offer,
-                        this.Skus,
-                        odataQuery: filter).GetAwaiter().GetResult();
+                    var result = VirtualMachineImageClient.ListWithHttpMessagesAsync(
+                        Location.Canonicalize(),
+                        PublisherName,
+                        Offer,
+                        Skus,
+                        filter).GetAwaiter().GetResult();
 
                     var images = from r in result.Body
                                  select new PSVirtualMachineImage
@@ -106,22 +106,22 @@ namespace Microsoft.Azure.Commands.Compute
                                      Id = r.Id,
                                      Location = r.Location,
                                      Version = r.Name,
-                                     PublisherName = this.PublisherName,
-                                     Offer = this.Offer,
-                                     Skus = this.Skus,
-                                     FilterExpression = this.FilterExpression
+                                     PublisherName = PublisherName,
+                                     Offer = Offer,
+                                     Skus = Skus,
+                                     FilterExpression = FilterExpression
                                  };
 
                     WriteObject(images, true);
                 }
                 else
                 {
-                    var response = this.VirtualMachineImageClient.GetWithHttpMessagesAsync(
-                        this.Location.Canonicalize(),
-                        this.PublisherName,
-                        this.Offer,
-                        this.Skus,
-                        version: this.Version).GetAwaiter().GetResult();
+                    var response = VirtualMachineImageClient.GetWithHttpMessagesAsync(
+                        Location.Canonicalize(),
+                        PublisherName,
+                        Offer,
+                        Skus,
+                        Version).GetAwaiter().GetResult();
 
                     var image = new PSVirtualMachineImageDetail
                     {
@@ -130,10 +130,10 @@ namespace Microsoft.Azure.Commands.Compute
                         Id = response.Body.Id,
                         Location = response.Body.Location,
                         Name = response.Body.Name,
-                        Version = this.Version,
-                        PublisherName = this.PublisherName,
-                        Offer = this.Offer,
-                        Skus = this.Skus,
+                        Version = Version,
+                        PublisherName = PublisherName,
+                        Offer = Offer,
+                        Skus = Skus,
                         OSDiskImage = response.Body.OsDiskImage,
                         DataDiskImages = response.Body.DataDiskImages,
                         PurchasePlan = response.Body.Plan,

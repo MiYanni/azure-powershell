@@ -26,19 +26,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskCounts
     {
         
-        internal Microsoft.Azure.Batch.TaskCounts omObject;
+        internal TaskCounts omObject;
         
-        internal PSTaskCounts(Microsoft.Azure.Batch.TaskCounts omObject)
+        internal PSTaskCounts(TaskCounts omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Active;
+                return omObject.Active;
             }
         }
         
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Completed;
+                return omObject.Completed;
             }
         }
         
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Failed;
+                return omObject.Failed;
             }
         }
         
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Running;
+                return omObject.Running;
             }
         }
         
@@ -79,15 +79,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Succeeded;
+                return omObject.Succeeded;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.TaskCountValidationStatus ValidationStatus
+        public Azure.Batch.Common.TaskCountValidationStatus ValidationStatus
         {
             get
             {
-                return this.omObject.ValidationStatus;
+                return omObject.ValidationStatus;
             }
         }
     }

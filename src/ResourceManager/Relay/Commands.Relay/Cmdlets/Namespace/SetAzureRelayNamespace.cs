@@ -63,11 +63,11 @@ namespace Microsoft.Azure.Commands.Relay.Commands.Namespace
             else
             {
                 // Update a Relay namespace 
-                Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
+                Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, true);
 
                 relayNamespace.Tags = tagDictionary;
             }
-            if (ShouldProcess(target: Name, action: string.Format(Resources.UpdateRelayNamespace, Name, ResourceGroupName)))
+            if (ShouldProcess(Name, string.Format(Resources.UpdateRelayNamespace, Name, ResourceGroupName)))
             {
                 WriteObject(Client.UpdateNamespace(ResourceGroupName, Name, relayNamespace));
             }

@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
 
         public PSPipelineRun()
         {
-            this.pipelineRun = new PipelineRun();
+            pipelineRun = new PipelineRun();
         }
 
         public PSPipelineRun(PipelineRun pipelineRun, string resourceGroupName, string factoryName)
@@ -35,8 +35,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
             }
 
             this.pipelineRun = pipelineRun;
-            this.ResourceGroupName = resourceGroupName;
-            this.DataFactoryName = factoryName;
+            ResourceGroupName = resourceGroupName;
+            DataFactoryName = factoryName;
         }
 
         public string ResourceGroupName { get; private set; }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.RunId;
+                return pipelineRun.RunId;
             }
         }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.PipelineName;
+                return pipelineRun.PipelineName;
             }
         }
 
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.LastUpdated;
+                return pipelineRun.LastUpdated;
             }
         }
 
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.Parameters;
+                return pipelineRun.Parameters;
             }
         }
         
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.RunStart;
+                return pipelineRun.RunStart;
             }
         }
 
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.RunEnd;
+                return pipelineRun.RunEnd;
             }
         }
 
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.DurationInMs;
+                return pipelineRun.DurationInMs;
             }
         }
 
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.Status;
+                return pipelineRun.Status;
             }
         }
 
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.pipelineRun.Message;
+                return pipelineRun.Message;
             }
         }
     }

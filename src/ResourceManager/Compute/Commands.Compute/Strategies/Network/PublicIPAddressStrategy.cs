@@ -25,13 +25,13 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
     {
         public static ResourceStrategy<PublicIPAddress> Strategy { get; }
             = NetworkStrategy.Create(
-                provider: "publicIPAddresses",
-                getOperations: client => client.PublicIPAddresses,
-                getAsync: (o, p) => o.GetAsync(
+                "publicIPAddresses",
+                client => client.PublicIPAddresses,
+                (o, p) => o.GetAsync(
                     p.ResourceGroupName, p.Name, null, p.CancellationToken),
-                createOrUpdateAsync: (o, p) => o.CreateOrUpdateAsync(
+                (o, p) => o.CreateOrUpdateAsync(
                     p.ResourceGroupName, p.Name, p.Model, p.CancellationToken),
-                createTime: _ => 15);
+                _ => 15);
 
         public enum Sku
         {
@@ -47,9 +47,9 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
             Sku sku,
             IList<string> zones)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: _ => new PublicIPAddress
+                resourceGroup,
+                name,
+                _ => new PublicIPAddress
                 {
                     PublicIPAllocationMethod = allocationMethod,
                     DnsSettings = new PublicIPAddressDnsSettings

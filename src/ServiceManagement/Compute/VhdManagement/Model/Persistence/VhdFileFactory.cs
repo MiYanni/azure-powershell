@@ -143,13 +143,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
                 VhdDirectory = Path.GetDirectoryName(path),
                 DisposeOnException = true
             };
-            return AsyncMachine<VhdFile>.BeginAsyncMachine(this.CreateAsync, streamSource, callback, state);
+            return AsyncMachine<VhdFile>.BeginAsyncMachine(CreateAsync, streamSource, callback, state);
         }
 
         public IAsyncResult BeginCreate(Stream stream, AsyncCallback callback, object state)
         {
             var streamSource = new StreamSource { Stream = stream };
-            return AsyncMachine<VhdFile>.BeginAsyncMachine(this.CreateAsync, streamSource, callback, state);
+            return AsyncMachine<VhdFile>.BeginAsyncMachine(CreateAsync, streamSource, callback, state);
         }
 
         public VhdFile EndCreate(IAsyncResult result)
@@ -165,7 +165,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
             public StreamSource()
             {
-                this.DisposeOnException = false;
+                DisposeOnException = false;
             }
         }
 

@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Management.Scheduler;
-    using Microsoft.Azure.Management.Scheduler.Models;
+    using Models;
+    using Properties;
+    using Management.Scheduler;
+    using Management.Scheduler.Models;
     using PSManagement = System.Management.Automation;
 
     public partial class SchedulerClient
@@ -34,17 +34,17 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(createJobParams.ResourceGroupName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSManagement.PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(createJobParams.JobCollectionName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSManagement.PSArgumentNullException("JobCollectionName");
             }
 
             if (string.IsNullOrWhiteSpace(createJobParams.JobName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobName");
+                throw new PSManagement.PSArgumentNullException("JobName");
             }
 
             if (!DoesResourceGroupExists(createJobParams.ResourceGroupName))
@@ -58,31 +58,28 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 throw new PSManagement.PSInvalidOperationException(string.Format(Resources.JobCollectionDoesnotExist, createJobParams.JobCollectionName, createJobParams.ResourceGroupName));
             }
-            else
+            if (JobExists(createJobParams.ResourceGroupName, createJobParams.JobCollectionName, createJobParams.JobName))
             {
-                if (JobExists(createJobParams.ResourceGroupName, createJobParams.JobCollectionName, createJobParams.JobName))
-                {
-                    throw new PSManagement.PSArgumentException(string.Format(Resources.SchedulerExistingJob, createJobParams.JobName, createJobParams.JobCollectionName));
-                }
-
-                IList<JobDefinition> listOfJobs = ListJobs(createJobParams.ResourceGroupName, createJobParams.JobCollectionName, jobState: null);
-
-                if (listOfJobs != null)
-                {
-                    Validate(jobCollection[0], listOfJobs.Count);
-                }
+                throw new PSManagement.PSArgumentException(string.Format(Resources.SchedulerExistingJob, createJobParams.JobName, createJobParams.JobCollectionName));
             }
 
-            JobAction jobAction = this.GetJobAction(createJobParams);
+            IList<JobDefinition> listOfJobs = ListJobs(createJobParams.ResourceGroupName, createJobParams.JobCollectionName, null);
 
-            JobRecurrence jobRecurrence = this.GetJobRecurrence(createJobParams.JobRecurrence);
+            if (listOfJobs != null)
+            {
+                Validate(jobCollection[0], listOfJobs.Count);
+            }
 
-            var properties = new JobProperties()
+            JobAction jobAction = GetJobAction(createJobParams);
+
+            JobRecurrence jobRecurrence = GetJobRecurrence(createJobParams.JobRecurrence);
+
+            var properties = new JobProperties
             {
                 Action = jobAction,
                 Recurrence = jobRecurrence,
                 StartTime = createJobParams.StartTime,
-                State = createJobParams.JobState.GetValueOrDefaultEnum<JobState?>(defaultValue: null)
+                State = createJobParams.JobState.GetValueOrDefaultEnum<JobState?>(null)
             };
 
             var jobDefinition = new JobDefinition(name: createJobParams.JobName)
@@ -90,7 +87,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 Properties = properties
             };
 
-            JobDefinition jobDefinitionResult =  this.SchedulerManagementClient.Jobs.CreateOrUpdate(createJobParams.ResourceGroupName, createJobParams.JobCollectionName, createJobParams.JobName, jobDefinition);
+            JobDefinition jobDefinitionResult =  SchedulerManagementClient.Jobs.CreateOrUpdate(createJobParams.ResourceGroupName, createJobParams.JobCollectionName, createJobParams.JobName, jobDefinition);
 
             return Converter.ConvertJobDefinitionToPS(jobDefinitionResult);
         }
@@ -104,13 +101,13 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             var jobAction = new JobAction();
 
-            this.PopulateJobAction(jobParams.JobAction, ref jobAction);
+            PopulateJobAction(jobParams.JobAction, ref jobAction);
 
             // Populate error job action.
             if (jobParams.JobErrorAction != null)
             {
                 var jobErrorAction = new JobErrorAction();
-                this.PopulateJobErrorAction(jobParams.JobErrorAction, ref jobErrorAction);
+                PopulateJobErrorAction(jobParams.JobErrorAction, ref jobErrorAction);
                 jobAction.ErrorAction = jobErrorAction;
             }
 
@@ -130,12 +127,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 !string.IsNullOrWhiteSpace(jobRecurrenceParams.Frequency) ||
                 jobRecurrenceParams.EndTime != null))
             {
-                var jobRecurrence = new JobRecurrence()
+                var jobRecurrence = new JobRecurrence
                 {
                     Count = jobRecurrenceParams.ExecutionCount ?? default(int?),
                     Interval = jobRecurrenceParams.Interval ?? default(int?),
                     EndTime = jobRecurrenceParams.EndTime ?? default(DateTime?),
-                    Frequency = jobRecurrenceParams.Frequency.GetValueOrDefaultEnum<RecurrenceFrequency?>(defaultValue: null)
+                    Frequency = jobRecurrenceParams.Frequency.GetValueOrDefaultEnum<RecurrenceFrequency?>(null)
                 };
 
                 return jobRecurrence;
@@ -156,22 +153,22 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 case JobActionType.Http:
                 case JobActionType.Https:
                     jobAction.Type = jobActionParams.JobActionType;
-                    jobAction.Request = this.GetHttpJobAction(jobActionParams.HttpJobAction);
+                    jobAction.Request = GetHttpJobAction(jobActionParams.HttpJobAction);
                     break;
 
                 case JobActionType.StorageQueue:
                     jobAction.Type = JobActionType.StorageQueue;
-                    jobAction.QueueMessage = this.GetStorageQueue(jobActionParams.StorageJobAction);
+                    jobAction.QueueMessage = GetStorageQueue(jobActionParams.StorageJobAction);
                     break;
 
                 case JobActionType.ServiceBusQueue:
                     jobAction.Type = JobActionType.ServiceBusQueue;
-                    jobAction.ServiceBusQueueMessage = this.GetServiceBusQueue(jobActionParams.ServiceBusAction);
+                    jobAction.ServiceBusQueueMessage = GetServiceBusQueue(jobActionParams.ServiceBusAction);
                     break;
 
                 case JobActionType.ServiceBusTopic:
                     jobAction.Type = JobActionType.ServiceBusTopic;
-                    jobAction.ServiceBusTopicMessage = this.GetServiceBusTopic(jobActionParams.ServiceBusAction);
+                    jobAction.ServiceBusTopicMessage = GetServiceBusTopic(jobActionParams.ServiceBusAction);
                     break;
             }
         }
@@ -195,22 +192,22 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                     case JobActionType.Http:
                     case JobActionType.Https:
                         jobErrorAction.Type = jobErrorActionParams.JobActionType;
-                        jobErrorAction.Request = this.GetHttpJobAction(jobErrorActionParams.HttpJobAction);
+                        jobErrorAction.Request = GetHttpJobAction(jobErrorActionParams.HttpJobAction);
                         break;
 
                     case JobActionType.StorageQueue:
                         jobErrorAction.Type = JobActionType.StorageQueue;
-                        jobErrorAction.QueueMessage = this.GetStorageQueue(jobErrorActionParams.StorageJobAction);
+                        jobErrorAction.QueueMessage = GetStorageQueue(jobErrorActionParams.StorageJobAction);
                         break;
 
                     case JobActionType.ServiceBusQueue:
                         jobErrorAction.Type = JobActionType.ServiceBusQueue;
-                        jobErrorAction.ServiceBusQueueMessage = this.GetServiceBusQueue(jobErrorActionParams.ServiceBusAction);
+                        jobErrorAction.ServiceBusQueueMessage = GetServiceBusQueue(jobErrorActionParams.ServiceBusAction);
                         break;
 
                     case JobActionType.ServiceBusTopic:
                         jobErrorAction.Type = JobActionType.ServiceBusTopic;
-                        jobErrorAction.ServiceBusTopicMessage = this.GetServiceBusTopic(jobErrorActionParams.ServiceBusAction);
+                        jobErrorAction.ServiceBusTopicMessage = GetServiceBusTopic(jobErrorActionParams.ServiceBusAction);
                         break;
                 }
             }
@@ -233,11 +230,11 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidHttpRequest);
             }
 
-            var httpRequest = new HttpRequest()
+            var httpRequest = new HttpRequest
             {
                 Method = httpActionParams.RequestMethod,
                 Uri = httpActionParams.Uri.OriginalString,
-                Authentication = this.PopulateHttpAuthentication(httpActionParams.RequestAuthentication)
+                Authentication = PopulateHttpAuthentication(httpActionParams.RequestAuthentication)
             };
 
             if (httpActionParams.RequestHeaders != null)
@@ -275,15 +272,15 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 return null;
             }
-            else if (authenticationParams.HttpAuthType.Equals(Constants.HttpAuthenticationClientCertificate, StringComparison.InvariantCultureIgnoreCase))
+            if (authenticationParams.HttpAuthType.Equals(Constants.HttpAuthenticationClientCertificate, StringComparison.InvariantCultureIgnoreCase))
             {
                 if(string.IsNullOrWhiteSpace(authenticationParams.ClientCertPfx) ||
-                    string.IsNullOrWhiteSpace(authenticationParams.ClientCertPassword))
+                   string.IsNullOrWhiteSpace(authenticationParams.ClientCertPassword))
                 {
                     throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidClientCertAuthRequest);
                 }
 
-                var clientCert = new ClientCertAuthentication()
+                var clientCert = new ClientCertAuthentication
                 {
                     Type = HttpAuthenticationType.ClientCertificate,
                     Pfx = authenticationParams.ClientCertPfx,
@@ -292,7 +289,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
                 return clientCert;
             }
-            else if (authenticationParams.HttpAuthType.Equals(Constants.HttpAuthenticationActiveDirectoryOAuth, StringComparison.InvariantCultureIgnoreCase))
+            if (authenticationParams.HttpAuthType.Equals(Constants.HttpAuthenticationActiveDirectoryOAuth, StringComparison.InvariantCultureIgnoreCase))
             {
                 if (string.IsNullOrWhiteSpace(authenticationParams.Tenant) ||
                     string.IsNullOrWhiteSpace(authenticationParams.ClientId) ||
@@ -302,7 +299,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                     throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidActiveDirectoryOAuthRequest);
                 }
 
-                var adOAuth = new OAuthAuthentication()
+                var adOAuth = new OAuthAuthentication
                 {
                     Type = HttpAuthenticationType.ActiveDirectoryOAuth,
                     Audience = authenticationParams.Audience,
@@ -313,7 +310,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
                 return adOAuth;
             }
-            else if (authenticationParams.HttpAuthType.Equals(Constants.HttpAuthenticationBasic, StringComparison.InvariantCultureIgnoreCase))
+            if (authenticationParams.HttpAuthType.Equals(Constants.HttpAuthenticationBasic, StringComparison.InvariantCultureIgnoreCase))
             {
                 if(string.IsNullOrWhiteSpace(authenticationParams.Username) ||
                    string.IsNullOrWhiteSpace(authenticationParams.Password))
@@ -321,7 +318,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                     throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidBasicRequest);
                 }
 
-                var basic = new BasicAuthentication()
+                var basic = new BasicAuthentication
                 {
                     Type = HttpAuthenticationType.Basic,
                     Username = authenticationParams.Username,
@@ -330,10 +327,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
                 return basic;
             }
-            else
-            {
-                throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidAuthenticationType);
-            }
+            throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidAuthenticationType);
         }
 
         /// <summary>
@@ -351,7 +345,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidStorageQueue);
             }
 
-            var storageQueue = new StorageQueueMessage()
+            var storageQueue = new StorageQueueMessage
             {
                 Message = storageActionParams.StorageQueueMessage,
                 QueueName = storageActionParams.StorageQueueName,
@@ -374,12 +368,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidServiceBusQueueName);
             }
 
-            var serviceBusQueueMessage = new ServiceBusQueueMessage()
+            var serviceBusQueueMessage = new ServiceBusQueueMessage
             {
                 QueueName = serviceBusQueueActionParams.QueueName
             };
 
-            this.PopulateServiceBusMessage(serviceBusQueueActionParams, serviceBusQueueMessage);
+            PopulateServiceBusMessage(serviceBusQueueActionParams, serviceBusQueueMessage);
 
             return serviceBusQueueMessage;
         }
@@ -396,12 +390,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 throw new PSManagement.PSArgumentException(Resources.SchedulerInvalidServiceBusTopicPath);
             }
 
-            var serviceBusTopicMessage = new ServiceBusTopicMessage()
+            var serviceBusTopicMessage = new ServiceBusTopicMessage
             {
                 TopicPath = serviceBusQueueActionParams.TopicPath
             };
 
-            this.PopulateServiceBusMessage(serviceBusQueueActionParams, serviceBusTopicMessage);
+            PopulateServiceBusMessage(serviceBusQueueActionParams, serviceBusTopicMessage);
 
             return serviceBusTopicMessage;
         }
@@ -425,12 +419,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 throw new ArgumentException("serviceBusMessage: Object must be initialized");
             }
 
-            ServiceBusAuthentication authentication = this.GetServiceBusAuthentication(serviceBusQueueActionParams.Authentication);
+            ServiceBusAuthentication authentication = GetServiceBusAuthentication(serviceBusQueueActionParams.Authentication);
 
-            serviceBusMessage.Authentication = this.GetServiceBusAuthentication(serviceBusQueueActionParams.Authentication);
+            serviceBusMessage.Authentication = GetServiceBusAuthentication(serviceBusQueueActionParams.Authentication);
             serviceBusMessage.Message = serviceBusQueueActionParams.Message;
             serviceBusMessage.NamespaceProperty = serviceBusQueueActionParams.NamespaceProperty;
-            serviceBusMessage.TransportType = serviceBusQueueActionParams.TransportType.GetValueOrDefaultEnum<ServiceBusTransportType>(defaultValue: ServiceBusTransportType.NetMessaging);
+            serviceBusMessage.TransportType = serviceBusQueueActionParams.TransportType.GetValueOrDefaultEnum<ServiceBusTransportType>(ServiceBusTransportType.NetMessaging);
         }
 
         /// <summary>
@@ -448,11 +442,11 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 throw new PSManagement.PSArgumentException();
             }
 
-            return new ServiceBusAuthentication()
+            return new ServiceBusAuthentication
             {
                 SasKey = serviceBusAuthenticationParams.SasKey,
                 SasKeyName = serviceBusAuthenticationParams.SasKeyName,
-                Type = serviceBusAuthenticationParams.Type.GetValueOrDefaultEnum<ServiceBusAuthenticationType>(defaultValue:ServiceBusAuthenticationType.NotSpecified)
+                Type = serviceBusAuthenticationParams.Type.GetValueOrDefaultEnum<ServiceBusAuthenticationType>(ServiceBusAuthenticationType.NotSpecified)
             };
         }
 

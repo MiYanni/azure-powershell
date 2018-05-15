@@ -64,13 +64,13 @@ namespace Microsoft.Azure.Commands.MachineLearningCompute.Cmdlets
 
         public override void ExecuteCmdlet()
         {
-            if (string.Equals(this.ParameterSetName, ObjectParameterSet, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(ParameterSetName, ObjectParameterSet, StringComparison.OrdinalIgnoreCase))
             {
                 var resourceInfo = new ResourceIdentifier(InputObject.Id);
                 ResourceGroupName = resourceInfo.ResourceGroupName;
                 Name = resourceInfo.ResourceName;
             }
-            else if (string.Equals(this.ParameterSetName, ResourceIdParameterSet, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(ParameterSetName, ResourceIdParameterSet, StringComparison.OrdinalIgnoreCase))
             {
                 var resourceInfo = new ResourceIdentifier(ResourceId);
                 ResourceGroupName = resourceInfo.ResourceGroupName;
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.MachineLearningCompute.Cmdlets
                 shouldProcessMessage += $" and supporting resource group {managedByResourceGroup}. All resources in resource group {managedByResourceGroup} will be deleted.";
             }
 
-            if (ShouldProcess(this.Name, shouldProcessMessage))
+            if (ShouldProcess(Name, shouldProcessMessage))
             {
                 try
                 {

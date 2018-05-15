@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Client
             IDictionary<string, string> tags, 
             int? retentionInDays)
         {
-            Workspace properties = new Workspace()
+            Workspace properties = new Workspace
             {
                 Location = location,
                 Tags = tags
@@ -266,11 +266,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Client
                 OperationalInsightsManagementClient.Workspaces.EnableIntelligencePack(resourceGroupName, workspaceName, intelligencePackName);
                 return new PSIntelligencePack(intelligencePackName, enabled); ;
             }
-            else
-            {
-                OperationalInsightsManagementClient.Workspaces.DisableIntelligencePack(resourceGroupName, workspaceName, intelligencePackName);
-                return new PSIntelligencePack(intelligencePackName, enabled);
-            }
+            OperationalInsightsManagementClient.Workspaces.DisableIntelligencePack(resourceGroupName, workspaceName, intelligencePackName);
+            return new PSIntelligencePack(intelligencePackName, enabled);
         }
         private bool CheckWorkspaceExists(string resourceGroupName, string workspaceName)
         {

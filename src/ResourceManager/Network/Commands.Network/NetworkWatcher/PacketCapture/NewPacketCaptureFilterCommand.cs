@@ -67,11 +67,11 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
 
             var packetCaptureFilter = new PSPacketCaptureFilter();
-            packetCaptureFilter.Protocol = this.Protocol;
-            packetCaptureFilter.RemoteIPAddress = this.RemoteIPAddress;
-            packetCaptureFilter.LocalIPAddress = this.LocalIPAddress;
-            packetCaptureFilter.RemotePort = this.RemotePort;
-            packetCaptureFilter.LocalPort = this.LocalPort;
+            packetCaptureFilter.Protocol = Protocol;
+            packetCaptureFilter.RemoteIPAddress = RemoteIPAddress;
+            packetCaptureFilter.LocalIPAddress = LocalIPAddress;
+            packetCaptureFilter.RemotePort = RemotePort;
+            packetCaptureFilter.LocalPort = LocalPort;
 
             WriteObject(packetCaptureFilter);
         }

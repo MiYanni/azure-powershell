@@ -38,25 +38,25 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var frontendIpConfig = this.LoadBalancer.FrontendIpConfigurations.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var frontendIpConfig = LoadBalancer.FrontendIpConfigurations.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (frontendIpConfig == null)
             {
                 throw new ArgumentException("FrontendIpConfiguration with the specified name does not exist");
             }
 
-            frontendIpConfig.Name = this.Name;
-            frontendIpConfig.Zones = this.Zone;
+            frontendIpConfig.Name = Name;
+            frontendIpConfig.Zones = Zone;
 
             frontendIpConfig.Subnet = null;
-            if (!string.IsNullOrEmpty(this.SubnetId))
+            if (!string.IsNullOrEmpty(SubnetId))
             {
                 frontendIpConfig.Subnet = new PSSubnet();
-                frontendIpConfig.Subnet.Id = this.SubnetId;
+                frontendIpConfig.Subnet.Id = SubnetId;
 
-                if (!string.IsNullOrEmpty(this.PrivateIpAddress))
+                if (!string.IsNullOrEmpty(PrivateIpAddress))
                 {
-                    frontendIpConfig.PrivateIpAddress = this.PrivateIpAddress;
+                    frontendIpConfig.PrivateIpAddress = PrivateIpAddress;
                     frontendIpConfig.PrivateIpAllocationMethod = Management.Network.Models.IPAllocationMethod.Static;
                 }
                 else
@@ -65,19 +65,19 @@ namespace Microsoft.Azure.Commands.Network
                 }
             }
 
-            if (!string.IsNullOrEmpty(this.PrivateIpAddress))
+            if (!string.IsNullOrEmpty(PrivateIpAddress))
             {
-                frontendIpConfig.PrivateIpAddress = this.PrivateIpAddress;
+                frontendIpConfig.PrivateIpAddress = PrivateIpAddress;
             }
 
             frontendIpConfig.PublicIpAddress = null;
-            if (!string.IsNullOrEmpty(this.PublicIpAddressId))
+            if (!string.IsNullOrEmpty(PublicIpAddressId))
             {
                 frontendIpConfig.PublicIpAddress = new PSPublicIpAddress();
-                frontendIpConfig.PublicIpAddress.Id = this.PublicIpAddressId;
+                frontendIpConfig.PublicIpAddress.Id = PublicIpAddressId;
             }
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

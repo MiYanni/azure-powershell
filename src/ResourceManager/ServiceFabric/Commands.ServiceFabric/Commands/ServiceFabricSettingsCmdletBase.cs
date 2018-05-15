@@ -37,35 +37,35 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = BatchSettings, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ParameterSetName = OneSetting, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
         [Parameter(Mandatory = true, Position = 1, ParameterSetName = BatchSettings, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = OneSetting,
                    HelpMessage = "Section name of the fabric setting")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string Section { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = OneSetting,
                    HelpMessage = "Parameter name of the fabric setting")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string Parameter { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = OneSetting,
                    HelpMessage = "Parameter value of the fabric setting")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public virtual string Value { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = BatchSettings,
                    HelpMessage = "An array of fabric settings")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public PSSettingsSectionDescription[] SettingsSectionDescription { get; set; }
 
         protected List<PSSettingsSectionDescription> UpdatedSettingsSectionDescriptionList
@@ -81,15 +81,15 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 {
                     case OneSetting:
                         {
-                            updatedSettingsSectionDescriptionList.Add(new PSSettingsSectionDescription()
+                            updatedSettingsSectionDescriptionList.Add(new PSSettingsSectionDescription
                             {
-                                Name = this.Section,
-                                Parameters = new List<PSSettingsParameterDescription>()
+                                Name = Section,
+                                Parameters = new List<PSSettingsParameterDescription>
                                 {
-                                    new PSSettingsParameterDescription()
+                                    new PSSettingsParameterDescription
                                     {
-                                        Name = this.Parameter,
-                                        Value = this.Value
+                                        Name = Parameter,
+                                        Value = Value
                                     }
                                 }
                             });
@@ -97,16 +97,16 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                         }
                     case BatchSettings:
                         {
-                            if (this.SettingsSectionDescription != null)
+                            if (SettingsSectionDescription != null)
                             {
-                                updatedSettingsSectionDescriptionList.AddRange(this.SettingsSectionDescription);
+                                updatedSettingsSectionDescriptionList.AddRange(SettingsSectionDescription);
                             }
 
                             break;
                         }
                 }
 
-                return this.updatedSettingsSectionDescriptionList;
+                return updatedSettingsSectionDescriptionList;
             }
         }
 
@@ -149,7 +149,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             {
                 foreach (var kvp1 in settings)
                 {
-                    var setting = new SettingsSectionDescription()
+                    var setting = new SettingsSectionDescription
                     {
                         Name = kvp1.Key,
                         Parameters = new List<SettingsParameterDescription>()
@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
                     foreach (var kvp2 in kvp1.Value)
                     {
-                        setting.Parameters.Add(new SettingsParameterDescription()
+                        setting.Parameters.Add(new SettingsParameterDescription
                         {
                             Name = kvp2.Key,
                             Value = kvp2.Value

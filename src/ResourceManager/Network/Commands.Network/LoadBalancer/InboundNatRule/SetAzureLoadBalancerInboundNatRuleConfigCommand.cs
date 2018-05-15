@@ -38,30 +38,30 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var inboundNatRule = this.LoadBalancer.InboundNatRules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var inboundNatRule = LoadBalancer.InboundNatRules.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (inboundNatRule == null)
             {
                 throw new ArgumentException("InboundNatRule with the specified name does not exist");
             }
 
-            inboundNatRule.Name = this.Name;
-            inboundNatRule.Protocol = this.Protocol;
-            inboundNatRule.FrontendPort = this.FrontendPort;
-            inboundNatRule.BackendPort = this.BackendPort;
-            if (this.IdleTimeoutInMinutes > 0)
+            inboundNatRule.Name = Name;
+            inboundNatRule.Protocol = Protocol;
+            inboundNatRule.FrontendPort = FrontendPort;
+            inboundNatRule.BackendPort = BackendPort;
+            if (IdleTimeoutInMinutes > 0)
             {
-                inboundNatRule.IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
+                inboundNatRule.IdleTimeoutInMinutes = IdleTimeoutInMinutes;
             }
-            inboundNatRule.EnableFloatingIP = this.EnableFloatingIP.IsPresent;
+            inboundNatRule.EnableFloatingIP = EnableFloatingIP.IsPresent;
 
             inboundNatRule.FrontendIPConfiguration = null;
-            if (!string.IsNullOrEmpty(this.FrontendIpConfigurationId))
+            if (!string.IsNullOrEmpty(FrontendIpConfigurationId))
             {
-                inboundNatRule.FrontendIPConfiguration = new PSResourceId() { Id = this.FrontendIpConfigurationId };
+                inboundNatRule.FrontendIPConfiguration = new PSResourceId { Id = FrontendIpConfigurationId };
             }
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

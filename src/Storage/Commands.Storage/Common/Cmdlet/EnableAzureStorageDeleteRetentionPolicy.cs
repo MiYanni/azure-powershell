@@ -14,8 +14,8 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
-    using Microsoft.WindowsAzure.Storage.Shared.Protocol;
+    using Model.ResourceModel;
+    using WindowsAzure.Storage.Shared.Protocol;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -56,7 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
                 serviceProperties.DeleteRetentionPolicy = new DeleteRetentionPolicy();
             }
             serviceProperties.DeleteRetentionPolicy.Enabled = true;
-            serviceProperties.DeleteRetentionPolicy.RetentionDays = this.RetentionDays;
+            serviceProperties.DeleteRetentionPolicy.RetentionDays = RetentionDays;
         }
 
         /// <summary>

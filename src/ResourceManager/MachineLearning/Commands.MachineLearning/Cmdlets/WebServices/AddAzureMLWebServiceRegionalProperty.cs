@@ -62,18 +62,18 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 
         protected override void RunCmdlet()
         {
-            if (ShouldProcess(this.Name, @"Creating the new web service property for the specific region.."))
+            if (ShouldProcess(Name, @"Creating the new web service property for the specific region.."))
             {
-                if (this.Force.IsPresent 
+                if (Force.IsPresent 
                     || ShouldContinue(
-                            Resources.CreateNewRegionalProperties.FormatInvariant(this.Name, this.Region),
+                            Resources.CreateNewRegionalProperties.FormatInvariant(Name, Region),
                             string.Empty))
                 {
-                    this.WebServicesClient.CreateRegionalProperties(this.ResourceGroupName, this.Name, this.Region);
+                    WebServicesClient.CreateRegionalProperties(ResourceGroupName, Name, Region);
 
                     // Fetch this region's WebService object
-                    WebService service = this.WebServicesClient.GetAzureMlWebService(this.ResourceGroupName, this.Name, this.Region);
-                    this.WriteObject(service);
+                    WebService service = WebServicesClient.GetAzureMlWebService(ResourceGroupName, Name, Region);
+                    WriteObject(service);
                 }
             }
         }

@@ -32,20 +32,20 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var oldBackendHttpSettings = this.ApplicationGateway.BackendHttpSettingsCollection.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var oldBackendHttpSettings = ApplicationGateway.BackendHttpSettingsCollection.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (oldBackendHttpSettings == null)
             {
                 throw new ArgumentException("Backend http settings with the specified name does not exist");
             }
 
-            var newBackendHttpSettings = base.NewObject();
+            var newBackendHttpSettings = NewObject();
 
-            this.ApplicationGateway.BackendHttpSettingsCollection.Remove(oldBackendHttpSettings);
-            this.ApplicationGateway.BackendHttpSettingsCollection.Add(newBackendHttpSettings);
+            ApplicationGateway.BackendHttpSettingsCollection.Remove(oldBackendHttpSettings);
+            ApplicationGateway.BackendHttpSettingsCollection.Add(newBackendHttpSettings);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

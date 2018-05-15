@@ -80,16 +80,16 @@ namespace Microsoft.Azure.Commands.Compute
                 ExecuteClientAction(() =>
                 {
                     Hashtable publicSettings = new Hashtable();
-                    publicSettings.Add(nameKey, this.DomainName);
+                    publicSettings.Add(nameKey, DomainName);
 
-                    if (this.OUPath != null)
+                    if (OUPath != null)
                     {
-                        publicSettings.Add(ouPathKey, this.OUPath);
+                        publicSettings.Add(ouPathKey, OUPath);
                     }
 
-                    if (this.JoinOption != null)
+                    if (JoinOption != null)
                     {
-                        publicSettings.Add(optionKey, this.JoinOption);
+                        publicSettings.Add(optionKey, JoinOption);
                     }
 
                     publicSettings.Add(restartKey, Restart.IsPresent);
@@ -98,30 +98,30 @@ namespace Microsoft.Azure.Commands.Compute
                     if (Credential != null)
                     {
                         publicSettings.Add(userKey, Credential.UserName);
-                        privateSettings.Add(passwordKey, ConversionUtilities.SecureStringToString(this.Credential.Password));
+                        privateSettings.Add(passwordKey, ConversionUtilities.SecureStringToString(Credential.Password));
                     }
 
-                    if (string.IsNullOrEmpty(this.Location))
+                    if (string.IsNullOrEmpty(Location))
                     {
-                        this.Location = GetLocationFromVm(this.ResourceGroupName, this.VMName);
+                        Location = GetLocationFromVm(ResourceGroupName, VMName);
                     }
 
                     var parameters = new VirtualMachineExtension
                     {
-                        Location = this.Location,
+                        Location = Location,
                         Publisher = VirtualMachineADDomainExtensionContext.ExtensionDefaultPublisher,
                         VirtualMachineExtensionType = VirtualMachineADDomainExtensionContext.ExtensionDefaultName,
-                        TypeHandlerVersion = this.TypeHandlerVersion ?? VirtualMachineADDomainExtensionContext.ExtensionDefaultVersion,
-                        AutoUpgradeMinorVersion = !this.DisableAutoUpgradeMinorVersion.IsPresent,
-                        ForceUpdateTag = this.ForceRerun,
+                        TypeHandlerVersion = TypeHandlerVersion ?? VirtualMachineADDomainExtensionContext.ExtensionDefaultVersion,
+                        AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent,
+                        ForceUpdateTag = ForceRerun,
                         Settings = publicSettings,
                         ProtectedSettings = privateSettings
                     };
 
-                    var op = this.VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name ?? VirtualMachineADDomainExtensionContext.ExtensionDefaultName,
+                    var op = VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name ?? VirtualMachineADDomainExtensionContext.ExtensionDefaultName,
                         parameters).GetAwaiter().GetResult();
 
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);

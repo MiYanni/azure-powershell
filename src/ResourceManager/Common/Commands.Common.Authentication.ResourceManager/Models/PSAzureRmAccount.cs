@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.Profile.Models
 
         public override string ToString()
         {
-            return this.Id;
+            return Id;
         }
     }
 }

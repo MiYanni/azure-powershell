@@ -37,13 +37,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string mappingName,
             CreateProtectionContainerMappingInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectionContainerMappings.BeginCreateWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     mappingName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);
@@ -62,11 +62,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             CreateProtectionContainerInput input)
         {
-            var op = this.GetSiteRecoveryClient().ReplicationProtectionContainers.BeginCreateWithHttpMessagesAsync(
+            var op = GetSiteRecoveryClient().ReplicationProtectionContainers.BeginCreateWithHttpMessagesAsync(
                 fabricName,
                 protectionContainerName,
                 input,
-                this.GetRequestHeaders(true))
+                GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);
@@ -79,17 +79,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>Protection Container list response</returns>
         public List<ProtectionContainer> GetAzureSiteRecoveryProtectionContainer()
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationProtectionContainers
-                .ListWithHttpMessagesAsync(this.GetRequestHeaders(true))
+                .ListWithHttpMessagesAsync(GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationProtectionContainers.ListNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);
@@ -104,19 +104,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public List<ProtectionContainer> GetAzureSiteRecoveryProtectionContainer(
             string fabricName)
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationProtectionContainers.ListByReplicationFabricsWithHttpMessagesAsync(
                     fabricName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationProtectionContainers
                     .ListByReplicationFabricsNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);
@@ -133,11 +133,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string fabricName,
             string protectionContainerName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .ReplicationProtectionContainers.GetWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -153,21 +153,21 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string fabricName,
             string protectionContainerName)
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationProtectionContainerMappings
                 .ListByReplicationProtectionContainersWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationProtectionContainerMappings
                     .ListByReplicationProtectionContainersNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);
@@ -187,12 +187,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             string mappingName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .ReplicationProtectionContainerMappings.GetWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     mappingName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -210,12 +210,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             string mappingName)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectionContainerMappings.BeginPurgeWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     mappingName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);
@@ -232,10 +232,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string fabricName,
             string protectionContainerName)
         {
-            var op = this.GetSiteRecoveryClient().ReplicationProtectionContainers.BeginDeleteWithHttpMessagesAsync(
+            var op = GetSiteRecoveryClient().ReplicationProtectionContainers.BeginDeleteWithHttpMessagesAsync(
                 fabricName,
                 protectionContainerName,
-                this.GetRequestHeaders(true))
+                GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);
@@ -256,13 +256,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string mappingName,
             RemoveProtectionContainerMappingInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectionContainerMappings.BeginDeleteWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     mappingName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);

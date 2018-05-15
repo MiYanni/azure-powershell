@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 
         private static string CurrentUtcDateHeaderName = "x-ms-current-utc-date";
 
-        private string serverName;
+        private string _serverName;
 
         private ClusterResolutionResult clusterResolveResult;
 
@@ -92,17 +92,17 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 
         public SynchronizeAzureAzureAnalysisServer()
         {
-            this.AsAzureHttpClient = new AsAzureHttpClient(() =>
+            AsAzureHttpClient = new AsAzureHttpClient(() =>
             {
                 HttpClientHandler httpClientHandler = new HttpClientHandler();
                 httpClientHandler.AllowAutoRedirect = false;
                 return new HttpClient(httpClientHandler);
             });
 
-            this.TokenCacheItemProvider = new TokenCacheItemProvider();
-            this.syncRequestRootActivityId = string.Empty;
-            this.correlationId = Guid.Empty;
-            this.syncRequestTimeStamp = string.Empty;
+            TokenCacheItemProvider = new TokenCacheItemProvider();
+            syncRequestRootActivityId = string.Empty;
+            correlationId = Guid.Empty;
+            syncRequestTimeStamp = string.Empty;
         }
 
         public SynchronizeAzureAzureAnalysisServer(IAsAzureHttpClient AsAzureHttpClient, ITokenCacheItemProvider TokenCacheItemProvider)
@@ -141,16 +141,16 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                 var context = AsAzureClientSession.Instance.Profile.Context;
                 AsAzureClientSession.Instance.Login(context);
                 WriteProgress(new ProgressRecord(0, "Sync-AzureAnalysisServicesInstance.", string.Format("Authenticating user for '{0}' environment.", context.Environment.Name)));
-                var clusterResolveResult = ClusterResolve(context, serverName);
+                var clusterResolveResult = ClusterResolve(context, _serverName);
                 var virtualServerName = clusterResolveResult.CoreServerName.Split(":".ToCharArray())[0];
-                if (!serverName.Equals(virtualServerName) && !clusterResolveResult.CoreServerName.EndsWith(":rw"))
+                if (!_serverName.Equals(virtualServerName) && !clusterResolveResult.CoreServerName.EndsWith(":rw"))
                 {
                     throw new SynchronizationFailedException("Sync request can only be sent to the management endpoint");
                 }
 
                 this.clusterResolveResult = clusterResolveResult;
                 Uri clusterBaseUri = new Uri(string.Format("{0}{1}{2}", Uri.UriSchemeHttps, Uri.SchemeDelimiter, clusterResolveResult.ClusterFQDN));
-                var accessToken = this.TokenCacheItemProvider.GetTokenFromTokenCache(AsAzureClientSession.TokenCache, context.Account.UniqueId, context.Environment.Name);
+                var accessToken = TokenCacheItemProvider.GetTokenFromTokenCache(AsAzureClientSession.TokenCache, context.Account.UniqueId, context.Environment.Name);
 
                 ScaleOutServerDatabaseSyncDetails syncResult = null;
                 try
@@ -194,21 +194,21 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 
         protected override void BeginProcessing()
         {
-            this._dataCollectionProfile = new AzurePSDataCollectionProfile(false);
+            _dataCollectionProfile = new AzurePSDataCollectionProfile(false);
 
             if (AsAzureClientSession.Instance.Profile.Environments.Count == 0)
             {
                 throw new PSInvalidOperationException(string.Format(Resources.NotLoggedInMessage, ""));
             }
 
-            serverName = Instance;
+            _serverName = Instance;
             Uri uriResult;
 
             // if the user specifies the FQN of the server, then extract the servername out of that.
             // and set the current context
             if (Uri.TryCreate(Instance, UriKind.Absolute, out uriResult) && uriResult.Scheme == "asazure")
             {
-                serverName = uriResult.PathAndQuery.Trim('/');
+                _serverName = uriResult.PathAndQuery.Trim('/');
                 if (string.Compare(AsAzureClientSession.Instance.Profile.Context.Environment.Name, uriResult.DnsSafeHost, StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
                     throw new PSInvalidOperationException(string.Format(Resources.NotLoggedInMessage, Instance));
@@ -220,13 +220,13 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                 if (currentContext != null
                     && AsAzureClientSession.AsAzureRolloutEnvironmentMapping.ContainsKey(currentContext.Environment.Name))
                 {
-                    throw new PSInvalidOperationException(string.Format(Resources.InvalidServerName, serverName));
+                    throw new PSInvalidOperationException(string.Format(Resources.InvalidServerName, _serverName));
                 }
             }
 
-            if (this.AsAzureHttpClient == null)
+            if (AsAzureHttpClient == null)
             {
-                this.AsAzureHttpClient = new AsAzureHttpClient(() =>
+                AsAzureHttpClient = new AsAzureHttpClient(() =>
                 {
                     HttpClientHandler httpClientHandler = new HttpClientHandler();
                     httpClientHandler.AllowAutoRedirect = false;
@@ -234,9 +234,9 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                 });
             }
 
-            if (this.TokenCacheItemProvider == null)
+            if (TokenCacheItemProvider == null)
             {
-                this.TokenCacheItemProvider = new TokenCacheItemProvider();
+                TokenCacheItemProvider = new TokenCacheItemProvider();
             }
 
             base.BeginProcessing();
@@ -271,14 +271,14 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
             string accessToken)
         {
             Tuple<Uri, RetryConditionHeaderValue> pollingUrlAndRetryAfter = new Tuple<Uri, RetryConditionHeaderValue>(null, null);
-            ScaleOutServerDatabaseSyncDetails syncResult = null;
+            ScaleOutServerDatabaseSyncDetails syncResult;
 
             return await Task.Run(async () =>
             {
                 try
                 {
-                    var synchronize = string.Format((string)context.Environment.Endpoints[AsAzureEnvironment.AsRolloutEndpoints.SyncEndpoint], this.serverName, databaseName);
-                    this.AsAzureHttpClient.resetHttpClient();
+                    var synchronize = string.Format((string)context.Environment.Endpoints[AsAzureEnvironment.AsRolloutEndpoints.SyncEndpoint], _serverName, databaseName);
+                    AsAzureHttpClient.resetHttpClient();
                     using (var message = await AsAzureHttpClient.CallPostAsync(
                         syncBaseUri,
                         synchronize,
@@ -286,8 +286,8 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                         correlationId,
                         null))
                     {
-                        this.syncRequestRootActivityId = message.Headers.Contains(RootActivityIdHeaderName) ? message.Headers.GetValues(RootActivityIdHeaderName).FirstOrDefault() : string.Empty;
-                        this.syncRequestTimeStamp = message.Headers.Contains(CurrentUtcDateHeaderName) ? message.Headers.GetValues(CurrentUtcDateHeaderName).FirstOrDefault() : string.Empty;
+                        syncRequestRootActivityId = message.Headers.Contains(RootActivityIdHeaderName) ? message.Headers.GetValues(RootActivityIdHeaderName).FirstOrDefault() : string.Empty;
+                        syncRequestTimeStamp = message.Headers.Contains(CurrentUtcDateHeaderName) ? message.Headers.GetValues(CurrentUtcDateHeaderName).FirstOrDefault() : string.Empty;
 
                         message.EnsureSuccessStatusCode();
 
@@ -322,9 +322,9 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                         Database = databaseName,
                         SyncState = DatabaseSyncState.Invalid,
                         Details = Resources.PostSyncRequestFailureMessage.FormatInvariant(
-                                                                this.clusterResolveResult.CoreServerName,
-                                                                this.syncRequestRootActivityId,
-                                                                this.syncRequestTimeStamp,
+                                                                clusterResolveResult.CoreServerName,
+                                                                syncRequestRootActivityId,
+                                                                syncRequestTimeStamp,
                                                                 string.Format(e.Message)),
                         UpdatedAt = timestampNow,
                         StartedAt = timestampNow
@@ -336,7 +336,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 
                 try
                 {
-                    ScaleOutServerDatabaseSyncResult result = await this.PollSyncStatusWithRetryAsync(
+                    ScaleOutServerDatabaseSyncResult result = await PollSyncStatusWithRetryAsync(
                             databaseName,
                             accessToken,
                             pollingUrl,
@@ -354,7 +354,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                         Database = databaseName,
                         SyncState = DatabaseSyncState.Invalid,
                         Details = Resources.SyncASPollStatusFailureMessage.FormatInvariant(
-                                serverName,
+                                _serverName,
                                 string.Empty,
                                 timestampNow.ToString(CultureInfo.InvariantCulture),
                                 string.Format(e.StackTrace)),
@@ -396,7 +396,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                         await Task.Delay(DefaultRetryIntervalForPolling);
                     }
 
-                    this.AsAzureHttpClient.resetHttpClient();
+                    AsAzureHttpClient.resetHttpClient();
                     using (HttpResponseMessage message = await AsAzureHttpClient.CallGetAsync(
                         pollingUrl,
                         string.Empty,
@@ -435,7 +435,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
                         if(shouldRetry)
                         {
                             retryCount++;
-                            response = new ScaleOutServerDatabaseSyncResult()
+                            response = new ScaleOutServerDatabaseSyncResult
                             {
                                 Database = databaseName,
                                 SyncState = DatabaseSyncState.Invalid
@@ -471,14 +471,13 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
         private ClusterResolutionResult ClusterResolve(AsAzureContext context, string serverName)
         {
             Uri clusterResolveBaseUri = new Uri(string.Format("{0}{1}{2}", Uri.UriSchemeHttps, Uri.SchemeDelimiter, context.Environment.Name));
-            UriBuilder resolvedUriBuilder = new UriBuilder(clusterResolveBaseUri);
-            string rolloutAccessToken = this.TokenCacheItemProvider.GetTokenFromTokenCache(AsAzureClientSession.TokenCache, context.Account.UniqueId, context.Environment.Name);
+            string rolloutAccessToken = TokenCacheItemProvider.GetTokenFromTokenCache(AsAzureClientSession.TokenCache, context.Account.UniqueId, context.Environment.Name);
 
             var resolveEndpoint = "/webapi/clusterResolve";
             var content = new StringContent($"ServerName={serverName}");
             content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
 
-            this.AsAzureHttpClient.resetHttpClient();
+            AsAzureHttpClient.resetHttpClient();
             using (HttpResponseMessage message = AsAzureHttpClient.CallPostAsync(
                 clusterResolveBaseUri,
                 resolveEndpoint,

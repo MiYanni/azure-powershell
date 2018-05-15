@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public ResourceIdentity ToResourceIdentity()
         {
-            return new ResourceIdentifier()
+            return new ResourceIdentifier
             {
                 ParentResource = ParentResource,
                 ResourceGroupName = ResourceGroupName,

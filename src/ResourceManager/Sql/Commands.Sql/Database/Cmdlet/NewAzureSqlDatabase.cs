@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
             // We try to get the database.  Since this is a create, we don't want the database to exist
             try
             {
-                ModelAdapter.GetDatabase(this.ResourceGroupName, this.ServerName, this.DatabaseName);
+                ModelAdapter.GetDatabase(ResourceGroupName, ServerName, DatabaseName);
             }
             catch (CloudException ex)
             {
@@ -153,7 +153,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
 
             // The database already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.DatabaseNameExists, this.DatabaseName, this.ServerName),
+                string.Format(Properties.Resources.DatabaseNameExists, DatabaseName, ServerName),
                 "DatabaseName");
         }
 
@@ -167,7 +167,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
             string location = ModelAdapter.GetServerLocation(ResourceGroupName, ServerName);
             return new AzureSqlDatabaseCreateOrUpdateModel
             {
-                Database = new AzureSqlDatabaseModel()
+                Database = new AzureSqlDatabaseModel
                 {
                     Location = location,
                     ResourceGroupName = ResourceGroupName,
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
                     Edition = Edition,
                     MaxSizeBytes = MaxSizeBytes,
                     RequestedServiceObjectiveName = RequestedServiceObjectiveName,
-                    Tags = TagsConversionHelper.CreateTagDictionary(Tags, validate: true),
+                    Tags = TagsConversionHelper.CreateTagDictionary(Tags, true),
                     ElasticPoolName = ElasticPoolName,
                     ReadScale = ReadScale,
                     ZoneRedundant = MyInvocation.BoundParameters.ContainsKey("ZoneRedundant") ? (bool?)ZoneRedundant.ToBool() : null,
@@ -202,11 +202,11 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
             AzureSqlDatabaseModel upsertedDatabase;
             if (!string.IsNullOrEmpty(entity.SampleName) || entity.Database.ZoneRedundant.HasValue)
             {
-                upsertedDatabase = ModelAdapter.UpsertDatabaseWithNewSdk(this.ResourceGroupName, this.ServerName, entity);
+                upsertedDatabase = ModelAdapter.UpsertDatabaseWithNewSdk(ResourceGroupName, ServerName, entity);
             }
             else
             {
-                upsertedDatabase = ModelAdapter.UpsertDatabase(this.ResourceGroupName, this.ServerName, entity);
+                upsertedDatabase = ModelAdapter.UpsertDatabase(ResourceGroupName, ServerName, entity);
             }
 
             return new AzureSqlDatabaseCreateOrUpdateModel

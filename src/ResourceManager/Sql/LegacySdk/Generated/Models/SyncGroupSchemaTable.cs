@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SyncGroupSchemaColumn> Columns
         {
-            get { return this._columns; }
-            set { this._columns = value; }
+            get { return _columns; }
+            set { _columns = value; }
         }
         
         private string _quotedName;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string QuotedName
         {
-            get { return this._quotedName; }
-            set { this._quotedName = value; }
+            get { return _quotedName; }
+            set { _quotedName = value; }
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncGroupSchemaTable()
         {
-            this.Columns = new LazyList<SyncGroupSchemaColumn>();
+            Columns = new LazyList<SyncGroupSchemaColumn>();
         }
     }
 }

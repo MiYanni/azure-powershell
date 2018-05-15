@@ -46,8 +46,9 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlElasticPoolModel> GetEntity()
         {
-            return new List<AzureSqlElasticPoolModel>() {
-                ModelAdapter.GetElasticPool(this.ResourceGroupName, this.ServerName, this.ElasticPoolName)
+            return new List<AzureSqlElasticPoolModel>
+            {
+                ModelAdapter.GetElasticPool(ResourceGroupName, ServerName, ElasticPoolName)
             };
         }
 
@@ -68,7 +69,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlElasticPoolModel> PersistChanges(IEnumerable<AzureSqlElasticPoolModel> entity)
         {
-            ModelAdapter.RemoveElasticPool(this.ResourceGroupName, this.ServerName, this.ElasticPoolName);
+            ModelAdapter.RemoveElasticPool(ResourceGroupName, ServerName, ElasticPoolName);
             return entity;
         }
 
@@ -78,9 +79,9 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlDatabaseElasticPoolDescription, this.ElasticPoolName, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlDatabaseElasticPoolWarning, this.ElasticPoolName, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseElasticPoolDescription, ElasticPoolName, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseElasticPoolWarning, ElasticPoolName, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }

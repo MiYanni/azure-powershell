@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var getEffectiveNsgs = this.NetworkInterfaceClient.ListEffectiveNetworkSecurityGroups(this.ResourceGroupName, this.NetworkInterfaceName);
+            var getEffectiveNsgs = NetworkInterfaceClient.ListEffectiveNetworkSecurityGroups(ResourceGroupName, NetworkInterfaceName);
 
             var psEffectiveNsgs = NetworkResourceManagerProfile.Mapper.Map<List<PSEffectiveNetworkSecurityGroup>>(getEffectiveNsgs.Value);
 
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.Network
 
             if (psEffectiveNsgs.Count == 0)
             {
-                WriteWarning(Microsoft.Azure.Commands.Network.Properties.Resources.EmptyEffectiveNetworkSecurityGroupOnNic);
+                WriteWarning(Properties.Resources.EmptyEffectiveNetworkSecurityGroupOnNic);
             }
         }
     }

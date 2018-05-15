@@ -86,20 +86,20 @@ namespace Microsoft.Azure.Commands.Network
 
             MNM.NextHopParameters parameters = new MNM.NextHopParameters();
 
-            parameters.DestinationIPAddress= this.DestinationIPAddress;
-            parameters.SourceIPAddress = this.SourceIPAddress;
-            parameters.TargetNicResourceId = this.TargetNetworkInterfaceId;
-            parameters.TargetResourceId = this.TargetVirtualMachineId;
+            parameters.DestinationIPAddress= DestinationIPAddress;
+            parameters.SourceIPAddress = SourceIPAddress;
+            parameters.TargetNicResourceId = TargetNetworkInterfaceId;
+            parameters.TargetResourceId = TargetVirtualMachineId;
 
             MNM.NextHopResult nextHop = new MNM.NextHopResult();
 
             if (ParameterSetName.Contains("SetByResource"))
             {
-                nextHop = this.NetworkWatcherClient.GetNextHop(this.NetworkWatcher.ResourceGroupName, this.NetworkWatcher.Name, parameters);
+                nextHop = NetworkWatcherClient.GetNextHop(NetworkWatcher.ResourceGroupName, NetworkWatcher.Name, parameters);
             }
             else
             {
-                nextHop = this.NetworkWatcherClient.GetNextHop(this.ResourceGroupName, this.NetworkWatcherName, parameters);
+                nextHop = NetworkWatcherClient.GetNextHop(ResourceGroupName, NetworkWatcherName, parameters);
             }
 
             PSNextHopResult psNextHop = NetworkResourceManagerProfile.Mapper.Map<PSNextHopResult>(nextHop);

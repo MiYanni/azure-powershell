@@ -67,11 +67,11 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("DatabaseName"))
             {
                 results = new List<AzureSqlDatabaseModelExpanded>();
-                results.Add(ModelAdapter.GetDatabaseExpanded(this.ResourceGroupName, this.ServerName, this.DatabaseName));
+                results.Add(ModelAdapter.GetDatabaseExpanded(ResourceGroupName, ServerName, DatabaseName));
             }
             else
             {
-                results = ModelAdapter.ListDatabasesExpanded(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListDatabasesExpanded(ResourceGroupName, ServerName);
             }
 
             return results;

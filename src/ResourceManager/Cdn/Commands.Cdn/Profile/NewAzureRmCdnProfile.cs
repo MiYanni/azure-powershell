@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.Cdn.Profile
         /// The resource group name of the profile.
         /// </summary>
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group of the Azure CDN profile will be created in.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         /// <summary>
@@ -97,10 +97,10 @@ namespace Microsoft.Azure.Commands.Cdn.Profile
                 new Management.Cdn.Models.Profile(
                     Location,
                     new SdkSku(Sku.ToString()),
-                    id: null,
-                    name: null,
-                    type: null,
-                    tags: Tag.ToDictionaryTags())
+                    null,
+                    null,
+                    null,
+                    Tag.ToDictionaryTags())
                 );
 
             WriteObject(cdnProfile.ToPsProfile());

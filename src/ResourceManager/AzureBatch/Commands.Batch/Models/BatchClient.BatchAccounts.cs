@@ -43,9 +43,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException(nameof(parameters));
             }
 
-            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(parameters.Tags, validate: true);
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(parameters.Tags, true);
 
-            AutoStorageBaseProperties autoStorage = (string.IsNullOrEmpty(parameters.AutoStorageAccountId)) ? null : new AutoStorageBaseProperties
+            AutoStorageBaseProperties autoStorage = string.IsNullOrEmpty(parameters.AutoStorageAccountId) ? null : new AutoStorageBaseProperties
             {
                 StorageAccountId = parameters.AutoStorageAccountId
             };
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 keyVaultRef = new KeyVaultReference(parameters.KeyVaultId, parameters.KeyVaultUrl);
             }
 
-            var response = BatchManagementClient.BatchAccount.Create(parameters.ResourceGroup, parameters.BatchAccount, new BatchAccountCreateParameters()
+            var response = BatchManagementClient.BatchAccount.Create(parameters.ResourceGroup, parameters.BatchAccount, new BatchAccountCreateParameters
             {
                 Location = parameters.Location,
                 Tags = tagDictionary,
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 KeyVaultReference = keyVaultRef
             });
 
-            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(response, this.azureContext);
+            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(response, azureContext);
             return context;
         }
 
@@ -85,24 +85,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 resourceGroupName = GetGroupForAccount(accountName);
             }
 
-            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(tags, validate: true);
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(tags, true);
             
             // need to the location in order to call
             var getResponse = BatchManagementClient.BatchAccount.Get(resourceGroupName, accountName);
 
-            AutoStorageBaseProperties autoStorage = (autoStorageAccountId == null) ? null : new AutoStorageBaseProperties
+            AutoStorageBaseProperties autoStorage = autoStorageAccountId == null ? null : new AutoStorageBaseProperties
             {
                 StorageAccountId = autoStorageAccountId
             };
 
-            var response = BatchManagementClient.BatchAccount.Create(resourceGroupName, accountName, new BatchAccountCreateParameters()
+            var response = BatchManagementClient.BatchAccount.Create(resourceGroupName, accountName, new BatchAccountCreateParameters
             {
                 Location = getResponse.Location,
                 Tags = tagDictionary,
                 AutoStorage = autoStorage
             });
 
-            BatchAccountContext context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(response, this.azureContext);
+            BatchAccountContext context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(response, azureContext);
 
             return context;
         }
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
             }
             var response = BatchManagementClient.BatchAccount.Get(resourceGroupName, accountName);
 
-            return BatchAccountContext.ConvertAccountResourceToNewAccountContext(response, this.azureContext);
+            return BatchAccountContext.ConvertAccountResourceToNewAccountContext(response, azureContext);
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
             var batchAccountContexts =
                 ListAllAccounts(response).
                 Where(acct => Helpers.MatchesTag(acct, tag)).
-                Select(resource => BatchAccountContext.ConvertAccountResourceToNewAccountContext(resource, this.azureContext));
+                Select(resource => BatchAccountContext.ConvertAccountResourceToNewAccountContext(resource, azureContext));
 
             return batchAccountContexts;
         }
@@ -242,7 +242,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
             IEnumerable<BatchClientBehavior> additionalBehaviors = null)
         {
             PoolOperations poolOperations = context.BatchOMClient.PoolOperations;
-            ODATADetailLevel filterLevel = new ODATADetailLevel(filterClause: filterClause);
+            ODATADetailLevel filterLevel = new ODATADetailLevel(filterClause);
 
             IPagedEnumerable<NodeAgentSku> nodeAgentSkus = poolOperations.ListNodeAgentSkus(filterLevel, additionalBehaviors);
             Func<NodeAgentSku, PSNodeAgentSku> mappingFunction = p => { return new PSNodeAgentSku(p); };

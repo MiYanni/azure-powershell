@@ -13,9 +13,9 @@ namespace Microsoft.Azure.Management.Internal.Resources
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure.OData;
-    using Microsoft.Rest.Azure;
+    using Rest;
+    using Rest.Azure.OData;
+    using Rest.Azure;
     using Models;
 
     /// <summary>

@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureReplicationLinkModel> GetEntity()
         {
-            return ModelAdapter.ListLinks(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.PartnerResourceGroupName);
+            return ModelAdapter.ListLinks(ResourceGroupName, ServerName, DatabaseName, PartnerResourceGroupName);
         }
 
         /// <summary>
@@ -112,11 +112,12 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
             switch (ParameterSetName)
             {
                 case ByFailoverParams:
-                    return new List<AzureReplicationLinkModel>() { ModelAdapter.FailoverLink(this.ResourceGroupName,
-                        this.ServerName,
-                        this.DatabaseName,
-                        this.PartnerResourceGroupName,
-                        this.AllowDataLoss.IsPresent)
+                    return new List<AzureReplicationLinkModel>
+                    { ModelAdapter.FailoverLink(ResourceGroupName,
+                        ServerName,
+                        DatabaseName,
+                        PartnerResourceGroupName,
+                        AllowDataLoss.IsPresent)
                     };
                 default:
                     // Warning user that no options were provided so no action can be taken.

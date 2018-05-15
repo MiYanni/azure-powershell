@@ -26,19 +26,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSRemoteLoginSettings
     {
         
-        internal Microsoft.Azure.Batch.RemoteLoginSettings omObject;
+        internal RemoteLoginSettings omObject;
         
-        internal PSRemoteLoginSettings(Microsoft.Azure.Batch.RemoteLoginSettings omObject)
+        internal PSRemoteLoginSettings(RemoteLoginSettings omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.IPAddress;
+                return omObject.IPAddress;
             }
         }
         
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Port;
+                return omObject.Port;
             }
         }
     }

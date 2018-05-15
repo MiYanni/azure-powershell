@@ -65,10 +65,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
             {
                 return false;
             }
-            else
-            {
-                return anotherSubscription.Id == Id;
-            }
+            return anotherSubscription.Id == Id;
         }
 
         /// <summary>

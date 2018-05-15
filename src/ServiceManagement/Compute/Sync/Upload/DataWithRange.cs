@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 
         public bool IsAllZero()
         {
-            var startIndex = Array.FindIndex(this.Data, 0, (int)this.Range.Length, b => b != 0);
+            var startIndex = Array.FindIndex(Data, 0, (int)Range.Length, b => b != 0);
 
             return startIndex == -1;
         }
@@ -40,23 +40,23 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.manager.ReturnBuffer(this.Data);
-                this.Data = null;
+                manager.ReturnBuffer(Data);
+                Data = null;
             }
-            this.disposed = true;
+            disposed = true;
         }
     }
 }

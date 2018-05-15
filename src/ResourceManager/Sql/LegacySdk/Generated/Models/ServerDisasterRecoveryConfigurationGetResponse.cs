@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerDisasterRecoveryConfiguration ServerDisasterRecoveryConfiguration
         {
-            get { return this._serverDisasterRecoveryConfiguration; }
-            set { this._serverDisasterRecoveryConfiguration = value; }
+            get { return _serverDisasterRecoveryConfiguration; }
+            set { _serverDisasterRecoveryConfiguration = value; }
         }
         
         /// <summary>

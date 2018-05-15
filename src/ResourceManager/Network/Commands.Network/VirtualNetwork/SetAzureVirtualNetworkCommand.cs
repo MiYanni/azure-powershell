@@ -38,19 +38,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!this.IsVirtualNetworkPresent(this.VirtualNetwork.ResourceGroupName, this.VirtualNetwork.Name))
+            if (!IsVirtualNetworkPresent(VirtualNetwork.ResourceGroupName, VirtualNetwork.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Map to the sdk object
-            var vnetModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetwork>(this.VirtualNetwork);
-            vnetModel.Tags = TagsConversionHelper.CreateTagDictionary(this.VirtualNetwork.Tag, validate: true);
+            var vnetModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetwork>(VirtualNetwork);
+            vnetModel.Tags = TagsConversionHelper.CreateTagDictionary(VirtualNetwork.Tag, validate: true);
 
             // Execute the Create VirtualNetwork call
-            this.VirtualNetworkClient.CreateOrUpdate(this.VirtualNetwork.ResourceGroupName, this.VirtualNetwork.Name, vnetModel);
+            VirtualNetworkClient.CreateOrUpdate(VirtualNetwork.ResourceGroupName, VirtualNetwork.Name, vnetModel);
 
-            var getVirtualNetwork = this.GetVirtualNetwork(this.VirtualNetwork.ResourceGroupName, this.VirtualNetwork.Name);
+            var getVirtualNetwork = GetVirtualNetwork(VirtualNetwork.ResourceGroupName, VirtualNetwork.Name);
             WriteObject(getVirtualNetwork);
         }
     }

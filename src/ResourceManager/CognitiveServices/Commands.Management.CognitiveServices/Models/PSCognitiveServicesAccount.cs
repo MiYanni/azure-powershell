@@ -22,23 +22,23 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices.Models
 {
     public class PSCognitiveServicesAccount
     {
-        public PSCognitiveServicesAccount(CognitiveServicesModels.CognitiveServicesAccount cognitiveServicesAccount)
+        public PSCognitiveServicesAccount(CognitiveServicesAccount cognitiveServicesAccount)
         {
-            this.ResourceGroupName = ParseResourceGroupFromId(cognitiveServicesAccount.Id);
-            this.AccountName = cognitiveServicesAccount.Name;
-            this.Id = cognitiveServicesAccount.Id;
-            this.Endpoint = cognitiveServicesAccount.Endpoint;
-            this.Location = cognitiveServicesAccount.Location;
-            this.Sku = cognitiveServicesAccount.Sku;
-            this.AccountType = cognitiveServicesAccount.Kind;
-            this.Etag = cognitiveServicesAccount.Etag;
-            this.ResourceType = cognitiveServicesAccount.Type;
+            ResourceGroupName = ParseResourceGroupFromId(cognitiveServicesAccount.Id);
+            AccountName = cognitiveServicesAccount.Name;
+            Id = cognitiveServicesAccount.Id;
+            Endpoint = cognitiveServicesAccount.Endpoint;
+            Location = cognitiveServicesAccount.Location;
+            Sku = cognitiveServicesAccount.Sku;
+            AccountType = cognitiveServicesAccount.Kind;
+            Etag = cognitiveServicesAccount.Etag;
+            ResourceType = cognitiveServicesAccount.Type;
 #pragma warning disable CS0436 // Type conflicts with imported type
 #pragma warning disable CS0618 // Type or member is obsolete
-            this.ProvisioningState = (ProvisioningState)Enum.Parse(typeof(ProvisioningState), cognitiveServicesAccount.ProvisioningState);
+            ProvisioningState = (ProvisioningState)Enum.Parse(typeof(ProvisioningState), cognitiveServicesAccount.ProvisioningState);
 #pragma warning restore CS0618 // Type or member is obsolete
 #pragma warning restore CS0436 // Type conflicts with imported type
-            this.Tags = cognitiveServicesAccount.Tags;
+            Tags = cognitiveServicesAccount.Tags;
         }
 
         public string ResourceGroupName { get; private set; }
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices.Models
 
         public IDictionary<string, string> Tags { get; private set; }
 
-        public static PSCognitiveServicesAccount Create(CognitiveServicesModels.CognitiveServicesAccount cognitiveServicesAccount)
+        public static PSCognitiveServicesAccount Create(CognitiveServicesAccount cognitiveServicesAccount)
         {
             var result = new PSCognitiveServicesAccount(cognitiveServicesAccount);
             return result;
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices.Models
         /// <returns>null</returns>
         public override string ToString()
         {
-            return this.Id;
+            return Id;
         }
     }
 }

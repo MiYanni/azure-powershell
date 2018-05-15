@@ -27,11 +27,11 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (response != null)
             {
-                this.Metadata = new PSSearchMetadata(response.Metadata);
-                this.Value = new List<PSSchemaValue>();
+                Metadata = new PSSearchMetadata(response.Metadata);
+                Value = new List<PSSchemaValue>();
                 foreach (SearchSchemaValue v in response.Value)
                 {
-                    this.Value.Add(new PSSchemaValue(v));
+                    Value.Add(new PSSchemaValue(v));
                 }
             }
         }

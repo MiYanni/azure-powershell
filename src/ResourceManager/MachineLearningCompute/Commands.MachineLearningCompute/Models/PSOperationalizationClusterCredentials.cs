@@ -20,12 +20,12 @@ namespace Microsoft.Azure.Commands.MachineLearningCompute.Models
     {
         public PSOperationalizationClusterCredentials(OperationalizationClusterCredentials credentials)
         {
-            this.StorageAccount = credentials.StorageAccount;
-            this.ContainerRegistry = credentials.ContainerRegistry;
-            this.ContainerService = credentials.ContainerService;
-            this.AppInsights = credentials.AppInsights;
-            this.ServiceAuthConfiguration = credentials.ServiceAuthConfiguration;
-            this.SslConfiguration = credentials.SslConfiguration;
+            StorageAccount = credentials.StorageAccount;
+            ContainerRegistry = credentials.ContainerRegistry;
+            ContainerService = credentials.ContainerService;
+            AppInsights = credentials.AppInsights;
+            ServiceAuthConfiguration = credentials.ServiceAuthConfiguration;
+            SslConfiguration = credentials.SslConfiguration;
         }
     }
 }

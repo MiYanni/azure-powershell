@@ -20,13 +20,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
     using Azure.Commands.Common.Authentication.Abstractions;
     using Commands.Common;
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.File;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.File;
+    using Commands.Common.Storage;
+    using Common;
+    using File;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.File;
     using System;
     using System.IO;
     using System.Management.Automation;
@@ -229,10 +229,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             {
                 return null;
             }
-            else
-            {
-                return base.CreateChannel();
-            }
+            return base.CreateChannel();
         }
 
         /// <summary>
@@ -279,7 +276,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                 }
                 else
                 {
-                    destChannel = CreateChannel(this.GetCmdletStorageContext(DestContext));
+                    destChannel = CreateChannel(GetCmdletStorageContext(DestContext));
                 }
             }
 
@@ -305,7 +302,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                     break;
 
                 case UriParameterSet:
-                    copyAction = () => StartCopyBlob(destChannel, AbsoluteUri, DestContainer, DestBlob, (Context != null? GetCmdletStorageContext(Context) : null));
+                    copyAction = () => StartCopyBlob(destChannel, AbsoluteUri, DestContainer, DestBlob, Context != null? GetCmdletStorageContext(Context) : null);
                     target = AbsoluteUri;
                     break;
 
@@ -325,45 +322,45 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                     break;
                 case ShareNameParameterSet:
                     copyAction = () => StartCopyFromFile(
-                        this.GetFileChannel(),
+                        GetFileChannel(),
                         destChannel,
-                        this.SrcShareName,
-                        this.SrcFilePath,
-                        this.DestContainer,
-                        this.DestBlob);
+                        SrcShareName,
+                        SrcFilePath,
+                        DestContainer,
+                        DestBlob);
                     target = SrcFilePath;
                     break;
                 case ShareParameterSet:
                     copyAction = () => StartCopyFromFile(
                         destChannel,
-                        this.SrcShare.GetRootDirectoryReference(),
-                        this.SrcFilePath,
-                        this.DestContainer,
-                        this.DestBlob);
+                        SrcShare.GetRootDirectoryReference(),
+                        SrcFilePath,
+                        DestContainer,
+                        DestBlob);
                     target = SrcFilePath;
                     break;
                 case DirParameterSet:
                     copyAction = () => StartCopyFromFile(
                         destChannel,
-                        this.SrcDir,
-                        this.SrcFilePath,
-                        this.DestContainer,
-                        this.DestBlob);
+                        SrcDir,
+                        SrcFilePath,
+                        DestContainer,
+                        DestBlob);
                     target = SrcFilePath;
                     break;
                 case FileParameterSet:
                     copyAction = () => StartCopyFromFile(
                         destChannel,
-                        this.SrcFile,
-                        this.DestContainer,
-                        this.DestBlob);
+                        SrcFile,
+                        DestContainer,
+                        DestBlob);
                     target = SrcFile.Name;
                     break;
                 case FileToBlobParameterSet:
                     copyAction = () => StartCopyFromFile(
                         destChannel,
-                        this.SrcFile,
-                        this.DestCloudBlob);
+                        SrcFile,
+                        DestCloudBlob);
                     target = SrcFile.Name;
                     break;
             }
@@ -385,7 +382,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             ValidateBlobType(srcCloudBlob);
             ValidateBlobTier(srcCloudBlob.BlobType, pageBlobTier);
 
-            Func<long, Task> taskGenerator = (taskId) => StartCopyAsync(taskId, destChannel, srcCloudBlob, destCloudBlob);
+            Func<long, Task> taskGenerator = taskId => StartCopyAsync(taskId, destChannel, srcCloudBlob, destCloudBlob);
             RunTask(taskGenerator);
         }
 
@@ -403,9 +400,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                 destBlobName = srcCloudBlob.Name;
             }
 
-            CloudBlob destBlob = this.GetDestBlob(destChannel, destContainer, destBlobName, srcCloudBlob.BlobType);
+            CloudBlob destBlob = GetDestBlob(destChannel, destContainer, destBlobName, srcCloudBlob.BlobType);
 
-            this.StartCopyBlob(destChannel, srcCloudBlob, destBlob);
+            StartCopyBlob(destChannel, srcCloudBlob, destBlob);
         }
 
         /// <summary>
@@ -451,7 +448,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             else
             {
                 CloudBlobContainer container = destChannel.GetContainerReference(destContainer);
-                Func<long, Task> taskGenerator = (taskId) => StartCopyAsync(taskId, destChannel, new Uri(srcUri), container, destBlobName);
+                Func<long, Task> taskGenerator = taskId => StartCopyAsync(taskId, destChannel, new Uri(srcUri), container, destBlobName);
                 RunTask(taskGenerator);
             }
         }
@@ -479,7 +476,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             CloudBlobContainer container = SrcChannel.GetContainerReference(srcContainerName);
             CloudBlob blob = GetBlobReferenceFromServerWithContainer(SrcChannel, container, srcBlobName, accessCondition, options, OperationContext);
 
-            this.StartCopyBlob(destChannel, blob, destContainerName, destBlobName);
+            StartCopyBlob(destChannel, blob, destContainerName, destBlobName);
         }
 
         private void StartCopyFromFile(IStorageFileManagement srcChannel, IStorageBlobManagement destChannel, string srcShareName, string srcFilePath, string destContainerName, string destBlobName)
@@ -487,7 +484,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             NamingUtil.ValidateShareName(srcShareName, false);
             CloudFileShare share = srcChannel.GetShareReference(srcShareName);
 
-            this.StartCopyFromFile(destChannel, share.GetRootDirectoryReference(), srcFilePath, destContainerName, destBlobName);
+            StartCopyFromFile(destChannel, share.GetRootDirectoryReference(), srcFilePath, destContainerName, destBlobName);
         }
 
         private void StartCopyFromFile(IStorageBlobManagement destChannel, CloudFileDirectory srcDir, string srcFilePath, string destContainerName, string destBlobName)
@@ -495,7 +492,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             string[] path = NamingUtil.ValidatePath(srcFilePath, true);
             CloudFile file = srcDir.GetFileReferenceByPath(path);
 
-            this.StartCopyFromFile(destChannel, file, destContainerName, destBlobName);
+            StartCopyFromFile(destChannel, file, destContainerName, destBlobName);
         }
 
         private void StartCopyFromFile(IStorageBlobManagement destChannel, CloudFile srcFile, string destContainerName, string destBlobName)
@@ -505,9 +502,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                 destBlobName = srcFile.GetFullPath();
             }
 
-            CloudBlob destBlob = this.GetDestBlob(destChannel, destContainerName, destBlobName, BlobType.BlockBlob);
+            CloudBlob destBlob = GetDestBlob(destChannel, destContainerName, destBlobName, BlobType.BlockBlob);
 
-            this.StartCopyFromFile(destChannel, srcFile, destBlob);
+            StartCopyFromFile(destChannel, srcFile, destBlob);
         }
 
         private void StartCopyFromFile(IStorageBlobManagement destChannel, CloudFile srcFile, CloudBlob destBlob)
@@ -519,7 +516,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                 throw new InvalidOperationException(Resources.OnlyCopyFromBlockBlobToAzureFile);
             }
 
-            Func<long, Task> taskGenerator = (taskId) => this.StartCopyFromFile(taskId, destChannel, srcFile, destBlockBlob); ;
+            Func<long, Task> taskGenerator = taskId => StartCopyFromFile(taskId, destChannel, srcFile, destBlockBlob); ;
             RunTask(taskGenerator);
         }
 
@@ -538,10 +535,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                     // Opened workitem 1487579 to track this.
                     throw new InvalidOperationException(Resources.DestinationBlobTypeNotMatch);
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
 
@@ -551,7 +545,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             bool destExist = true;
             try
             {
-                await destBlob.FetchAttributesAsync(null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
+                await destBlob.FetchAttributesAsync(null, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
             }
             catch (StorageException ex)
             {
@@ -565,25 +559,25 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                 }
             }
 
-            if (!destExist || this.ConfirmOverwrite(srcUri.AbsoluteUri.ToString(), destBlob.Uri.ToString()))
+            if (!destExist || ConfirmOverwrite(srcUri.AbsoluteUri.ToString(), destBlob.Uri.ToString()))
             {
                 string copyId;
                 if (pageBlobTier == null)
                 {
-                    copyId = await destChannel.StartCopyAsync(destBlob, srcUri, null, null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
+                    copyId = await destChannel.StartCopyAsync(destBlob, srcUri, null, null, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    copyId = await destChannel.StartCopyAsync((CloudPageBlob)destBlob, srcUri, pageBlobTier.Value, null, null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
+                    copyId = await destChannel.StartCopyAsync((CloudPageBlob)destBlob, srcUri, pageBlobTier.Value, null, null, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
                 }
-                this.OutputStream.WriteVerbose(taskId, String.Format(Resources.CopyDestinationBlobPending, destBlob.Name, destBlob.Container.Name, copyId));
-                this.WriteCloudBlobObject(taskId, destChannel, destBlob);
+                OutputStream.WriteVerbose(taskId, String.Format(Resources.CopyDestinationBlobPending, destBlob.Name, destBlob.Container.Name, copyId));
+                WriteCloudBlobObject(taskId, destChannel, destBlob);
             }
         }
 
         private async Task StartCopyFromFile(long taskId, IStorageBlobManagement destChannel, CloudFile srcFile, CloudBlockBlob destBlob)
         {
-            await this.StartCopyFromUri(taskId, destChannel, srcFile.GenerateUriWithCredentials(), destBlob).ConfigureAwait(false);
+            await StartCopyFromUri(taskId, destChannel, srcFile.GenerateUriWithCredentials(), destBlob).ConfigureAwait(false);
         }
 
         private CloudBlob GetDestBlob(IStorageBlobManagement destChannel, string destContainerName, string destBlobName, BlobType blobType)
@@ -626,7 +620,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             NameUtil.ValidateContainerName(destBlob.Container.Name);
             NameUtil.ValidateBlobName(destBlob.Name);
 
-            await this.StartCopyFromBlob(taskId, destChannel, sourceBlob, destBlob).ConfigureAwait(false);
+            await StartCopyFromBlob(taskId, destChannel, sourceBlob, destBlob).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -645,7 +639,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             BlobType destBlobType = BlobType.BlockBlob;
             try
             {
-                await sourceBlob.FetchAttributesAsync(null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken);
+                await sourceBlob.FetchAttributesAsync(null, RequestOptions, OperationContext, CmdletCancellationToken);
 
                 //When the source Uri is a file Uri, will get BlobType.Unspecified, and should use block blob in destination
                 if (sourceBlob.BlobType != BlobType.Unspecified)
@@ -658,7 +652,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             }
             CloudBlob destBlob = GetDestBlob(destChannel, destContainer.Name, destBlobName, destBlobType);
 
-            await this.StartCopyFromUri(taskId, destChannel, uri, destBlob);
+            await StartCopyFromUri(taskId, destChannel, uri, destBlob);
         }
 
         /// <summary>

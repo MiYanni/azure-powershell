@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
 
             List<CSMContainerResponse> containers = new List<CSMContainerResponse>();
             containers.AddRange(AzureBackupClient.ListContainers(resourceGroupName, resourceName, parameters));
-            WriteDebug(string.Format(Resources.FetchedContainer, containers.Count()));
+            WriteDebug(string.Format(Resources.FetchedContainer, containers.Count));
 
             // When resource group name is specified, remove all containers whose resource group name
             // doesn't match the given resource group name

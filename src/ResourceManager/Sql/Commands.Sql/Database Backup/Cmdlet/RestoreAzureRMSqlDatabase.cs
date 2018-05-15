@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
     [Cmdlet(VerbsData.Restore, "AzureRmSqlDatabase",
         ConfirmImpact = ConfirmImpact.None)]
     public class RestoreAzureRmSqlDatabase
-        : AzureSqlCmdletBase<Database.Model.AzureSqlDatabaseModel, AzureSqlDatabaseBackupAdapter>
+        : AzureSqlCmdletBase<AzureSqlDatabaseModel, AzureSqlDatabaseBackupAdapter>
     {
 
         private const string FromPointInTimeBackupSetName = "FromPointInTimeBackup";
@@ -187,7 +187,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
                     throw new ArgumentException("No ParameterSet name");
             }
 
-            model = new AzureSqlDatabaseModel()
+            model = new AzureSqlDatabaseModel
             {
                 Location = location,
                 ResourceGroupName = ResourceGroupName,
@@ -199,7 +199,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
                 CreateMode = createMode
             };
 
-            return ModelAdapter.RestoreDatabase(this.ResourceGroupName, restorePointInTime, ResourceId, model);
+            return ModelAdapter.RestoreDatabase(ResourceGroupName, restorePointInTime, ResourceId, model);
         }
     }
 }

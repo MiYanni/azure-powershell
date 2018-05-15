@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.Sql.DataMasking.Cmdlet
 
             if (!string.IsNullOrEmpty(DataMaskingState))
             {
-                model.DataMaskingState = (DataMaskingState == SecurityConstants.Enabled) ? DataMaskingStateType.Enabled : DataMaskingStateType.Disabled;
+                model.DataMaskingState = DataMaskingState == SecurityConstants.Enabled ? DataMaskingStateType.Enabled : DataMaskingStateType.Disabled;
             }
 
             return model;

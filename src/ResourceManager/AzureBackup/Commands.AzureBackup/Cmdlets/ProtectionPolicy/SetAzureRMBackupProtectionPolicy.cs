@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 WriteDebug(Resources.MakingClientCall);
 
                 var response = AzureBackupClient.GetProtectionPolicyByName(ProtectionPolicy.ResourceGroupName, ProtectionPolicy.ResourceName, ProtectionPolicy.Name);
-                var vault = new CmdletModel.AzureRMBackupVault(ProtectionPolicy.ResourceGroupName, ProtectionPolicy.ResourceName, ProtectionPolicy.Location);
+                var vault = new AzureRMBackupVault(ProtectionPolicy.ResourceGroupName, ProtectionPolicy.ResourceName, ProtectionPolicy.Location);
 
                 var policyInfo = ProtectionPolicyHelpers.GetCmdletPolicy(vault, response);
 
@@ -71,15 +71,15 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                     throw new ArgumentException(String.Format(Resources.PolicyNotFound, ProtectionPolicy.Name));
                 }
 
-                FillRemainingValuesForSetPolicyRequest(policyInfo, this.NewName);
+                FillRemainingValuesForSetPolicyRequest(policyInfo, NewName);
 
                 var backupSchedule = ProtectionPolicyHelpers.FillCSMBackupSchedule(policyInfo.ScheduleType, BackupTime,
                     policyInfo.DaysOfWeek.ToArray<string>());
 
-                NewName = (string.IsNullOrEmpty(NewName) ? policyInfo.Name : NewName);
+                NewName = string.IsNullOrEmpty(NewName) ? policyInfo.Name : NewName;
                 var updateProtectionPolicyRequest = new CSMUpdateProtectionPolicyRequest();
                 updateProtectionPolicyRequest.Properties = new CSMUpdateProtectionPolicyRequestProperties();
-                updateProtectionPolicyRequest.Properties.PolicyName = this.NewName;
+                updateProtectionPolicyRequest.Properties.PolicyName = NewName;
                 updateProtectionPolicyRequest.Properties.BackupSchedule = backupSchedule;
 
                 if (RetentionPolicy != null && RetentionPolicy.Length > 0)
@@ -119,24 +119,24 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
         {
             if (newName != null && NewName != policy.Name)
             {
-                ProtectionPolicyHelpers.ValidateProtectionPolicyName(this.NewName);
-                AzureBackupClient.CheckProtectionPolicyNameAvailability(ProtectionPolicy.ResourceGroupName, ProtectionPolicy.ResourceName, this.NewName);
+                ProtectionPolicyHelpers.ValidateProtectionPolicyName(NewName);
+                AzureBackupClient.CheckProtectionPolicyNameAvailability(ProtectionPolicy.ResourceGroupName, ProtectionPolicy.ResourceName, NewName);
             }
 
-            BackupTime = (BackupTime == DateTime.MinValue) ? policy.BackupTime :
+            BackupTime = BackupTime == DateTime.MinValue ? policy.BackupTime :
                                 BackupTime;
 
-            WriteDebug(String.Format(Resources.PolicyParameterSet, this.ParameterSetName.ToString()));
+            WriteDebug(String.Format(Resources.PolicyParameterSet, ParameterSetName));
 
-            if (this.ParameterSetName != NoScheduleParamSet)
+            if (ParameterSetName != NoScheduleParamSet)
             {
                 if (DaysOfWeek != null && DaysOfWeek.Length > 0 &&
-                    this.ParameterSetName == WeeklyScheduleParamSet)
+                    ParameterSetName == WeeklyScheduleParamSet)
                 {
                     policy.ScheduleType = ScheduleType.Weekly.ToString();
                     policy.DaysOfWeek = DaysOfWeek.ToList<string>();
                 }
-                else if (this.ParameterSetName == DailyScheduleParamSet &&
+                else if (ParameterSetName == DailyScheduleParamSet &&
                     (DaysOfWeek == null || DaysOfWeek.Length <= 0))
                 {
                     policy.ScheduleType = ScheduleType.Daily.ToString();
@@ -144,7 +144,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 }
                 else
                 {
-                    policy.ScheduleType = ProtectionPolicyHelpers.GetScheduleType(DaysOfWeek, this.ParameterSetName,
+                    policy.ScheduleType = ProtectionPolicyHelpers.GetScheduleType(DaysOfWeek, ParameterSetName,
                     DailyScheduleParamSet, WeeklyScheduleParamSet);
 
                 }

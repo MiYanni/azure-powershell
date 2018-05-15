@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ExtensionName
         {
-            get { return this._extensionName; }
-            set { this._extensionName = value; }
+            get { return _extensionName; }
+            set { _extensionName = value; }
         }
         
         private string _extensionType;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ExtensionType
         {
-            get { return this._extensionType; }
-            set { this._extensionType = value; }
+            get { return _extensionType; }
+            set { _extensionType = value; }
         }
         
         private ImportExtensionProperties _properties;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ImportExtensionProperties Properties
         {
-            get { return this._properties; }
-            set { this._properties = value; }
+            get { return _properties; }
+            set { _properties = value; }
         }
         
         /// <summary>
@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ImportExtensionRequestParameteres()
         {
-            this.ExtensionName = "Import";
-            this.ExtensionType = "Microsoft.Sql/servers/databases/extensions";
+            ExtensionName = "Import";
+            ExtensionType = "Microsoft.Sql/servers/databases/extensions";
         }
         
         /// <summary>
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("properties");
             }
-            this.Properties = properties;
+            Properties = properties;
         }
     }
 }

@@ -27,11 +27,11 @@ namespace Microsoft.WindowsAzure.Commands.Sync
 
         public ProgressStatus(long alreadyProcessedBytes, long totalLength, ComputeStats computeStats)
         {
-            this.PreExistingBytes = alreadyProcessedBytes;
-            this.BytesProcessed = alreadyProcessedBytes;
-            this.TotalLength = totalLength;
-            this.ThrougputStats = computeStats;
-            this.StartTime = DateTime.UtcNow;
+            PreExistingBytes = alreadyProcessedBytes;
+            BytesProcessed = alreadyProcessedBytes;
+            TotalLength = totalLength;
+            ThrougputStats = computeStats;
+            StartTime = DateTime.UtcNow;
         }
 
         long PreExistingBytes { get; set; }
@@ -58,20 +58,20 @@ namespace Microsoft.WindowsAzure.Commands.Sync
         {
             lock (thisLock)
             {
-                this.BytesProcessed += size;
+                BytesProcessed += size;
             }
         }
 
         bool HasProgess()
         {
-            return this.BytesProcessed > this.PreExistingBytes;
+            return BytesProcessed > PreExistingBytes;
         }
 
         ProgressRecord Progress()
         {
             double computeAvg = ThrougputStats.ComputeAvg(ThroughputMBs());
             double avtThroughputMbps = 8.0 * computeAvg;
-            double remainingSeconds = (RemainingMB() / computeAvg);
+            double remainingSeconds = RemainingMB() / computeAvg;
             var pr = new ProgressRecord
             {
                 PercentComplete = PercentComplete(),
@@ -83,22 +83,22 @@ namespace Microsoft.WindowsAzure.Commands.Sync
 
         double RemainingMB()
         {
-            return (this.TotalLength - this.BytesProcessed) / MB;
+            return (TotalLength - BytesProcessed) / MB;
         }
 
         double ThroughputMBs()
         {
-            return (this.BytesProcessed - this.PreExistingBytes) / MB / ProcessTime().TotalSeconds;
+            return (BytesProcessed - PreExistingBytes) / MB / ProcessTime().TotalSeconds;
         }
 
         TimeSpan ProcessTime()
         {
-            return DateTime.UtcNow - this.StartTime;
+            return DateTime.UtcNow - StartTime;
         }
 
         double PercentComplete()
         {
-            return 100.0 * this.BytesProcessed / ((double)this.TotalLength);
+            return 100.0 * BytesProcessed / TotalLength;
         }
     }
 }

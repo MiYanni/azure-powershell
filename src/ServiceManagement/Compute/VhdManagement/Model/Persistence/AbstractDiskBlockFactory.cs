@@ -31,12 +31,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public IndexRange GetFooterRange()
         {
-            return IndexRange.FromLength(this.GetBlockSize() * this.BlockCount, VhdConstants.VHD_FOOTER_SIZE);
+            return IndexRange.FromLength(GetBlockSize() * BlockCount, VhdConstants.VHD_FOOTER_SIZE);
         }
 
         public byte[] ReadBlockData(Block block)
         {
-            if (!this.HasData(block.BlockIndex))
+            if (!HasData(block.BlockIndex))
             {
                 if (emptyBlockData == null)
                 {

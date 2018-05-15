@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                     resourceGroupName,
                     dataFactoryName,
                     linkedServiceName,
-                    new LinkedServiceCreateOrUpdateWithRawJsonContentParameters() { Content = rawJsonContent });
+                    new LinkedServiceCreateOrUpdateWithRawJsonContentParameters { Content = rawJsonContent });
 
             return response.LinkedService;
         }
@@ -189,10 +189,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 {
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
     }

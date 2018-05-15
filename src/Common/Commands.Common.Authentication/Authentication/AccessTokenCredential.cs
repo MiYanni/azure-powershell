@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
         {
             this.subscriptionId = subscriptionId;
             this.token = token;
-            this.TenantID = token.TenantId;
+            TenantID = token.TenantId;
         }
 
         public override Task ProcessHttpRequestAsync(HttpRequestMessage request, CancellationToken cancellationToken)

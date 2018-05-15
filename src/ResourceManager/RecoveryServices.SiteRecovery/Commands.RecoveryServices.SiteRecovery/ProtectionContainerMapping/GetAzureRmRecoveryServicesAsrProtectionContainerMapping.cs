@@ -63,13 +63,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByObject:
-                    this.GetAll();
+                    GetAll();
                     break;
                 case ASRParameterSets.ByObjectWithName:
-                    this.GetByName();
+                    GetByName();
                     break;
             }
         }
@@ -79,14 +79,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetAll()
         {
-            var protectionContainerMappingListResponse = this.RecoveryServicesClient
+            var protectionContainerMappingListResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryProtectionContainerMapping(
                     Utilities.GetValueFromArmId(
-                        this.ProtectionContainer.ID,
+                        ProtectionContainer.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
-                    this.ProtectionContainer.Name);
+                    ProtectionContainer.Name);
 
-            this.WriteProtectionContainerMappings(protectionContainerMappingListResponse);
+            WriteProtectionContainerMappings(protectionContainerMappingListResponse);
         }
 
         /// <summary>
@@ -96,17 +96,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             try
             {
-                var protectionContainerMappingResponse = this.RecoveryServicesClient
+                var protectionContainerMappingResponse = RecoveryServicesClient
                     .GetAzureSiteRecoveryProtectionContainerMapping(
                         Utilities.GetValueFromArmId(
-                            this.ProtectionContainer.ID,
+                            ProtectionContainer.ID,
                             ARMResourceTypeConstants.ReplicationFabrics),
-                        this.ProtectionContainer.Name,
-                        this.Name);
+                        ProtectionContainer.Name,
+                        Name);
 
                 if (protectionContainerMappingResponse != null)
                 {
-                    this.WriteProtectionContainerMapping(protectionContainerMappingResponse);
+                    WriteProtectionContainerMapping(protectionContainerMappingResponse);
                 }
             }
             catch (CloudException ex)
@@ -120,8 +120,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.ProtectionConatinerMappingNotFound,
-                            this.Name,
-                            this.ProtectionContainer.FriendlyName));
+                            Name,
+                            ProtectionContainer.FriendlyName));
                 }
 
                 throw;
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteProtectionContainerMapping(
             ProtectionContainerMapping protectionContainerMapping)
         {
-            this.WriteObject(new ASRProtectionContainerMapping(protectionContainerMapping));
+            WriteObject(new ASRProtectionContainerMapping(protectionContainerMapping));
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteProtectionContainerMappings(
             IList<ProtectionContainerMapping> protectionContainerMappings)
         {
-            this.WriteObject(
+            WriteObject(
                 protectionContainerMappings.Select(pcm => new ASRProtectionContainerMapping(pcm)),
                 true);
         }

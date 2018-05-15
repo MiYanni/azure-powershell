@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Compute
         ProfileNouns.BootDiagnostics),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class SetAzureVMBootDiagnosticsCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class SetAzureVMBootDiagnosticsCommand : ResourceManager.Common.AzureRMCmdlet
     {
         private const string EnableParameterSet = "EnableBootDiagnostics";
         private const string DisableParameterSet = "DisableBootDiagnostics";
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.Compute
             ParameterSetName = EnableParameterSet,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = HelpMessages.VMBootDiagnosticsResourceGroupName)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -82,17 +82,17 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            var diagnosticsProfile = this.VM.DiagnosticsProfile;
+            var diagnosticsProfile = VM.DiagnosticsProfile;
 
             diagnosticsProfile = diagnosticsProfile ?? new DiagnosticsProfile();
 
             diagnosticsProfile.BootDiagnostics = diagnosticsProfile.BootDiagnostics ?? new BootDiagnostics();
 
-            diagnosticsProfile.BootDiagnostics.Enabled = this.Enable.IsPresent;
+            diagnosticsProfile.BootDiagnostics.Enabled = Enable.IsPresent;
 
-            if (this.Enable.IsPresent)
+            if (Enable.IsPresent)
             {
-                if (string.IsNullOrEmpty(this.StorageAccountName))
+                if (string.IsNullOrEmpty(StorageAccountName))
                 {
                     if (diagnosticsProfile.BootDiagnostics.StorageUri == null)
                     {
@@ -103,20 +103,20 @@ namespace Microsoft.Azure.Commands.Compute
                 {
                     var storageClient = AzureSession.Instance.ClientFactory.CreateArmClient<StorageManagementClient>(
                         DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
-                    var storageAccount = storageClient.StorageAccounts.GetProperties(this.ResourceGroupName, this.StorageAccountName);
+                    var storageAccount = storageClient.StorageAccounts.GetProperties(ResourceGroupName, StorageAccountName);
 
                     if (storageAccount.IsPremiumLrs())
                     {
-                        ThrowPremiumStorageError(this.StorageAccountName);
+                        ThrowPremiumStorageError(StorageAccountName);
                     }
 
                     diagnosticsProfile.BootDiagnostics.StorageUri = storageAccount.PrimaryEndpoints.Blob.ToString();
                 }
             }
 
-            this.VM.DiagnosticsProfile = diagnosticsProfile;
+            VM.DiagnosticsProfile = diagnosticsProfile;
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
 
         private void ThrowPremiumStorageError(string storageAccountName)

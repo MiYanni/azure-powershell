@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Compute
         DefaultParameterSetName = "DefaultParameterSet"),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class NewAzureVMConfigCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class NewAzureVMConfigCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Alias("ResourceName", "Name")]
         [Parameter(
@@ -100,29 +100,29 @@ namespace Microsoft.Azure.Commands.Compute
         {
             var vm = new PSVirtualMachine
             {
-                Name = this.VMName,
-                AvailabilitySetReference = string.IsNullOrEmpty(this.AvailabilitySetId) ? null : new SubResource
+                Name = VMName,
+                AvailabilitySetReference = string.IsNullOrEmpty(AvailabilitySetId) ? null : new SubResource
                 {
-                    Id = this.AvailabilitySetId
+                    Id = AvailabilitySetId
                 },
-                LicenseType = this.LicenseType,
-                Identity = this.AssignIdentity.IsPresent ? new VirtualMachineIdentity(null, null, ResourceIdentityType.SystemAssigned) : null,
-                Tags = this.Tags != null ? this.Tags.ToDictionary() : null,
-                Zones = this.Zone,
+                LicenseType = LicenseType,
+                Identity = AssignIdentity.IsPresent ? new VirtualMachineIdentity(null, null, ResourceIdentityType.SystemAssigned) : null,
+                Tags = Tags != null ? Tags.ToDictionary() : null,
+                Zones = Zone,
             };
 
-            if (this.IdentityType != null)
+            if (IdentityType != null)
             {
-                vm.Identity = new VirtualMachineIdentity(null, null, this.IdentityType);
-                if (this.IdentityId != null)
+                vm.Identity = new VirtualMachineIdentity(null, null, IdentityType);
+                if (IdentityId != null)
                 {
-                    vm.Identity.IdentityIds = this.IdentityId;
+                    vm.Identity.IdentityIds = IdentityId;
                 }
             }
-            if (!string.IsNullOrEmpty(this.VMSize))
+            if (!string.IsNullOrEmpty(VMSize))
             {
                 vm.HardwareProfile = new HardwareProfile();
-                vm.HardwareProfile.VmSize = this.VMSize;
+                vm.HardwareProfile.VmSize = VMSize;
             }
 
             WriteObject(vm);

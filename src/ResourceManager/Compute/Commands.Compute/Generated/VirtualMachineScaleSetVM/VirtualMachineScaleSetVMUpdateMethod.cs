@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             VirtualMachineScaleSetVM parameters = new VirtualMachineScaleSetVM();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName", "InstanceId", "Parameters" },
+                 new[] { "ResourceGroupName", "VMScaleSetName", "InstanceId", "Parameters" },
                  new object[] { resourceGroupName, vmScaleSetName, instanceId, parameters });
         }
     }

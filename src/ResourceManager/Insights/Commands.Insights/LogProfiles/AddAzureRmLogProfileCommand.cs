@@ -77,30 +77,30 @@ namespace Microsoft.Azure.Commands.Insights.LogProfiles
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                target: string.Format("Create/update a log profile: {0}", this.Name),
-                action: "Create/update a log profile"))
+                string.Format("Create/update a log profile: {0}", Name),
+                "Create/update a log profile"))
             {
-                var putParameters = new LogProfileResource()
+                var putParameters = new LogProfileResource
                 {
                     Location = string.Empty,
-                    Locations = this.Location
+                    Locations = Location
                 };
 
-                if (this.Category == null)
+                if (Category == null)
                 {
-                    this.Category = new List<string>(ValidCategories);
+                    Category = new List<string>(ValidCategories);
                 }
 
-                putParameters.Categories = this.Category;
+                putParameters.Categories = Category;
                 putParameters.RetentionPolicy = new RetentionPolicy
                 {
-                    Days = this.RetentionInDays.HasValue ? this.RetentionInDays.Value : 0,
-                    Enabled = this.RetentionInDays.HasValue
+                    Days = RetentionInDays.HasValue ? RetentionInDays.Value : 0,
+                    Enabled = RetentionInDays.HasValue
                 };
-                putParameters.ServiceBusRuleId = this.ServiceBusRuleId;
-                putParameters.StorageAccountId = this.StorageAccountId;
+                putParameters.ServiceBusRuleId = ServiceBusRuleId;
+                putParameters.StorageAccountId = StorageAccountId;
 
-                LogProfileResource result = this.MonitorManagementClient.LogProfiles.CreateOrUpdateAsync(logProfileName: this.Name, parameters: putParameters, cancellationToken: CancellationToken.None).Result;
+                LogProfileResource result = MonitorManagementClient.LogProfiles.CreateOrUpdateAsync(Name, putParameters, CancellationToken.None).Result;
                 WriteObject(new PSLogProfile(result));
             }
         }

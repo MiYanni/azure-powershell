@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
             }
 
             this.linkedService = linkedService;
-            this.ResourceGroupName = resourceGroupName;
-            this.DataFactoryName = factoryName;
+            ResourceGroupName = resourceGroupName;
+            DataFactoryName = factoryName;
         }
 
         public override string Name
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.linkedService.Id;
+                return linkedService.Id;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.linkedService.Etag;
+                return linkedService.Etag;
             }
         }
     }

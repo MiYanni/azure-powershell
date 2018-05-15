@@ -16,8 +16,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Utilities;
+    using Management.Logic.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -79,17 +79,17 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 
             if (string.IsNullOrEmpty(AgreementType))
             {
-                this.WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
+                WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
                 AgreementType = "X12";
             }
 
-            this.WriteObject(
-                sendToPipeline: this.IntegrationAccountClient.GetIntegrationAccountReceivedControlNumber(
-                    resourceGroupName: this.ResourceGroupName,
-                    integrationAccountName: this.Name,
-                    integrationAccountAgreementName: this.AgreementName,
-                    agreementType: (AgreementType)Enum.Parse(enumType: typeof(AgreementType), value: AgreementType, ignoreCase: true),
-                    controlNumber: this.ControlNumberValue));
+            WriteObject(
+                IntegrationAccountClient.GetIntegrationAccountReceivedControlNumber(
+                    ResourceGroupName,
+                    Name,
+                    AgreementName,
+                    (AgreementType)Enum.Parse(typeof(AgreementType), AgreementType, true),
+                    ControlNumberValue));
         }
     }
 }

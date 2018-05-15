@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
             ICollection<AzureSqlServerBackupLongTermRetentionVaultModel> results;
 
             results = new List<AzureSqlServerBackupLongTermRetentionVaultModel>();
-            results.Add(ModelAdapter.GetBackupLongTermRetentionVault(this.ResourceGroupName, this.ServerName));
+            results.Add(ModelAdapter.GetBackupLongTermRetentionVault(ResourceGroupName, ServerName));
 
             return results;
         }

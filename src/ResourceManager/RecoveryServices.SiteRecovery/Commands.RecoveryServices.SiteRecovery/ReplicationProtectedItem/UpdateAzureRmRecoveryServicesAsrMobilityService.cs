@@ -56,23 +56,23 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Update Mobility Service",
                 ReplicationProtectedItem.FriendlyName))
             {
                 // Validate the Replication Provider for InMageAzureV2 / InMage.
                 if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMageAzureV2,
                     StringComparison.OrdinalIgnoreCase) !=
                 0 &&
                 string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMage,
                     StringComparison.OrdinalIgnoreCase) !=
                 0 &&
                 string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.A2A,
                     StringComparison.OrdinalIgnoreCase) !=
                 0)
@@ -80,30 +80,30 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.UnsupportedReplicationProviderForUpdateMobilityService,
-                            this.ReplicationProtectedItem.ReplicationProvider));
+                            ReplicationProtectedItem.ReplicationProvider));
                 }
 
                 // Set the Fabric Name and Protection Container Name.
-                this.fabricName =
+                fabricName =
                     Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationFabrics);
-                this.protectionContainerName =
+                protectionContainerName =
                     Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationProtectionContainers);
-                this.protectableItemName =
+                protectableItemName =
                     Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationProtectedItems);
 
                 // Create the Update Mobility Service input request.
                 var input = new UpdateMobilityServiceRequest();
-                if (this.Account != null)
+                if (Account != null)
                 {
                     input.Properties = new UpdateMobilityServiceRequestProperties
                     {
-                        RunAsAccountId = this.Account.AccountId
+                        RunAsAccountId = Account.AccountId
                     };
                 }
                 else
@@ -112,16 +112,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 }
 
                 // Update the Mobility Service.
-                var response = this.RecoveryServicesClient.UpdateAzureSiteRecoveryMobilityService(
-                    this.fabricName,
-                    this.protectionContainerName,
-                    this.protectableItemName,
+                var response = RecoveryServicesClient.UpdateAzureSiteRecoveryMobilityService(
+                    fabricName,
+                    protectionContainerName,
+                    protectableItemName,
                     input);
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
 

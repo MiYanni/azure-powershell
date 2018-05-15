@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 resourceGroupName = GetGroupForAccount(accountName);
             }
 
-            AddApplicationParameters addApplicationParameters = new AddApplicationParameters()
+            AddApplicationParameters addApplicationParameters = new AddApplicationParameters
             {
                 DisplayName = displayName,
                 AllowUpdates = allowUpdates
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             try
             {
-                PSApplication psApplication = this.GetApplication(resourceGroupName, accountName, applicationId);
+                PSApplication psApplication = GetApplication(resourceGroupName, accountName, applicationId);
 
                 if (psApplication.AllowUpdates == false)
                 {
@@ -155,7 +155,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
 
         private static PSApplication ConvertApplicationToPSApplication(Application application)
         {
-            return new PSApplication()
+            return new PSApplication
             {
                 AllowUpdates = application.AllowUpdates.Value,
                 ApplicationPackages = ConvertApplicationPackagesToPsApplicationPackages(application.Packages),

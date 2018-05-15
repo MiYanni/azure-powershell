@@ -59,10 +59,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
             {
                 return VirtualStore[path];
             }
-            else
-            {
-                throw new IOException("File not found: " + path);
-            }
+            throw new IOException("File not found: " + path);
         }
 
         public Stream ReadFileAsStream(string path)
@@ -76,10 +73,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
                 stream.Position = 0;
                 return stream;
             }
-            else
-            {
-                throw new IOException("File not found: " + path);
-            }
+            throw new IOException("File not found: " + path);
         }
 
         public byte[] ReadFileAsBytes(string path)
@@ -88,10 +82,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
             {
                 return Encoding.Default.GetBytes(VirtualStore[path]);
             }
-            else
-            {
-                throw new IOException("File not found: " + path);
-            }
+            throw new IOException("File not found: " + path);
         }
 
         public void RenameFile(string oldPath, string newPath)
@@ -251,17 +242,14 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
             {
                 return FileAttributes.Normal;
             }
-            else
+            foreach (var key in VirtualStore.Keys.ToArray())
             {
-                foreach (var key in VirtualStore.Keys.ToArray())
+                if (key.StartsWith(path))
                 {
-                    if (key.StartsWith(path))
-                    {
-                        return FileAttributes.Directory;
-                    }
+                    return FileAttributes.Directory;
                 }
-                throw new IOException("File not found: " + path);
             }
+            throw new IOException("File not found: " + path);
         }
 
         public X509Certificate2 GetCertificate(string thumbprint)
@@ -270,10 +258,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
             {
                 return certStore[thumbprint];
             }
-            else
-            {
-                return new X509Certificate2();
-            }
+            return new X509Certificate2();
         }
 
         public void AddCertificate(X509Certificate2 cert)
@@ -328,7 +313,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
             {
                 throw new IOException($"File {path} is open for writing");
             }
-            else if (readLocks.ContainsKey(path))
+            if (readLocks.ContainsKey(path))
             {
                 readLocks[path]++;
             }
@@ -356,14 +341,11 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
             {
                 throw new IOException($"File {path} is open for writing");
             }
-            else if (readLocks.ContainsKey(path) && readLocks[path] > 0)
+            if (readLocks.ContainsKey(path) && readLocks[path] > 0)
             {
                 throw new IOException($"File {path} is open for reading");
             }
-            else
-            {
-                writeLocks[path] = true;
-            }
+            writeLocks[path] = true;
 
             if (!FileExists(path))
             {

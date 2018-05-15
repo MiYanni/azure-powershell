@@ -53,12 +53,8 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Subscription
             {
                 subscriptionAttributes = InputObject;
             }
-            else
-            {
-               // subscriptionAttributes = SubscriptionObj;
-            }
-            
-            if (ShouldProcess(target: subscriptionAttributes.Name, action: string.Format(Resources.UpdateSubscription, subscriptionAttributes.Name, Namespace)))
+
+            if (ShouldProcess(subscriptionAttributes.Name, string.Format(Resources.UpdateSubscription, subscriptionAttributes.Name, Namespace)))
             {
                 WriteObject(Client.CreateUpdateSubscription(ResourceGroupName, Namespace, Topic, subscriptionAttributes.Name, subscriptionAttributes));
             }

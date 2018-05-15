@@ -124,7 +124,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             string activity = String.Format(Resources.ReceiveAzureBlobActivity, blob.Name, filePath);
             string status = Resources.PrepareDownloadingBlob;
             ProgressRecord pr = new ProgressRecord(OutputStream.GetProgressId(taskId), activity, status);
-            DataMovementUserData data = new DataMovementUserData()
+            DataMovementUserData data = new DataMovementUserData
             {
                 Data = blob,
                 TaskId = taskId,
@@ -135,18 +135,18 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 
             await DataMovementTransferHelper.DoTransfer(() =>
                 {
-                    return this.TransferManager.DownloadAsync(blob, filePath,
-                        new DownloadOptions()
+                    return TransferManager.DownloadAsync(blob, filePath,
+                        new DownloadOptions
                         {
-                            DisableContentMD5Validation = !this.checkMd5
+                            DisableContentMD5Validation = !checkMd5
                         },
-                        this.GetTransferContext(data),
-                        this.CmdletCancellationToken);
+                        GetTransferContext(data),
+                        CmdletCancellationToken);
                 },
                 data.Record,
-                this.OutputStream).ConfigureAwait(false);
+                OutputStream).ConfigureAwait(false);
 
-            this.WriteCloudBlobObject(data.TaskId, data.Channel, blob);
+            WriteCloudBlobObject(data.TaskId, data.Channel, blob);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             }
 
             IStorageBlobManagement localChannel = Channel;
-            Func<long, Task> taskGenerator = (taskId) => DownloadBlob(taskId, localChannel, blob, filePath);
+            Func<long, Task> taskGenerator = taskId => DownloadBlob(taskId, localChannel, blob, filePath);
             RunTask(taskGenerator);
         }
 

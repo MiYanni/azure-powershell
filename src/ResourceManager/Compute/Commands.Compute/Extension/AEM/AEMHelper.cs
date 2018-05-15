@@ -50,12 +50,12 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
         public AEMHelper(Action<ErrorRecord> errorAction, Action<string> verboseAction, Action<string> warningAction,
             PSHostUserInterface ui, StorageManagementClient storageClient, IAzureSubscription subscription)
         {
-            this._ErrorAction = errorAction;
-            this._VerboseAction = verboseAction;
-            this._WarningAction = warningAction;
-            this._UI = ui;
-            this._StorageClient = storageClient;
-            this._Subscription = subscription;
+            _ErrorAction = errorAction;
+            _VerboseAction = verboseAction;
+            _WarningAction = warningAction;
+            _UI = ui;
+            _StorageClient = storageClient;
+            _Subscription = subscription;
         }
 
         internal string GetStorageAccountFromUri(string uri)
@@ -65,11 +65,8 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
             {
                 return match.Groups[1].Value;
             }
-            else
-            {
-                WriteError("Could not determine storage account for OS disk. Please contact support");
-                throw new ArgumentException("Could not determine storage account for OS disk. Please contact support");
-            }
+            WriteError("Could not determine storage account for OS disk. Please contact support");
+            throw new ArgumentException("Could not determine storage account for OS disk. Please contact support");
         }
 
         internal StorageAccount GetStorageAccountFromCache(string accountName)
@@ -79,7 +76,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                 return _StorageCache[accountName];
             }
 
-            var listResponse = this._StorageClient.StorageAccounts.List();
+            var listResponse = _StorageClient.StorageAccounts.List();
             var account = listResponse.First(accTemp => accTemp.Name.Equals(accountName, StringComparison.InvariantCultureIgnoreCase));
 
             _StorageCache.Add(account.Name, account);
@@ -112,7 +109,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
         internal bool IsPremiumStorageAccount(string accountName)
         {
-            return IsPremiumStorageAccount(this.GetStorageAccountFromCache(accountName));
+            return IsPremiumStorageAccount(GetStorageAccountFromCache(accountName));
         }
 
         internal int? GetDiskSizeGbFromBlobUri(string sBlobUri)
@@ -135,17 +132,17 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
             {
                 try
                 {
-                    var account = this.GetStorageAccountFromCache(accountName);
-                    var resGroupName = this.GetResourceGroupFromId(account.Id);
+                    var account = GetStorageAccountFromCache(accountName);
+                    var resGroupName = GetResourceGroupFromId(account.Id);
                     StorageCredentialsFactory storageCredentialsFactory = new StorageCredentialsFactory(resGroupName,
-                        this._StorageClient, this._Subscription);
+                        _StorageClient, _Subscription);
                     StorageCredentials sc = storageCredentialsFactory.Create(blobUri);
                     CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(sc, true);
                     CloudBlobClient blobClient = cloudStorageAccount.CreateCloudBlobClient();
                     CloudBlobContainer blobContainer = blobClient.GetContainerReference(blobUri.BlobContainerName);
                     var cloudBlob = blobContainer.GetPageBlobReference(blobUri.BlobName);
                     var sasToken = cloudBlob.GetSharedAccessSignature(
-                        new SharedAccessBlobPolicy()
+                        new SharedAccessBlobPolicy
                         {
                             SharedAccessExpiryTime = DateTime.UtcNow.AddHours(24.0),
                             Permissions = SharedAccessBlobPermissions.Read
@@ -157,7 +154,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                 }
                 catch (Exception)
                 {
-                    this.WriteWarning("Could not determine OS Disk size.");
+                    WriteWarning("Could not determine OS Disk size.");
                 }
             }
 
@@ -326,9 +323,9 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                 return _StorageKeyCache[accountName];
             }
 
-            var account = this.GetStorageAccountFromCache(accountName);
-            var resourceGroup = this.GetResourceGroupFromId(account.Id);
-            var keys = this._StorageClient.StorageAccounts.ListKeys(resourceGroup, account.Name);
+            var account = GetStorageAccountFromCache(accountName);
+            var resourceGroup = GetResourceGroupFromId(account.Id);
+            var keys = _StorageClient.StorageAccounts.ListKeys(resourceGroup, account.Name);
 
             _StorageKeyCache.Add(account.Name, keys.GetKey1());
 
@@ -339,7 +336,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
         {
             try
             {
-                var storage = this.GetStorageAccountFromCache(storageAccountName);
+                var storage = GetStorageAccountFromCache(storageAccountName);
                 var blobendpoint = storage.PrimaryEndpoints.Blob;
                 var blobUri = new Uri(blobendpoint);
 
@@ -376,23 +373,23 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
         internal AzureSLA GetDiskSLA(OSDisk osdisk)
         {
-            return this.GetDiskSLA(osdisk.DiskSizeGB, osdisk.Vhd);
+            return GetDiskSLA(osdisk.DiskSizeGB, osdisk.Vhd);
         }
 
         internal AzureSLA GetDiskSLA(DataDisk datadisk)
         {
-            return this.GetDiskSLA(datadisk.DiskSizeGB, datadisk.Vhd);
+            return GetDiskSLA(datadisk.DiskSizeGB, datadisk.Vhd);
         }
 
         internal AzureSLA GetDiskSLA(int? diskSize, VirtualHardDisk vhd)
         {
             if (!diskSize.HasValue && vhd != null)
             {
-                diskSize = this.GetDiskSizeGbFromBlobUri(vhd.Uri);
+                diskSize = GetDiskSizeGbFromBlobUri(vhd.Uri);
             }
             if (!diskSize.HasValue)
             {
-                this.WriteWarning("OS Disk size is empty and could not be determined. Assuming P10.");
+                WriteWarning("OS Disk size is empty and could not be determined. Assuming P10.");
                 diskSize = 127;
             }
 
@@ -450,21 +447,21 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
         internal void WriteHost(string message, params string[] args)
         {
-            this.WriteHost(message, newLine: true, foregroundColor: null, args: args);
+            WriteHost(message, true, null, args);
         }
 
         internal void WriteHost(string message, bool newLine)
         {
-            this.WriteHost(message, newLine: newLine, foregroundColor: null);
+            WriteHost(message, newLine, foregroundColor: null);
         }
         internal void WriteHost(string message, bool newLine, params string[] args)
         {
-            this.WriteHost(message, newLine: newLine, foregroundColor: null, args: args);
+            WriteHost(message, newLine, null, args);
         }
 
         internal void WriteHost(string message, ConsoleColor foregroundColor)
         {
-            this.WriteHost(message, newLine: true, foregroundColor: foregroundColor);
+            WriteHost(message, true, foregroundColor);
         }
 
         internal void WriteHost(string message, bool newLine, ConsoleColor? foregroundColor, params string[] args)
@@ -473,17 +470,17 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
             try
             {
-                this.WriteVerbose(message, args);
-                var fColor = foregroundColor != null ? foregroundColor.Value : this._UI.RawUI.ForegroundColor;
-                var bgColor = this._UI.RawUI.BackgroundColor;
+                WriteVerbose(message, args);
+                var fColor = foregroundColor != null ? foregroundColor.Value : _UI.RawUI.ForegroundColor;
+                var bgColor = _UI.RawUI.BackgroundColor;
 
                 if (newLine)
                 {
-                    this._UI.WriteLine(fColor, bgColor, String.Format(message, args));
+                    _UI.WriteLine(fColor, bgColor, String.Format(message, args));
                 }
                 else
                 {
-                    this._UI.Write(fColor, bgColor, String.Format(message, args));
+                    _UI.Write(fColor, bgColor, String.Format(message, args));
                 }
             }
             catch (Exception ex)
@@ -498,7 +495,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
             try
             {
-                this._VerboseAction(String.Format(message, args));
+                _VerboseAction(String.Format(message, args));
             }
             catch (Exception ex)
             {
@@ -512,7 +509,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
             try
             {
-                this._ErrorAction(new ErrorRecord(new Exception(String.Format(message, args)), "Error", ErrorCategory.NotSpecified, null));
+                _ErrorAction(new ErrorRecord(new Exception(String.Format(message, args)), "Error", ErrorCategory.NotSpecified, null));
             }
             catch (Exception ex)
             {
@@ -526,7 +523,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
             try
             {
-                this._WarningAction(String.Format(message, args));
+                _WarningAction(String.Format(message, args));
             }
             catch (Exception ex)
             {
@@ -599,7 +596,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
         internal VirtualMachineExtensionInstanceView GetExtension(VirtualMachine vm, VirtualMachineInstanceView vmStatus, string type, string publisher)
         {
-            var ext = this.GetExtension(vm, type, publisher);
+            var ext = GetExtension(vm, type, publisher);
             if (ext == null)
             {
                 return null;
@@ -619,9 +616,9 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
             WriteHost(CheckMessage + "...", false);
             if (Properties != null && Properties["cfg"] != null)
             {
-                var set = Properties["cfg"].FirstOrDefault((tok) =>
+                var set = Properties["cfg"].FirstOrDefault(tok =>
                 {
-                    JValue jval = (tok["key"] as JValue);
+                    JValue jval = tok["key"] as JValue;
                     if (jval != null && jval.Value != null)
                     {
                         return jval.Value.Equals(PropertyName);
@@ -630,7 +627,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                     return false;
                 });
 
-                if (set != null && set["value"] != null && (set["value"] as JValue) != null)
+                if (set != null && set["value"] != null && set["value"] as JValue != null)
                 {
                     result = true;
 
@@ -683,9 +680,9 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                 return false;
             }
 
-            var set = Properties["cfg"].FirstOrDefault((tok) =>
+            var set = Properties["cfg"].FirstOrDefault(tok =>
             {
-                JValue jvaltok = (tok["key"] as JValue);
+                JValue jvaltok = tok["key"] as JValue;
                 if (jvaltok != null && jvaltok.Value != null)
                 {
                     return jvaltok.Value.Equals(PropertyName);
@@ -699,7 +696,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                 return false;
             }
 
-            JValue jval = (set["value"] as JValue);
+            JValue jval = set["value"] as JValue;
             if (jval != null && jval.Value != null)
             {
                 result = (set["value"] as JValue).Value<T>();
@@ -711,13 +708,13 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
         internal bool CheckWADConfiguration(System.Xml.XmlDocument CurrentConfig)
         {
-            if ((CurrentConfig == null)
-            || (CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration") == null)
-            || (int.Parse(CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration/@overallQuotaInMB").Value) < 4096)
-            || (CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration/PerformanceCounters") == null)
-            || (!CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration/PerformanceCounters/@scheduledTransferPeriod").
-                    Value.Equals("PT1M", StringComparison.InvariantCultureIgnoreCase))
-            || (CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration/PerformanceCounters/PerformanceCounterConfiguration") == null))
+            if (CurrentConfig == null
+            || CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration") == null
+            || int.Parse(CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration/@overallQuotaInMB").Value) < 4096
+            || CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration/PerformanceCounters") == null
+            || !CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration/PerformanceCounters/@scheduledTransferPeriod").
+                    Value.Equals("PT1M", StringComparison.InvariantCultureIgnoreCase)
+            || CurrentConfig.SelectSingleNode("/WadCfg/DiagnosticMonitorConfiguration/PerformanceCounters/PerformanceCounterConfiguration") == null)
             {
                 return false;
             }
@@ -727,7 +724,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
         internal ServiceProperties GetStorageAnalytics(string storageAccountName)
         {
-            var key = this.GetAzureStorageKeyFromCache(storageAccountName);
+            var key = GetAzureStorageKeyFromCache(storageAccountName);
             var credentials = new StorageCredentials(storageAccountName, key);
             var cloudStorageAccount = new CloudStorageAccount(credentials, true);
             return cloudStorageAccount.CreateCloudBlobClient().GetServicePropertiesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
@@ -735,12 +732,12 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
 
         internal bool CheckStorageAnalytics(string storageAccountName, ServiceProperties currentConfig)
         {
-            if ((currentConfig == null)
-                || (currentConfig.Logging == null)
-                || ((currentConfig.Logging.LoggingOperations & LoggingOperations.All) != LoggingOperations.All)
-                || (currentConfig.MinuteMetrics == null)
-                || (currentConfig.MinuteMetrics.MetricsLevel <= 0)
-                || (currentConfig.MinuteMetrics.RetentionDays < 0))
+            if (currentConfig == null
+                || currentConfig.Logging == null
+                || (currentConfig.Logging.LoggingOperations & LoggingOperations.All) != LoggingOperations.All
+                || currentConfig.MinuteMetrics == null
+                || currentConfig.MinuteMetrics.MetricsLevel <= 0
+                || currentConfig.MinuteMetrics.RetentionDays < 0)
             {
                 WriteVerbose("Storage account {0} does not have the required metrics enabled", storageAccountName);
                 return false;
@@ -756,12 +753,12 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
             StorageAccount account = null;
             if (!String.IsNullOrEmpty(StorageAccountName))
             {
-                account = this.GetStorageAccountFromCache(StorageAccountName);
+                account = GetStorageAccountFromCache(StorageAccountName);
             }
             if (account != null)
             {
-                var endpoint = this.GetCoreEndpoint(StorageAccountName);
-                var key = this.GetAzureStorageKeyFromCache(StorageAccountName);
+                var endpoint = GetCoreEndpoint(StorageAccountName);
+                var key = GetAzureStorageKeyFromCache(StorageAccountName);
                 var credentials = new StorageCredentials(StorageAccountName, key);
                 var cloudStorageAccount = new CloudStorageAccount(credentials, endpoint, true);
                 var tableClient = cloudStorageAccount.CreateCloudTableClient();
@@ -772,7 +769,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                 {
                     try
                     {
-                        table = tableClient.ListTablesSegmentedAsync(currentToken: null)
+                        table = tableClient.ListTablesSegmentedAsync(null)
                             .ConfigureAwait(false).GetAwaiter().GetResult()
                             .FirstOrDefault(tab => tab.Name.StartsWith("WADMetricsPT1M"));
                     }
@@ -793,7 +790,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                     {
                         TableQuery query = new TableQuery();
                         query.FilterString = FilterString;
-                        var results = table.ExecuteQuerySegmentedAsync(query, token: null)
+                        var results = table.ExecuteQuerySegmentedAsync(query, null)
                             .ConfigureAwait(false).GetAwaiter().GetResult();
                         if (results.Count() > 0)
                         {
@@ -802,13 +799,13 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                         }
                     }
 
-                    WriteHost(WaitChar, newLine: false);
+                    WriteHost(WaitChar, false);
                     TestMockSupport.Delay(5000);
                     if (UseNewTableNames)
                     {
                         try
                         {
-                            table = tableClient.ListTablesSegmentedAsync(currentToken: null)
+                            table = tableClient.ListTablesSegmentedAsync(null)
                                 .ConfigureAwait(false).GetAwaiter().GetResult().FirstOrDefault(tab => tab.Name.StartsWith("WADMetricsPT1M"));
                         }
                         catch { } //#table name should be sorted 
@@ -822,7 +819,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                         catch { }
                     }
 
-                    wait = ((DateTime.Now) - checkStart).TotalMinutes < TimeoutinMinutes;
+                    wait = (DateTime.Now - checkStart).TotalMinutes < TimeoutinMinutes;
                 }
             }
             return tableExists;
@@ -834,12 +831,12 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
             StorageAccount account = null;
             if (!String.IsNullOrEmpty(storageAccountName))
             {
-                account = this.GetStorageAccountFromCache(storageAccountName);
+                account = GetStorageAccountFromCache(storageAccountName);
             }
             if (account != null)
             {
-                var endpoint = this.GetCoreEndpoint(storageAccountName);
-                var key = this.GetAzureStorageKeyFromCache(storageAccountName);
+                var endpoint = GetCoreEndpoint(storageAccountName);
+                var key = GetAzureStorageKeyFromCache(storageAccountName);
                 var credentials = new StorageCredentials(storageAccountName, key);
                 var cloudStorageAccount = new CloudStorageAccount(credentials, endpoint, true);
                 var tableClient = cloudStorageAccount.CreateCloudTableClient();
@@ -862,19 +859,16 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
                     bool wait = true;
                     while (wait)
                     {
-                        var results = perfCounterTable.ExecuteQuerySegmentedAsync(new TableQuery() { FilterString = query }, token: null)
+                        var results = perfCounterTable.ExecuteQuerySegmentedAsync(new TableQuery { FilterString = query }, null)
                             .ConfigureAwait(false).GetAwaiter().GetResult();
                         if (results.Count() > 0)
                         {
                             tableExists &= true;
                             break;
                         }
-                        else
-                        {
-                            WriteHost(waitChar, newLine: false);
-                            TestMockSupport.Delay(5000);
-                        }
-                        wait = ((DateTime.Now) - checkStart).TotalMinutes < TimeoutinMinutes;
+                        WriteHost(waitChar, false);
+                        TestMockSupport.Delay(5000);
+                        wait = (DateTime.Now - checkStart).TotalMinutes < TimeoutinMinutes;
                     }
                     if (!wait)
                     {

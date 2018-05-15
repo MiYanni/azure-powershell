@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights
 
             var auditLogProperties = new PSWindowsEventDataSourceProperties
             {
-                EventLogName = this.EventLogName,
+                EventLogName = EventLogName,
                 EventTypes = eventTypeInstances
             };
 

@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -73,13 +73,13 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             base.ExecuteCmdlet();
 
             Sku sku = null;
-            if (!string.IsNullOrWhiteSpace(this.SkuName))
+            if (!string.IsNullOrWhiteSpace(SkuName))
             {
-                sku = new Sku(this.SkuName);
+                sku = new Sku(SkuName);
             }
             
             Dictionary<string, string> tags = null;
-            if (this.Tag != null)
+            if (Tag != null)
             {
                 Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag);
                 tags = tagDictionary ?? new Dictionary<string, string>();
@@ -88,34 +88,34 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             string processMessage = string.Empty;
             if (sku != null && tags != null)
             {
-                processMessage = string.Format(CultureInfo.CurrentCulture, Resources.SetAccount_ProcessMessage_UpdateSkuAndTags, this.Name, sku.Name);
+                processMessage = string.Format(CultureInfo.CurrentCulture, Resources.SetAccount_ProcessMessage_UpdateSkuAndTags, Name, sku.Name);
             }
             else if (sku != null) 
             {
-                processMessage = string.Format(CultureInfo.CurrentCulture, Resources.SetAccount_ProcessMessage_UpdateSku, this.Name, sku.Name);
+                processMessage = string.Format(CultureInfo.CurrentCulture, Resources.SetAccount_ProcessMessage_UpdateSku, Name, sku.Name);
             }
             else if (tags != null)
             {
-                processMessage = string.Format(CultureInfo.CurrentCulture, Resources.SetAccount_ProcessMessage_UpdateTags, this.Name);
+                processMessage = string.Format(CultureInfo.CurrentCulture, Resources.SetAccount_ProcessMessage_UpdateTags, Name);
             }
             else
             {
                 // Not updating anything (this is allowed) - just return the account, no need for approval.
-                var cognitiveServicesAccount = this.CognitiveServicesClient.Accounts.GetProperties(this.ResourceGroupName, this.Name);
+                var cognitiveServicesAccount = CognitiveServicesClient.Accounts.GetProperties(ResourceGroupName, Name);
                 WriteCognitiveServicesAccount(cognitiveServicesAccount);
                 return;
             }
 
             if (ShouldProcess(
-                this.Name, processMessage)
+                Name, processMessage)
                 ||
                 Force.IsPresent)
             {
                 RunCmdLet(() =>
                 {
-                    var updatedAccount = this.CognitiveServicesClient.Accounts.Update(
-                        this.ResourceGroupName,
-                        this.Name,
+                    var updatedAccount = CognitiveServicesClient.Accounts.Update(
+                        ResourceGroupName,
+                        Name,
                         sku,
                         tags);
 

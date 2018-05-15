@@ -14,12 +14,12 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 {
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Collections;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Resources;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities;
+    using Commands.Common.Authentication.Abstractions;
+    using Collections;
+    using Entities.Resources;
+    using Extensions;
+    using RestClients;
+    using Utilities;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Management.Automation;
@@ -67,10 +67,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="isResourceCreateOrUpdate">Set to true if this tracker will be used to track a resource creation.</param>
         internal LongRunningOperationHelper(string activityName, Func<ResourceManagerRestRestClient> resourcesClientFactory, Action<ProgressRecord> writeProgressAction, CancellationToken cancellationToken, bool isResourceCreateOrUpdate)
         {
-            this.ResourcesClientFactory = resourcesClientFactory;
-            this.CancellationToken = cancellationToken;
-            this.ProgressTrackerObject = new ProgressTracker(activityName, resourcesClientFactory, writeProgressAction, cancellationToken);
-            this.IsResourceCreateOrUpdate = isResourceCreateOrUpdate;
+            ResourcesClientFactory = resourcesClientFactory;
+            CancellationToken = cancellationToken;
+            ProgressTrackerObject = new ProgressTracker(activityName, resourcesClientFactory, writeProgressAction, cancellationToken);
+            IsResourceCreateOrUpdate = isResourceCreateOrUpdate;
         }
 
         /// <summary>
@@ -80,26 +80,26 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         internal string WaitOnOperation(OperationResult operationResult)
         {
             // TODO: Re-factor this mess.
-            this.ProgressTrackerObject.UpdateProgress("Starting", 0);
+            ProgressTrackerObject.UpdateProgress("Starting", 0);
 
-            var trackingResult = this.HandleOperationResponse(operationResult, this.IsResourceCreateOrUpdate ? operationResult.OperationUri : operationResult.LocationUri);
+            var trackingResult = HandleOperationResponse(operationResult, IsResourceCreateOrUpdate ? operationResult.OperationUri : operationResult.LocationUri);
 
             while (trackingResult != null && trackingResult.ShouldWait)
             {
                 operationResult =
-                    this.GetResourcesClient()
-                        .GetOperationResult<JToken>(trackingResult.TrackingUri, this.CancellationToken)
+                    GetResourcesClient()
+                        .GetOperationResult<JToken>(trackingResult.TrackingUri, CancellationToken)
                         .Result;
 
-                trackingResult = this.HandleOperationResponse(operationResult, trackingResult.TrackingUri);
+                trackingResult = HandleOperationResponse(operationResult, trackingResult.TrackingUri);
 
                 if (trackingResult.ShouldWait && trackingResult.RetryAfter != null)
                 {
-                    Task.Delay(delay: trackingResult.RetryAfter.Value, cancellationToken: this.CancellationToken).Wait(cancellationToken: this.CancellationToken);
+                    Task.Delay(trackingResult.RetryAfter.Value, CancellationToken).Wait(CancellationToken);
                 }
             }
 
-            this.ProgressTrackerObject.UpdateProgress("Complete", 100);
+            ProgressTrackerObject.UpdateProgress("Complete", 100);
 
             return operationResult.Value;
         }
@@ -120,39 +120,35 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
                     {
                         ShouldWait = true,
                         Failed = false,
-                        RetryAfter = operationResult.RetryAfter ?? LongRunningOperationHelper.DefaultRetryAfter,
+                        RetryAfter = operationResult.RetryAfter ?? DefaultRetryAfter,
                         TrackingUri = lastRequestUri,
                         OperationResult = operationResult,
                     };
 
-                    this.UpdateProgress(result);
+                    UpdateProgress(result);
                     return result;
                 }
-                else
-                {
-                    this.FailedResult(
-                        operationResult,
-                        string.Format("The operation failed because the resource provider returned an unexpected HTTP status code of: '{0}'.", (int)operationResult.HttpStatusCode));
-                }
-            }
-
-            if (operationResult.HttpStatusCode == HttpStatusCode.Accepted)
-            {
-                return this.WaitResult(operationResult);
-            }
-
-            if (operationResult.HttpStatusCode != HttpStatusCode.OK &&
-                operationResult.HttpStatusCode != HttpStatusCode.Created &&
-                (!this.IsResourceCreateOrUpdate && operationResult.HttpStatusCode != HttpStatusCode.NoContent))
-            {
-                this.FailedResult(
+                FailedResult(
                     operationResult,
                     string.Format("The operation failed because the resource provider returned an unexpected HTTP status code of: '{0}'.", (int)operationResult.HttpStatusCode));
             }
 
-            return this.IsResourceCreateOrUpdate
-                ? this.HandleCreateOrUpdateResponse(operationResult)
-                : this.SuccessfulResult(operationResult);
+            if (operationResult.HttpStatusCode == HttpStatusCode.Accepted)
+            {
+                return WaitResult(operationResult);
+            }
+
+            if (operationResult.HttpStatusCode != HttpStatusCode.OK &&
+                operationResult.HttpStatusCode != HttpStatusCode.Created && !IsResourceCreateOrUpdate && operationResult.HttpStatusCode != HttpStatusCode.NoContent)
+            {
+                FailedResult(
+                    operationResult,
+                    string.Format("The operation failed because the resource provider returned an unexpected HTTP status code of: '{0}'.", (int)operationResult.HttpStatusCode));
+            }
+
+            return IsResourceCreateOrUpdate
+                ? HandleCreateOrUpdateResponse(operationResult)
+                : SuccessfulResult(operationResult);
 
         }
 
@@ -170,12 +166,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 
             if (resource == null && operationResult.HttpStatusCode == HttpStatusCode.Created)
             {
-                return this.SuccessfulResult(operationResult);
+                return SuccessfulResult(operationResult);
             }
 
             if (resource == null)
             {
-                this.FailedResult(
+                FailedResult(
                     operationResult,
                     "The operation failed because resource could not be de-serialized.");
             }
@@ -186,29 +182,29 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             if (resource.Properties.TryGetValue("provisioningState", out provisioningStateJToken))
             {
                 TerminalProvisioningStates resourceProvisioningState;
-                if (Enum.TryParse(value: provisioningStateJToken.ToString(), ignoreCase: true, result: out resourceProvisioningState))
+                if (Enum.TryParse(provisioningStateJToken.ToString(), true, out resourceProvisioningState))
                 {
                     if (resourceProvisioningState == TerminalProvisioningStates.Succeeded ||
                         resourceProvisioningState == TerminalProvisioningStates.Ready)
                     {
-                        return this.SuccessfulResult(operationResult);
+                        return SuccessfulResult(operationResult);
                     }
 
                     if (resourceProvisioningState == TerminalProvisioningStates.Failed ||
                         resourceProvisioningState == TerminalProvisioningStates.Canceled)
                     {
-                        this.FailedResult(
+                        FailedResult(
                             operationResult,
                             string.Format("The operation failed because resource is in the: '{0}' state. Please check the logs for more details.", provisioningStateJToken));
                     }
                 }
                 else
                 {
-                    return this.WaitResult(operationResult);
+                    return WaitResult(operationResult);
                 }
             }
 
-            return this.SuccessfulResult(operationResult);
+            return SuccessfulResult(operationResult);
         }
 
         /// <summary>
@@ -221,12 +217,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 ShouldWait = false,
                 Failed = false,
-                RetryAfter = operationResult.RetryAfter ?? LongRunningOperationHelper.DefaultRetryAfter,
+                RetryAfter = operationResult.RetryAfter ?? DefaultRetryAfter,
                 TrackingUri = operationResult.LocationUri ?? operationResult.OperationUri,
                 OperationResult = operationResult,
             };
 
-            this.UpdateProgress(result);
+            UpdateProgress(result);
             return result;
         }
 
@@ -240,12 +236,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 ShouldWait = true,
                 Failed = false,
-                RetryAfter = operationResult.RetryAfter ?? LongRunningOperationHelper.DefaultRetryAfter,
+                RetryAfter = operationResult.RetryAfter ?? DefaultRetryAfter,
                 TrackingUri = operationResult.LocationUri ?? operationResult.OperationUri,
                 OperationResult = operationResult,
             };
 
-            this.UpdateProgress(result);
+            UpdateProgress(result);
             return result;
         }
 
@@ -260,12 +256,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 ShouldWait = false,
                 Failed = true,
-                RetryAfter = operationResult.RetryAfter ?? LongRunningOperationHelper.DefaultRetryAfter,
+                RetryAfter = operationResult.RetryAfter ?? DefaultRetryAfter,
                 TrackingUri = operationResult.LocationUri ?? operationResult.OperationUri,
                 OperationResult = operationResult,
             };
 
-            this.UpdateProgress(result);
+            UpdateProgress(result);
 
             throw new InvalidOperationException(message);
         }
@@ -275,7 +271,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// </summary>
         private ResourceManagerRestRestClient GetResourcesClient()
         {
-            return this.ResourcesClientFactory();
+            return ResourcesClientFactory();
         }
 
         /// <summary>
@@ -284,7 +280,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="result">The operation result</param>
         private void UpdateProgress(TrackingOperationResult result)
         {
-            this.ProgressTrackerObject.UpdateProgress(result, this.IsResourceCreateOrUpdate);
+            ProgressTrackerObject.UpdateProgress(result, IsResourceCreateOrUpdate);
         }
 
         /// <summary>
@@ -326,17 +322,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             /// <param name="cancellationToken">The cancellation token.</param>
             internal ProgressTracker(string activityName, Func<ResourceManagerRestRestClient> resourcesClientFactory, Action<ProgressRecord> writeProgressAction, CancellationToken cancellationToken)
             {
-                this.ResourcesClientFactory = resourcesClientFactory;
-                this.WriteProgressAction = writeProgressAction;
-                this.CancellationToken = cancellationToken;
-                this.LastState = "Starting";
-                this.ProgressRecord = new ProgressRecord(activityId: 0, activity: activityName, statusDescription: "Starting - 0.00% completed.");
+                ResourcesClientFactory = resourcesClientFactory;
+                WriteProgressAction = writeProgressAction;
+                CancellationToken = cancellationToken;
+                LastState = "Starting";
+                ProgressRecord = new ProgressRecord(0, activityName, "Starting - 0.00% completed.");
             }
 
             internal void SetProgressPercentageAndWriteProgress(double percentage)
             {
-                this.SetProgressRecordPercentComplete(percentage);
-                this.WriteProgressAction(this.ProgressRecord);
+                SetProgressRecordPercentComplete(percentage);
+                WriteProgressAction(ProgressRecord);
             }
 
             /// <summary>
@@ -348,11 +344,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 if (isResourceCreateOrUpdate)
                 {
-                    var currentState = this.GetOperationState(result.OperationResult);
+                    var currentState = GetOperationState(result.OperationResult);
 
-                    if (result.Failed || currentState == null || !this.LastState.EqualsInsensitively(currentState))
+                    if (result.Failed || currentState == null || !LastState.EqualsInsensitively(currentState))
                     {
-                        this.SetProgressPercentageAndWriteProgress(100.0);
+                        SetProgressPercentageAndWriteProgress(100.0);
                     }
 
                     if (currentState == null)
@@ -360,18 +356,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
                         return;
                     }
 
-                    this.LastState = currentState;
+                    LastState = currentState;
                 }
                 else
                 {
                     if(result.Failed)
                     {
-                        this.SetProgressPercentageAndWriteProgress(100.0);
+                        SetProgressPercentageAndWriteProgress(100.0);
                     }
                 }
 
-                this.SetProgressRecordPercentComplete(result.OperationResult.PercentComplete);
-                this.WriteProgressAction(this.ProgressRecord);
+                SetProgressRecordPercentComplete(result.OperationResult.PercentComplete);
+                WriteProgressAction(ProgressRecord);
             }
 
             /// <summary>
@@ -381,10 +377,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             /// <param name="percentCompleted">The percent completed.</param>
             internal void UpdateProgress(string currentState, double percentCompleted)
             {
-                if (currentState == null || !this.LastState.EqualsInsensitively(currentState))
+                if (currentState == null || !LastState.EqualsInsensitively(currentState))
                 {
-                    this.SetProgressRecordPercentComplete(100.0);
-                    this.WriteProgressAction(this.ProgressRecord);
+                    SetProgressRecordPercentComplete(100.0);
+                    WriteProgressAction(ProgressRecord);
                 }
 
                 if (currentState == null)
@@ -392,9 +388,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
                     return;
                 }
 
-                this.LastState = currentState;
-                this.SetProgressRecordPercentComplete(percentCompleted);
-                this.WriteProgressAction(this.ProgressRecord);
+                LastState = currentState;
+                SetProgressRecordPercentComplete(percentCompleted);
+                WriteProgressAction(ProgressRecord);
             }
 
             /// <summary>
@@ -410,11 +406,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 
                 var value = Math.Max(Math.Min(100.0, percentComplete.Value), 0.0);
 
-                this.ProgressRecord.PercentComplete = (int)value;
+                ProgressRecord.PercentComplete = (int)value;
 
-                this.ProgressRecord.StatusDescription = string.Format("{0} - {1:P2} completed.", this.LastState, value / 100.0);
+                ProgressRecord.StatusDescription = string.Format("{0} - {1:P2} completed.", LastState, value / 100.0);
 
-                this.ProgressRecord.RecordType = (100.0 - value) <= double.Epsilon
+                ProgressRecord.RecordType = 100.0 - value <= double.Epsilon
                     ? ProgressRecordType.Completed
                     : ProgressRecordType.Processing;
             }
@@ -426,8 +422,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             private string GetOperationState(OperationResult operationResult)
             {
                 return operationResult.AzureAsyncOperationUri != null
-                    ? this.GetAzureAsyncOperationState(operationResult)
-                    : ProgressTracker.GetResourceState(operationResult);
+                    ? GetAzureAsyncOperationState(operationResult)
+                    : GetResourceState(operationResult);
             }
 
             /// <summary>
@@ -438,8 +434,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 try
                 {
-                    var result = this.ResourcesClientFactory()
-                        .GetAzureAsyncOperationResource(operationResult.AzureAsyncOperationUri, this.CancellationToken)
+                    var result = ResourcesClientFactory()
+                        .GetAzureAsyncOperationResource(operationResult.AzureAsyncOperationUri, CancellationToken)
                         .Result;
 
                     return result == null

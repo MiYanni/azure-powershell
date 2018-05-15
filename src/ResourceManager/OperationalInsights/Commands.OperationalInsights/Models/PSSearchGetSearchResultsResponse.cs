@@ -29,13 +29,13 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (response != null)
             {
-                this.Id = response.Id;
-                this.Metadata = new PSSearchMetadata(response.Metadata);
-                this.Value = response.Value.Select(jObj=>jObj.ToString()).ToList();
+                Id = response.Id;
+                Metadata = new PSSearchMetadata(response.Metadata);
+                Value = response.Value.Select(jObj=>jObj.ToString()).ToList();
 
                 if (response.Error != null)
                 {
-                    this.Error = new PSSearchError(response.Error);
+                    Error = new PSSearchError(response.Error);
                 }
             }
         }

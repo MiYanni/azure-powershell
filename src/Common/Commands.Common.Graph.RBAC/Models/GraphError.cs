@@ -4,19 +4,19 @@
 
 namespace Microsoft.Azure.Graph.RBAC.Version1_6.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Graph;
-    using Microsoft.Azure.Graph.RBAC;
-    using Microsoft.Azure.Graph.RBAC.Version1_6;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Serialization;
+    using Azure;
+    using Graph;
+    using RBAC;
+    using Version1_6;
+    using Rest;
+    using Rest.Serialization;
     using Newtonsoft.Json;
     using System.Linq;
 
     /// <summary>
     /// Active Directory error information.
     /// </summary>
-    [Rest.Serialization.JsonTransformation]
+    [JsonTransformation]
     public partial class GraphError
     {
         /// <summary>

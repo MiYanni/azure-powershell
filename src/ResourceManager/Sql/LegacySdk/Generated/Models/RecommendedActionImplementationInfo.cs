@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Method
         {
-            get { return this._method; }
-            set { this._method = value; }
+            get { return _method; }
+            set { _method = value; }
         }
         
         private string _script;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Script
         {
-            get { return this._script; }
-            set { this._script = value; }
+            get { return _script; }
+            set { _script = value; }
         }
         
         /// <summary>

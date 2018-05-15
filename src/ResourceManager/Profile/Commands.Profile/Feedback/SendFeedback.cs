@@ -31,28 +31,28 @@ namespace Microsoft.Azure.Commands.Profile
             //cmdlet is failing due to _metrichelper being null, since we skipped beging processing. 
             base.BeginProcessing(); 
 
-            if (!this.CheckIfInteractive())
+            if (!CheckIfInteractive())
                 throw new PSInvalidOperationException(String.Format(Resources.SendFeedbackNonInteractiveMessage, nameof(SendFeedbackCommand)));
         }
 
         public override void ExecuteCmdlet()
         {
-            this.WriteQuestion(Resources.SendFeedbackRecommendationQuestion);
+            WriteQuestion(Resources.SendFeedbackRecommendationQuestion);
             int recommendation;
-            if (!int.TryParse(this.Host.UI.ReadLine(), out recommendation) || recommendation < 0 || recommendation > 10)
+            if (!int.TryParse(Host.UI.ReadLine(), out recommendation) || recommendation < 0 || recommendation > 10)
                 throw new PSArgumentOutOfRangeException(Resources.SendFeedbackOutOfRangeMessage);
 
-            this.WriteQuestion(Resources.SendFeedbackPositiveCommentsQuestion);
-            var positiveComments = this.Host.UI.ReadLine();
+            WriteQuestion(Resources.SendFeedbackPositiveCommentsQuestion);
+            var positiveComments = Host.UI.ReadLine();
 
-            this.WriteQuestion(Resources.SendFeedbackNegativeCommentsQuestion);
-            var negativeComments = this.Host.UI.ReadLine();
+            WriteQuestion(Resources.SendFeedbackNegativeCommentsQuestion);
+            var negativeComments = Host.UI.ReadLine();
 
-            this.WriteQuestion(Resources.SendFeedbackEmailQuestion);
-            var email = this.Host.UI.ReadLine();
+            WriteQuestion(Resources.SendFeedbackEmailQuestion);
+            var email = Host.UI.ReadLine();
 
-            var loggedIn = this.DefaultProfile != null
-                && this.DefaultProfile.DefaultContext != null
+            var loggedIn = DefaultProfile != null
+                && DefaultProfile.DefaultContext != null
                 && DefaultProfile.DefaultContext.Account != null
                 && DefaultProfile.DefaultContext.Tenant != null
                 && DefaultProfile.DefaultContext.Subscription != null
@@ -60,27 +60,27 @@ namespace Microsoft.Azure.Commands.Profile
 
             var feedbackPayload = new PSAzureFeedback
             {
-                ModuleName = this.ModuleName, 
-                ModuleVersion = this.ModuleVersion, 
-                SubscriptionId = loggedIn ? this.DefaultContext.Subscription.Id : Guid.Empty.ToString(), 
-                TenantId = loggedIn ? this.DefaultContext.Tenant.Id : Guid.Empty.ToString(), 
-                Environment = loggedIn ? this.DefaultContext.Environment.Name : null, 
+                ModuleName = ModuleName, 
+                ModuleVersion = ModuleVersion, 
+                SubscriptionId = loggedIn ? DefaultContext.Subscription.Id : Guid.Empty.ToString(), 
+                TenantId = loggedIn ? DefaultContext.Tenant.Id : Guid.Empty.ToString(), 
+                Environment = loggedIn ? DefaultContext.Environment.Name : null, 
                 Recommendation = recommendation, 
                 PositiveComments = positiveComments, 
                 NegativeComments = negativeComments, 
                 Email = email
             };
 
-            this.Host.UI.WriteLine();
+            Host.UI.WriteLine();
 
             // Log the event with force since the user specifically issued this command to provide feedback.
 
-            this._metricHelper.LogCustomEvent(_eventName, feedbackPayload, true /* force */);
+            _metricHelper.LogCustomEvent(_eventName, feedbackPayload, true /* force */);
         }
 
         private void WriteQuestion(string question)
         {
-            this.Host.UI.WriteLine(ConsoleColor.Cyan, this.Host.UI.RawUI.BackgroundColor, $"{Environment.NewLine}{question}{Environment.NewLine}");
+            Host.UI.WriteLine(ConsoleColor.Cyan, Host.UI.RawUI.BackgroundColor, $"{Environment.NewLine}{question}{Environment.NewLine}");
         }
     }
 }

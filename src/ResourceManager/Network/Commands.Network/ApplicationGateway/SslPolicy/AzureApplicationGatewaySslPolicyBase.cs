@@ -54,22 +54,22 @@ namespace Microsoft.Azure.Commands.Network
         public PSApplicationGatewaySslPolicy NewObject()
         {
             var policy = new PSApplicationGatewaySslPolicy();
-            if (this.DisabledSslProtocols != null)
+            if (DisabledSslProtocols != null)
             {
                 policy.DisabledSslProtocols = new List<string>();
-                foreach (var protocol in this.DisabledSslProtocols)
+                foreach (var protocol in DisabledSslProtocols)
                 {
                     policy.DisabledSslProtocols.Add(protocol);
                 }
             }
 
-            policy.PolicyType = this.PolicyType;
-            policy.PolicyName = this.PolicyName;
-            policy.MinProtocolVersion = this.MinProtocolVersion;
-            if (this.CipherSuite != null)
+            policy.PolicyType = PolicyType;
+            policy.PolicyName = PolicyName;
+            policy.MinProtocolVersion = MinProtocolVersion;
+            if (CipherSuite != null)
             {
                 policy.CipherSuites = new List<string>();
-                foreach (var ciphersuite in this.CipherSuite)
+                foreach (var ciphersuite in CipherSuite)
                 {
                     policy.CipherSuites.Add(ciphersuite);
                 }

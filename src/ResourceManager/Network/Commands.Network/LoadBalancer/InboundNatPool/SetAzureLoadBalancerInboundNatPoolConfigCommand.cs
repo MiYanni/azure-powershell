@@ -38,26 +38,26 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var inboundNatPool = this.LoadBalancer.InboundNatPools.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var inboundNatPool = LoadBalancer.InboundNatPools.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (inboundNatPool == null)
             {
                 throw new ArgumentException("InboundNatPool with the specified name does not exist");
             }
 
-            inboundNatPool.Name = this.Name;
-            inboundNatPool.Protocol = this.Protocol;
-            inboundNatPool.FrontendPortRangeStart = this.FrontendPortRangeStart;
-            inboundNatPool.FrontendPortRangeEnd = this.FrontendPortRangeEnd;
-            inboundNatPool.BackendPort = this.BackendPort;
+            inboundNatPool.Name = Name;
+            inboundNatPool.Protocol = Protocol;
+            inboundNatPool.FrontendPortRangeStart = FrontendPortRangeStart;
+            inboundNatPool.FrontendPortRangeEnd = FrontendPortRangeEnd;
+            inboundNatPool.BackendPort = BackendPort;
 
             inboundNatPool.FrontendIPConfiguration = null;
-            if (!string.IsNullOrEmpty(this.FrontendIpConfigurationId))
+            if (!string.IsNullOrEmpty(FrontendIpConfigurationId))
             {
-                inboundNatPool.FrontendIPConfiguration = new PSResourceId() { Id = this.FrontendIpConfigurationId };
+                inboundNatPool.FrontendIPConfiguration = new PSResourceId { Id = FrontendIpConfigurationId };
             }
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

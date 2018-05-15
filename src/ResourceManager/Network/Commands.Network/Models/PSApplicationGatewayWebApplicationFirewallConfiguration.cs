@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string DisabledRuleGroupsText
         {
-            get { return JsonConvert.SerializeObject(this.DisabledRuleGroups, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DisabledRuleGroups, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

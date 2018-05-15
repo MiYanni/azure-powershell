@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             NotBefore = certItem.Attributes.NotBefore;
             Created = certItem.Attributes.Created;
             Updated = certItem.Attributes.Updated;
-            Tags = (certItem.Tags == null) ? null : certItem.Tags.ConvertToHashtable();
+            Tags = certItem.Tags == null ? null : certItem.Tags.ConvertToHashtable();
         }
 
         internal PSKeyVaultCertificateIdentityItem(CertificateBundle certBundle)
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             NotBefore = certBundle.Attributes.NotBefore;
             Created = certBundle.Attributes.Created;
             Updated = certBundle.Attributes.Updated;
-            Tags = (certBundle.Tags == null) ? null : certBundle.Tags.ConvertToHashtable();
+            Tags = certBundle.Tags == null ? null : certBundle.Tags.ConvertToHashtable();
         }
 
         public bool? Enabled { get; set; }

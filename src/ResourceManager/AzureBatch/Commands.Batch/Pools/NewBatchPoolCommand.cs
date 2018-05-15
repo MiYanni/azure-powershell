@@ -122,27 +122,27 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            NewPoolParameters parameters = new NewPoolParameters(this.BatchContext, this.Id, this.AdditionalBehaviors)
+            NewPoolParameters parameters = new NewPoolParameters(BatchContext, Id, AdditionalBehaviors)
             {
-                VirtualMachineSize = this.VirtualMachineSize,
-                DisplayName = this.DisplayName,
-                ResizeTimeout = this.ResizeTimeout,
-                TargetDedicatedComputeNodes = this.TargetDedicatedComputeNodes,
-                TargetLowPriorityComputeNodes = this.TargetLowPriorityComputeNodes,
-                AutoScaleEvaluationInterval = this.AutoScaleEvaluationInterval,
-                AutoScaleFormula = this.AutoScaleFormula,
-                MaxTasksPerComputeNode = this.MaxTasksPerComputeNode,
-                TaskSchedulingPolicy = this.TaskSchedulingPolicy,
-                Metadata = this.Metadata,
-                InterComputeNodeCommunicationEnabled = this.InterComputeNodeCommunicationEnabled.IsPresent,
-                StartTask = this.StartTask,
-                CertificateReferences = this.CertificateReferences,
-                ApplicationPackageReferences = this.ApplicationPackageReferences,
-                VirtualMachineConfiguration =  this.VirtualMachineConfiguration,
-                CloudServiceConfiguration = this.CloudServiceConfiguration,
-                NetworkConfiguration = this.NetworkConfiguration,
-                UserAccounts = this.UserAccount,
-                ApplicationLicenses = this.ApplicationLicenses
+                VirtualMachineSize = VirtualMachineSize,
+                DisplayName = DisplayName,
+                ResizeTimeout = ResizeTimeout,
+                TargetDedicatedComputeNodes = TargetDedicatedComputeNodes,
+                TargetLowPriorityComputeNodes = TargetLowPriorityComputeNodes,
+                AutoScaleEvaluationInterval = AutoScaleEvaluationInterval,
+                AutoScaleFormula = AutoScaleFormula,
+                MaxTasksPerComputeNode = MaxTasksPerComputeNode,
+                TaskSchedulingPolicy = TaskSchedulingPolicy,
+                Metadata = Metadata,
+                InterComputeNodeCommunicationEnabled = InterComputeNodeCommunicationEnabled.IsPresent,
+                StartTask = StartTask,
+                CertificateReferences = CertificateReferences,
+                ApplicationPackageReferences = ApplicationPackageReferences,
+                VirtualMachineConfiguration =  VirtualMachineConfiguration,
+                CloudServiceConfiguration = CloudServiceConfiguration,
+                NetworkConfiguration = NetworkConfiguration,
+                UserAccounts = UserAccount,
+                ApplicationLicenses = ApplicationLicenses
             };
 
             if (ShouldProcess("AzureBatchPool"))

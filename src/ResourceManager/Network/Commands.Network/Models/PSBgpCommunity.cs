@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string CommunityPrefixesText
         {
-            get { return JsonConvert.SerializeObject(CommunityPrefixes, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(CommunityPrefixes, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

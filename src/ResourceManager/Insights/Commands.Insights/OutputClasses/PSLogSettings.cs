@@ -28,9 +28,9 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// </summary>
         public PSLogSettings(LogSettings logSettings)
         {
-            this.Enabled = logSettings.Enabled;
-            this.Category = logSettings.Category;
-            this.RetentionPolicy = logSettings.RetentionPolicy;
+            Enabled = logSettings.Enabled;
+            Category = logSettings.Category;
+            RetentionPolicy = logSettings.RetentionPolicy;
         }
 
         /// <summary>

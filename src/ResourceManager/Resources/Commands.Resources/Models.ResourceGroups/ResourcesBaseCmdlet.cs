@@ -15,7 +15,7 @@
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
-    using Microsoft.Azure.Commands.Resources.Models.Authorization;
+    using Authorization;
     using ResourceManager.Common;
 
     /// <summary> 
@@ -52,19 +52,19 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             get
             {
-                if (this.resourcesClient == null)
+                if (resourcesClient == null)
                 {
-                    this.resourcesClient = new ResourcesClient(DefaultContext)
+                    resourcesClient = new ResourcesClient(DefaultContext)
                     {
                         VerboseLogger = WriteVerboseWithTimestamp,
                         ErrorLogger = WriteErrorWithTimestamp,
                         WarningLogger = WriteWarningWithTimestamp
                     };
                 }
-                return this.resourcesClient;
+                return resourcesClient;
             }
 
-            set { this.resourcesClient = value; }
+            set { resourcesClient = value; }
         }
 
 #if !NETSTANDARD
@@ -96,14 +96,14 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             get
             {
-                if (this.policiesClient == null)
+                if (policiesClient == null)
                 {
-                    this.policiesClient = new AuthorizationClient(DefaultContext);
+                    policiesClient = new AuthorizationClient(DefaultContext);
                 }
-                return this.policiesClient;
+                return policiesClient;
             }
 
-            set { this.policiesClient = value; }
+            set { policiesClient = value; }
         }
 
         /// <summary>
@@ -113,14 +113,14 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             get
             {
-                if (this.subscriptionsClient == null)
+                if (subscriptionsClient == null)
                 {
-                    this.subscriptionsClient = new SubscriptionsClient(DefaultContext);
+                    subscriptionsClient = new SubscriptionsClient(DefaultContext);
                 }
-                return this.subscriptionsClient;
+                return subscriptionsClient;
             }
 
-            set { this.subscriptionsClient = value; }
+            set { subscriptionsClient = value; }
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
         /// </summary>
         public virtual string DetermineParameterSetName()
         {
-            return this.ParameterSetName;
+            return ParameterSetName;
         }
     }
 }

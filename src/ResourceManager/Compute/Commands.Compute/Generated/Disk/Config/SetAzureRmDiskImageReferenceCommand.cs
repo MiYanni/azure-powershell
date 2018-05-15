@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Set", "AzureRmDiskImageReference", SupportsShouldProcess = true)]
     [OutputType(typeof(PSDisk))]
-    public partial class SetAzureRmDiskImageReferenceCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class SetAzureRmDiskImageReferenceCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -62,37 +62,37 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
         private void Run()
         {
-            if (this.MyInvocation.BoundParameters.ContainsKey("Id"))
+            if (MyInvocation.BoundParameters.ContainsKey("Id"))
             {
                 // CreationData
-                if (this.Disk.CreationData == null)
+                if (Disk.CreationData == null)
                 {
-                    this.Disk.CreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    Disk.CreationData = new CreationData();
                 }
                 // ImageReference
-                if (this.Disk.CreationData.ImageReference == null)
+                if (Disk.CreationData.ImageReference == null)
                 {
-                    this.Disk.CreationData.ImageReference = new Microsoft.Azure.Management.Compute.Models.ImageDiskReference();
+                    Disk.CreationData.ImageReference = new ImageDiskReference();
                 }
-                this.Disk.CreationData.ImageReference.Id = this.Id;
+                Disk.CreationData.ImageReference.Id = Id;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Lun"))
+            if (MyInvocation.BoundParameters.ContainsKey("Lun"))
             {
                 // CreationData
-                if (this.Disk.CreationData == null)
+                if (Disk.CreationData == null)
                 {
-                    this.Disk.CreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    Disk.CreationData = new CreationData();
                 }
                 // ImageReference
-                if (this.Disk.CreationData.ImageReference == null)
+                if (Disk.CreationData.ImageReference == null)
                 {
-                    this.Disk.CreationData.ImageReference = new Microsoft.Azure.Management.Compute.Models.ImageDiskReference();
+                    Disk.CreationData.ImageReference = new ImageDiskReference();
                 }
-                this.Disk.CreationData.ImageReference.Lun = this.Lun;
+                Disk.CreationData.ImageReference.Lun = Lun;
             }
 
-            WriteObject(this.Disk);
+            WriteObject(Disk);
         }
     }
 }

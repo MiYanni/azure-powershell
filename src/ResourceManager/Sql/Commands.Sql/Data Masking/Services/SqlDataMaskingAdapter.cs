@@ -159,11 +159,11 @@ namespace Microsoft.Azure.Commands.Sql.DataMasking.Services
             properties.SchemaName = model.SchemaName;
             properties.ColumnName = model.ColumnName;
             properties.MaskingFunction = PolicizeMaskingFunction(model.MaskingFunction);
-            properties.PrefixSize = (model.PrefixSize == null) ? null : model.PrefixSize.ToString();
+            properties.PrefixSize = model.PrefixSize == null ? null : model.PrefixSize.ToString();
             properties.ReplacementString = model.ReplacementString;
-            properties.SuffixSize = (model.SuffixSize == null) ? null : model.SuffixSize.ToString();
-            properties.NumberFrom = (model.NumberFrom == null) ? null : model.NumberFrom.ToString();
-            properties.NumberTo = (model.NumberTo == null) ? null : model.NumberTo.ToString();
+            properties.SuffixSize = model.SuffixSize == null ? null : model.SuffixSize.ToString();
+            properties.NumberFrom = model.NumberFrom == null ? null : model.NumberFrom.ToString();
+            properties.NumberTo = model.NumberTo == null ? null : model.NumberTo.ToString();
             properties.RuleState = SecurityConstants.Enabled;
             return updateParameters;
         }
@@ -287,7 +287,7 @@ namespace Microsoft.Azure.Commands.Sql.DataMasking.Services
             DataMaskingPolicyCreateOrUpdateParameters updateParameters = new DataMaskingPolicyCreateOrUpdateParameters();
             DataMaskingPolicyProperties properties = new DataMaskingPolicyProperties();
             updateParameters.Properties = properties;
-            properties.DataMaskingState = (model.DataMaskingState == DataMaskingStateType.Disabled) ? SecurityConstants.DataMaskingEndpoint.Disabled : SecurityConstants.DataMaskingEndpoint.Enabled;
+            properties.DataMaskingState = model.DataMaskingState == DataMaskingStateType.Disabled ? SecurityConstants.DataMaskingEndpoint.Disabled : SecurityConstants.DataMaskingEndpoint.Enabled;
             properties.ExemptPrincipals = model.PrivilegedUsers ?? "";
             return updateParameters;
         }

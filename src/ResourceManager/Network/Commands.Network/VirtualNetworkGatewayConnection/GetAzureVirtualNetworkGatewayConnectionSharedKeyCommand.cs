@@ -39,9 +39,9 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var vnetGatewayConnection = this.GetVirtualNetworkGatewayConnectionSharedKey(this.ResourceGroupName, this.Name);
+                var vnetGatewayConnection = GetVirtualNetworkGatewayConnectionSharedKey(ResourceGroupName, Name);
 
                 WriteObject(vnetGatewayConnection);
             }

@@ -42,23 +42,23 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
             IEnumerable<Runbook> ret = null;
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByRunbookName)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByRunbookName)
             {
                 ret = new List<Runbook>
                 {
-                   this.AutomationClient.GetRunbook(this.ResourceGroupName, this.AutomationAccountName, this.Name)
+                   AutomationClient.GetRunbook(ResourceGroupName, AutomationAccountName, Name)
                 };
 
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByAll)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByAll)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    ret = this.AutomationClient.ListRunbooks(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
-                    this.GenerateCmdletOutput(ret);
+                    ret = AutomationClient.ListRunbooks(ResourceGroupName, AutomationAccountName, ref nextLink);
+                    GenerateCmdletOutput(ret);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

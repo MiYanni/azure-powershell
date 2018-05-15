@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     using System.Collections.Concurrent;
     using System.Management.Automation;
     using System.Threading.Tasks;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
+    using Extensions;
+    using Common;
     using Newtonsoft.Json.Linq;
 
     /// <summary>
@@ -37,12 +37,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the extension resource name parameter.
         /// </summary>
         [Alias("ExtensionResourceName", "Name")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupResourceLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ScopeLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.SubscriptionLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.SubscriptionResourceLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.TenantResourceLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ResourceGroupLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ResourceGroupResourceLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ScopeLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = SubscriptionLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = SubscriptionResourceLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = TenantResourceLevelLock, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
         [ValidateNotNullOrEmpty]
         public string LockName { get; set; }
 
@@ -60,16 +60,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
             PaginatedResponseHelper.ForEach(
-                getFirstPage: () => this.GetResources(),
-                getNextPage: nextLink => this.GetNextLink<JObject>(nextLink),
-                cancellationToken: this.CancellationToken,
-                action: resources => this.WriteObject(sendToPipeline: this.GetOutputObjects(resources), enumerateCollection: true));
+                () => GetResources(),
+                nextLink => GetNextLink<JObject>(nextLink),
+                CancellationToken,
+                resources => WriteObject(GetOutputObjects(resources), true));
 
-            if (this.errors.Count != 0)
+            if (errors.Count != 0)
             {
-                foreach (var error in this.errors)
+                foreach (var error in errors)
                 {
-                    this.WriteError(error);
+                    WriteError(error);
                 }
             }
         }
@@ -83,15 +83,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(this.LockName))
+                if (!string.IsNullOrWhiteSpace(LockName))
                 {
-                    var resource = await this.GetResource().ConfigureAwait(continueOnCapturedContext: false);
+                    var resource = await GetResource().ConfigureAwait(false);
 
                     response.Value = resource.AsArray();
                 }
                 else
                 {
-                    response = await this.ListResourcesTypeCollection().ConfigureAwait(continueOnCapturedContext: false);
+                    response = await ListResourcesTypeCollection().ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -101,11 +101,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                     throw;
                 }
 
-                ex = (ex is AggregateException)
+                ex = ex is AggregateException
                     ? (ex as AggregateException).Flatten()
                     : ex;
 
-                this.errors.Add(new ErrorRecord(ex, "ErrorGettingResourceLock", ErrorCategory.CloseError, null));
+                errors.Add(new ErrorRecord(ex, "ErrorGettingResourceLock", ErrorCategory.CloseError, null));
             }
 
             return response;
@@ -116,15 +116,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private async Task<JObject> GetResource()
         {
-            var resourceId = this.GetResourceId(this.LockName);
+            var resourceId = GetResourceId(LockName);
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .GetResource<JObject>(
-                    resourceId: resourceId,
-                    apiVersion: this.LockApiVersion,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    resourceId,
+                    LockApiVersion,
+                    CancellationToken.Value)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -132,20 +131,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private async Task<ResponseWithContinuation<JObject[]>> ListResourcesTypeCollection()
         {
-            var resourceCollectionId = this.GetResourceId(this.LockName);
+            var resourceCollectionId = GetResourceId(LockName);
 
-            var filter = this.AtScope
+            var filter = AtScope
                 ? "$filter=atScope()"
                 : null;
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .ListObjectColleciton<JObject>(
-                    resourceCollectionId: resourceCollectionId,
-                    apiVersion: this.LockApiVersion,
-                    cancellationToken: this.CancellationToken.Value,
-                    odataQuery: filter)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    resourceCollectionId,
+                    LockApiVersion,
+                    CancellationToken.Value,
+                    filter)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -154,9 +152,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <param name="nextLink">The next link.</param>
         private Task<ResponseWithContinuation<TType[]>> GetNextLink<TType>(string nextLink)
         {
-            return this
-                .GetResourcesClient()
-                .ListNextBatch<TType>(nextLink: nextLink, cancellationToken: this.CancellationToken.Value);
+            return GetResourcesClient()
+                .ListNextBatch<TType>(nextLink, CancellationToken.Value);
         }
     }
 }

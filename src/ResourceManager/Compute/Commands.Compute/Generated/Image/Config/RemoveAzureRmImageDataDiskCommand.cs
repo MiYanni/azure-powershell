@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Remove", "AzureRmImageDataDisk", SupportsShouldProcess = true)]
     [OutputType(typeof(PSImage))]
-    public partial class RemoveAzureRmImageDataDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class RemoveAzureRmImageDataDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -50,33 +50,33 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         protected override void ProcessRecord()
         {
             // StorageProfile
-            if (this.Image.StorageProfile == null)
+            if (Image.StorageProfile == null)
             {
-                WriteObject(this.Image);
+                WriteObject(Image);
                 return;
             }
 
             // DataDisks
-            if (this.Image.StorageProfile.DataDisks == null)
+            if (Image.StorageProfile.DataDisks == null)
             {
-                WriteObject(this.Image);
+                WriteObject(Image);
                 return;
             }
-            var vDataDisks = this.Image.StorageProfile.DataDisks.First
+            var vDataDisks = Image.StorageProfile.DataDisks.First
                 (e =>
-                    (this.Lun != null && e.Lun == this.Lun)
+                    Lun != null && e.Lun == Lun
                 );
 
             if (vDataDisks != null)
             {
-                this.Image.StorageProfile.DataDisks.Remove(vDataDisks);
+                Image.StorageProfile.DataDisks.Remove(vDataDisks);
             }
 
-            if (this.Image.StorageProfile.DataDisks.Count == 0)
+            if (Image.StorageProfile.DataDisks.Count == 0)
             {
-                this.Image.StorageProfile.DataDisks = null;
+                Image.StorageProfile.DataDisks = null;
             }
-            WriteObject(this.Image);
+            WriteObject(Image);
         }
     }
 }

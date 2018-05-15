@@ -14,8 +14,8 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
+    using Model.Contract;
+    using WindowsAzure.Storage;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -78,13 +78,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            var sharedAccessPolicy = new SharedAccessAccountPolicy()
+            var sharedAccessPolicy = new SharedAccessAccountPolicy
             {
-                Permissions = SetupAccessPolicyPermission(this.Permission),
+                Permissions = SetupAccessPolicyPermission(Permission),
                 Services = Service,
                 ResourceTypes = ResourceType,
                 Protocols = Protocol,
-                IPAddressOrRange = Util.SetupIPAddressOrRangeForSAS(this.IPAddressOrRange)
+                IPAddressOrRange = Util.SetupIPAddressOrRangeForSAS(IPAddressOrRange)
             };
 
             DateTimeOffset? accessStartTime;
@@ -94,7 +94,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
             sharedAccessPolicy.SharedAccessStartTime = accessStartTime;
             sharedAccessPolicy.SharedAccessExpiryTime = accessEndTime;
 
-            this.WriteObject(Channel.GetStorageAccountSASToken(sharedAccessPolicy));
+            WriteObject(Channel.GetStorageAccountSASToken(sharedAccessPolicy));
         }
 
         /// <summary>

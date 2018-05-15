@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
         /// <param name="tenant"></param>
         public KeyStoreApplicationCredentialProvider(string tenant)
         {
-            this._tenantId = tenant;
+            _tenantId = tenant;
         }
 
         /// <summary>

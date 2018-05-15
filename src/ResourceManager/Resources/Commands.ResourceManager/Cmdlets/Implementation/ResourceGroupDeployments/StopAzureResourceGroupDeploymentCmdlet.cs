@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// Cancel a running deployment.
     /// </summary>
     [Cmdlet(VerbsLifecycle.Stop, "AzureRmResourceGroupDeployment", SupportsShouldProcess = true, 
-        DefaultParameterSetName = StopAzureResourceGroupDeploymentCmdlet.DeploymentNameParameterSet), OutputType(typeof(bool))]
+        DefaultParameterSetName = DeploymentNameParameterSet), OutputType(typeof(bool))]
     public class StopAzureResourceGroupDeploymentCmdlet : ResourceManagerCmdletBase
     {
         /// <summary>
@@ -37,20 +37,20 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         internal const string DeploymentNameParameterSet = "StopByResourceGroupDeploymentName";
 
-        [Parameter(Position = 0, ParameterSetName = StopAzureResourceGroupDeploymentCmdlet.DeploymentNameParameterSet, 
+        [Parameter(Position = 0, ParameterSetName = DeploymentNameParameterSet, 
             Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the resource group.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         [Alias("DeploymentName")]
-        [Parameter(Position = 1, ParameterSetName = StopAzureResourceGroupDeploymentCmdlet.DeploymentNameParameterSet, 
+        [Parameter(Position = 1, ParameterSetName = DeploymentNameParameterSet, 
             Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the deployment.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         [Alias("DeploymentId", "ResourceId")]
-        [Parameter(ParameterSetName = StopAzureResourceGroupDeploymentCmdlet.DeploymentIdParameterSet, Mandatory = true, 
+        [Parameter(ParameterSetName = DeploymentIdParameterSet, Mandatory = true, 
             HelpMessage = "The fully qualified resource Id of the deployment. example: /subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Resources/deployments/{deploymentName}")]
         [ValidateNotNullOrEmpty]
         public string Id { get; set; }

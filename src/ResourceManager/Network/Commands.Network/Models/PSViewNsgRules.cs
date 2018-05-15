@@ -26,12 +26,12 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string NetworkInterfacesPropertyText
         {
-            get { return JsonConvert.SerializeObject(this.NetworkInterfacesProperty, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(NetworkInterfacesProperty, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         public bool ShouldSerializeIpConfigurations()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }

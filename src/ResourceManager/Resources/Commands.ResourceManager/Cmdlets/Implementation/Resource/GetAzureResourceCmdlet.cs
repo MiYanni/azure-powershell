@@ -16,13 +16,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Commands.Common.Authentication.Abstractions;
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Resources;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
-    using Microsoft.Azure.Management.ResourceManager.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Components;
+    using Entities.Resources;
+    using Extensions;
+    using SdkModels;
+    using Common;
+    using Management.ResourceManager.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections;
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected override void OnProcessRecord()
         {
             base.OnProcessRecord();
-            this.DefaultApiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.ResourcesApiVersion : this.ApiVersion;
+            DefaultApiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.ResourcesApiVersion : ApiVersion;
             var resourceId = string.Empty;
             if (ShouldConstructResourceId(out resourceId))
             {
@@ -135,11 +135,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             }
             else if (this.IsParameterBound(c => c.ApiVersion) || this.IsParameterBound(c => c.ExpandProperties))
             {
-                this.RunCmdlet();
+                RunCmdlet();
             }
             else
             {
-                this.RunSimpleCmdlet();
+                RunSimpleCmdlet();
             }
         }
 
@@ -155,47 +155,47 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             if (this.IsParameterBound(c => c.Tag))
             {
-                this.TagName = TagsHelper.GetTagNameFromParameters(this.Tag, null);
-                this.TagValue = TagsHelper.GetTagValueFromParameters(this.Tag, null);
+                TagName = TagsHelper.GetTagNameFromParameters(Tag, null);
+                TagValue = TagsHelper.GetTagValueFromParameters(Tag, null);
             }
 
             var expression = QueryFilterBuilder.CreateFilter(
-                subscriptionId: null,
-                resourceGroup: null,
-                resourceType: this.ResourceType,
-                resourceName: null,
-                tagName: null,
-                tagValue: null,
-                filter: this.ODataQuery);
+                null,
+                null,
+                ResourceType,
+                null,
+                null,
+                null,
+                ODataQuery);
 
             var odataQuery = new Rest.Azure.OData.ODataQuery<GenericResourceFilter>(expression);
             var result = Enumerable.Empty<PSResource>();
-            if (!string.IsNullOrEmpty(this.ResourceGroupName) && !this.ResourceGroupName.Contains('*'))
+            if (!string.IsNullOrEmpty(ResourceGroupName) && !ResourceGroupName.Contains('*'))
             {
-                result = this.ResourceManagerSdkClient.ListByResourceGroup(this.ResourceGroupName, odataQuery);
+                result = ResourceManagerSdkClient.ListByResourceGroup(ResourceGroupName, odataQuery);
             }
             else
             {
-                result = this.ResourceManagerSdkClient.ListResources(odataQuery);
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                result = ResourceManagerSdkClient.ListResources(odataQuery);
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
                     result = FilterResourceGroupByWildcard(result);
                 }
             }
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 result = FilterResourceByWildcard(result);
             }
 
-            if (!string.IsNullOrEmpty(this.TagName))
+            if (!string.IsNullOrEmpty(TagName))
             {
-                result = result.Where(r => r.Tags != null && r.Tags.Keys != null && r.Tags.Keys.Where(k => string.Equals(k, this.TagName, StringComparison.OrdinalIgnoreCase)).Any());
+                result = result.Where(r => r.Tags != null && r.Tags.Keys != null && r.Tags.Keys.Where(k => string.Equals(k, TagName, StringComparison.OrdinalIgnoreCase)).Any());
             }
 
-            if (!string.IsNullOrEmpty(this.TagValue))
+            if (!string.IsNullOrEmpty(TagValue))
             {
-                result = result.Where(r => r.Tags != null && r.Tags.Values != null && r.Tags.Values.Where(v => string.Equals(v, this.TagValue, StringComparison.OrdinalIgnoreCase)).Any());
+                result = result.Where(r => r.Tags != null && r.Tags.Values != null && r.Tags.Values.Where(v => string.Equals(v, TagValue, StringComparison.OrdinalIgnoreCase)).Any());
             }
 
             WriteObject(result, true);
@@ -226,23 +226,23 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 
         private IEnumerable<PSResource> FilterResourceGroupByWildcard(IEnumerable<PSResource> result)
         {
-            if (this.ResourceGroupName.StartsWith("*"))
+            if (ResourceGroupName.StartsWith("*"))
             {
-                this.ResourceGroupName = this.ResourceGroupName.TrimStart('*');
-                if (this.ResourceGroupName.EndsWith("*"))
+                ResourceGroupName = ResourceGroupName.TrimStart('*');
+                if (ResourceGroupName.EndsWith("*"))
                 {
-                    this.ResourceGroupName = this.ResourceGroupName.TrimEnd('*');
-                    result = result.Where(r => r.ResourceGroupName.IndexOf(this.ResourceGroupName, StringComparison.OrdinalIgnoreCase) >= 0);
+                    ResourceGroupName = ResourceGroupName.TrimEnd('*');
+                    result = result.Where(r => r.ResourceGroupName.IndexOf(ResourceGroupName, StringComparison.OrdinalIgnoreCase) >= 0);
                 }
                 else
                 {
-                    result = result.Where(r => r.ResourceGroupName.EndsWith(this.ResourceGroupName, StringComparison.OrdinalIgnoreCase));
+                    result = result.Where(r => r.ResourceGroupName.EndsWith(ResourceGroupName, StringComparison.OrdinalIgnoreCase));
                 }
             }
-            else if (this.ResourceGroupName.EndsWith("*"))
+            else if (ResourceGroupName.EndsWith("*"))
             {
-                this.ResourceGroupName = this.ResourceGroupName.TrimEnd('*');
-                result = result.Where(r => r.ResourceGroupName.StartsWith(this.ResourceGroupName, StringComparison.OrdinalIgnoreCase));
+                ResourceGroupName = ResourceGroupName.TrimEnd('*');
+                result = result.Where(r => r.ResourceGroupName.StartsWith(ResourceGroupName, StringComparison.OrdinalIgnoreCase));
             }
 
             return result;
@@ -250,27 +250,27 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 
         private IEnumerable<PSResource> FilterResourceByWildcard(IEnumerable<PSResource> result)
         {
-            if (this.Name.StartsWith("*"))
+            if (Name.StartsWith("*"))
             {
-                this.Name = this.Name.TrimStart('*');
-                if (this.Name.EndsWith("*"))
+                Name = Name.TrimStart('*');
+                if (Name.EndsWith("*"))
                 {
-                    this.Name = this.Name.TrimEnd('*');
-                    result = result.Where(r => r.Name.IndexOf(this.Name, StringComparison.OrdinalIgnoreCase) >= 0);
+                    Name = Name.TrimEnd('*');
+                    result = result.Where(r => r.Name.IndexOf(Name, StringComparison.OrdinalIgnoreCase) >= 0);
                 }
                 else
                 {
-                    result = result.Where(r => r.Name.EndsWith(this.Name, StringComparison.OrdinalIgnoreCase));
+                    result = result.Where(r => r.Name.EndsWith(Name, StringComparison.OrdinalIgnoreCase));
                 }
             }
-            else if (this.Name.EndsWith("*"))
+            else if (Name.EndsWith("*"))
             {
-                this.Name = this.Name.TrimEnd('*');
-                result = result.Where(r => r.Name.StartsWith(this.Name, StringComparison.OrdinalIgnoreCase));
+                Name = Name.TrimEnd('*');
+                result = result.Where(r => r.Name.StartsWith(Name, StringComparison.OrdinalIgnoreCase));
             }
             else
             {
-                result = result.Where(r => string.Equals(r.Name, this.Name, StringComparison.OrdinalIgnoreCase));
+                result = result.Where(r => string.Equals(r.Name, Name, StringComparison.OrdinalIgnoreCase));
             }
 
             return result;
@@ -281,16 +281,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private void RunCmdlet()
         {
-            if (string.IsNullOrEmpty(this.ResourceId))
+            if (string.IsNullOrEmpty(ResourceId))
             {
-                this.SubscriptionId = DefaultContext.Subscription.GetId();
+                SubscriptionId = DefaultContext.Subscription.GetId();
             }
 
             PaginatedResponseHelper.ForEach(
-                getFirstPage: () => this.GetResources(),
-                getNextPage: nextLink => this.GetNextLink<JObject>(nextLink),
-                cancellationToken: this.CancellationToken,
-                action: resources =>
+                () => GetResources(),
+                nextLink => GetNextLink<JObject>(nextLink),
+                CancellationToken,
+                resources =>
                 {
                     Resource<JToken> resource;
                     if (resources.CoalesceEnumerable().FirstOrDefault().TryConvertTo(out resource))
@@ -300,27 +300,27 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                         foreach (var batch in genericResources.Batch())
                         {
                             var items = batch;
-                            if (this.ExpandProperties)
+                            if (ExpandProperties)
                             {
-                                items = this.GetPopulatedResource(batch).Result;
+                                items = GetPopulatedResource(batch).Result;
                             }
 
                             var powerShellObjects = items.SelectArray(genericResource => genericResource.ToPsObject());
 
-                            this.WriteObject(sendToPipeline: powerShellObjects, enumerateCollection: true);
+                            WriteObject(powerShellObjects, true);
                         }
                     }
                     else
                     {
-                        this.WriteObject(sendToPipeline: resources.CoalesceEnumerable().SelectArray(res => res.ToPsObject()), enumerateCollection: true);
+                        WriteObject(resources.CoalesceEnumerable().SelectArray(res => res.ToPsObject()), true);
                     }
                 });
 
-            if (this.errors.Count != 0)
+            if (errors.Count != 0)
             {
-                foreach (var error in this.errors)
+                foreach (var error in errors)
                 {
-                    this.WriteError(error);
+                    WriteError(error);
                 }
             }
         }
@@ -330,26 +330,26 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private async Task<ResponseWithContinuation<JObject[]>> GetResources()
         {
-            if (this.IsResourceGet())
+            if (IsResourceGet())
             {
-                var resource = await this.GetResource().ConfigureAwait(continueOnCapturedContext: false);
+                var resource = await GetResource().ConfigureAwait(false);
                 ResponseWithContinuation<JObject[]> retVal;
                 return resource.TryConvertTo(out retVal) && retVal.Value != null
                     ? retVal
                     : new ResponseWithContinuation<JObject[]> { Value = resource.AsArray() };
             }
 
-            if (this.IsResourceGroupLevelQuery())
+            if (IsResourceGroupLevelQuery())
             {
-                return await this.ListResourcesInResourceGroup().ConfigureAwait(continueOnCapturedContext: false);
+                return await ListResourcesInResourceGroup().ConfigureAwait(false);
             }
 
-            if (this.IsSubscriptionLevelQuery())
+            if (IsSubscriptionLevelQuery())
             {
-                return await this.ListResourcesInSubscription().ConfigureAwait(continueOnCapturedContext: false);
+                return await ListResourcesInSubscription().ConfigureAwait(false);
             }
 
-            return await this.ListResourcesInTenant().ConfigureAwait(continueOnCapturedContext: false);
+            return await ListResourcesInTenant().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -359,31 +359,29 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
 #pragma warning disable 618
 
-            var resourceId = this.GetResourceId();
+            var resourceId = GetResourceId();
 
 #pragma warning restore 618
 
-            var apiVersion = await this
-                .DetermineApiVersion(resourceId: resourceId)
-                .ConfigureAwait(continueOnCapturedContext: false);
+            var apiVersion = await DetermineApiVersion(resourceId)
+                .ConfigureAwait(false);
 
             var odataQuery = QueryFilterBuilder.CreateFilter(
-                subscriptionId: null,
-                resourceGroup: null,
-                resourceType: null,
-                resourceName: null,
-                tagName: null,
-                tagValue: null,
-                filter: this.ODataQuery);
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                ODataQuery);
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .GetResource<JObject>(
-                    resourceId: resourceId,
-                    apiVersion: apiVersion,
-                    cancellationToken: this.CancellationToken.Value,
-                    odataQuery: odataQuery)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    resourceId,
+                    apiVersion,
+                    CancellationToken.Value,
+                    odataQuery)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -392,28 +390,27 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private async Task<ResponseWithContinuation<JObject[]>> ListResourcesTypeCollection()
         {
             var resourceCollectionId = ResourceIdUtility.GetResourceId(
-                subscriptionId: this.SubscriptionId.AsArray().CoalesceEnumerable().Cast<Guid?>().FirstOrDefault(),
-                resourceGroupName: this.ResourceGroupName,
-                resourceType: this.ResourceType,
-                resourceName: this.Name);
+                SubscriptionId.AsArray().CoalesceEnumerable().Cast<Guid?>().FirstOrDefault(),
+                ResourceGroupName,
+                ResourceType,
+                Name);
 
             var odataQuery = QueryFilterBuilder.CreateFilter(
-                subscriptionId: null,
-                resourceGroup: null,
-                resourceType: null,
-                resourceName: null,
-                tagName: null,
-                tagValue: null,
-                filter: this.ODataQuery);
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                ODataQuery);
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .ListObjectColleciton<JObject>(
-                    resourceCollectionId: resourceCollectionId,
-                    apiVersion: this.DefaultApiVersion,
-                    cancellationToken: this.CancellationToken.Value,
-                    odataQuery: odataQuery)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    resourceCollectionId,
+                    DefaultApiVersion,
+                    CancellationToken.Value,
+                    odataQuery)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -423,21 +420,20 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             var filterQuery = QueryFilterBuilder
                 .CreateFilter(
-                    subscriptionId: null,
-                    resourceGroup: this.ResourceGroupName,
-                    resourceType: this.ResourceType,
-                    resourceName: this.Name,
-                    tagName: null,
-                    tagValue: null,
-                    filter: this.ODataQuery);
+                    null,
+                    ResourceGroupName,
+                    ResourceType,
+                    Name,
+                    null,
+                    null,
+                    ODataQuery);
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .ListResources<JObject>(
-                    apiVersion: this.DefaultApiVersion,
+                    DefaultApiVersion,
                     filter: filterQuery,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    cancellationToken: CancellationToken.Value)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -447,23 +443,22 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             var filterQuery = QueryFilterBuilder
                 .CreateFilter(
-                    subscriptionId: null,
-                    resourceGroup: null,
-                    resourceType: this.ResourceType,
-                    resourceName: this.Name,
-                    tagName: null,
-                    tagValue: null,
-                    filter: this.ODataQuery);
+                    null,
+                    null,
+                    ResourceType,
+                    Name,
+                    null,
+                    null,
+                    ODataQuery);
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .ListResources<JObject>(
-                    subscriptionId: this.SubscriptionId.Value,
-                    resourceGroupName: this.ResourceGroupName,
-                    apiVersion: this.DefaultApiVersion,
+                    SubscriptionId.Value,
+                    ResourceGroupName,
+                    DefaultApiVersion,
                     filter: filterQuery,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    cancellationToken: CancellationToken.Value)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -473,22 +468,21 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             var filterQuery = QueryFilterBuilder
                 .CreateFilter(
-                    subscriptionId: null,
-                    resourceGroup: null,
-                    resourceType: this.ResourceType,
-                    resourceName: this.Name,
-                    tagName: null,
-                    tagValue: null,
-                    filter: this.ODataQuery);
+                    null,
+                    null,
+                    ResourceType,
+                    Name,
+                    null,
+                    null,
+                    ODataQuery);
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .ListResources<JObject>(
-                    subscriptionId: this.SubscriptionId.Value,
-                    apiVersion: this.DefaultApiVersion,
+                    SubscriptionId.Value,
+                    DefaultApiVersion,
                     filter: filterQuery,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    cancellationToken: CancellationToken.Value)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -497,9 +491,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <param name="nextLink">The next link.</param>
         private Task<ResponseWithContinuation<TType[]>> GetNextLink<TType>(string nextLink)
         {
-            return this
-                .GetResourcesClient()
-                .ListNextBatch<TType>(nextLink: nextLink, cancellationToken: this.CancellationToken.Value);
+            return GetResourcesClient()
+                .ListNextBatch<TType>(nextLink, CancellationToken.Value);
         }
 
         /// <summary>
@@ -509,9 +502,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private async Task<Resource<JToken>[]> GetPopulatedResource(IEnumerable<Resource<JToken>> resources)
         {
             return await resources
-                .Select(resource => this.GetPopulatedResource(resource))
+                .Select(resource => GetPopulatedResource(resource))
                 .WhenAllForAwait()
-                .ConfigureAwait(continueOnCapturedContext: false);
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -522,18 +515,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             try
             {
-                var apiVersion = await this.DetermineApiVersion(
-                    resourceId: resource.Id,
-                    pre: this.Pre)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                var apiVersion = await DetermineApiVersion(
+                    resource.Id,
+                    Pre)
+                    .ConfigureAwait(false);
 
-                return await this
-                    .GetResourcesClient()
+                return await GetResourcesClient()
                     .GetResource<Resource<JToken>>(
-                        resourceId: resource.Id,
-                        apiVersion: apiVersion,
-                        cancellationToken: this.CancellationToken.Value)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                        resource.Id,
+                        apiVersion,
+                        CancellationToken.Value)
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -542,11 +534,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                     throw;
                 }
 
-                ex = (ex is AggregateException)
+                ex = ex is AggregateException
                     ? (ex as AggregateException).Flatten()
                     : ex;
 
-                this.errors.Add(new ErrorRecord(ex, "ErrorExpandingProperties", ErrorCategory.CloseError, resource));
+                errors.Add(new ErrorRecord(ex, "ErrorExpandingProperties", ErrorCategory.CloseError, resource));
             }
 
             return resource;
@@ -557,13 +549,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private string GetResourceId()
         {
-            return !string.IsNullOrWhiteSpace(this.ResourceId)
-            ? this.ResourceId
+            return !string.IsNullOrWhiteSpace(ResourceId)
+            ? ResourceId
             : ResourceIdUtility.GetResourceId(
-                subscriptionId: this.SubscriptionId.Value,
-                resourceGroupName: this.ResourceGroupName,
-                resourceType: this.ResourceType,
-                resourceName: this.Name);
+                SubscriptionId.Value,
+                ResourceGroupName,
+                ResourceType,
+                Name);
         }
 
         /// <summary>
@@ -571,10 +563,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsResourceGet()
         {
-            return !string.IsNullOrWhiteSpace(this.ResourceId) ||
-                this.IsResourceGroupLevelResourceGet() ||
-                this.IsSubscriptionLevelResourceGet() ||
-                this.IsTenantLevelResourceGet();
+            return !string.IsNullOrWhiteSpace(ResourceId) ||
+                IsResourceGroupLevelResourceGet() ||
+                IsSubscriptionLevelResourceGet() ||
+                IsTenantLevelResourceGet();
         }
 
         /// <summary>
@@ -582,10 +574,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsSubscriptionLevelResourceTypeCollectionGet()
         {
-            return this.SubscriptionId.HasValue &&
-                this.ResourceGroupName == null &&
-                this.Name == null &&
-                this.ResourceType != null;
+            return SubscriptionId.HasValue &&
+                ResourceGroupName == null &&
+                Name == null &&
+                ResourceType != null;
         }
 
         /// <summary>
@@ -593,10 +585,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsResourceGroupLevelResourceTypeCollectionGet()
         {
-            return this.SubscriptionId.HasValue &&
-                this.ResourceGroupName != null &&
-                this.Name == null &&
-                this.ResourceType != null;
+            return SubscriptionId.HasValue &&
+                ResourceGroupName != null &&
+                Name == null &&
+                ResourceType != null;
         }
 
         /// <summary>
@@ -605,10 +597,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsTenantLevelResourceTypeCollectionGet()
         {
-            return this.SubscriptionId == null &&
-                this.ResourceGroupName == null &&
-                this.Name == null &&
-                this.ResourceType != null;
+            return SubscriptionId == null &&
+                ResourceGroupName == null &&
+                Name == null &&
+                ResourceType != null;
         }
 
         /// <summary>
@@ -617,10 +609,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsSubscriptionLevelResourceGet()
         {
-            return this.SubscriptionId.HasValue &&
-                this.ResourceGroupName == null &&
-                this.Name != null &&
-                this.ResourceType != null;
+            return SubscriptionId.HasValue &&
+                ResourceGroupName == null &&
+                Name != null &&
+                ResourceType != null;
         }
 
         /// <summary>
@@ -629,10 +621,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsResourceGroupLevelResourceGet()
         {
-            return this.SubscriptionId.HasValue &&
-                this.ResourceGroupName != null &&
-                this.Name != null &&
-                this.ResourceType != null;
+            return SubscriptionId.HasValue &&
+                ResourceGroupName != null &&
+                Name != null &&
+                ResourceType != null;
         }
 
         /// <summary>
@@ -640,10 +632,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsTenantLevelResourceGet()
         {
-            return this.SubscriptionId == null &&
-                this.ResourceGroupName == null &&
-                this.Name != null &&
-                this.ResourceType != null;
+            return SubscriptionId == null &&
+                ResourceGroupName == null &&
+                Name != null &&
+                ResourceType != null;
         }
 
         /// <summary>
@@ -651,8 +643,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsSubscriptionLevelQuery()
         {
-            return this.SubscriptionId.HasValue &&
-                this.ResourceGroupName == null;
+            return SubscriptionId.HasValue &&
+                ResourceGroupName == null;
         }
 
         /// <summary>
@@ -660,10 +652,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private bool IsResourceGroupLevelQuery()
         {
-            return this.SubscriptionId.HasValue &&
-                this.ResourceGroupName != null &&
-                this.Name != null ||
-                this.ResourceType != null;
+            return SubscriptionId.HasValue &&
+                ResourceGroupName != null &&
+                Name != null ||
+                ResourceType != null;
         }
     }
 }

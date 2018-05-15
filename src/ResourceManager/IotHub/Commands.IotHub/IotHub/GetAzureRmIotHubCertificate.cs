@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 {
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIotHubCertificate", DefaultParameterSetName = ResourceParameterSet)]
@@ -76,31 +76,31 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (ParameterSetName.Equals(InputObjectParameterSet))
             {
-                this.ResourceGroupName = this.InputObject.Resourcegroup;
-                this.Name = this.InputObject.Name;
+                ResourceGroupName = InputObject.Resourcegroup;
+                Name = InputObject.Name;
             }
 
             if (ParameterSetName.Equals(ResourceIdParameterSet))
             {
-                this.ResourceGroupName = IotHubUtils.GetResourceGroupName(this.ResourceId);
-                this.Name = IotHubUtils.GetIotHubName(this.ResourceId);
+                ResourceGroupName = IotHubUtils.GetResourceGroupName(ResourceId);
+                Name = IotHubUtils.GetIotHubName(ResourceId);
             }
 
             if (!string.IsNullOrEmpty(CertificateName))
             {
-                CertificateDescription certificateDescription = this.IotHubClient.Certificates.Get(this.ResourceGroupName, this.Name, this.CertificateName);
-                this.WriteObject(IotHubUtils.ToPSCertificateDescription(certificateDescription));
+                CertificateDescription certificateDescription = IotHubClient.Certificates.Get(ResourceGroupName, Name, CertificateName);
+                WriteObject(IotHubUtils.ToPSCertificateDescription(certificateDescription));
             }
             else
             {
-                CertificateListDescription certificateDescriptions = this.IotHubClient.Certificates.ListByIotHub(this.ResourceGroupName, this.Name);
+                CertificateListDescription certificateDescriptions = IotHubClient.Certificates.ListByIotHub(ResourceGroupName, Name);
                 if (certificateDescriptions.Value.Count == 1)
                 {
-                    this.WriteObject(IotHubUtils.ToPSCertificateDescription(certificateDescriptions.Value[0]));
+                    WriteObject(IotHubUtils.ToPSCertificateDescription(certificateDescriptions.Value[0]));
                 }
                 else
                 {
-                    this.WriteObject(IotHubUtils.ToPSCertificates(certificateDescriptions), true);
+                    WriteObject(IotHubUtils.ToPSCertificates(certificateDescriptions), true);
                 }
             }
         }

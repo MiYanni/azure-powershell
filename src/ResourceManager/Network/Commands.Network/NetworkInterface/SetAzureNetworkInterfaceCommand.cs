@@ -38,9 +38,9 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!this.IsNetworkInterfacePresent(this.NetworkInterface.ResourceGroupName, this.NetworkInterface.Name))
+            if (!IsNetworkInterfacePresent(NetworkInterface.ResourceGroupName, NetworkInterface.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Verify if PublicIpAddress is empty
@@ -54,15 +54,15 @@ namespace Microsoft.Azure.Commands.Network
             }
 
             // Map to the sdk object
-            var networkInterfaceModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkInterface>(this.NetworkInterface);
+            var networkInterfaceModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkInterface>(NetworkInterface);
 
-			this.NullifyApplicationSecurityGroupIfAbsent(networkInterfaceModel);
+			NullifyApplicationSecurityGroupIfAbsent(networkInterfaceModel);
 
-			networkInterfaceModel.Tags = TagsConversionHelper.CreateTagDictionary(this.NetworkInterface.Tag, validate: true);
+			networkInterfaceModel.Tags = TagsConversionHelper.CreateTagDictionary(NetworkInterface.Tag, validate: true);
 
-            this.NetworkInterfaceClient.CreateOrUpdate(this.NetworkInterface.ResourceGroupName, this.NetworkInterface.Name, networkInterfaceModel);
+            NetworkInterfaceClient.CreateOrUpdate(NetworkInterface.ResourceGroupName, NetworkInterface.Name, networkInterfaceModel);
 
-            var getNetworkInterface = this.GetNetworkInterface(this.NetworkInterface.ResourceGroupName, this.NetworkInterface.Name);
+            var getNetworkInterface = GetNetworkInterface(NetworkInterface.ResourceGroupName, NetworkInterface.Name);
             WriteObject(getNetworkInterface);
         }
     }

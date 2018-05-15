@@ -44,32 +44,32 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var circuit = this.GetExpressRouteCircuit(this.ResourceGroupName, this.Name);
+                var circuit = GetExpressRouteCircuit(ResourceGroupName, Name);
 
                 WriteObject(circuit);
             }
             else
             {
                 IPage<ExpressRouteCircuit> circuitPage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    circuitPage = this.ExpressRouteCircuitClient.List(this.ResourceGroupName);
+                    circuitPage = ExpressRouteCircuitClient.List(ResourceGroupName);
                 }
                 else
                 {
-                    circuitPage = this.ExpressRouteCircuitClient.ListAll();
+                    circuitPage = ExpressRouteCircuitClient.ListAll();
                 }
 
                 // Get all resources by polling on next page link
-                var circuitList = ListNextLink<ExpressRouteCircuit>.GetAllResourcesByPollingNextLink(circuitPage, this.ExpressRouteCircuitClient.ListNext);
+                var circuitList = ListNextLink<ExpressRouteCircuit>.GetAllResourcesByPollingNextLink(circuitPage, ExpressRouteCircuitClient.ListNext);
 
                 var psCircuits = new List<PSExpressRouteCircuit>();
                 foreach (var ExpressRouteCircuit in circuitList)
                 {
-                    var psVnet = this.ToPsExpressRouteCircuit(ExpressRouteCircuit);
-                    psVnet.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(ExpressRouteCircuit.Id);
+                    var psVnet = ToPsExpressRouteCircuit(ExpressRouteCircuit);
+                    psVnet.ResourceGroupName = GetResourceGroup(ExpressRouteCircuit.Id);
                     psCircuits.Add(psVnet);
                 }
 

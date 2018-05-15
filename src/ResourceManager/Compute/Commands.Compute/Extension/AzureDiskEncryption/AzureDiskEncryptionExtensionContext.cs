@@ -72,16 +72,16 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             AzureDiskEncryptionExtensionProtectedSettings protectedSettings = string.IsNullOrEmpty(psExt.ProtectedSettings) ? null
                                     : JsonConvert.DeserializeObject<AzureDiskEncryptionExtensionProtectedSettings>(psExt.ProtectedSettings);
 
-            AadClientID = (publicSettings == null) ? null : publicSettings.AadClientID;
-            KeyVaultURL = (publicSettings == null) ? null : publicSettings.KeyVaultURL;
-            KeyEncryptionKeyURL = (publicSettings == null) ? null : publicSettings.KeyEncryptionKeyURL;
-            KeyEncryptionAlgorithm = (publicSettings == null) ? null : publicSettings.KeyEncryptionAlgorithm;
-            VolumeType = (publicSettings == null) ? null : publicSettings.VolumeType;
-            AadClientCertThumbprint = (publicSettings == null) ? null : publicSettings.AadClientCertThumbprint;
-            SequenceVersion = (publicSettings == null) ? null : publicSettings.SequenceVersion;
-            EncryptionOperation = (publicSettings == null) ? null : publicSettings.EncryptionOperation;
-            AadClientSecret = (protectedSettings == null) ? null : ConvertStringToSecureString(protectedSettings.AadClientSecret);
-            Passphrase = (protectedSettings == null) ? null : ConvertStringToSecureString(protectedSettings.Passphrase);
+            AadClientID = publicSettings == null ? null : publicSettings.AadClientID;
+            KeyVaultURL = publicSettings == null ? null : publicSettings.KeyVaultURL;
+            KeyEncryptionKeyURL = publicSettings == null ? null : publicSettings.KeyEncryptionKeyURL;
+            KeyEncryptionAlgorithm = publicSettings == null ? null : publicSettings.KeyEncryptionAlgorithm;
+            VolumeType = publicSettings == null ? null : publicSettings.VolumeType;
+            AadClientCertThumbprint = publicSettings == null ? null : publicSettings.AadClientCertThumbprint;
+            SequenceVersion = publicSettings == null ? null : publicSettings.SequenceVersion;
+            EncryptionOperation = publicSettings == null ? null : publicSettings.EncryptionOperation;
+            AadClientSecret = protectedSettings == null ? null : ConvertStringToSecureString(protectedSettings.AadClientSecret);
+            Passphrase = protectedSettings == null ? null : ConvertStringToSecureString(protectedSettings.Passphrase);
         }
 
         public AzureDiskEncryptionExtensionContext(PSVirtualMachineExtension psExt)

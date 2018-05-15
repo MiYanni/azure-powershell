@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.StreamAnalytics.Models
                 throw new ArgumentNullException("subscriptionQuotas");
             }
 
-            this.subscriptionQuota = subscriptionQuotas;
+            subscriptionQuota = subscriptionQuotas;
         }
 
         public string Name

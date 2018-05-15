@@ -15,7 +15,7 @@
 namespace Microsoft.Azure.Commands.Scheduler.Models
 {
     using System;
-    using SchedulerModels = Microsoft.Azure.Management.Scheduler.Models;
+    using SchedulerModels = Management.Scheduler.Models;
 
     public class PSServiceBusJobActionDetails : PSJobActionDetails
     {
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Models
                 throw new ArgumentOutOfRangeException();
             }
 
-            this.JobActionType = actionType;
+            JobActionType = actionType;
         }
     }
 }

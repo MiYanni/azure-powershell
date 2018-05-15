@@ -26,37 +26,37 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSLinuxUserConfiguration
     {
         
-        internal Microsoft.Azure.Batch.LinuxUserConfiguration omObject;
+        internal LinuxUserConfiguration omObject;
         
-        public PSLinuxUserConfiguration(System.Nullable<int> uid = null, System.Nullable<int> gid = null, string sshPrivateKey = null)
+        public PSLinuxUserConfiguration(Nullable<int> uid = null, Nullable<int> gid = null, string sshPrivateKey = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.LinuxUserConfiguration(uid, gid, sshPrivateKey);
+            omObject = new LinuxUserConfiguration(uid, gid, sshPrivateKey);
         }
         
-        internal PSLinuxUserConfiguration(Microsoft.Azure.Batch.LinuxUserConfiguration omObject)
+        internal PSLinuxUserConfiguration(LinuxUserConfiguration omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.Int32? Gid
+        public Int32? Gid
         {
             get
             {
-                return this.omObject.Gid;
+                return omObject.Gid;
             }
             set
             {
-                this.omObject.Gid = value;
+                omObject.Gid = value;
             }
         }
         
@@ -64,23 +64,23 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.SshPrivateKey;
+                return omObject.SshPrivateKey;
             }
             set
             {
-                this.omObject.SshPrivateKey = value;
+                omObject.SshPrivateKey = value;
             }
         }
         
-        public System.Int32? Uid
+        public Int32? Uid
         {
             get
             {
-                return this.omObject.Uid;
+                return omObject.Uid;
             }
             set
             {
-                this.omObject.Uid = value;
+                omObject.Uid = value;
             }
         }
     }

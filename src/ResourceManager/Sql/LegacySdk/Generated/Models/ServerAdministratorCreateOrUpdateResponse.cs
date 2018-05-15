@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ErrorResponse Error
         {
-            get { return this._error; }
-            set { this._error = value; }
+            get { return _error; }
+            set { _error = value; }
         }
         
         private string _operationStatusLink;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string OperationStatusLink
         {
-            get { return this._operationStatusLink; }
-            set { this._operationStatusLink = value; }
+            get { return _operationStatusLink; }
+            set { _operationStatusLink = value; }
         }
         
         private int _retryAfter;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int RetryAfter
         {
-            get { return this._retryAfter; }
-            set { this._retryAfter = value; }
+            get { return _retryAfter; }
+            set { _retryAfter = value; }
         }
         
         private ServerAdministrator _serverAdministrator;
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerAdministrator ServerAdministrator
         {
-            get { return this._serverAdministrator; }
-            set { this._serverAdministrator = value; }
+            get { return _serverAdministrator; }
+            set { _serverAdministrator = value; }
         }
         
         private OperationStatus _status;
@@ -84,8 +84,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public OperationStatus Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         /// <summary>

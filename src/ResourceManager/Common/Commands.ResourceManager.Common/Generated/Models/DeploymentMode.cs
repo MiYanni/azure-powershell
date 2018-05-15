@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Management.Internal.Resources.Models
     /// <summary>
     /// Defines values for DeploymentMode.
     /// </summary>
-    [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum DeploymentMode
     {
         [EnumMember(Value = "Incremental")]

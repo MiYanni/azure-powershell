@@ -69,26 +69,26 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
         {
             base.ExecuteCmdlet();
 
-            if (this.ApplicationInsightsComponent != null)
+            if (ApplicationInsightsComponent != null)
             {
-                this.ResourceGroupName = this.ApplicationInsightsComponent.ResourceGroupName;
-                this.Name = this.ApplicationInsightsComponent.Name;
+                ResourceGroupName = ApplicationInsightsComponent.ResourceGroupName;
+                Name = ApplicationInsightsComponent.Name;
             }
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                ResourceIdentifier identifier = new ResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = identifier.ResourceGroupName;
-                this.Name = identifier.ResourceName;
+                ResourceIdentifier identifier = new ResourceIdentifier(ResourceId);
+                ResourceGroupName = identifier.ResourceGroupName;
+                Name = identifier.ResourceName;
             }
 
-            if (string.IsNullOrEmpty(this.ExportId))
+            if (string.IsNullOrEmpty(ExportId))
             {
-                var exportConfigurationsResponse = this.AppInsightsManagementClient
+                var exportConfigurationsResponse = AppInsightsManagementClient
                                                         .ExportConfigurations
                                                         .ListWithHttpMessagesAsync(
-                                                            this.ResourceGroupName,
-                                                            this.Name)
+                                                            ResourceGroupName,
+                                                            Name)
                                                         .GetAwaiter()
                                                         .GetResult();
 
@@ -96,12 +96,12 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
             }
             else
             {
-                var exportConfigurationResponse = this.AppInsightsManagementClient
+                var exportConfigurationResponse = AppInsightsManagementClient
                                                         .ExportConfigurations
                                                         .GetWithHttpMessagesAsync(
-                                                            this.ResourceGroupName,
-                                                            this.Name,
-                                                            this.ExportId)
+                                                            ResourceGroupName,
+                                                            Name,
+                                                            ExportId)
                                                         .GetAwaiter()
                                                         .GetResult();
 

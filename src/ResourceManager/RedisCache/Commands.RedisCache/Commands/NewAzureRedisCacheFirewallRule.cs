@@ -14,9 +14,9 @@
 
 namespace Microsoft.Azure.Commands.RedisCache
 {
-    using Microsoft.Azure.Commands.RedisCache.Models;
-    using Microsoft.Azure.Commands.RedisCache.Properties;
-    using Microsoft.Azure.Management.Redis.Models;
+    using Models;
+    using Properties;
+    using Management.Redis.Models;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Management.Automation;
     using Rest.Azure;
@@ -78,11 +78,11 @@ namespace Microsoft.Azure.Commands.RedisCache
                 () =>
                 {
                     RedisFirewallRule redisFirewallRule = CacheClient.SetFirewallRule(
-                        resourceGroupName: ResourceGroupName,
-                        cacheName: Name,
-                        ruleName: RuleName,
-                        startIP: StartIP,
-                        endIP: EndIP);
+                        ResourceGroupName,
+                        Name,
+                        RuleName,
+                        StartIP,
+                        EndIP);
 
                     if (redisFirewallRule == null)
                     {

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Azure.Commands.Common.Authentication;
-using Microsoft.Azure.Commands.Common.Authentication.Models;
+﻿using Microsoft.Azure.Commands.Common.Authentication;
 using Microsoft.Azure.Commands.ResourceManager.Common;
 using Microsoft.Azure.Management.Reservations;
 using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
@@ -18,8 +11,6 @@ namespace Microsoft.Azure.Commands.Reservations.Common
     public abstract class AzureReservationsCmdletBase : AzureRMCmdlet
     {
         private IAzureReservationAPIClient _azureReservationAPI;
-
-        private Dictionary<string, List<string>> _defaultRequestHeaders;
 
         /// <summary>
         /// Gets or sets the Reservations management client.

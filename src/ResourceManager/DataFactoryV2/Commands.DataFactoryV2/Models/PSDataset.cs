@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
 
         public PSDataset()
         {
-            this.dataset = new DatasetResource() { Properties = new Dataset() };
+            dataset = new DatasetResource { Properties = new Dataset() };
         }
 
         public PSDataset(DatasetResource dataset, string resourceGroupName, string factoryName)
@@ -39,15 +39,15 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
             }
 
             this.dataset = dataset;
-            this.ResourceGroupName = resourceGroupName;
-            this.DataFactoryName = factoryName;
+            ResourceGroupName = resourceGroupName;
+            DataFactoryName = factoryName;
         }
 
         public override string Name
         {
             get
             {
-                return this.dataset.Name;
+                return dataset.Name;
             }
         }
 
@@ -55,11 +55,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.dataset.Properties.Structure;
+                return dataset.Properties.Structure;
             }
             set
             {
-                this.dataset.Properties.Structure = value;
+                dataset.Properties.Structure = value;
             }
         }
 
@@ -67,11 +67,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.dataset.Properties;
+                return dataset.Properties;
             }
             set
             {
-                this.dataset.Properties = value;
+                dataset.Properties = value;
             }
         }
 
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.dataset.Id;
+                return dataset.Id;
             }
         }
 
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.dataset.Etag;
+                return dataset.Etag;
             }
         }
     }

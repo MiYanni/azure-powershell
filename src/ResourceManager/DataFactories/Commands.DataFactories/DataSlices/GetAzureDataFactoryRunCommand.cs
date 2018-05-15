@@ -56,11 +56,11 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName = DataFactory.ResourceGroupName;
             }
 
-            DataSliceRunFilterOptions filterOptions = new DataSliceRunFilterOptions()
+            DataSliceRunFilterOptions filterOptions = new DataSliceRunFilterOptions
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = DataFactoryName,
-                DatasetName = this.DatasetName,
+                DatasetName = DatasetName,
                 StartDateTime = StartDateTime
             };
 

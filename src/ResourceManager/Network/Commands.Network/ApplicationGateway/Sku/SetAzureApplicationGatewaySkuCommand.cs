@@ -29,11 +29,11 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            this.ApplicationGateway.Sku.Name = this.Name;
-            this.ApplicationGateway.Sku.Tier = this.Tier;
-            this.ApplicationGateway.Sku.Capacity = this.Capacity;
+            ApplicationGateway.Sku.Name = Name;
+            ApplicationGateway.Sku.Tier = Tier;
+            ApplicationGateway.Sku.Capacity = Capacity;
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

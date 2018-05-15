@@ -43,8 +43,8 @@ namespace Microsoft.Azure.Commands.PolicyInsights.Models
                 return;
             }
 
-            this.PolicyAssignments = summary.PolicyAssignments.Select(policyAssignmentSummary => new PolicyAssignmentSummary(policyAssignmentSummary)).ToList();
-            this.Results = new SummaryResults(summary.Results);
+            PolicyAssignments = summary.PolicyAssignments.Select(policyAssignmentSummary => new PolicyAssignmentSummary(policyAssignmentSummary)).ToList();
+            Results = new SummaryResults(summary.Results);
         }
     }
 }

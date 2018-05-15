@@ -61,13 +61,13 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var present = this.IsNetworkWatcherPresent(this.ResourceGroupName, this.Name);
+            var present = IsNetworkWatcherPresent(ResourceGroupName, Name);
 
             if (!present)
             {
                 ConfirmAction(
                     Properties.Resources.CreatingResourceMessage,
-                    this.Name,
+                    Name,
                     () =>
                     {
                         var networkWatcher = CreateNetworkWatcher();
@@ -79,10 +79,10 @@ namespace Microsoft.Azure.Commands.Network
         private PSNetworkWatcher CreateNetworkWatcher()
         {
             var networkWatcher = new PSNetworkWatcher();
-            networkWatcher.Name = this.Name;
-            networkWatcher.ResourceGroupName = this.ResourceGroupName;
-            networkWatcher.Location = this.Location;
-            networkWatcher.Tag = this.Tag;
+            networkWatcher.Name = Name;
+            networkWatcher.ResourceGroupName = ResourceGroupName;
+            networkWatcher.Location = Location;
+            networkWatcher.Tag = Tag;
 
             // Map to the sdk object
             var networkWatcherModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkWatcher>(networkWatcher);
@@ -91,9 +91,9 @@ namespace Microsoft.Azure.Commands.Network
             networkWatcherPropertiesModel.Tags = TagsConversionHelper.CreateTagDictionary(networkWatcher.Tag, validate: true);
 
             // Execute the Create NetworkWatcher call
-            this.NetworkWatcherClient.CreateOrUpdate(this.ResourceGroupName, this.Name, networkWatcherPropertiesModel);
+            NetworkWatcherClient.CreateOrUpdate(ResourceGroupName, Name, networkWatcherPropertiesModel);
 
-            var getNetworkWatcher = this.GetNetworkWatcher(this.ResourceGroupName, this.Name);
+            var getNetworkWatcher = GetNetworkWatcher(ResourceGroupName, Name);
 
             return getNetworkWatcher;
         }

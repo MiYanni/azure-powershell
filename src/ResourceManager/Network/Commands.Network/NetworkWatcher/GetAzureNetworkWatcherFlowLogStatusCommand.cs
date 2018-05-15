@@ -66,24 +66,24 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             MNM.FlowLogStatusParameters parameters = new MNM.FlowLogStatusParameters();
-            parameters.TargetResourceId = this.TargetResourceId;
+            parameters.TargetResourceId = TargetResourceId;
 
             PSFlowLog flowLog = new PSFlowLog();
 
             if (ParameterSetName.Contains("SetByResource"))
             {
-                flowLog = GetFlowLogStatus(this.NetworkWatcher.ResourceGroupName, this.NetworkWatcher.Name, parameters);
+                flowLog = GetFlowLogStatus(NetworkWatcher.ResourceGroupName, NetworkWatcher.Name, parameters);
             }
             else
             {
-                flowLog = GetFlowLogStatus(this.ResourceGroupName, this.NetworkWatcherName, parameters);
+                flowLog = GetFlowLogStatus(ResourceGroupName, NetworkWatcherName, parameters);
             }
             WriteObject(flowLog);
         }
 
         public PSFlowLog GetFlowLogStatus(string resourceGroupName, string name, MNM.FlowLogStatusParameters parameters)
         {
-            MNM.FlowLogInformation flowLog = this.NetworkWatcherClient.GetFlowLogStatus(resourceGroupName, name, parameters);
+            MNM.FlowLogInformation flowLog = NetworkWatcherClient.GetFlowLogStatus(resourceGroupName, name, parameters);
             PSFlowLog psFlowLog = NetworkResourceManagerProfile.Mapper.Map<PSFlowLog>(flowLog);
 
             return psFlowLog;

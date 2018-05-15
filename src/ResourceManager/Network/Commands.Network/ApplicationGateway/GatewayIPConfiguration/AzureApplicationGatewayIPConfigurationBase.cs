@@ -40,11 +40,11 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
-                if (this.Subnet != null)
+                if (Subnet != null)
                 {
-                    this.SubnetId = this.Subnet.Id;
+                    SubnetId = Subnet.Id;
                 }
             }
         }
@@ -53,19 +53,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             var gatewayIPConfiguration = new PSApplicationGatewayIPConfiguration();
 
-            gatewayIPConfiguration.Name = this.Name;
+            gatewayIPConfiguration.Name = Name;
 
-            if (!string.IsNullOrEmpty(this.SubnetId))
+            if (!string.IsNullOrEmpty(SubnetId))
             {
                 var gatewayIPConfig = new PSResourceId();
-                gatewayIPConfig.Id = this.SubnetId;
+                gatewayIPConfig.Id = SubnetId;
                 gatewayIPConfiguration.Subnet = gatewayIPConfig;
             }
 
             gatewayIPConfiguration.Id = ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                                this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayIPConfigurationName,
-                                this.Name);
+                                NetworkClient.NetworkManagementClient.SubscriptionId,
+                                Properties.Resources.ApplicationGatewayIPConfigurationName,
+                                Name);
 
             return gatewayIPConfiguration;
         }

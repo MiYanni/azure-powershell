@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            this.ByResourceId();
-            this.ByIntegrationRuntimeObject();
+            ByResourceId();
+            ByIntegrationRuntimeObject();
 
             ConfirmAction(
                 Force.IsPresent,

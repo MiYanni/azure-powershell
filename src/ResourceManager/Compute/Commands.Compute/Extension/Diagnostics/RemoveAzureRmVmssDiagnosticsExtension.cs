@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Compute
         SupportsShouldProcess = true
         )]
     [OutputType(typeof(VirtualMachineScaleSet))]
-    public class RemoveAzureRmVmssDiagnosticsExtension : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class RemoveAzureRmVmssDiagnosticsExtension : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -45,33 +45,33 @@ namespace Microsoft.Azure.Commands.Compute
 
         protected override void ProcessRecord()
         {
-            if (ShouldProcess(this.VirtualMachineScaleSet.Name, Properties.Resources.RemoveVmssDiagnosticsExtensionAction))
+            if (ShouldProcess(VirtualMachineScaleSet.Name, Properties.Resources.RemoveVmssDiagnosticsExtensionAction))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile != null &&
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile != null &&
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions != null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile != null &&
+                    VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile != null &&
+                    VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions != null)
                 {
-                    var extensions = this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions;
+                    var extensions = VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions;
 
                     // Filter by publisher and type
                     // If extension name is provided, should match the name as well
                     var diagnosticsExtensions = extensions
                         .Where(extension =>
                             DiagnosticsHelper.IsDiagnosticsExtension(extension) &&
-                            (string.IsNullOrEmpty(this.Name) || extension.Name.Equals(this.Name, StringComparison.InvariantCultureIgnoreCase)))
+                            (string.IsNullOrEmpty(Name) || extension.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase)))
                         .ToList();
 
                     if (diagnosticsExtensions.Any())
                     {
-                        this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions = extensions.Except(diagnosticsExtensions).ToList();
+                        VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions = extensions.Except(diagnosticsExtensions).ToList();
 
-                        if (this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions.Count == 0)
+                        if (VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions.Count == 0)
                         {
-                            this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions = null;
+                            VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions = null;
                         }
 
-                        WriteObject(this.VirtualMachineScaleSet);
+                        WriteObject(VirtualMachineScaleSet);
                         return;
                     }
                 }
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Compute
                 WriteWarning(Properties.Resources.DiagnosticsExtensionNotFoundForVMSS);
             }
 
-            WriteObject(this.VirtualMachineScaleSet);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

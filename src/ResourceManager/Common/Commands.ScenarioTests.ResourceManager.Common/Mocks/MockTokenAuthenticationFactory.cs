@@ -51,10 +51,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             {
                 UserId = userId,
                 LoginType = LoginType.OrgId,
-                AccessToken = accessToken,
+                AccessToken = accessToken
             };
 
-            TokenProvider = ((account, environment, tenant) => Token);
+            TokenProvider = (account, environment, tenant) => Token;
         }
 
         public MockTokenAuthenticationFactory(string userId, string accessToken, string tenantId)
@@ -67,7 +67,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 TenantId = tenantId
             };
 
-            TokenProvider = ((account, environment, tenant) => Token);
+            TokenProvider = (account, environment, tenant) => Token;
         }
 
 
@@ -88,17 +88,14 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
             if (TokenProvider == null)
             {
-                return new MockAccessToken()
+                return new MockAccessToken
                 {
                     AccessToken = account.Id,
                     LoginType = LoginType.OrgId,
                     UserId = account.Id
                 };
             }
-            else
-            {
-                return TokenProvider(account, environment as AzureEnvironment, tenant);
-            }
+            return TokenProvider(account, environment as AzureEnvironment, tenant);
         }
 
         public IAccessToken Authenticate(
@@ -118,9 +115,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             return new AccessTokenCredential(context.Subscription.GetId(), Token);
         }
 
-        public Microsoft.Rest.ServiceClientCredentials GetServiceClientCredentials(IAzureContext context)
+        public ServiceClientCredentials GetServiceClientCredentials(IAzureContext context)
         {
-            return new Microsoft.Rest.TokenCredentials(Token.AccessToken);
+            return new TokenCredentials(Token.AccessToken);
         }
 
 
@@ -132,7 +129,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public ServiceClientCredentials GetServiceClientCredentials(IAzureContext context, string targetEndpoint)
         {
-            return new Microsoft.Rest.TokenCredentials(Token.AccessToken);
+            return new TokenCredentials(Token.AccessToken);
         }
 
         public void RemoveUser(IAzureAccount account, IAzureTokenCache tokenCache)

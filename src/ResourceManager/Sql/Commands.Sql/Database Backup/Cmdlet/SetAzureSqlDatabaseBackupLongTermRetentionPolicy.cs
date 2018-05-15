@@ -143,12 +143,12 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlDatabaseBackupLongTermRetentionPolicyModel> GetEntity()
         {
-            return new List<AzureSqlDatabaseBackupLongTermRetentionPolicyModel>()
+            return new List<AzureSqlDatabaseBackupLongTermRetentionPolicyModel>
             {
                 ModelAdapter.GetDatabaseBackupLongTermRetentionPolicy(
-                    this.ResourceGroupName,
-                    this.ServerName,
-                    this.DatabaseName,
+                    ResourceGroupName,
+                    ServerName,
+                    DatabaseName,
                     !ParameterSetName.Equals(LegacySet))
             };
         }
@@ -185,9 +185,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
                 WeekOfYear = 1;
             }
 
-            return new List<AzureSqlDatabaseBackupLongTermRetentionPolicyModel>()
+            return new List<AzureSqlDatabaseBackupLongTermRetentionPolicyModel>
             {
-                new AzureSqlDatabaseBackupLongTermRetentionPolicyModel()
+                new AzureSqlDatabaseBackupLongTermRetentionPolicyModel
                 {
                     ResourceGroupName = ResourceGroupName,
                     ServerName = ServerName,
@@ -212,14 +212,12 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         {
             if (ShouldProcess(DatabaseName))
             {
-                return new List<AzureSqlDatabaseBackupLongTermRetentionPolicyModel>() {
-                    ModelAdapter.SetDatabaseBackupLongTermRetentionPolicy(this.ResourceGroupName, this.ServerName, this.DatabaseName, entity.First())
+                return new List<AzureSqlDatabaseBackupLongTermRetentionPolicyModel>
+                {
+                    ModelAdapter.SetDatabaseBackupLongTermRetentionPolicy(ResourceGroupName, ServerName, DatabaseName, entity.First())
                 };
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

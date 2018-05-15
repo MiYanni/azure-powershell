@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="metricAvailabilities">The list of metric availabilities</param>
         public PSMetricAvailabilityCollection(IEnumerable<MetricAvailability> metricAvailabilities)
         {
-            this.AddRange(metricAvailabilities.Select(e => new PSMetricAvailability(e)));
+            AddRange(metricAvailabilities.Select(e => new PSMetricAvailability(e)));
         }
 
 /*        /// <summary>

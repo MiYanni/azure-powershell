@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         /// <param name="obj">Object to wrap in array.</param>
         public static T[] AsArray<T>(this T obj)
         {
-            return new T[] { obj };
+            return new[] { obj };
         }
     }
 }

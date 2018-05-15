@@ -24,11 +24,11 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            PSApplicationGatewaySku sku = new PSApplicationGatewaySku()
+            PSApplicationGatewaySku sku = new PSApplicationGatewaySku
             {
-                Name = this.Name,
-                Tier = this.Tier,
-                Capacity = this.Capacity
+                Name = Name,
+                Tier = Tier,
+                Capacity = Capacity
             };
 
             WriteObject(sku);

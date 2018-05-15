@@ -33,8 +33,8 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                var result = this.VirtualMachineImageClient.ListPublishersWithHttpMessagesAsync(
-                    this.Location.Canonicalize()).GetAwaiter().GetResult();
+                var result = VirtualMachineImageClient.ListPublishersWithHttpMessagesAsync(
+                    Location.Canonicalize()).GetAwaiter().GetResult();
 
                 var images = from r in result.Body
                              select new PSVirtualMachineImagePublisher

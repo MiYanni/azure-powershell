@@ -24,7 +24,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public VhdFileFormatVersion(uint data)
         {
-            this.Data = data;
+            Data = data;
         }
 
         public uint Data { get; private set; }
@@ -36,7 +36,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public override string ToString()
         {
-            return this.Data.ToString();
+            return Data.ToString();
         }
 
         public override bool Equals(object obj)

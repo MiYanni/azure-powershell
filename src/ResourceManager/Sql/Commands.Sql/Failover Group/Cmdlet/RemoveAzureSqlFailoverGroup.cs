@@ -56,8 +56,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> GetEntity()
         {
-            return new List<AzureSqlFailoverGroupModel>() {
-                ModelAdapter.GetFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName),
+            return new List<AzureSqlFailoverGroupModel>
+            {
+                ModelAdapter.GetFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName),
             };
         }
 
@@ -78,7 +79,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> PersistChanges(IEnumerable<AzureSqlFailoverGroupModel> entity)
         {
-            ModelAdapter.RemoveFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName);
+            ModelAdapter.RemoveFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName);
             return entity;
         }
 
@@ -88,9 +89,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlDatabaseFailoverGroupDescription, this.FailoverGroupName, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlDatabaseFailoverGroupWarning, this.FailoverGroupName, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseFailoverGroupDescription, FailoverGroupName, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseFailoverGroupWarning, FailoverGroupName, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }

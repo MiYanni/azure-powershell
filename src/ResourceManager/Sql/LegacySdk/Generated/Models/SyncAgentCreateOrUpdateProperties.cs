@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncDatabaseId
         {
-            get { return this._syncDatabaseId; }
-            set { this._syncDatabaseId = value; }
+            get { return _syncDatabaseId; }
+            set { _syncDatabaseId = value; }
         }
         
         /// <summary>

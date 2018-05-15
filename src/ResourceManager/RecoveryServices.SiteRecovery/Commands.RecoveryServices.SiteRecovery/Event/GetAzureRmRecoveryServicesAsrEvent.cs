@@ -114,18 +114,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override void ExecuteSiteRecoveryCmdlet()
         {
             base.ExecuteSiteRecoveryCmdlet();
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByName:
-                    this.GetByName();
+                    GetByName();
                     break;
                 case ASRParameterSets.ByResourceId:
-                    this.GetByResourceId();
+                    GetByResourceId();
                     break;
                 case ASRParameterSets.ByFabricId:
                 case ASRParameterSets.ByParam:
                 default:
-                    this.GetEvents();
+                    GetEvents();
                     break;
             }
         }
@@ -135,13 +135,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetByResourceId()
         {
-            if (!string.IsNullOrWhiteSpace(this.ResourceId))
+            if (!string.IsNullOrWhiteSpace(ResourceId))
             {
-                this.Name = Utilities.GetValueFromArmId(
-                    this.ResourceId,
+                Name = Utilities.GetValueFromArmId(
+                    ResourceId,
                     ARMResourceTypeConstants.Events);
 
-                this.GetByName();
+                GetByName();
             }
         }
 
@@ -151,8 +151,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void GetByName()
         {
             var eventsResponse =
-                this.RecoveryServicesClient.GetAzureRmSiteRecoveryEvent(this.Name);
-            this.WriteObject(new ASREvent(eventsResponse));
+                RecoveryServicesClient.GetAzureRmSiteRecoveryEvent(Name);
+            WriteObject(new ASREvent(eventsResponse));
         }
 
         /// <summary>
@@ -162,47 +162,47 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var parameters = new EventQueryParameter();
 
-            if (!string.IsNullOrEmpty(this.EventType))
+            if (!string.IsNullOrEmpty(EventType))
             {
-                parameters.EventType = this.EventType;
+                parameters.EventType = EventType;
             }
 
-            if (!string.IsNullOrEmpty(this.Severity))
+            if (!string.IsNullOrEmpty(Severity))
             {
-                parameters.Severity = this.Severity;
+                parameters.Severity = Severity;
             }
 
-            if (this.Fabric != null)
+            if (Fabric != null)
             {
-                parameters.FabricName = this.Fabric.Name;
+                parameters.FabricName = Fabric.Name;
             }
 
-            if (this.FabricId != null)
+            if (FabricId != null)
             {
                 parameters.FabricName = Utilities.GetValueFromArmId(
-                    this.FabricId,
+                    FabricId,
                     ARMResourceTypeConstants.ReplicationFabrics);
             }
 
-            if (!string.IsNullOrEmpty(this.AffectedObjectFriendlyName))
+            if (!string.IsNullOrEmpty(AffectedObjectFriendlyName))
             {
-                parameters.AffectedObjectFriendlyName = this.AffectedObjectFriendlyName;
+                parameters.AffectedObjectFriendlyName = AffectedObjectFriendlyName;
             }
 
-            if (this.StartTime != DateTime.MinValue)
+            if (StartTime != DateTime.MinValue)
             {
-                parameters.StartTime = this.StartTime;
+                parameters.StartTime = StartTime;
             }
 
-            if (this.EndTime != DateTime.MinValue)
+            if (EndTime != DateTime.MinValue)
             {
-                parameters.EndTime = this.EndTime;
+                parameters.EndTime = EndTime;
             }
 
             var eventsResponse =
-                this.RecoveryServicesClient.ListAzureRmSiteRecoveryEvents(parameters);
+                RecoveryServicesClient.ListAzureRmSiteRecoveryEvents(parameters);
 
-            this.WriteObject(eventsResponse.Select(p => new ASREvent(p)), true);
+            WriteObject(eventsResponse.Select(p => new ASREvent(p)), true);
         }
     }
 }

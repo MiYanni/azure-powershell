@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var present = this.IsVirtualNetworkGatewayConnectionSharedKeyPresent(this.ResourceGroupName, this.Name);            ConfirmAction(
+            var present = IsVirtualNetworkGatewayConnectionSharedKeyPresent(ResourceGroupName, Name);            ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
                 Properties.Resources.ResettingResourceMessage,
@@ -77,9 +77,9 @@ namespace Microsoft.Azure.Commands.Network
             var vnetGatewayConnectionSharedKeyModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ConnectionResetSharedKey>(vnetGatewayConnectionSharedKey);
 
             // Execute the Set VirtualNetworkConnectionSharedKey call
-            this.VirtualNetworkGatewayConnectionClient.ResetSharedKey(this.ResourceGroupName, this.Name, vnetGatewayConnectionSharedKeyModel);
+            VirtualNetworkGatewayConnectionClient.ResetSharedKey(ResourceGroupName, Name, vnetGatewayConnectionSharedKeyModel);
 
-            var getVirtualNetworkGatewayConnectionSharedKey = this.GetVirtualNetworkGatewayConnectionSharedKey(this.ResourceGroupName, this.Name);
+            var getVirtualNetworkGatewayConnectionSharedKey = GetVirtualNetworkGatewayConnectionSharedKey(ResourceGroupName, Name);
 
             return getVirtualNetworkGatewayConnectionSharedKey;
         }

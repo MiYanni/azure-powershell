@@ -8,12 +8,12 @@
 
 namespace Microsoft.Azure.Management.Authorization.Version2015_07_01
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Management;
-    using Microsoft.Azure.Management.Authorization;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
-    using Microsoft.Rest.Azure.OData;
+    using Azure;
+    using Management;
+    using Authorization;
+    using Rest;
+    using Rest.Azure;
+    using Rest.Azure.OData;
     using Models;
     using System.Threading;
     using System.Threading.Tasks;
@@ -197,7 +197,7 @@ namespace Microsoft.Azure.Management.Authorization.Version2015_07_01
             /// </param>
             public static IPage<RoleDefinition> List(this IRoleDefinitionsOperations operations, string scope, ODataQuery<RoleDefinitionFilter> odataQuery = default(ODataQuery<RoleDefinitionFilter>))
             {
-                return ((IRoleDefinitionsOperations)operations).ListAsync(scope, odataQuery).GetAwaiter().GetResult();
+                return operations.ListAsync(scope, odataQuery).GetAwaiter().GetResult();
             }
 
             /// <summary>

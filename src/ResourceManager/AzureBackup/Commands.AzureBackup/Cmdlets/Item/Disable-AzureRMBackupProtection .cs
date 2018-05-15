@@ -53,10 +53,10 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets.DataSource
                         Guid operationId = Guid.Empty;
                         WriteDebug(Resources.MakingClientCall);
 
-                        if (!this.DeleteBackupData)
+                        if (!DeleteBackupData)
                         {
                             //Calling update protection with policy Id as empty.
-                            CSMUpdateProtectionRequest input = new CSMUpdateProtectionRequest()
+                            CSMUpdateProtectionRequest input = new CSMUpdateProtectionRequest
                             {
                                 Properties = new CSMUpdateProtectionRequestProperties(string.Empty)
                             };
@@ -73,9 +73,9 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets.DataSource
 
                         WriteDebug(Resources.DisableAzureBackupProtection);
                         var operationStatus = TrackOperation(Item.ResourceGroupName, Item.ResourceName, operationId);
-                        this.WriteObject(GetCreatedJobs(Item.ResourceGroupName,
+                        WriteObject(GetCreatedJobs(Item.ResourceGroupName,
                             Item.ResourceName,
-                            new Models.AzureRMBackupVault(Item.ResourceGroupName, Item.ResourceName, Item.Location),
+                            new AzureRMBackupVault(Item.ResourceGroupName, Item.ResourceName, Item.Location),
                             operationStatus.JobList).FirstOrDefault());
                     });
                 });

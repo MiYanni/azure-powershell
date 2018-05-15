@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string CitiesText
         {
-            get { return JsonConvert.SerializeObject(Cities, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Cities, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

@@ -45,34 +45,34 @@ namespace Microsoft.Azure.Commands.TrafficManager
             var disabled = false;
             TrafficManagerProfile profileToDisable = null;
 
-            if (this.ParameterSetName == "Fields")
+            if (ParameterSetName == "Fields")
             {
                 profileToDisable = new TrafficManagerProfile
                 {
-                    Name = this.Name,
-                    ResourceGroupName = this.ResourceGroupName
+                    Name = Name,
+                    ResourceGroupName = ResourceGroupName
                 };
             }
-            else if (this.ParameterSetName == "Object")
+            else if (ParameterSetName == "Object")
             {
-                profileToDisable = this.TrafficManagerProfile;
+                profileToDisable = TrafficManagerProfile;
             }
 
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(ProjectResources.Confirm_DisableProfile, profileToDisable.Name),
                 ProjectResources.Progress_DisablingProfile,
                 profileToDisable.Name,
                 () =>
                 {
-                    disabled = this.TrafficManagerClient.EnableDisableTrafficManagerProfile(profileToDisable, shouldEnableProfileStatus: false);
+                    disabled = TrafficManagerClient.EnableDisableTrafficManagerProfile(profileToDisable, false);
                     if (disabled)
                     {
-                        this.WriteVerbose(ProjectResources.Success);
-                        this.WriteVerbose(string.Format(ProjectResources.Success_DisableProfile, profileToDisable.Name, profileToDisable.ResourceGroupName));
+                        WriteVerbose(ProjectResources.Success);
+                        WriteVerbose(string.Format(ProjectResources.Success_DisableProfile, profileToDisable.Name, profileToDisable.ResourceGroupName));
                     }
 
-                    this.WriteObject(disabled);
+                    WriteObject(disabled);
                 });
         }
     }

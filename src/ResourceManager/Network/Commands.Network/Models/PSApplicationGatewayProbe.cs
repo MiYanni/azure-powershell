@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string MatchText
         {
-            get { return JsonConvert.SerializeObject(Match, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Match, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

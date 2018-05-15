@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 ResourceGroupName = parsedResourceId.ResourceGroupName;
             }
 
-            var parameters = new UpdatePSDataFactoryParameters()
+            var parameters = new UpdatePSDataFactoryParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = Name,

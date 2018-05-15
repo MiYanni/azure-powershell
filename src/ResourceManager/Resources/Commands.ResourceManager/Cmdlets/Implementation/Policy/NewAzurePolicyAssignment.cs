@@ -14,11 +14,11 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Policy;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Components;
+    using Entities.Policy;
+    using Extensions;
+    using Commands.Common.Authentication;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using System.Management.Automation;
     using System;
@@ -133,42 +133,42 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected override void OnProcessRecord()
         {
             base.OnProcessRecord();
-            if(this.PolicyDefinition !=null && this.PolicySetDefinition !=null)
+            if(PolicyDefinition !=null && PolicySetDefinition !=null)
             {
                 throw new PSInvalidOperationException("Only one of PolicyDefinition or PolicySetDefinition can be specified, not both.");
             }
-            if (this.PolicyDefinition !=null && this.PolicyDefinition.Properties["policyDefinitionId"] == null)
+            if (PolicyDefinition !=null && PolicyDefinition.Properties["policyDefinitionId"] == null)
             {
                 throw new PSInvalidOperationException("The supplied PolicyDefinition object is invalid.");
             }
-            if (this.PolicySetDefinition != null && this.PolicySetDefinition.Properties["policySetDefinitionId"] == null)
+            if (PolicySetDefinition != null && PolicySetDefinition.Properties["policySetDefinitionId"] == null)
             {
                 throw new PSInvalidOperationException("The supplied PolicySetDefinition object is invalid.");
             }
             string resourceId = GetResourceId();
 
-            var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.PolicyAssignmentApiVersion : this.ApiVersion;
+            var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.PolicyAssignmentApiVersion : ApiVersion;
 
-            var operationResult = this.GetResourcesClient()
+            var operationResult = GetResourcesClient()
                 .PutResource(
-                    resourceId: resourceId,
-                    apiVersion: apiVersion,
-                    resource: this.GetResource(),
-                    cancellationToken: this.CancellationToken.Value,
-                    odataQuery: null)
+                    resourceId,
+                    apiVersion,
+                    GetResource(),
+                    CancellationToken.Value,
+                    null)
                 .Result;
 
-            var managementUri = this.GetResourcesClient()
+            var managementUri = GetResourcesClient()
               .GetResourceManagementRequestUri(
-                  resourceId: resourceId,
-                  apiVersion: apiVersion,
+                  resourceId,
+                  apiVersion,
                   odataQuery: null);
 
             var activity = string.Format("PUT {0}", managementUri.PathAndQuery);
-            var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: true)
-                .WaitOnOperation(operationResult: operationResult);
+            var result = GetLongRunningOperationTracker(activity, true)
+                .WaitOnOperation(operationResult);
 
-            this.WriteObject(this.GetOutputObjects("PolicyAssignmentId", JObject.Parse(result)), enumerateCollection: true);
+            WriteObject(GetOutputObjects("PolicyAssignmentId", JObject.Parse(result)), true);
         }
 
         /// <summary>
@@ -177,9 +177,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private string GetResourceId()
         {
             return ResourceIdUtility.GetResourceId(
-                resourceId: this.Scope,
-                extensionResourceType: Constants.MicrosoftAuthorizationPolicyAssignmentType,
-                extensionResourceName: this.Name);
+                Scope,
+                Constants.MicrosoftAuthorizationPolicyAssignmentType,
+                Name);
         }
 
         /// <summary>
@@ -189,25 +189,25 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             var policyassignmentObject = new PolicyAssignment
             {
-                Name = this.Name,
-                Sku = this.Sku == null? new PolicySku { Name = "A0", Tier = "Free" } : this.Sku.ToDictionary(addValueLayer: false).ToJson().FromJson<PolicySku>(),
+                Name = Name,
+                Sku = Sku == null? new PolicySku { Name = "A0", Tier = "Free" } : Sku.ToDictionary(false).ToJson().FromJson<PolicySku>(),
                 Properties = new PolicyAssignmentProperties
                 {
-                    DisplayName = this.DisplayName ?? null,
-                    Description = this.Description ?? null,
-                    Scope = this.Scope,
-                    NotScopes = this.NotScope ?? null,
-                    Parameters = this.GetParameters()
+                    DisplayName = DisplayName ?? null,
+                    Description = Description ?? null,
+                    Scope = Scope,
+                    NotScopes = NotScope ?? null,
+                    Parameters = GetParameters()
                 }
             };
 
-            if(this.PolicyDefinition != null)
+            if(PolicyDefinition != null)
             {
-                policyassignmentObject.Properties.PolicyDefinitionId = this.PolicyDefinition.Properties["policyDefinitionId"].Value.ToString();
+                policyassignmentObject.Properties.PolicyDefinitionId = PolicyDefinition.Properties["policyDefinitionId"].Value.ToString();
             }
-            else if(this.PolicySetDefinition != null)
+            else if(PolicySetDefinition != null)
             {
-                policyassignmentObject.Properties.PolicyDefinitionId = this.PolicySetDefinition.Properties["policySetDefinitionId"].Value.ToString();
+                policyassignmentObject.Properties.PolicyDefinitionId = PolicySetDefinition.Properties["policySetDefinitionId"].Value.ToString();
             }
 
             return policyassignmentObject.ToJToken();
@@ -216,13 +216,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         object IDynamicParameters.GetDynamicParameters()
         {
             PSObject parameters = null;
-            if (this.PolicyDefinition != null)
+            if (PolicyDefinition != null)
             {
-                parameters = this.PolicyDefinition.GetPSObjectProperty("Properties.parameters") as PSObject;
+                parameters = PolicyDefinition.GetPSObjectProperty("Properties.parameters") as PSObject;
             }
-            else if(this.PolicySetDefinition != null)
+            else if(PolicySetDefinition != null)
             {
-                parameters = this.PolicySetDefinition.GetPSObjectProperty("Properties.parameters") as PSObject;
+                parameters = PolicySetDefinition.GetPSObjectProperty("Properties.parameters") as PSObject;
             }
             if (parameters != null)
             {
@@ -244,30 +244,30 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                         ValueFromPipelineByPropertyName = false,
                         HelpMessage = helpString
                     });
-                    this.dynamicParameters.Add(param.Name, dp);
+                    dynamicParameters.Add(param.Name, dp);
                 }
             }
 
             RegisterDynamicParameters(dynamicParameters);
 
-            return this.dynamicParameters;
+            return dynamicParameters;
         }
 
         private JObject GetParameters()
         {
             // Load parameters from local file or literal
-            if (this.PolicyParameter != null)
+            if (PolicyParameter != null)
             {
-                string policyParameterFilePath = this.TryResolvePath(this.PolicyParameter);
+                string policyParameterFilePath = this.TryResolvePath(PolicyParameter);
                 return FileUtilities.DataStore.FileExists(policyParameterFilePath)
                     ? JObject.Parse(FileUtilities.DataStore.ReadFileAsText(policyParameterFilePath))
-                    : JObject.Parse(this.PolicyParameter);
+                    : JObject.Parse(PolicyParameter);
             }
 
             // Load from PS object
-            if (this.PolicyParameterObject != null)
+            if (PolicyParameterObject != null)
             {
-                return this.PolicyParameterObject.ToJObjectWithValue();
+                return PolicyParameterObject.ToJObjectWithValue();
             }
 
             // Load dynamic parameters

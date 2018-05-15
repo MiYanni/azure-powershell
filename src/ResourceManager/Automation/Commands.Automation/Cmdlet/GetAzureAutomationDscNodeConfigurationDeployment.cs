@@ -60,10 +60,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByJobId)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByJobId)
             {
-                var returnNodeStatus = this.AutomationClient.GetNodeConfigurationDeployment(this.ResourceGroupName, this.AutomationAccountName, this.JobId);
-                this.GenerateCmdletOutput(returnNodeStatus);
+                var returnNodeStatus = AutomationClient.GetNodeConfigurationDeployment(ResourceGroupName, AutomationAccountName, JobId);
+                GenerateCmdletOutput(returnNodeStatus);
             } else {
                 // ByAll 
                 var nextLink = string.Empty;
@@ -71,8 +71,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
                 do
                 {
-                    deployments = this.AutomationClient.ListNodeConfigurationDeployment(this.ResourceGroupName, this.AutomationAccountName, this.StartTime, this.EndTime, this.Status, ref nextLink);
-                    this.WriteObject(deployments, true);
+                    deployments = AutomationClient.ListNodeConfigurationDeployment(ResourceGroupName, AutomationAccountName, StartTime, EndTime, Status, ref nextLink);
+                    WriteObject(deployments, true);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

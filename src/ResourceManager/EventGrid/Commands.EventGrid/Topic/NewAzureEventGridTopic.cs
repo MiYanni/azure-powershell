@@ -75,13 +75,13 @@ namespace Microsoft.Azure.Commands.EventGrid
         public override void ExecuteCmdlet()
         {
             // Create a new Event Grid Topic
-            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(this.Tag, true);
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, true);
 
-            if (this.ShouldProcess(this.Name, $"Create a new EventGrid topic {this.Name} in Resource Group {this.ResourceGroupName}"))
+            if (ShouldProcess(Name, $"Create a new EventGrid topic {Name} in Resource Group {ResourceGroupName}"))
             {
-                Topic topic = this.Client.CreateTopic(this.ResourceGroupName, this.Name, this.Location, tagDictionary);
+                Topic topic = Client.CreateTopic(ResourceGroupName, Name, Location, tagDictionary);
                 PSTopic psTopic = new PSTopic(topic);
-                this.WriteObject(psTopic);
+                WriteObject(psTopic);
             }
         }
     }

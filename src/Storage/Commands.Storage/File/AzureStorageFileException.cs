@@ -39,8 +39,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
         public AzureStorageFileException(ErrorCategory category, string errorId, string errorDetails, object targetObject)
             : base(errorDetails)
         {
-            this.record = new ErrorRecord(this, errorId, category, targetObject);
-            this.record.ErrorDetails = new ErrorDetails(errorDetails);
+            record = new ErrorRecord(this, errorId, category, targetObject);
+            record.ErrorDetails = new ErrorDetails(errorDetails);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
         protected AzureStorageFileException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            this.record = (ErrorRecord)info.GetValue("Record", typeof(ErrorRecord));
+            record = (ErrorRecord)info.GetValue("Record", typeof(ErrorRecord));
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
         /// <returns>Returns an instance of ErrorRecord.</returns>
         internal ErrorRecord GetErrorRecord()
         {
-            return this.record;
+            return record;
         }
     }
 }

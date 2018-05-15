@@ -48,12 +48,12 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var vRoutes =
-                        this.RouteTable.Routes.First(
+                        RouteTable.Routes.First(
                             resource =>
-                                string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                                string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
                 WriteObject(vRoutes);
             }
             else

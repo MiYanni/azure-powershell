@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             var supportedVpnDevices = NetworkClient.NetworkManagementClient.VirtualNetworkGateways
-                .SupportedVpnDevices(this.ResourceGroupName, this.Name);
+                .SupportedVpnDevices(ResourceGroupName, Name);
 
             WriteObject(supportedVpnDevices);
         }

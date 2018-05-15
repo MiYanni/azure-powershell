@@ -32,19 +32,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var frontendIPConfig = this.ApplicationGateway.FrontendIPConfigurations.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var frontendIPConfig = ApplicationGateway.FrontendIPConfigurations.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (frontendIPConfig != null)
             {
                 throw new ArgumentException("FrontendIPConfiguration with the specified name already exists");
             }
 
-            frontendIPConfig = base.NewObject();
+            frontendIPConfig = NewObject();
 
-            this.ApplicationGateway.FrontendIPConfigurations.Add(frontendIPConfig);
+            ApplicationGateway.FrontendIPConfigurations.Add(frontendIPConfig);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

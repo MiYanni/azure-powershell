@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System;
     using System.Globalization;
     using System.Management.Automation;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Management.Logic.Models;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -87,37 +87,37 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 
             if (string.IsNullOrEmpty(AgreementType))
             {
-                this.WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
+                WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
                 AgreementType = "X12";
             }
 
-            var integrationAccountReceivedIcn = this.IntegrationAccountClient.GetIntegrationAccountReceivedControlNumber(
-                resourceGroupName: this.ResourceGroupName,
-                integrationAccountName: this.Name,
-                integrationAccountAgreementName: this.AgreementName,
-                agreementType: (AgreementType)Enum.Parse(enumType: typeof(AgreementType), value: AgreementType, ignoreCase: true),
-                controlNumber: this.ControlNumberValue);
+            var integrationAccountReceivedIcn = IntegrationAccountClient.GetIntegrationAccountReceivedControlNumber(
+                ResourceGroupName,
+                Name,
+                AgreementName,
+                (AgreementType)Enum.Parse(typeof(AgreementType), AgreementType, true),
+                ControlNumberValue);
 
-            integrationAccountReceivedIcn.MessageType = (MessageType)Enum.Parse(enumType: typeof(MessageType), value: AgreementType, ignoreCase: true);
-            integrationAccountReceivedIcn.ControlNumber = this.ControlNumberValue;
-            integrationAccountReceivedIcn.IsMessageProcessingFailed = this.IsMessageProcessingFailed;
+            integrationAccountReceivedIcn.MessageType = (MessageType)Enum.Parse(typeof(MessageType), AgreementType, true);
+            integrationAccountReceivedIcn.ControlNumber = ControlNumberValue;
+            integrationAccountReceivedIcn.IsMessageProcessingFailed = IsMessageProcessingFailed;
             integrationAccountReceivedIcn.ControlNumberChangedTime = DateTime.UtcNow > integrationAccountReceivedIcn.ControlNumberChangedTime ?
                 DateTime.UtcNow :
                 integrationAccountReceivedIcn.ControlNumberChangedTime.AddTicks(1);
 
-            this.ConfirmAction(
-                processMessage: string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateReceivedControlNumberMessage, this.ControlNumberValue, "Microsoft.Logic/integrationAccounts/agreements", this.Name),
-                target: this.Name,
-                action: () =>
+            ConfirmAction(
+                string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateReceivedControlNumberMessage, ControlNumberValue, "Microsoft.Logic/integrationAccounts/agreements", Name),
+                Name,
+                () =>
                 {
-                    this.WriteObject(
-                        sendToPipeline: this.IntegrationAccountClient.UpdateIntegrationAccountReceivedIcn(
-                            resourceGroupName: this.ResourceGroupName,
-                            integrationAccountName: this.Name,
-                            integrationAccountAgreementName: this.AgreementName,
-                            agreementType: (AgreementType)Enum.Parse(enumType: typeof(AgreementType), value: AgreementType, ignoreCase: true),
-                            integrationAccountControlNumber: integrationAccountReceivedIcn),
-                        enumerateCollection: true);
+                    WriteObject(
+                        IntegrationAccountClient.UpdateIntegrationAccountReceivedIcn(
+                            ResourceGroupName,
+                            Name,
+                            AgreementName,
+                            (AgreementType)Enum.Parse(typeof(AgreementType), AgreementType, true),
+                            integrationAccountReceivedIcn),
+                        true);
                 });
         }
     }

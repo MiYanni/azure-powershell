@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ParameterSetName = ForVault,
             HelpMessage = "Specifies the name of the resource group associated with the key vault whose access policy is being modified.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         [Parameter(Mandatory = true,
             ParameterSetName = ResourceIdByServicePrincipalName,
             HelpMessage = "Specifies the service principal name of the application to which to grant permissions. Specify the application ID, also known as client ID, registered for the application in Azure Active Directory. The application with the service principal name that this parameter specifies must be registered in the Azure directory that contains your current subscription.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("SPN")]
         public string ServicePrincipalName { get; set; }
 
@@ -195,7 +195,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         [Parameter(Mandatory = true,
             ParameterSetName = ResourceIdByUserPrincipalName,
             HelpMessage = "Specifies the user principal name of the user to whom to grant permissions. This user principal name must exist in the directory associated with the current subscription.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("UPN")]
         public string UserPrincipalName { get; set; }
 
@@ -211,7 +211,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         [Parameter(Mandatory = true,
             ParameterSetName = ResourceIdByObjectId,
             HelpMessage = "Specifies the object ID of the user or service principal in Azure Active Directory for which to grant permissions.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ObjectId { get; set; }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Microsoft.Azure.Commands.KeyVault
         [Parameter(Mandatory = true,
             ParameterSetName = ResourceIdByEmailAddress,
             HelpMessage = "Specifies the email address of the user in Azure Active Directory for which to grant permissions.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string EmailAddress { get; set; }
 
         /// <summary>
@@ -477,7 +477,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                 VaultName = resourceIdentifier.ResourceName;
             }
 
-            if (ShouldProcess(VaultName, Properties.Resources.SetVaultAccessPolicy))
+            if (ShouldProcess(VaultName, Resources.SetVaultAccessPolicy))
             {
                 if (ParameterSetName == ForVault && !EnabledForDeployment.IsPresent &&
                 !EnabledForTemplateDeployment.IsPresent && !EnabledForDiskEncryption.IsPresent)
@@ -498,7 +498,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                     throw new ArgumentException(string.Format(Resources.VaultNotFound, VaultName, ResourceGroupName));
                 }
 
-                if (!string.IsNullOrWhiteSpace(this.ObjectId) && !this.IsValidObjectIdSyntax(this.ObjectId))
+                if (!string.IsNullOrWhiteSpace(ObjectId) && !IsValidObjectIdSyntax(ObjectId))
                 {
                     throw new ArgumentException(Resources.InvalidObjectIdSyntax);
                 }
@@ -507,13 +507,13 @@ namespace Microsoft.Azure.Commands.KeyVault
                 PSKeyVaultAccessPolicy[] updatedListOfAccessPolicies = vault.AccessPolicies;
                 if (!string.IsNullOrEmpty(UserPrincipalName)
                     || !string.IsNullOrEmpty(ServicePrincipalName)
-                    || !string.IsNullOrWhiteSpace(this.ObjectId)
-                    || !string.IsNullOrWhiteSpace(this.EmailAddress))
+                    || !string.IsNullOrWhiteSpace(ObjectId)
+                    || !string.IsNullOrWhiteSpace(EmailAddress))
                 {
-                    var objId = this.ObjectId;
-                    if (!this.BypassObjectIdValidation.IsPresent)
+                    var objId = ObjectId;
+                    if (!BypassObjectIdValidation.IsPresent)
                     {
-                        objId = GetObjectId(this.ObjectId, this.UserPrincipalName, this.EmailAddress, this.ServicePrincipalName);
+                        objId = GetObjectId(ObjectId, UserPrincipalName, EmailAddress, ServicePrincipalName);
                     }
 
                     if (ApplicationId.HasValue && ApplicationId.Value == Guid.Empty)
@@ -522,33 +522,29 @@ namespace Microsoft.Azure.Commands.KeyVault
                     //All permission arrays cannot be null
                     if ( PermissionsToKeys == null && PermissionsToSecrets == null && PermissionsToCertificates == null && PermissionsToStorage == null )
                         throw new ArgumentException(Resources.PermissionsNotSpecified);
-                    else
+                    //Is there an existing policy for this policy identity?
+                    var existingPolicy = vault.AccessPolicies.FirstOrDefault(ap => MatchVaultAccessPolicyIdentity(ap, objId, ApplicationId));
+
+                    //New policy will have permission arrays that are either from cmdlet input
+                    //or if that's null, then from the old policy for this object ID if one existed
+                    var keys = PermissionsToKeys ?? (existingPolicy != null && existingPolicy.PermissionsToKeys != null ?
+                                   existingPolicy.PermissionsToKeys.ToArray() : null);
+
+                    var secrets = PermissionsToSecrets ?? (existingPolicy != null && existingPolicy.PermissionsToSecrets != null ?
+                                      existingPolicy.PermissionsToSecrets.ToArray() : null);
+
+                    var certificates = PermissionsToCertificates ?? (existingPolicy != null && existingPolicy.PermissionsToCertificates != null ?
+                                           existingPolicy.PermissionsToCertificates.ToArray() : null);
+
+                    var managedStorage = PermissionsToStorage ?? ( existingPolicy != null && existingPolicy.PermissionsToStorage != null ?
+                                             existingPolicy.PermissionsToStorage.ToArray() : null );
+
+                    //Remove old policies for this policy identity and add a new one with the right permissions, iff there were some non-empty permissions
+                    updatedListOfAccessPolicies = vault.AccessPolicies.Where(ap => !MatchVaultAccessPolicyIdentity(ap, objId, ApplicationId)).ToArray();
+                    if ( keys != null && keys.Length > 0 || secrets != null && secrets.Length > 0 || certificates != null && certificates.Length > 0 || managedStorage != null && managedStorage.Length > 0 )
                     {
-                        //Is there an existing policy for this policy identity?
-                        var existingPolicy = vault.AccessPolicies.FirstOrDefault(ap => MatchVaultAccessPolicyIdentity(ap, objId, ApplicationId));
-
-                        //New policy will have permission arrays that are either from cmdlet input
-                        //or if that's null, then from the old policy for this object ID if one existed
-                        var keys = PermissionsToKeys ?? (existingPolicy != null && existingPolicy.PermissionsToKeys != null ?
-                            existingPolicy.PermissionsToKeys.ToArray() : null);
-
-                        var secrets = PermissionsToSecrets ?? (existingPolicy != null && existingPolicy.PermissionsToSecrets != null ?
-                            existingPolicy.PermissionsToSecrets.ToArray() : null);
-
-                        var certificates = PermissionsToCertificates ?? (existingPolicy != null && existingPolicy.PermissionsToCertificates != null ?
-                            existingPolicy.PermissionsToCertificates.ToArray() : null);
-
-                        var managedStorage = PermissionsToStorage ?? ( existingPolicy != null && existingPolicy.PermissionsToStorage != null ?
-                            existingPolicy.PermissionsToStorage.ToArray() : null );
-
-                        //Remove old policies for this policy identity and add a new one with the right permissions, iff there were some non-empty permissions
-                        updatedListOfAccessPolicies = vault.AccessPolicies.Where(ap => !MatchVaultAccessPolicyIdentity(ap, objId, this.ApplicationId)).ToArray();
-                        if ( ( keys != null && keys.Length > 0 ) || ( secrets != null && secrets.Length > 0 ) || ( certificates != null && certificates.Length > 0 ) || ( managedStorage != null && managedStorage.Length > 0 ) )
-                        {
-                            var policy = new PSKeyVaultAccessPolicy( vault.TenantId, objId, this.ApplicationId, keys, secrets, certificates, managedStorage );
-                            updatedListOfAccessPolicies = updatedListOfAccessPolicies.Concat(new[] { policy }).ToArray();
-                        }
-
+                        var policy = new PSKeyVaultAccessPolicy( vault.TenantId, objId, ApplicationId, keys, secrets, certificates, managedStorage );
+                        updatedListOfAccessPolicies = updatedListOfAccessPolicies.Concat(new[] { policy }).ToArray();
                     }
                 }
 

@@ -78,16 +78,16 @@ namespace Microsoft.Azure.Commands.Compute
                     VhdPrefix = VHDNamePrefix
                 };
 
-                var op = this.VirtualMachineClient.CaptureWithHttpMessagesAsync(
-                    this.ResourceGroupName,
-                    this.Name,
+                var op = VirtualMachineClient.CaptureWithHttpMessagesAsync(
+                    ResourceGroupName,
+                    Name,
                     parameters).GetAwaiter().GetResult();
 
                 var result = ComputeAutoMapperProfile.Mapper.Map<PSComputeLongRunningOperation>(op);
 
-                if (!string.IsNullOrWhiteSpace(this.Path))
+                if (!string.IsNullOrWhiteSpace(Path))
                 {
-                    File.WriteAllText(this.Path, op.Body.Output.ToString());
+                    File.WriteAllText(Path, op.Body.Output.ToString());
                 }
                 WriteObject(result);
             });

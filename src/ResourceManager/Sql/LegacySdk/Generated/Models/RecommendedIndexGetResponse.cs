@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedIndex RecommendedIndex
         {
-            get { return this._recommendedIndex; }
-            set { this._recommendedIndex = value; }
+            get { return _recommendedIndex; }
+            set { _recommendedIndex = value; }
         }
         
         /// <summary>

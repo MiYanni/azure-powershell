@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
                 categories: logProfile.Categories,
                 retentionPolicy: new PSRetentionPolicy(logProfile.RetentionPolicy))
         {
-            this.ServiceBusRuleId = logProfile.ServiceBusRuleId;
-            this.StorageAccountId = logProfile.StorageAccountId;
+            ServiceBusRuleId = logProfile.ServiceBusRuleId;
+            StorageAccountId = logProfile.StorageAccountId;
         }
     }
 }

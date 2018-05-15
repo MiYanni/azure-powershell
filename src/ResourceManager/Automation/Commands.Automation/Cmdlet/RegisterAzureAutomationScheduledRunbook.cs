@@ -67,10 +67,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             JobSchedule jobSchedule;
 
-            jobSchedule = this.AutomationClient.RegisterScheduledRunbook(
-                    this.ResourceGroupName, this.AutomationAccountName, this.RunbookName, this.ScheduleName, this.Parameters, this.RunOn);
+            jobSchedule = AutomationClient.RegisterScheduledRunbook(
+                    ResourceGroupName, AutomationAccountName, RunbookName, ScheduleName, Parameters, RunOn);
 
-            this.WriteObject(jobSchedule);
+            WriteObject(jobSchedule);
         }
     }
 }

@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;

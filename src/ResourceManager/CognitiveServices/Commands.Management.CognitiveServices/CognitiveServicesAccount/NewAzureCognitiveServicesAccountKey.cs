@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
     /// <summary>
     /// Regnerate Cognitive Services Account Key (Key1 or Key2)
     /// </summary>
-    [Cmdlet(VerbsCommon.New, CognitiveServicesAccountKeyNounStr, SupportsShouldProcess = true), OutputType(typeof(CognitiveServicesModels.CognitiveServicesAccountKeys))]
+    [Cmdlet(VerbsCommon.New, CognitiveServicesAccountKeyNounStr, SupportsShouldProcess = true), OutputType(typeof(CognitiveServicesAccountKeys))]
     public class NewAzureCognitiveServicesAccountKeyCommand : CognitiveServicesAccountBaseCmdlet
     {
         [Parameter(
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -61,17 +61,17 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             base.ExecuteCmdlet();
 
             if (ShouldProcess(
-                this.Name, string.Format(CultureInfo.CurrentCulture, Resources.NewAccountKey_ProcessMessage, this.KeyName, this.Name))
+                Name, string.Format(CultureInfo.CurrentCulture, Resources.NewAccountKey_ProcessMessage, KeyName, Name))
                 ||
                 Force.IsPresent)
             {
 
                 RunCmdLet(() =>
                 {
-                    var keys = this.CognitiveServicesClient.Accounts.RegenerateKey(
-                        this.ResourceGroupName,
-                        this.Name,
-                        this.KeyName);
+                    var keys = CognitiveServicesClient.Accounts.RegenerateKey(
+                        ResourceGroupName,
+                        Name,
+                        KeyName);
 
                     WriteObject(keys);
                 });

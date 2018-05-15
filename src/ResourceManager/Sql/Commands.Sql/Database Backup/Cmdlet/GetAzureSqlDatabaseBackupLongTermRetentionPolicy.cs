@@ -37,12 +37,12 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlDatabaseBackupLongTermRetentionPolicyModel> GetEntity()
         {
-            return new List<AzureSqlDatabaseBackupLongTermRetentionPolicyModel>()
+            return new List<AzureSqlDatabaseBackupLongTermRetentionPolicyModel>
             {
                 ModelAdapter.GetDatabaseBackupLongTermRetentionPolicy(
-                    this.ResourceGroupName,
-                    this.ServerName,
-                    this.DatabaseName,
+                    ResourceGroupName,
+                    ServerName,
+                    DatabaseName,
                     Current.IsPresent)
             };
         }

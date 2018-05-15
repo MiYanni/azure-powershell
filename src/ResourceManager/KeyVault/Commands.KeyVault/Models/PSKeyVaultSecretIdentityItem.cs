@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             Created = secretItem.Attributes.Created;
             Updated = secretItem.Attributes.Updated;
             ContentType = secretItem.ContentType;
-            Tags = (secretItem.Tags == null) ? null : secretItem.Tags.ConvertToHashtable();
+            Tags = secretItem.Tags == null ? null : secretItem.Tags.ConvertToHashtable();
         }
 
         internal PSKeyVaultSecretIdentityItem(PSKeyVaultSecret secret)
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return (Tags == null) ? null : Tags.ConvertToTagsTable();
+                return Tags == null ? null : Tags.ConvertToTagsTable();
             }
         }
 

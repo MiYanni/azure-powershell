@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch
         public override void ExecuteCmdlet()
         {
             WriteVerboseWithTimestamp(Resources.BeginMAMLCall, mamlCall);
-            BatchClient.UpdateApplication(this.ResourceGroupName, this.AccountName, this.ApplicationId, this.AllowUpdates, this.DefaultVersion, this.DisplayName);
+            BatchClient.UpdateApplication(ResourceGroupName, AccountName, ApplicationId, AllowUpdates, DefaultVersion, DisplayName);
             WriteVerboseWithTimestamp(Resources.EndMAMLCall, mamlCall);
         }
     }

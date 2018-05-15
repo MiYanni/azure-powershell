@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Commands.Compute
 {
     [Cmdlet(VerbsCommon.Set, ProfileNouns.SourceImage, DefaultParameterSetName = ImageReferenceSkuParameterSet),
     OutputType(typeof(PSVirtualMachine))]
-    public class SetAzureVMSourceImageCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class SetAzureVMSourceImageCommand : ResourceManager.Common.AzureRMCmdlet
     {
         protected const string ImageReferenceSkuParameterSet = "ImageReferenceSkuParameterSet";
         protected const string ImageReferenceIdParameterSet = "ImageReferenceIdParameterSet";
@@ -53,14 +53,14 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.VM.StorageProfile == null)
+            if (VM.StorageProfile == null)
             {
-                this.VM.StorageProfile = new StorageProfile();
+                VM.StorageProfile = new StorageProfile();
             }
 
             if (ParameterSetName.Equals(ImageReferenceSkuParameterSet))
             {
-                this.VM.StorageProfile.ImageReference = new ImageReference
+                VM.StorageProfile.ImageReference = new ImageReference
                 {
                     Publisher = PublisherName,
                     Offer = Offer,
@@ -70,13 +70,13 @@ namespace Microsoft.Azure.Commands.Compute
             }
             else
             {
-                this.VM.StorageProfile.ImageReference = new ImageReference
+                VM.StorageProfile.ImageReference = new ImageReference
                 {
-                    Id = this.Id
+                    Id = Id
                 };
             }
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

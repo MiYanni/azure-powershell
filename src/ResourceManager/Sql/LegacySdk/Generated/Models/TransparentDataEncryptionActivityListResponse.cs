@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<TransparentDataEncryptionActivity> TransparentDataEncryptionActivities
         {
-            get { return this._transparentDataEncryptionActivities; }
-            set { this._transparentDataEncryptionActivities = value; }
+            get { return _transparentDataEncryptionActivities; }
+            set { _transparentDataEncryptionActivities = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public TransparentDataEncryptionActivityListResponse()
         {
-            this.TransparentDataEncryptionActivities = new LazyList<TransparentDataEncryptionActivity>();
+            TransparentDataEncryptionActivities = new LazyList<TransparentDataEncryptionActivity>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<TransparentDataEncryptionActivity> GetEnumerator()
         {
-            return this.TransparentDataEncryptionActivities.GetEnumerator();
+            return TransparentDataEncryptionActivities.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

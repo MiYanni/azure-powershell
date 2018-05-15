@@ -132,75 +132,75 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                    target: string.Format("Create/update an activity logs alert: {0} from resource group: {1}", this.Name, this.ResourceGroupName),
-                    action: "Create/update an activity logs alert"))
+                    string.Format("Create/update an activity logs alert: {0} from resource group: {1}", Name, ResourceGroupName),
+                    "Create/update an activity logs alert"))
             {
-                string resourceGroupName = this.ResourceGroupName;
-                string activityLogAlertName = this.Name;
+                string resourceGroupName = ResourceGroupName;
+                string activityLogAlertName = Name;
                 ActivityLogAlertResource requestBody = null;
 
                 // Using value from the pipe
-                if (this.MyInvocation.BoundParameters.ContainsKey("InputObject") || this.InputObject != null)
+                if (MyInvocation.BoundParameters.ContainsKey("InputObject") || InputObject != null)
                 {
                     WriteVerboseWithTimestamp("InputObject detected: creating request body based on it.");
 
                     ActivityLogAlertUtilities.ProcessPipeObject(
-                        inputObject: this.InputObject,
-                        resourceGroupName: out resourceGroupName,
-                        activityLogAlertName: out activityLogAlertName);
+                        InputObject,
+                        out resourceGroupName,
+                        out activityLogAlertName);
 
-                    requestBody = this.UpdateActivityLogAlertResource(this.InputObject);
+                    requestBody = UpdateActivityLogAlertResource(InputObject);
                 }
-                else if (this.MyInvocation.BoundParameters.ContainsKey("ResourceId") || !string.IsNullOrWhiteSpace(this.ResourceId))
+                else if (MyInvocation.BoundParameters.ContainsKey("ResourceId") || !string.IsNullOrWhiteSpace(ResourceId))
                 {
                     WriteVerboseWithTimestamp("ResourceId detected: extracting name and resource group name based on it.");
 
                     // ResourceId is not enough to set an ActivityLogAlert
                     // First there is the need to try and find an existing alert and modify it
                     ActivityLogAlertUtilities.ProcessPipeObject(
-                        resourceId: this.ResourceId,
-                        resourceGroupName: out resourceGroupName,
-                        activityLogAlertName: out activityLogAlertName);
+                        ResourceId,
+                        out resourceGroupName,
+                        out activityLogAlertName);
 
                     WriteVerboseWithTimestamp("ResourceId detected: checking for the existence the given activity log alert.");
 
-                    requestBody = this.MonitorManagementClient.ActivityLogAlerts.Get(resourceGroupName: resourceGroupName, activityLogAlertName: activityLogAlertName);
+                    requestBody = MonitorManagementClient.ActivityLogAlerts.Get(resourceGroupName, activityLogAlertName);
                     if (requestBody == null)
                     {
                         WriteVerboseWithTimestamp("ResourceId detected: given activity log alert does not exist.");
 
                         // This can only happen if the user sent a resourceId of an alert that does not exist yet
-                        if (string.IsNullOrWhiteSpace(this.Location))
+                        if (string.IsNullOrWhiteSpace(Location))
                         {
                             // The user wants to create an activity log alert given ResourceId as argument, but the Location parameter was empty or null
                             throw new PSArgumentException("With ResourceId parameter used to create a new ActivityLogAlert, Location must contain a value", "Location");
                         }
 
-                        requestBody = this.CreateActivityLogAlertResource(
-                            name: activityLogAlertName,
-                            location: this.Location);
+                        requestBody = CreateActivityLogAlertResource(
+                            activityLogAlertName,
+                            Location);
                     }
                     else
                     {
                         WriteVerboseWithTimestamp("ResourceId detected: given activity log alert found, modifying its values with the parameters.");
 
-                        requestBody = this.UpdateActivityLogAlertResource(requestBody);
+                        requestBody = UpdateActivityLogAlertResource(requestBody);
                     }
                 }
                 else
                 {
                     WriteVerboseWithTimestamp("No InputObject or ResourceId detected: following standard creation/update process.");
 
-                    requestBody = this.CreateActivityLogAlertResource(
-                        name: activityLogAlertName,
-                        location: this.Location);
+                    requestBody = CreateActivityLogAlertResource(
+                        activityLogAlertName,
+                        Location);
                 }
 
                 WriteObject(
-                    this.MonitorManagementClient.ActivityLogAlerts.CreateOrUpdate(
-                        resourceGroupName: resourceGroupName,
-                        activityLogAlertName: activityLogAlertName,
-                        activityLogAlert: requestBody));
+                    MonitorManagementClient.ActivityLogAlerts.CreateOrUpdate(
+                        resourceGroupName,
+                        activityLogAlertName,
+                        requestBody));
             }
         }
 
@@ -208,34 +208,34 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
         {
             // There was an ActivityLogAlert already there, just modify what can be modifed
             // NOTE: Location remains unchanged, the value of the Location parameter is ignored
-            if (this.MyInvocation.BoundParameters.ContainsKey("Scope") || this.Scope != null)
+            if (MyInvocation.BoundParameters.ContainsKey("Scope") || Scope != null)
             {
-                requestBody.Scopes = this.Scope;
+                requestBody.Scopes = Scope;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Condition") || this.Condition != null)
+            if (MyInvocation.BoundParameters.ContainsKey("Condition") || Condition != null)
             {
-                requestBody.Condition = new ActivityLogAlertAllOfCondition(this.Condition);
+                requestBody.Condition = new ActivityLogAlertAllOfCondition(Condition);
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Action") || this.Action != null)
+            if (MyInvocation.BoundParameters.ContainsKey("Action") || Action != null)
             {
-                requestBody.Actions = new ActivityLogAlertActionList(this.Action);
+                requestBody.Actions = new ActivityLogAlertActionList(Action);
             }
 
-            if (this.DisableAlert.IsPresent)
+            if (DisableAlert.IsPresent)
             {
                 requestBody.Enabled = false;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Description") || this.Description != null)
+            if (MyInvocation.BoundParameters.ContainsKey("Description") || Description != null)
             {
-                requestBody.Description = this.Description;
+                requestBody.Description = Description;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Tag") || this.Tag != null)
+            if (MyInvocation.BoundParameters.ContainsKey("Tag") || Tag != null)
             {
-                requestBody.Tags = this.Tag;
+                requestBody.Tags = Tag;
             }
 
             return requestBody;
@@ -246,14 +246,14 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
             ActivityLogAlertResource newAlert = new ActivityLogAlertResource(
                 name: name,
                 location: location,
-                scopes: this.Scope,
-                condition: new ActivityLogAlertAllOfCondition(this.Condition),
-                actions: new ActivityLogAlertActionList(this.Action));
+                scopes: Scope,
+                condition: new ActivityLogAlertAllOfCondition(Condition),
+                actions: new ActivityLogAlertActionList(Action));
 
             // EnableAlert defaults to true
-            newAlert.Enabled = !this.DisableAlert.IsPresent;
-            newAlert.Description = this.Description;
-            newAlert.Tags = this.Tag;
+            newAlert.Enabled = !DisableAlert.IsPresent;
+            newAlert.Description = Description;
+            newAlert.Tags = Tag;
 
             return newAlert;
         }

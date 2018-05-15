@@ -45,14 +45,14 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(CultureInfo.CurrentCulture, Resources.RemoveAzureAutomationScheduleWarning),
                 string.Format(CultureInfo.CurrentCulture, Resources.RemoveAzureAutomationScheduleDescription),
-                this.Name,
+                Name,
                 () =>
                     {
-                        this.AutomationClient.DeleteSchedule(this.ResourceGroupName, this.AutomationAccountName, this.Name);
+                        AutomationClient.DeleteSchedule(ResourceGroupName, AutomationAccountName, Name);
                     });
         }
     }

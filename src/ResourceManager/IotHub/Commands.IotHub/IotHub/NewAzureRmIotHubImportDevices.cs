@@ -15,11 +15,11 @@
 namespace Microsoft.Azure.Commands.Management.IotHub
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
-    using ResourceProperties = Microsoft.Azure.Commands.Management.IotHub.Properties;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
+    using ResourceProperties = Properties;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.New, "AzureRmIotHubImportDevices", SupportsShouldProcess = true)]
@@ -61,14 +61,14 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (ShouldProcess(Name, ResourceProperties.Resources.NewAzureRmIotHubImportDevices))
             {
-                var importDevicesRequest = new PSImportDevicesRequest()
+                var importDevicesRequest = new PSImportDevicesRequest
                 {
-                    InputBlobContainerUri = this.InputBlobContainerUri,
-                    OutputBlobContainerUri = this.OutputBlobContainerUri
+                    InputBlobContainerUri = InputBlobContainerUri,
+                    OutputBlobContainerUri = OutputBlobContainerUri
                 };
 
-                JobResponse jobResponse = this.IotHubClient.IotHubResource.ImportDevices(this.ResourceGroupName, this.Name, IotHubUtils.ToImportDevicesRequest(importDevicesRequest));
-                this.WriteObject(IotHubUtils.ToPSIotHubJobResponse(jobResponse), false);
+                JobResponse jobResponse = IotHubClient.IotHubResource.ImportDevices(ResourceGroupName, Name, IotHubUtils.ToImportDevicesRequest(importDevicesRequest));
+                WriteObject(IotHubUtils.ToPSIotHubJobResponse(jobResponse), false);
             }
         }
     }

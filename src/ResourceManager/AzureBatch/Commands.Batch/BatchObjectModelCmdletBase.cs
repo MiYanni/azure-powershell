@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Commands.Batch
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            string verboseMessage = this.BatchContext.HasKeys ?
-                string.Format(Resources.UsingSharedKeyAuth, this.BatchContext.KeyInUse) :
+            string verboseMessage = BatchContext.HasKeys ?
+                string.Format(Resources.UsingSharedKeyAuth, BatchContext.KeyInUse) :
                 Resources.UsingAadAuth;
             WriteVerboseWithTimestamp(verboseMessage);
         }

@@ -8,7 +8,7 @@
 
 namespace Microsoft.Azure.Commands.Relay.Models
 {
-    using Azure.Management.Relay.Models;
+    using Management.Relay.Models;
 
     /// <summary>
     /// The object that represents the operation.

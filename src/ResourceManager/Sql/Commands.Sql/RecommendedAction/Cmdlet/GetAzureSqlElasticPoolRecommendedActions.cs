@@ -45,11 +45,11 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("RecommendedActionName"))
             {
                 results = new List<AzureSqlElasticPoolRecommendedActionModel>();
-                results.Add(ModelAdapter.GetElasticPoolRecommendedAction(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.AdvisorName, this.RecommendedActionName));
+                results.Add(ModelAdapter.GetElasticPoolRecommendedAction(ResourceGroupName, ServerName, ElasticPoolName, AdvisorName, RecommendedActionName));
             }
             else
             {
-                results = ModelAdapter.ListElasticPoolRecommendedActions(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.AdvisorName);
+                results = ModelAdapter.ListElasticPoolRecommendedActions(ResourceGroupName, ServerName, ElasticPoolName, AdvisorName);
             }
 
             return results;

@@ -53,19 +53,19 @@ namespace Microsoft.Azure.Commands.TrafficManager
 
         public override void ExecuteCmdlet()
         {
-            if (this.ResourceGroupName != null && this.Name != null)
+            if (ResourceGroupName != null && Name != null)
             {
-                TrafficManagerProfile profile = this.TrafficManagerClient.GetTrafficManagerProfile(this.ResourceGroupName, this.Name);
+                TrafficManagerProfile profile = TrafficManagerClient.GetTrafficManagerProfile(ResourceGroupName, Name);
 
-                this.WriteVerbose(ProjectResources.Success);
-                this.WriteObject(profile);
+                WriteVerbose(ProjectResources.Success);
+                WriteObject(profile);
             }
             else
             {
-                TrafficManagerProfile[] profiles = this.TrafficManagerClient.ListTrafficManagerProfiles(this.ResourceGroupName);
+                TrafficManagerProfile[] profiles = TrafficManagerClient.ListTrafficManagerProfiles(ResourceGroupName);
 
-                this.WriteVerbose(ProjectResources.Success);
-                this.WriteObject(profiles, enumerateCollection: true);
+                WriteVerbose(ProjectResources.Success);
+                WriteObject(profiles, true);
             }
         }
     }

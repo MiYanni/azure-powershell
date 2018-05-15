@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Rule
             if (!string.IsNullOrEmpty(SqlExpression))
                 ruleAttributes.SqlFilter.SqlExpression = SqlExpression;
 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.CreateRule, Name, Topic,Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.CreateRule, Name, Topic,Namespace)))
             {
                 WriteObject(Client.CreateUpdateRules(ResourceGroupName, Namespace, Topic, Subscription, Name, ruleAttributes));
             }

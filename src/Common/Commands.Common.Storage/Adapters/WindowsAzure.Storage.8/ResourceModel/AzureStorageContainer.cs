@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Common.Storage.ResourceModel
 {
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.Blob;
     using System;
 
     /// <summary>

@@ -32,9 +32,9 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
         {
             get
             {
-                if (string.IsNullOrEmpty(this.Id)) return null;
+                if (string.IsNullOrEmpty(Id)) return null;
                 Regex r = new Regex(@"(.*?)/resourcegroups/(?<rgname>\S+)/providers/(.*?)", RegexOptions.IgnoreCase);
-                Match m = r.Match(this.Id);
+                Match m = r.Match(Id);
                 return m.Success ? m.Groups["rgname"].Value : null;
             }
         }
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
         /// </summary>
         public static PSContainerGroup FromContainerGroup(ContainerGroup containerGroup)
         {
-            return new PSContainerGroup()
+            return new PSContainerGroup
             {
                 Id = containerGroup?.Id,
                 Name = containerGroup?.Name,

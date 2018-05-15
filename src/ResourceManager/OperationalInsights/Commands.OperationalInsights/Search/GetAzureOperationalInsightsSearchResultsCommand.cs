@@ -76,13 +76,13 @@ namespace Microsoft.Azure.Commands.OperationalInsights
             }
             else if (!string.IsNullOrEmpty(Query))
             {
-                PSHighlight highlight = new PSHighlight()
+                PSHighlight highlight = new PSHighlight
                 {
                     Pre = PreHighlight,
                     Post = PostHighlight
                 };
 
-                PSSearchGetSearchResultsParameters parameters = new PSSearchGetSearchResultsParameters()
+                PSSearchGetSearchResultsParameters parameters = new PSSearchGetSearchResultsParameters
                 {
                     Top = Top,
                     Highlight = highlight,

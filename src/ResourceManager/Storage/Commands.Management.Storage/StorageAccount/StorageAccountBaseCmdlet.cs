@@ -84,8 +84,8 @@ namespace Microsoft.Azure.Commands.Management.Storage
                     storageClientWrapper = new StorageManagementClientWrapper(DefaultProfile.DefaultContext);
                 }
 
-                this.storageClientWrapper.VerboseLogger = WriteVerboseWithTimestamp;
-                this.storageClientWrapper.ErrorLogger = WriteErrorWithTimestamp;
+                storageClientWrapper.VerboseLogger = WriteVerboseWithTimestamp;
+                storageClientWrapper.ErrorLogger = WriteErrorWithTimestamp;
                 return storageClientWrapper.StorageManagementClient;
             }
 
@@ -147,13 +147,13 @@ namespace Microsoft.Azure.Commands.Management.Storage
 
         protected void WriteStorageAccount(StorageModels.StorageAccount storageAccount)
         {
-            WriteObject(PSStorageAccount.Create(storageAccount, this.StorageClient));
+            WriteObject(PSStorageAccount.Create(storageAccount, StorageClient));
         }
 
         protected void WriteStorageAccountList(IEnumerable<StorageModels.StorageAccount> storageAccounts)
         {
             List<PSStorageAccount> output = new List<PSStorageAccount>();
-            storageAccounts.ForEach(storageAccount => output.Add(PSStorageAccount.Create(storageAccount, this.StorageClient)));
+            storageAccounts.ForEach(storageAccount => output.Add(PSStorageAccount.Create(storageAccount, StorageClient)));
             WriteObject(output, true);
         }
     }

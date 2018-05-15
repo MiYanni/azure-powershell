@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Management.Monitor.Models
         /// </summary>
         /// <param name="metricAvailability">The metric availability</param>
         public PSMetricAvailability(MetricAvailability metricAvailability)
-            : base(timeGrain: metricAvailability.TimeGrain, retention: metricAvailability.Retention)
+            : base(metricAvailability.TimeGrain, metricAvailability.Retention)
         {
         }
     }

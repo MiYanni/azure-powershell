@@ -40,9 +40,9 @@ namespace Microsoft.Azure.Commands.ScenarioTest.Extensions
         /// <returns>true if the tenants are equal, otherwise false</returns>
         public static bool IsEqual(this IAzureTenant baseTenant, IAzureTenant other)
         {
-            return (baseTenant == null && other == null) || (baseTenant.CheckExtensionsEqual(other)
-                && string.Equals(baseTenant.Directory, other.Directory, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(baseTenant.Id, other.Id, StringComparison.OrdinalIgnoreCase));
+            return baseTenant == null && other == null || baseTenant.CheckExtensionsEqual(other)
+                   && string.Equals(baseTenant.Directory, other.Directory, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(baseTenant.Id, other.Id, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -53,11 +53,11 @@ namespace Microsoft.Azure.Commands.ScenarioTest.Extensions
         /// <returns>true if the elements of both accounts are equal, otherwise false</returns>
         public static bool IsEqual(this IAzureAccount baseAccount, IAzureAccount other)
         {
-            return (baseAccount == null && other == null) || (baseAccount.CheckExtensionsEqual(other)
-                && string.Equals(baseAccount.Credential, other.Credential, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(baseAccount.Id, other.Id, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(baseAccount.Type, other.Type, StringComparison.OrdinalIgnoreCase)
-                && CheckEquality(baseAccount.TenantMap, other.TenantMap));
+            return baseAccount == null && other == null || baseAccount.CheckExtensionsEqual(other)
+                   && string.Equals(baseAccount.Credential, other.Credential, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(baseAccount.Id, other.Id, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(baseAccount.Type, other.Type, StringComparison.OrdinalIgnoreCase)
+                   && CheckEquality(baseAccount.TenantMap, other.TenantMap);
         }
 
         /// <summary>
@@ -68,10 +68,10 @@ namespace Microsoft.Azure.Commands.ScenarioTest.Extensions
         /// <returns>True if the elements of both subscriptiosn are equal, otherwise false</returns>
         public static bool IsEqual(this IAzureSubscription baseSub, IAzureSubscription other)
         {
-            return (baseSub == null && other == null) || (baseSub.CheckExtensionsEqual(other)
-                && string.Equals(baseSub.Id, other.Id, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(baseSub.Name, other.Name, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(baseSub.State, other.State, StringComparison.OrdinalIgnoreCase));
+            return baseSub == null && other == null || baseSub.CheckExtensionsEqual(other)
+                   && string.Equals(baseSub.Id, other.Id, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(baseSub.Name, other.Name, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(baseSub.State, other.State, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.Extensions
         /// <returns>Treu fi the elements of the environment are equal, otherwise false</returns>
         public static bool IsEqual(this IAzureEnvironment environment, IAzureEnvironment other)
         {
-            return (environment == null && other == null) 
+            return environment == null && other == null 
                 || environment.CheckExtensionsEqual(other);
         }
 
@@ -94,14 +94,14 @@ namespace Microsoft.Azure.Commands.ScenarioTest.Extensions
         /// <returns>True if the elements of the contexts are equal, otherwise false</returns>
         public static bool IsEqual(this IAzureContext context, IAzureContext other)
         {
-            return (context == null && other == null)
-                || (context.CheckExtensionsEqual(other)
-                && context.Account.IsEqual(other.Account)
-                && context.Environment.IsEqual(other.Environment)
-                && context.Subscription.IsEqual(other.Subscription)
-                && context.Tenant.IsEqual(other.Tenant)
-                && context.TokenCache.IsEqual(other.TokenCache)
-                && string.Equals(context.VersionProfile, other.VersionProfile, StringComparison.OrdinalIgnoreCase));
+            return context == null && other == null
+                || context.CheckExtensionsEqual(other)
+                   && context.Account.IsEqual(other.Account)
+                   && context.Environment.IsEqual(other.Environment)
+                   && context.Subscription.IsEqual(other.Subscription)
+                   && context.Tenant.IsEqual(other.Tenant)
+                   && context.TokenCache.IsEqual(other.TokenCache)
+                   && string.Equals(context.VersionProfile, other.VersionProfile, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.Extensions
         /// <returns>True if the two caches contain the same data, otherwise false</returns>
         public static bool IsEqual(this IAzureTokenCache cache, IAzureTokenCache other)
         {
-            bool result = (cache == null && other == null) || (cache != null && cache.CacheData == null && other != null && other.CacheData == null);
+            bool result = cache == null && other == null || cache != null && cache.CacheData == null && other != null && other.CacheData == null;
             if (cache != null && other != null && cache.CacheData != null && other.CacheData != null && cache.CacheData.Length == other.CacheData.Length)
             {
                 result = true;

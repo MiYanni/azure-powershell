@@ -20,11 +20,11 @@ namespace Microsoft.Azure.Commands.Network
 
     using AutoMapper;
 
-    using Microsoft.Azure.Commands.Network.Models;
+    using Models;
 
-    using MNM = Microsoft.Azure.Management.Network.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.Tags;
-    using Microsoft.Azure.Management.Network;
+    using MNM = Management.Network.Models;
+    using ResourceManager.Common.Tags;
+    using Management.Network;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.New, "AzureRmRouteFilter", SupportsShouldProcess = true),OutputType(typeof(PSRouteFilter))]
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsRouteFilterPresent(this.ResourceGroupName, this.Name);
+            var present = IsRouteFilterPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    var routeTable = this.CreateRouteFilter();
+                    var routeTable = CreateRouteFilter();
                     WriteObject(routeTable);
                 },
                 () => present);
@@ -95,19 +95,19 @@ namespace Microsoft.Azure.Commands.Network
         private PSRouteFilter CreateRouteFilter()
         {
             var psRouteFilter = new PSRouteFilter();
-            psRouteFilter.Name = this.Name;
-            psRouteFilter.ResourceGroupName = this.ResourceGroupName;
-            psRouteFilter.Location = this.Location;
-            psRouteFilter.Rules = this.Rule;
+            psRouteFilter.Name = Name;
+            psRouteFilter.ResourceGroupName = ResourceGroupName;
+            psRouteFilter.Location = Location;
+            psRouteFilter.Rules = Rule;
 
             // Map to the sdk object
             var routeFilterModel = NetworkResourceManagerProfile.Mapper.Map<MNM.RouteFilter>(psRouteFilter);
-            routeFilterModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            routeFilterModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
             // Execute the Create RouteTable call
-            this.RouteFilterClient.CreateOrUpdate(this.ResourceGroupName, this.Name, routeFilterModel);
+            RouteFilterClient.CreateOrUpdate(ResourceGroupName, Name, routeFilterModel);
 
-            var getRouteFilter = this.GetRouteFilter(this.ResourceGroupName, this.Name);
+            var getRouteFilter = GetRouteFilter(ResourceGroupName, Name);
 
             return getRouteFilter;
         }

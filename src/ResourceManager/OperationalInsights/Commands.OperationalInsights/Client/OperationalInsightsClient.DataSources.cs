@@ -174,7 +174,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Client
                 || dataSourceKind == PSDataSourceKinds.LinuxSyslogCollection
                 || dataSourceKind == PSDataSourceKinds.CustomLogCollection)
             {
-                dataSources = this.FilterPSDataSources(resourceGroup, workspaceName, dataSourceKind);
+                dataSources = FilterPSDataSources(resourceGroup, workspaceName, dataSourceKind);
             }
             else
             {

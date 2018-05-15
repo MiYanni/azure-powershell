@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Compute
         {
             var objType = obj.GetType();
 
-            System.Reflection.PropertyInfo[] pros = objType.GetProperties();
+            PropertyInfo[] pros = objType.GetProperties();
             bool expand = true;
             foreach (var p in pros)
             {
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.Compute
         protected string GetResourceGroupNameFromId(string idString)
         {
             var match = Regex.Match(idString, @"resourceGroups/([A-Za-z0-9\-]+)/");
-            return (match.Success)
+            return match.Success
                 ? match.Groups[1].Value
                 : null;
         }
@@ -152,11 +152,11 @@ namespace Microsoft.Azure.Commands.Compute
                                     if (expand)
                                     {
                                         tupleList.Add(MakeTuple(property.Name + "[" + i + "]", "", depth));
-                                        max = Math.Max(max, GetTabLength((Object)elem[i], max, depth + 1, tupleList));
+                                        max = Math.Max(max, GetTabLength(elem[i], max, depth + 1, tupleList));
                                     }
                                     else
                                     {
-                                        elementName.Add(GetChildProperties((Object)elem[i], true));
+                                        elementName.Add(GetChildProperties(elem[i], true));
                                     }
                                 }
                             }
@@ -243,7 +243,7 @@ namespace Microsoft.Azure.Commands.Compute
                 }
             }
 
-            return (getOnlyName)
+            return getOnlyName
                 ? " "
                 : "{" + string.Join(", ", propertyList) + "}";
         }

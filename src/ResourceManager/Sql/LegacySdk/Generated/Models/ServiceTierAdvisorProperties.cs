@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double? ActiveTimeRatio
         {
-            get { return this._activeTimeRatio; }
-            set { this._activeTimeRatio = value; }
+            get { return _activeTimeRatio; }
+            set { _activeTimeRatio = value; }
         }
         
         private double? _avgDtu;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double? AvgDtu
         {
-            get { return this._avgDtu; }
-            set { this._avgDtu = value; }
+            get { return _avgDtu; }
+            set { _avgDtu = value; }
         }
         
         private double _confidence;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double Confidence
         {
-            get { return this._confidence; }
-            set { this._confidence = value; }
+            get { return _confidence; }
+            set { _confidence = value; }
         }
         
         private string _currentServiceLevelObjective;
@@ -73,20 +73,20 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string CurrentServiceLevelObjective
         {
-            get { return this._currentServiceLevelObjective; }
-            set { this._currentServiceLevelObjective = value; }
+            get { return _currentServiceLevelObjective; }
+            set { _currentServiceLevelObjective = value; }
         }
         
-        private System.Guid? _currentServiceLevelObjectiveId;
+        private Guid? _currentServiceLevelObjectiveId;
         
         /// <summary>
         /// Optional. Gets or sets currentServiceLevelObjectiveId for service
         /// tier advisor.
         /// </summary>
-        public System.Guid? CurrentServiceLevelObjectiveId
+        public Guid? CurrentServiceLevelObjectiveId
         {
-            get { return this._currentServiceLevelObjectiveId; }
-            set { this._currentServiceLevelObjectiveId = value; }
+            get { return _currentServiceLevelObjectiveId; }
+            set { _currentServiceLevelObjectiveId = value; }
         }
         
         private string _databaseSizeBasedRecommendationServiceLevelObjective;
@@ -98,21 +98,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseSizeBasedRecommendationServiceLevelObjective
         {
-            get { return this._databaseSizeBasedRecommendationServiceLevelObjective; }
-            set { this._databaseSizeBasedRecommendationServiceLevelObjective = value; }
+            get { return _databaseSizeBasedRecommendationServiceLevelObjective; }
+            set { _databaseSizeBasedRecommendationServiceLevelObjective = value; }
         }
         
-        private System.Guid? _databaseSizeBasedRecommendationServiceLevelObjectiveId;
+        private Guid? _databaseSizeBasedRecommendationServiceLevelObjectiveId;
         
         /// <summary>
         /// Optional. Gets or sets
         /// databaseSizeBasedRecommendationServiceLevelObjectiveId for service
         /// tier advisor.
         /// </summary>
-        public System.Guid? DatabaseSizeBasedRecommendationServiceLevelObjectiveId
+        public Guid? DatabaseSizeBasedRecommendationServiceLevelObjectiveId
         {
-            get { return this._databaseSizeBasedRecommendationServiceLevelObjectiveId; }
-            set { this._databaseSizeBasedRecommendationServiceLevelObjectiveId = value; }
+            get { return _databaseSizeBasedRecommendationServiceLevelObjectiveId; }
+            set { _databaseSizeBasedRecommendationServiceLevelObjectiveId = value; }
         }
         
         private string _disasterPlanBasedRecommendationServiceLevelObjective;
@@ -124,21 +124,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DisasterPlanBasedRecommendationServiceLevelObjective
         {
-            get { return this._disasterPlanBasedRecommendationServiceLevelObjective; }
-            set { this._disasterPlanBasedRecommendationServiceLevelObjective = value; }
+            get { return _disasterPlanBasedRecommendationServiceLevelObjective; }
+            set { _disasterPlanBasedRecommendationServiceLevelObjective = value; }
         }
         
-        private System.Guid? _disasterPlanBasedRecommendationServiceLevelObjectiveId;
+        private Guid? _disasterPlanBasedRecommendationServiceLevelObjectiveId;
         
         /// <summary>
         /// Optional. Gets or sets
         /// disasterPlanBasedRecommendationServiceLevelObjectiveId for service
         /// tier advisor.
         /// </summary>
-        public System.Guid? DisasterPlanBasedRecommendationServiceLevelObjectiveId
+        public Guid? DisasterPlanBasedRecommendationServiceLevelObjectiveId
         {
-            get { return this._disasterPlanBasedRecommendationServiceLevelObjectiveId; }
-            set { this._disasterPlanBasedRecommendationServiceLevelObjectiveId = value; }
+            get { return _disasterPlanBasedRecommendationServiceLevelObjectiveId; }
+            set { _disasterPlanBasedRecommendationServiceLevelObjectiveId = value; }
         }
         
         private double? _maxDtu;
@@ -148,8 +148,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double? MaxDtu
         {
-            get { return this._maxDtu; }
-            set { this._maxDtu = value; }
+            get { return _maxDtu; }
+            set { _maxDtu = value; }
         }
         
         private double? _maxSizeInGB;
@@ -159,8 +159,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double? MaxSizeInGB
         {
-            get { return this._maxSizeInGB; }
-            set { this._maxSizeInGB = value; }
+            get { return _maxSizeInGB; }
+            set { _maxSizeInGB = value; }
         }
         
         private double? _minDtu;
@@ -170,30 +170,30 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double? MinDtu
         {
-            get { return this._minDtu; }
-            set { this._minDtu = value; }
+            get { return _minDtu; }
+            set { _minDtu = value; }
         }
         
-        private System.DateTime? _observationPeriodEnd;
+        private DateTime? _observationPeriodEnd;
         
         /// <summary>
         /// Optional. Gets the observation period start.
         /// </summary>
-        public System.DateTime? ObservationPeriodEnd
+        public DateTime? ObservationPeriodEnd
         {
-            get { return this._observationPeriodEnd; }
-            set { this._observationPeriodEnd = value; }
+            get { return _observationPeriodEnd; }
+            set { _observationPeriodEnd = value; }
         }
         
-        private System.DateTime? _observationPeriodStart;
+        private DateTime? _observationPeriodStart;
         
         /// <summary>
         /// Optional. Gets the observation period start.
         /// </summary>
-        public System.DateTime? ObservationPeriodStart
+        public DateTime? ObservationPeriodStart
         {
-            get { return this._observationPeriodStart; }
-            set { this._observationPeriodStart = value; }
+            get { return _observationPeriodStart; }
+            set { _observationPeriodStart = value; }
         }
         
         private string _overallRecommendationServiceLevelObjective;
@@ -204,20 +204,20 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string OverallRecommendationServiceLevelObjective
         {
-            get { return this._overallRecommendationServiceLevelObjective; }
-            set { this._overallRecommendationServiceLevelObjective = value; }
+            get { return _overallRecommendationServiceLevelObjective; }
+            set { _overallRecommendationServiceLevelObjective = value; }
         }
         
-        private System.Guid? _overallRecommendationServiceLevelObjectiveId;
+        private Guid? _overallRecommendationServiceLevelObjectiveId;
         
         /// <summary>
         /// Optional. Gets or sets overallRecommendationServiceLevelObjectiveId
         /// for service tier advisor.
         /// </summary>
-        public System.Guid? OverallRecommendationServiceLevelObjectiveId
+        public Guid? OverallRecommendationServiceLevelObjectiveId
         {
-            get { return this._overallRecommendationServiceLevelObjectiveId; }
-            set { this._overallRecommendationServiceLevelObjectiveId = value; }
+            get { return _overallRecommendationServiceLevelObjectiveId; }
+            set { _overallRecommendationServiceLevelObjectiveId = value; }
         }
         
         private IList<SloUsageMetric> _serviceLevelObjectiveUsageMetrics;
@@ -228,8 +228,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SloUsageMetric> ServiceLevelObjectiveUsageMetrics
         {
-            get { return this._serviceLevelObjectiveUsageMetrics; }
-            set { this._serviceLevelObjectiveUsageMetrics = value; }
+            get { return _serviceLevelObjectiveUsageMetrics; }
+            set { _serviceLevelObjectiveUsageMetrics = value; }
         }
         
         private string _usageBasedRecommendationServiceLevelObjective;
@@ -241,21 +241,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string UsageBasedRecommendationServiceLevelObjective
         {
-            get { return this._usageBasedRecommendationServiceLevelObjective; }
-            set { this._usageBasedRecommendationServiceLevelObjective = value; }
+            get { return _usageBasedRecommendationServiceLevelObjective; }
+            set { _usageBasedRecommendationServiceLevelObjective = value; }
         }
         
-        private System.Guid? _usageBasedRecommendationServiceLevelObjectiveId;
+        private Guid? _usageBasedRecommendationServiceLevelObjectiveId;
         
         /// <summary>
         /// Optional. Gets or sets
         /// usageBasedRecommendationServiceLevelObjectiveId for service tier
         /// advisor.
         /// </summary>
-        public System.Guid? UsageBasedRecommendationServiceLevelObjectiveId
+        public Guid? UsageBasedRecommendationServiceLevelObjectiveId
         {
-            get { return this._usageBasedRecommendationServiceLevelObjectiveId; }
-            set { this._usageBasedRecommendationServiceLevelObjectiveId = value; }
+            get { return _usageBasedRecommendationServiceLevelObjectiveId; }
+            set { _usageBasedRecommendationServiceLevelObjectiveId = value; }
         }
         
         /// <summary>
@@ -264,7 +264,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServiceTierAdvisorProperties()
         {
-            this.ServiceLevelObjectiveUsageMetrics = new LazyList<SloUsageMetric>();
+            ServiceLevelObjectiveUsageMetrics = new LazyList<SloUsageMetric>();
         }
     }
 }

@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         /// <returns>The Virtual Network Rule being updated</returns>
         protected override IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerVirtualNetworkRuleModel>() { ModelAdapter.GetVirtualNetworkRule(this.ResourceGroupName, this.ServerName, this.VirtualNetworkRuleName) };
+            return new List<Model.AzureSqlServerVirtualNetworkRuleModel> { ModelAdapter.GetVirtualNetworkRule(ResourceGroupName, ServerName, VirtualNetworkRuleName) };
         }
 
         /// <summary>
@@ -73,13 +73,13 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         {
             // Construct a new entity so we only send the relevant data to the server
             List<Model.AzureSqlServerVirtualNetworkRuleModel> updateData = new List<Model.AzureSqlServerVirtualNetworkRuleModel>();
-            updateData.Add(new Model.AzureSqlServerVirtualNetworkRuleModel()
+            updateData.Add(new Model.AzureSqlServerVirtualNetworkRuleModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                VirtualNetworkRuleName = this.VirtualNetworkRuleName,
-                VirtualNetworkSubnetId = this.VirtualNetworkSubnetId,
-                IgnoreMissingVnetServiceEndpoint = this.IgnoreMissingVnetServiceEndpoint
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                VirtualNetworkRuleName = VirtualNetworkRuleName,
+                VirtualNetworkSubnetId = VirtualNetworkSubnetId,
+                IgnoreMissingVnetServiceEndpoint = IgnoreMissingVnetServiceEndpoint
             });
             return updateData;
         }
@@ -91,7 +91,8 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         /// <returns>The response object from the service</returns>
         protected override IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> PersistChanges(IEnumerable<Model.AzureSqlServerVirtualNetworkRuleModel> entity)
         {
-            return new List<Model.AzureSqlServerVirtualNetworkRuleModel>() {
+            return new List<Model.AzureSqlServerVirtualNetworkRuleModel>
+            {
                 ModelAdapter.UpsertVirtualNetworkRule(entity.First())
             };
         }

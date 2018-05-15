@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ParameterSetName = ByExistingPfxAndVaultName,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true, ParameterSetName = ByExistingKeyVault,
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                    HelpMessage = "Specify the name of the cluster")]
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true, ParameterSetName = ByExistingPfxAndVaultName,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
@@ -120,12 +120,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Alias("Subject")]
         public virtual string CertificateSubjectName
         {
-            get { return this.certificateSubjectName; }
+            get { return certificateSubjectName; }
             set
             {
                 if (!value.StartsWith("cn=", StringComparison.OrdinalIgnoreCase))
                 {
-                    this.certificateSubjectName = string.Concat("cn=", value);
+                    certificateSubjectName = string.Concat("cn=", value);
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         {
             get
             {
-                return ResourceManagerClient.ResourceGroups.Get(this.ResourceGroupName).Location;
+                return ResourceManagerClient.ResourceGroups.Get(ResourceGroupName).Location;
             }
         }
 
@@ -155,26 +155,26 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         public override void ExecuteCmdlet()
         {
-            this.Validate();
+            Validate();
         }
 
         protected virtual List<string> GetPfxSrcFiles()
         {
-            return new List<string>() {this.CertificateFile};
+            return new List<string> {CertificateFile};
         }
 
         protected virtual SecureString GetPfxPassword(string pfxFilePath)
         {
-            return this.CertificatePassword;
+            return CertificatePassword;
         }                                   
 
         protected virtual void Validate()
         {
-            if (!string.IsNullOrWhiteSpace(this.CertificateOutputFolder))
+            if (!string.IsNullOrWhiteSpace(CertificateOutputFolder))
             {
-                if (!Directory.Exists(this.CertificateOutputFolder))
+                if (!Directory.Exists(CertificateOutputFolder))
                 {
-                    throw new PSArgumentException(string.Format(ServiceFabricProperties.Resources.InvalidDirectory, this.CertificateOutputFolder));
+                    throw new PSArgumentException(string.Format(ServiceFabricProperties.Resources.InvalidDirectory, CertificateOutputFolder));
                 }
             }
 
@@ -191,12 +191,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             }
 
-            if (this.CertificatePassword != null && this.CertificateFile == null && this.CertificateOutputFolder == null)
+            if (CertificatePassword != null && CertificateFile == null && CertificateOutputFolder == null)
             {
                 throw new PSArgumentException("CertificateOutputFolder must be given if CertificatePassword is specified");
             }
 
-            if (this.CertificateOutputFolder != null && this.CertificatePassword == null)
+            if (CertificateOutputFolder != null && CertificatePassword == null)
             {
                 throw new PSArgumentException("CertificatePassword must be given for the Pfx downloaded from Azure KeyVault");
             }
@@ -205,23 +205,23 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         private void CreateSelfSignedCertificate(string subjectName, string keyVaultUrl, out string thumbprint, out CertificateBundle certificateBundle, out string outputFilePath)
         {
             outputFilePath = string.Empty;
-            var policy = new CertificatePolicy()
+            var policy = new CertificatePolicy
             {
                 SecretProperties = new SecretProperties { ContentType = Constants.SecretContentType },
-                X509CertificateProperties = new X509CertificateProperties()
+                X509CertificateProperties = new X509CertificateProperties
                 {
                     Subject = subjectName,
                     Ekus = new List<string> { "1.3.6.1.5.5.7.3.1", "1.3.6.1.5.5.7.3.2" }
                 },
-                IssuerParameters = new IssuerParameters() { Name = Constants.SelfSignedIssuerName }
+                IssuerParameters = new IssuerParameters { Name = Constants.SelfSignedIssuerName }
             };
 
-            WriteVerboseWithTimestamp(string.Format("Begin to create self signed certificate {0}", this.keyVaultCertificateName));
+            WriteVerboseWithTimestamp(string.Format("Begin to create self signed certificate {0}", keyVaultCertificateName));
 
             CertificateOperation operation;
             try
             {
-                operation = this.KeyVaultClient.CreateCertificateAsync(keyVaultUrl, this.keyVaultCertificateName, policy).Result;
+                operation = KeyVaultClient.CreateCertificateAsync(keyVaultUrl, keyVaultCertificateName, policy).Result;
             }
             catch (Exception ex)
             {
@@ -232,9 +232,9 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             var retry = 120;// 240 * 5 = 20 minutes
             while (retry-- >= 0 && operation != null && operation.Error == null && operation.Status.Equals("inProgress", StringComparison.OrdinalIgnoreCase))
             {
-                operation = this.KeyVaultClient.GetCertificateOperationAsync(keyVaultUrl, this.keyVaultCertificateName).Result;
+                operation = KeyVaultClient.GetCertificateOperationAsync(keyVaultUrl, keyVaultCertificateName).Result;
                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(WriteVerboseIntervalInSec));
-                WriteVerboseWithTimestamp(string.Format("Creating self signed certificate {0} with status {1}", this.keyVaultCertificateName, operation.Status));
+                WriteVerboseWithTimestamp(string.Format("Creating self signed certificate {0} with status {1}", keyVaultCertificateName, operation.Status));
             }
 
             if (retry < 0)
@@ -265,19 +265,19 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                  operation.StatusDetails));
             }
 
-            certificateBundle = this.KeyVaultClient.GetCertificateAsync(keyVaultUrl, this.keyVaultCertificateName).Result;
+            certificateBundle = KeyVaultClient.GetCertificateAsync(keyVaultUrl, keyVaultCertificateName).Result;
             thumbprint = BitConverter.ToString(certificateBundle.X509Thumbprint).Replace("-", "");
 
             WriteVerboseWithTimestamp(string.Format("Self signed certificate created: {0}", certificateBundle.CertificateIdentifier));
 
-            if (!string.IsNullOrEmpty(this.CertificateOutputFolder))
+            if (!string.IsNullOrEmpty(CertificateOutputFolder))
             {
-                outputFilePath = GeneratePfxName(this.CertificateOutputFolder);
-                var secretBundle = this.KeyVaultClient.GetSecretAsync(keyVaultUrl, this.keyVaultCertificateName).Result;
+                outputFilePath = GeneratePfxName(CertificateOutputFolder);
+                var secretBundle = KeyVaultClient.GetSecretAsync(keyVaultUrl, keyVaultCertificateName).Result;
                 var kvSecretBytes = Convert.FromBase64String(secretBundle.Value);
                 var certCollection = new X509Certificate2Collection();
                 certCollection.Import(kvSecretBytes,null,X509KeyStorageFlags.Exportable);
-                var protectedCertificateBytes = certCollection.Export(X509ContentType.Pkcs12, this.CertificatePassword?.ConvertToString());
+                var protectedCertificateBytes = certCollection.Export(X509ContentType.Pkcs12, CertificatePassword?.ConvertToString());
                 File.WriteAllBytes(outputFilePath, protectedCertificateBytes);
             }
         }
@@ -288,7 +288,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             var suffx = string.Empty;
             var ret = string.Empty;
             const string fileExt = ".pfx";
-            while (File.Exists(ret = Path.Combine(dir, string.Concat(this.keyVaultCertificateName, suffx, fileExt))) && ++retry <= 50)
+            while (File.Exists(ret = Path.Combine(dir, string.Concat(keyVaultCertificateName, suffx, fileExt))) && ++retry <= 50)
             {
                 suffx = retry.ToString();
             }
@@ -304,30 +304,30 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         internal List<CertificateInformation> GetOrCreateCertificateInformation()
         {
             var certificateInformations = new List<CertificateInformation>();
-            if (string.IsNullOrEmpty(this.KeyVaultResouceGroupName))
+            if (string.IsNullOrEmpty(KeyVaultResouceGroupName))
             {
-                this.KeyVaultResouceGroupName = this.ResourceGroupName;
+                KeyVaultResouceGroupName = ResourceGroupName;
             }
 
-            if (string.IsNullOrEmpty(this.KeyVaultName))
+            if (string.IsNullOrEmpty(KeyVaultName))
             {
-                this.KeyVaultName = CreateDefaultKeyVaultName(this.ResourceGroupName);
+                KeyVaultName = CreateDefaultKeyVaultName(ResourceGroupName);
             }
 
             if (ParameterSetName != ByExistingKeyVault)
             {
                 var resourceGroup = SafeGetResource(
-                    () => this.ResourceManagerClient.ResourceGroups.Get(
-                        this.KeyVaultResouceGroupName),
+                    () => ResourceManagerClient.ResourceGroups.Get(
+                        KeyVaultResouceGroupName),
                         true);
 
                 if (resourceGroup == null)
                 {
-                    this.ResourceManagerClient.ResourceGroups.CreateOrUpdate(
-                        this.KeyVaultResouceGroupName,
-                        new ResourceGroup()
+                    ResourceManagerClient.ResourceGroups.CreateOrUpdate(
+                        KeyVaultResouceGroupName,
+                        new ResourceGroup
                         {
-                            Location = this.KeyVaultResouceGroupLocation
+                            Location = KeyVaultResouceGroupLocation
                         });
                 }
             }
@@ -343,7 +343,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                         string pfxOutputPath = null;
                         GetKeyVaultReady(out vault, out certificateBundle, out thumbprint, out pfxOutputPath, null);
 
-                        certificateInformations.Add(new CertificateInformation()
+                        certificateInformations.Add(new CertificateInformation
                         {
                             KeyVault = vault,
                             Certificate = certificateBundle.Cer == null ? null : new X509Certificate2(certificateBundle.Cer),
@@ -370,7 +370,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                             string pfxOutputPath = null;
                             GetKeyVaultReady(out vault, out certificateBundle, out thumbprint, out pfxOutputPath, srcPfx);
 
-                            certificateInformations.Add(new CertificateInformation()
+                            certificateInformations.Add(new CertificateInformation
                             {
                                 KeyVault = vault,
                                 Certificate =
@@ -390,16 +390,16 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                     }
                 case ByExistingKeyVault:
                     {
-                        var vault = TryGetKeyVault(this.SecretIdentifier);
+                        var vault = TryGetKeyVault(SecretIdentifier);
 
                         string vaultSecretName;
                         string version;
-                        ExtractSecretNameFromSecretIdentifier(this.SecretIdentifier, out vaultSecretName, out version);
-                        certificateInformations.Add(new CertificateInformation()
+                        ExtractSecretNameFromSecretIdentifier(SecretIdentifier, out vaultSecretName, out version);
+                        certificateInformations.Add(new CertificateInformation
                         {
                             KeyVault = vault,
-                            SecretUrl = this.SecretIdentifier,
-                            CertificateThumbprint = GetThumbprintFromSecret(this.SecretIdentifier),
+                            SecretUrl = SecretIdentifier,
+                            CertificateThumbprint = GetThumbprintFromSecret(SecretIdentifier),
                             SecretName = vaultSecretName,
                             Version = version
                         });
@@ -418,15 +418,15 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             if (secretGroup == null)
             {
                 vmss.VirtualMachineProfile.OsProfile.Secrets.Add(
-                    new VaultSecretGroup()
+                    new VaultSecretGroup
                     {
-                        SourceVault = new Management.Compute.Models.SubResource()
+                        SourceVault = new Management.Compute.Models.SubResource
                         {
                             Id = certInformation.KeyVault.Id
                         },
-                        VaultCertificates = new List<VaultCertificate>()
+                        VaultCertificates = new List<VaultCertificate>
                         {
-                          new VaultCertificate()
+                          new VaultCertificate
                           {
                           CertificateStore = Constants.DefaultCertificateStore,
                           CertificateUrl = certInformation.SecretUrl
@@ -447,7 +447,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                     if (!exsit)
                     {
                         secretGroup.VaultCertificates.Add(
-                            new VaultCertificate()
+                            new VaultCertificate
                             {
                                 CertificateStore = Constants.DefaultCertificateStore,
                                 CertificateUrl = certInformation.SecretUrl
@@ -456,9 +456,9 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 }
                 else
                 {
-                    secretGroup.VaultCertificates = new List<VaultCertificate>()
+                    secretGroup.VaultCertificates = new List<VaultCertificate>
                     {
-                        new VaultCertificate()
+                        new VaultCertificate
                         {
                             CertificateStore = Constants.DefaultCertificateStore,
                             CertificateUrl = certInformation.SecretUrl
@@ -468,29 +468,29 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             }
 
             return ComputeClient.VirtualMachineScaleSets.CreateOrUpdateAsync(
-                   this.ResourceGroupName,
+                   ResourceGroupName,
                    vmss.Name,
                    vmss);
         }
 
         protected void GetKeyVaultReady(out Vault vault, out CertificateBundle certificateBundle, out string thumbprint, out string pfxOutputPath, string srcPfxPath = null)
         { 
-            vault = TryGetKeyVault(this.KeyVaultResouceGroupName, this.KeyVaultName);
+            vault = TryGetKeyVault(KeyVaultResouceGroupName, KeyVaultName);
             pfxOutputPath = null;
             if (vault == null)
             {
-                WriteVerboseWithTimestamp(string.Format("Creating Azure Key Vault {0}", this.KeyVaultName));
-                vault = CreateKeyVault(this.Name, this.KeyVaultName, this.KeyVaultResouceGroupLocation, this.KeyVaultResouceGroupName);
+                WriteVerboseWithTimestamp(string.Format("Creating Azure Key Vault {0}", KeyVaultName));
+                vault = CreateKeyVault(Name, KeyVaultName, KeyVaultResouceGroupLocation, KeyVaultResouceGroupName);
                 WriteVerboseWithTimestamp(string.Format("Key Vault is created: {0}", vault.Id));
             }
 
-            this.keyVaultCertificateName = CreateDefaultCertificateName(this.ResourceGroupName);
+            keyVaultCertificateName = CreateDefaultCertificateName(ResourceGroupName);
 
             if (!string.IsNullOrEmpty(srcPfxPath))
             {
                 certificateBundle = ImportCertificateToAzureKeyVault(
-                    this.KeyVaultName,
-                    this.keyVaultCertificateName,
+                    KeyVaultName,
+                    keyVaultCertificateName,
                     srcPfxPath,
                     GetPfxPassword(srcPfxPath),
                     out thumbprint);
@@ -499,7 +499,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             {
                 var vaultUrl = CreateVaultUri(vault.Name);
                 CreateSelfSignedCertificate(
-                    this.CertificateSubjectName,
+                    CertificateSubjectName,
                     vaultUrl.ToString(),
                     out thumbprint,
                     out certificateBundle,
@@ -586,7 +586,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSArgumentException("secretUrl");
             }
 
-            var secretBundle = this.KeyVaultClient.GetSecretAsync(secretUrl).Result;
+            var secretBundle = KeyVaultClient.GetSecretAsync(secretUrl).Result;
             var secretValue = secretBundle.Value;
             try
             {
@@ -646,7 +646,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             var secretId = secretIdentifier;
             secretId = secretId.Trim('/');
-            var separator = new string[] { "/" };
+            var separator = new[] { "/" };
             var tokens = secretId.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
             if (tokens.Length != 5)

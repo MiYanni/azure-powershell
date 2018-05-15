@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedElasticPool RecommendedElasticPool
         {
-            get { return this._recommendedElasticPool; }
-            set { this._recommendedElasticPool = value; }
+            get { return _recommendedElasticPool; }
+            set { _recommendedElasticPool = value; }
         }
         
         /// <summary>

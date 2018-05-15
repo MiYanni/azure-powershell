@@ -96,10 +96,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters
                         return tempResourceTypeList;
                     }
 
-                    else
-                    {
-                        return _resourceTypesDictionary[contextHash];
-                    }
+                    return _resourceTypesDictionary[contextHash];
                 }
             }
         }

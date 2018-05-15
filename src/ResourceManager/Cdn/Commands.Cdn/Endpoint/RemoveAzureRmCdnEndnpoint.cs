@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Cdn.Endpoint
         public string ProfileName { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = FieldsParameterSet, HelpMessage = "The resource group of the Azure CDN profile")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Cdn.Endpoint
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Return object (if specified).")]
         public SwitchParameter PassThru { get; set; }
 
-        [Parameter()]
+        [Parameter]
         public SwitchParameter Force { get; set; }
 
         public override void ExecuteCmdlet()
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.Cdn.Endpoint
 
             ConfirmAction(Force,
                 string.Format(Resources.Confirm_RemoveEndpoint, EndpointName, ProfileName, ResourceGroupName),
-                this.MyInvocation.InvocationName,
+                MyInvocation.InvocationName,
                 EndpointName,
                 () => CdnManagementClient.Endpoints.Delete(ResourceGroupName, ProfileName, EndpointName));
            

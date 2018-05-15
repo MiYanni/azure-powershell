@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Commands.Relay.Models
 {
     using Rest.Serialization;
     using System.Collections.Generic;
-    using Azure.Management.Relay.Models;
+    using Management.Relay.Models;
 
     /// <summary>
     /// Description of a Namespace AuthorizationRules.

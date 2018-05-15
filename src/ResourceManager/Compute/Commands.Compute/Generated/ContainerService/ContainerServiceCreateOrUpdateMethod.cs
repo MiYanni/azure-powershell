@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             ContainerService parameters = new ContainerService();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "ContainerServiceName", "Parameters" },
+                 new[] { "ResourceGroupName", "ContainerServiceName", "Parameters" },
                  new object[] { resourceGroupName, containerServiceName, parameters });
         }
     }
@@ -119,12 +119,12 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.Name, VerbsCommon.New))
+                if (ShouldProcess(Name, VerbsCommon.New))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string containerServiceName = this.Name;
+                    string resourceGroupName = ResourceGroupName;
+                    string containerServiceName = Name;
                     ContainerService parameters = new ContainerService();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSContainerService, ContainerService>(this.ContainerService, parameters);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSContainerService, ContainerService>(ContainerService, parameters);
 
                     var result = ContainerServicesClient.CreateOrUpdate(resourceGroupName, containerServiceName, parameters);
                     var psObject = new PSContainerService();
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(
@@ -168,12 +168,12 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.Name, VerbsData.Update))
+                if (ShouldProcess(Name, VerbsData.Update))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string containerServiceName = this.Name;
+                    string resourceGroupName = ResourceGroupName;
+                    string containerServiceName = Name;
                     ContainerService parameters = new ContainerService();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSContainerService, ContainerService>(this.ContainerService, parameters);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSContainerService, ContainerService>(ContainerService, parameters);
 
                     var result = ContainerServicesClient.CreateOrUpdate(resourceGroupName, containerServiceName, parameters);
                     var psObject = new PSContainerService();
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

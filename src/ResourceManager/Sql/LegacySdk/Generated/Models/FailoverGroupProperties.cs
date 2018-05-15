@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<string> Databases
         {
-            get { return this._databases; }
-            set { this._databases = value; }
+            get { return _databases; }
+            set { _databases = value; }
         }
         
         private IList<FailoverGroupPartnerServer> _partnerServers;
@@ -52,8 +52,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<FailoverGroupPartnerServer> PartnerServers
         {
-            get { return this._partnerServers; }
-            set { this._partnerServers = value; }
+            get { return _partnerServers; }
+            set { _partnerServers = value; }
         }
         
         private ReadOnlyEndpoint _readOnlyEndpoint;
@@ -64,8 +64,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ReadOnlyEndpoint ReadOnlyEndpoint
         {
-            get { return this._readOnlyEndpoint; }
-            set { this._readOnlyEndpoint = value; }
+            get { return _readOnlyEndpoint; }
+            set { _readOnlyEndpoint = value; }
         }
         
         private ReadWriteEndpoint _readWriteEndpoint;
@@ -76,8 +76,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ReadWriteEndpoint ReadWriteEndpoint
         {
-            get { return this._readWriteEndpoint; }
-            set { this._readWriteEndpoint = value; }
+            get { return _readWriteEndpoint; }
+            set { _readWriteEndpoint = value; }
         }
         
         private string _replicationRole;
@@ -88,8 +88,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ReplicationRole
         {
-            get { return this._replicationRole; }
-            set { this._replicationRole = value; }
+            get { return _replicationRole; }
+            set { _replicationRole = value; }
         }
         
         private string _replicationState;
@@ -100,8 +100,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ReplicationState
         {
-            get { return this._replicationState; }
-            set { this._replicationState = value; }
+            get { return _replicationState; }
+            set { _replicationState = value; }
         }
         
         /// <summary>
@@ -109,8 +109,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public FailoverGroupProperties()
         {
-            this.Databases = new LazyList<string>();
-            this.PartnerServers = new LazyList<FailoverGroupPartnerServer>();
+            Databases = new LazyList<string>();
+            PartnerServers = new LazyList<FailoverGroupPartnerServer>();
         }
     }
 }

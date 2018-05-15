@@ -53,11 +53,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.InputObject.FriendlyName,
+            if (ShouldProcess(
+                InputObject.FriendlyName,
                 VerbsCommon.Remove))
             {
-                this.RemoveServiceProvider();
+                RemoveServiceProvider();
             }
         }
 
@@ -68,27 +68,27 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             PSSiteRecoveryLongRunningOperation response;
 
-            if (!this.Force.IsPresent)
+            if (!Force.IsPresent)
             {
-                response = this.RecoveryServicesClient.RemoveAzureSiteRecoveryProvider(
+                response = RecoveryServicesClient.RemoveAzureSiteRecoveryProvider(
                     Utilities.GetValueFromArmId(
-                        this.InputObject.ID,
+                        InputObject.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
-                    this.InputObject.Name);
+                    InputObject.Name);
             }
             else
             {
-                response = this.RecoveryServicesClient.PurgeAzureSiteRecoveryProvider(
+                response = RecoveryServicesClient.PurgeAzureSiteRecoveryProvider(
                     Utilities.GetValueFromArmId(
-                        this.InputObject.ID,
+                        InputObject.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
-                    this.InputObject.Name);
+                    InputObject.Name);
             }
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
     }
 }

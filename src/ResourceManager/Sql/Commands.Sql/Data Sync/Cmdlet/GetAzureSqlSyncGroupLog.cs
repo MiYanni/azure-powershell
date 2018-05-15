@@ -78,12 +78,12 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlSyncGroupLogModel> GetEntity()
         {
-            return ModelAdapter.ListSyncGroupLogs(this.ResourceGroupName, this.ServerName, this.DatabaseName, new SyncGroupLogGetParameters
+            return ModelAdapter.ListSyncGroupLogs(ResourceGroupName, ServerName, DatabaseName, new SyncGroupLogGetParameters
             {
-                SyncGroupName = this.SyncGroupName,
-                StartTime = this.StartTime.ToString(),
-                EndTime = MyInvocation.BoundParameters.ContainsKey("EndTime") ? this.EndTime.ToString() : DateTime.Now.ToString(),
-                Type = MyInvocation.BoundParameters.ContainsKey("LogLevel") ? this.LogLevel : LogType.All.ToString()
+                SyncGroupName = SyncGroupName,
+                StartTime = StartTime.ToString(),
+                EndTime = MyInvocation.BoundParameters.ContainsKey("EndTime") ? EndTime.ToString() : DateTime.Now.ToString(),
+                Type = MyInvocation.BoundParameters.ContainsKey("LogLevel") ? LogLevel : LogType.All.ToString()
             });
         }
 

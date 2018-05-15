@@ -233,7 +233,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
             string name = parameter.Key;
             object defaultValue = parameter.Value.DefaultValue;
 
-            RuntimeDefinedParameter runtimeParameter = new RuntimeDefinedParameter()
+            RuntimeDefinedParameter runtimeParameter = new RuntimeDefinedParameter
             {
                 // For duplicated template parameter names, add a suffix FromTemplate to distinguish them from the cmdlet parameter.
                 Name = staticParameters.Any(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase))
@@ -241,7 +241,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
                 ParameterType = GetParameterType(parameter.Value.Type),
                 Value = defaultValue
             };
-            runtimeParameter.Attributes.Add(new ParameterAttribute()
+            runtimeParameter.Attributes.Add(new ParameterAttribute
             {
                 Mandatory = defaultValue == null ? true : false,
                 ValueFromPipelineByPropertyName = true,

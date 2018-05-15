@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             _authenticationFactory = authFactory;
             _context = context;
             _endpointName = resourceIdEndpoint;
-            this.TenantId = GetTenantId(context);
+            TenantId = GetTenantId(context);
         }
 
         public string TenantId { get; private set; }
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 _context.Environment.SetEndpoint(_endpointName, resource);
             }
 
-            var bundle = GetTokenInternal(this.TenantId, this._authenticationFactory, this._context, this._endpointName);
+            var bundle = GetTokenInternal(TenantId, _authenticationFactory, _context, _endpointName);
             bundle.Item1.AuthorizeRequest((tokenType, tokenValue) =>
             {
                 tokenStr = tokenValue;
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
         public string GetToken()
         {
-            return GetTokenInternal(this.TenantId, this._authenticationFactory, this._context, this._endpointName).Item1.AccessToken;
+            return GetTokenInternal(TenantId, _authenticationFactory, _context, _endpointName).Item1.AccessToken;
         }
 
         private static string GetTenantId(IAzureContext context)

@@ -135,15 +135,15 @@ namespace Microsoft.Azure.Commands.Batch
         /// </summary>
         public AccountKeyType KeyInUse
         {
-            get { return this.keyInUse; }
+            get { return keyInUse; }
             set
             {
-                if (this.batchOMClient != null && this.HasKeys && value != this.keyInUse)
+                if (batchOMClient != null && HasKeys && value != keyInUse)
                 {
-                    this.batchOMClient.Dispose();
-                    this.batchOMClient = null;
+                    batchOMClient.Dispose();
+                    batchOMClient = null;
                 }
-                this.keyInUse = value;
+                keyInUse = value;
             }
         }
 
@@ -156,10 +156,10 @@ namespace Microsoft.Azure.Commands.Batch
         {
             get
             {
-                if (this.batchOMClient == null)
+                if (batchOMClient == null)
                 {
                     ServiceClientCredentials credentials;
-                    if (this.HasKeys)
+                    if (HasKeys)
                     {
                         // Use shared key auth
                         string key = KeyInUse == AccountKeyType.Primary ? PrimaryAccountKey : SecondaryAccountKey;
@@ -168,18 +168,18 @@ namespace Microsoft.Azure.Commands.Batch
                     else
                     {
                         // Use AAD auth
-                        credentials = new TokenCredentials(new BatchAadTokenProvider(this.azureContext));
+                        credentials = new TokenCredentials(new BatchAadTokenProvider(azureContext));
                     }
                     BatchServiceClient restClient = CreateBatchRestClient(TaskTenantUrl, credentials);
-                    this.batchOMClient = Microsoft.Azure.Batch.BatchClient.Open(restClient);
+                    batchOMClient = BatchClient.Open(restClient);
                 }
-                return this.batchOMClient;
+                return batchOMClient;
             }
         }
 
         public BatchAccountContext(IAzureContext azureContext)
         {
-            this.KeyInUse = AccountKeyType.Primary;
+            KeyInUse = AccountKeyType.Primary;
             this.azureContext = azureContext;
         }
 
@@ -196,19 +196,19 @@ namespace Microsoft.Azure.Commands.Batch
                 throw new ArgumentException(String.Format(Resources.InvalidEndpointType, accountEndpoint), "AccountEndpoint");
             }
 
-            this.Id = resource.Id;
-            this.AccountEndpoint = accountEndpoint;
-            this.Location = resource.Location;
-            this.State = resource.ProvisioningState.ToString();
-            this.Tags = TagsConversionHelper.CreateTagHashtable(resource.Tags);
-            this.CoreQuota = resource.CoreQuota;
-            this.PoolQuota = resource.PoolQuota;
-            this.ActiveJobAndJobScheduleQuota = resource.ActiveJobAndJobScheduleQuota;
-            this.PoolAllocationMode = resource.PoolAllocationMode;
+            Id = resource.Id;
+            AccountEndpoint = accountEndpoint;
+            Location = resource.Location;
+            State = resource.ProvisioningState.ToString();
+            Tags = TagsConversionHelper.CreateTagHashtable(resource.Tags);
+            CoreQuota = resource.CoreQuota;
+            PoolQuota = resource.PoolQuota;
+            ActiveJobAndJobScheduleQuota = resource.ActiveJobAndJobScheduleQuota;
+            PoolAllocationMode = resource.PoolAllocationMode;
             
             if (resource.AutoStorage != null)
             {
-                this.AutoStorageProperties = new AutoStorageProperties()
+                AutoStorageProperties = new AutoStorageProperties
                 {
                     StorageAccountId = resource.AutoStorage.StorageAccountId,
                     LastKeySync = resource.AutoStorage.LastKeySync,
@@ -217,13 +217,13 @@ namespace Microsoft.Azure.Commands.Batch
 
             if (resource.KeyVaultReference != null)
             {
-                this.KeyVaultReference = resource.KeyVaultReference;
+                KeyVaultReference = resource.KeyVaultReference;
             }
 
             // extract the host and strip off the account name for the TaskTenantUrl and AccountName
             var hostParts = accountEndpoint.Split('.');
-            this.AccountName = hostParts[0];
-            this.TaskTenantUrl = Uri.UriSchemeHttps + Uri.SchemeDelimiter + accountEndpoint;
+            AccountName = hostParts[0];
+            TaskTenantUrl = Uri.UriSchemeHttps + Uri.SchemeDelimiter + accountEndpoint;
 
             // get remaining fields from Id which looks like:
             // /subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw
@@ -233,8 +233,8 @@ namespace Microsoft.Azure.Commands.Batch
                 throw new ArgumentException(String.Format(Resources.InvalidResourceId, resource.Id), "Id");
             }
 
-            this.Subscription = idParts[2];
-            this.ResourceGroupName = idParts[4];
+            Subscription = idParts[2];
+            ResourceGroupName = idParts[4];
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace Microsoft.Azure.Commands.Batch
         {
             BatchServiceClient restClient = handler == null ? new BatchServiceClient(new Uri(url), creds) : new BatchServiceClient(new Uri(url), creds, handler);
 
-            restClient.HttpClient.DefaultRequestHeaders.UserAgent.Add(Microsoft.WindowsAzure.Commands.Common.AzurePowerShell.UserAgentValue);
+            restClient.HttpClient.DefaultRequestHeaders.UserAgent.Add(WindowsAzure.Commands.Common.AzurePowerShell.UserAgentValue);
 
             restClient.SetRetryPolicy(null); //Force there to be no retries
             restClient.HttpClient.Timeout = Timeout.InfiniteTimeSpan; //Client side timeout will be set per-request

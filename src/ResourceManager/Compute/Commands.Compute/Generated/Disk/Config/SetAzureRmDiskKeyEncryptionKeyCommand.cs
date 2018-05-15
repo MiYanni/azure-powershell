@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Set", "AzureRmDiskKeyEncryptionKey", SupportsShouldProcess = true)]
     [OutputType(typeof(PSDisk))]
-    public partial class SetAzureRmDiskKeyEncryptionKeyCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class SetAzureRmDiskKeyEncryptionKeyCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -62,42 +62,42 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
         private void Run()
         {
-            if (this.MyInvocation.BoundParameters.ContainsKey("KeyUrl"))
+            if (MyInvocation.BoundParameters.ContainsKey("KeyUrl"))
             {
                 // EncryptionSettings
-                if (this.Disk.EncryptionSettings == null)
+                if (Disk.EncryptionSettings == null)
                 {
-                    this.Disk.EncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    Disk.EncryptionSettings = new EncryptionSettings();
                 }
                 // KeyEncryptionKey
-                if (this.Disk.EncryptionSettings.KeyEncryptionKey == null)
+                if (Disk.EncryptionSettings.KeyEncryptionKey == null)
                 {
-                    this.Disk.EncryptionSettings.KeyEncryptionKey = new Microsoft.Azure.Management.Compute.Models.KeyVaultAndKeyReference();
+                    Disk.EncryptionSettings.KeyEncryptionKey = new KeyVaultAndKeyReference();
                 }
-                this.Disk.EncryptionSettings.KeyEncryptionKey.KeyUrl = this.KeyUrl;
+                Disk.EncryptionSettings.KeyEncryptionKey.KeyUrl = KeyUrl;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SourceVaultId"))
+            if (MyInvocation.BoundParameters.ContainsKey("SourceVaultId"))
             {
                 // EncryptionSettings
-                if (this.Disk.EncryptionSettings == null)
+                if (Disk.EncryptionSettings == null)
                 {
-                    this.Disk.EncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    Disk.EncryptionSettings = new EncryptionSettings();
                 }
                 // KeyEncryptionKey
-                if (this.Disk.EncryptionSettings.KeyEncryptionKey == null)
+                if (Disk.EncryptionSettings.KeyEncryptionKey == null)
                 {
-                    this.Disk.EncryptionSettings.KeyEncryptionKey = new Microsoft.Azure.Management.Compute.Models.KeyVaultAndKeyReference();
+                    Disk.EncryptionSettings.KeyEncryptionKey = new KeyVaultAndKeyReference();
                 }
                 // SourceVault
-                if (this.Disk.EncryptionSettings.KeyEncryptionKey.SourceVault == null)
+                if (Disk.EncryptionSettings.KeyEncryptionKey.SourceVault == null)
                 {
-                    this.Disk.EncryptionSettings.KeyEncryptionKey.SourceVault = new Microsoft.Azure.Management.Compute.Models.SourceVault();
+                    Disk.EncryptionSettings.KeyEncryptionKey.SourceVault = new SourceVault();
                 }
-                this.Disk.EncryptionSettings.KeyEncryptionKey.SourceVault.Id = this.SourceVaultId;
+                Disk.EncryptionSettings.KeyEncryptionKey.SourceVault.Id = SourceVaultId;
             }
 
-            WriteObject(this.Disk);
+            WriteObject(Disk);
         }
     }
 }

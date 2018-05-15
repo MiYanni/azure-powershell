@@ -35,8 +35,8 @@ namespace Microsoft.Azure.Commands.Compute
                     computeClient = new ComputeClient(DefaultProfile.DefaultContext);
                 }
 
-                this.computeClient.VerboseLogger = WriteVerboseWithTimestamp;
-                this.computeClient.ErrorLogger = WriteErrorWithTimestamp;
+                computeClient.VerboseLogger = WriteVerboseWithTimestamp;
+                computeClient.ErrorLogger = WriteErrorWithTimestamp;
                 return computeClient;
             }
 
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Compute
             {
                 try
                 {
-                    base.EndProcessing();
+                    EndProcessing();
                 }
                 catch
                 {

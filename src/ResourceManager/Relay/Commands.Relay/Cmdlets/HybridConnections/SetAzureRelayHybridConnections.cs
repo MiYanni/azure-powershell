@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands.HybridConnections
                     hybridConnections.UserMetadata = UserMetadata;
             }
             
-            if(ShouldProcess(target: Name, action: string.Format(Resources.UpdateHybirdconnection, Name,Namespace)))
+            if(ShouldProcess(Name, string.Format(Resources.UpdateHybirdconnection, Name,Namespace)))
             {
                 WriteObject(Client.UpdateHybridConnections(ResourceGroupName, Namespace, Name, hybridConnections));
             }

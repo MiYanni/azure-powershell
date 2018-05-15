@@ -83,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
 
             try
             {
-                supressWarningOrError = bool.Parse(System.Environment.GetEnvironmentVariable(SUPPRESS_ERROR_OR_WARNING_MESSAGE_ENV_VARIABLE_NAME));
+                supressWarningOrError = bool.Parse(Environment.GetEnvironmentVariable(SUPPRESS_ERROR_OR_WARNING_MESSAGE_ENV_VARIABLE_NAME));
             }
             catch (Exception)
             {
@@ -143,7 +143,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
 
             foreach (MethodInfo m in type.GetRuntimeMethods())
             {
-                attributeList.AddRange((m.GetCustomAttributes(typeof(GenericBreakingChangeAttribute), false).Cast<GenericBreakingChangeAttribute>()));
+                attributeList.AddRange(m.GetCustomAttributes(typeof(GenericBreakingChangeAttribute), false).Cast<GenericBreakingChangeAttribute>());
             }
 
             foreach (FieldInfo f in type.GetRuntimeFields())

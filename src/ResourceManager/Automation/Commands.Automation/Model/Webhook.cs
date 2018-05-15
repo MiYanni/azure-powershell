@@ -38,38 +38,38 @@ namespace Microsoft.Azure.Commands.Automation.Model
         public Webhook(
             string resourceGroupName,
             string automationAccountName,
-            Azure.Management.Automation.Models.Webhook webhook,
+            Management.Automation.Models.Webhook webhook,
             string webhookUri = "")
         {
             Requires.Argument("resourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("automationAccountName", automationAccountName).NotNull();
             Requires.Argument("webhook", webhook).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = automationAccountName;
-            this.Name = webhook.Name;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = automationAccountName;
+            Name = webhook.Name;
 
             if (webhook.Properties == null) return;
 
-            this.CreationTime = webhook.Properties.CreationTime.ToLocalTime();
-            this.Description = webhook.Properties.Description;
-            this.ExpiryTime = webhook.Properties.ExpiryTime.ToLocalTime();
-            this.IsEnabled = webhook.Properties.IsEnabled;
+            CreationTime = webhook.Properties.CreationTime.ToLocalTime();
+            Description = webhook.Properties.Description;
+            ExpiryTime = webhook.Properties.ExpiryTime.ToLocalTime();
+            IsEnabled = webhook.Properties.IsEnabled;
             if (webhook.Properties.LastInvokedTime.HasValue)
             {
-                this.LastInvokedTime = webhook.Properties.LastInvokedTime.Value.ToLocalTime();
+                LastInvokedTime = webhook.Properties.LastInvokedTime.Value.ToLocalTime();
             }
 
-            this.LastModifiedTime = webhook.Properties.LastModifiedTime.ToLocalTime();
-            this.Parameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            LastModifiedTime = webhook.Properties.LastModifiedTime.ToLocalTime();
+            Parameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in webhook.Properties.Parameters)
             {
-                this.Parameters.Add(kvp.Key, (object)PowerShellJsonConverter.Deserialize(kvp.Value));
+                Parameters.Add(kvp.Key, PowerShellJsonConverter.Deserialize(kvp.Value));
             }
 
-            this.RunbookName = webhook.Properties.Runbook.Name;
-            this.WebhookURI = webhookUri;
-            this.HybridWorker = webhook.Properties.RunOn;
+            RunbookName = webhook.Properties.Runbook.Name;
+            WebhookURI = webhookUri;
+            HybridWorker = webhook.Properties.RunOn;
         }
 
         public string ResourceGroupName { get; set; }

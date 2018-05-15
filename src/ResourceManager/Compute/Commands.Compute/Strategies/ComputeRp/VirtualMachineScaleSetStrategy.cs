@@ -27,13 +27,13 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
     {
         public static ResourceStrategy<VirtualMachineScaleSet> Strategy { get; }
             = ComputeStrategy.Create(
-                provider: "virtualMachineScaleSets",
-                getOperations: client => client.VirtualMachineScaleSets,
-                getAsync: (o, p) => o.GetAsync(
+                "virtualMachineScaleSets",
+                client => client.VirtualMachineScaleSets,
+                (o, p) => o.GetAsync(
                     p.ResourceGroupName, p.Name, p.CancellationToken),
-                createOrUpdateAsync: (o, p) => o.CreateOrUpdateAsync(
+                (o, p) => o.CreateOrUpdateAsync(
                     p.ResourceGroupName, p.Name, p.Model, p.CancellationToken),
-                createTime: _ => 180);
+                _ => 180);
 
         internal static ResourceConfig<VirtualMachineScaleSet> CreateVirtualMachineScaleSetConfig(
             this ResourceConfig<ResourceGroup> resourceGroup,
@@ -52,16 +52,16 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
             IEnumerable<int> dataDisks,
             IList<string> zones)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: engine => new VirtualMachineScaleSet()
+                resourceGroup,
+                name,
+                engine => new VirtualMachineScaleSet
                 {
                     Zones = zones,
                     UpgradePolicy = new UpgradePolicy
                     {
                         Mode = upgradeMode ?? UpgradeMode.Manual
                     },
-                    Sku = new Azure.Management.Compute.Models.Sku()
+                    Sku = new Azure.Management.Compute.Models.Sku
                     {
                         Capacity = instanceCount,
                         Name = vmSize,

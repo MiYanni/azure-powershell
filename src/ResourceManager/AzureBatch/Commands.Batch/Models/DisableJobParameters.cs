@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
             IEnumerable<BatchClientBehavior> additionalBehaviors = null)
             : base(context, jobId, job, additionalBehaviors)
         {
-            this.DisableJobOption = disableJobOption;
+            DisableJobOption = disableJobOption;
         }
 
         /// <summary>

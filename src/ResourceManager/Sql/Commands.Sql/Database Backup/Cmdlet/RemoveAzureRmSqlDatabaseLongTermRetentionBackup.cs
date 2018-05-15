@@ -183,11 +183,11 @@ namespace Microsoft.Azure.Commands.Sql.Database_Backup.Cmdlet
                 Location = identifier.ResourceName;
             }
 
-            if (ShouldProcess(this.BackupName))
+            if (ShouldProcess(BackupName))
             {
                 if (Force.IsPresent || ShouldContinue(
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseLongTermRetentionBackupDescription, this.BackupName, this.DatabaseName, this.ServerName, this.Location),
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseLongTermRetentionBackupWarning, this.BackupName, this.DatabaseName, this.ServerName, this.Location)))
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseLongTermRetentionBackupDescription, BackupName, DatabaseName, ServerName, Location),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseLongTermRetentionBackupWarning, BackupName, DatabaseName, ServerName, Location)))
                 {
                     base.ExecuteCmdlet();
                 }

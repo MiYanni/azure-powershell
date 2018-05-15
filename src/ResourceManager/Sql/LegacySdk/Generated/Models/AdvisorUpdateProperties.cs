@@ -43,8 +43,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AutoExecuteStatus
         {
-            get { return this._autoExecuteStatus; }
-            set { this._autoExecuteStatus = value; }
+            get { return _autoExecuteStatus; }
+            set { _autoExecuteStatus = value; }
         }
         
         /// <summary>

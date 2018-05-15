@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
 
         public PSActivityRun()
         {
-            this.activityRun = new ActivityRun();
+            activityRun = new ActivityRun();
         }
 
         public PSActivityRun(ActivityRun activityRun, string resourceGroupName, string factoryName)
@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
             }
 
             this.activityRun = activityRun;
-            this.ResourceGroupName = resourceGroupName;
-            this.DataFactoryName = factoryName;
+            ResourceGroupName = resourceGroupName;
+            DataFactoryName = factoryName;
         }
 
         public string ResourceGroupName { get; private set; }
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.ActivityName;
+                return activityRun.ActivityName;
             }
         }
 
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.PipelineRunId;
+                return activityRun.PipelineRunId;
             }
         }
 
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.PipelineName;
+                return activityRun.PipelineName;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.Input;
+                return activityRun.Input;
             }
         }
 
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.Output;
+                return activityRun.Output;
             }
         }
 
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.LinkedServiceName;
+                return activityRun.LinkedServiceName;
             }
         }
 
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.ActivityRunStart;
+                return activityRun.ActivityRunStart;
             }
         }
 
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.ActivityRunEnd;
+                return activityRun.ActivityRunEnd;
             }
         }
 
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.DurationInMs;
+                return activityRun.DurationInMs;
             }
         }
 
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.Status;
+                return activityRun.Status;
             }
         }
 
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.activityRun.Error;
+                return activityRun.Error;
             }
         }
     }

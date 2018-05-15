@@ -54,20 +54,20 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 
         public NewAzureResourceGroupDeploymentCmdlet()
         {
-            this.Mode = DeploymentMode.Incremental;
+            Mode = DeploymentMode.Incremental;
         }
 
         public override void ExecuteCmdlet()
         {
 
-            this.ConfirmAction(
-                this.Force,
-                string.Format(ProjectResources.ConfirmOnCompleteDeploymentMode, this.ResourceGroupName),
+            ConfirmAction(
+                Force,
+                string.Format(ProjectResources.ConfirmOnCompleteDeploymentMode, ResourceGroupName),
                 ProjectResources.CreateDeployment,
                 ResourceGroupName,
                 () =>
                 {
-                    PSCreateResourceGroupDeploymentParameters parameters = new PSCreateResourceGroupDeploymentParameters()
+                    PSCreateResourceGroupDeploymentParameters parameters = new PSCreateResourceGroupDeploymentParameters
                     {
                         ResourceGroupName = ResourceGroupName,
                         DeploymentName = Name,
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                     }
                     WriteObject(ResourceManagerSdkClient.ExecuteDeployment(parameters));
                 },
-                () => this.Mode == DeploymentMode.Complete);
+                () => Mode == DeploymentMode.Complete);
         }
     }
 }

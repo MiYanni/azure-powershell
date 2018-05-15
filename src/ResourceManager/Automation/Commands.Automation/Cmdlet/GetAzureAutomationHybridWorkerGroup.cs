@@ -18,22 +18,22 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
         protected override void AutomationProcessRecord()
         {
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByName)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByName)
             {
                 IEnumerable<HybridRunbookWorkerGroup> ret = null;
                 ret = new List<HybridRunbookWorkerGroup> {
 
-                    this.AutomationClient.GetHybridRunbookWorkerGroup(this.ResourceGroupName, this.AutomationAccountName, this.Name)
+                    AutomationClient.GetHybridRunbookWorkerGroup(ResourceGroupName, AutomationAccountName, Name)
                 };
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
-            else if(this.ParameterSetName == AutomationCmdletParameterSets.ByAll)
+            else if(ParameterSetName == AutomationCmdletParameterSets.ByAll)
             {
                 var nextLink = string.Empty;
                 do
                 {
-                    var results = this.AutomationClient.ListHybridRunbookWorkerGroups(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
-                    this.GenerateCmdletOutput(results);
+                    var results = AutomationClient.ListHybridRunbookWorkerGroups(ResourceGroupName, AutomationAccountName, ref nextLink);
+                    GenerateCmdletOutput(results);
                 }while (!string.IsNullOrEmpty(nextLink));
             }
         }

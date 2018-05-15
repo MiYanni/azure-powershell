@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
 
             return await base
                 .SendAsync(request, cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                .ConfigureAwait(false);
         }
     }
 }

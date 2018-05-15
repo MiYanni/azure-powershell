@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             AzureVMBackupConfig vmConfig = new AzureVMBackupConfig();
             vmConfig.ResourceGroupName = ResourceGroupName;
-            vmConfig.VMName = this.VMName;
-            vmConfig.ExtensionName = this.Name;
+            vmConfig.VMName = VMName;
+            vmConfig.ExtensionName = Name;
             vmConfig.VirtualMachineExtensionType = VirtualMachineExtensionType;
 
             azureBackupExtensionUtil.CreateSnapshotForDisks(vmConfig, Tag, this);

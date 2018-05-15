@@ -171,57 +171,57 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Protected item or Recovery plan",
                 "Start test failover"))
             {
-                if (!string.IsNullOrEmpty(this.DataEncryptionPrimaryCertFile))
+                if (!string.IsNullOrEmpty(DataEncryptionPrimaryCertFile))
                 {
-                    var certBytesPrimary = File.ReadAllBytes(this.DataEncryptionPrimaryCertFile);
-                    this.primaryKekCertpfx = Convert.ToBase64String(certBytesPrimary);
+                    var certBytesPrimary = File.ReadAllBytes(DataEncryptionPrimaryCertFile);
+                    primaryKekCertpfx = Convert.ToBase64String(certBytesPrimary);
                 }
 
-                if (!string.IsNullOrEmpty(this.DataEncryptionSecondaryCertFile))
+                if (!string.IsNullOrEmpty(DataEncryptionSecondaryCertFile))
                 {
                     var certBytesSecondary =
-                        File.ReadAllBytes(this.DataEncryptionSecondaryCertFile);
-                    this.secondaryKekCertpfx = Convert.ToBase64String(certBytesSecondary);
+                        File.ReadAllBytes(DataEncryptionSecondaryCertFile);
+                    secondaryKekCertpfx = Convert.ToBase64String(certBytesSecondary);
                 }
 
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByRPIObjectWithVMNetwork:
                     case ASRParameterSets.ByRPObjectWithVMNetwork:
-                        this.networkType = "VmNetworkAsInput";
-                        this.networkId = this.VMNetwork.ID;
+                        networkType = "VmNetworkAsInput";
+                        networkId = VMNetwork.ID;
                         break;
                     case ASRParameterSets.ByRPIObjectWithAzureVMNetworkId:
                     case ASRParameterSets.ByRPObjectWithAzureVMNetworkId:
-                        this.networkType = "VmNetworkAsInput";
-                        this.networkId = this.AzureVMNetworkId;
+                        networkType = "VmNetworkAsInput";
+                        networkId = AzureVMNetworkId;
                         break;
                     case ASRParameterSets.ByRPIObject:
                     case ASRParameterSets.ByRPObject:
-                        this.networkType = "NoNetworkAttachAsInput";
-                        this.networkId = null;
+                        networkType = "NoNetworkAttachAsInput";
+                        networkId = null;
                         break;
                 }
 
-                if ((this.ParameterSetName == ASRParameterSets.ByRPObject) ||
-                    (this.ParameterSetName == ASRParameterSets.ByRPObjectWithVMNetwork) ||
-                    (this.ParameterSetName == ASRParameterSets.ByRPObjectWithAzureVMNetworkId))
+                if (ParameterSetName == ASRParameterSets.ByRPObject ||
+                    ParameterSetName == ASRParameterSets.ByRPObjectWithVMNetwork ||
+                    ParameterSetName == ASRParameterSets.ByRPObjectWithAzureVMNetworkId)
                 {
-                    this.StartRpTestFailover();
+                    StartRpTestFailover();
                 }
                 else
                 {
-                    this.protectionContainerName = Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                    protectionContainerName = Utilities.GetValueFromArmId(
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationProtectionContainers);
-                    this.fabricName = Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                    fabricName = Utilities.GetValueFromArmId(
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationFabrics);
-                    this.StartRPITestFailover();
+                    StartRPITestFailover();
                 }
             }
         }
@@ -233,9 +233,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var testFailoverInputProperties = new TestFailoverInputProperties
             {
-                FailoverDirection = this.Direction,
-                NetworkId = this.networkId,
-                NetworkType = this.networkType,
+                FailoverDirection = Direction,
+                NetworkId = networkId,
+                NetworkType = networkType,
                 ProviderSpecificDetails = new ProviderSpecificFailoverInput(),
                 SkipTestFailoverCleanup = bool.TrueString
             };
@@ -244,16 +244,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             if (0 ==
                 string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.HyperVReplicaAzure,
                     StringComparison.OrdinalIgnoreCase))
             {
-                if (this.Direction == Constants.PrimaryToRecovery)
+                if (Direction == Constants.PrimaryToRecovery)
                 {
                     var failoverInput = new HyperVReplicaAzureFailoverProviderInput
                     {
-                        PrimaryKekCertificatePfx = this.primaryKekCertpfx,
-                        SecondaryKekCertificatePfx = this.secondaryKekCertpfx
+                        PrimaryKekCertificatePfx = primaryKekCertpfx,
+                        SecondaryKekCertificatePfx = secondaryKekCertpfx
                     };
 
                     input.Properties.ProviderSpecificDetails = failoverInput;
@@ -266,7 +266,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 }
             }
             else if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMageAzureV2,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
@@ -274,15 +274,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 // Validate if the Replication Protection Item is part of any Replication Group.
                 Guid guidResult;
                 var parseFlag = Guid.TryParse(
-                    ((ASRInMageAzureV2SpecificRPIDetails)this.ReplicationProtectedItem
+                    ((ASRInMageAzureV2SpecificRPIDetails)ReplicationProtectedItem
                         .ProviderSpecificDetails).MultiVmGroupName,
                     out guidResult);
                 if (parseFlag == false ||
                     guidResult == Guid.Empty ||
                     string.Compare(
-                        ((ASRInMageAzureV2SpecificRPIDetails)this.ReplicationProtectedItem
+                        ((ASRInMageAzureV2SpecificRPIDetails)ReplicationProtectedItem
                             .ProviderSpecificDetails).MultiVmGroupName,
-                        ((ASRInMageAzureV2SpecificRPIDetails)this.ReplicationProtectedItem
+                        ((ASRInMageAzureV2SpecificRPIDetails)ReplicationProtectedItem
                             .ProviderSpecificDetails).MultiVmGroupId) !=
                     0)
                 {
@@ -290,16 +290,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.UnsupportedReplicationProtectionActionForTestFailover,
-                            this.ReplicationProtectedItem.ReplicationProvider));
+                            ReplicationProtectedItem.ReplicationProvider));
                 }
 
                 // Validate the Direction as PrimaryToRecovery.
-                if (this.Direction == Constants.PrimaryToRecovery)
+                if (Direction == Constants.PrimaryToRecovery)
                 {
                     // Set the InMageAzureV2 Provider specific input in the Test Failover Input.
                     var failoverInput = new InMageAzureV2FailoverProviderInput
                     {
-                        RecoveryPointId = this.RecoveryPoint != null ? this.RecoveryPoint.ID : null
+                        RecoveryPointId = RecoveryPoint != null ? RecoveryPoint.ID : null
                     };
                     input.Properties.ProviderSpecificDetails = failoverInput;
                 }
@@ -310,7 +310,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 }
             }
             else if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMage,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
@@ -318,31 +318,31 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.UnsupportedReplicationProviderForTestFailover,
-                        this.ReplicationProtectedItem.ReplicationProvider));
+                        ReplicationProtectedItem.ReplicationProvider));
             }else if (Constants.A2A.Equals(
-              this.ReplicationProtectedItem.ReplicationProvider,
+              ReplicationProtectedItem.ReplicationProvider,
                StringComparison.OrdinalIgnoreCase))
             {
                 var failoverInput = new A2AFailoverProviderInput()
                 {
-                    RecoveryPointId = this.RecoveryPoint != null ? this.RecoveryPoint.ID : null,
-                    CloudServiceCreationOption = this.CloudServiceCreationOption
+                    RecoveryPointId = RecoveryPoint != null ? RecoveryPoint.ID : null,
+                    CloudServiceCreationOption = CloudServiceCreationOption
                 };
 
                 input.Properties.ProviderSpecificDetails = failoverInput;
                 input.Properties.SkipTestFailoverCleanup = true.ToString();
             }
 
-            var response = this.RecoveryServicesClient.StartAzureSiteRecoveryTestFailover(
-                this.fabricName,
-                this.protectionContainerName,
-                this.ReplicationProtectedItem.Name,
+            var response = RecoveryServicesClient.StartAzureSiteRecoveryTestFailover(
+                fabricName,
+                protectionContainerName,
+                ReplicationProtectedItem.Name,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -351,18 +351,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void StartRpTestFailover()
         {
             // Refresh RP Object
-            var rp = this.RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(
-                this.RecoveryPlan.Name);
+            var rp = RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(
+                RecoveryPlan.Name);
 
             var recoveryPlanTestFailoverInputProperties =
                 new RecoveryPlanTestFailoverInputProperties
                 {
                     FailoverDirection =
-                        this.Direction == PossibleOperationsDirections.PrimaryToRecovery.ToString()
+                        Direction == PossibleOperationsDirections.PrimaryToRecovery.ToString()
                             ? PossibleOperationsDirections.PrimaryToRecovery
                             : PossibleOperationsDirections.RecoveryToPrimary,
-                    NetworkId = this.networkId,
-                    NetworkType = this.networkType,
+                    NetworkId = networkId,
+                    NetworkType = networkType,
                     ProviderSpecificDetails = new List<RecoveryPlanProviderSpecificFailoverInput>(),
                     SkipTestFailoverCleanup = bool.TrueString
                 };
@@ -375,13 +375,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         Constants.HyperVReplicaAzure,
                         StringComparison.OrdinalIgnoreCase))
                 {
-                    if (this.Direction == Constants.PrimaryToRecovery)
+                    if (Direction == Constants.PrimaryToRecovery)
                     {
                         var recoveryPlanHyperVReplicaAzureFailoverInput =
                             new RecoveryPlanHyperVReplicaAzureFailoverInput
                             {
-                                PrimaryKekCertificatePfx = this.primaryKekCertpfx,
-                                SecondaryKekCertificatePfx = this.secondaryKekCertpfx,
+                                PrimaryKekCertificatePfx = primaryKekCertpfx,
+                                SecondaryKekCertificatePfx = secondaryKekCertpfx,
                                 VaultLocation = "dummy"
                             };
                         recoveryPlanTestFailoverInputProperties.ProviderSpecificDetails.Add(
@@ -401,14 +401,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     0)
                 {
                     // Check if the Direction is PrimaryToRecovery.
-                    if (this.Direction == Constants.PrimaryToRecovery)
+                    if (Direction == Constants.PrimaryToRecovery)
                     {
                         // Set the Recovery Point Types for InMage.
                         var recoveryPointType =
-                            this.RecoveryTag ==
+                            RecoveryTag ==
                             Constants.RecoveryTagLatestAvailableApplicationConsistent
                                 ? InMageV2RpRecoveryPointType.LatestApplicationConsistent
-                                : this.RecoveryTag == Constants.RecoveryTagLatest
+                                : RecoveryTag == Constants.RecoveryTagLatest
                                     ? InMageV2RpRecoveryPointType.Latest
                                     : InMageV2RpRecoveryPointType.LatestProcessed;
 
@@ -434,7 +434,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.UnsupportedReplicationProviderForTestFailover,
-                            this.ReplicationProtectedItem.ReplicationProvider));
+                            ReplicationProtectedItem.ReplicationProvider));
                 }
                 else if (string.Compare(
                        replicationProvider,
@@ -444,12 +444,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 {
                     // Set the Recovery Point Types for InMage.
                     var recoveryPointType =
-                        this.RecoveryTag ==
+                        RecoveryTag ==
                         Constants.RecoveryTagLatestAvailableApplicationConsistent
                             ? A2ARpRecoveryPointType.LatestApplicationConsistent
-                            : this.RecoveryTag == Constants.RecoveryTagLatest
+                            : RecoveryTag == Constants.RecoveryTagLatest
                                 ? A2ARpRecoveryPointType.Latest
-                                 : this.RecoveryTag == Constants.RecoveryTagLatestAvailableCrashConsistent
+                                 : RecoveryTag == Constants.RecoveryTagLatestAvailableCrashConsistent
                                      ? A2ARpRecoveryPointType.LatestCrashConsistent
                                       : A2ARpRecoveryPointType.LatestProcessed;
 
@@ -458,7 +458,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         new RecoveryPlanA2AFailoverInput
                         {
                             RecoveryPointType = recoveryPointType,
-                            CloudServiceCreationOption = this.CloudServiceCreationOption
+                            CloudServiceCreationOption = CloudServiceCreationOption
                         };
 
                     // Add the InMageAzureV2 Provider specific input in the Test Failover Input.
@@ -473,14 +473,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     Properties = recoveryPlanTestFailoverInputProperties
                 };
 
-            var response = this.RecoveryServicesClient.StartAzureSiteRecoveryTestFailover(
-                this.RecoveryPlan.Name,
+            var response = RecoveryServicesClient.StartAzureSiteRecoveryTestFailover(
+                RecoveryPlan.Name,
                 recoveryPlanTestFailoverInput);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         #region local parameters

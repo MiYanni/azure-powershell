@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance
             Mandatory = true,
             ParameterSetName = GetContainerInstanceLogByNamesParamSet,
             HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -77,23 +77,23 @@ namespace Microsoft.Azure.Commands.ContainerInstance
 
         public override void ExecuteCmdlet()
         {
-            var resourceGroupName = this.InputContainerGroup?.ResourceGroupName ?? this.ResourceGroupName;
-            var containerGroupName = this.InputContainerGroup?.Name ?? this.ContainerGroupName;
+            var resourceGroupName = InputContainerGroup?.ResourceGroupName ?? ResourceGroupName;
+            var containerGroupName = InputContainerGroup?.Name ?? ContainerGroupName;
 
             if (string.IsNullOrWhiteSpace(resourceGroupName)
                 && string.IsNullOrWhiteSpace(containerGroupName)
-                && !string.IsNullOrWhiteSpace(this.ResourceId))
+                && !string.IsNullOrWhiteSpace(ResourceId))
             {
-                var resource = this.ResourceClient.Resources.GetById(this.ResourceId, this.ContainerClient.ApiVersion);
-                resourceGroupName = this.ParseResourceGroupFromResourceId(this.ResourceId);
+                var resource = ResourceClient.Resources.GetById(ResourceId, ContainerClient.ApiVersion);
+                resourceGroupName = ParseResourceGroupFromResourceId(ResourceId);
                 containerGroupName = resource?.Name;
             }
 
-            var containerName = this.Name ?? containerGroupName;
+            var containerName = Name ?? containerGroupName;
 
-            var log = this.ContainerClient.ContainerLogs.List(resourceGroupName, containerGroupName, containerName, this.Tail)?.Content;
+            var log = ContainerClient.ContainerLogs.List(resourceGroupName, containerGroupName, containerName, Tail)?.Content;
 
-            this.WriteObject(log);
+            WriteObject(log);
         }
     }
 }

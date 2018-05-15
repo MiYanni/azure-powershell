@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Servi
         {
             var resp = Communicator.List(resourceGroupName, serverName);
 
-            return resp.Select((serverDisasterRecoveryConfigurationName) => CreateServerDisasterRecoveryConfigurationModelFromResponse(resourceGroupName, serverName, serverDisasterRecoveryConfigurationName)).ToList();
+            return resp.Select(serverDisasterRecoveryConfigurationName => CreateServerDisasterRecoveryConfigurationModelFromResponse(resourceGroupName, serverName, serverDisasterRecoveryConfigurationName)).ToList();
         }
 
         /// <summary>
@@ -92,10 +92,10 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Servi
         /// <returns>The created Azure Sql Server Disaster Recovery Configuration</returns>
         internal AzureSqlServerDisasterRecoveryConfigurationModel CreateServerDisasterRecoveryConfiguration(string resourceGroup, string serverName, string partnerServerId, AzureSqlServerDisasterRecoveryConfigurationModel model)
         {
-            var resp = Communicator.Create(resourceGroup, serverName, model.ServerDisasterRecoveryConfigurationName, new ServerDisasterRecoveryConfigurationCreateOrUpdateParameters()
+            var resp = Communicator.Create(resourceGroup, serverName, model.ServerDisasterRecoveryConfigurationName, new ServerDisasterRecoveryConfigurationCreateOrUpdateParameters
             {
                 Location = model.Location,
-                Properties = new ServerDisasterRecoveryConfigurationCreateOrUpdateProperties()
+                Properties = new ServerDisasterRecoveryConfigurationCreateOrUpdateProperties
                 {
                     PartnerServerId = partnerServerId
                 }
@@ -156,9 +156,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Servi
         {
             var response = Communicator.List(resourceGroupName, serverName);
 
-            IEnumerable<AzureSqlServerDisasterRecoveryConfigurationActivityModel> list = response.Select((r) =>
+            IEnumerable<AzureSqlServerDisasterRecoveryConfigurationActivityModel> list = response.Select(r =>
             {
-                return new AzureSqlServerDisasterRecoveryConfigurationActivityModel()
+                return new AzureSqlServerDisasterRecoveryConfigurationActivityModel
                 {
                     ServerDisasterRecoveryConfigurationName = r.Name,
 

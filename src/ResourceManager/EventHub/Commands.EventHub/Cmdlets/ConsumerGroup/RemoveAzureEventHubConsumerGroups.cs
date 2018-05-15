@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.ConsumerGroup
         public override void ExecuteCmdlet()
         {
             // delete a ConsumerGroup 
-            if (ShouldProcess(target:Name, action: string.Format(Resources.RemoveConsumerGroup, Name, EventHub)))
+            if (ShouldProcess(Name, string.Format(Resources.RemoveConsumerGroup, Name, EventHub)))
                {
                     Client.DeletConsumerGroup(ResourceGroupName, Namespace, EventHub, Name);
                }

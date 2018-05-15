@@ -50,10 +50,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                 string.Format(Resources.RemovingAzureAutomationResourceWarning, "DSC node configuration"),
                 string.Format(Resources.RemoveAzureAutomationResourceDescription, "DSC node configuration"),
                 Name,
-                () => this.AutomationClient.DeleteNodeConfiguration(
-                    this.ResourceGroupName,
-                    this.AutomationAccountName,
-                    this.Name,
+                () => AutomationClient.DeleteNodeConfiguration(
+                    ResourceGroupName,
+                    AutomationAccountName,
+                    Name,
                     IgnoreNodeMappings.IsPresent));
         }
     }

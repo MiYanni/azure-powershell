@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
 
         public static bool IsJobRunning(string status)
         {
-            return ((status.CompareTo("InProgress") == 0) || (status.CompareTo("Cancelling") == 0));
+            return status.CompareTo("InProgress") == 0 || status.CompareTo("Cancelling") == 0;
         }
     }
 }

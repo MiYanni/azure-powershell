@@ -64,34 +64,34 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var loadBalancer = this.GetLoadBalancer(this.ResourceGroupName, this.Name, this.ExpandResource);
+                var loadBalancer = GetLoadBalancer(ResourceGroupName, Name, ExpandResource);
 
                 WriteObject(loadBalancer);
             }
             else
             {
                 IPage<LoadBalancer> lbPage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    lbPage = this.LoadBalancerClient.List(this.ResourceGroupName);
+                    lbPage = LoadBalancerClient.List(ResourceGroupName);
                 }
 
                 else
                 {
-                    lbPage = this.LoadBalancerClient.ListAll();
+                    lbPage = LoadBalancerClient.ListAll();
                 }
 
                 // Get all resources by polling on next page link
-                var lbList = ListNextLink<LoadBalancer>.GetAllResourcesByPollingNextLink(lbPage, this.LoadBalancerClient.ListNext);
+                var lbList = ListNextLink<LoadBalancer>.GetAllResourcesByPollingNextLink(lbPage, LoadBalancerClient.ListNext);
 
                 var psLoadBalancers = new List<PSLoadBalancer>();
 
                 foreach (var lb in lbList)
                 {
-                    var psLb = this.ToPsLoadBalancer(lb);
-                    psLb.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(lb.Id);
+                    var psLb = ToPsLoadBalancer(lb);
+                    psLb.ResourceGroupName = GetResourceGroup(lb.Id);
                     psLoadBalancers.Add(psLb);
                 }
 

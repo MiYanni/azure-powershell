@@ -23,24 +23,24 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
     {
         public PSApplicationInsightsComponent(ApplicationInsightsComponent component)
         {
-            this.ResourceGroupName = ParseResourceGroupFromId(component.Id);
-            this.Name = component.Name;
-            this.Id = component.Id;
-            this.Location = component.Location;
-            this.Tags = component.Tags;
-            this.Kind = component.Kind;
-            this.Type = component.Type;
-            this.AppId = component.AppId;
-            this.ApplicationType = component.ApplicationType;
-            this.CreationDate = component.CreationDate;
-            this.FlowType = component.FlowType;
-            this.HockeyAppId = component.HockeyAppId;
-            this.HockeyAppToken = component.HockeyAppToken;
-            this.InstrumentationKey = component.InstrumentationKey;
-            this.ProvisioningState = component.ProvisioningState;
-            this.RequestSource = component.RequestSource;
-            this.SamplingPercentage = component.SamplingPercentage;
-            this.TenantId = component.TenantId;
+            ResourceGroupName = ParseResourceGroupFromId(component.Id);
+            Name = component.Name;
+            Id = component.Id;
+            Location = component.Location;
+            Tags = component.Tags;
+            Kind = component.Kind;
+            Type = component.Type;
+            AppId = component.AppId;
+            ApplicationType = component.ApplicationType;
+            CreationDate = component.CreationDate;
+            FlowType = component.FlowType;
+            HockeyAppId = component.HockeyAppId;
+            HockeyAppToken = component.HockeyAppToken;
+            InstrumentationKey = component.InstrumentationKey;
+            ProvisioningState = component.ProvisioningState;
+            RequestSource = component.RequestSource;
+            SamplingPercentage = component.SamplingPercentage;
+            TenantId = component.TenantId;
         }
 
         public string Id { get; set; }
@@ -128,18 +128,18 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
         {
             if (billing.CurrentBillingFeatures.Any(f => f.Contains("Enterprise")))
             {
-                this.PricingPlan = "Application Insights Enterprise";
+                PricingPlan = "Application Insights Enterprise";
             }
             else
             {
-                this.PricingPlan = billing.CurrentBillingFeatures.FirstOrDefault();
+                PricingPlan = billing.CurrentBillingFeatures.FirstOrDefault();
             }
 
-            this.Cap = billing.DataVolumeCap.Cap;
-            this.ResetTime = billing.DataVolumeCap.ResetTime;
-            this.StopSendNotificationWhenHitCap = billing.DataVolumeCap.StopSendNotificationWhenHitCap.Value;
-            this.CapExpirationTime = status.ExpirationTime;
-            this.IsCapped = status.ShouldBeThrottled != null ? status.ShouldBeThrottled.Value : false;
+            Cap = billing.DataVolumeCap.Cap;
+            ResetTime = billing.DataVolumeCap.ResetTime;
+            StopSendNotificationWhenHitCap = billing.DataVolumeCap.StopSendNotificationWhenHitCap.Value;
+            CapExpirationTime = status.ExpirationTime;
+            IsCapped = status.ShouldBeThrottled != null ? status.ShouldBeThrottled.Value : false;
         }
     }
 }

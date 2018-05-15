@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Compute
                 Position = 0,
                 ValueFromPipelineByPropertyName = true,
                 HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -73,48 +73,45 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            this._Helper = new AEMHelper((err) => this.WriteError(err), (msg) => this.WriteVerbose(msg), (msg) => this.WriteWarning(msg),
-                this.CommandRuntime.Host.UI,
+            _Helper = new AEMHelper(err => WriteError(err), msg => WriteVerbose(msg), msg => WriteWarning(msg),
+                CommandRuntime.Host.UI,
                 AzureSession.Instance.ClientFactory.CreateArmClient<StorageManagementClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager),
-                this.DefaultContext.Subscription);
+                DefaultContext.Subscription);
 
             base.ExecuteCmdlet();
 
             ExecuteClientAction(() =>
             {
                 VirtualMachine virtualMachine = null;
-                if (String.IsNullOrEmpty(this.OSType))
+                if (String.IsNullOrEmpty(OSType))
                 {
-                    virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName);
-                    this.OSType = virtualMachine.StorageProfile.OsDisk.OsType.ToString();
+                    virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
+                    OSType = virtualMachine.StorageProfile.OsDisk.OsType.ToString();
                 }
-                if (String.IsNullOrEmpty(this.OSType))
+                if (String.IsNullOrEmpty(OSType))
                 {
-                    this._Helper.WriteError("Could not determine Operating System of the VM. Please provide the Operating System type ({0} or {1}) via parameter OSType",
+                    _Helper.WriteError("Could not determine Operating System of the VM. Please provide the Operating System type ({0} or {1}) via parameter OSType",
                         AEMExtensionConstants.OSTypeWindows, AEMExtensionConstants.OSTypeLinux);
                     return;
                 }
 
-                if (string.IsNullOrEmpty(this.Name))
+                if (string.IsNullOrEmpty(Name))
                 {
                     if (virtualMachine == null)
                     {
-                        virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName);
+                        virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
                     }
-                    var aemExtension = this._Helper.GetExtension(virtualMachine, AEMExtensionConstants.AEMExtensionType[this.OSType], AEMExtensionConstants.AEMExtensionPublisher[this.OSType]);
+                    var aemExtension = _Helper.GetExtension(virtualMachine, AEMExtensionConstants.AEMExtensionType[OSType], AEMExtensionConstants.AEMExtensionPublisher[OSType]);
 
                     if (aemExtension == null)
                     {
-                        WriteWarning(string.Format(CultureInfo.InvariantCulture, Properties.Resources.AEMExtensionNotFound, this.ResourceGroupName, this.VMName));
+                        WriteWarning(string.Format(CultureInfo.InvariantCulture, Properties.Resources.AEMExtensionNotFound, ResourceGroupName, VMName));
                         return;
                     }
-                    else
-                    {
-                        this.Name = aemExtension.Name;
-                    }
+                    Name = aemExtension.Name;
                 }
 
-                var op = this.VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(this.ResourceGroupName, this.VMName, this.Name).GetAwaiter().GetResult();
+                var op = VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(ResourceGroupName, VMName, Name).GetAwaiter().GetResult();
                 var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
                 WriteObject(result);
             });

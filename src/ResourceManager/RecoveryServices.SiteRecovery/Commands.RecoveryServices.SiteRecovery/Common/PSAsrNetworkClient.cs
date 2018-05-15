@@ -32,11 +32,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string fabricName,
             string networkName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .ReplicationNetworks.GetWithHttpMessagesAsync(
                     fabricName,
                     networkName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -48,16 +48,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>Network list response</returns>
         public List<Network> GetAzureSiteRecoveryNetworks()
         {
-            var firstPage = this.GetSiteRecoveryClient()
-                .ReplicationNetworks.ListWithHttpMessagesAsync(this.GetRequestHeaders(true))
+            var firstPage = GetSiteRecoveryClient()
+                .ReplicationNetworks.ListWithHttpMessagesAsync(GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationNetworks.ListNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);
@@ -73,18 +73,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public List<Network> GetAzureSiteRecoveryNetworks(
             string fabricName)
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationNetworks.ListByReplicationFabricsWithHttpMessagesAsync(
                     fabricName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationNetworks.ListByReplicationFabricsNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);

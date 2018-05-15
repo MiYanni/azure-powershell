@@ -56,9 +56,9 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
 
-            var updatedConnection = this.AutomationClient.UpdateConnectionFieldValue(this.ResourceGroupName, this.AutomationAccountName, this.Name, this.ConnectionFieldName, this.Value);
+            var updatedConnection = AutomationClient.UpdateConnectionFieldValue(ResourceGroupName, AutomationAccountName, Name, ConnectionFieldName, Value);
 
-            this.WriteObject(updatedConnection);
+            WriteObject(updatedConnection);
         }
     }
 }

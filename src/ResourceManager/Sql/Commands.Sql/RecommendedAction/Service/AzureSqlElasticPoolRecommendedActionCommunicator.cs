@@ -57,9 +57,9 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Service
             return GetCurrentSqlClient().ElasticPoolRecommendedActions.Update(resourceGroupName, serverName, elasticPoolName, advisorName, recommendedActionName,
                     new RecommendedActionUpdateParameters
                     {
-                        Properties = new RecommendedActionUpdateProperties()
+                        Properties = new RecommendedActionUpdateProperties
                         {
-                            State = new RecommendedActionUpdateStateInfo()
+                            State = new RecommendedActionUpdateStateInfo
                             {
                                 CurrentValue = newStateValue
                             }

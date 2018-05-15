@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Description
         {
-            get { return this._description; }
-            set { this._description = value; }
+            get { return _description; }
+            set { _description = value; }
         }
         
         private bool _enabled;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool Enabled
         {
-            get { return this._enabled; }
-            set { this._enabled = value; }
+            get { return _enabled; }
+            set { _enabled = value; }
         }
         
         private bool _isDefault;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool IsDefault
         {
-            get { return this._isDefault; }
-            set { this._isDefault = value; }
+            get { return _isDefault; }
+            set { _isDefault = value; }
         }
         
         private bool _isSystem;
@@ -71,8 +71,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool IsSystem
         {
-            get { return this._isSystem; }
-            set { this._isSystem = value; }
+            get { return _isSystem; }
+            set { _isSystem = value; }
         }
         
         private string _serviceObjectiveName;
@@ -82,8 +82,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServiceObjectiveName
         {
-            get { return this._serviceObjectiveName; }
-            set { this._serviceObjectiveName = value; }
+            get { return _serviceObjectiveName; }
+            set { _serviceObjectiveName = value; }
         }
         
         /// <summary>

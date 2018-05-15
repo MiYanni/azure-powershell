@@ -26,37 +26,37 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSAuthenticationTokenSettings
     {
         
-        internal Microsoft.Azure.Batch.AuthenticationTokenSettings omObject;
+        internal AuthenticationTokenSettings omObject;
         
         public PSAuthenticationTokenSettings()
         {
-            this.omObject = new Microsoft.Azure.Batch.AuthenticationTokenSettings();
+            omObject = new AuthenticationTokenSettings();
         }
         
-        internal PSAuthenticationTokenSettings(Microsoft.Azure.Batch.AuthenticationTokenSettings omObject)
+        internal PSAuthenticationTokenSettings(AuthenticationTokenSettings omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.AccessScope Access
+        public Azure.Batch.Common.AccessScope Access
         {
             get
             {
-                return this.omObject.Access;
+                return omObject.Access;
             }
             set
             {
-                this.omObject.Access = value;
+                omObject.Access = value;
             }
         }
     }

@@ -74,23 +74,23 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
         {
             return new VhdFooter
             {
-                Cookie = this.Cookie.CreateCopy(),
-                Features = this.Features,
-                FileFormatVersion = this.FileFormatVersion,
-                HeaderOffset = this.HeaderOffset,
-                TimeStamp = this.TimeStamp,
-                CreatorApplication = this.CreatorApplication,
-                CreatorVersion = this.CreatorVersion,
-                CreatorHostOsType = this.CreatorHostOsType,
-                PhsyicalSize = this.PhsyicalSize,
-                VirtualSize = this.VirtualSize,
-                DiskGeometry = this.DiskGeometry.CreateCopy(),
-                DiskType = this.DiskType,
-                CheckSum = this.CheckSum,
-                UniqueId = this.UniqueId,
-                SavedState = this.SavedState,
-                Reserved = CreateCopy(this.Reserved),
-                RawData = CreateCopy(this.RawData),
+                Cookie = Cookie.CreateCopy(),
+                Features = Features,
+                FileFormatVersion = FileFormatVersion,
+                HeaderOffset = HeaderOffset,
+                TimeStamp = TimeStamp,
+                CreatorApplication = CreatorApplication,
+                CreatorVersion = CreatorVersion,
+                CreatorHostOsType = CreatorHostOsType,
+                PhsyicalSize = PhsyicalSize,
+                VirtualSize = VirtualSize,
+                DiskGeometry = DiskGeometry.CreateCopy(),
+                DiskType = DiskType,
+                CheckSum = CheckSum,
+                UniqueId = UniqueId,
+                SavedState = SavedState,
+                Reserved = CreateCopy(Reserved),
+                RawData = CreateCopy(RawData),
             };
         }
 
@@ -117,7 +117,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
         {
             unchecked
             {
-                int result = (Cookie != null ? Cookie.GetHashCode() : 0);
+                int result = Cookie != null ? Cookie.GetHashCode() : 0;
                 result = (result * 397) ^ Features.GetHashCode();
                 result = (result * 397) ^ (FileFormatVersion != null ? FileFormatVersion.GetHashCode() : 0);
                 result = (result * 397) ^ HeaderOffset.GetHashCode();

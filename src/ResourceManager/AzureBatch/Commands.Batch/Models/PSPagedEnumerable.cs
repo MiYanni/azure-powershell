@@ -44,21 +44,21 @@ namespace Microsoft.Azure.Commands.Batch.Models
             this.mappingFunction = mappingFunction;
         }
 
-        IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return new PSPagedEnumerator<T1, T2>(this.omPagedEnumerable.GetPagedEnumerator(), this.mappingFunction);
+            return new PSPagedEnumerator<T1, T2>(omPagedEnumerable.GetPagedEnumerator(), mappingFunction);
         }
 
         // IEnumerable<T>
         public IEnumerator<T1> GetEnumerator()
         {
-            return new PSPagedEnumerator<T1, T2>(this.omPagedEnumerable.GetPagedEnumerator(), this.mappingFunction);
+            return new PSPagedEnumerator<T1, T2>(omPagedEnumerable.GetPagedEnumerator(), mappingFunction);
         }
 
         // IPagedEnumerable
         public IPagedEnumerator<T1> GetPagedEnumerator()
         {
-            return new PSPagedEnumerator<T1, T2>(this.omPagedEnumerable.GetPagedEnumerator(), this.mappingFunction);
+            return new PSPagedEnumerator<T1, T2>(omPagedEnumerable.GetPagedEnumerator(), mappingFunction);
         }
 
         internal static IEnumerable<T1> CreateWithMaxCount(
@@ -70,14 +70,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
             {
                 return asyncEnumerable;
             }
-            else
+            if (logMaxCount != null)
             {
-                if (logMaxCount != null)
-                {
-                    logMaxCount();
-                }
-                return asyncEnumerable.Take(maxCount);
+                logMaxCount();
             }
+            return asyncEnumerable.Take(maxCount);
         }
     }
 
@@ -103,11 +100,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
             this.mappingFunction = mappingFunction;
         }
 
-        object System.Collections.IEnumerator.Current
+        object IEnumerator.Current
         {
             get
             {
-                return this.Current;
+                return Current;
             }
         }
 
@@ -115,33 +112,33 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.mappingFunction(this.omEnumerator.Current);
+                return mappingFunction(omEnumerator.Current);
             }
         }
 
         public bool MoveNext()
         {
-            return ((IEnumerator<T2>)this.omEnumerator).MoveNext();
+            return ((IEnumerator<T2>)omEnumerator).MoveNext();
         }
 
         public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
         {
-            return this.omEnumerator.MoveNextAsync(cancellationToken);
+            return omEnumerator.MoveNextAsync(cancellationToken);
         }
 
         public Task ResetAsync(CancellationToken cancellationToken)
         {
-            return this.omEnumerator.ResetAsync(cancellationToken);
+            return omEnumerator.ResetAsync(cancellationToken);
         }
 
         public void Reset()
         {
-            ((IEnumerator<T2>)this.omEnumerator).Reset();
+            ((IEnumerator<T2>)omEnumerator).Reset();
         }
 
         public void Dispose()
         {
-            this.omEnumerator.Dispose();
+            omEnumerator.Dispose();
         }
     }
 }

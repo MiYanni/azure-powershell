@@ -15,10 +15,10 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.File
 {
     using Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.File;
+    using Commands.Common.Storage;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage.File;
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
@@ -36,30 +36,30 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
         {
             get
             {
-                return (FileRequestOptions)this.GetRequestOptions(StorageServiceType.File);
+                return (FileRequestOptions)GetRequestOptions(StorageServiceType.File);
             }
         }
 
         protected override IStorageFileManagement CreateChannel()
         {
-            if (this.Channel == null || !this.ShareChannel)
+            if (Channel == null || !ShareChannel)
             {
-                this.Channel = new StorageFileManagement(
-                    this.ParameterSetName == Constants.ShareNameParameterSetName ||
-                    this.ParameterSetName == Constants.MatchingPrefixParameterSetName ||
-                    this.ParameterSetName == Constants.SpecificParameterSetName ?
-                        this.GetCmdletStorageContext() :
+                Channel = new StorageFileManagement(
+                    ParameterSetName == Constants.ShareNameParameterSetName ||
+                    ParameterSetName == Constants.MatchingPrefixParameterSetName ||
+                    ParameterSetName == Constants.SpecificParameterSetName ?
+                        GetCmdletStorageContext() :
                         AzureStorageContext.EmptyContextInstance
                 );
             }
 
-            return this.Channel;
+            return Channel;
         }
 
         protected CloudFileShare BuildFileShareObjectFromName(string name)
         {
             NamingUtil.ValidateShareName(name, false);
-            return this.Channel.GetShareReference(name);
+            return Channel.GetShareReference(name);
         }
 
         protected bool ShareIsEmpty(CloudFileShare share)

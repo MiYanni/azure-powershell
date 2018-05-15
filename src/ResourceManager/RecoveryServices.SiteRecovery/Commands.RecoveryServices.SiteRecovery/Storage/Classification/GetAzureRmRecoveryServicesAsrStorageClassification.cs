@@ -72,40 +72,40 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            var storageClassifications = this.RecoveryServicesClient
+            var storageClassifications = RecoveryServicesClient
                 .GetAzureSiteRecoveryStorageClassification();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByObjectWithFriendlyName:
                     storageClassifications = storageClassifications.Where(
                             item => item.Properties.FriendlyName.Equals(
-                                this.FriendlyName,
+                                FriendlyName,
                                 StringComparison.InvariantCultureIgnoreCase))
                         .ToList();
                     storageClassifications = storageClassifications.Where(
                             item => item.GetFabricId()
                                 .ToLower()
-                                .Equals(this.Fabric.ID.ToLower()))
+                                .Equals(Fabric.ID.ToLower()))
                         .ToList();
                     break;
                 case ASRParameterSets.ByObjectWithName:
                     storageClassifications = storageClassifications.Where(
                             item => item.Name.Equals(
-                                this.Name,
+                                Name,
                                 StringComparison.InvariantCultureIgnoreCase))
                         .ToList();
                     storageClassifications = storageClassifications.Where(
                             item => item.GetFabricId()
                                 .ToLower()
-                                .Equals(this.Fabric.ID.ToLower()))
+                                .Equals(Fabric.ID.ToLower()))
                         .ToList();
                     break;
                 case ASRParameterSets.ByFabricObject:
                     storageClassifications = storageClassifications.Where(
                             item => item.GetFabricId()
                                 .ToLower()
-                                .Equals(this.Fabric.ID.ToLower()))
+                                .Equals(Fabric.ID.ToLower()))
                         .ToList();
                     break;
             }
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     };
                 });
 
-            this.WriteObject(
+            WriteObject(
                 psObject,
                 true);
         }

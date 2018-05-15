@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
     using System.IO;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Management.Logic.Models;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
 
             if (!string.IsNullOrEmpty(definitionFilePath))
             {
-                if (!(new FileInfo(definitionFilePath)).Exists)
+                if (!new FileInfo(definitionFilePath).Exists)
                 {
                     throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
                         Properties.Resource.FileDoesNotExist, definitionFilePath));
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
 
             if (!string.IsNullOrEmpty(filePath))
             {
-                if (!(new FileInfo(filePath)).Exists)
+                if (!new FileInfo(filePath).Exists)
                 {
                     throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
                         Properties.Resource.FileDoesNotExist, filePath));
@@ -83,15 +83,12 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Boolean result indicating whether file exists.</returns>
         internal static bool FileExists(string filePath)
         {
-            if (!(new FileInfo(filePath)).Exists)
+            if (!new FileInfo(filePath).Exists)
             {
                 throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
                     Properties.Resource.FileDoesNotExist, filePath));
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         /// <summary>
@@ -155,20 +152,20 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
 
             if (arr != null && arr[0] is Array)
             {
-                var validateresult = arr.Where(item => (((object[])item).Length != 2));
+                var validateresult = arr.Where(item => ((object[])item).Length != 2);
 
                 if (validateresult != null && validateresult.Count() > 0)
                 {
                     throw new PSArgumentException(Properties.Resource.InvalidBusinessIdentity, "BusinessIdentities");
                 }
 
-                return arr.Select(item => new BusinessIdentity()
+                return arr.Select(item => new BusinessIdentity
                 {
                     Qualifier = ((object[])item)[0].ToString(),
                     Value = ((object[])item)[1].ToString()
                 }).ToList();
             }
-            else if (arr != null && arr is Array)
+            if (arr != null && arr is Array)
             {
                 if (arr.Count() != 2)
                 {
@@ -176,7 +173,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
                 }
 
                 var identities = new List<BusinessIdentity>();
-                identities.Add(new BusinessIdentity()
+                identities.Add(new BusinessIdentity
                 {
                     Qualifier = arr[0].ToString(),
                     Value = arr[1].ToString(),
@@ -184,10 +181,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
 
                 return identities;
             }
-            else
-            {
-                throw new PSArgumentException(Properties.Resource.InvalidBusinessIdentity, "BusinessIdentities");
-            }
+            throw new PSArgumentException(Properties.Resource.InvalidBusinessIdentity, "BusinessIdentities");
         }
 
         /// <summary>
@@ -218,7 +212,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
 
             if (!string.IsNullOrEmpty(parametersFilePath))
             {
-                if (!(new FileInfo(parametersFilePath)).Exists)
+                if (!new FileInfo(parametersFilePath).Exists)
                 {
                     throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
                         Properties.Resource.FileDoesNotExist, parametersFilePath));

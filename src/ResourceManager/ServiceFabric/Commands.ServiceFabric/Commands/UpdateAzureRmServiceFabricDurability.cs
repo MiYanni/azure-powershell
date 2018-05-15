@@ -40,39 +40,39 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true,
            HelpMessage = "Specify Service Fabric node type name")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string NodeType { get; set; } 
 
         [Parameter(Mandatory = true, ValueFromPipeline = true,
                    HelpMessage = "Specify durability Level")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("Level")]
         public DurabilityLevel DurabilityLevel { get; set; } 
 
         [Parameter(Mandatory = false, ValueFromPipeline = true,
                    HelpMessage = "Specify the SKU of the node type")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string Sku { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            var vmss = GetVmss(this.NodeType);
+            var vmss = GetVmss(NodeType);
             var ext = FindFabricVmExt(vmss.VirtualMachineProfile.ExtensionProfile.Extensions);
             var cluster = GetCurrentCluster();
-            var nodeType = GetNodeType(cluster, this.NodeType);
+            var nodeType = GetNodeType(cluster, NodeType);
             var oldDurabilityLevel = GetDurabilityLevel(nodeType.DurabilityLevel);
-            var newDurabilityLevel = this.DurabilityLevel;
+            var newDurabilityLevel = DurabilityLevel;
             var isMismatched = oldDurabilityLevel != GetDurabilityLevel(vmss);
 
             if (newDurabilityLevel == oldDurabilityLevel && !isMismatched)
@@ -96,8 +96,8 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             }
 
             if (newDurabilityLevel == DurabilityLevel.Bronze &&
-                !string.IsNullOrEmpty(this.Sku) &&
-                !this.Sku.Equals(vmss.Sku.Name))
+                !string.IsNullOrEmpty(Sku) &&
+                !Sku.Equals(vmss.Sku.Name))
             {
                 throw new PSInvalidOperationException(
                     ServiceFabricProperties.Resources.CannotUpdateSkuWithBronzeDurability);
@@ -105,20 +105,20 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             if (!string.IsNullOrEmpty(Sku))
             {
-                vmss.Sku = new Sku(this.Sku, Constants.DefaultTier, vmss.Sku.Capacity);
+                vmss.Sku = new Sku(Sku, Constants.DefaultTier, vmss.Sku.Capacity);
             }
 
-            ((JObject)ext.Settings)["durabilityLevel"] = this.DurabilityLevel.ToString();
+            ((JObject)ext.Settings)["durabilityLevel"] = DurabilityLevel.ToString();
             ((JObject)ext.Settings)["enableParallelJobs"] = true;
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Update fabric durability level to {0} of {1}", this.DurabilityLevel, this.NodeType)))
+            if (ShouldProcess(Name, string.Format("Update fabric durability level to {0} of {1}", DurabilityLevel, NodeType)))
             {
                 var vmssTask = ComputeClient.VirtualMachineScaleSets.CreateOrUpdateAsync(
                     ResourceGroupName,
                     vmss.Name,
                     vmss);
 
-                nodeType.DurabilityLevel = this.DurabilityLevel.ToString();
+                nodeType.DurabilityLevel = DurabilityLevel.ToString();
 
                 var patchArg = new ClusterUpdateParameters
                 {
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
                 var patchTask = PatchAsync(patchArg);
 
-                WriteClusterAndVmssVerboseWhenUpdate(new List<Task>() { vmssTask, patchTask }, true, this.NodeType);
+                WriteClusterAndVmssVerboseWhenUpdate(new List<Task> { vmssTask, patchTask }, true, NodeType);
 
                 var psCluster = new PSCluster(patchTask.Result);
                 WriteObject(psCluster, true);
@@ -154,7 +154,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             if (next == DurabilityLevel.Gold)
             {
-                var targetSkuName = string.IsNullOrEmpty(this.Sku) ? currentSkuName : this.Sku;
+                var targetSkuName = string.IsNullOrEmpty(Sku) ? currentSkuName : Sku;
 
                 if (!skusSupportGoldDurability.Contains(targetSkuName))
                 {

@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerKey ServerKey
         {
-            get { return this._serverKey; }
-            set { this._serverKey = value; }
+            get { return _serverKey; }
+            set { _serverKey = value; }
         }
         
         /// <summary>

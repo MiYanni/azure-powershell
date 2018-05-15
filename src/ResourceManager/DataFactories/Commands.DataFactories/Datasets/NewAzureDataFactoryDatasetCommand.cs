@@ -65,7 +65,7 @@ HelpMessage = "The data factory object.")]
             // Resolve any mismatch between -Name and the name written in JSON
             Name = ResolveResourceName(rawJsonContent, Name, "Dataset");
 
-            CreatePSDatasetParameters parameters = new CreatePSDatasetParameters()
+            CreatePSDatasetParameters parameters = new CreatePSDatasetParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = DataFactoryName,

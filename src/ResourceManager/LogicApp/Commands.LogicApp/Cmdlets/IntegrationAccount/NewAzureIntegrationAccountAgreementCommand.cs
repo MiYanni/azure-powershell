@@ -18,9 +18,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -110,56 +110,56 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                this.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
-            var hostPartner = IntegrationAccountClient.GetIntegrationAccountPartner(this.ResourceGroupName, this.Name,
-                this.HostPartner);
-            var guestPartner = IntegrationAccountClient.GetIntegrationAccountPartner(this.ResourceGroupName, this.Name,
-                this.GuestPartner);
+            var hostPartner = IntegrationAccountClient.GetIntegrationAccountPartner(ResourceGroupName, Name,
+                HostPartner);
+            var guestPartner = IntegrationAccountClient.GetIntegrationAccountPartner(ResourceGroupName, Name,
+                GuestPartner);
 
             var hostIdentity =
                 hostPartner.Content.B2b.BusinessIdentities.FirstOrDefault(
-                    s => s.Qualifier == this.HostIdentityQualifier && s.Value == this.HostIdentityQualifierValue);
+                    s => s.Qualifier == HostIdentityQualifier && s.Value == HostIdentityQualifierValue);
 
             if (hostIdentity == null)
             {
                 throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    Properties.Resource.InvalidQualifierSpecified, this.HostIdentityQualifier, this.HostPartner));
+                    Properties.Resource.InvalidQualifierSpecified, HostIdentityQualifier, HostPartner));
             }
 
             var guestIdentity =
                 guestPartner.Content.B2b.BusinessIdentities.FirstOrDefault(
-                    s => s.Qualifier == this.GuestIdentityQualifier && s.Value == this.GuestIdentityQualifierValue);
+                    s => s.Qualifier == GuestIdentityQualifier && s.Value == GuestIdentityQualifierValue);
 
             if (guestIdentity == null)
             {
                 throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    Properties.Resource.InvalidQualifierSpecified, this.GuestIdentityQualifier, this.GuestPartner));
+                    Properties.Resource.InvalidQualifierSpecified, GuestIdentityQualifier, GuestPartner));
             }
 
-            if (string.IsNullOrEmpty(this.AgreementContent))
+            if (string.IsNullOrEmpty(AgreementContent))
             {
-                this.AgreementContent =
-                    CmdletHelper.GetContentFromFile(this.TryResolvePath(this.AgreementContentFilePath));
+                AgreementContent =
+                    CmdletHelper.GetContentFromFile(this.TryResolvePath(AgreementContentFilePath));
             }
 
-            this.WriteObject(
-                IntegrationAccountClient.CreateIntegrationAccountAgreement(this.ResourceGroupName, integrationAccount.Name,
-                    this.AgreementName,
+            WriteObject(
+                IntegrationAccountClient.CreateIntegrationAccountAgreement(ResourceGroupName, integrationAccount.Name,
+                    AgreementName,
                     new IntegrationAccountAgreement
                     {
-                        AgreementType = (AgreementType) Enum.Parse(typeof(AgreementType), this.AgreementType),
+                        AgreementType = (AgreementType) Enum.Parse(typeof(AgreementType), AgreementType),
                         HostIdentity = hostIdentity,
                         GuestIdentity = guestIdentity,
-                        GuestPartner = this.GuestPartner,
-                        HostPartner = this.HostPartner,
-                        Content = CmdletHelper.ConvertToAgreementContent(this.AgreementContent),
-                        Metadata = this.Metadata
+                        GuestPartner = GuestPartner,
+                        HostPartner = HostPartner,
+                        Content = CmdletHelper.ConvertToAgreementContent(AgreementContent),
+                        Metadata = Metadata
                     }), true);
         }
     }

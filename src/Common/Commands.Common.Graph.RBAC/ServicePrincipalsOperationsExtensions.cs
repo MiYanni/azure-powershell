@@ -4,12 +4,12 @@
 
 namespace Microsoft.Azure.Graph.RBAC.Version1_6
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Graph;
-    using Microsoft.Azure.Graph.RBAC;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
-    using Microsoft.Rest.Azure.OData;
+    using Azure;
+    using Graph;
+    using RBAC;
+    using Rest;
+    using Rest.Azure;
+    using Rest.Azure.OData;
     using Models;
     using System.Collections;
     using System.Collections.Generic;
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6
             /// </param>
             public static IPage<ServicePrincipal> List(this IServicePrincipalsOperations operations, ODataQuery<ServicePrincipal> odataQuery = default(ODataQuery<ServicePrincipal>))
             {
-                return ((IServicePrincipalsOperations)operations).ListAsync(odataQuery).GetAwaiter().GetResult();
+                return operations.ListAsync(odataQuery).GetAwaiter().GetResult();
             }
 
             /// <summary>

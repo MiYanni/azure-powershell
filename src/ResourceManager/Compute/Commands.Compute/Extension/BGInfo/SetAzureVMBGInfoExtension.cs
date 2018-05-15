@@ -35,25 +35,25 @@ namespace Microsoft.Azure.Commands.Compute
             {
                 ExecuteClientAction(() =>
                 {
-                    if (string.IsNullOrEmpty(this.Location))
+                    if (string.IsNullOrEmpty(Location))
                     {
-                        this.Location = GetLocationFromVm(this.ResourceGroupName, this.VMName);
+                        Location = GetLocationFromVm(ResourceGroupName, VMName);
                     }
 
                     var parameters = new VirtualMachineExtension
                     {
-                        Location = this.Location,
+                        Location = Location,
                         Publisher = VirtualMachineBGInfoExtensionContext.ExtensionDefaultPublisher,
                         VirtualMachineExtensionType = VirtualMachineBGInfoExtensionContext.ExtensionDefaultName,
-                        TypeHandlerVersion = this.TypeHandlerVersion ?? VirtualMachineBGInfoExtensionContext.ExtensionDefaultVersion,
-                        AutoUpgradeMinorVersion = !this.DisableAutoUpgradeMinorVersion.IsPresent,
-                        ForceUpdateTag = this.ForceRerun
+                        TypeHandlerVersion = TypeHandlerVersion ?? VirtualMachineBGInfoExtensionContext.ExtensionDefaultVersion,
+                        AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent,
+                        ForceUpdateTag = ForceRerun
                     };
 
-                    var op = this.VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name ?? VirtualMachineBGInfoExtensionContext.ExtensionDefaultName,
+                    var op = VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name ?? VirtualMachineBGInfoExtensionContext.ExtensionDefaultName,
                         parameters).GetAwaiter().GetResult();
 
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);

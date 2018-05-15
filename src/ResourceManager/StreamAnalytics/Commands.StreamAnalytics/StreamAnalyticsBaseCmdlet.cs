@@ -32,15 +32,15 @@ namespace Microsoft.Azure.Commands.StreamAnalytics
         {
             get
             {
-                if (this.streamAnalyticsClient == null)
+                if (streamAnalyticsClient == null)
                 {
-                    this.streamAnalyticsClient = new StreamAnalyticsClient(DefaultProfile.DefaultContext);
+                    streamAnalyticsClient = new StreamAnalyticsClient(DefaultProfile.DefaultContext);
                 }
-                return this.streamAnalyticsClient;
+                return streamAnalyticsClient;
             }
             set
             {
-                this.streamAnalyticsClient = value;
+                streamAnalyticsClient = value;
             }
         }
 

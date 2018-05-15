@@ -40,44 +40,44 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
 
             // Verify if the subnet exists in the VirtualNetwork
-            var subnet = this.VirtualNetwork.Subnets.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, StringComparison.CurrentCultureIgnoreCase));
+            var subnet = VirtualNetwork.Subnets.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (subnet == null)
             {
                 throw new ArgumentException("Subnet with the specified name does not exist");
             }
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
-                if (this.NetworkSecurityGroup != null)
+                if (NetworkSecurityGroup != null)
                 {
-                    this.NetworkSecurityGroupId = this.NetworkSecurityGroup.Id;
+                    NetworkSecurityGroupId = NetworkSecurityGroup.Id;
                 }
 
-                if (this.RouteTable != null)
+                if (RouteTable != null)
                 {
-                    this.RouteTableId = this.RouteTable.Id;
+                    RouteTableId = RouteTable.Id;
                 }
             }
 
-            subnet.AddressPrefix = this.AddressPrefix;
+            subnet.AddressPrefix = AddressPrefix;
 
-            if (!string.IsNullOrEmpty(this.NetworkSecurityGroupId))
+            if (!string.IsNullOrEmpty(NetworkSecurityGroupId))
             {
                 subnet.NetworkSecurityGroup = new PSNetworkSecurityGroup();
-                subnet.NetworkSecurityGroup.Id = this.NetworkSecurityGroupId;
+                subnet.NetworkSecurityGroup.Id = NetworkSecurityGroupId;
             }
 
-            if (!string.IsNullOrEmpty(this.RouteTableId))
+            if (!string.IsNullOrEmpty(RouteTableId))
             {
                 subnet.RouteTable = new PSRouteTable();
-                subnet.RouteTable.Id = this.RouteTableId;
+                subnet.RouteTable.Id = RouteTableId;
             }
 
-            if (this.ServiceEndpoint != null)
+            if (ServiceEndpoint != null)
             {
                 subnet.ServiceEndpoints = new List<PSServiceEndpoint>();
-                foreach (var item in this.ServiceEndpoint)
+                foreach (var item in ServiceEndpoint)
                 {
                     var service = new PSServiceEndpoint();
                     service.Service = item;
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Commands.Network
                 subnet.ServiceEndpoints = null;
             }
 
-            WriteObject(this.VirtualNetwork);
+            WriteObject(VirtualNetwork);
         }
     }
 }

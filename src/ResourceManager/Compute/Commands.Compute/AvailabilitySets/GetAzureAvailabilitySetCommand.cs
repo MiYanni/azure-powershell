@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -48,9 +48,9 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                if (string.IsNullOrEmpty(this.Name))
+                if (string.IsNullOrEmpty(Name))
                 {
-                    var result = this.AvailabilitySetClient.ListWithHttpMessagesAsync(this.ResourceGroupName).GetAwaiter().GetResult();
+                    var result = AvailabilitySetClient.ListWithHttpMessagesAsync(ResourceGroupName).GetAwaiter().GetResult();
 
                     var psResultList = new List<PSAvailabilitySet>();
                     foreach (var item in result.Body)
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Compute
                 }
                 else
                 {
-                    var result = this.AvailabilitySetClient.GetWithHttpMessagesAsync(this.ResourceGroupName, this.Name).GetAwaiter().GetResult();
+                    var result = AvailabilitySetClient.GetWithHttpMessagesAsync(ResourceGroupName, Name).GetAwaiter().GetResult();
                     var psResult = ComputeAutoMapperProfile.Mapper.Map<PSAvailabilitySet>(result);
                     if (result.Body != null)
                     {

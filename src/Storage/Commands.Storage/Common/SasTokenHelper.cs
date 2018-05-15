@@ -14,13 +14,13 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.File;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Queue.Protocol;
-    using Microsoft.WindowsAzure.Storage.Table;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.File;
+    using WindowsAzure.Storage.Queue;
+    using WindowsAzure.Storage.Queue.Protocol;
+    using WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
 
@@ -217,17 +217,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
 
         public static string GetFullUriWithSASToken(string absoluteUri, string sasToken)
         {
-
             if (absoluteUri.Contains("?"))
             {
                 // There is already a query string in the URI,
                 // remove "?" from sas token.
                 return absoluteUri + sasToken.Substring(1);
             }
-            else
-            {
-                return absoluteUri + sasToken;
-            }
+            return absoluteUri + sasToken;
         }
     }
 }

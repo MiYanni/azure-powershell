@@ -64,23 +64,23 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             MNM.QueryTroubleshootingParameters parameters = new MNM.QueryTroubleshootingParameters();
-            parameters.TargetResourceId = this.TargetResourceId;
+            parameters.TargetResourceId = TargetResourceId;
 
             PSTroubleshootResult troubleshoot = new PSTroubleshootResult();
             if (ParameterSetName.Contains("SetByResource"))
             {
-                troubleshoot = GetTroubleshooting(this.NetworkWatcher.ResourceGroupName, this.NetworkWatcher.Name, parameters);
+                troubleshoot = GetTroubleshooting(NetworkWatcher.ResourceGroupName, NetworkWatcher.Name, parameters);
             }
             else
             {
-                troubleshoot = GetTroubleshooting(this.ResourceGroupName, this.NetworkWatcherName, parameters);
+                troubleshoot = GetTroubleshooting(ResourceGroupName, NetworkWatcherName, parameters);
             }
             WriteObject(troubleshoot);
         }
 
         public PSTroubleshootResult GetTroubleshooting(string resourceGroupName, string name, MNM.QueryTroubleshootingParameters parameters)
         {
-            MNM.TroubleshootingResult troubleshoot = this.NetworkWatcherClient.GetTroubleshootingResult(resourceGroupName, name, parameters);
+            MNM.TroubleshootingResult troubleshoot = NetworkWatcherClient.GetTroubleshootingResult(resourceGroupName, name, parameters);
 
             PSTroubleshootResult psTroubleshoot = NetworkResourceManagerProfile.Mapper.Map<PSTroubleshootResult>(troubleshoot);
             return psTroubleshoot;

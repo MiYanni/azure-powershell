@@ -26,13 +26,13 @@ namespace RecoveryServices.SiteRecovery.Test
             ITestOutputHelper output)
         {
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
-            this.vaultSettingsFilePath = System.IO.Path.Combine(
+            vaultSettingsFilePath = System.IO.Path.Combine(
                 System.AppDomain.CurrentDomain.BaseDirectory,
                 "ScenarioTests\\E2A\\E2A.VaultCredentials");
-            this.powershellFile = System.IO.Path.Combine(
+            powershellFile = System.IO.Path.Combine(
                 System.AppDomain.CurrentDomain.BaseDirectory,
                 "ScenarioTests\\E2A\\AsrE2ATests.ps1");
-            this.initialize();
+            initialize();
         }
 
         [Fact]
@@ -41,10 +41,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void FabricTests()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-FabricTest -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -54,10 +54,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestCreatePolicy()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-SiteRecoveryCreatePolicy -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -67,10 +67,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestEnableDR()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-SiteRecoveryEnableDR -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -80,10 +80,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestMapNetwork()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-MapNetwork -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -93,10 +93,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestTFO()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-TFO -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -106,10 +106,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestPlannedFailover()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-PlannedFailover -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -119,10 +119,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestReprotect()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-Reprotect -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
     }

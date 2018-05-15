@@ -58,17 +58,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override void ExecuteSiteRecoveryCmdlet()
         {
             base.ExecuteSiteRecoveryCmdlet();
-            if (this.ShouldProcess(
-                this.Name,
+            if (ShouldProcess(
+                Name,
                 VerbsCommon.New))
             {
-                if (!this.InputObject.FabricType.Equals(Constants.Azure))
+                if (!InputObject.FabricType.Equals(Constants.Azure))
                 {
                     throw new Exception(
                         string.Format(
                             Resources.IncorrectFabricType,
                             Constants.Azure,
-                            this.InputObject.FabricType));
+                            InputObject.FabricType));
                 }
 
                 var input = new CreateProtectionContainerInput()
@@ -78,8 +78,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
                 var response =
                     RecoveryServicesClient.CreateProtectionContainer(
-                        this.InputObject.Name,
-                        this.Name,
+                        InputObject.Name,
+                        Name,
                         input);
 
                 string jobId = PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location);

@@ -55,23 +55,23 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                if (this.ShouldProcess(Name, VerbsLifecycle.Stop) 
-                    && (this.Force.IsPresent || this.ShouldContinue(Properties.Resources.VirtualMachineStoppingConfirmation, Properties.Resources.VirtualMachineStoppingCaption)))
+                if (ShouldProcess(Name, VerbsLifecycle.Stop) 
+                    && (Force.IsPresent || ShouldContinue(Properties.Resources.VirtualMachineStoppingConfirmation, Properties.Resources.VirtualMachineStoppingCaption)))
                 {
                     Action<Func<string, string, Dictionary<string, List<string>>, CancellationToken, Task<Rest.Azure.AzureOperationResponse<MCM.OperationStatusResponse>>>> call = f =>
                     {
-                        var op = f(this.ResourceGroupName, this.Name, null, CancellationToken.None).GetAwaiter().GetResult();
+                        var op = f(ResourceGroupName, Name, null, CancellationToken.None).GetAwaiter().GetResult();
                         var result = ComputeAutoMapperProfile.Mapper.Map<PSComputeLongRunningOperation>(op);
                         WriteObject(result);
                     };
 
-                    if (this.StayProvisioned)
+                    if (StayProvisioned)
                     {
-                        call(this.VirtualMachineClient.PowerOffWithHttpMessagesAsync);
+                        call(VirtualMachineClient.PowerOffWithHttpMessagesAsync);
                     }
                     else
                     {
-                        call(this.VirtualMachineClient.DeallocateWithHttpMessagesAsync);
+                        call(VirtualMachineClient.DeallocateWithHttpMessagesAsync);
                     }
                 }
                 else

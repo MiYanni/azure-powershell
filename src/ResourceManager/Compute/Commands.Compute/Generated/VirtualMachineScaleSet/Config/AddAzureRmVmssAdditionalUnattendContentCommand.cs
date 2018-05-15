@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Add", "AzureRmVmssAdditionalUnattendContent", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class AddAzureRmVmssAdditionalUnattendContentCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class AddAzureRmVmssAdditionalUnattendContentCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -75,37 +75,37 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // VirtualMachineProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
             }
 
             // OsProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
             }
 
             // WindowsConfiguration
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new Microsoft.Azure.Management.Compute.Models.WindowsConfiguration();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new WindowsConfiguration();
             }
 
             // AdditionalUnattendContent
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.AdditionalUnattendContent == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.AdditionalUnattendContent == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.AdditionalUnattendContent = new List<Microsoft.Azure.Management.Compute.Models.AdditionalUnattendContent>();
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.AdditionalUnattendContent = new List<AdditionalUnattendContent>();
             }
 
-            var vAdditionalUnattendContent = new Microsoft.Azure.Management.Compute.Models.AdditionalUnattendContent();
+            var vAdditionalUnattendContent = new AdditionalUnattendContent();
 
-            vAdditionalUnattendContent.PassName = this.MyInvocation.BoundParameters.ContainsKey("PassName") ? this.PassName : (PassNames?) null;
-            vAdditionalUnattendContent.ComponentName = this.MyInvocation.BoundParameters.ContainsKey("ComponentName") ? this.ComponentName : (ComponentNames?) null;
-            vAdditionalUnattendContent.SettingName = this.MyInvocation.BoundParameters.ContainsKey("SettingName") ? this.SettingName : (SettingNames?) null;
-            vAdditionalUnattendContent.Content = this.MyInvocation.BoundParameters.ContainsKey("Content") ? this.Content : null;
-            this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.AdditionalUnattendContent.Add(vAdditionalUnattendContent);
-            WriteObject(this.VirtualMachineScaleSet);
+            vAdditionalUnattendContent.PassName = MyInvocation.BoundParameters.ContainsKey("PassName") ? PassName : null;
+            vAdditionalUnattendContent.ComponentName = MyInvocation.BoundParameters.ContainsKey("ComponentName") ? ComponentName : null;
+            vAdditionalUnattendContent.SettingName = MyInvocation.BoundParameters.ContainsKey("SettingName") ? SettingName : null;
+            vAdditionalUnattendContent.Content = MyInvocation.BoundParameters.ContainsKey("Content") ? Content : null;
+            VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.AdditionalUnattendContent.Add(vAdditionalUnattendContent);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

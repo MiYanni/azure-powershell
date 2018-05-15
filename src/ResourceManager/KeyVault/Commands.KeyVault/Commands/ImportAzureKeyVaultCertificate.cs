@@ -152,11 +152,11 @@ namespace Microsoft.Azure.Commands.KeyVault
                             }
 
                             string base64CertCollection = Convert.ToBase64String(base64Bytes);
-                            certBundle = this.DataServiceClient.ImportCertificate(VaultName, Name, base64CertCollection, Password, Tag == null ? null : Tag.ConvertToDictionary());
+                            certBundle = DataServiceClient.ImportCertificate(VaultName, Name, base64CertCollection, Password, Tag == null ? null : Tag.ConvertToDictionary());
                         }
                         else
                         {
-                            certBundle = this.DataServiceClient.MergeCertificate(
+                            certBundle = DataServiceClient.MergeCertificate(
                                 VaultName,
                                 Name,
                                 userProvidedCertColl,
@@ -165,37 +165,37 @@ namespace Microsoft.Azure.Commands.KeyVault
                         break;
 
                     case ImportWithPrivateKeyFromCollectionParameterSet:
-                        certBundle = this.DataServiceClient.ImportCertificate(VaultName, Name, CertificateCollection, Tag == null ? null : Tag.ConvertToDictionary());
+                        certBundle = DataServiceClient.ImportCertificate(VaultName, Name, CertificateCollection, Tag == null ? null : Tag.ConvertToDictionary());
 
                         break;
 
                     case ImportWithPrivateKeyFromStringParameterSet:
-                        certBundle = this.DataServiceClient.ImportCertificate(VaultName, Name, CertificateString, Password, Tag == null ? null : Tag.ConvertToDictionary());
+                        certBundle = DataServiceClient.ImportCertificate(VaultName, Name, CertificateString, Password, Tag == null ? null : Tag.ConvertToDictionary());
 
                         break;
                 }
 
-                this.WriteObject(certBundle);
+                WriteObject(certBundle);
             }
         }
 
         internal X509Certificate2Collection InitializeCertificateCollection()
         {
-            FileInfo certFile = new FileInfo(this.GetUnresolvedProviderPathFromPSPath(this.FilePath));
+            FileInfo certFile = new FileInfo(GetUnresolvedProviderPathFromPSPath(FilePath));
             if (!certFile.Exists)
             {
-                throw new FileNotFoundException(string.Format(KeyVaultProperties.Resources.CertificateFileNotFound, this.FilePath));
+                throw new FileNotFoundException(string.Format(KeyVaultProperties.Resources.CertificateFileNotFound, FilePath));
             }
 
             X509Certificate2Collection certificateCollection = new X509Certificate2Collection();
 
-            if (null == this.Password)
+            if (null == Password)
             {
                 certificateCollection.Import(certFile.FullName);
             }
             else
             {
-                certificateCollection.Import(certFile.FullName, this.Password.ConvertToString(), X509KeyStorageFlags.Exportable);
+                certificateCollection.Import(certFile.FullName, Password.ConvertToString(), X509KeyStorageFlags.Exportable);
             }
 
             return certificateCollection;

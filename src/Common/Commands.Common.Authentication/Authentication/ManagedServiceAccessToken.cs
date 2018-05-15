@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
                 }
                 catch (CloudException httpException)
                 {
-                    throw new InvalidOperationException(string.Format(Resources.MSITokenRequestFailed, _resourceId, httpException?.Request?.RequestUri?.ToString()), httpException);
+                    throw new InvalidOperationException(string.Format(Resources.MSITokenRequestFailed, _resourceId, httpException?.Request?.RequestUri), httpException);
                 }
 
                 return _accessToken;

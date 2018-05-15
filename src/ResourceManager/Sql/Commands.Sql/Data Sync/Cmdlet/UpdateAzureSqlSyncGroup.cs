@@ -63,8 +63,9 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlSyncGroupModel> GetEntity()
         {
-            return new List<AzureSqlSyncGroupModel>() { 
-                ModelAdapter.GetSyncGroup(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.Name) 
+            return new List<AzureSqlSyncGroupModel>
+            { 
+                ModelAdapter.GetSyncGroup(ResourceGroupName, ServerName, DatabaseName, Name) 
             };
         }
 
@@ -79,13 +80,13 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
 
             if (MyInvocation.BoundParameters.ContainsKey("IntervalInSeconds"))
             {
-                newModel.IntervalInSeconds = this.IntervalInSeconds;
+                newModel.IntervalInSeconds = IntervalInSeconds;
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("DatabaseCredential"))
             {
-                newModel.HubDatabaseUserName = this.DatabaseCredential.UserName;
-                newModel.HubDatabasePassword = this.DatabaseCredential.Password;
+                newModel.HubDatabaseUserName = DatabaseCredential.UserName;
+                newModel.HubDatabasePassword = DatabaseCredential.Password;
             }
             else
             {
@@ -98,7 +99,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
             {
                 try
                 {
-                    newModel.Schema = ConstructSchemaFromFile(this.SchemaFile);
+                    newModel.Schema = ConstructSchemaFromFile(SchemaFile);
                 }
                 catch (CloudException ex)
                 {
@@ -117,7 +118,8 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlSyncGroupModel> PersistChanges(IEnumerable<AzureSqlSyncGroupModel> entity)
         {
-            return new List<AzureSqlSyncGroupModel>() {
+            return new List<AzureSqlSyncGroupModel>
+            {
                 ModelAdapter.UpdateSyncGroup(entity.First())
             };
         }

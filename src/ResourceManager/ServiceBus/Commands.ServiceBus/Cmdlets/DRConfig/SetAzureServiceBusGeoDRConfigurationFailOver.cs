@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.GeoDR
 
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ParentResource != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: getParamGeoDR.ResourceName, action: string.Format(Resources.DRFailOver, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                    if (ShouldProcess(getParamGeoDR.ResourceName, string.Format(Resources.DRFailOver, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                     {
                         Client.SetServiceBusDRConfigurationFailOver(getParamGeoDR.ResourceGroupName, getParamGeoDR.ParentResource, getParamGeoDR.ResourceName);
                         if (PassThru)
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.GeoDR
 
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ParentResource != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: getParamGeoDR.ResourceName, action: string.Format(Resources.DRFailOver, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                    if (ShouldProcess(getParamGeoDR.ResourceName, string.Format(Resources.DRFailOver, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                     {
                         Client.SetServiceBusDRConfigurationFailOver(getParamGeoDR.ResourceGroupName, getParamGeoDR.ParentResource, getParamGeoDR.ResourceName);
                         if (PassThru)
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.GeoDR
 
             if (ParameterSetName == GeoDRParameterSet)
             {
-                if (ShouldProcess(target: Name, action: string.Format(Resources.DRFailOver, Name, Namespace)))
+                if (ShouldProcess(Name, string.Format(Resources.DRFailOver, Name, Namespace)))
                 {
                     Client.SetServiceBusDRConfigurationFailOver(ResourceGroupName, Namespace, Name);
                     if (PassThru)

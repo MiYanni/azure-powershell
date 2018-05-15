@@ -113,7 +113,7 @@ namespace Microsoft.Azure.Commands.PowerBI
                 PSPowerBIEmbeddedCapacity currentCapacity = null;
                 if (!PowerBIClient.TestCapacity(resourceGroupName, capacityName, out currentCapacity))
                 {
-                    throw new InvalidOperationException(string.Format(Properties.Resources.CapacityDoesNotExist, capacityName));
+                    throw new InvalidOperationException(string.Format(Resources.CapacityDoesNotExist, capacityName));
                 }
 
                 var availableSkus = PowerBIClient.ListSkusForExisting(resourceGroupName, capacityName);

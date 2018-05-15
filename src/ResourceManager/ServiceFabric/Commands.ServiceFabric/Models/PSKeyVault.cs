@@ -40,10 +40,10 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Models
             var sb = new StringBuilder();
 
             const string spaces = "    ";
-            sb.AppendLine(string.Format("{0} {1} : {2}", "", "KeyVaultId", this.KeyVaultId));
-            sb.AppendLine(string.Format("{0} {1} : {2}", "", "KeyVaultName", this.KeyVaultName));
-            sb.AppendLine(string.Format("{0} {1} : {2}", "", "KeyVaultCertificateId", this.KeyVaultCertificateId));
-            sb.AppendLine(string.Format("{0} {1} : {2}", "", "SecretIdentifier", this.SecretIdentifier));
+            sb.AppendLine(string.Format("{0} {1} : {2}", "", "KeyVaultId", KeyVaultId));
+            sb.AppendLine(string.Format("{0} {1} : {2}", "", "KeyVaultName", KeyVaultName));
+            sb.AppendLine(string.Format("{0} {1} : {2}", "", "KeyVaultCertificateId", KeyVaultCertificateId));
+            sb.AppendLine(string.Format("{0} {1} : {2}", "", "SecretIdentifier", SecretIdentifier));
 
             sb.AppendLine(string.Format("{0} {1} :", "", "Certificate:"));
             if (Certificate != null)
@@ -54,9 +54,9 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Models
                 sb.AppendLine(string.Format("{0} {1} : {2}", spaces, "NotAfter", Certificate.NotAfter));
             }
 
-            sb.AppendLine(string.Format("{0} {1} : {2}", "", "CertificateThumbprint", this.CertificateThumbprint));
+            sb.AppendLine(string.Format("{0} {1} : {2}", "", "CertificateThumbprint", CertificateThumbprint));
             sb.AppendLine(string.Format("{0} {1} : {2}", "", "CertificateSavedLocalPath", string.IsNullOrWhiteSpace(
-                this.CertificateSavedLocalPath) ? "Not saved" : this.CertificateSavedLocalPath));
+                CertificateSavedLocalPath) ? "Not saved" : CertificateSavedLocalPath));
 
             return sb.ToString();
         }

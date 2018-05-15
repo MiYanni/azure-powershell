@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var existingInboundNatPool = this.LoadBalancer.InboundNatPools.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var existingInboundNatPool = LoadBalancer.InboundNatPools.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (existingInboundNatPool != null)
             {
@@ -46,28 +46,28 @@ namespace Microsoft.Azure.Commands.Network
             }
 
             var inboundNatPool = new PSInboundNatPool();
-            inboundNatPool.Name = this.Name;
-            inboundNatPool.Protocol = this.Protocol;
-            inboundNatPool.FrontendPortRangeStart = this.FrontendPortRangeStart;
-            inboundNatPool.FrontendPortRangeEnd = this.FrontendPortRangeEnd;
-            inboundNatPool.BackendPort = this.BackendPort;
+            inboundNatPool.Name = Name;
+            inboundNatPool.Protocol = Protocol;
+            inboundNatPool.FrontendPortRangeStart = FrontendPortRangeStart;
+            inboundNatPool.FrontendPortRangeEnd = FrontendPortRangeEnd;
+            inboundNatPool.BackendPort = BackendPort;
 
-            if (!string.IsNullOrEmpty(this.FrontendIpConfigurationId))
+            if (!string.IsNullOrEmpty(FrontendIpConfigurationId))
             {
-                inboundNatPool.FrontendIPConfiguration = new PSResourceId() { Id = this.FrontendIpConfigurationId };
+                inboundNatPool.FrontendIPConfiguration = new PSResourceId { Id = FrontendIpConfigurationId };
             }
 
             inboundNatPool.Id =
                 ChildResourceHelper.GetResourceId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    this.LoadBalancer.ResourceGroupName,
-                    this.LoadBalancer.Name,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerInboundNatPoolName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    LoadBalancer.ResourceGroupName,
+                    LoadBalancer.Name,
+                    Properties.Resources.LoadBalancerInboundNatPoolName,
+                    Name);
 
-            this.LoadBalancer.InboundNatPools.Add(inboundNatPool);
+            LoadBalancer.InboundNatPools.Add(inboundNatPool);
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

@@ -33,9 +33,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
 
             results = new List<AzureSqlDatabaseGeoBackupPolicyModel>();
             results.Add(ModelAdapter.GetDatabaseGeoBackupPolicy(
-                this.ResourceGroupName, 
-                this.ServerName, 
-                this.DatabaseName));
+                ResourceGroupName, 
+                ServerName, 
+                DatabaseName));
 
             return results;
         }

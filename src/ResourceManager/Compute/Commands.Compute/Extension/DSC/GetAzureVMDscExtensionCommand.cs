@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
             Position = 0,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
             if (Status)
             {
                 var result = VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName, VMName, Name);
-                var extension = result.ToPSVirtualMachineExtension(this.ResourceGroupName, this.VMName);
+                var extension = result.ToPSVirtualMachineExtension(ResourceGroupName, VMName);
 
                 if (
                     extension.Publisher.Equals(DscExtensionCmdletConstants.ExtensionPublishedNamespace,
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
             else
             {
                 var result = VirtualMachineExtensionClient.Get(ResourceGroupName, VMName, Name);
-                var extension = result.ToPSVirtualMachineExtension(this.ResourceGroupName, this.VMName);
+                var extension = result.ToPSVirtualMachineExtension(ResourceGroupName, VMName);
 
                 if (
                     extension.Publisher.Equals(
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                         new JsonException(
                             String.Format(
                                 CultureInfo.CurrentUICulture,
-                                Microsoft.Azure.Commands.Compute.Properties.Resources.AzureVMDscWrongSettingsFormat,
+                                Properties.Resources.AzureVMDscWrongSettingsFormat,
                                 extension.PublicSettings),
                             e),
                         string.Empty,

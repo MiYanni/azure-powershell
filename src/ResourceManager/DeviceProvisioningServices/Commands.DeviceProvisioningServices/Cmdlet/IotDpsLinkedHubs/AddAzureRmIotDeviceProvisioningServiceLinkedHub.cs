@@ -18,11 +18,11 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
-    using DPSResources = Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Properties.Resources;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices;
+    using Azure.Management.DeviceProvisioningServices.Models;
+    using DPSResources = Properties.Resources;
 
     [Cmdlet(VerbsCommon.Add, "AzureRmIoTDeviceProvisioningServiceLinkedHub", DefaultParameterSetName = ResourceParameterSet, SupportsShouldProcess = true)]
     [Alias("Add-AzureRmIoTDpsHub")]
@@ -123,19 +123,19 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
                 switch (ParameterSetName)
                 {
                     case InputObjectParameterSet:
-                        this.ResourceGroupName = this.DpsObject.ResourceGroupName;
-                        this.Name = this.DpsObject.Name;
-                        this.AddIotDpsLinkedHub();
+                        ResourceGroupName = DpsObject.ResourceGroupName;
+                        Name = DpsObject.Name;
+                        AddIotDpsLinkedHub();
                         break;
 
                     case ResourceIdParameterSet:
-                        this.ResourceGroupName = IotDpsUtils.GetResourceGroupName(this.ResourceId);
-                        this.Name = IotDpsUtils.GetIotDpsName(this.ResourceId);
-                        this.AddIotDpsLinkedHub();
+                        ResourceGroupName = IotDpsUtils.GetResourceGroupName(ResourceId);
+                        Name = IotDpsUtils.GetIotDpsName(ResourceId);
+                        AddIotDpsLinkedHub();
                         break;
 
                     case ResourceParameterSet:
-                        this.AddIotDpsLinkedHub();
+                        AddIotDpsLinkedHub();
                         break;
 
                     default:
@@ -146,36 +146,36 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 
         private void WritePSObject(IotHubDefinitionDescription iotDpsHub)
         {
-            this.WriteObject(IotDpsUtils.ToPSIotHubDefinitionDescription(iotDpsHub, this.ResourceGroupName, this.Name), false);
+            WriteObject(IotDpsUtils.ToPSIotHubDefinitionDescription(iotDpsHub, ResourceGroupName, Name), false);
         }
 
         private void WritePSObjects(IList<IotHubDefinitionDescription> iotDpsHubs)
         {
-            this.WriteObject(IotDpsUtils.ToPSIotHubDefinitionDescription(iotDpsHubs), true);
+            WriteObject(IotDpsUtils.ToPSIotHubDefinitionDescription(iotDpsHubs), true);
         }
 
         private void AddIotDpsLinkedHub()
         {
             IotHubDefinitionDescription iotDpsHub = new IotHubDefinitionDescription()
             {
-                ConnectionString = this.IotHubConnectionString,
-                Location = this.IotHubLocation,
-                AllocationWeight = this.AllocationWeight,
-                ApplyAllocationPolicy = this.ApplyAllocationPolicy.IsPresent
+                ConnectionString = IotHubConnectionString,
+                Location = IotHubLocation,
+                AllocationWeight = AllocationWeight,
+                ApplyAllocationPolicy = ApplyAllocationPolicy.IsPresent
             };
 
-            ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(this.ResourceGroupName, this.Name);
+            ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(ResourceGroupName, Name);
             provisioningServiceDescription.Properties.IotHubs.Add(iotDpsHub);
-            IotDpsCreateOrUpdate(this.ResourceGroupName, this.Name, provisioningServiceDescription);
+            IotDpsCreateOrUpdate(ResourceGroupName, Name, provisioningServiceDescription);
 
-            IList<IotHubDefinitionDescription> iotDpsHubs = GetIotDpsHubs(this.ResourceGroupName, this.Name);
+            IList<IotHubDefinitionDescription> iotDpsHubs = GetIotDpsHubs(ResourceGroupName, Name);
             if (iotDpsHubs.Count == 1)
             {
-                this.WritePSObject(iotDpsHubs[0]);
+                WritePSObject(iotDpsHubs[0]);
             }
             else
             {
-                this.WritePSObjects(iotDpsHubs);
+                WritePSObjects(iotDpsHubs);
             }
         }
     }

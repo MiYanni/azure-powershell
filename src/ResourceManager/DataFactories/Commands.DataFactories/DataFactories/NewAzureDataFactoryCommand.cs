@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            CreatePSDataFactoryParameters parameters = new CreatePSDataFactoryParameters()
+            CreatePSDataFactoryParameters parameters = new CreatePSDataFactoryParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = Name,

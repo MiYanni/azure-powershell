@@ -21,12 +21,12 @@ namespace Microsoft.Azure.Commands.Common.Strategies.WebApps
     static class ServerFarmStrategy
     {
         public static ResourceStrategy<AppServicePlan> Strategy { get; } = AppServicePolicy.Create(
-            provider: "serverFarms",
-            getOperations: client => client.AppServicePlans,
-            getAsync: (o, p) => o.GetAsync(p.ResourceGroupName, p.Name, p.CancellationToken),
-            createOrUpdateAsync: (o, p) => o.CreateOrUpdateAsync(p.ResourceGroupName, p.Name, p.Model, cancellationToken: p.CancellationToken),
-            createTime: _ => 5,
-            compulsoryLocation: true);
+            "serverFarms",
+            client => client.AppServicePlans,
+            (o, p) => o.GetAsync(p.ResourceGroupName, p.Name, p.CancellationToken),
+            (o, p) => o.CreateOrUpdateAsync(p.ResourceGroupName, p.Name, p.Model, p.CancellationToken),
+            _ => 5,
+            true);
 
         public static ResourceConfig<AppServicePlan> CreateServerFarmConfig(
             this ResourceConfig<ResourceGroup> resourceGroup,
@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.Common.Strategies.WebApps
             string name) => Strategy.CreateResourceConfig(
                 resourceGroup,
                 name,
-                createModel: _ =>
-                    new AppServicePlan(location: null, name: name)
+                _ =>
+                    new AppServicePlan(null, name: name)
                     {
                         Sku = new SkuDescription { Tier = "Basic", Capacity = 1, Name = CmdletHelpers.GetSkuName("Basic", 1) }
                     });

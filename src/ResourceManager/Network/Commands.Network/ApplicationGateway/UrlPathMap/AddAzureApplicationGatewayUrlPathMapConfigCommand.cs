@@ -32,18 +32,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var urlPathMap = this.ApplicationGateway.UrlPathMaps.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var urlPathMap = ApplicationGateway.UrlPathMaps.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (urlPathMap != null)
             {
                 throw new ArgumentException("URL path map with the specified name already exists");
             }
 
-            urlPathMap = base.NewObject();
-            this.ApplicationGateway.UrlPathMaps.Add(urlPathMap);
+            urlPathMap = NewObject();
+            ApplicationGateway.UrlPathMaps.Add(urlPathMap);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

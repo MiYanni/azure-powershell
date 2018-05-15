@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var existingFrontendIpConfig = this.LoadBalancer.FrontendIpConfigurations.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var existingFrontendIpConfig = LoadBalancer.FrontendIpConfigurations.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (existingFrontendIpConfig != null)
             {
@@ -46,17 +46,17 @@ namespace Microsoft.Azure.Commands.Network
             }
 
             var frontendIpConfig = new PSFrontendIPConfiguration();
-            frontendIpConfig.Name = this.Name;
-            frontendIpConfig.Zones = this.Zone;
+            frontendIpConfig.Name = Name;
+            frontendIpConfig.Zones = Zone;
 
-            if (!string.IsNullOrEmpty(this.SubnetId))
+            if (!string.IsNullOrEmpty(SubnetId))
             {
                 frontendIpConfig.Subnet = new PSSubnet();
-                frontendIpConfig.Subnet.Id = this.SubnetId;
+                frontendIpConfig.Subnet.Id = SubnetId;
 
-                if (!string.IsNullOrEmpty(this.PrivateIpAddress))
+                if (!string.IsNullOrEmpty(PrivateIpAddress))
                 {
-                    frontendIpConfig.PrivateIpAddress = this.PrivateIpAddress;
+                    frontendIpConfig.PrivateIpAddress = PrivateIpAddress;
                     frontendIpConfig.PrivateIpAllocationMethod = Management.Network.Models.IPAllocationMethod.Static;
                 }
                 else
@@ -65,23 +65,23 @@ namespace Microsoft.Azure.Commands.Network
                 }
             }
 
-            if (!string.IsNullOrEmpty(this.PublicIpAddressId))
+            if (!string.IsNullOrEmpty(PublicIpAddressId))
             {
                 frontendIpConfig.PublicIpAddress = new PSPublicIpAddress();
-                frontendIpConfig.PublicIpAddress.Id = this.PublicIpAddressId;
+                frontendIpConfig.PublicIpAddress.Id = PublicIpAddressId;
             }
 
             frontendIpConfig.Id =
                 ChildResourceHelper.GetResourceId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    this.LoadBalancer.ResourceGroupName,
-                    this.LoadBalancer.Name,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerFrontendIpConfigName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    LoadBalancer.ResourceGroupName,
+                    LoadBalancer.Name,
+                    Properties.Resources.LoadBalancerFrontendIpConfigName,
+                    Name);
 
-            this.LoadBalancer.FrontendIpConfigurations.Add(frontendIpConfig);
+            LoadBalancer.FrontendIpConfigurations.Add(frontendIpConfig);
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
 
         }
     }

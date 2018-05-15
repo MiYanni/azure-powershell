@@ -46,9 +46,9 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
             string name,
             Sku sku)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: engine => new LoadBalancer
+                resourceGroup,
+                name,
+                engine => new LoadBalancer
                 {
                     Sku = new LoadBalancerSku
                     {

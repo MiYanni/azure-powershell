@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
 
         public CommitmentPlansClient(IAzureContext context)
         {
-            this.apiClient = AzureSession.Instance.ClientFactory.CreateArmClient<APIClient>(
+            apiClient = AzureSession.Instance.ClientFactory.CreateArmClient<APIClient>(
                 context,
                 AzureEnvironment.Endpoint.ResourceManager);
         }
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                 Sku = commitmentPlanSku
             };
 
-            return this.apiClient.CommitmentPlans.CreateOrUpdate(
+            return apiClient.CommitmentPlans.CreateOrUpdate(
                 commitmentPlan,
                 resourceGroupName,
                 commitmentPlanName);
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
             string commitmentPlanName,
             CommitmentPlanPatchPayload patchPayload)
         {
-            return this.apiClient.CommitmentPlans.Patch(
+            return apiClient.CommitmentPlans.Patch(
                 patchPayload,
                 resourceGroupName,
                 commitmentPlanName);
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
             string resourceGroupName,
             string commitmentPlanName)
         {
-            this.apiClient.CommitmentPlans.Remove(
+            apiClient.CommitmentPlans.Remove(
                 resourceGroupName,
                 commitmentPlanName);
         }
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
             string resourceGroupName,
             string commitmentPlanName)
         {
-            return this.apiClient.CommitmentPlans.Get(
+            return apiClient.CommitmentPlans.Get(
                 resourceGroupName,
                 commitmentPlanName);
         }
@@ -88,12 +88,12 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
             string nextLink,
             CancellationToken? cancellationToken)
         {
-            string skipToken = CommitmentPlansClient.GetSkipTokenFromLink(nextLink);
+            string skipToken = GetSkipTokenFromLink(nextLink);
             var cancellationTokenParam = cancellationToken ?? CancellationToken.None;
 
             var paginatedResponse =
                 await
-                    this.apiClient.CommitmentPlans.ListInResourceGroupWithHttpMessagesAsync(
+                    apiClient.CommitmentPlans.ListInResourceGroupWithHttpMessagesAsync(
                         resourceGroupName,
                         skipToken,
                         cancellationToken: cancellationTokenParam).ConfigureAwait(false);
@@ -105,11 +105,11 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
             string nextLink,
             CancellationToken? cancellationToken)
         {
-            string skipToken = CommitmentPlansClient.GetSkipTokenFromLink(nextLink);
+            string skipToken = GetSkipTokenFromLink(nextLink);
             var cancellationTokenParam = cancellationToken ?? CancellationToken.None;
 
             var paginatedResponse =
-                await this.apiClient.CommitmentPlans.ListWithHttpMessagesAsync(
+                await apiClient.CommitmentPlans.ListWithHttpMessagesAsync(
                     skipToken,
                     cancellationToken: cancellationTokenParam).ConfigureAwait(false);
 
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
             string commitmentPlanName,
             string commitmentAssociationName)
         {
-            return this.apiClient.CommitmentAssociations.Get(resourceGroupName, commitmentPlanName, commitmentAssociationName);
+            return apiClient.CommitmentAssociations.Get(resourceGroupName, commitmentPlanName, commitmentAssociationName);
         }
 
         public async Task<IPage<CommitmentAssociation>> ListAzureMlCommitmentAssociationsAsync(
@@ -130,12 +130,12 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
             string nextLink,
             CancellationToken? cancellationToken)
         {
-            string skipToken = CommitmentPlansClient.GetSkipTokenFromLink(nextLink);
+            string skipToken = GetSkipTokenFromLink(nextLink);
             var cancellationTokenParam = cancellationToken ?? CancellationToken.None;
 
             var paginatedResponse =
                 await
-                    this.apiClient.CommitmentAssociations.ListWithHttpMessagesAsync(
+                    apiClient.CommitmentAssociations.ListWithHttpMessagesAsync(
                         resourceGroupName,
                         commitmentPlanName,
                         skipToken,
@@ -150,12 +150,12 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
             string nextLink,
             CancellationToken? cancellationToken)
         {
-            string skipToken = CommitmentPlansClient.GetSkipTokenFromLink(nextLink);
+            string skipToken = GetSkipTokenFromLink(nextLink);
             var cancellationTokenParam = cancellationToken ?? CancellationToken.None;
 
             var paginatedResponse =
                 await
-                    this.apiClient.UsageHistory.ListWithHttpMessagesAsync(
+                    apiClient.UsageHistory.ListWithHttpMessagesAsync(
                         resourceGroupName,
                         commitmentPlanName,
                         skipToken,
@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
 
             var resposne =
                 await
-                    this.apiClient.CommitmentAssociations.MoveWithHttpMessagesAsync(
+                    apiClient.CommitmentAssociations.MoveWithHttpMessagesAsync(
                         resourceGroupName,
                         commitmentPlanName, commitmentAssociationName, moveRequest,
                         cancellationToken: cancellationTokenParam).ConfigureAwait(false);

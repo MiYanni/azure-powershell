@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Compute
            Mandatory = true,
            Position = 0,
            ValueFromPipelineByPropertyName = true)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                var result = this.VirtualMachineClient.GetWithInstanceView(this.ResourceGroupName, this.Name);
+                var result = VirtualMachineClient.GetWithInstanceView(ResourceGroupName, Name);
                 if (result == null || result.Body == null)
                 {
                     ThrowTerminatingError
@@ -125,20 +125,20 @@ namespace Microsoft.Azure.Commands.Compute
                             null));
                 }
 
-                if (this.Windows.IsPresent
-                    || (this.Linux.IsPresent && !string.IsNullOrEmpty(this.LocalPath)))
+                if (Windows.IsPresent
+                    || Linux.IsPresent && !string.IsNullOrEmpty(LocalPath))
                 {
                     var screenshotUri = new Uri(result.Body.InstanceView.BootDiagnostics.ConsoleScreenshotBlobUri);
-                    var localFile = this.LocalPath + screenshotUri.Segments[2];
+                    var localFile = LocalPath + screenshotUri.Segments[2];
                     DownloadFromBlobUri(screenshotUri, localFile);
                 }
 
 
-                if (this.Linux.IsPresent)
+                if (Linux.IsPresent)
                 {
                     var logUri = new Uri(result.Body.InstanceView.BootDiagnostics.SerialConsoleLogBlobUri);
 
-                    var localFile = (this.LocalPath ?? Path.GetTempPath()) + logUri.Segments[2];
+                    var localFile = (LocalPath ?? Path.GetTempPath()) + logUri.Segments[2];
 
                     DownloadFromBlobUri(logUri, localFile);
 
@@ -170,10 +170,10 @@ namespace Microsoft.Azure.Commands.Compute
                         DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
 
 
-            var storageService = storageClient.StorageAccounts.GetProperties(this.ResourceGroupName, blobUri.StorageAccountName);
+            var storageService = storageClient.StorageAccounts.GetProperties(ResourceGroupName, blobUri.StorageAccountName);
             if (storageService != null)
             {
-                var storageKeys = storageClient.StorageAccounts.ListKeys(this.ResourceGroupName, storageService.Name);
+                var storageKeys = storageClient.StorageAccounts.ListKeys(ResourceGroupName, storageService.Name);
                 storagekey = storageKeys.GetKey1();
             }
 

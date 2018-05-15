@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.ServiceBus
 
         public ServiceBusClient(IAzureContext context)
         {
-            this.Client = AzureSession.Instance.ClientFactory.CreateArmClient<ServiceBusManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            Client = AzureSession.Instance.ClientFactory.CreateArmClient<ServiceBusManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
 
         }
         public ServiceBusManagementClient Client
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.ServiceBus
         public PSNamespaceAttributes UpdateNamespace(string resourceGroupName, string namespaceName, string location, string skuName, int? skuCapacity, Dictionary<string, string> tags)
         {
 
-            var parameter = new SBNamespace()
+            var parameter = new SBNamespace
             {
                 Location = location
             };
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Commands.ServiceBus
 
         public PSSharedAccessAuthorizationRuleAttributes CreateOrUpdateNamespaceAuthorizationRules(string resourceGroupName, string namespaceName, string authorizationRuleName, PSSharedAccessAuthorizationRuleAttributes parameters)
         {
-            var parameter1 = new SBAuthorizationRule()
+            var parameter1 = new SBAuthorizationRule
             {
                 Rights = parameters.Rights.ToList()
             };
@@ -210,13 +210,13 @@ namespace Microsoft.Azure.Commands.ServiceBus
             SBQueue parameters = new SBQueue();
 
             if(queue.LockDuration != null)
-                parameters.LockDuration = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(queue.LockDuration);
+                parameters.LockDuration = AzureServiceBusCmdletBase.ParseTimespan(queue.LockDuration);
             if (queue.AutoDeleteOnIdle != null)
-                parameters.AutoDeleteOnIdle = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(queue.AutoDeleteOnIdle);
+                parameters.AutoDeleteOnIdle = AzureServiceBusCmdletBase.ParseTimespan(queue.AutoDeleteOnIdle);
             if (queue.DefaultMessageTimeToLive != null)
-                parameters.DefaultMessageTimeToLive = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(queue.DefaultMessageTimeToLive);
+                parameters.DefaultMessageTimeToLive = AzureServiceBusCmdletBase.ParseTimespan(queue.DefaultMessageTimeToLive);
             if (queue.DuplicateDetectionHistoryTimeWindow != null)
-                parameters.DuplicateDetectionHistoryTimeWindow = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(queue.DuplicateDetectionHistoryTimeWindow);
+                parameters.DuplicateDetectionHistoryTimeWindow = AzureServiceBusCmdletBase.ParseTimespan(queue.DuplicateDetectionHistoryTimeWindow);
             if (queue.DeadLetteringOnMessageExpiration.HasValue)
                 parameters.DeadLetteringOnMessageExpiration = queue.DeadLetteringOnMessageExpiration;
             if (queue.EnableExpress.HasValue)
@@ -252,7 +252,8 @@ namespace Microsoft.Azure.Commands.ServiceBus
 
         public PSQueueAttributes UpdateQueue(string resourceGroupName, string namespaceName, string queueName, string location, bool enableExpress, bool isAnonymousAccessible)
         {
-            SBQueue parameters = new SBQueue(){
+            SBQueue parameters = new SBQueue
+            {
                 
                 EnableExpress = enableExpress
                
@@ -277,7 +278,7 @@ namespace Microsoft.Azure.Commands.ServiceBus
 
         public PSSharedAccessAuthorizationRuleAttributes CreateOrUpdateServiceBusQueueAuthorizationRules(string resourceGroupName, string namespaceName, string queueName, string authorizationRuleName, PSSharedAccessAuthorizationRuleAttributes parameters)
         {
-            var parameter1 = new SBAuthorizationRule()
+            var parameter1 = new SBAuthorizationRule
             {
                 Rights = parameters.Rights.ToList()
             };
@@ -339,11 +340,11 @@ namespace Microsoft.Azure.Commands.ServiceBus
             var parameters = new SBTopic();
 
             if (topic.AutoDeleteOnIdle != null)
-                parameters.AutoDeleteOnIdle = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(topic.AutoDeleteOnIdle);
+                parameters.AutoDeleteOnIdle = AzureServiceBusCmdletBase.ParseTimespan(topic.AutoDeleteOnIdle);
             if (topic.DefaultMessageTimeToLive != null)
-                parameters.DefaultMessageTimeToLive = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(topic.DefaultMessageTimeToLive);
+                parameters.DefaultMessageTimeToLive = AzureServiceBusCmdletBase.ParseTimespan(topic.DefaultMessageTimeToLive);
             if (topic.DuplicateDetectionHistoryTimeWindow != null)
-                parameters.DuplicateDetectionHistoryTimeWindow = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(topic.DuplicateDetectionHistoryTimeWindow);
+                parameters.DuplicateDetectionHistoryTimeWindow = AzureServiceBusCmdletBase.ParseTimespan(topic.DuplicateDetectionHistoryTimeWindow);
             if (topic.EnableBatchedOperations != null)
                 parameters.EnableBatchedOperations = topic.EnableBatchedOperations;
             if (topic.EnableExpress != null)
@@ -371,7 +372,7 @@ namespace Microsoft.Azure.Commands.ServiceBus
 
         public PSTopicAttributes UpdateTopic(string resourceGroupName, string namespaceName, string topicName, string location, bool enableExpress, bool isAnonymousAccessible)
         {
-            SBTopic parameters = new SBTopic()
+            SBTopic parameters = new SBTopic
             {
                 EnableExpress = enableExpress
             };
@@ -395,7 +396,7 @@ namespace Microsoft.Azure.Commands.ServiceBus
 
         public PSSharedAccessAuthorizationRuleAttributes CreateOrUpdateServiceBusTopicAuthorizationRules(string resourceGroupName, string namespaceName, string topicName, string authorizationRuleName, PSSharedAccessAuthorizationRuleAttributes parameters)
         {
-            var parameter1 = new SBAuthorizationRule()
+            var parameter1 = new SBAuthorizationRule
             {
                 Rights = parameters.Rights.ToList()
             };
@@ -455,11 +456,11 @@ namespace Microsoft.Azure.Commands.ServiceBus
             var parameters = new SBSubscription();
 
             if (subscription.AutoDeleteOnIdle != null)
-                parameters.AutoDeleteOnIdle = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(subscription.AutoDeleteOnIdle);
+                parameters.AutoDeleteOnIdle = AzureServiceBusCmdletBase.ParseTimespan(subscription.AutoDeleteOnIdle);
             if (subscription.DefaultMessageTimeToLive != null)
-                parameters.DefaultMessageTimeToLive = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(subscription.DefaultMessageTimeToLive);
+                parameters.DefaultMessageTimeToLive = AzureServiceBusCmdletBase.ParseTimespan(subscription.DefaultMessageTimeToLive);
             if (subscription.LockDuration != null)
-                parameters.LockDuration = (TimeSpan?)AzureServiceBusCmdletBase.ParseTimespan(subscription.LockDuration);
+                parameters.LockDuration = AzureServiceBusCmdletBase.ParseTimespan(subscription.LockDuration);
             if (subscription.DeadLetteringOnMessageExpiration.HasValue)
                 parameters.DeadLetteringOnMessageExpiration = subscription.DeadLetteringOnMessageExpiration;
             if (subscription.DeadLetteringOnFilterEvaluationExceptions.HasValue)
@@ -508,17 +509,17 @@ namespace Microsoft.Azure.Commands.ServiceBus
         {
             var parameters = new Rule();
             parameters.FilterType = ruleAttributes.FilterType;
-            parameters.Action = new Management.ServiceBus.Models.Action()
+            parameters.Action = new Management.ServiceBus.Models.Action
             {
                 SqlExpression = ruleAttributes.Action.SqlExpression,
                 CompatibilityLevel = ruleAttributes.Action.CompatibilityLevel
             };
 
             if (ruleAttributes.FilterType.ToString().Equals("SqlFilter"))
-                parameters.SqlFilter = new SqlFilter() { RequiresPreprocessing = ruleAttributes.SqlFilter.RequiresPreprocessing, SqlExpression = ruleAttributes.SqlFilter.SqlExpression };
+                parameters.SqlFilter = new SqlFilter { RequiresPreprocessing = ruleAttributes.SqlFilter.RequiresPreprocessing, SqlExpression = ruleAttributes.SqlFilter.SqlExpression };
             if (ruleAttributes.FilterType.ToString().Equals("CorrelationFilter"))
             {
-                parameters.CorrelationFilter = new CorrelationFilter()
+                parameters.CorrelationFilter = new CorrelationFilter
                 {
                     CorrelationId = ruleAttributes.CorrelationFilter.CorrelationId,
                     MessageId = ruleAttributes.CorrelationFilter.MessageId,
@@ -575,7 +576,7 @@ namespace Microsoft.Azure.Commands.ServiceBus
 
         public PSServiceBusDRConfigurationAttributes CreateServiceBusDRConfiguration(string resourceGroupName, string namespaceName, string alias, PSServiceBusDRConfigurationAttributes parameter)
         {
-            var Parameter1 = new Management.ServiceBus.Models.ArmDisasterRecovery();
+            var Parameter1 = new ArmDisasterRecovery();
 
             if (!string.IsNullOrEmpty(parameter.PartnerNamespace))
                 Parameter1.PartnerNamespace = parameter.PartnerNamespace;

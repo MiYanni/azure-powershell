@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands.WcfRelay
                     wcfRelay.UserMetadata = UserMetadata;
             }
             
-            if(ShouldProcess(target: Name, action: string.Format(Resources.UpdateWcfRelay, Name,Namespace)))
+            if(ShouldProcess(Name, string.Format(Resources.UpdateWcfRelay, Name,Namespace)))
             {
                 WriteObject(Client.UpdateWcfRelay(ResourceGroupName, Namespace, Name, wcfRelay));
             }

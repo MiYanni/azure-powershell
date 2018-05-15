@@ -41,13 +41,13 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
             IEnumerable<CertificateInfo> ret = null;
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByCertificateName)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByCertificateName)
             {
                 ret = new List<CertificateInfo>
                 {
-                   this.AutomationClient.GetCertificate(this.ResourceGroupName, this.AutomationAccountName, this.Name)
+                   AutomationClient.GetCertificate(ResourceGroupName, AutomationAccountName, Name)
                 };
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
             else
             {
@@ -55,8 +55,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
                 do
                 {
-                    ret = this.AutomationClient.ListCertificates(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
-                    this.GenerateCmdletOutput(ret);
+                    ret = AutomationClient.ListCertificates(ResourceGroupName, AutomationAccountName, ref nextLink);
+                    GenerateCmdletOutput(ret);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

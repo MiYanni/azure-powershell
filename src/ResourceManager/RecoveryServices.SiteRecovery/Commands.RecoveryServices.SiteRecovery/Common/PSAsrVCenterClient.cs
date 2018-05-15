@@ -28,11 +28,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>vCenter response.</returns>
         public VCenter GetAzureRmSiteRecoveryvCenter(string fabricId, string vCenterName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .ReplicationvCenters.GetWithHttpMessagesAsync(
                     fabricId,
                     vCenterName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -45,20 +45,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>vCenter list response.</returns>
         public List<VCenter> ListAzureRmSiteRecoveryvCenter(string fabricId)
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationvCenters
                 .ListByReplicationFabricsWithHttpMessagesAsync(
                     fabricId,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationvCenters
                     .ListByReplicationFabricsNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
 
             pages.Insert(0, firstPage);
             return Utilities.IpageToList(pages);
@@ -76,12 +76,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string vCenterName,
             AddVCenterRequest input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationvCenters.BeginCreateWithHttpMessagesAsync(
                     fabricName,
                     vCenterName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -101,12 +101,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string vCenterName,
             UpdateVCenterRequest input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationvCenters.BeginUpdateWithHttpMessagesAsync(
                     fabricName,
                     vCenterName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -124,11 +124,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string fabricName,
             string vCenterName)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationvCenters.BeginDeleteWithHttpMessagesAsync(
                     fabricName,
                     vCenterName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 

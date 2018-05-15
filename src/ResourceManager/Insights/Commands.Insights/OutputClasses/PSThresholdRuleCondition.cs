@@ -54,11 +54,11 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="ruleCondition">The rule condition</param>
         public PSThresholdRuleCondition(ThresholdRuleCondition ruleCondition)
         {
-            this.DataSource = ruleCondition.DataSource as RuleMetricDataSource;
-            this.Operator = ruleCondition.OperatorProperty;
-            this.Threshold = ruleCondition.Threshold;
-            this.TimeAggregation = ruleCondition.TimeAggregation;
-            this.WindowsSize = ruleCondition.WindowSize;
+            DataSource = ruleCondition.DataSource as RuleMetricDataSource;
+            Operator = ruleCondition.OperatorProperty;
+            Threshold = ruleCondition.Threshold;
+            TimeAggregation = ruleCondition.TimeAggregation;
+            WindowsSize = ruleCondition.WindowSize;
         }
 
         /// <summary>
@@ -69,11 +69,11 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         {
             StringBuilder output = new StringBuilder();
             output.AppendLine();
-            output.AppendLine("    DataSource          : " + this.DataSource.ToString(indentationTabs: 2));
-            output.AppendLine("    Operator            : " + this.Operator);
-            output.AppendLine("    Threshold           : " + this.Threshold);
-            output.AppendLine("    Aggregation operator: " + this.TimeAggregation);
-            output.Append("    Window size         : " + this.WindowsSize);
+            output.AppendLine("    DataSource          : " + DataSource.ToString(2));
+            output.AppendLine("    Operator            : " + Operator);
+            output.AppendLine("    Threshold           : " + Threshold);
+            output.AppendLine("    Aggregation operator: " + TimeAggregation);
+            output.Append("    Window size         : " + WindowsSize);
             return output.ToString();
         }
     }

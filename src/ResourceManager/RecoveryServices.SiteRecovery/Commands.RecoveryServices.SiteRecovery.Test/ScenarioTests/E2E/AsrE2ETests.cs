@@ -26,13 +26,13 @@ namespace RecoveryServices.SiteRecovery.Test
             ITestOutputHelper output)
         {
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
-            this.vaultSettingsFilePath = System.IO.Path.Combine(
+            vaultSettingsFilePath = System.IO.Path.Combine(
                 System.AppDomain.CurrentDomain.BaseDirectory,
                 "ScenarioTests\\E2E\\E2E.VaultCredentials");
-            this.powershellFile = System.IO.Path.Combine(
+            powershellFile = System.IO.Path.Combine(
                 System.AppDomain.CurrentDomain.BaseDirectory,
                 "ScenarioTests\\E2E\\AsrE2ETests.ps1");
-            this.initialize();
+            initialize();
         }
 
         [Fact]
@@ -41,10 +41,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void FabricTests()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-SiteRecoveryFabricTest -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -54,10 +54,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestCreatePolicy()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-SiteRecoveryCreatePolicy -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -67,9 +67,9 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestCreatePCMap()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
-                "Test-CreatePCMap -vaultSettingsFilePath \"" + this.vaultSettingsFilePath + "\"");
+                "Test-CreatePCMap -vaultSettingsFilePath \"" + vaultSettingsFilePath + "\"");
         }
 
         [Fact]
@@ -78,10 +78,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestEnableDR()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-SiteRecoveryEnableDR -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -91,10 +91,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestMapNetwork()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-MapNetwork -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -104,10 +104,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestTFO()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-TFO -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -117,10 +117,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestPlannedFailover()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-PlannedFailover -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -130,10 +130,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestReprotect()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-Reprotect -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -143,10 +143,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestUFOandFailback()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-UFOandFailback -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -156,10 +156,10 @@ namespace RecoveryServices.SiteRecovery.Test
            Category.CheckIn)]
         public void TestEditRP()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-EditRecoveryPlan -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -169,10 +169,10 @@ namespace RecoveryServices.SiteRecovery.Test
            Category.CheckIn)]
         public void TestRemoveRP()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-SiteRecoveryRemoveRecoveryPlan -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -182,10 +182,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestDisableDR()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-SiteRecoveryDisableDR -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -195,9 +195,9 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestRemovePCMap()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
-                "Test-RemovePCMap -vaultSettingsFilePath \"" + this.vaultSettingsFilePath + "\"");
+                "Test-RemovePCMap -vaultSettingsFilePath \"" + vaultSettingsFilePath + "\"");
         }
 
         [Fact]
@@ -206,10 +206,10 @@ namespace RecoveryServices.SiteRecovery.Test
             Category.CheckIn)]
         public void TestRemovePolicy()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-SiteRecoveryRemovePolicy -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -219,10 +219,10 @@ namespace RecoveryServices.SiteRecovery.Test
              Category.CheckIn)]
         public void TestRemoveNetworkPairing()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-RemoveNetworkPairing -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
 
@@ -232,10 +232,10 @@ namespace RecoveryServices.SiteRecovery.Test
              Category.CheckIn)]
         public void TestRemoveFabric()
         {
-            this.RunPowerShellTest(
+            RunPowerShellTest(
                 Constants.NewModel,
                 "Test-RemoveFabric -vaultSettingsFilePath \"" +
-                this.vaultSettingsFilePath +
+                vaultSettingsFilePath +
                 "\"");
         }
     }

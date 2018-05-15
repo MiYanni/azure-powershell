@@ -58,12 +58,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
         [Parameter(Mandatory = false, HelpMessage = ParamHelpMsgs.Common.ConfirmationMessage)]
         public SwitchParameter Force { get; set; }
 
-        private string PolicyName = string.Empty;
+        private string _policyName = string.Empty;
 
         public override void ExecuteCmdlet()
         {
-            PolicyName = (this.ParameterSetName == PolicyNameParameterSet) ? Name : Policy.Name;
-            if (string.IsNullOrEmpty(PolicyName))
+            _policyName = ParameterSetName == PolicyNameParameterSet ? Name : Policy.Name;
+            if (string.IsNullOrEmpty(_policyName))
             {
                 throw new ArgumentException(Resources.PolicyNameIsEmptyOrNull);
             }
@@ -72,15 +72,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
             {
                 ConfirmAction(
                     Force.IsPresent,
-                    string.Format(Resources.RemoveProtectionPolicyWarning, PolicyName),
+                    string.Format(Resources.RemoveProtectionPolicyWarning, _policyName),
                     Resources.RemoveProtectionPolicyMessage,
-                    PolicyName, () =>
+                    _policyName, () =>
                     {
                         base.ExecuteCmdlet();
 
                         WriteDebug(Resources.MakingClientCall);
 
-                        ServiceClientAdapter.RemoveProtectionPolicy(PolicyName);
+                        ServiceClientAdapter.RemoveProtectionPolicy(_policyName);
                         WriteDebug(Resources.ProtectionPolicyDeleted);
                     }
                 );
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 {
                     WriteObject(Policy);
                 }
-            }, ShouldProcess(PolicyName, VerbsCommon.Remove));
+            }, ShouldProcess(_policyName, VerbsCommon.Remove));
         }
     }
 }

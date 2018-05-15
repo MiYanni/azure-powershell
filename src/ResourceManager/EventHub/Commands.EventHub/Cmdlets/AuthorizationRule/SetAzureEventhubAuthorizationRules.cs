@@ -82,14 +82,14 @@ namespace Microsoft.Azure.Commands.EventHub.Commands
             if (ParameterSetName.Equals(AuthoRuleInputObjectParameterSet))
                 if (EventHub != null)
                 {
-                    if (ShouldProcess(target: sasRule.Name, action: string.Format(Resources.UpdateEventHubAuthorizationrule, Name, EventHub)))
+                    if (ShouldProcess(sasRule.Name, string.Format(Resources.UpdateEventHubAuthorizationrule, Name, EventHub)))
                     {
                         WriteObject(Client.CreateOrUpdateEventHubAuthorizationRules(ResourceGroupName, Namespace, EventHub, Name, sasRule));
                     }
                 }
                 else
                 {
-                    if (ShouldProcess(target: sasRule.Name, action: string.Format(Resources.UpdateNamespaceAuthorizationrule, Name, Namespace)))
+                    if (ShouldProcess(sasRule.Name, string.Format(Resources.UpdateNamespaceAuthorizationrule, Name, Namespace)))
                     {
                         sasRule = InputObject;
                         WriteObject(Client.CreateOrUpdateNamespaceAuthorizationRules(ResourceGroupName, Namespace, Name, sasRule));
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands
 
             // update Namespace Authorization Rule
             if (ParameterSetName.Equals(NamespaceAuthoRuleParameterSet))
-                if (ShouldProcess(target: sasRule.Name, action: string.Format(Resources.UpdateNamespaceAuthorizationrule, Name, Namespace)))
+                if (ShouldProcess(sasRule.Name, string.Format(Resources.UpdateNamespaceAuthorizationrule, Name, Namespace)))
                 {
                     WriteObject(Client.CreateOrUpdateNamespaceAuthorizationRules(ResourceGroupName, Namespace, Name, sasRule));
                 }
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands
 
             // Update EventHub authorizationRule
             if (ParameterSetName.Equals(EventhubAuthoRuleParameterSet))
-                if (ShouldProcess(target: sasRule.Name, action: string.Format(Resources.UpdateEventHubAuthorizationrule, Name, EventHub)))
+                if (ShouldProcess(sasRule.Name, string.Format(Resources.UpdateEventHubAuthorizationrule, Name, EventHub)))
                 {
                     WriteObject(Client.CreateOrUpdateEventHubAuthorizationRules(ResourceGroupName, Namespace, EventHub, Name, sasRule));
                 }

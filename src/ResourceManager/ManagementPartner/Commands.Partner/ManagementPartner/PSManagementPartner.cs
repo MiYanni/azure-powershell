@@ -17,7 +17,7 @@ using Microsoft.Azure.Management.ManagementPartner.Models;
 
 namespace Microsoft.Azure.Commands.ManagementPartner
 {
-    class PSManagementPartner
+    internal class PSManagementPartner
     {
         public string PartnerId { get; set; }
         public string PartnerName { get; set; }

@@ -35,18 +35,18 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var peering =
-                    this.ExpressRouteCircuit.Peerings.First(
+                    ExpressRouteCircuit.Peerings.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(peering);
             }
             else
             {
-                var peerings = this.ExpressRouteCircuit.Peerings;
+                var peerings = ExpressRouteCircuit.Peerings;
                 WriteObject(peerings, true);
             }
         }

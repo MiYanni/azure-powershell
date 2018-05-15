@@ -47,11 +47,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.InputObject.FriendlyName,
+            if (ShouldProcess(
+                InputObject.FriendlyName,
                 VerbsData.Update))
             {
-                this.RefreshServicesProvider();
+                RefreshServicesProvider();
             }
         }
 
@@ -60,16 +60,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void RefreshServicesProvider()
         {
-            var response = this.RecoveryServicesClient.RefreshAzureSiteRecoveryProvider(
+            var response = RecoveryServicesClient.RefreshAzureSiteRecoveryProvider(
                 Utilities.GetValueFromArmId(
-                    this.InputObject.ID,
+                    InputObject.ID,
                     ARMResourceTypeConstants.ReplicationFabrics),
-                this.InputObject.Name);
+                InputObject.Name);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
     }
 }

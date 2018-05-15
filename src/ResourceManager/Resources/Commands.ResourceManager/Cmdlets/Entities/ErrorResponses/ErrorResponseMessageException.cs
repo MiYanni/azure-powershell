@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ErrorResponses
 {
-    using Cmdlets.Utilities;
+    using Utilities;
     using System;
     using System.Net;
 
@@ -46,12 +46,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ErrorRespons
             if (HttpUtility.IsSuccessfulRequest(httpStatus))
             {
                 throw new ArgumentException(
-                    message: "The error response message exception should not be used for successful http response messages.",
-                    paramName: "httpStatus");
+                    "The error response message exception should not be used for successful http response messages.",
+                    "httpStatus");
             }
 
-            this.HttpStatus = httpStatus;
-            this.ErrorResponseMessage = errorResponseMessage;
+            HttpStatus = httpStatus;
+            ErrorResponseMessage = errorResponseMessage;
         }
     }
 }

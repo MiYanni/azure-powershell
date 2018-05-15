@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Topic
         {
             // delete a Topic             
 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.RemoveTopic, Name, Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.RemoveTopic, Name, Namespace)))
             {
                 WriteObject(Client.DeleteQueue(ResourceGroupName, Namespace, Name));
             }

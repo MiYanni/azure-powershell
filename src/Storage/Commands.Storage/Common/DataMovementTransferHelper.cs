@@ -41,11 +41,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                     HandleTransferException(se, record, outputStream);
                     throw se;
                 }
-                else
-                {
-                    HandleTransferException(e, record, outputStream);
-                    throw;
-                }
+                HandleTransferException(e, record, outputStream);
+                throw;
             }
             catch (Exception e)
             {

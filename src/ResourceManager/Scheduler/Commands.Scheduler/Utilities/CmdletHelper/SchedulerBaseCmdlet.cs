@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.Scheduler.Utilities
 {
-    using Microsoft.Azure.Commands.ResourceManager.Common;
+    using ResourceManager.Common;
 
     /// <summary>
     /// Scheduler base commandlet class.
@@ -33,13 +33,13 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                this._schedulerClient = new SchedulerClient(this.DefaultProfile.DefaultContext);
+                _schedulerClient = new SchedulerClient(DefaultProfile.DefaultContext);
 
-                return this._schedulerClient;
+                return _schedulerClient;
             }
             set
             {
-                this._schedulerClient = value;
+                _schedulerClient = value;
             }
         }
     }

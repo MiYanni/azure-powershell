@@ -15,9 +15,9 @@
 namespace Microsoft.Azure.Commands.ApiManagement.Commands
 {
     using Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ApiManagement.Models;
-    using Microsoft.WindowsAzure.Commands.Storage.Adapters;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
+    using Models;
+    using WindowsAzure.Commands.Storage.Adapters;
+    using WindowsAzure.Commands.Common.Storage;
     using System.Management.Automation;
     using ResourceManager.Common.ArgumentCompleters;
 
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.Commands
             ValueFromPipelineByPropertyName = true,
             Mandatory = true,
             HelpMessage = "Name of resource group under which API Management exists.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         {
             get
             {
-                return this.toRemoveNode;
+                return toRemoveNode;
             }
             set
             {
@@ -42,12 +42,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         protected override int Number
         {
-             get { return this.NumberOfNodesToRemove; }
+             get { return NumberOfNodesToRemove; }
         }      
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(target: this.Name, action: string.Format("Remove {0} nodes from {1}", -toRemoveNode, this.NodeType)))
+            if (ShouldProcess(Name, string.Format("Remove {0} nodes from {1}", -toRemoveNode, NodeType)))
             {
                 base.ExecuteCmdlet();
             }

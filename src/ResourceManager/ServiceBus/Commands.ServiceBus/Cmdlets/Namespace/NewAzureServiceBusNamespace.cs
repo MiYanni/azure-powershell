@@ -71,9 +71,9 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Namespace
         public override void ExecuteCmdlet()
         {
             // Create a new ServiceBus namespace
-            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, true);
 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.CreateNamesapce, Name, ResourceGroupName)))
+            if (ShouldProcess(Name, string.Format(Resources.CreateNamesapce, Name, ResourceGroupName)))
             {
                 WriteObject(Client.BeginCreateNamespace(ResourceGroupName, Name, Location, SkuName, tagDictionary));
             }

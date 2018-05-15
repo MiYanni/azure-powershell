@@ -70,20 +70,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.Name,
+            if (ShouldProcess(
+                Name,
                 VerbsCommon.New))
             {
                 var input = new FabricCreationInput();
                 input.Properties = new FabricCreationInputProperties();
                 
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.Azure:
 
                         input.Properties.CustomDetails = new AzureFabricCreationInput()
                         {
-                            Location = this.Location
+                            Location = Location
                         };
                         break;
 
@@ -93,14 +93,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         break;
                 }
 
-                var response = this.RecoveryServicesClient.CreateAzureSiteRecoveryFabric(
-                    this.Name,
+                var response = RecoveryServicesClient.CreateAzureSiteRecoveryFabric(
+                    Name,
                     input);
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
     }

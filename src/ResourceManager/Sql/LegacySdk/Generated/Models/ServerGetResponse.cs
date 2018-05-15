@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Server Server
         {
-            get { return this._server; }
-            set { this._server = value; }
+            get { return _server; }
+            set { _server = value; }
         }
         
         /// <summary>

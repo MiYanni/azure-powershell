@@ -40,44 +40,41 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 WriteVerbose(string.Format(Resources.GetJobById, options.JobId));
                 JobOperations jobOperations = options.Context.BatchOMClient.JobOperations;
                 ODATADetailLevel getDetailLevel = new ODATADetailLevel(selectClause: options.Select, expandClause: options.Expand);
-                CloudJob job = jobOperations.GetJob(options.JobId, detailLevel: getDetailLevel, additionalBehaviors: options.AdditionalBehaviors);
+                CloudJob job = jobOperations.GetJob(options.JobId, getDetailLevel, options.AdditionalBehaviors);
                 PSCloudJob psJob = new PSCloudJob(job);
-                return new PSCloudJob[] { psJob };
+                return new[] { psJob };
             }
             // List jobs using the specified filter
+            string jobScheduleId = options.JobSchedule == null ? options.JobScheduleId : options.JobSchedule.Id;
+            bool filterByJobSchedule = !string.IsNullOrEmpty(jobScheduleId);
+            ODATADetailLevel listDetailLevel = new ODATADetailLevel(selectClause: options.Select, expandClause: options.Expand);
+
+            string verboseLogString = null;
+            if (!string.IsNullOrEmpty(options.Filter))
+            {
+                verboseLogString = filterByJobSchedule ? Resources.GetJobByOData : string.Format(Resources.GetJobByODataAndJobSChedule, jobScheduleId);
+                listDetailLevel.FilterClause = options.Filter;
+            }
             else
             {
-                string jobScheduleId = options.JobSchedule == null ? options.JobScheduleId : options.JobSchedule.Id;
-                bool filterByJobSchedule = !string.IsNullOrEmpty(jobScheduleId);
-                ODATADetailLevel listDetailLevel = new ODATADetailLevel(selectClause: options.Select, expandClause: options.Expand);
-
-                string verboseLogString = null;
-                if (!string.IsNullOrEmpty(options.Filter))
-                {
-                    verboseLogString = filterByJobSchedule ? Resources.GetJobByOData : string.Format(Resources.GetJobByODataAndJobSChedule, jobScheduleId);
-                    listDetailLevel.FilterClause = options.Filter;
-                }
-                else
-                {
-                    verboseLogString = filterByJobSchedule ? Resources.GetJobNoFilter : string.Format(Resources.GetJobByJobScheduleNoFilter, jobScheduleId);
-                }
-                WriteVerbose(verboseLogString);
-
-                IPagedEnumerable<CloudJob> jobs = null;
-                if (filterByJobSchedule)
-                {
-                    JobScheduleOperations jobScheduleOperations = options.Context.BatchOMClient.JobScheduleOperations;
-                    jobs = jobScheduleOperations.ListJobs(jobScheduleId, listDetailLevel, options.AdditionalBehaviors);
-                }
-                else
-                {
-                    JobOperations jobOperations = options.Context.BatchOMClient.JobOperations;
-                    jobs = jobOperations.ListJobs(listDetailLevel, options.AdditionalBehaviors);
-                }
-                Func<CloudJob, PSCloudJob> mappingFunction = j => { return new PSCloudJob(j); };
-                return PSPagedEnumerable<PSCloudJob, CloudJob>.CreateWithMaxCount(
-                    jobs, mappingFunction, options.MaxCount, () => WriteVerbose(string.Format(Resources.MaxCount, options.MaxCount)));
+                verboseLogString = filterByJobSchedule ? Resources.GetJobNoFilter : string.Format(Resources.GetJobByJobScheduleNoFilter, jobScheduleId);
             }
+            WriteVerbose(verboseLogString);
+
+            IPagedEnumerable<CloudJob> jobs = null;
+            if (filterByJobSchedule)
+            {
+                JobScheduleOperations jobScheduleOperations = options.Context.BatchOMClient.JobScheduleOperations;
+                jobs = jobScheduleOperations.ListJobs(jobScheduleId, listDetailLevel, options.AdditionalBehaviors);
+            }
+            else
+            {
+                JobOperations jobOperations = options.Context.BatchOMClient.JobOperations;
+                jobs = jobOperations.ListJobs(listDetailLevel, options.AdditionalBehaviors);
+            }
+            Func<CloudJob, PSCloudJob> mappingFunction = j => { return new PSCloudJob(j); };
+            return PSPagedEnumerable<PSCloudJob, CloudJob>.CreateWithMaxCount(
+                jobs, mappingFunction, options.MaxCount, () => WriteVerbose(string.Format(Resources.MaxCount, options.MaxCount)));
         }
 
         /// <summary>
@@ -295,9 +292,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
             
             WriteVerbose(string.Format(Resources.GetJobPreparationAndReleaseStatus, jobId));
             JobOperations jobOperations = options.Context.BatchOMClient.JobOperations;
-            ODATADetailLevel getDetailLevel = new ODATADetailLevel(filterClause: options.Filter, selectClause: options.Select, expandClause: options.Expand);
+            ODATADetailLevel getDetailLevel = new ODATADetailLevel(options.Filter, options.Select, options.Expand);
             IPagedEnumerable<JobPreparationAndReleaseTaskExecutionInformation> jobPrepAndReleaseDetails =
-                jobOperations.ListJobPreparationAndReleaseTaskStatus(jobId, getDetailLevel, additionalBehaviors: options.AdditionalBehaviors);
+                jobOperations.ListJobPreparationAndReleaseTaskStatus(jobId, getDetailLevel, options.AdditionalBehaviors);
 
             Func<JobPreparationAndReleaseTaskExecutionInformation, PSJobPreparationAndReleaseTaskExecutionInformation> mappingFunction = 
                 j => new PSJobPreparationAndReleaseTaskExecutionInformation(j);

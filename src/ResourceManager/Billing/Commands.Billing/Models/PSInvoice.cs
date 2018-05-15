@@ -46,19 +46,19 @@ namespace Microsoft.Azure.Commands.Billing.Models
         {
             if (invoice != null)
             {
-                this.Id = invoice.Id;
-                this.Type = invoice.Type;
-                this.Name = invoice.Name;
-                this.InvoicePeriodStartDate = invoice.InvoicePeriodStartDate;
-                this.InvoicePeriodEndDate = invoice.InvoicePeriodEndDate;
+                Id = invoice.Id;
+                Type = invoice.Type;
+                Name = invoice.Name;
+                InvoicePeriodStartDate = invoice.InvoicePeriodStartDate;
+                InvoicePeriodEndDate = invoice.InvoicePeriodEndDate;
                 if (invoice.DownloadUrl != null)
                 {
-                    this.DownloadUrl = invoice.DownloadUrl.Url;
-                    this.DownloadUrlExpiry = invoice.DownloadUrl.ExpiryTime;
+                    DownloadUrl = invoice.DownloadUrl.Url;
+                    DownloadUrlExpiry = invoice.DownloadUrl.ExpiryTime;
                 }
                 if (invoice.BillingPeriodIds != null)
                 {
-                    this.BillingPeriodNames = invoice.BillingPeriodIds.Select(x => Utilities.GetResourceNameFromId(x)).ToList();
+                    BillingPeriodNames = invoice.BillingPeriodIds.Select(x => Utilities.GetResourceNameFromId(x)).ToList();
                 }
             }
         }

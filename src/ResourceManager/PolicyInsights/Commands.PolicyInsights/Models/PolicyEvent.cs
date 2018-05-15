@@ -183,36 +183,36 @@ namespace Microsoft.Azure.Commands.PolicyInsights.Models
                 return;
             }
 
-            this.AdditionalProperties = policyEvent.AdditionalProperties;
-            this.AdditionalProperties.Remove("@odata.id");
+            AdditionalProperties = policyEvent.AdditionalProperties;
+            AdditionalProperties.Remove("@odata.id");
 
-            this.Timestamp = policyEvent.Timestamp;
-            this.ResourceId = policyEvent.ResourceId;
-            this.PolicyAssignmentId = policyEvent.PolicyAssignmentId;
-            this.PolicyDefinitionId = policyEvent.PolicyDefinitionId;
-            this.EffectiveParameters = policyEvent.EffectiveParameters;
-            this.IsCompliant = policyEvent.IsCompliant;
-            this.SubscriptionId = policyEvent.SubscriptionId;
-            this.ResourceType = policyEvent.ResourceType;
-            this.ResourceLocation = policyEvent.ResourceLocation;
-            this.ResourceGroup = policyEvent.ResourceGroup;
-            this.ResourceTags = policyEvent.ResourceTags;
-            this.PolicyAssignmentName = policyEvent.PolicyAssignmentName;
-            this.PolicyAssignmentOwner = policyEvent.PolicyAssignmentOwner;
-            this.PolicyAssignmentParameters = policyEvent.PolicyAssignmentParameters;
-            this.PolicyAssignmentScope = policyEvent.PolicyAssignmentScope;
-            this.PolicyDefinitionName = policyEvent.PolicyDefinitionName;
-            this.PolicyDefinitionAction = policyEvent.PolicyDefinitionAction;
-            this.PolicyDefinitionCategory = policyEvent.PolicyDefinitionCategory;
-            this.PolicySetDefinitionId = policyEvent.PolicySetDefinitionId;
-            this.PolicySetDefinitionName = policyEvent.PolicySetDefinitionName;
-            this.PolicySetDefinitionOwner = policyEvent.PolicySetDefinitionOwner;
-            this.PolicySetDefinitionCategory = policyEvent.PolicySetDefinitionCategory;
-            this.PolicySetDefinitionParameters = policyEvent.PolicySetDefinitionParameters;
-            this.ManagementGroupIds = policyEvent.ManagementGroupIds;
-            this.PolicyDefinitionReferenceId = policyEvent.PolicyDefinitionReferenceId;
-            this.TenantId = policyEvent.TenantId;
-            this.PrincipalOid = policyEvent.PrincipalOid;
+            Timestamp = policyEvent.Timestamp;
+            ResourceId = policyEvent.ResourceId;
+            PolicyAssignmentId = policyEvent.PolicyAssignmentId;
+            PolicyDefinitionId = policyEvent.PolicyDefinitionId;
+            EffectiveParameters = policyEvent.EffectiveParameters;
+            IsCompliant = policyEvent.IsCompliant;
+            SubscriptionId = policyEvent.SubscriptionId;
+            ResourceType = policyEvent.ResourceType;
+            ResourceLocation = policyEvent.ResourceLocation;
+            ResourceGroup = policyEvent.ResourceGroup;
+            ResourceTags = policyEvent.ResourceTags;
+            PolicyAssignmentName = policyEvent.PolicyAssignmentName;
+            PolicyAssignmentOwner = policyEvent.PolicyAssignmentOwner;
+            PolicyAssignmentParameters = policyEvent.PolicyAssignmentParameters;
+            PolicyAssignmentScope = policyEvent.PolicyAssignmentScope;
+            PolicyDefinitionName = policyEvent.PolicyDefinitionName;
+            PolicyDefinitionAction = policyEvent.PolicyDefinitionAction;
+            PolicyDefinitionCategory = policyEvent.PolicyDefinitionCategory;
+            PolicySetDefinitionId = policyEvent.PolicySetDefinitionId;
+            PolicySetDefinitionName = policyEvent.PolicySetDefinitionName;
+            PolicySetDefinitionOwner = policyEvent.PolicySetDefinitionOwner;
+            PolicySetDefinitionCategory = policyEvent.PolicySetDefinitionCategory;
+            PolicySetDefinitionParameters = policyEvent.PolicySetDefinitionParameters;
+            ManagementGroupIds = policyEvent.ManagementGroupIds;
+            PolicyDefinitionReferenceId = policyEvent.PolicyDefinitionReferenceId;
+            TenantId = policyEvent.TenantId;
+            PrincipalOid = policyEvent.PrincipalOid;
         }
     }
 }

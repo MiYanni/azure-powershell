@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
 
             WriteProgress(progressRecord);
 
-            var sites = this.ResourcesClient.ResourceManagementClient.FilterResources(new FilterResourcesOptions()
+            var sites = ResourcesClient.ResourceManagementClient.FilterResources(new FilterResourcesOptions
             {
                 ResourceType = "Microsoft.Web/Sites"
             }).Where(s => string.Equals(s.Name, Name, StringComparison.OrdinalIgnoreCase)).ToArray();
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
                 }
 
                 progressRecord.StatusDescription = string.Format(progressDescriptionFormat, i + 1, sites.Length);
-                progressRecord.PercentComplete = (100 * (i + 1)) / sites.Length;
+                progressRecord.PercentComplete = 100 * (i + 1) / sites.Length;
                 WriteProgress(progressRecord);
             }
 
@@ -147,7 +147,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
 
             WriteProgress(progressRecord);
 
-            var resourceGroups = this.ResourcesClient.ResourceManagementClient.FilterResources(new FilterResourcesOptions()
+            var resourceGroups = ResourcesClient.ResourceManagementClient.FilterResources(new FilterResourcesOptions
             {
                 ResourceType = "Microsoft.Web/Sites"
             }).Select(s => s.ResourceGroupName).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
 
                 progressRecord.CurrentOperation = string.Format(progressCurrentOperationFormat, rg);
                 progressRecord.StatusDescription = string.Format(progressDescriptionFormat, i + 1, resourceGroups.Length);
-                progressRecord.PercentComplete = (100 * (i + 1)) / resourceGroups.Length;
+                progressRecord.PercentComplete = 100 * (i + 1) / resourceGroups.Length;
                 WriteProgress(progressRecord);
             }
 
@@ -186,7 +186,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
 
             WriteProgress(progressRecord);
 
-            var sites = this.ResourcesClient.ResourceManagementClient.FilterResources(new FilterResourcesOptions()
+            var sites = ResourcesClient.ResourceManagementClient.FilterResources(new FilterResourcesOptions
             {
                 ResourceType = "Microsoft.Web/Sites"
             }).Where(s => string.Equals(s.Location, Location.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase)).ToArray();
@@ -209,7 +209,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
                 }
 
                 progressRecord.StatusDescription = string.Format(progressDescriptionFormat, i + 1, sites.Length);
-                progressRecord.PercentComplete = (100 * (i + 1)) / sites.Length;
+                progressRecord.PercentComplete = 100 * (i + 1) / sites.Length;
                 WriteProgress(progressRecord);
             }
 

@@ -32,66 +32,66 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
 
             // Get the subnetId and publicIpAddressId from the object if specified
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
-                if (this.Subnet != null)
+                if (Subnet != null)
                 {
-                    this.SubnetId = this.Subnet.Id;
+                    SubnetId = Subnet.Id;
                 }
 
                 if (PublicIpAddress != null)
                 {
-                    this.PublicIpAddressId = this.PublicIpAddress.Id;
+                    PublicIpAddressId = PublicIpAddress.Id;
                 }
 
-                if (this.LoadBalancerBackendAddressPool != null)
+                if (LoadBalancerBackendAddressPool != null)
                 {
-                    this.LoadBalancerBackendAddressPoolId = new List<string>();
-                    foreach (var bepool in this.LoadBalancerBackendAddressPool)
+                    LoadBalancerBackendAddressPoolId = new List<string>();
+                    foreach (var bepool in LoadBalancerBackendAddressPool)
                     {
-                        this.LoadBalancerBackendAddressPoolId.Add(bepool.Id);
+                        LoadBalancerBackendAddressPoolId.Add(bepool.Id);
                     }
                 }
 
-                if (this.LoadBalancerInboundNatRule != null)
+                if (LoadBalancerInboundNatRule != null)
                 {
-                    this.LoadBalancerInboundNatRuleId = new List<string>();
-                    foreach (var natRule in this.LoadBalancerInboundNatRule)
+                    LoadBalancerInboundNatRuleId = new List<string>();
+                    foreach (var natRule in LoadBalancerInboundNatRule)
                     {
-                        this.LoadBalancerInboundNatRuleId.Add(natRule.Id);
+                        LoadBalancerInboundNatRuleId.Add(natRule.Id);
                     }
                 }
 
-                if (this.ApplicationGatewayBackendAddressPool != null)
+                if (ApplicationGatewayBackendAddressPool != null)
                 {
-                    this.ApplicationGatewayBackendAddressPoolId = new List<string>();
-                    foreach (var appgwBepool in this.ApplicationGatewayBackendAddressPool)
+                    ApplicationGatewayBackendAddressPoolId = new List<string>();
+                    foreach (var appgwBepool in ApplicationGatewayBackendAddressPool)
                     {
-                        this.ApplicationGatewayBackendAddressPoolId.Add(appgwBepool.Id);
+                        ApplicationGatewayBackendAddressPoolId.Add(appgwBepool.Id);
                     }
                 }
 
-                if (this.ApplicationSecurityGroup != null)
+                if (ApplicationSecurityGroup != null)
                 {
-                    this.ApplicationSecurityGroupId = new List<string>();
-                    foreach (var asg in this.ApplicationSecurityGroup)
+                    ApplicationSecurityGroupId = new List<string>();
+                    foreach (var asg in ApplicationSecurityGroup)
                     {
-                        this.ApplicationSecurityGroupId.Add(asg.Id);
+                        ApplicationSecurityGroupId.Add(asg.Id);
                     }
                 }
             }
 
             var ipconfig = new PSNetworkInterfaceIPConfiguration();
-            ipconfig.Name = this.Name;
+            ipconfig.Name = Name;
 
-            if (!string.IsNullOrEmpty(this.SubnetId))
+            if (!string.IsNullOrEmpty(SubnetId))
             {
                 ipconfig.Subnet = new PSSubnet();
-                ipconfig.Subnet.Id = this.SubnetId;
+                ipconfig.Subnet.Id = SubnetId;
 
-                if (!string.IsNullOrEmpty(this.PrivateIpAddress))
+                if (!string.IsNullOrEmpty(PrivateIpAddress))
                 {
-                    ipconfig.PrivateIpAddress = this.PrivateIpAddress;
+                    ipconfig.PrivateIpAddress = PrivateIpAddress;
                     ipconfig.PrivateIpAllocationMethod = Management.Network.Models.IPAllocationMethod.Static;
                 }
                 else
@@ -100,50 +100,50 @@ namespace Microsoft.Azure.Commands.Network
                 }
             }
 
-            if (!string.IsNullOrEmpty(this.PublicIpAddressId))
+            if (!string.IsNullOrEmpty(PublicIpAddressId))
             {
                 ipconfig.PublicIpAddress = new PSPublicIpAddress();
-                ipconfig.PublicIpAddress.Id = this.PublicIpAddressId;
+                ipconfig.PublicIpAddress.Id = PublicIpAddressId;
             }
 
-            if (this.LoadBalancerBackendAddressPoolId != null)
+            if (LoadBalancerBackendAddressPoolId != null)
             {
                 ipconfig.LoadBalancerBackendAddressPools = new List<PSBackendAddressPool>();
-                foreach (var bepoolId in this.LoadBalancerBackendAddressPoolId)
+                foreach (var bepoolId in LoadBalancerBackendAddressPoolId)
                 {
                     ipconfig.LoadBalancerBackendAddressPools.Add(new PSBackendAddressPool { Id = bepoolId });
                 }
             }
 
-            if (this.LoadBalancerInboundNatRuleId != null)
+            if (LoadBalancerInboundNatRuleId != null)
             {
                 ipconfig.LoadBalancerInboundNatRules = new List<PSInboundNatRule>();
-                foreach (var natruleId in this.LoadBalancerInboundNatRuleId)
+                foreach (var natruleId in LoadBalancerInboundNatRuleId)
                 {
                     ipconfig.LoadBalancerInboundNatRules.Add(new PSInboundNatRule { Id = natruleId });
                 }
             }
 
-            if (this.ApplicationGatewayBackendAddressPoolId != null)
+            if (ApplicationGatewayBackendAddressPoolId != null)
             {
                 ipconfig.ApplicationGatewayBackendAddressPools = new List<PSApplicationGatewayBackendAddressPool>();
-                foreach (var appgwBepoolId in this.ApplicationGatewayBackendAddressPoolId)
+                foreach (var appgwBepoolId in ApplicationGatewayBackendAddressPoolId)
                 {
                     ipconfig.ApplicationGatewayBackendAddressPools.Add(new PSApplicationGatewayBackendAddressPool { Id = appgwBepoolId });
                 }
             }
 
-            if (this.ApplicationSecurityGroupId != null)
+            if (ApplicationSecurityGroupId != null)
             {
                 ipconfig.ApplicationSecurityGroups = new List<PSApplicationSecurityGroup>();
-                foreach (var asgId in this.ApplicationSecurityGroupId)
+                foreach (var asgId in ApplicationSecurityGroupId)
                 {
                     ipconfig.ApplicationSecurityGroups.Add(new PSApplicationSecurityGroup { Id = asgId });
                 }
             }
 
-            ipconfig.PrivateIpAddressVersion = this.PrivateIpAddressVersion;
-            ipconfig.Primary = this.Primary.IsPresent;
+            ipconfig.PrivateIpAddressVersion = PrivateIpAddressVersion;
+            ipconfig.Primary = Primary.IsPresent;
             WriteObject(ipconfig);
 
         }

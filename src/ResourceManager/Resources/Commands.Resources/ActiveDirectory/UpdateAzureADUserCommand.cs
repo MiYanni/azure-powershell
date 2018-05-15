@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     UPNOrObjectId = ObjectId.ToString();
                 }
 
-                if (ShouldProcess(target: UPNOrObjectId, action: string.Format("Updating properties for user with upn or object id '{0}'", UPNOrObjectId)))
+                if (ShouldProcess(UPNOrObjectId, string.Format("Updating properties for user with upn or object id '{0}'", UPNOrObjectId)))
                 {
                     WriteObject(ActiveDirectoryClient.UpdateUser(UPNOrObjectId, userUpdateParameters));
                 }

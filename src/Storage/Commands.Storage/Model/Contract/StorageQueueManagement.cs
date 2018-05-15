@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Queue.Protocol;
+    using Commands.Common.Storage;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Queue;
+    using WindowsAzure.Storage.Queue.Protocol;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -104,10 +104,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
                 {
                     return queue;
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
             catch (AggregateException e) when (e.InnerException is StorageException)
             {

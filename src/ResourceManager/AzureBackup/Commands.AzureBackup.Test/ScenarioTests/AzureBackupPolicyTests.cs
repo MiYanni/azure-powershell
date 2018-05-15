@@ -28,35 +28,35 @@ namespace Microsoft.Azure.Commands.AzureBackup.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ListProtectionPolicyTests()
         {
-            this.RunPowerShellTest("Test-GetAzureBackupProtectionPolicyTests");
+            RunPowerShellTest("Test-GetAzureBackupProtectionPolicyTests");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void NewProtectionPolicyTests()
         {
-            this.RunPowerShellTest("Test-NewAzureBackupProtectionPolicyTests");
+            RunPowerShellTest("Test-NewAzureBackupProtectionPolicyTests");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ListProtectionPolicyByNameTests()
         {
-            this.RunPowerShellTest("Test-GetAzureBackupProtectionPolicyByNameTests");
+            RunPowerShellTest("Test-GetAzureBackupProtectionPolicyByNameTests");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void SetProtectionPolicyTests()
         {
-            this.RunPowerShellTest("Test-SetAzureBackupProtectionPolicyTests");
+            RunPowerShellTest("Test-SetAzureBackupProtectionPolicyTests");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void RemoveProtectionPolicyTests()
         {
-            this.RunPowerShellTest("Test-RemoveAzureBackupProtectionPolicyTests");
+            RunPowerShellTest("Test-RemoveAzureBackupProtectionPolicyTests");
         }
 
 

@@ -198,7 +198,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
 
             if (!TestAccount(resourceGroupName, accountName))
             {
-                throw new InvalidOperationException(string.Format(Properties.Resources.AccountDoesNotExist, accountName));
+                throw new InvalidOperationException(string.Format(Resources.AccountDoesNotExist, accountName));
             }
 
             _accountClient.Account.Delete(resourceGroupName, accountName);
@@ -213,7 +213,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
             }
             catch (CloudException ex)
             {
-                if ((ex.Response != null && ex.Response.StatusCode == HttpStatusCode.NotFound) || ex.Message.Contains(string.Format(Properties.Resources.FailedToDiscoverResourceGroup, accountName,
+                if (ex.Response != null && ex.Response.StatusCode == HttpStatusCode.NotFound || ex.Message.Contains(string.Format(Resources.FailedToDiscoverResourceGroup, accountName,
                     _subscriptionId)))
                 {
                     return false;
@@ -423,7 +423,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
 
             if (_accountClient.Account.Get(resourceGroupName, accountName).FirewallState == FirewallState.Disabled)
             {
-                runningCommand.WriteWarning(string.Format(Properties.Resources.FirewallDisabledWarning, accountName));
+                runningCommand.WriteWarning(string.Format(Resources.FirewallDisabledWarning, accountName));
             }
 
             return _accountClient.FirewallRules.CreateOrUpdate(
@@ -447,7 +447,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
 
             if (_accountClient.Account.Get(resourceGroupName, accountName).FirewallState == FirewallState.Disabled)
             {
-                runningCommand.WriteWarning(string.Format(Properties.Resources.FirewallDisabledWarning, accountName));
+                runningCommand.WriteWarning(string.Format(Resources.FirewallDisabledWarning, accountName));
             }
 
             _accountClient.FirewallRules.Delete(resourceGroupName, accountName, ruleName);
@@ -589,7 +589,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
         {
             if (path == null && itemType != DataLakeAnalyticsEnums.CatalogItemType.Database)
             {
-                throw new InvalidOperationException(Properties.Resources.EmptyCatalogPath);
+                throw new InvalidOperationException(Resources.EmptyCatalogPath);
             }
 
             var isList = IsCatalogItemOrList(path, itemType);
@@ -759,14 +759,14 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                     }
                     else
                     {
-                        throw new InvalidOperationException(Properties.Resources.InvalidUSqlTypeRequest);
+                        throw new InvalidOperationException(Resources.InvalidUSqlTypeRequest);
                     }
 
                     break;
                 case DataLakeAnalyticsEnums.CatalogItemType.Secret:
                     if (isList)
                     {
-                        throw new InvalidOperationException(Properties.Resources.InvalidUSqlSecretRequest);
+                        throw new InvalidOperationException(Resources.InvalidUSqlSecretRequest);
                     }
                     else
                     {
@@ -1314,13 +1314,13 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                         .Find(x => x.Name.Equals(accountName, StringComparison.InvariantCultureIgnoreCase))
                         .Id;
                 var rgStart = acctId.IndexOf("resourceGroups/", StringComparison.InvariantCultureIgnoreCase) +
-                              ("resourceGroups/".Length);
-                var rgLength = (acctId.IndexOf("/providers/", StringComparison.InvariantCultureIgnoreCase)) - rgStart;
+                              "resourceGroups/".Length;
+                var rgLength = acctId.IndexOf("/providers/", StringComparison.InvariantCultureIgnoreCase) - rgStart;
                 return acctId.Substring(rgStart, rgLength);
             }
             catch
             {
-                throw new CloudException(string.Format(Properties.Resources.FailedToDiscoverResourceGroup, accountName,
+                throw new CloudException(string.Format(Resources.FailedToDiscoverResourceGroup, accountName,
                     _subscriptionId));
             }
         }
@@ -1394,7 +1394,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                 case DataLakeAnalyticsEnums.CatalogItemType.Credential:
                     if (string.IsNullOrEmpty(path.DatabaseName))
                     {
-                        throw new CloudException(string.Format(Properties.Resources.InvalidCatalogPath,
+                        throw new CloudException(string.Format(Resources.InvalidCatalogPath,
                             path.FullCatalogItemPath));
                     }
 
@@ -1410,7 +1410,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                     if (string.IsNullOrEmpty(path.DatabaseName) ||
                         string.IsNullOrEmpty(path.SchemaAssemblyOrExternalDataSourceName))
                     {
-                        throw new CloudException(string.Format(Properties.Resources.InvalidCatalogPath,
+                        throw new CloudException(string.Format(Resources.InvalidCatalogPath,
                             path.FullCatalogItemPath));
                     }
 
@@ -1426,7 +1426,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                 case DataLakeAnalyticsEnums.CatalogItemType.View:
                     if (string.IsNullOrEmpty(path.DatabaseName))
                     {
-                        throw new CloudException(string.Format(Properties.Resources.InvalidCatalogPath,
+                        throw new CloudException(string.Format(Resources.InvalidCatalogPath,
                             path.FullCatalogItemPath));
                     }
 
@@ -1443,7 +1443,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                         string.IsNullOrEmpty(path.SchemaAssemblyOrExternalDataSourceName) ||
                         string.IsNullOrEmpty(path.TableOrTableValuedFunctionName))
                     {
-                        throw new CloudException(string.Format(Properties.Resources.InvalidCatalogPath,
+                        throw new CloudException(string.Format(Resources.InvalidCatalogPath,
                             path.FullCatalogItemPath));
                     }
 
@@ -1456,7 +1456,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                 case DataLakeAnalyticsEnums.CatalogItemType.TableStatistics:
                     if (string.IsNullOrEmpty(path.DatabaseName))
                     {
-                        throw new CloudException(string.Format(Properties.Resources.InvalidCatalogPath,
+                        throw new CloudException(string.Format(Resources.InvalidCatalogPath,
                             path.FullCatalogItemPath));
                     }
 

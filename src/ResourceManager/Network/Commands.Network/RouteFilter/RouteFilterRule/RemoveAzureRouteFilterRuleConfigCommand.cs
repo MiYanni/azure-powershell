@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Commands.Network
     using System.Linq;
     using System.Management.Automation;
 
-    using Microsoft.Azure.Commands.Network.Models;
+    using Models;
 
     [Cmdlet(VerbsCommon.Remove, "AzureRmRouteFilterRuleConfig", SupportsShouldProcess = true), OutputType(typeof(PSRouteFilterRule))]
     public class RemoveAzureRouteFilterRuleConfigCommand : NetworkBaseCmdlet
@@ -46,18 +46,18 @@ namespace Microsoft.Azure.Commands.Network
             // Verify if the route exists in the RouteTable
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Properties.Resources.OverwritingResource, this.RouteFilter.Name),
+                string.Format(Properties.Resources.OverwritingResource, RouteFilter.Name),
                 Properties.Resources.CreatingResourceMessage,
-                this.RouteFilter.Name,
+                RouteFilter.Name,
                 () =>
                 {
-                    var rule = this.RouteFilter.Rules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                    var rule = RouteFilter.Rules.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
                     if (rule != null)
                     {
-                        this.RouteFilter.Rules.Remove(rule);
+                        RouteFilter.Rules.Remove(rule);
                     }
 
-                    WriteObject(this.RouteFilter);
+                    WriteObject(RouteFilter);
                 });
             
         }

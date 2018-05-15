@@ -16,7 +16,7 @@ using Microsoft.Azure.Management.Logic.Models;
 
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Management.Automation;
 
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            LogicAppClient.RunWorkflowTrigger(this.ResourceGroupName, this.Name, this.TriggerName);
+            LogicAppClient.RunWorkflowTrigger(ResourceGroupName, Name, TriggerName);
         }
     }
 }

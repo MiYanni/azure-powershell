@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServiceObjective> ServiceObjectives
         {
-            get { return this._serviceObjectives; }
-            set { this._serviceObjectives = value; }
+            get { return _serviceObjectives; }
+            set { _serviceObjectives = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServiceObjectiveListResponse()
         {
-            this.ServiceObjectives = new LazyList<ServiceObjective>();
+            ServiceObjectives = new LazyList<ServiceObjective>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<ServiceObjective> GetEnumerator()
         {
-            return this.ServiceObjectives.GetEnumerator();
+            return ServiceObjectives.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

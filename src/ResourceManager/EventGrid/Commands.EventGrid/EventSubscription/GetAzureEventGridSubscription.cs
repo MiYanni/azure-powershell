@@ -113,31 +113,31 @@ namespace Microsoft.Azure.Commands.EventGrid
         public override void ExecuteCmdlet()
         {
             string scope;
-            bool includeFullEndpointUrl = this.IncludeFullEndpointUrl.IsPresent;
+            bool includeFullEndpointUrl = IncludeFullEndpointUrl.IsPresent;
 
-            if (!string.IsNullOrEmpty(this.EventSubscriptionName))
+            if (!string.IsNullOrEmpty(EventSubscriptionName))
             {
                 // Since an EventSubscription name is specified, we need to retrieve 
                 // only the particular event subscription corresponding to this name.
-                if (this.InputObject != null)
+                if (InputObject != null)
                 {
                     // Retrieve the event subscription for the specified topic
-                    scope = this.InputObject.Id;
+                    scope = InputObject.Id;
                 }
-                else if (string.IsNullOrEmpty(this.ResourceId))
+                else if (string.IsNullOrEmpty(ResourceId))
                 {
                     // ResourceID not specified, retrieve the event subscription for either the 
                     // subscription, or resource group, or custom topic depending on which of the parameters are provided.
-                    scope = EventGridUtils.GetScope(this.DefaultContext.Subscription.Id, this.ResourceGroupName, this.TopicName);
+                    scope = EventGridUtils.GetScope(DefaultContext.Subscription.Id, ResourceGroupName, TopicName);
                 }
                 else
                 {
                     // Since both a ResourceId and EventSubscriptionName are specified, we need to retrieve 
                     // only this particular event subscription corresponding to this resource ID.
-                    scope = this.ResourceId;
+                    scope = ResourceId;
                 }
 
-                this.RetrieveAndWriteEventSubscription(scope, this.EventSubscriptionName, includeFullEndpointUrl);
+                RetrieveAndWriteEventSubscription(scope, EventSubscriptionName, includeFullEndpointUrl);
             }
             else
             {
@@ -145,83 +145,83 @@ namespace Microsoft.Azure.Commands.EventGrid
                 // event subscriptions based on the provided parameters.
                 IEnumerable<EventSubscription> eventSubscriptionsList = null;
 
-                if (this.InputObject != null)
+                if (InputObject != null)
                 {
                     // Retrieve all the event subscriptions based on the ID of the specified topic object
-                    eventSubscriptionsList = this.Client.ListByResourceId(this.DefaultContext.Subscription.Id, this.InputObject.Id);
+                    eventSubscriptionsList = Client.ListByResourceId(DefaultContext.Subscription.Id, InputObject.Id);
                 }
-                else if (!string.IsNullOrEmpty(this.ResourceId))
+                else if (!string.IsNullOrEmpty(ResourceId))
                 {
-                    eventSubscriptionsList = this.Client.ListByResourceId(this.DefaultContext.Subscription.Id, this.ResourceId);
+                    eventSubscriptionsList = Client.ListByResourceId(DefaultContext.Subscription.Id, ResourceId);
                 }
-                else if (!string.IsNullOrEmpty(this.TopicName))
+                else if (!string.IsNullOrEmpty(TopicName))
                 {
                     // Get all event subscriptions for this topic
-                    if (string.IsNullOrEmpty(this.ResourceGroupName))
+                    if (string.IsNullOrEmpty(ResourceGroupName))
                     {
-                        throw new ArgumentNullException(this.ResourceGroupName,
+                        throw new ArgumentNullException(ResourceGroupName,
                             "Resource Group Name should be specified to retrieve event subscriptions for a topic");
                     }
 
-                    eventSubscriptionsList = this.Client.ListByResource(this.ResourceGroupName, "Microsoft.EventGrid", "topics", this.TopicName);
+                    eventSubscriptionsList = Client.ListByResource(ResourceGroupName, "Microsoft.EventGrid", "topics", TopicName);
                 }
-                else if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                else if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    if (string.IsNullOrEmpty(this.Location) && string.IsNullOrEmpty(this.TopicTypeName))
+                    if (string.IsNullOrEmpty(Location) && string.IsNullOrEmpty(TopicTypeName))
                     {
                         // List all global Event Grid subscriptions in the given resource group
-                        eventSubscriptionsList = this.Client.ListGlobalEventSubscriptionsByResourceGroup(this.ResourceGroupName);
+                        eventSubscriptionsList = Client.ListGlobalEventSubscriptionsByResourceGroup(ResourceGroupName);
                     }
-                    else if (string.IsNullOrEmpty(this.Location) && !string.IsNullOrEmpty(this.TopicTypeName))
+                    else if (string.IsNullOrEmpty(Location) && !string.IsNullOrEmpty(TopicTypeName))
                     {
-                        eventSubscriptionsList = this.Client.ListGlobalEventSubscriptionsByResourceGroupForTopicType(this.ResourceGroupName, this.TopicTypeName);
+                        eventSubscriptionsList = Client.ListGlobalEventSubscriptionsByResourceGroupForTopicType(ResourceGroupName, TopicTypeName);
                     }
-                    else if (!string.IsNullOrEmpty(this.Location) && string.IsNullOrEmpty(this.TopicTypeName))
+                    else if (!string.IsNullOrEmpty(Location) && string.IsNullOrEmpty(TopicTypeName))
                     {
                         // List all regional Event Grid subscriptions in the given resource group
-                        eventSubscriptionsList = this.Client.ListRegionalEventSubscriptionsByResourceGroup(this.ResourceGroupName, this.Location);
+                        eventSubscriptionsList = Client.ListRegionalEventSubscriptionsByResourceGroup(ResourceGroupName, Location);
                     }
-                    else if (!string.IsNullOrEmpty(this.Location) && !string.IsNullOrEmpty(this.TopicTypeName))
+                    else if (!string.IsNullOrEmpty(Location) && !string.IsNullOrEmpty(TopicTypeName))
                     {
-                        eventSubscriptionsList = this.Client.ListRegionalEventSubscriptionsByResourceGroupForTopicType(this.ResourceGroupName, this.Location, this.TopicTypeName);
+                        eventSubscriptionsList = Client.ListRegionalEventSubscriptionsByResourceGroupForTopicType(ResourceGroupName, Location, TopicTypeName);
                     }
                 }
                 else
                 {
                     // List all Event Grid event subscriptions in the given subscription
-                    if (string.IsNullOrEmpty(this.Location) && string.IsNullOrEmpty(this.TopicTypeName))
+                    if (string.IsNullOrEmpty(Location) && string.IsNullOrEmpty(TopicTypeName))
                     {
                         // List all global Event Grid subscriptions in the given resource group
-                        eventSubscriptionsList = this.Client.ListGlobalEventSubscriptionsBySubscription();
+                        eventSubscriptionsList = Client.ListGlobalEventSubscriptionsBySubscription();
                     }
-                    else if (string.IsNullOrEmpty(this.Location) && !string.IsNullOrEmpty(this.TopicTypeName))
+                    else if (string.IsNullOrEmpty(Location) && !string.IsNullOrEmpty(TopicTypeName))
                     {
-                        eventSubscriptionsList = this.Client.ListGlobalEventSubscriptionsBySubscriptionForTopicType(this.TopicTypeName);
+                        eventSubscriptionsList = Client.ListGlobalEventSubscriptionsBySubscriptionForTopicType(TopicTypeName);
                     }
-                    else if (!string.IsNullOrEmpty(this.Location) && string.IsNullOrEmpty(this.TopicTypeName))
+                    else if (!string.IsNullOrEmpty(Location) && string.IsNullOrEmpty(TopicTypeName))
                     {
                         // List all regional Event Grid subscriptions in the given resource group
-                        eventSubscriptionsList = this.Client.ListRegionalEventSubscriptionsBySubscription(this.Location);
+                        eventSubscriptionsList = Client.ListRegionalEventSubscriptionsBySubscription(Location);
                     }
-                    else if (!string.IsNullOrEmpty(this.Location) && !string.IsNullOrEmpty(this.TopicTypeName))
+                    else if (!string.IsNullOrEmpty(Location) && !string.IsNullOrEmpty(TopicTypeName))
                     {
-                        eventSubscriptionsList = this.Client.ListRegionalEventSubscriptionsBySubscriptionForTopicType(this.Location, this.TopicTypeName);
+                        eventSubscriptionsList = Client.ListRegionalEventSubscriptionsBySubscriptionForTopicType(Location, TopicTypeName);
                     }
                 }
 
-                this.WritePSEventSubscriptionsList(eventSubscriptionsList, includeFullEndpointUrl);
+                WritePSEventSubscriptionsList(eventSubscriptionsList, includeFullEndpointUrl);
             }
         }
 
         void RetrieveAndWriteEventSubscription(string scope, string eventSubscriptionName, bool includeFullEndpointUrl)
         {
-            EventSubscription eventSubscription = this.Client.GetEventSubscription(scope, eventSubscriptionName);
+            EventSubscription eventSubscription = Client.GetEventSubscription(scope, eventSubscriptionName);
             PSEventSubscription psEventSubscription;
 
             if (includeFullEndpointUrl &&
                 eventSubscription.Destination is WebHookEventSubscriptionDestination)
             {
-                EventSubscriptionFullUrl fullUrl = this.Client.GetEventSubscriptionFullUrl(scope, eventSubscriptionName);
+                EventSubscriptionFullUrl fullUrl = Client.GetEventSubscriptionFullUrl(scope, eventSubscriptionName);
                 psEventSubscription = new PSEventSubscription(eventSubscription, fullUrl.EndpointUrl);
             }
             else
@@ -229,7 +229,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                 psEventSubscription = new PSEventSubscription(eventSubscription);
             }
 
-            this.WriteObject(psEventSubscription);
+            WriteObject(psEventSubscription);
         }
 
         void WritePSEventSubscriptionsList(IEnumerable<EventSubscription> eventSubscriptionsList, bool includeFullEndpointUrl)
@@ -248,7 +248,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                 if (includeFullEndpointUrl &&
                     eventSubscription.Destination is WebHookEventSubscriptionDestination)
                 {
-                    EventSubscriptionFullUrl fullUrl = this.Client.GetEventSubscriptionFullUrl(eventSubscription.Topic, eventSubscription.Name);
+                    EventSubscriptionFullUrl fullUrl = Client.GetEventSubscriptionFullUrl(eventSubscription.Topic, eventSubscription.Name);
                     psEventSubscription = new PSEventSubscriptionListInstance(eventSubscription, fullUrl.EndpointUrl);
                 }
                 else
@@ -259,7 +259,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                 psEventSubscriptionsList.Add(psEventSubscription);
             }
 
-            this.WriteObject(psEventSubscriptionsList, true);
+            WriteObject(psEventSubscriptionsList, true);
         }
     }
 }

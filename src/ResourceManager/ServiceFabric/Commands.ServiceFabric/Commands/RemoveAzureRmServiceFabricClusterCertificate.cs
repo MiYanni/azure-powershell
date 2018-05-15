@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true,
                    HelpMessage = "Specify the cluster thumbprint which to be removed")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string Thumbprint { get; set; }
 
         public override void ExecuteCmdlet()
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSInvalidOperationException(
                     string.Format(
                         ServiceFabricProperties.Resources.RemoveCertFromUnsecureCluster,
-                        this.Name));
+                        Name));
             }
 
             if (clusterResource.Certificate.ThumbprintSecondary == null)
@@ -53,13 +53,13 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 Certificate = clusterResource.Certificate
             };
 
-            if (this.Thumbprint.Equals(
+            if (Thumbprint.Equals(
                 clusterResource.Certificate.ThumbprintSecondary,
                 StringComparison.OrdinalIgnoreCase))
             {
                 patchRequest.Certificate.ThumbprintSecondary = null;
             }
-            else if (this.Thumbprint.Equals( 
+            else if (Thumbprint.Equals( 
                 clusterResource.Certificate.Thumbprint,
                 StringComparison.OrdinalIgnoreCase))
             {
@@ -72,10 +72,10 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new InvalidOperationException(
                     string.Format(
                         ServiceFabricProperties.Resources.CannotFindThumbprintInTheCluster,
-                        this.Thumbprint));
+                        Thumbprint));
             }
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Remove a cluster certificate")))
+            if (ShouldProcess(Name, string.Format("Remove a cluster certificate")))
             {
                 var cluster = SendPatchRequest(patchRequest);
                 WriteObject(cluster, true);

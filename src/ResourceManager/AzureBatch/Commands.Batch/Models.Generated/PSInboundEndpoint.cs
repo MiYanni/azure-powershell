@@ -26,19 +26,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSInboundEndpoint
     {
         
-        internal Microsoft.Azure.Batch.InboundEndpoint omObject;
+        internal InboundEndpoint omObject;
         
-        internal PSInboundEndpoint(Microsoft.Azure.Batch.InboundEndpoint omObject)
+        internal PSInboundEndpoint(InboundEndpoint omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.BackendPort;
+                return omObject.BackendPort;
             }
         }
         
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.FrontendPort;
+                return omObject.FrontendPort;
             }
         }
         
@@ -63,15 +63,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Name;
+                return omObject.Name;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.InboundEndpointProtocol Protocol
+        public Azure.Batch.Common.InboundEndpointProtocol Protocol
         {
             get
             {
-                return this.omObject.Protocol;
+                return omObject.Protocol;
             }
         }
         
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PublicFqdn;
+                return omObject.PublicFqdn;
             }
         }
         
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PublicIPAddress;
+                return omObject.PublicIPAddress;
             }
         }
     }

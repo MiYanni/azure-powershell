@@ -85,7 +85,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 
         public static byte[] GetBlobMd5Hash(this CloudPageBlob blob, BlobRequestOptions requestOptions)
         {
-            blob.FetchAttributesAsync(new AccessCondition(), requestOptions, operationContext: null)
+            blob.FetchAttributesAsync(new AccessCondition(), requestOptions, null)
                 .ConfigureAwait(false).GetAwaiter().GetResult();
             if (String.IsNullOrEmpty(blob.Properties.ContentMD5))
             {
@@ -217,7 +217,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
         {
             var ub = new UriBuilder(uri);
             var parts = ub.Path
-                .Split(new char[] { '/' }, StringSplitOptions.None)
+                .Split(new[] { '/' }, StringSplitOptions.None)
                 .Select((p, i) => i == 1 ? p.ToLowerInvariant() : p)
                 .ToArray();
             ub.Path = string.Join("/", parts);

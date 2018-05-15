@@ -31,8 +31,8 @@ namespace Microsoft.Azure.Commands.DataMigration.Models
             }
 
             this.service = service;
-            this.ids = new DmsResourceIdentifier(service.Id);
-            this.ResourceGroupName = ids.ResourceGroupName;
+            ids = new DmsResourceIdentifier(service.Id);
+            ResourceGroupName = ids.ResourceGroupName;
         }
 
         public DataMigrationService Service => service;

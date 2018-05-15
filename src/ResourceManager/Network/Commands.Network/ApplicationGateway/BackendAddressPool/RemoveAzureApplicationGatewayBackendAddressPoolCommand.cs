@@ -36,19 +36,19 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(Name, Microsoft.Azure.Commands.Network.Properties.Resources.RemoveResourceMessage))
+            if (ShouldProcess(Name, Properties.Resources.RemoveResourceMessage))
             {
                 base.ExecuteCmdlet();
 
-                var backendAddressPool = this.ApplicationGateway.BackendAddressPools.SingleOrDefault
-                    (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                var backendAddressPool = ApplicationGateway.BackendAddressPools.SingleOrDefault
+                    (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 if (backendAddressPool != null)
                 {
-                    this.ApplicationGateway.BackendAddressPools.Remove(backendAddressPool);
+                    ApplicationGateway.BackendAddressPools.Remove(backendAddressPool);
                 }
 
-                WriteObject(this.ApplicationGateway);
+                WriteObject(ApplicationGateway);
             }
         }
     }

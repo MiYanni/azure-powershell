@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights
 
         protected void CreatePSDataSourceWithProperties(PSDataSourcePropertiesBase createParameters)
         {
-            CreatePSDataSourceWithProperties(createParameters, this.Name);
+            CreatePSDataSourceWithProperties(createParameters, Name);
         }
 
     }

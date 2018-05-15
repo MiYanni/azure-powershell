@@ -155,10 +155,10 @@ namespace Microsoft.Azure.Commands.Common.Strategies
                         if (x != previousX || operation != previousOperation)
                         {
                             asyncCmdlet.Cmdlet.WriteProgress(
-                                activity: "Creating Azure resources",
-                                statusDescription: percent + "% " + x,
-                                currentOperation: operation,
-                                percentComplete: percent);
+                                "Creating Azure resources",
+                                percent + "% " + x,
+                                operation,
+                                percent);
                             previousX = x;
                             previousOperation = operation;
                         }

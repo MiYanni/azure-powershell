@@ -88,11 +88,11 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
                 if (ParameterSetName == UserSpecifiedRuleSet)
                 {
 
-                    ModelAdapter.GetFirewallRule(this.ResourceGroupName, this.ServerName, this.FirewallRuleName);
+                    ModelAdapter.GetFirewallRule(ResourceGroupName, ServerName, FirewallRuleName);
                 }
                 else
                 {
-                    ModelAdapter.GetFirewallRule(this.ResourceGroupName, this.ServerName, AzureRuleName);
+                    ModelAdapter.GetFirewallRule(ResourceGroupName, ServerName, AzureRuleName);
                 }
             }
             catch (CloudException ex)
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
 
             // The server already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.ServerFirewallRuleNameExists, this.FirewallRuleName, this.ServerName),
+                string.Format(Properties.Resources.ServerFirewallRuleNameExists, FirewallRuleName, ServerName),
                 "FirewallRule");
         }
 
@@ -124,21 +124,21 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
 
             if (ParameterSetName == UserSpecifiedRuleSet)
             {
-                newEntity.Add(new Model.AzureSqlServerFirewallRuleModel()
+                newEntity.Add(new Model.AzureSqlServerFirewallRuleModel
                 {
-                    ResourceGroupName = this.ResourceGroupName,
-                    ServerName = this.ServerName,
-                    FirewallRuleName = this.FirewallRuleName,
-                    StartIpAddress = this.StartIpAddress,
-                    EndIpAddress = this.EndIpAddress,
+                    ResourceGroupName = ResourceGroupName,
+                    ServerName = ServerName,
+                    FirewallRuleName = FirewallRuleName,
+                    StartIpAddress = StartIpAddress,
+                    EndIpAddress = EndIpAddress,
                 });
             }
             else
             {
-                newEntity.Add(new Model.AzureSqlServerFirewallRuleModel()
+                newEntity.Add(new Model.AzureSqlServerFirewallRuleModel
                 {
-                    ResourceGroupName = this.ResourceGroupName,
-                    ServerName = this.ServerName,
+                    ResourceGroupName = ResourceGroupName,
+                    ServerName = ServerName,
                     FirewallRuleName = AzureRuleName,
                     StartIpAddress = AzureRuleIp,
                     EndIpAddress = AzureRuleIp,
@@ -155,7 +155,8 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
         /// <returns>The created FirewallRule</returns>
         protected override IEnumerable<Model.AzureSqlServerFirewallRuleModel> PersistChanges(IEnumerable<Model.AzureSqlServerFirewallRuleModel> entity)
         {
-            return new List<Model.AzureSqlServerFirewallRuleModel>() {
+            return new List<Model.AzureSqlServerFirewallRuleModel>
+            {
                 ModelAdapter.UpsertFirewallRule(entity.First())
             };
         }

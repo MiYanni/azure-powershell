@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AdministratorLogin
         {
-            get { return this._administratorLogin; }
-            set { this._administratorLogin = value; }
+            get { return _administratorLogin; }
+            set { _administratorLogin = value; }
         }
         
         private string _administratorLoginPassword;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AdministratorLoginPassword
         {
-            get { return this._administratorLoginPassword; }
-            set { this._administratorLoginPassword = value; }
+            get { return _administratorLoginPassword; }
+            set { _administratorLoginPassword = value; }
         }
         
         private string _authenticationType;
@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AuthenticationType
         {
-            get { return this._authenticationType; }
-            set { this._authenticationType = value; }
+            get { return _authenticationType; }
+            set { _authenticationType = value; }
         }
         
         private string _storageKey;
@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageKey
         {
-            get { return this._storageKey; }
-            set { this._storageKey = value; }
+            get { return _storageKey; }
+            set { _storageKey = value; }
         }
         
         private string _storageKeyType;
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageKeyType
         {
-            get { return this._storageKeyType; }
-            set { this._storageKeyType = value; }
+            get { return _storageKeyType; }
+            set { _storageKeyType = value; }
         }
         
         private Uri _storageUri;
@@ -92,8 +92,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Uri StorageUri
         {
-            get { return this._storageUri; }
-            set { this._storageUri = value; }
+            get { return _storageUri; }
+            set { _storageUri = value; }
         }
         
         /// <summary>

@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.TrafficManager.Models
 {
-    using Microsoft.Azure.Commands.TrafficManager.Utilities;
-    using Microsoft.Azure.Management.TrafficManager.Models;
+    using Utilities;
+    using Management.TrafficManager.Models;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -51,29 +51,29 @@ namespace Microsoft.Azure.Commands.TrafficManager.Models
 
         public Profile ToSDKProfile()
         {
-            var profile = new Profile(this.Id, this.Name, Constants.ProfileType, TrafficManagerClient.ProfileResourceLocation)
+            var profile = new Profile(Id, Name, Constants.ProfileType, TrafficManagerClient.ProfileResourceLocation)
             { 
-                ProfileStatus = this.ProfileStatus,
-                TrafficRoutingMethod = this.TrafficRoutingMethod,
+                ProfileStatus = ProfileStatus,
+                TrafficRoutingMethod = TrafficRoutingMethod,
                 DnsConfig = new DnsConfig
                 {
-                    RelativeName = this.RelativeDnsName,
-                    Ttl = this.Ttl
+                    RelativeName = RelativeDnsName,
+                    Ttl = Ttl
                 },
                 MonitorConfig = new MonitorConfig
                 {
-                    Protocol = this.MonitorProtocol,
-                    Port = this.MonitorPort,
-                    Path = this.MonitorPath,
-                    IntervalInSeconds = this.MonitorIntervalInSeconds,
-                    TimeoutInSeconds = this.MonitorTimeoutInSeconds,
-                    ToleratedNumberOfFailures = this.MonitorToleratedNumberOfFailures,
+                    Protocol = MonitorProtocol,
+                    Port = MonitorPort,
+                    Path = MonitorPath,
+                    IntervalInSeconds = MonitorIntervalInSeconds,
+                    TimeoutInSeconds = MonitorTimeoutInSeconds,
+                    ToleratedNumberOfFailures = MonitorToleratedNumberOfFailures,
                 }
             };
 
-            if (this.Endpoints != null && this.Endpoints.Any())
+            if (Endpoints != null && Endpoints.Any())
             {
-                profile.Endpoints = this.Endpoints.Select(endpoint => endpoint.ToSDKEndpoint()).ToList();
+                profile.Endpoints = Endpoints.Select(endpoint => endpoint.ToSDKEndpoint()).ToList();
             }
 
             return profile;

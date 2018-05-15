@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Commands
                     AdministratorDetails = AdministratorDetails,
                 };
 
-                this.WriteObject(organizationDetails);
+                WriteObject(organizationDetails);
             }
         }
     }

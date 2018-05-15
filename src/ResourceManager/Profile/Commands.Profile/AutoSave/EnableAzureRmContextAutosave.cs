@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Profile.Context
                 ConfirmAction("Autosave the context in the current session", "Current session", () =>
                 {
                     ContextAutosaveSettings settings = null;
-                    AzureSession.Modify((session) => EnableAutosave(session, false, out settings));
+                    AzureSession.Modify(session => EnableAutosave(session, false, out settings));
                     ProtectedProfileProvider.InitializeResourceManagerProfile(true);
                     WriteObject(settings);
                 });
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Profile.Context
                     () =>
                     {
                         ContextAutosaveSettings settings = null;
-                        AzureSession.Modify((session) => EnableAutosave(session, true, out settings));
+                        AzureSession.Modify(session => EnableAutosave(session, true, out settings));
                         ProtectedProfileProvider.InitializeResourceManagerProfile(true);
                         WriteObject(settings);
                     });

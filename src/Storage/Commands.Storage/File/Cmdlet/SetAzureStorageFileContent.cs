@@ -14,15 +14,15 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.File;
+    using Common;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.File;
     using System.Globalization;
     using System.IO;
     using System.Management.Automation;
     using System.Net;
     using System.Threading.Tasks;
-    using LocalConstants = Microsoft.WindowsAzure.Commands.Storage.File.Constants;
+    using LocalConstants = Constants;
 
     [Cmdlet(VerbsCommon.Set, LocalConstants.FileContentCmdletName, SupportsShouldProcess = true, DefaultParameterSetName = LocalConstants.ShareNameParameterSetName)]
     public class SetAzureStorageFileContent : StorageFileDataManagementCmdletBase
@@ -74,10 +74,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         public override void ExecuteCmdlet()
         {
             // Step 1: Validate source file.
-            FileInfo localFile = new FileInfo(this.GetUnresolvedProviderPathFromPSPath(this.Source));
+            FileInfo localFile = new FileInfo(GetUnresolvedProviderPathFromPSPath(Source));
             if (!localFile.Exists)
             {
-                throw new FileNotFoundException(string.Format(CultureInfo.CurrentCulture, Resources.SourceFileNotFound, this.Source));
+                throw new FileNotFoundException(string.Format(CultureInfo.CurrentCulture, Resources.SourceFileNotFound, Source));
             }
 
             // if FIPS policy is enabled, must use native MD5
@@ -87,35 +87,35 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             }
 
             bool isDirectory;
-            string[] path = NamingUtil.ValidatePath(this.Path, out isDirectory);
+            string[] path = NamingUtil.ValidatePath(Path, out isDirectory);
             var cloudFileToBeUploaded =
                 BuildCloudFileInstanceFromPathAsync(localFile.Name, path, isDirectory).ConfigureAwait(false).GetAwaiter().GetResult();
             if (ShouldProcess(cloudFileToBeUploaded.Name, "Set file content"))
             {
                 // Step 2: Build the CloudFile object which pointed to the
                 // destination cloud file.
-                this.RunTask(async taskId =>
+                RunTask(async taskId =>
                 {
                     var progressRecord = new ProgressRecord(
-                        this.OutputStream.GetProgressId(taskId),
+                        OutputStream.GetProgressId(taskId),
                         string.Format(CultureInfo.CurrentCulture, Resources.SendAzureFileActivity, localFile.Name,
                             cloudFileToBeUploaded.GetFullPath(), cloudFileToBeUploaded.Share.Name),
                         Resources.PrepareUploadingFile);
 
                     await DataMovementTransferHelper.DoTransfer(() =>
-                    this.TransferManager.UploadAsync(
+                    TransferManager.UploadAsync(
                             localFile.FullName,
                             cloudFileToBeUploaded,
                             null,
-                            this.GetTransferContext(progressRecord, localFile.Length),
-                            this.CmdletCancellationToken),
+                            GetTransferContext(progressRecord, localFile.Length),
+                            CmdletCancellationToken),
                         progressRecord,
-                        this.OutputStream).ConfigureAwait(false);
+                        OutputStream).ConfigureAwait(false);
 
 
-                    if (this.PassThru)
+                    if (PassThru)
                     {
-                        this.OutputStream.WriteObject(taskId, cloudFileToBeUploaded);
+                        OutputStream.WriteObject(taskId, cloudFileToBeUploaded);
                     }
                 });
             }
@@ -125,23 +125,23 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         {
             CloudFileDirectory baseDirectory = null;
             bool isPathEmpty = path.Length == 0;
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case LocalConstants.DirectoryParameterSetName:
-                    baseDirectory = this.Directory;
+                    baseDirectory = Directory;
                     break;
 
                 case LocalConstants.ShareNameParameterSetName:
-                    NamingUtil.ValidateShareName(this.ShareName, false);
-                    baseDirectory = this.BuildFileShareObjectFromName(this.ShareName).GetRootDirectoryReference();
+                    NamingUtil.ValidateShareName(ShareName, false);
+                    baseDirectory = BuildFileShareObjectFromName(ShareName).GetRootDirectoryReference();
                     break;
 
                 case LocalConstants.ShareParameterSetName:
-                    baseDirectory = this.Share.GetRootDirectoryReference();
+                    baseDirectory = Share.GetRootDirectoryReference();
                     break;
 
                 default:
-                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", this.ParameterSetName));
+                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", ParameterSetName));
             }
 
             if (isPathEmpty)
@@ -159,7 +159,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
             try
             {
-                directoryExists = await this.Channel.DirectoryExistsAsync(directory, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
+                directoryExists = await Channel.DirectoryExistsAsync(directory, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
             }
             catch (StorageException e)
             {
@@ -180,13 +180,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                 // it and build an instance of CloudFile class.
                 return directory.GetFileReference(defaultFileName);
             }
-            else
-            {
-                // If the directory does not exist, we treat the path as to a
-                // file. So we use the path of the directory to build out a
-                // new instance of CloudFile class.
-                return baseDirectory.GetFileReferenceByPath(path);
-            }
+            // If the directory does not exist, we treat the path as to a
+            // file. So we use the path of the directory to build out a
+            // new instance of CloudFile class.
+            return baseDirectory.GetFileReferenceByPath(path);
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Sql.ImportExport.Cmdlet
         /// Get the Firewall Rule to update
         /// </summary>
         /// <returns>The Firewall Rule being updated</returns>
-        protected override Model.AzureSqlDatabaseImportExportBaseModel GetEntity()
+        protected override AzureSqlDatabaseImportExportBaseModel GetEntity()
         {
             return new AzureSqlDatabaseImportModel();
         }
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.Sql.ImportExport.Cmdlet
         /// <param name="model">A model object</param>
         protected override AzureSqlDatabaseImportExportBaseModel ApplyUserInputToModel(AzureSqlDatabaseImportExportBaseModel model)
         {
-            AzureSqlDatabaseImportModel exportRequest = new AzureSqlDatabaseImportModel()
+            AzureSqlDatabaseImportModel exportRequest = new AzureSqlDatabaseImportModel
             {
                 ResourceGroupName = ResourceGroupName,
                 AdministratorLogin = AdministratorLogin,

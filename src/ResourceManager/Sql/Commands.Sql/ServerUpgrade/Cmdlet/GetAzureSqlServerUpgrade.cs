@@ -32,9 +32,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Cmdlet
         /// <returns>A single server upgrade</returns>
         protected override IEnumerable<AzureSqlServerUpgradeModel> GetEntity()
         {
-            return new List<AzureSqlServerUpgradeModel>()
+            return new List<AzureSqlServerUpgradeModel>
             {
-                ModelAdapter.GetUpgrade(this.ResourceGroupName, this.ServerName)
+                ModelAdapter.GetUpgrade(ResourceGroupName, ServerName)
             };
         }
 

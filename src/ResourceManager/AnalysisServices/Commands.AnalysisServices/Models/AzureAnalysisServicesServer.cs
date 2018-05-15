@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Models
 
         public ServerSku Sku { get; set; }
 
-        public System.Collections.Generic.IDictionary<string, string> Tag { get; set; }
+        public IDictionary<string, string> Tag { get; set; }
 
         public string DefaultConnectionMode { get; set; }
 
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Models
                 config = new PsAzureAnalysisServicesFirewallConfig(enablePowerBIService, rules);
             }
 
-            return new AzureAnalysisServicesServerDetail()
+            return new AzureAnalysisServicesServerDetail
             {
                 AsAdministrators = server.AsAdministrators == null
                     ? new List<string>()
@@ -112,6 +112,6 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Models
 
     public class AzureAnalysisServicesServerDetail : AzureAnalysisServicesServer
     {
-        public new System.Collections.Generic.IDictionary<string, string> Sku { get; set; }
+        public new IDictionary<string, string> Sku { get; set; }
     }
 }

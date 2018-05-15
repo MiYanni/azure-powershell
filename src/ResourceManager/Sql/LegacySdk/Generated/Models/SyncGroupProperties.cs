@@ -30,17 +30,17 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
     /// </summary>
     public partial class SyncGroupProperties
     {
-        private Microsoft.Azure.Management.Sql.LegacySdk.Models.ConflictResolutionPolicyType? _conflictResolutionPolicy;
+        private ConflictResolutionPolicyType? _conflictResolutionPolicy;
         
         /// <summary>
         /// Optional. The policy of resolving confliction between hub and
         /// member database in the sync group.The possible values: 'HubWin'
         /// and 'MemberWin'.
         /// </summary>
-        public Microsoft.Azure.Management.Sql.LegacySdk.Models.ConflictResolutionPolicyType? ConflictResolutionPolicy
+        public ConflictResolutionPolicyType? ConflictResolutionPolicy
         {
-            get { return this._conflictResolutionPolicy; }
-            set { this._conflictResolutionPolicy = value; }
+            get { return _conflictResolutionPolicy; }
+            set { _conflictResolutionPolicy = value; }
         }
         
         private string _hubDatabaseUserName;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string HubDatabaseUserName
         {
-            get { return this._hubDatabaseUserName; }
-            set { this._hubDatabaseUserName = value; }
+            get { return _hubDatabaseUserName; }
+            set { _hubDatabaseUserName = value; }
         }
         
         private int? _interval;
@@ -61,19 +61,19 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int? Interval
         {
-            get { return this._interval; }
-            set { this._interval = value; }
+            get { return _interval; }
+            set { _interval = value; }
         }
         
-        private System.DateTime? _lastSyncTime;
+        private DateTime? _lastSyncTime;
         
         /// <summary>
         /// Optional. The last sync time of a sync group.
         /// </summary>
-        public System.DateTime? LastSyncTime
+        public DateTime? LastSyncTime
         {
-            get { return this._lastSyncTime; }
-            set { this._lastSyncTime = value; }
+            get { return _lastSyncTime; }
+            set { _lastSyncTime = value; }
         }
         
         private SyncGroupSchema _schema;
@@ -83,8 +83,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncGroupSchema Schema
         {
-            get { return this._schema; }
-            set { this._schema = value; }
+            get { return _schema; }
+            set { _schema = value; }
         }
         
         private string _syncDatabaseId;
@@ -94,8 +94,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncDatabaseId
         {
-            get { return this._syncDatabaseId; }
-            set { this._syncDatabaseId = value; }
+            get { return _syncDatabaseId; }
+            set { _syncDatabaseId = value; }
         }
         
         private string _syncState;
@@ -106,8 +106,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncState
         {
-            get { return this._syncState; }
-            set { this._syncState = value; }
+            get { return _syncState; }
+            set { _syncState = value; }
         }
         
         /// <summary>

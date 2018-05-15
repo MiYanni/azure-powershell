@@ -15,9 +15,9 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.Table.Cmdlet
 {
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.Table;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Table.Cmdlet
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = NameParameterSet)]
-        [SupportsWildcards()]
+        [SupportsWildcards]
         public string Name { get; set; }
 
         [Parameter(HelpMessage = "Table Prefix",

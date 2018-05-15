@@ -80,8 +80,8 @@ namespace Microsoft.Azure.Commands.Profile.Models
                 throw new ArgumentNullException(nameof(other));
             }
 
-            this.Id = other.GetProperty<string>(nameof(Id));
-            this.Directory = other.GetProperty<string>(nameof(Directory));
+            Id = other.GetProperty<string>(nameof(Id));
+            Directory = other.GetProperty<string>(nameof(Directory));
             this.PopulateExtensions(other);
         }
         /// <summary>
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.Profile.Models
 
         public override string ToString()
         {
-            return (this.Id == Guid.Empty.ToString()) ? this.Directory : this.Id;
+            return Id == Guid.Empty.ToString() ? Directory : Id;
         }
     }
 }

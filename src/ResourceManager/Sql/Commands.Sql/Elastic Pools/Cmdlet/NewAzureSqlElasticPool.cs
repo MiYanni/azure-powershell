@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
             // We try to get the database.  Since this is a create, we don't want the database to exist
             try
             {
-                ModelAdapter.GetElasticPool(this.ResourceGroupName, this.ServerName, this.ElasticPoolName);
+                ModelAdapter.GetElasticPool(ResourceGroupName, ServerName, ElasticPoolName);
             }
             catch (CloudException ex)
             {
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
 
             // The database already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.ElasticPoolNameExists, this.ElasticPoolName, this.ServerName),
+                string.Format(Properties.Resources.ElasticPoolNameExists, ElasticPoolName, ServerName),
                 "ElasticPoolName");
         }
 
@@ -146,11 +146,11 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         {
             string location = ModelAdapter.GetServerLocation(ResourceGroupName, ServerName);
             List<AzureSqlElasticPoolModel> newEntity = new List<AzureSqlElasticPoolModel>();
-            newEntity.Add(new AzureSqlElasticPoolModel()
+            newEntity.Add(new AzureSqlElasticPoolModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
-                Tags = TagsConversionHelper.CreateTagDictionary(Tags, validate: true),
+                Tags = TagsConversionHelper.CreateTagDictionary(Tags, true),
                 Location = location,
                 ElasticPoolName = ElasticPoolName,
                 DatabaseDtuMax = MyInvocation.BoundParameters.ContainsKey("DatabaseDtuMax") ? (int?)DatabaseDtuMax : null,
@@ -170,7 +170,8 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlElasticPoolModel> PersistChanges(IEnumerable<AzureSqlElasticPoolModel> entity)
         {
-            return new List<AzureSqlElasticPoolModel>() {
+            return new List<AzureSqlElasticPoolModel>
+            {
                 ModelAdapter.UpsertElasticPool(entity.First())
             };
         }

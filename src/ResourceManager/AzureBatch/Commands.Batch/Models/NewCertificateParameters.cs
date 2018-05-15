@@ -29,8 +29,8 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentException(Resources.NoCertificateData);
             }
 
-            this.FilePath = filePath;
-            this.RawData = rawData;
+            FilePath = filePath;
+            RawData = rawData;
         }
 
         /// <summary>

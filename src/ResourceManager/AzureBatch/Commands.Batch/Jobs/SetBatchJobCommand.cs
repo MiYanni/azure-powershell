@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            this.BatchClient.UpdateJob(this.BatchContext, this.Job, this.AdditionalBehaviors);
+            BatchClient.UpdateJob(BatchContext, Job, AdditionalBehaviors);
         }
     }
 }

@@ -33,8 +33,8 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            EvaluateAutoScaleParameters parameters = new EvaluateAutoScaleParameters(this.BatchContext, this.Id, null,
-                this.AutoScaleFormula, this.AdditionalBehaviors);
+            EvaluateAutoScaleParameters parameters = new EvaluateAutoScaleParameters(BatchContext, Id, null,
+                AutoScaleFormula, AdditionalBehaviors);
             WriteObject(BatchClient.EvaluateAutoScale(parameters));
         }
     }

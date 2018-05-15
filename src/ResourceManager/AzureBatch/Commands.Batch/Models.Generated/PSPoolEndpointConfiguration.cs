@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSPoolEndpointConfiguration
     {
         
-        internal Microsoft.Azure.Batch.PoolEndpointConfiguration omObject;
+        internal PoolEndpointConfiguration omObject;
         
         private IReadOnlyList<PSInboundNatPool> inboundNatPools;
         
-        public PSPoolEndpointConfiguration(System.Collections.Generic.IReadOnlyList<Microsoft.Azure.Batch.InboundNatPool> inboundNatPools)
+        public PSPoolEndpointConfiguration(IReadOnlyList<InboundNatPool> inboundNatPools)
         {
-            this.omObject = new Microsoft.Azure.Batch.PoolEndpointConfiguration(inboundNatPools);
+            omObject = new PoolEndpointConfiguration(inboundNatPools);
         }
         
-        internal PSPoolEndpointConfiguration(Microsoft.Azure.Batch.PoolEndpointConfiguration omObject)
+        internal PSPoolEndpointConfiguration(PoolEndpointConfiguration omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,22 +54,22 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.inboundNatPools == null) 
-                            && (this.omObject.InboundNatPools != null)))
+                if (inboundNatPools == null 
+                    && omObject.InboundNatPools != null)
                 {
                     List<PSInboundNatPool> list;
                     list = new List<PSInboundNatPool>();
-                    IEnumerator<Microsoft.Azure.Batch.InboundNatPool> enumerator;
-                    enumerator = this.omObject.InboundNatPools.GetEnumerator();
+                    IEnumerator<InboundNatPool> enumerator;
+                    enumerator = omObject.InboundNatPools.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSInboundNatPool(enumerator.Current));
                     }
-                    this.inboundNatPools = list.AsReadOnly();
+                    inboundNatPools = list.AsReadOnly();
                 }
-                return this.inboundNatPools;
+                return inboundNatPools;
             }
         }
     }

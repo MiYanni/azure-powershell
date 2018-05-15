@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedActionUpdateStateInfo State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("state");
             }
-            this.State = state;
+            State = state;
         }
     }
 }

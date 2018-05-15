@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SecurityEnabledAccess
         {
-            get { return this._securityEnabledAccess; }
-            set { this._securityEnabledAccess = value; }
+            get { return _securityEnabledAccess; }
+            set { _securityEnabledAccess = value; }
         }
         
         /// <summary>

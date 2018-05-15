@@ -37,11 +37,11 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            BackupRequest request = new BackupRequest()
+            BackupRequest request = new BackupRequest
             {
-                StorageAccountUrl = this.StorageAccountUrl,
-                BackupRequestName = this.BackupName,
-                Databases = this.Databases
+                StorageAccountUrl = StorageAccountUrl,
+                BackupRequestName = BackupName,
+                Databases = Databases
             };
             var backup = WebsitesClient.BackupSite(ResourceGroupName, Name, Slot, request);
             WriteObject(BackupRestoreUtils.BackupItemToAppBackup(backup, ResourceGroupName, Name, Slot));

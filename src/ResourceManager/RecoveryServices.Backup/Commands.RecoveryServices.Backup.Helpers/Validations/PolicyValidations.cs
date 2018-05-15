@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             // AND weekly retention policy is required
             if (schPolicy.ScheduleRunFrequency == ScheduleRunType.Weekly &&
                (ltrPolicy.IsDailyScheduleEnabled != false || ltrPolicy.WeeklySchedule == null ||
-               (ltrPolicy.IsWeeklyScheduleEnabled == false)))
+               ltrPolicy.IsWeeklyScheduleEnabled == false))
             {
                 throw new ArgumentException(Resources.WeeklyRetentionScheduleNullException);
             }

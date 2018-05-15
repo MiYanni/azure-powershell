@@ -38,11 +38,11 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            EnableAutoScaleParameters parameters = new EnableAutoScaleParameters(this.BatchContext, this.Id,
-                pool: null, additionalBehaviors: this.AdditionalBehaviors)
+            EnableAutoScaleParameters parameters = new EnableAutoScaleParameters(BatchContext, Id,
+                null, AdditionalBehaviors)
             {
-                AutoScaleFormula = this.AutoScaleFormula,
-                AutoScaleEvaluationInterval = this.AutoScaleEvaluationInterval
+                AutoScaleFormula = AutoScaleFormula,
+                AutoScaleEvaluationInterval = AutoScaleEvaluationInterval
             };
 
             BatchClient.EnableAutoScale(parameters);

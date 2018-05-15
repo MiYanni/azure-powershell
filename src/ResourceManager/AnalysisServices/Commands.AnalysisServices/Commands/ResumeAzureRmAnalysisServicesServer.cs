@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices
     {
         [Parameter(Position = 1, ValueFromPipelineByPropertyName = true,
             Mandatory = false, HelpMessage = "Name of resource group under which to retrieve the server.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -52,10 +52,10 @@ namespace Microsoft.Azure.Commands.AnalysisServices
 
             if (ShouldProcess(Name, Resources.ResumingAnalysisServicesServer))
             {
-                AnalysisServicesServer server = null;
+                AnalysisServicesServer server;
                 if (!AnalysisServicesClient.TestServer(ResourceGroupName, Name, out server))
                 {
-                    throw new InvalidOperationException(string.Format(Properties.Resources.ServerDoesNotExist, Name));
+                    throw new InvalidOperationException(string.Format(Resources.ServerDoesNotExist, Name));
                 }
 
                 AnalysisServicesClient.ResumeServer(ResourceGroupName, Name);

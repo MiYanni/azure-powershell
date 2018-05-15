@@ -38,18 +38,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!this.IsApplicationGatewayPresent(this.ApplicationGateway.ResourceGroupName, this.ApplicationGateway.Name))
+            if (!IsApplicationGatewayPresent(ApplicationGateway.ResourceGroupName, ApplicationGateway.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Map to the sdk object
-            var appGwModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ApplicationGateway>(this.ApplicationGateway);
-            appGwModel.Tags = TagsConversionHelper.CreateTagDictionary(this.ApplicationGateway.Tag, validate: true);
+            var appGwModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ApplicationGateway>(ApplicationGateway);
+            appGwModel.Tags = TagsConversionHelper.CreateTagDictionary(ApplicationGateway.Tag, validate: true);
 
-            this.ApplicationGatewayClient.Stop(this.ApplicationGateway.ResourceGroupName, this.ApplicationGateway.Name);
+            ApplicationGatewayClient.Stop(ApplicationGateway.ResourceGroupName, ApplicationGateway.Name);
 
-            var getApplicationGateway = this.GetApplicationGateway(this.ApplicationGateway.ResourceGroupName, this.ApplicationGateway.Name);
+            var getApplicationGateway = GetApplicationGateway(ApplicationGateway.ResourceGroupName, ApplicationGateway.Name);
 
             WriteObject(getApplicationGateway);
         }

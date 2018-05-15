@@ -65,11 +65,11 @@ namespace Microsoft.Azure.Commands.Sql.ServiceTierAdvisor.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("DatabaseName"))
             {
                 results = new List<RecommendedDatabaseProperties>();
-                results.Add(ModelAdapter.GetUpgradeDatabaseHints(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.ExcludeElasticPoolCandidates));
+                results.Add(ModelAdapter.GetUpgradeDatabaseHints(ResourceGroupName, ServerName, DatabaseName, ExcludeElasticPoolCandidates));
             }
             else
             {
-                results = ModelAdapter.ListUpgradeDatabaseHints(this.ResourceGroupName, this.ServerName, this.ExcludeElasticPoolCandidates);
+                results = ModelAdapter.ListUpgradeDatabaseHints(ResourceGroupName, ServerName, ExcludeElasticPoolCandidates);
             }
 
             return results;

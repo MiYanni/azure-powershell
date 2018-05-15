@@ -30,9 +30,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns></returns>
         public EventModel GetAzureRmSiteRecoveryEvent(string eventName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .ReplicationEvents
-                .GetWithHttpMessagesAsync(eventName, this.GetRequestHeaders(true))
+                .GetWithHttpMessagesAsync(eventName, GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -46,17 +46,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public List<EventModel> ListAzureRmSiteRecoveryEvents(EventQueryParameter parameters)
         {
             var odataQuery = new ODataQuery<EventQueryParameter>(parameters.ToQueryString());
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationEvents
-                .ListWithHttpMessagesAsync(odataQuery, this.GetRequestHeaders(true))
+                .ListWithHttpMessagesAsync(odataQuery, GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
 
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient().ReplicationEvents.ListNextWithHttpMessagesAsync,
+                GetSiteRecoveryClient().ReplicationEvents.ListNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
 
             pages.Insert(0, firstPage);
 

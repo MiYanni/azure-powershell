@@ -55,48 +55,48 @@ namespace Microsoft.Azure.Commands.Dns
             string zoneName = null;
             string resourceGroupName = null;
 
-            if (this.ParameterSetName == "Fields")
+            if (ParameterSetName == "Fields")
             {
-                zoneName = this.ZoneName;
-                resourceGroupName = this.ResourceGroupName;
+                zoneName = ZoneName;
+                resourceGroupName = ResourceGroupName;
             }
             else
             {
-                zoneName = this.Zone.Name;
-                resourceGroupName = this.Zone.ResourceGroupName;
+                zoneName = Zone.Name;
+                resourceGroupName = Zone.ResourceGroupName;
             }
 
             if (zoneName != null && zoneName.EndsWith("."))
             {
                 zoneName = zoneName.TrimEnd('.');
-                this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", zoneName));
+                WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", zoneName));
             }
 
-            if (this.Name != null)
+            if (Name != null)
             {
-                if (this.RecordType == null)
+                if (RecordType == null)
                 {
                     throw new PSArgumentException("If you specify the Name parameter you must also specify the RecordType parameter.");
                 }
 
-                DnsRecordSet result = this.DnsClient.GetDnsRecordSet(this.Name, zoneName, resourceGroupName, this.RecordType.Value);
-                this.WriteObject(result);
+                DnsRecordSet result = DnsClient.GetDnsRecordSet(Name, zoneName, resourceGroupName, RecordType.Value);
+                WriteObject(result);
             }
             else
             {
                 List<DnsRecordSet> result = null;
-                if (this.RecordType == null)
+                if (RecordType == null)
                 {
-                    result = this.DnsClient.ListRecordSets(zoneName, resourceGroupName);
+                    result = DnsClient.ListRecordSets(zoneName, resourceGroupName);
                 }
                 else
                 {
-                    result = this.DnsClient.ListRecordSets(zoneName, resourceGroupName, this.RecordType.Value);
+                    result = DnsClient.ListRecordSets(zoneName, resourceGroupName, RecordType.Value);
                 }
 
                 foreach (var r in result)
                 {
-                    this.WriteObject(r);
+                    WriteObject(r);
                 }
             }
 

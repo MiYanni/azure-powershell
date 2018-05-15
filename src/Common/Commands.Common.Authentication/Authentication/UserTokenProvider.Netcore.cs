@@ -12,7 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 using Hyak.Common;
-using Microsoft.Azure.Commands.Common.Authentication;
 using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
@@ -29,12 +28,6 @@ namespace Microsoft.Azure.Commands.Common.Authentication
     /// </summary>
     internal class UserTokenProvider : ITokenProvider
     {
-        Action<string> _promptAction = null;
-
-        public UserTokenProvider()
-        {
-        }
-
         public IAccessToken GetAccessToken(
             AdalConfiguration config,
             string promptBehavior,
@@ -45,13 +38,13 @@ namespace Microsoft.Azure.Commands.Common.Authentication
         {
             if (credentialType != AzureAccount.AccountType.User)
             {
-                throw new ArgumentException(string.Format(Resources.InvalidCredentialType, "User"), "credentialType");
+                throw new ArgumentException(string.Format(Resources.InvalidCredentialType, "User"), nameof(credentialType));
             }
 
             return new AdalAccessToken(AcquireToken(config, promptAction, userId, password), this, config);
         }
 
-        private readonly static TimeSpan expirationThreshold = TimeSpan.FromMinutes(5);
+        private static readonly TimeSpan ExpirationThreshold = TimeSpan.FromMinutes(5);
 
         private bool IsExpired(AdalAccessToken token)
         {
@@ -64,9 +57,9 @@ namespace Microsoft.Azure.Commands.Common.Authentication
             var expiration = token.AuthResult.ExpiresOn;
             var currentTime = DateTimeOffset.UtcNow;
             var timeUntilExpiration = expiration - currentTime;
-            TracingAdapter.Information(Resources.UPNTokenExpirationCheckTrace, expiration, currentTime, expirationThreshold,
+            TracingAdapter.Information(Resources.UPNTokenExpirationCheckTrace, expiration, currentTime, ExpirationThreshold,
                 timeUntilExpiration);
-            return timeUntilExpiration < expirationThreshold;
+            return timeUntilExpiration < ExpirationThreshold;
         }
 
         private void Renew(AdalAccessToken token)
@@ -99,10 +92,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
                 {
                     throw new AuthenticationException(Resources.ExpiredRefreshToken);
                 }
-                else
-                {
-                    token.AuthResult = result;
-                }
+                token.AuthResult = result;
             }
         }
 
@@ -118,7 +108,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
             string userId, SecureString password, bool renew = false)
         {
             AuthenticationResult result = null;
-            Exception ex = null;
+            Exception ex;
             result = SafeAquireToken(config, promptAction, userId, password, out ex);
             if (ex != null)
             {
@@ -206,7 +196,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
                 config.ClientRedirectUri);
             if (promptAction == null || renew)
             {
-                result =context.AcquireTokenSilentAsync(config.ResourceClientUri, config.ClientId,
+                result = context.AcquireTokenSilentAsync(config.ResourceClientUri, config.ClientId,
                     new UserIdentifier(userId, UserIdentifierType.OptionalDisplayableId))
                     .ConfigureAwait(false).GetAwaiter().GetResult();
             }
@@ -246,38 +236,29 @@ namespace Microsoft.Azure.Commands.Common.Authentication
         {
             internal readonly AdalConfiguration Configuration;
             internal AuthenticationResult AuthResult;
-            private readonly UserTokenProvider tokenProvider;
+            private readonly UserTokenProvider _tokenProvider;
 
             public AdalAccessToken(AuthenticationResult authResult, UserTokenProvider tokenProvider, AdalConfiguration configuration)
             {
                 AuthResult = authResult;
-                this.tokenProvider = tokenProvider;
+                _tokenProvider = tokenProvider;
                 Configuration = configuration;
             }
 
             public void AuthorizeRequest(Action<string, string> authTokenSetter)
             {
-                tokenProvider.Renew(this);
+                _tokenProvider.Renew(this);
                 authTokenSetter(AuthResult.AccessTokenType, AuthResult.AccessToken);
             }
 
-            public string AccessToken { get { return AuthResult.AccessToken; } }
+            public string AccessToken => AuthResult.AccessToken;
 
-            public string UserId { get { return AuthResult.UserInfo.DisplayableId; } }
+            public string UserId => AuthResult.UserInfo.DisplayableId;
 
-            public string TenantId { get { return AuthResult.TenantId; } }
+            public string TenantId => AuthResult.TenantId;
 
-            public string LoginType
-            {
-                get
-                {
-                    if (AuthResult.UserInfo.IdentityProvider != null)
-                    {
-                        return Authentication.LoginType.LiveId;
-                    }
-                    return Authentication.LoginType.OrgId;
-                }
-            }
+            public string LoginType => AuthResult.UserInfo.IdentityProvider != null 
+                ? Authentication.LoginType.LiveId : Authentication.LoginType.OrgId;
         }
     }
 }

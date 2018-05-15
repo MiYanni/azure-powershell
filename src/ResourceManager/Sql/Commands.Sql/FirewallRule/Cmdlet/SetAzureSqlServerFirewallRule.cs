@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
         /// <returns>The Firewall Rule being updated</returns>
         protected override IEnumerable<Model.AzureSqlServerFirewallRuleModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerFirewallRuleModel>() { ModelAdapter.GetFirewallRule(this.ResourceGroupName, this.ServerName, this.FirewallRuleName) };
+            return new List<Model.AzureSqlServerFirewallRuleModel> { ModelAdapter.GetFirewallRule(ResourceGroupName, ServerName, FirewallRuleName) };
         }
 
         /// <summary>
@@ -69,13 +69,13 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
         {
             // Construct a new entity so we only send the relevant data to the server
             List<Model.AzureSqlServerFirewallRuleModel> updateData = new List<Model.AzureSqlServerFirewallRuleModel>();
-            updateData.Add(new Model.AzureSqlServerFirewallRuleModel()
+            updateData.Add(new Model.AzureSqlServerFirewallRuleModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                FirewallRuleName = this.FirewallRuleName,
-                StartIpAddress = this.StartIpAddress,
-                EndIpAddress = this.EndIpAddress,
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                FirewallRuleName = FirewallRuleName,
+                StartIpAddress = StartIpAddress,
+                EndIpAddress = EndIpAddress,
             });
             return updateData;
         }
@@ -87,7 +87,8 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
         /// <returns>The response object from the service</returns>
         protected override IEnumerable<Model.AzureSqlServerFirewallRuleModel> PersistChanges(IEnumerable<Model.AzureSqlServerFirewallRuleModel> entity)
         {
-            return new List<Model.AzureSqlServerFirewallRuleModel>() {
+            return new List<Model.AzureSqlServerFirewallRuleModel>
+            {
                 ModelAdapter.UpsertFirewallRule(entity.First())
             };
         }

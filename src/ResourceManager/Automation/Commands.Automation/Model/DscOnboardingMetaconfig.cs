@@ -17,7 +17,7 @@ using Microsoft.Azure.Commands.Automation.Common;
 namespace Microsoft.Azure.Commands.Automation.Model
 {
 
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// DSC Onboarding Meta Configuration
@@ -41,9 +41,9 @@ namespace Microsoft.Azure.Commands.Automation.Model
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = automationAccountName;
-            this.DscMetaConfiguration = dscOnboardingMetaConfig.DscMetaConfiguration;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = automationAccountName;
+            DscMetaConfiguration = dscOnboardingMetaConfig.DscMetaConfiguration;
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics
         [Parameter(Position = 2,
             ValueFromPipelineByPropertyName = true, Mandatory = false,
             HelpMessage = "Name of resource group under which want to retrieve the account.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

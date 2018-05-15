@@ -26,13 +26,13 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSExitConditions
     {
         
-        internal Microsoft.Azure.Batch.ExitConditions omObject;
+        internal ExitConditions omObject;
         
         private PSExitOptions @default;
         
@@ -46,14 +46,14 @@ namespace Microsoft.Azure.Commands.Batch.Models
         
         public PSExitConditions()
         {
-            this.omObject = new Microsoft.Azure.Batch.ExitConditions();
+            omObject = new ExitConditions();
         }
         
-        internal PSExitConditions(Microsoft.Azure.Batch.ExitConditions omObject)
+        internal PSExitConditions(ExitConditions omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -62,24 +62,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.@default == null) 
-                            && (this.omObject.Default != null)))
+                if (@default == null 
+                    && omObject.Default != null)
                 {
-                    this.@default = new PSExitOptions(this.omObject.Default);
+                    @default = new PSExitOptions(omObject.Default);
                 }
-                return this.@default;
+                return @default;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.Default = null;
+                    omObject.Default = null;
                 }
                 else
                 {
-                    this.omObject.Default = value.omObject;
+                    omObject.Default = value.omObject;
                 }
-                this.@default = value;
+                @default = value;
             }
         }
         
@@ -87,34 +87,34 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.exitCodeRanges == null) 
-                            && (this.omObject.ExitCodeRanges != null)))
+                if (exitCodeRanges == null 
+                    && omObject.ExitCodeRanges != null)
                 {
                     List<PSExitCodeRangeMapping> list;
                     list = new List<PSExitCodeRangeMapping>();
-                    IEnumerator<Microsoft.Azure.Batch.ExitCodeRangeMapping> enumerator;
-                    enumerator = this.omObject.ExitCodeRanges.GetEnumerator();
+                    IEnumerator<ExitCodeRangeMapping> enumerator;
+                    enumerator = omObject.ExitCodeRanges.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSExitCodeRangeMapping(enumerator.Current));
                     }
-                    this.exitCodeRanges = list;
+                    exitCodeRanges = list;
                 }
-                return this.exitCodeRanges;
+                return exitCodeRanges;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.ExitCodeRanges = null;
+                    omObject.ExitCodeRanges = null;
                 }
                 else
                 {
-                    this.omObject.ExitCodeRanges = new List<Microsoft.Azure.Batch.ExitCodeRangeMapping>();
+                    omObject.ExitCodeRanges = new List<ExitCodeRangeMapping>();
                 }
-                this.exitCodeRanges = value;
+                exitCodeRanges = value;
             }
         }
         
@@ -122,34 +122,34 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.exitCodes == null) 
-                            && (this.omObject.ExitCodes != null)))
+                if (exitCodes == null 
+                    && omObject.ExitCodes != null)
                 {
                     List<PSExitCodeMapping> list;
                     list = new List<PSExitCodeMapping>();
-                    IEnumerator<Microsoft.Azure.Batch.ExitCodeMapping> enumerator;
-                    enumerator = this.omObject.ExitCodes.GetEnumerator();
+                    IEnumerator<ExitCodeMapping> enumerator;
+                    enumerator = omObject.ExitCodes.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSExitCodeMapping(enumerator.Current));
                     }
-                    this.exitCodes = list;
+                    exitCodes = list;
                 }
-                return this.exitCodes;
+                return exitCodes;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.ExitCodes = null;
+                    omObject.ExitCodes = null;
                 }
                 else
                 {
-                    this.omObject.ExitCodes = new List<Microsoft.Azure.Batch.ExitCodeMapping>();
+                    omObject.ExitCodes = new List<ExitCodeMapping>();
                 }
-                this.exitCodes = value;
+                exitCodes = value;
             }
         }
         
@@ -157,24 +157,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.fileUploadError == null) 
-                            && (this.omObject.FileUploadError != null)))
+                if (fileUploadError == null 
+                    && omObject.FileUploadError != null)
                 {
-                    this.fileUploadError = new PSExitOptions(this.omObject.FileUploadError);
+                    fileUploadError = new PSExitOptions(omObject.FileUploadError);
                 }
-                return this.fileUploadError;
+                return fileUploadError;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.FileUploadError = null;
+                    omObject.FileUploadError = null;
                 }
                 else
                 {
-                    this.omObject.FileUploadError = value.omObject;
+                    omObject.FileUploadError = value.omObject;
                 }
-                this.fileUploadError = value;
+                fileUploadError = value;
             }
         }
         
@@ -182,24 +182,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.preProcessingError == null) 
-                            && (this.omObject.PreProcessingError != null)))
+                if (preProcessingError == null 
+                    && omObject.PreProcessingError != null)
                 {
-                    this.preProcessingError = new PSExitOptions(this.omObject.PreProcessingError);
+                    preProcessingError = new PSExitOptions(omObject.PreProcessingError);
                 }
-                return this.preProcessingError;
+                return preProcessingError;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.PreProcessingError = null;
+                    omObject.PreProcessingError = null;
                 }
                 else
                 {
-                    this.omObject.PreProcessingError = value.omObject;
+                    omObject.PreProcessingError = value.omObject;
                 }
-                this.preProcessingError = value;
+                preProcessingError = value;
             }
         }
     }

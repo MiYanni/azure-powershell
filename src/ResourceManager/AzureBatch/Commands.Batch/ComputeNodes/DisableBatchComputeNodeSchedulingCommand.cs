@@ -43,10 +43,10 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            DisableComputeNodeSchedulingParameters parameters = new DisableComputeNodeSchedulingParameters(this.BatchContext,
-                this.PoolId, this.Id, this.ComputeNode, this.AdditionalBehaviors)
+            DisableComputeNodeSchedulingParameters parameters = new DisableComputeNodeSchedulingParameters(BatchContext,
+                PoolId, Id, ComputeNode, AdditionalBehaviors)
             {
-                DisableSchedulingOption = this.DisableSchedulingOption
+                DisableSchedulingOption = DisableSchedulingOption
             };
 
             BatchClient.DisableComputeNodeScheduling(parameters);

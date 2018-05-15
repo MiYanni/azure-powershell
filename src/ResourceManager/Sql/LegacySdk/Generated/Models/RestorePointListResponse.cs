@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RestorePoint> RestorePoints
         {
-            get { return this._restorePoints; }
-            set { this._restorePoints = value; }
+            get { return _restorePoints; }
+            set { _restorePoints = value; }
         }
         
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RestorePointListResponse()
         {
-            this.RestorePoints = new LazyList<RestorePoint>();
+            RestorePoints = new LazyList<RestorePoint>();
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<RestorePoint> GetEnumerator()
         {
-            return this.RestorePoints.GetEnumerator();
+            return RestorePoints.GetEnumerator();
         }
         
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

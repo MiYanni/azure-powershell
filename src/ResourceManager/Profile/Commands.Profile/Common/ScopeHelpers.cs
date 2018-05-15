@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Profile.Common
         /// <returns>A string representation of the scope</returns>
         public static string GetContextSaveMode(ContextModificationScope scope)
         {
-            return (scope == ContextModificationScope.CurrentUser? ContextSaveMode.CurrentUser : ContextSaveMode.Process);
+            return scope == ContextModificationScope.CurrentUser? ContextSaveMode.CurrentUser : ContextSaveMode.Process;
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.Profile.Common
         /// <returns>The corresponding value in the ContextModificatioNScope enum</returns>
         public static ContextModificationScope GetContextModificationScopeFromSaveMode(string saveMode)
         {
-            return (saveMode == ContextSaveMode.CurrentUser ? ContextModificationScope.CurrentUser : ContextModificationScope.Process);
+            return saveMode == ContextSaveMode.CurrentUser ? ContextModificationScope.CurrentUser : ContextModificationScope.Process;
         }
     }
 }

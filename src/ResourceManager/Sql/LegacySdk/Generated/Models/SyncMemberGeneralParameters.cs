@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncGroupName
         {
-            get { return this._syncGroupName; }
-            set { this._syncGroupName = value; }
+            get { return _syncGroupName; }
+            set { _syncGroupName = value; }
         }
         
         private string _syncMemberName;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncMemberName
         {
-            get { return this._syncMemberName; }
-            set { this._syncMemberName = value; }
+            get { return _syncMemberName; }
+            set { _syncMemberName = value; }
         }
         
         /// <summary>
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("syncGroupName");
             }
-            this.SyncMemberName = syncMemberName;
-            this.SyncGroupName = syncGroupName;
+            SyncMemberName = syncMemberName;
+            SyncGroupName = syncGroupName;
         }
     }
 }

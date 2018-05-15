@@ -33,14 +33,14 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="autoscaleSettingSpec">The autoscale setting spec</param>
         public PSAutoscaleSetting(AutoscaleSettingResource autoscaleSettingSpec)
             : base(
-                  location: autoscaleSettingSpec.Location,
-                  profiles: autoscaleSettingSpec.Profiles,
-                  id: autoscaleSettingSpec.Id,
-                  name: autoscaleSettingSpec.Name,
-                  type: autoscaleSettingSpec.Type,
-                  tags: autoscaleSettingSpec.Tags,
-                  notifications: autoscaleSettingSpec.Notifications,
-                  enabled: autoscaleSettingSpec.Enabled,
+                  autoscaleSettingSpec.Location,
+                  autoscaleSettingSpec.Profiles,
+                  autoscaleSettingSpec.Id,
+                  autoscaleSettingSpec.Name,
+                  autoscaleSettingSpec.Type,
+                  autoscaleSettingSpec.Tags,
+                  autoscaleSettingSpec.Notifications,
+                  autoscaleSettingSpec.Enabled,
                   targetResourceUri: autoscaleSettingSpec.TargetResourceUri)
         {
         }

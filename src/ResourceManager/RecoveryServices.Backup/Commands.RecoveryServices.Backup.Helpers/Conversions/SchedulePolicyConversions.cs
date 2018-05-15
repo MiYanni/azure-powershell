@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                     serviceClientPolicy.ScheduleRunDays);
             psPolicy.ScheduleRunFrequency =
                 (ScheduleRunType)Enum.Parse(
-                    typeof(ScheduleRunType), serviceClientPolicy.ScheduleRunFrequency.ToString());
+                    typeof(ScheduleRunType), serviceClientPolicy.ScheduleRunFrequency);
             psPolicy.ScheduleRunTimes = ParseDateTimesToUTC(serviceClientPolicy.ScheduleRunTimes, timeZone);
 
             // safe side validation

@@ -72,10 +72,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters
                         return tempScopeList;
                     }
 
-                    else
-                    {
-                        return _scopeDictionary[contextHash];
-                    }
+                    return _scopeDictionary[contextHash];
                 }
             }
         }

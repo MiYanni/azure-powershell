@@ -14,9 +14,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.File;
+    using Commands.Common.Storage;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.File;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 
         public StorageFileManagement(AzureStorageContext context)
         {
-            this.StorageContext = context;
+            StorageContext = context;
         }
 
         public AzureStorageContext StorageContext
@@ -43,25 +43,22 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
         {
             get
             {
-                if (this.client == null)
+                if (client == null)
                 {
-                    if (this.StorageContext.StorageAccount == null)
+                    if (StorageContext.StorageAccount == null)
                     {
                         throw new ArgumentException(Resources.DefaultStorageCredentialsNotFound);
                     }
-                    else
-                    {
-                        this.client = this.StorageContext.StorageAccount.CreateCloudFileClient();
-                    }
+                    client = StorageContext.StorageAccount.CreateCloudFileClient();
                 }
 
-                return this.client;
+                return client;
             }
         }
 
         public CloudFileShare GetShareReference(string shareName, DateTimeOffset? snapshotTime = null)
         {
-            return this.Client.GetShareReference(shareName, snapshotTime);
+            return Client.GetShareReference(shareName, snapshotTime);
         }
 
         public void FetchShareAttributes(CloudFileShare share, AccessCondition accessCondition, FileRequestOptions options, OperationContext operationContext)
@@ -114,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
             FileContinuationToken continuationToken = null;
             do
             {
-                var segment = await this.Client.ListSharesSegmentedAsync(prefix, detailsIncluded, null, continuationToken, options, operationContext, token).ConfigureAwait(false);
+                var segment = await Client.ListSharesSegmentedAsync(prefix, detailsIncluded, null, continuationToken, options, operationContext, token).ConfigureAwait(false);
                 foreach (var item in segment.Results)
                 {
                     enumerationAction(item);

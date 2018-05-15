@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
 
             foreach (var subscription in subscriptions)
             {
-                var foundSubscription = profile.Subscriptions.FirstOrDefault((s) => string.Equals(s.Id, subscription, StringComparison.OrdinalIgnoreCase));
+                var foundSubscription = profile.Subscriptions.FirstOrDefault(s => string.Equals(s.Id, subscription, StringComparison.OrdinalIgnoreCase));
                 if (foundSubscription != null)
                 {
                     subscriptionsList.Add(foundSubscription);

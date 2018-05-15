@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
     using Commands.Common.Authentication.Abstractions;
     using Entities.Providers;
     using Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
+    using Common;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -49,10 +49,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             var providerNamespace = ResourceIdUtility.GetExtensionProviderNamespace(resourceId)
                 ?? ResourceIdUtility.GetProviderNamespace(resourceId);
 
-            var resourceType = ResourceIdUtility.GetExtensionResourceType(resourceId: resourceId, includeProviderNamespace: false)
-                ?? ResourceIdUtility.GetResourceType(resourceId: resourceId, includeProviderNamespace: false);
+            var resourceType = ResourceIdUtility.GetExtensionResourceType(resourceId, false)
+                ?? ResourceIdUtility.GetResourceType(resourceId, false);
 
-            return ApiVersionHelper.DetermineApiVersion(context: context, providerNamespace: providerNamespace, resourceType: resourceType, cancellationToken: cancellationToken, pre: pre, cmdletHeaderValues: cmdletHeaderValues);
+            return DetermineApiVersion(context, providerNamespace, resourceType, cancellationToken, pre, cmdletHeaderValues);
         }
 
         /// <summary>
@@ -65,14 +65,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <param name="pre">When specified, indicates if pre-release API versions should be considered.</param>
         internal static Task<string> DetermineApiVersion(IAzureContext context, string providerNamespace, string resourceType, CancellationToken cancellationToken, bool? pre = null, Dictionary<string, string> cmdletHeaderValues = null)
         {
-            var cacheKey = ApiVersionCache.GetCacheKey(context.Environment.Name, providerNamespace: providerNamespace, resourceType: resourceType);
+            var cacheKey = ApiVersionCache.GetCacheKey(context.Environment.Name, providerNamespace, resourceType);
             var apiVersions = ApiVersionCache.Instance
-                .AddOrGetExisting(cacheKey: cacheKey, getFreshData: () => ApiVersionHelper.GetApiVersionsForResourceType(
+                .AddOrGetExisting(cacheKey, () => GetApiVersionsForResourceType(
                     context,
-                    providerNamespace: providerNamespace,
-                    resourceType: resourceType,
-                    cancellationToken: cancellationToken,
-                    cmdletHeaderValues: cmdletHeaderValues));
+                    providerNamespace,
+                    resourceType,
+                    cancellationToken,
+                    cmdletHeaderValues));
 
             apiVersions = apiVersions.CoalesceEnumerable().ToArray();
             var apiVersionsToSelectFrom = apiVersions;
@@ -115,16 +115,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
                 : string.Format("/subscriptions/{0}/providers", defaultSubscription.Id);
 
             var providers = PaginatedResponseHelper.Enumerate(
-                getFirstPage: () => resourceManagerClient
+                () => resourceManagerClient
                     .ListObjectColleciton<ResourceProviderDefinition>(
-                        resourceCollectionId: resourceCollectionId,
-                        apiVersion: Constants.ProvidersApiVersion,
-                        cancellationToken: cancellationToken),
-                getNextPage: nextLink => resourceManagerClient
+                        resourceCollectionId,
+                        Constants.ProvidersApiVersion,
+                        cancellationToken),
+                nextLink => resourceManagerClient
                     .ListNextBatch<ResourceProviderDefinition>(
-                    nextLink: nextLink,
-                    cancellationToken: cancellationToken),
-                cancellationToken: cancellationToken);
+                    nextLink,
+                    cancellationToken),
+                cancellationToken);
 
             return providers
                 .CoalesceEnumerable()
@@ -167,7 +167,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             /// <param name="cacheDataExpirationTime">The polling interval.</param>
             private ApiVersionCache(TimeSpan cacheDataExpirationTime)
             {
-                this.CacheDataExpirationTime = cacheDataExpirationTime;
+                CacheDataExpirationTime = cacheDataExpirationTime;
             }
 
             /// <summary>
@@ -179,20 +179,20 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             {
                 cacheKey = cacheKey.ToUpperInvariant();
 
-                var cacheItem = this.GetCacheItem(cacheKey: cacheKey);
+                var cacheItem = GetCacheItem(cacheKey);
 
                 if (cacheItem == null)
                 {
-                    var expirationTime = DateTime.UtcNow.Add(this.CacheDataExpirationTime);
+                    var expirationTime = DateTime.UtcNow.Add(CacheDataExpirationTime);
 
                     cacheItem = getFreshData();
 
                     if (cacheItem != null)
                     {
-                        this.SetCacheItem(
-                        cacheKey: cacheKey,
-                        data: cacheItem,
-                        absoluteExpirationTime: expirationTime);
+                        SetCacheItem(
+                        cacheKey,
+                        cacheItem,
+                        expirationTime);
                     }
                 }
 
@@ -216,7 +216,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             /// <param name="absoluteExpirationTime">The absolute expiration time.</param>
             private void SetCacheItem(string cacheKey, string[] data, DateTimeOffset absoluteExpirationTime)
             {
-                _cache.Set(key: cacheKey, value: data, absoluteExpiration: absoluteExpirationTime);
+                _cache.Set(cacheKey, data, absoluteExpirationTime);
             }
 
             /// <summary>

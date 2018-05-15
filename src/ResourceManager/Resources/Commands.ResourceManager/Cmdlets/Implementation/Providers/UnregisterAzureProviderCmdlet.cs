@@ -16,10 +16,10 @@ using System;
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
+    using SdkModels;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
 
     /// <summary>
     /// Un-registers the resource provider from the current subscription.
@@ -40,10 +40,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            this.ConfirmAction(
-                processMessage: ProjectResources.UnregisterProviderMessage,
-                target: this.ProviderNamespace,
-                action: () => this.WriteObject(this.ResourceManagerSdkClient.UnregisterProvider(providerName: this.ProviderNamespace)));
+            ConfirmAction(
+                ProjectResources.UnregisterProviderMessage,
+                ProviderNamespace,
+                () => WriteObject(ResourceManagerSdkClient.UnregisterProvider(ProviderNamespace)));
         }
     }
 }

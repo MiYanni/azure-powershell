@@ -26,13 +26,13 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSSubtaskInformation
     {
         
-        internal Microsoft.Azure.Batch.SubtaskInformation omObject;
+        internal SubtaskInformation omObject;
         
         private PSComputeNodeInformation computeNodeInformation;
         
@@ -40,11 +40,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         
         private PSTaskFailureInformation failureInformation;
         
-        internal PSSubtaskInformation(Microsoft.Azure.Batch.SubtaskInformation omObject)
+        internal PSSubtaskInformation(SubtaskInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -53,12 +53,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.computeNodeInformation == null) 
-                            && (this.omObject.ComputeNodeInformation != null)))
+                if (computeNodeInformation == null 
+                    && omObject.ComputeNodeInformation != null)
                 {
-                    this.computeNodeInformation = new PSComputeNodeInformation(this.omObject.ComputeNodeInformation);
+                    computeNodeInformation = new PSComputeNodeInformation(omObject.ComputeNodeInformation);
                 }
-                return this.computeNodeInformation;
+                return computeNodeInformation;
             }
         }
         
@@ -66,28 +66,28 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.containerInformation == null) 
-                            && (this.omObject.ContainerInformation != null)))
+                if (containerInformation == null 
+                    && omObject.ContainerInformation != null)
                 {
-                    this.containerInformation = new PSTaskContainerExecutionInformation(this.omObject.ContainerInformation);
+                    containerInformation = new PSTaskContainerExecutionInformation(omObject.ContainerInformation);
                 }
-                return this.containerInformation;
+                return containerInformation;
             }
         }
         
-        public System.DateTime? EndTime
+        public DateTime? EndTime
         {
             get
             {
-                return this.omObject.EndTime;
+                return omObject.EndTime;
             }
         }
         
-        public System.Int32? ExitCode
+        public Int32? ExitCode
         {
             get
             {
-                return this.omObject.ExitCode;
+                return omObject.ExitCode;
             }
         }
         
@@ -95,68 +95,68 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.failureInformation == null) 
-                            && (this.omObject.FailureInformation != null)))
+                if (failureInformation == null 
+                    && omObject.FailureInformation != null)
                 {
-                    this.failureInformation = new PSTaskFailureInformation(this.omObject.FailureInformation);
+                    failureInformation = new PSTaskFailureInformation(omObject.FailureInformation);
                 }
-                return this.failureInformation;
+                return failureInformation;
             }
         }
         
-        public System.Int32? Id
+        public Int32? Id
         {
             get
             {
-                return this.omObject.Id;
+                return omObject.Id;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.SubtaskState? PreviousState
+        public Azure.Batch.Common.SubtaskState? PreviousState
         {
             get
             {
-                return this.omObject.PreviousState;
+                return omObject.PreviousState;
             }
         }
         
-        public System.DateTime? PreviousStateTransitionTime
+        public DateTime? PreviousStateTransitionTime
         {
             get
             {
-                return this.omObject.PreviousStateTransitionTime;
+                return omObject.PreviousStateTransitionTime;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.TaskExecutionResult? Result
+        public Azure.Batch.Common.TaskExecutionResult? Result
         {
             get
             {
-                return this.omObject.Result;
+                return omObject.Result;
             }
         }
         
-        public System.DateTime? StartTime
+        public DateTime? StartTime
         {
             get
             {
-                return this.omObject.StartTime;
+                return omObject.StartTime;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.SubtaskState? State
+        public Azure.Batch.Common.SubtaskState? State
         {
             get
             {
-                return this.omObject.State;
+                return omObject.State;
             }
         }
         
-        public System.DateTime? StateTransitionTime
+        public DateTime? StateTransitionTime
         {
             get
             {
-                return this.omObject.StateTransitionTime;
+                return omObject.StateTransitionTime;
             }
         }
     }

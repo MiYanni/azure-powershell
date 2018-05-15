@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetNetworkWatcher(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSNetworkWatcher GetNetworkWatcher(string resourceGroupName, string name, string expandResource = null)
         {
-            NetworkWatcher networkWatcher = this.NetworkWatcherClient.Get(resourceGroupName, name);
+            NetworkWatcher networkWatcher = NetworkWatcherClient.Get(resourceGroupName, name);
 
             PSNetworkWatcher psNetworkWatcher = ToPsNetworkWatcher(networkWatcher);
             psNetworkWatcher.ResourceGroupName = resourceGroupName;

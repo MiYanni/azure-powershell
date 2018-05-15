@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double CurrentValue
         {
-            get { return this._currentValue; }
-            set { this._currentValue = value; }
+            get { return _currentValue; }
+            set { _currentValue = value; }
         }
         
         private string _displayName;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DisplayName
         {
-            get { return this._displayName; }
-            set { this._displayName = value; }
+            get { return _displayName; }
+            set { _displayName = value; }
         }
         
         private double _limit;
@@ -58,19 +58,19 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double Limit
         {
-            get { return this._limit; }
-            set { this._limit = value; }
+            get { return _limit; }
+            set { _limit = value; }
         }
         
-        private System.DateTime? _nextResetTime;
+        private DateTime? _nextResetTime;
         
         /// <summary>
         /// Optional. Gets or sets the next reset time for the metric.
         /// </summary>
-        public System.DateTime? NextResetTime
+        public DateTime? NextResetTime
         {
-            get { return this._nextResetTime; }
-            set { this._nextResetTime = value; }
+            get { return _nextResetTime; }
+            set { _nextResetTime = value; }
         }
         
         private string _resourceName;
@@ -80,8 +80,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ResourceName
         {
-            get { return this._resourceName; }
-            set { this._resourceName = value; }
+            get { return _resourceName; }
+            set { _resourceName = value; }
         }
         
         private string _unit;
@@ -91,8 +91,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Unit
         {
-            get { return this._unit; }
-            set { this._unit = value; }
+            get { return _unit; }
+            set { _unit = value; }
         }
         
         /// <summary>

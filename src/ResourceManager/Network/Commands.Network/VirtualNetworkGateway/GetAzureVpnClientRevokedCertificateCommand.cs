@@ -48,19 +48,16 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var vnetGateway = this.GetVirtualNetworkGateway(this.ResourceGroupName, this.VirtualNetworkGatewayName);
+            var vnetGateway = GetVirtualNetworkGateway(ResourceGroupName, VirtualNetworkGatewayName);
 
-            if (!string.IsNullOrEmpty(this.VpnClientRevokedCertificateName))
+            if (!string.IsNullOrEmpty(VpnClientRevokedCertificateName))
             {
                 PSVpnClientRevokedCertificate clientRevokedCertificate = vnetGateway.VpnClientConfiguration.VpnClientRevokedCertificates.Find(cert => cert.Name.Equals(VpnClientRevokedCertificateName));
                 if (clientRevokedCertificate == null)
                 {
-                    throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                    throw new ArgumentException(Properties.Resources.ResourceNotFound);
                 }
-                else
-                {
-                    WriteObject(clientRevokedCertificate);
-                }
+                WriteObject(clientRevokedCertificate);
             }
             else
             {

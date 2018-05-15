@@ -53,14 +53,14 @@ namespace Microsoft.Azure.Commands.Batch.Models
             {
                 throw new ArgumentException(Resources.NoNodeFile);
             }
-            this.NodeFileType = nodeFileType.Value;
+            NodeFileType = nodeFileType.Value;
 
-            this.JobId = jobId;
-            this.TaskId = taskId;
-            this.PoolId = poolId;
-            this.ComputeNodeId = computeNodeId;
-            this.Path = path;
-            this.NodeFile = nodeFile;
+            JobId = jobId;
+            TaskId = taskId;
+            PoolId = poolId;
+            ComputeNodeId = computeNodeId;
+            Path = path;
+            NodeFile = nodeFile;
         }
 
         /// <summary>

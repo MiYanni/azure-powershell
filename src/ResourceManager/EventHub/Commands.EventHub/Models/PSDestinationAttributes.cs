@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.EventHub.Models
         public PSDestinationAttributes()
         { }
 
-        public PSDestinationAttributes(Microsoft.Azure.Management.EventHub.Models.Destination destinationResource)
+        public PSDestinationAttributes(Destination destinationResource)
         {
             if (destinationResource != null)
             {

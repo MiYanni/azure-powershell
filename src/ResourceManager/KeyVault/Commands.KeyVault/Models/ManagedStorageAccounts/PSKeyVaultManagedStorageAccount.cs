@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             SetObjectIdentifier(vaultUriHelper, new Azure.KeyVault.StorageAccountIdentifier( managedStorageAccountBundle.Id) );
 
-            AccountName = this.Name;
+            AccountName = Name;
             AccountResourceId = managedStorageAccountBundle.ResourceId;
             ActiveKeyName = managedStorageAccountBundle.ActiveKeyName;
             AutoRegenerateKey = managedStorageAccountBundle.AutoRegenerateKey;

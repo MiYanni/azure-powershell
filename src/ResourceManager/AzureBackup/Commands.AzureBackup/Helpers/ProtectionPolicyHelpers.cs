@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Helpers
         public const string LastDayOfTheMonth = "Last";
         public static Regex rgx = new Regex(@"^[A-Za-z][-A-Za-z0-9]*[A-Za-z0-9]$");
 
-        public static AzureRMBackupProtectionPolicy GetCmdletPolicy(CmdletModel.AzureRMBackupVault vault, CSMProtectionPolicyResponse sourcePolicy)
+        public static AzureRMBackupProtectionPolicy GetCmdletPolicy(AzureRMBackupVault vault, CSMProtectionPolicyResponse sourcePolicy)
         {
             if (sourcePolicy == null)
             {
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Helpers
             return new AzureRMBackupProtectionPolicy(vault, sourcePolicy.Properties, sourcePolicy.Id);
         }
 
-        public static IEnumerable<AzureRMBackupProtectionPolicy> GetCmdletPolicies(CmdletModel.AzureRMBackupVault vault, IEnumerable<CSMProtectionPolicyResponse> sourcePolicyList)
+        public static IEnumerable<AzureRMBackupProtectionPolicy> GetCmdletPolicies(AzureRMBackupVault vault, IEnumerable<CSMProtectionPolicyResponse> sourcePolicyList)
         {
             if (sourcePolicyList == null)
             {
@@ -250,7 +250,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Helpers
                 scheduleStartTime = scheduleStartTime.ToUniversalTime();
             }
             DateTime scheduleRunTime = new DateTime(scheduleStartTime.Year, scheduleStartTime.Month,
-                scheduleStartTime.Day, scheduleStartTime.Hour, scheduleStartTime.Minute - (scheduleStartTime.Minute % 30), 0);
+                scheduleStartTime.Day, scheduleStartTime.Hour, scheduleStartTime.Minute - scheduleStartTime.Minute % 30, 0);
             return scheduleRunTime;
         }
 

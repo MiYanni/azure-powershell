@@ -127,21 +127,21 @@ namespace Microsoft.Azure.Commands.Network
             var ipsecPolicy = new PSIpsecPolicy();
 
             // default SA values
-            ipsecPolicy.SALifeTimeSeconds = (!this.MyInvocation.BoundParameters.ContainsKey("SALifeTimeSeconds")) ? 27000 : this.SALifeTimeSeconds;
-            ipsecPolicy.SADataSizeKilobytes = (!this.MyInvocation.BoundParameters.ContainsKey("SADataSizeKilobytes")) ? 102400000 : this.SADataSizeKilobytes;
+            ipsecPolicy.SALifeTimeSeconds = !MyInvocation.BoundParameters.ContainsKey("SALifeTimeSeconds") ? 27000 : SALifeTimeSeconds;
+            ipsecPolicy.SADataSizeKilobytes = !MyInvocation.BoundParameters.ContainsKey("SADataSizeKilobytes") ? 102400000 : SADataSizeKilobytes;
 
             // GCM matching check
-            if ((this.IpsecEncryption.Contains("GCM") || this.IpsecIntegrity.Contains("GCM")) && this.IpsecEncryption != this.IpsecIntegrity)
+            if ((IpsecEncryption.Contains("GCM") || IpsecIntegrity.Contains("GCM")) && IpsecEncryption != IpsecIntegrity)
             {
                 throw new ArgumentException("IpsecEncryption and IpsecIntegrity must use matching GCM algorithms");
             }
 
-            ipsecPolicy.IpsecEncryption = this.IpsecEncryption;
-            ipsecPolicy.IpsecIntegrity = this.IpsecIntegrity;
-            ipsecPolicy.IkeEncryption = this.IkeEncryption;
-            ipsecPolicy.IkeIntegrity = this.IkeIntegrity;
-            ipsecPolicy.DhGroup = this.DhGroup;
-            ipsecPolicy.PfsGroup = this.PfsGroup;
+            ipsecPolicy.IpsecEncryption = IpsecEncryption;
+            ipsecPolicy.IpsecIntegrity = IpsecIntegrity;
+            ipsecPolicy.IkeEncryption = IkeEncryption;
+            ipsecPolicy.IkeIntegrity = IkeIntegrity;
+            ipsecPolicy.DhGroup = DhGroup;
+            ipsecPolicy.PfsGroup = PfsGroup;
 
             WriteObject(ipsecPolicy);
         }

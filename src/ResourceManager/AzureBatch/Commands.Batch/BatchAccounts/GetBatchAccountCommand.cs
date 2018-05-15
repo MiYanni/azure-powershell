@@ -37,16 +37,16 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(this.AccountName))
+            if (string.IsNullOrEmpty(AccountName))
             {
-                foreach (BatchAccountContext context in BatchClient.ListAccounts(Tag, this.ResourceGroupName))
+                foreach (BatchAccountContext context in BatchClient.ListAccounts(Tag, ResourceGroupName))
                 {
                     WriteObject(context);
                 }
             }
             else
             {
-                BatchAccountContext context = BatchClient.GetAccount(this.ResourceGroupName, this.AccountName);
+                BatchAccountContext context = BatchClient.GetAccount(ResourceGroupName, AccountName);
                 WriteObject(context);
             }
         }

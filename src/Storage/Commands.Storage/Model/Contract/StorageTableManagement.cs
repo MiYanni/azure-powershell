@@ -14,9 +14,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Table;
+    using Commands.Common.Storage;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;

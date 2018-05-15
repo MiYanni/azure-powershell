@@ -34,15 +34,15 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(Name, VerbsLifecycle.Start))
+            if (ShouldProcess(Name, VerbsLifecycle.Start))
             {
                 base.ExecuteCmdlet();
 
                 ExecuteClientAction(() =>
                 {
-                    var op = this.VirtualMachineClient.StartWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.Name).GetAwaiter().GetResult();
+                    var op = VirtualMachineClient.StartWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        Name).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSComputeLongRunningOperation>(op);
                     WriteObject(result);
                 });

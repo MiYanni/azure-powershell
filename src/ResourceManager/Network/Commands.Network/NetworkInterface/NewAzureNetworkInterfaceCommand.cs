@@ -246,7 +246,7 @@ namespace Microsoft.Azure.Commands.Network
         {           
           base.Execute();
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsNetworkInterfacePresent(this.ResourceGroupName, this.Name);
+            var present = IsNetworkInterfacePresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
@@ -257,7 +257,7 @@ namespace Microsoft.Azure.Commands.Network
                     var networkInterface = CreateNetworkInterface();
                     if (present)
                     {
-                        networkInterface = this.GetNetworkInterface(this.ResourceGroupName, this.Name);
+                        networkInterface = GetNetworkInterface(ResourceGroupName, Name);
                     }
 
                     WriteObject(networkInterface);
@@ -268,132 +268,132 @@ namespace Microsoft.Azure.Commands.Network
         private PSNetworkInterface CreateNetworkInterface()
         {
             var networkInterface = new PSNetworkInterface();
-            networkInterface.Name = this.Name;
+            networkInterface.Name = Name;
 
-            networkInterface.Location = this.Location;
+            networkInterface.Location = Location;
 
-            networkInterface.EnableIPForwarding = this.EnableIPForwarding.IsPresent;
-            networkInterface.EnableAcceleratedNetworking = this.EnableAcceleratedNetworking.IsPresent;
+            networkInterface.EnableIPForwarding = EnableIPForwarding.IsPresent;
+            networkInterface.EnableAcceleratedNetworking = EnableAcceleratedNetworking.IsPresent;
 
             // Get the subnetId and publicIpAddressId from the object if specified
-            if (ParameterSetName.Contains(Microsoft.Azure.Commands.Network.Properties.Resources.SetByIpConfiguration))
+            if (ParameterSetName.Contains(Properties.Resources.SetByIpConfiguration))
             {
-                networkInterface.IpConfigurations = this.IpConfiguration;
+                networkInterface.IpConfigurations = IpConfiguration;
 
-                if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByIpConfigurationResourceId))
+                if (string.Equals(ParameterSetName, Properties.Resources.SetByIpConfigurationResourceId))
                 {
-                    if (this.NetworkSecurityGroup != null)
+                    if (NetworkSecurityGroup != null)
                     {
-                        this.NetworkSecurityGroupId = this.NetworkSecurityGroup.Id;
+                        NetworkSecurityGroupId = NetworkSecurityGroup.Id;
                     }
                 }
             }
             else
             {
-                if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+                if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
                 {
-                    this.SubnetId = this.Subnet.Id;
+                    SubnetId = Subnet.Id;
 
-                    if (this.PublicIpAddress != null)
+                    if (PublicIpAddress != null)
                     {
-                        this.PublicIpAddressId = this.PublicIpAddress.Id;
+                        PublicIpAddressId = PublicIpAddress.Id;
                     }
 
-                    if (this.NetworkSecurityGroup != null)
+                    if (NetworkSecurityGroup != null)
                     {
-                        this.NetworkSecurityGroupId = this.NetworkSecurityGroup.Id;
+                        NetworkSecurityGroupId = NetworkSecurityGroup.Id;
                     }
 
-                    if (this.LoadBalancerBackendAddressPool != null)
+                    if (LoadBalancerBackendAddressPool != null)
                     {
-                        this.LoadBalancerBackendAddressPoolId = new List<string>();
-                        foreach (var bepool in this.LoadBalancerBackendAddressPool)
+                        LoadBalancerBackendAddressPoolId = new List<string>();
+                        foreach (var bepool in LoadBalancerBackendAddressPool)
                         {
-                            this.LoadBalancerBackendAddressPoolId.Add(bepool.Id);
+                            LoadBalancerBackendAddressPoolId.Add(bepool.Id);
                         }
                     }
 
-                    if (this.LoadBalancerInboundNatRule != null)
+                    if (LoadBalancerInboundNatRule != null)
                     {
-                        this.LoadBalancerInboundNatRuleId = new List<string>();
-                        foreach (var natRule in this.LoadBalancerInboundNatRule)
+                        LoadBalancerInboundNatRuleId = new List<string>();
+                        foreach (var natRule in LoadBalancerInboundNatRule)
                         {
-                            this.LoadBalancerInboundNatRuleId.Add(natRule.Id);
+                            LoadBalancerInboundNatRuleId.Add(natRule.Id);
                         }
                     }
 
-                    if (this.ApplicationGatewayBackendAddressPool != null)
+                    if (ApplicationGatewayBackendAddressPool != null)
                     {
-                        this.ApplicationGatewayBackendAddressPoolId = new List<string>();
-                        foreach (var appgwBepool in this.ApplicationGatewayBackendAddressPool)
+                        ApplicationGatewayBackendAddressPoolId = new List<string>();
+                        foreach (var appgwBepool in ApplicationGatewayBackendAddressPool)
                         {
-                            this.ApplicationGatewayBackendAddressPoolId.Add(appgwBepool.Id);
+                            ApplicationGatewayBackendAddressPoolId.Add(appgwBepool.Id);
                         }
                     }
 
-                    if (this.ApplicationSecurityGroup != null)
+                    if (ApplicationSecurityGroup != null)
                     {
-                        this.ApplicationSecurityGroupId = new List<string>();
-                        foreach (var asg in this.ApplicationSecurityGroup)
+                        ApplicationSecurityGroupId = new List<string>();
+                        foreach (var asg in ApplicationSecurityGroup)
                         {
-                            this.ApplicationSecurityGroupId.Add(asg.Id);
+                            ApplicationSecurityGroupId.Add(asg.Id);
                         }
                     }
                 }
 
                 var nicIpConfiguration = new PSNetworkInterfaceIPConfiguration();
-                nicIpConfiguration.Name = string.IsNullOrEmpty(this.IpConfigurationName) ? "ipconfig1" : this.IpConfigurationName;
+                nicIpConfiguration.Name = string.IsNullOrEmpty(IpConfigurationName) ? "ipconfig1" : IpConfigurationName;
                 nicIpConfiguration.PrivateIpAllocationMethod = MNM.IPAllocationMethod.Dynamic;
                 nicIpConfiguration.Primary = true;
                 // Uncomment when ipv6 is supported as standalone ipconfig in a nic
                 // nicIpConfiguration.PrivateIpAddressVersion = this.PrivateIpAddressVersion;
 
-                if (!string.IsNullOrEmpty(this.PrivateIpAddress))
+                if (!string.IsNullOrEmpty(PrivateIpAddress))
                 {
-                    nicIpConfiguration.PrivateIpAddress = this.PrivateIpAddress;
+                    nicIpConfiguration.PrivateIpAddress = PrivateIpAddress;
                     nicIpConfiguration.PrivateIpAllocationMethod = MNM.IPAllocationMethod.Static;
                 }
 
                 nicIpConfiguration.Subnet = new PSSubnet();
-                nicIpConfiguration.Subnet.Id = this.SubnetId;
+                nicIpConfiguration.Subnet.Id = SubnetId;
 
-                if (!string.IsNullOrEmpty(this.PublicIpAddressId))
+                if (!string.IsNullOrEmpty(PublicIpAddressId))
                 {
                     nicIpConfiguration.PublicIpAddress = new PSPublicIpAddress();
-                    nicIpConfiguration.PublicIpAddress.Id = this.PublicIpAddressId;
+                    nicIpConfiguration.PublicIpAddress.Id = PublicIpAddressId;
                 }
 
-                if (this.LoadBalancerBackendAddressPoolId != null)
+                if (LoadBalancerBackendAddressPoolId != null)
                 {
                     nicIpConfiguration.LoadBalancerBackendAddressPools = new List<PSBackendAddressPool>();
-                    foreach (var bepoolId in this.LoadBalancerBackendAddressPoolId)
+                    foreach (var bepoolId in LoadBalancerBackendAddressPoolId)
                     {
                         nicIpConfiguration.LoadBalancerBackendAddressPools.Add(new PSBackendAddressPool { Id = bepoolId });
                     }
                 }
 
-                if (this.LoadBalancerInboundNatRuleId != null)
+                if (LoadBalancerInboundNatRuleId != null)
                 {
                     nicIpConfiguration.LoadBalancerInboundNatRules = new List<PSInboundNatRule>();
-                    foreach (var natruleId in this.LoadBalancerInboundNatRuleId)
+                    foreach (var natruleId in LoadBalancerInboundNatRuleId)
                     {
                         nicIpConfiguration.LoadBalancerInboundNatRules.Add(new PSInboundNatRule { Id = natruleId });
                     }
                 }
 
-                if (this.ApplicationGatewayBackendAddressPoolId != null)
+                if (ApplicationGatewayBackendAddressPoolId != null)
                 {
                     nicIpConfiguration.ApplicationGatewayBackendAddressPools = new List<PSApplicationGatewayBackendAddressPool>();
-                    foreach (var appgwBepoolId in this.ApplicationGatewayBackendAddressPoolId)
+                    foreach (var appgwBepoolId in ApplicationGatewayBackendAddressPoolId)
                     {
                         nicIpConfiguration.ApplicationGatewayBackendAddressPools.Add(new PSApplicationGatewayBackendAddressPool { Id = appgwBepoolId });
                     }
                 }
 
-                if (this.ApplicationSecurityGroupId != null)
+                if (ApplicationSecurityGroupId != null)
                 {
                     nicIpConfiguration.ApplicationSecurityGroups = new List<PSApplicationSecurityGroup>();
-                    foreach (var id in this.ApplicationSecurityGroupId)
+                    foreach (var id in ApplicationSecurityGroupId)
                     {
                         nicIpConfiguration.ApplicationSecurityGroups.Add(new PSApplicationSecurityGroup { Id = id });
                     }
@@ -403,35 +403,35 @@ namespace Microsoft.Azure.Commands.Network
                 networkInterface.IpConfigurations.Add(nicIpConfiguration);
             }
 
-            if (this.DnsServer != null || this.InternalDnsNameLabel != null)
+            if (DnsServer != null || InternalDnsNameLabel != null)
             {
                 networkInterface.DnsSettings = new PSNetworkInterfaceDnsSettings();
-                if (this.DnsServer != null)
+                if (DnsServer != null)
                 {
-                    networkInterface.DnsSettings.DnsServers = this.DnsServer;
+                    networkInterface.DnsSettings.DnsServers = DnsServer;
                 }
-                if (this.InternalDnsNameLabel != null)
+                if (InternalDnsNameLabel != null)
                 {
-                    networkInterface.DnsSettings.InternalDnsNameLabel = this.InternalDnsNameLabel;
+                    networkInterface.DnsSettings.InternalDnsNameLabel = InternalDnsNameLabel;
                 }
 
             }
 
-            if (!string.IsNullOrEmpty(this.NetworkSecurityGroupId))
+            if (!string.IsNullOrEmpty(NetworkSecurityGroupId))
             {
                 networkInterface.NetworkSecurityGroup = new PSNetworkSecurityGroup();
-                networkInterface.NetworkSecurityGroup.Id = this.NetworkSecurityGroupId;
+                networkInterface.NetworkSecurityGroup.Id = NetworkSecurityGroupId;
             }
 
             var networkInterfaceModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkInterface>(networkInterface);
 
-			this.NullifyApplicationSecurityGroupIfAbsent(networkInterfaceModel);
+			NullifyApplicationSecurityGroupIfAbsent(networkInterfaceModel);
 
-			networkInterfaceModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+			networkInterfaceModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
-            this.NetworkInterfaceClient.CreateOrUpdate(this.ResourceGroupName, this.Name, networkInterfaceModel);
+            NetworkInterfaceClient.CreateOrUpdate(ResourceGroupName, Name, networkInterfaceModel);
              
-            var getNetworkInterface = this.GetNetworkInterface(this.ResourceGroupName, this.Name);
+            var getNetworkInterface = GetNetworkInterface(ResourceGroupName, Name);
 
             return getNetworkInterface;
         }

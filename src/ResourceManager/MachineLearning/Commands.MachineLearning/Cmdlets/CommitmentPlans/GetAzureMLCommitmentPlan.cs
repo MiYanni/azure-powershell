@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
     using ResourceManager.Common.ArgumentCompleters;
     using Rest.Azure;
 
-    [Cmdlet(VerbsCommon.Get, CommitmentPlansCmdletBase.CommitmentPlanCommandletSuffix)]
+    [Cmdlet(VerbsCommon.Get, CommitmentPlanCommandletSuffix)]
     [OutputType(typeof(CommitmentPlan), typeof(CommitmentPlan[]))]
     public class GetAzureMLCommitmentPlan : CommitmentPlansCmdletBase
     {
@@ -36,33 +36,33 @@ namespace Microsoft.Azure.Commands.MachineLearning
         protected override void RunCmdlet()
         {
             // If this is a simple get commitment plan by name operation, resolve it as such
-            if (!string.IsNullOrWhiteSpace(this.ResourceGroupName) &&
-                !string.IsNullOrWhiteSpace(this.Name))
+            if (!string.IsNullOrWhiteSpace(ResourceGroupName) &&
+                !string.IsNullOrWhiteSpace(Name))
             {
                 CommitmentPlan commitmentPlan =
-                    this.CommitmentPlansClient.GetAzureMlCommitmentPlan(this.ResourceGroupName, this.Name);
-                this.WriteObject(commitmentPlan);
+                    CommitmentPlansClient.GetAzureMlCommitmentPlan(ResourceGroupName, Name);
+                WriteObject(commitmentPlan);
             }
             else
             {
                 IPage<CommitmentPlan> commitmentPlans;
-                if (!string.IsNullOrWhiteSpace(this.ResourceGroupName))
+                if (!string.IsNullOrWhiteSpace(ResourceGroupName))
                 {
-                    commitmentPlans = this.CommitmentPlansClient.ListAzureMlCommitmentPlansInResourceGroupAsync(
-                                                        this.ResourceGroupName,
+                    commitmentPlans = CommitmentPlansClient.ListAzureMlCommitmentPlansInResourceGroupAsync(
+                                                        ResourceGroupName,
                                                         null,
-                                                        this.CancellationToken).Result;
+                                                        CancellationToken).Result;
                 }
                 else
                 {
-                    commitmentPlans = this.CommitmentPlansClient.ListAzureMlCommitmentPlansAsync(
+                    commitmentPlans = CommitmentPlansClient.ListAzureMlCommitmentPlansAsync(
                                                         null,
-                                                        this.CancellationToken).Result;
+                                                        CancellationToken).Result;
                 }
 
                 foreach (var commitmentPlan in commitmentPlans)
                 {
-                    this.WriteObject(commitmentPlan, true);
+                    WriteObject(commitmentPlan, true);
                 }
             }
         }

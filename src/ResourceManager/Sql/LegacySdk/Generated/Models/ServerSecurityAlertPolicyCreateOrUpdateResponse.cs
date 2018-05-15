@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string OperationStatusLink
         {
-            get { return this._operationStatusLink; }
-            set { this._operationStatusLink = value; }
+            get { return _operationStatusLink; }
+            set { _operationStatusLink = value; }
         }
         
         /// <summary>

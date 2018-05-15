@@ -129,14 +129,14 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 }
 
                 DateTimeFormatInfo format = new CultureInfo("en-US").DateTimeFormat;
-                WriteDebug(String.Format(Resources.StartTimeFilter, System.Uri.EscapeDataString(From.Value.ToString("yyyy-MM-dd hh:mm:ss tt", format))));
-                WriteDebug(String.Format(Resources.EndTimeFilter, System.Uri.EscapeDataString(To.Value.ToString("yyyy-MM-dd hh:mm:ss tt", format))));
+                WriteDebug(String.Format(Resources.StartTimeFilter, Uri.EscapeDataString(From.Value.ToString("yyyy-MM-dd hh:mm:ss tt", format))));
+                WriteDebug(String.Format(Resources.EndTimeFilter, Uri.EscapeDataString(To.Value.ToString("yyyy-MM-dd hh:mm:ss tt", format))));
                 WriteDebug(String.Format(Resources.OperationFilter, Operation));
                 WriteDebug(String.Format(Resources.StatusFilter, Status));
                 WriteDebug(String.Format(Resources.TypeFilter, Type));
                 WriteDebug(String.Format(Resources.JobIdFilter, JobId));
 
-                Mgmt.CSMJobQueryObject queryParams = new Mgmt.CSMJobQueryObject()
+                Mgmt.CSMJobQueryObject queryParams = new Mgmt.CSMJobQueryObject
                 {
 
                     StartTime = From.Value.ToString("yyyy-MM-dd hh:mm:ss tt", format),
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                     retrievedJobs.Add(new AzureRMBackupJob(Vault, serviceJob.Properties, serviceJob.Name));
                 }
 
-                WriteDebug(String.Format(Resources.JobRetrieved, retrievedJobs.Count()));
+                WriteDebug(String.Format(Resources.JobRetrieved, retrievedJobs.Count));
 
                 if (retrievedJobs.Count == 1)
                 {

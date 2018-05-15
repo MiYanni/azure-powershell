@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._clientCertificatePfx == null ? null : (string)this._clientCertificatePfx.Value;
+                return _clientCertificatePfx == null ? null : (string)_clientCertificatePfx.Value;
             }
         }
 
@@ -144,7 +144,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._clientCertificatePassword == null ? null : (string)this._clientCertificatePassword.Value;
+                return _clientCertificatePassword == null ? null : (string)_clientCertificatePassword.Value;
             }
         }
 
@@ -155,7 +155,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._basicUsername == null ? null : (string)this._basicUsername.Value;
+                return _basicUsername == null ? null : (string)_basicUsername.Value;
             }
         }
 
@@ -166,7 +166,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._basicPassword == null ? null : (string)this._basicPassword.Value;
+                return _basicPassword == null ? null : (string)_basicPassword.Value;
             }
         }
 
@@ -177,7 +177,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._oAuthTenant == null ? null : (string)this._oAuthTenant.Value;
+                return _oAuthTenant == null ? null : (string)_oAuthTenant.Value;
             }
         }
 
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._oAuthAudience == null ? null : (string)this._oAuthAudience.Value;
+                return _oAuthAudience == null ? null : (string)_oAuthAudience.Value;
             }
         }
 
@@ -199,7 +199,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._oAuthClientId == null ? null : (string)this._oAuthClientId.Value;
+                return _oAuthClientId == null ? null : (string)_oAuthClientId.Value;
             }
         }
 
@@ -210,7 +210,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._oAuthSecret == null ? null : (string)this._oAuthSecret.Value;
+                return _oAuthSecret == null ? null : (string)_oAuthSecret.Value;
             }
         }
 
@@ -221,7 +221,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionMethod == null ? null : (string)this._errorActionMethod.Value;
+                return _errorActionMethod == null ? null : (string)_errorActionMethod.Value;
             }
         }
 
@@ -232,7 +232,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionUri == null ? null : (Uri)this._errorActionUri.Value;
+                return _errorActionUri == null ? null : (Uri)_errorActionUri.Value;
             }
         }
 
@@ -243,7 +243,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionRequestBody == null ? null : (string)this._errorActionRequestBody.Value;
+                return _errorActionRequestBody == null ? null : (string)_errorActionRequestBody.Value;
             }
         }
 
@@ -254,7 +254,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionHeaders == null ? null : (Hashtable)this._errorActionHeaders.Value;
+                return _errorActionHeaders == null ? null : (Hashtable)_errorActionHeaders.Value;
             }
         }
 
@@ -265,7 +265,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionHttpAuthenticationType == null ? null : (string)this._errorActionHttpAuthenticationType.Value;
+                return _errorActionHttpAuthenticationType == null ? null : (string)_errorActionHttpAuthenticationType.Value;
             }
         }
 
@@ -276,7 +276,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionClientCertificatePfx == null ? null : (string)this._errorActionClientCertificatePfx.Value;
+                return _errorActionClientCertificatePfx == null ? null : (string)_errorActionClientCertificatePfx.Value;
             }
         }
 
@@ -287,7 +287,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionClientCertificatePassword == null ? null : (string)this._errorActionClientCertificatePassword.Value;
+                return _errorActionClientCertificatePassword == null ? null : (string)_errorActionClientCertificatePassword.Value;
             }
         }
 
@@ -298,7 +298,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionBasicUsername == null ? null : (string)this._errorActionBasicUsername.Value;
+                return _errorActionBasicUsername == null ? null : (string)_errorActionBasicUsername.Value;
             }
         }
 
@@ -309,7 +309,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionBasicPassword == null ? null : (string)this._errorActionBasicPassword.Value;
+                return _errorActionBasicPassword == null ? null : (string)_errorActionBasicPassword.Value;
             }
         }
 
@@ -320,7 +320,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionOAuthTenant == null ? null : (string)this._errorActionOAuthTenant.Value;
+                return _errorActionOAuthTenant == null ? null : (string)_errorActionOAuthTenant.Value;
             }
         }
 
@@ -331,7 +331,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionOAuthAudience == null ? null : (string)this._errorActionOAuthAudience.Value;
+                return _errorActionOAuthAudience == null ? null : (string)_errorActionOAuthAudience.Value;
             }
         }
 
@@ -342,7 +342,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionOAuthClientId == null ? null : (string)this._errorActionOAuthClientId.Value;
+                return _errorActionOAuthClientId == null ? null : (string)_errorActionOAuthClientId.Value;
             }
         }
 
@@ -353,7 +353,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionOAuthSecret == null ? null : (string)this._errorActionOAuthSecret.Value;
+                return _errorActionOAuthSecret == null ? null : (string)_errorActionOAuthSecret.Value;
             }
         }
 
@@ -384,12 +384,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._clientCertificatePfx = new RuntimeDefinedParameter("ClientCertificatePfx", typeof(object), clientCertificatePfxAttributes);
-            this._clientCertificatePassword = new RuntimeDefinedParameter("ClientCertificatePassword", typeof(string), clientCertificatePasswordAttributes);
+            _clientCertificatePfx = new RuntimeDefinedParameter("ClientCertificatePfx", typeof(object), clientCertificatePfxAttributes);
+            _clientCertificatePassword = new RuntimeDefinedParameter("ClientCertificatePassword", typeof(string), clientCertificatePasswordAttributes);
 
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runtimeDefinedParameterDictionary.Add("ClientCertificatePfx", this._clientCertificatePfx);
-            runtimeDefinedParameterDictionary.Add("ClientCertificatePassword", this._clientCertificatePassword);
+            runtimeDefinedParameterDictionary.Add("ClientCertificatePfx", _clientCertificatePfx);
+            runtimeDefinedParameterDictionary.Add("ClientCertificatePassword", _clientCertificatePassword);
 
             return runtimeDefinedParameterDictionary;
         }
@@ -421,12 +421,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._basicUsername = new RuntimeDefinedParameter("Username", typeof(string), basicUsernameAttributes);
-            this._basicPassword = new RuntimeDefinedParameter("Password", typeof(string), basicPasswordAttributes);
+            _basicUsername = new RuntimeDefinedParameter("Username", typeof(string), basicUsernameAttributes);
+            _basicPassword = new RuntimeDefinedParameter("Password", typeof(string), basicPasswordAttributes);
 
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runtimeDefinedParameterDictionary.Add("Username", this._basicUsername);
-            runtimeDefinedParameterDictionary.Add("Password", this._basicPassword);
+            runtimeDefinedParameterDictionary.Add("Username", _basicUsername);
+            runtimeDefinedParameterDictionary.Add("Password", _basicPassword);
 
             return runtimeDefinedParameterDictionary;
         }
@@ -478,16 +478,16 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._oAuthTenant = new RuntimeDefinedParameter("Tenant", typeof(string), oAuthTenantAttributes);
-            this._oAuthAudience = new RuntimeDefinedParameter("Audience", typeof(string), oAuthAudienceAttributes);
-            this._oAuthClientId = new RuntimeDefinedParameter("ClientId", typeof(string), oAuthClientIdAttributes);
-            this._oAuthSecret = new RuntimeDefinedParameter("Secret", typeof(string), oAuthSecretAttributes);
+            _oAuthTenant = new RuntimeDefinedParameter("Tenant", typeof(string), oAuthTenantAttributes);
+            _oAuthAudience = new RuntimeDefinedParameter("Audience", typeof(string), oAuthAudienceAttributes);
+            _oAuthClientId = new RuntimeDefinedParameter("ClientId", typeof(string), oAuthClientIdAttributes);
+            _oAuthSecret = new RuntimeDefinedParameter("Secret", typeof(string), oAuthSecretAttributes);
 
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runtimeDefinedParameterDictionary.Add("Tenant", this._oAuthTenant);
-            runtimeDefinedParameterDictionary.Add("Audience", this._oAuthAudience);
-            runtimeDefinedParameterDictionary.Add("ClientId", this._oAuthClientId);
-            runtimeDefinedParameterDictionary.Add("Secret", this._oAuthSecret);
+            runtimeDefinedParameterDictionary.Add("Tenant", _oAuthTenant);
+            runtimeDefinedParameterDictionary.Add("Audience", _oAuthAudience);
+            runtimeDefinedParameterDictionary.Add("ClientId", _oAuthClientId);
+            runtimeDefinedParameterDictionary.Add("Secret", _oAuthSecret);
 
             return runtimeDefinedParameterDictionary;
         }
@@ -555,22 +555,22 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 }
             };
 
-            this._errorActionMethod = new RuntimeDefinedParameter("ErrorActionMethod", typeof(string), errorActionMethodAttributes);
-            this._errorActionUri = new RuntimeDefinedParameter("ErrorActionUri", typeof(Uri), errorActionUriAttributes);
-            this._errorActionRequestBody = new RuntimeDefinedParameter("ErrorActionRequestBody", typeof(string), errorActionRequestBodyAttributes);
-            this._errorActionHeaders = new RuntimeDefinedParameter("ErrorActionHeaders", typeof(Hashtable), errorActionHeadersAttributes);
-            this._errorActionHttpAuthenticationType = new RuntimeDefinedParameter("ErrorActionHttpAuthenticationType", typeof(string), errorActionHttpAuthenticationTypeAttributes);
+            _errorActionMethod = new RuntimeDefinedParameter("ErrorActionMethod", typeof(string), errorActionMethodAttributes);
+            _errorActionUri = new RuntimeDefinedParameter("ErrorActionUri", typeof(Uri), errorActionUriAttributes);
+            _errorActionRequestBody = new RuntimeDefinedParameter("ErrorActionRequestBody", typeof(string), errorActionRequestBodyAttributes);
+            _errorActionHeaders = new RuntimeDefinedParameter("ErrorActionHeaders", typeof(Hashtable), errorActionHeadersAttributes);
+            _errorActionHttpAuthenticationType = new RuntimeDefinedParameter("ErrorActionHttpAuthenticationType", typeof(string), errorActionHttpAuthenticationTypeAttributes);
 
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runtimeDefinedParameterDictionary.Add("ErrorActionMethod", this._errorActionMethod);
-            runtimeDefinedParameterDictionary.Add("ErrorActionUri", this._errorActionUri);
-            runtimeDefinedParameterDictionary.Add("ErrorActionRequestBody", this._errorActionRequestBody);
-            runtimeDefinedParameterDictionary.Add("ErrorActionHeaders", this._errorActionHeaders);
-            runtimeDefinedParameterDictionary.Add("ErrorActionHttpAuthenticationType", this._errorActionHttpAuthenticationType);
+            runtimeDefinedParameterDictionary.Add("ErrorActionMethod", _errorActionMethod);
+            runtimeDefinedParameterDictionary.Add("ErrorActionUri", _errorActionUri);
+            runtimeDefinedParameterDictionary.Add("ErrorActionRequestBody", _errorActionRequestBody);
+            runtimeDefinedParameterDictionary.Add("ErrorActionHeaders", _errorActionHeaders);
+            runtimeDefinedParameterDictionary.Add("ErrorActionHttpAuthenticationType", _errorActionHttpAuthenticationType);
 
-            runtimeDefinedParameterDictionary.AddRange(this.AddHttpErrorActionClientCertificateAuthenticationTypeParameters());
-            runtimeDefinedParameterDictionary.AddRange(this.AddHttpErrorActionBasicAuthenticationTypeParameters());
-            runtimeDefinedParameterDictionary.AddRange(this.AddHttpErrorActionActiveDirectoryOAuthAuthenticationTypeParameters());
+            runtimeDefinedParameterDictionary.AddRange(AddHttpErrorActionClientCertificateAuthenticationTypeParameters());
+            runtimeDefinedParameterDictionary.AddRange(AddHttpErrorActionBasicAuthenticationTypeParameters());
+            runtimeDefinedParameterDictionary.AddRange(AddHttpErrorActionActiveDirectoryOAuthAuthenticationTypeParameters());
 
             return runtimeDefinedParameterDictionary;
         }
@@ -601,12 +601,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._errorActionClientCertificatePfx = new RuntimeDefinedParameter("ErrorActionClientCertificatePfx", typeof(object), errorActionClientCertificatePfxAttributes);
-            this._errorActionClientCertificatePassword = new RuntimeDefinedParameter("ErrorActionClientCertificatePassword", typeof(string), errorActionClientCertificatePasswordAttributes);
+            _errorActionClientCertificatePfx = new RuntimeDefinedParameter("ErrorActionClientCertificatePfx", typeof(object), errorActionClientCertificatePfxAttributes);
+            _errorActionClientCertificatePassword = new RuntimeDefinedParameter("ErrorActionClientCertificatePassword", typeof(string), errorActionClientCertificatePasswordAttributes);
 
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runtimeDefinedParameterDictionary.Add("ErrorActionClientCertificatePfx", this._errorActionClientCertificatePfx);
-            runtimeDefinedParameterDictionary.Add("ErrorActionClientCertificatePassword", this._errorActionClientCertificatePassword);
+            runtimeDefinedParameterDictionary.Add("ErrorActionClientCertificatePfx", _errorActionClientCertificatePfx);
+            runtimeDefinedParameterDictionary.Add("ErrorActionClientCertificatePassword", _errorActionClientCertificatePassword);
 
             return runtimeDefinedParameterDictionary;
         }
@@ -637,12 +637,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._errorActionBasicUsername = new RuntimeDefinedParameter("ErrorActionUsername", typeof(string), errorActionBasicUsernameAttributes);
-            this._errorActionBasicPassword = new RuntimeDefinedParameter("ErrorActionPassword", typeof(string), errorActionBasicPasswordAttributes);
+            _errorActionBasicUsername = new RuntimeDefinedParameter("ErrorActionUsername", typeof(string), errorActionBasicUsernameAttributes);
+            _errorActionBasicPassword = new RuntimeDefinedParameter("ErrorActionPassword", typeof(string), errorActionBasicPasswordAttributes);
 
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runtimeDefinedParameterDictionary.Add("ErrorActionUsername", this._errorActionBasicUsername);
-            runtimeDefinedParameterDictionary.Add("ErrorActionPassword", this._errorActionBasicPassword);
+            runtimeDefinedParameterDictionary.Add("ErrorActionUsername", _errorActionBasicUsername);
+            runtimeDefinedParameterDictionary.Add("ErrorActionPassword", _errorActionBasicPassword);
 
             return runtimeDefinedParameterDictionary;
         }
@@ -693,16 +693,16 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._errorActionOAuthTenant = new RuntimeDefinedParameter("ErrorActionTenant", typeof(string), errorActionOAuthTenantAttributes);
-            this._errorActionOAuthAudience = new RuntimeDefinedParameter("ErrorActionAudience", typeof(string), errorActionOAuthAudienceAttributes);
-            this._errorActionOAuthClientId = new RuntimeDefinedParameter("ErrorActionClientId", typeof(string), errorActionOAuthClientIdAttributes);
-            this._errorActionOAuthSecret = new RuntimeDefinedParameter("ErrorActionSecret", typeof(string), errorActionOAuthSecretAttributes);
+            _errorActionOAuthTenant = new RuntimeDefinedParameter("ErrorActionTenant", typeof(string), errorActionOAuthTenantAttributes);
+            _errorActionOAuthAudience = new RuntimeDefinedParameter("ErrorActionAudience", typeof(string), errorActionOAuthAudienceAttributes);
+            _errorActionOAuthClientId = new RuntimeDefinedParameter("ErrorActionClientId", typeof(string), errorActionOAuthClientIdAttributes);
+            _errorActionOAuthSecret = new RuntimeDefinedParameter("ErrorActionSecret", typeof(string), errorActionOAuthSecretAttributes);
 
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runtimeDefinedParameterDictionary.Add("ErrorActionTenant", this._errorActionOAuthTenant);
-            runtimeDefinedParameterDictionary.Add("ErrorActionAudience", this._errorActionOAuthAudience);
-            runtimeDefinedParameterDictionary.Add("ErrorActionClientId", this._errorActionOAuthClientId);
-            runtimeDefinedParameterDictionary.Add("ErrorActionSecret", this._errorActionOAuthSecret);
+            runtimeDefinedParameterDictionary.Add("ErrorActionTenant", _errorActionOAuthTenant);
+            runtimeDefinedParameterDictionary.Add("ErrorActionAudience", _errorActionOAuthAudience);
+            runtimeDefinedParameterDictionary.Add("ErrorActionClientId", _errorActionOAuthClientId);
+            runtimeDefinedParameterDictionary.Add("ErrorActionSecret", _errorActionOAuthSecret);
 
             return runtimeDefinedParameterDictionary;
         }

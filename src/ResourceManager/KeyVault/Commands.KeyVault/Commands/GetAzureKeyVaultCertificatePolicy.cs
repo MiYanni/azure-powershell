@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Commands
 
             try
             {
-                certificatePolicy = this.DataServiceClient.GetCertificatePolicy(this.VaultName, this.Name);
+                certificatePolicy = DataServiceClient.GetCertificatePolicy(VaultName, Name);
             }
             catch (KeyVaultErrorException exception)
             {
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Commands
 
             if (certificatePolicy != null)
             {
-                this.WriteObject(certificatePolicy);
+                WriteObject(certificatePolicy);
             }
         }
     }

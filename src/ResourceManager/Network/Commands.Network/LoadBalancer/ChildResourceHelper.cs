@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Network
             string resourceName)
         {
             return string.Format(
-                Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerChildResourceId,
+                Properties.Resources.LoadBalancerChildResourceId,
                 subscriptionId,
                 resourceGroupName,
                 loadBalancerName,
@@ -38,10 +38,10 @@ namespace Microsoft.Azure.Commands.Network
         public static string GetResourceNotSetId(string subscriptionId, string resource, string resourceName)
         {
             return string.Format(
-                Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerChildResourceId,
+                Properties.Resources.LoadBalancerChildResourceId,
                 subscriptionId,
-                Microsoft.Azure.Commands.Network.Properties.Resources.ResourceGroupNotSet,
-                Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerNameNotSet,
+                Properties.Resources.ResourceGroupNotSet,
+                Properties.Resources.LoadBalancerNameNotSet,
                 resource,
                 resourceName);
         }
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 foreach (var loadBalancingRule in loadBalancer.LoadBalancingRules)
                 {
-                    loadBalancingRule.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerRuleName, loadBalancingRule.Name);
+                    loadBalancingRule.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Properties.Resources.LoadBalancerRuleName, loadBalancingRule.Name);
 
                     if (loadBalancingRule.FrontendIPConfiguration != null)
                     {
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 foreach (var inboundNatRule in loadBalancer.InboundNatRules)
                 {
-                    inboundNatRule.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerInBoundNatRuleName, inboundNatRule.Name);
+                    inboundNatRule.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Properties.Resources.LoadBalancerInBoundNatRuleName, inboundNatRule.Name);
 
                     if (inboundNatRule.FrontendIPConfiguration != null)
                     {
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 foreach (var inboundNatPool in loadBalancer.InboundNatPools)
                 {
-                    inboundNatPool.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerInboundNatPoolName, inboundNatPool.Name);
+                    inboundNatPool.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Properties.Resources.LoadBalancerInboundNatPoolName, inboundNatPool.Name);
 
                     if (inboundNatPool.FrontendIPConfiguration != null)
                     {
@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 foreach (var frontendIpConfig in loadBalancer.FrontendIpConfigurations)
                 {
-                    frontendIpConfig.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerFrontendIpConfigName, frontendIpConfig.Name);
+                    frontendIpConfig.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Properties.Resources.LoadBalancerFrontendIpConfigName, frontendIpConfig.Name);
                 }
             }
 
@@ -154,7 +154,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 foreach (var probe in loadBalancer.Probes)
                 {
-                    probe.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerProbeName, probe.Name);
+                    probe.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Properties.Resources.LoadBalancerProbeName, probe.Name);
                 }
             }
 
@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 foreach (var backendAddressPool in loadBalancer.BackendAddressPools)
                 {
-                    backendAddressPool.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerBackendAddressPoolName, backendAddressPool.Name);
+                    backendAddressPool.Id = GetResourceId(subscriptionId, loadBalancer.ResourceGroupName, loadBalancer.Name, Properties.Resources.LoadBalancerBackendAddressPoolName, backendAddressPool.Name);
                 }
             }
         }

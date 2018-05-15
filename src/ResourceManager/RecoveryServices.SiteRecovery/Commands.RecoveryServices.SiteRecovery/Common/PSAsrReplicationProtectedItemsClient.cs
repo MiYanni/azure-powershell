@@ -38,13 +38,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             DisableProtectionInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginDeleteWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -66,13 +66,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             EnableProtectionInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginCreateWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -90,22 +90,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string fabricName,
             string protectionContainerName)
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationProtectedItems
                 .ListByReplicationProtectionContainersWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
 
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationProtectedItems
                     .ListByReplicationProtectionContainersNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
 
             pages.Insert(0, firstPage);
             return Utilities.IpageToList(pages);
@@ -123,12 +123,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             string replicatedProtectedItemName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .ReplicationProtectedItems.GetWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicatedProtectedItemName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -147,20 +147,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var odataQuery =
                 new ODataQuery<ProtectedItemsQueryParameter>(
                     protectedItemsQueryParameter.ToQueryString());
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.ListWithHttpMessagesAsync(
                     odataQuery,
                     null,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
 
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationProtectedItems.ListNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
 
             pages.Insert(0, firstPage);
             return Utilities.IpageToList(pages);
@@ -178,12 +178,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             string replicationProtectedItemName)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginPurgeWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -205,13 +205,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             ApplyRecoveryPointInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginApplyRecoveryPointWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -231,12 +231,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             string replicationProtectedItemName)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginFailoverCommitWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -258,13 +258,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             PlannedFailoverInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginPlannedFailoverWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -286,13 +286,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             ReverseReplicationInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginReprotectWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -314,13 +314,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             TestFailoverInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginTestFailoverWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -342,13 +342,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             TestFailoverCleanupInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginTestFailoverCleanupWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -370,13 +370,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             UnplannedFailoverInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginUnplannedFailoverWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -396,12 +396,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             string replicationProtectedItemName)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginRepairReplicationWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -423,13 +423,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             UpdateMobilityServiceRequest input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginUpdateMobilityServiceWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -449,12 +449,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             SwitchProtectionInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectionContainers.BeginSwitchProtectionWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 
@@ -476,13 +476,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             UpdateReplicationProtectedItemInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationProtectedItems.BeginUpdateWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
 

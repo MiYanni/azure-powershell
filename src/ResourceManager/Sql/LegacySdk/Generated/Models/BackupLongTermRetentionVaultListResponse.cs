@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<BackupLongTermRetentionVault> BackupLongTermRetentionVaults
         {
-            get { return this._backupLongTermRetentionVaults; }
-            set { this._backupLongTermRetentionVaults = value; }
+            get { return _backupLongTermRetentionVaults; }
+            set { _backupLongTermRetentionVaults = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public BackupLongTermRetentionVaultListResponse()
         {
-            this.BackupLongTermRetentionVaults = new LazyList<BackupLongTermRetentionVault>();
+            BackupLongTermRetentionVaults = new LazyList<BackupLongTermRetentionVault>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<BackupLongTermRetentionVault> GetEnumerator()
         {
-            return this.BackupLongTermRetentionVaults.GetEnumerator();
+            return BackupLongTermRetentionVaults.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

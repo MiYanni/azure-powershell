@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
         #region Webhooks
 
-        Model.Webhook CreateWebhook(
+        Webhook CreateWebhook(
             string resourceGroupName,
             string automationAccountName,
             string name,
@@ -167,11 +167,11 @@ namespace Microsoft.Azure.Commands.Automation.Common
             IDictionary parameters,
             string runOn);
 
-        Model.Webhook GetWebhook(string resourceGroupName, string automationAccountName, string name);
+        Webhook GetWebhook(string resourceGroupName, string automationAccountName, string name);
 
-        IEnumerable<Model.Webhook> ListWebhooks(string resourceGroupName, string automationAccountName, string runbooName, ref string nextLink);
+        IEnumerable<Webhook> ListWebhooks(string resourceGroupName, string automationAccountName, string runbooName, ref string nextLink);
 
-        Model.Webhook UpdateWebhook(string resourceGroupName, string automationAccountName, string name, IDictionary parameters, bool? isEnabled);
+        Webhook UpdateWebhook(string resourceGroupName, string automationAccountName, string name, IDictionary parameters, bool? isEnabled);
 
         void DeleteWebhook(string resourceGroupName, string automationAccountName, string name);
 

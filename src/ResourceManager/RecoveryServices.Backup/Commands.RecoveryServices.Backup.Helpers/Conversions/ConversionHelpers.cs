@@ -68,17 +68,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             {
                 string friendlyName = backupEngine.Properties.FriendlyName;
                 string backupManagementType =
-                    backupEngine.Properties.BackupManagementType.ToString();
+                    backupEngine.Properties.BackupManagementType;
                 string registrationStatus = backupEngine.Properties.RegistrationStatus;
                 string healthStatus = backupEngine.Properties.HealthStatus;
                 bool? canReRegister = backupEngine.Properties.CanReRegister;
                 string backupEngineId = backupEngine.Properties.BackupEngineId;
 
-                if (backupEngine.Properties.GetType() == (typeof(ServiceClientModel.DpmBackupEngine)))
+                if (backupEngine.Properties.GetType() == typeof(ServiceClientModel.DpmBackupEngine))
                 {
                     backupEngineModel = new DpmBackupEngine(backupEngine);
                 }
-                else if (backupEngine.Properties.GetType() == (typeof(ServiceClientModel.AzureBackupServerEngine)))
+                else if (backupEngine.Properties.GetType() == typeof(ServiceClientModel.AzureBackupServerEngine))
                 {
                     backupEngineModel = new AzureBackupServerEngine(backupEngine);
                 }

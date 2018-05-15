@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string AssociationText
         {
-            get { return JsonConvert.SerializeObject(this.Associations, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Associations, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

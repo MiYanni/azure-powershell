@@ -15,10 +15,10 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
@@ -48,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             ValueFromPipeline = true,
              ValueFromPipelineByPropertyName = true,
            ParameterSetName = NameParameterSet)]
-        [SupportsWildcards()]
+        [SupportsWildcards]
         public string Name { get; set; }
 
         [Parameter(HelpMessage = "Container Prefix",
@@ -117,7 +117,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                     wildcard = new WildcardPattern(name, options);
                 }
 
-                Func<CloudBlobContainer, bool> containerFilter = (container) => null == wildcard || wildcard.IsMatch(container.Name);
+                Func<CloudBlobContainer, bool> containerFilter = container => null == wildcard || wildcard.IsMatch(container.Name);
 
                 IEnumerable<Tuple<CloudBlobContainer, BlobContinuationToken>> containerList = ListContainersByPrefix(prefix, containerFilter);
 
@@ -208,10 +208,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             }
 
             // Only write warning for SAS when use cmdlet alias Get-AzureStorageContainerAcl, since the cmdlets alias specified get container ACL
-            if (this.MyInvocation.Line.ToLower().Contains("get-azurestoragecontaineracl"))
+            if (MyInvocation.Line.ToLower().Contains("get-azurestoragecontaineracl"))
             {
                 // Write warning when user SAS credential since get container ACL will fail
-                AzureStorageContext storageContext = this.GetCmdletStorageContext();
+                AzureStorageContext storageContext = GetCmdletStorageContext();
                 if (storageContext != null && storageContext.StorageAccount != null && storageContext.StorageAccount.Credentials != null && storageContext.StorageAccount.Credentials.IsSAS)
                 {
                     WriteWarning("Get container permission will fail with SAS token credentials, it needs storage Account key credentials.");
@@ -221,7 +221,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             IStorageBlobManagement localChannel = Channel;
             foreach (Tuple<CloudBlobContainer, BlobContinuationToken> containerInfo in containerList)
             {
-                Func<long, Task> generator = (taskId) => GetContainerPermission(taskId, localChannel, containerInfo.Item1, containerInfo.Item2);
+                Func<long, Task> generator = taskId => GetContainerPermission(taskId, localChannel, containerInfo.Item1, containerInfo.Item2);
                 RunTask(generator);
             }
         }

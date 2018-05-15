@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
 
                 foreach (var memberObjectId in MemberObjectId)
                 {
-                    var groupAddMemberParams = new GroupAddMemberParameters()
+                    var groupAddMemberParams = new GroupAddMemberParameters
                     {
                         Url = string.Format("{0}/{1}/directoryObjects/{2}",
                                             AzureEnvironmentConstants.AzureGraphEndpoint,
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                                             memberObjectId)
                     };
 
-                    if (ShouldProcess(target: memberObjectId.ToString(), action: string.Format("Adding user with object id '{0}' to group with object id '{1}'.", memberObjectId, TargetGroupObjectId)))
+                    if (ShouldProcess(memberObjectId.ToString(), string.Format("Adding user with object id '{0}' to group with object id '{1}'.", memberObjectId, TargetGroupObjectId)))
                     {
                         ActiveDirectoryClient.AddGroupMember(TargetGroupObjectId.ToString(), groupAddMemberParams);
                     }

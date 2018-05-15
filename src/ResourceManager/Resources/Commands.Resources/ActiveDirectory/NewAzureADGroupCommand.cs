@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
 
         public override void ExecuteCmdlet()
         {
-            var groupCreateParams = new GroupCreateParameters()
+            var groupCreateParams = new GroupCreateParameters
             {
                 DisplayName = DisplayName,
                 MailNickname = MailNickname
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
 
             ExecutionBlock(() =>
             {
-                if (ShouldProcess(target: DisplayName, action: string.Format("Creating a new AD group with display name '{0}'", DisplayName)))
+                if (ShouldProcess(DisplayName, string.Format("Creating a new AD group with display name '{0}'", DisplayName)))
                 {
                     WriteObject(ActiveDirectoryClient.CreateGroup(groupCreateParams));
                 }

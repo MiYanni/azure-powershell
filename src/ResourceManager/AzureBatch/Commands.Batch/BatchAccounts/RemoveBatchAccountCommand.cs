@@ -42,10 +42,10 @@ namespace Microsoft.Azure.Commands.Batch
         {
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Resources.RemoveAccountConfirm, this.AccountName),
+                string.Format(Resources.RemoveAccountConfirm, AccountName),
                 Resources.RemoveBatchAccount,
-                this.AccountName,
-                () => DeleteAction(this.ResourceGroupName, this.AccountName));
+                AccountName,
+                () => DeleteAction(ResourceGroupName, AccountName));
         }
 
         private void DeleteAction(string resGroupName, string accountName)

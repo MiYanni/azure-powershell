@@ -26,30 +26,30 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSNodeFile
     {
         
-        internal Microsoft.Azure.Batch.NodeFile omObject;
+        internal NodeFile omObject;
         
         private PSFileProperties properties;
         
-        internal PSNodeFile(Microsoft.Azure.Batch.NodeFile omObject)
+        internal PSNodeFile(NodeFile omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.Boolean? IsDirectory
+        public Boolean? IsDirectory
         {
             get
             {
-                return this.omObject.IsDirectory;
+                return omObject.IsDirectory;
             }
         }
         
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Path;
+                return omObject.Path;
             }
         }
         
@@ -65,12 +65,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.properties == null) 
-                            && (this.omObject.Properties != null)))
+                if (properties == null 
+                    && omObject.Properties != null)
                 {
-                    this.properties = new PSFileProperties(this.omObject.Properties);
+                    properties = new PSFileProperties(omObject.Properties);
                 }
-                return this.properties;
+                return properties;
             }
         }
         
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Url;
+                return omObject.Url;
             }
         }
     }

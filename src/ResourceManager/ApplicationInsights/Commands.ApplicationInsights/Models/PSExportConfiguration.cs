@@ -31,17 +31,17 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
 
         public PSExportConfiguration(ApplicationInsightsComponentExportConfiguration response)
         {
-            this.ExportId = response.ExportId;
+            ExportId = response.ExportId;
 
-            this.DocumentTypes = string.Join(", ", ApplicationInsightsBaseCmdlet.ConvertToDocumentType(response.RecordTypes.Split(',')));
-            this.DestinationStorageSubscriptionId = response.DestinationStorageSubscriptionId;
-            this.DestinationStorageLocationId = response.DestinationStorageLocationId;
-            this.DestinationStorageAccountId = response.DestinationAccountId;
-            this.IsEnabled = response.IsUserEnabled;
-            this.ExportStatus = response.ExportStatus;
-            this.StorageName = response.StorageName;
-            this.ContainerName = response.ContainerName;
-            this.LastSuccessTime = response.LastSuccessTime;
+            DocumentTypes = string.Join(", ", ApplicationInsightsBaseCmdlet.ConvertToDocumentType(response.RecordTypes.Split(',')));
+            DestinationStorageSubscriptionId = response.DestinationStorageSubscriptionId;
+            DestinationStorageLocationId = response.DestinationStorageLocationId;
+            DestinationStorageAccountId = response.DestinationAccountId;
+            IsEnabled = response.IsUserEnabled;
+            ExportStatus = response.ExportStatus;
+            StorageName = response.StorageName;
+            ContainerName = response.ContainerName;
+            LastSuccessTime = response.LastSuccessTime;
         }
     }
 

@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.EventHub.Models
         public PSEventHubAttributes()
         { }
 
-        public PSEventHubAttributes(Microsoft.Azure.Management.EventHub.Models.Eventhub ehResource)
+        public PSEventHubAttributes(Management.EventHub.Models.Eventhub ehResource)
         {
             if (ehResource != null)
             {

@@ -14,8 +14,8 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using Model.Contract;
+    using WindowsAzure.Storage.Blob;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -55,22 +55,16 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 throw new ArgumentException(Resources.BlobNameShouldBeEmptyWhenUploading);
             }
-            else
-            {
-                BlobName = blobName;
-                Type = type;
-            }
+            BlobName = blobName;
+            Type = type;
 
-            if (!System.IO.File.Exists(absoluteFilePath))
+            if (!File.Exists(absoluteFilePath))
             {
-                if (System.IO.Directory.Exists(absoluteFilePath))
+                if (Directory.Exists(absoluteFilePath))
                 {
                     return false;
                 }
-                else
-                {
-                    throw new ArgumentException(String.Format(Resources.FileNotFound, absoluteFilePath));
-                }
+                throw new ArgumentException(String.Format(Resources.FileNotFound, absoluteFilePath));
             }
 
             string dirPath = Path.GetDirectoryName(absoluteFilePath).ToLower();

@@ -218,10 +218,7 @@ namespace Microsoft.Azure.Commands.StreamAnalytics.Models
                 {
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
     }

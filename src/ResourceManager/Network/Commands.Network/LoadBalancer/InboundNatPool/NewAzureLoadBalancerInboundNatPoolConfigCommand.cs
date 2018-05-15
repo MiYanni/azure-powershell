@@ -31,22 +31,22 @@ namespace Microsoft.Azure.Commands.Network
 
             base.Execute();
             var inboundNatPool = new PSInboundNatPool();
-            inboundNatPool.Name = this.Name;
-            inboundNatPool.Protocol = this.Protocol;
-            inboundNatPool.FrontendPortRangeStart = this.FrontendPortRangeStart;
-            inboundNatPool.FrontendPortRangeEnd = this.FrontendPortRangeEnd;
-            inboundNatPool.BackendPort = this.BackendPort;
+            inboundNatPool.Name = Name;
+            inboundNatPool.Protocol = Protocol;
+            inboundNatPool.FrontendPortRangeStart = FrontendPortRangeStart;
+            inboundNatPool.FrontendPortRangeEnd = FrontendPortRangeEnd;
+            inboundNatPool.BackendPort = BackendPort;
 
-            if (!string.IsNullOrEmpty(this.FrontendIpConfigurationId))
+            if (!string.IsNullOrEmpty(FrontendIpConfigurationId))
             {
-                inboundNatPool.FrontendIPConfiguration = new PSResourceId() { Id = this.FrontendIpConfigurationId };
+                inboundNatPool.FrontendIPConfiguration = new PSResourceId { Id = FrontendIpConfigurationId };
             }
 
             inboundNatPool.Id =
                 ChildResourceHelper.GetResourceNotSetId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerInboundNatPoolName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    Properties.Resources.LoadBalancerInboundNatPoolName,
+                    Name);
 
             WriteObject(inboundNatPool);
         }

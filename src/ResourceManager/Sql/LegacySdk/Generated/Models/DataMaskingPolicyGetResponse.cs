@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DataMaskingPolicy DataMaskingPolicy
         {
-            get { return this._dataMaskingPolicy; }
-            set { this._dataMaskingPolicy = value; }
+            get { return _dataMaskingPolicy; }
+            set { _dataMaskingPolicy = value; }
         }
         
         /// <summary>

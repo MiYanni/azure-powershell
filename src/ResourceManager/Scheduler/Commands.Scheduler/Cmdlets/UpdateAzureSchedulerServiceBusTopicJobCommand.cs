@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
     using System;
     using System.Collections;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Commands.Scheduler.Utilities;
-    using SchedulerModels = Microsoft.Azure.Management.Scheduler.Models;
+    using Models;
+    using Properties;
+    using Utilities;
+    using SchedulerModels = Management.Scheduler.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -104,54 +104,54 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var serviceBusAuthentication = new PSServiceBusAuthenticationParams()
+            var serviceBusAuthentication = new PSServiceBusAuthenticationParams
             {
-                SasKey = this.ServiceBusSasKeyValue,
-                SasKeyName = this.ServiceBusSasKeyName,
+                SasKey = ServiceBusSasKeyValue,
+                SasKeyName = ServiceBusSasKeyName,
                 Type = Constants.SharedAccessKey
             };
 
-            var servicBusQueue = new PSServiceBusParams()
+            var servicBusQueue = new PSServiceBusParams
             {
                 Authentication = serviceBusAuthentication,
-                Message = this.ServiceBusMessage,
-                NamespaceProperty = this.ServiceBusNamespace,
-                TopicPath = this.ServiceBusTopicPath,
-                TransportType = this.ServiceBusTransportType
+                Message = ServiceBusMessage,
+                NamespaceProperty = ServiceBusNamespace,
+                TopicPath = ServiceBusTopicPath,
+                TransportType = ServiceBusTransportType
             };
 
-            var jobAction = new PSJobActionParams()
+            var jobAction = new PSJobActionParams
             {
                 JobActionType = SchedulerModels.JobActionType.ServiceBusQueue,
                 ServiceBusAction = servicBusQueue
             };
 
-            var jobRecurrence = new PSJobRecurrenceParams()
+            var jobRecurrence = new PSJobRecurrenceParams
             {
-                Interval = this.Interval,
-                Frequency = this.Frequency,
-                EndTime = this.EndTime,
-                ExecutionCount = this.ExecutionCount
+                Interval = Interval,
+                Frequency = Frequency,
+                EndTime = EndTime,
+                ExecutionCount = ExecutionCount
             };
 
-            var jobParams = new PSJobParams()
+            var jobParams = new PSJobParams
             {
-                ResourceGroupName = this.ResourceGroupName,
-                JobCollectionName = this.JobCollectionName,
-                JobName = this.JobName,
-                JobState = this.JobState,
-                StartTime = this.StartTime,
+                ResourceGroupName = ResourceGroupName,
+                JobCollectionName = JobCollectionName,
+                JobName = JobName,
+                JobState = JobState,
+                StartTime = StartTime,
                 JobAction = jobAction,
                 JobRecurrence = jobRecurrence,
-                JobErrorAction = this.GetErrorActionParamsValue(this.ErrorActionType)
+                JobErrorAction = GetErrorActionParamsValue(ErrorActionType)
             };
 
-            this.ConfirmAction(
-                processMessage: string.Format(Resources.UpdateServiceBusTopicJobResourceDescription, this.JobName),
-                target: this.JobCollectionName,
-                action: () =>
+            ConfirmAction(
+                string.Format(Resources.UpdateServiceBusTopicJobResourceDescription, JobName),
+                JobCollectionName,
+                () =>
                 {
-                    this.WriteObject(this.SchedulerClient.UpdateJob(jobParams));
+                    WriteObject(SchedulerClient.UpdateJob(jobParams));
                 }
             ); 
         }
@@ -164,9 +164,9 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
 
-            if (!string.IsNullOrWhiteSpace(this.ErrorActionType))
+            if (!string.IsNullOrWhiteSpace(ErrorActionType))
             {
-                runtimeDefinedParameterDictionary.AddRange(this.AddErrorActionParameters(this.ErrorActionType, create: false));
+                runtimeDefinedParameterDictionary.AddRange(AddErrorActionParameters(ErrorActionType, false));
             }
 
             return runtimeDefinedParameterDictionary;

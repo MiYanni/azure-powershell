@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Aks
             Mandatory = true,
             ParameterSetName = DefaultParamSet,
             HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -293,7 +293,7 @@ namespace Microsoft.Azure.Commands.Aks
             var scope = $"/subscriptions/{DefaultContext.Subscription.Id}";
             var roleId = GetRoleId(role, scope);
             var success = RetryAction(() =>
-                AuthClient.RoleAssignments.Create(scope, appId, new RoleAssignmentCreateParameters()
+                AuthClient.RoleAssignments.Create(scope, appId, new RoleAssignmentCreateParameters
                 {
                     Properties = new RoleAssignmentProperties(roleId, appId)
                 }), Resources.AddRoleAssignment);

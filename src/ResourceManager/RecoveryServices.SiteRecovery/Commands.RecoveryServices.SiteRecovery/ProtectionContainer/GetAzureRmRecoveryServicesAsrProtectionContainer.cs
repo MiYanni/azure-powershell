@@ -76,16 +76,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByObjectWithName:
-                    this.GetByName();
+                    GetByName();
                     break;
                 case ASRParameterSets.ByObjectWithFriendlyName:
-                    this.GetByFriendlyName();
+                    GetByFriendlyName();
                     break;
                 case ASRParameterSets.ByFabricObject:
-                    this.GetByFabric();
+                    GetByFabric();
                     break;
             }
         }
@@ -96,9 +96,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void GetByFabric()
         {
             var protectionContainerListResponse =
-                this.RecoveryServicesClient.GetAzureSiteRecoveryProtectionContainer(
-                    this.Fabric.Name);
-            this.WriteProtectionContainers(protectionContainerListResponse);
+                RecoveryServicesClient.GetAzureSiteRecoveryProtectionContainer(
+                    Fabric.Name);
+            WriteProtectionContainers(protectionContainerListResponse);
         }
 
         /// <summary>
@@ -109,22 +109,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             List<ProtectionContainer> protectionContainerListResponse;
             var found = false;
 
-            protectionContainerListResponse = this.RecoveryServicesClient
-                .GetAzureSiteRecoveryProtectionContainer(this.Fabric.Name);
+            protectionContainerListResponse = RecoveryServicesClient
+                .GetAzureSiteRecoveryProtectionContainer(Fabric.Name);
 
             foreach (var protectionContainer in protectionContainerListResponse)
             {
                 if (0 ==
                     string.Compare(
-                        this.FriendlyName,
+                        FriendlyName,
                         protectionContainer.Properties.FriendlyName,
                         StringComparison.OrdinalIgnoreCase))
                 {
-                    var protectionContainerByName = this.RecoveryServicesClient
+                    var protectionContainerByName = RecoveryServicesClient
                         .GetAzureSiteRecoveryProtectionContainer(
-                            this.Fabric.Name,
+                            Fabric.Name,
                             protectionContainer.Name);
-                    this.WriteProtectionContainer(protectionContainerByName);
+                    WriteProtectionContainer(protectionContainerByName);
 
                     found = true;
                 }
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.ProtectionContainerNotFound,
-                        this.FriendlyName,
+                        FriendlyName,
                         PSRecoveryServicesClient.asrVaultCreds.ResourceName));
             }
         }
@@ -147,14 +147,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             try
             {
-                var protectionContainerResponse = this.RecoveryServicesClient
+                var protectionContainerResponse = RecoveryServicesClient
                     .GetAzureSiteRecoveryProtectionContainer(
-                        this.Fabric.Name,
-                        this.Name);
+                        Fabric.Name,
+                        Name);
 
                 if (protectionContainerResponse != null)
                 {
-                    this.WriteProtectionContainer(protectionContainerResponse);
+                    WriteProtectionContainer(protectionContainerResponse);
                 }
             }
             catch (CloudException ex)
@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.ProtectionContainerNotFound,
-                            this.Name,
+                            Name,
                             PSRecoveryServicesClient.asrVaultCreds.ResourceName));
                 }
 
@@ -186,7 +186,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var availablePolicies = new List<ASRPolicy>();
             var asrProtectionContainerMappings = new List<ASRProtectionContainerMapping>();
 
-            var protectionContainerMappingListResponse = this.RecoveryServicesClient
+            var protectionContainerMappingListResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryProtectionContainerMapping(
                     Utilities.GetValueFromArmId(
                         protectionContainer.Id,
@@ -198,14 +198,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             foreach (var protectionContainerMapping in protectionContainerMappingListResponse)
             {
-                var policyResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryPolicy(
+                var policyResponse = RecoveryServicesClient.GetAzureSiteRecoveryPolicy(
                     Utilities.GetValueFromArmId(
                         protectionContainerMapping.Properties.PolicyId,
                         ARMResourceTypeConstants.ReplicationPolicies));
                 availablePolicies.Add(new ASRPolicy(policyResponse));
             }
 
-            this.WriteObject(
+            WriteObject(
                 new ASRProtectionContainer(
                     protectionContainer,
                     availablePolicies.Distinct()
@@ -236,7 +236,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         StringComparison.OrdinalIgnoreCase))
                 {
                     // Get all Protection Container Mappings for specific container to find out the policies attached to container.
-                    var protectionContainerMappingListResponse = this.RecoveryServicesClient
+                    var protectionContainerMappingListResponse = RecoveryServicesClient
                         .GetAzureSiteRecoveryProtectionContainerMapping(
                             Utilities.GetValueFromArmId(
                                 protectionContainer.Id,
@@ -265,7 +265,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         {
                             // Get all policies and fill up the dictionary once.
                             var policyListResponse =
-                                this.RecoveryServicesClient.GetAzureSiteRecoveryPolicy();
+                                RecoveryServicesClient.GetAzureSiteRecoveryPolicy();
                             foreach (var policy in policyListResponse)
                             {
                                 asrPolicy = new ASRPolicy(policy);
@@ -301,7 +301,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 (
                     x,
                     y) => x.FriendlyName.CompareTo(y.FriendlyName));
-            this.WriteObject(
+            WriteObject(
                 asrProtectionContainers,
                 true);
         }

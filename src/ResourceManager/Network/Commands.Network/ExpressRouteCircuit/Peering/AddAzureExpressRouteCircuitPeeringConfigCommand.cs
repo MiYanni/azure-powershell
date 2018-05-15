@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             // Verify if the subnet exists in the VirtualNetwork
-            var peering = this.ExpressRouteCircuit.Peerings.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var peering = ExpressRouteCircuit.Peerings.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (peering != null)
             {
@@ -46,42 +46,42 @@ namespace Microsoft.Azure.Commands.Network
             }
 
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
-                if (this.RouteFilter != null)
+                if (RouteFilter != null)
                 {
-                    this.RouteFilterId = this.RouteFilter.Id;
+                    RouteFilterId = RouteFilter.Id;
                 }
             }
 
             peering = new PSPeering();
 
-            peering.Name = this.Name;
-            peering.PeeringType = this.PeeringType;
-            peering.PeerASN = this.PeerASN;
-            peering.VlanId = this.VlanId;
+            peering.Name = Name;
+            peering.PeeringType = PeeringType;
+            peering.PeerASN = PeerASN;
+            peering.VlanId = VlanId;
 
 
-            if (!string.IsNullOrEmpty(this.SharedKey))
+            if (!string.IsNullOrEmpty(SharedKey))
             {
-                peering.SharedKey = this.SharedKey;
+                peering.SharedKey = SharedKey;
             }
 
-            if (this.PeerAddressType == IPv6)
+            if (PeerAddressType == IPv6)
             {
-                this.SetIpv6PeeringParameters(peering);
+                SetIpv6PeeringParameters(peering);
             }
             else
             {
                 // Set IPv4 config even if no PeerAddresType has been specified for backward compatibility
-                this.SetIpv4PeeringParameters(peering);
+                SetIpv4PeeringParameters(peering);
             }
 
-            this.ConstructMicrosoftConfig(peering);
+            ConstructMicrosoftConfig(peering);
 
-            this.ExpressRouteCircuit.Peerings.Add(peering);
+            ExpressRouteCircuit.Peerings.Add(peering);
 
-            WriteObject(this.ExpressRouteCircuit);
+            WriteObject(ExpressRouteCircuit);
         }
     }
 }

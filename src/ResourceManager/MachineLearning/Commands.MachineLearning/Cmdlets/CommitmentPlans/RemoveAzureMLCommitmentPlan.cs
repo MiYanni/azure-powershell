@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
     using Common.Authentication.Abstractions;
     using ResourceManager.Common.ArgumentCompleters;
 
-    [Cmdlet(VerbsCommon.Remove, CommitmentPlansCmdletBase.CommitmentPlanCommandletSuffix, SupportsShouldProcess = true)]
+    [Cmdlet(VerbsCommon.Remove, CommitmentPlanCommandletSuffix, SupportsShouldProcess = true)]
     [OutputType(typeof(void))]
     public class RemoveAzureMLCommitmentPlan : CommitmentPlansCmdletBase
     {
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
         protected const string RemoveByObjectParameterSet = "RemoveByObject";
 
         [Parameter(
-            ParameterSetName = RemoveAzureMLCommitmentPlan.RemoveByNameGroupParameterSet,
+            ParameterSetName = RemoveByNameGroupParameterSet,
             Mandatory = true,
             HelpMessage = "The name of the resource group for the Azure ML commitment plan.")]
         [ResourceGroupCompleter]
@@ -39,14 +39,14 @@ namespace Microsoft.Azure.Commands.MachineLearning
         public string ResourceGroupName { get; set; }
 
         [Parameter(
-            ParameterSetName = RemoveAzureMLCommitmentPlan.RemoveByNameGroupParameterSet,
+            ParameterSetName = RemoveByNameGroupParameterSet,
             Mandatory = true,
             HelpMessage = "The name of the Azure ML commitment plan.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         [Parameter(
-            ParameterSetName = RemoveAzureMLCommitmentPlan.RemoveByObjectParameterSet,
+            ParameterSetName = RemoveByObjectParameterSet,
             Mandatory = true,
             HelpMessage = "The machine learning web service object.",
             ValueFromPipeline = true)]
@@ -61,19 +61,19 @@ namespace Microsoft.Azure.Commands.MachineLearning
 
         protected override void RunCmdlet()
         {
-            if (!ShouldProcess(this.Name, @"Deleting Azure ML commitment plan."))
+            if (!ShouldProcess(Name, @"Deleting Azure ML commitment plan."))
             {
                 return;
             }
 
-            if (string.Equals(this.ParameterSetName, RemoveAzureMLCommitmentPlan.RemoveByObjectParameterSet, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(ParameterSetName, RemoveByObjectParameterSet, StringComparison.OrdinalIgnoreCase))
             {
                 string subscriptionId;
                 string resourceGroup;
                 string commitmentPlanName;
 
                 if (!CmdletHelpers.TryParseMlResourceMetadataFromResourceId(
-                                    this.MlCommitmentPlan.Id,
+                                    MlCommitmentPlan.Id,
                                     out subscriptionId,
                                     out resourceGroup,
                                     out commitmentPlanName))
@@ -81,17 +81,17 @@ namespace Microsoft.Azure.Commands.MachineLearning
                     throw new ValidationMetadataException(Resources.InvalidWebServiceIdOnObject);
                 }
 
-                this.ResourceGroupName = resourceGroup;
-                this.Name = commitmentPlanName;
+                ResourceGroupName = resourceGroup;
+                Name = commitmentPlanName;
             }
 
-            if (!this.Force.IsPresent && !ShouldContinue(Resources.RemoveMlServiceWarning.FormatInvariant(this.Name), string.Empty))
+            if (!Force.IsPresent && !ShouldContinue(Resources.RemoveMlServiceWarning.FormatInvariant(Name), string.Empty))
             {
                 return;
             }
 
-            this.CommitmentPlansClient.GetAzureMlCommitmentPlan(this.ResourceGroupName, this.Name);
-            this.CommitmentPlansClient.RemoveAzureMlCommitmentPlan(this.ResourceGroupName, this.Name);
+            CommitmentPlansClient.GetAzureMlCommitmentPlan(ResourceGroupName, Name);
+            CommitmentPlansClient.RemoveAzureMlCommitmentPlan(ResourceGroupName, Name);
         }
     }
 }

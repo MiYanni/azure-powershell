@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Commands.Network
 {
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Network.Models;
+    using Models;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmRouteFilterRuleConfig"), OutputType(typeof(PSRouteFilterRule))]
     public class GetRouteFilterRuleConfigCommand : NetworkBaseCmdlet
@@ -37,14 +37,14 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var rules = this.RouteFilter.Rules;
+            var rules = RouteFilter.Rules;
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var rule =
                     rules.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(rule);
             }

@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var gatewayIpConfiguration =
-                    this.ApplicationGateway.GatewayIPConfigurations.First(
+                    ApplicationGateway.GatewayIPConfigurations.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(gatewayIpConfiguration);
             }
             else
             {
-                var gatewayIPConfigurations = this.ApplicationGateway.GatewayIPConfigurations;
+                var gatewayIPConfigurations = ApplicationGateway.GatewayIPConfigurations;
                 WriteObject(gatewayIPConfigurations, true);
             }
 

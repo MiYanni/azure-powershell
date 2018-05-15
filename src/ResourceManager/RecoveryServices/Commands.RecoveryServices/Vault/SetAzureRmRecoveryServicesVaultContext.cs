@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true)]
         [ValidateNotNullOrEmpty]
-        public ARSVault Vault { get; set; }        
+        public ARSVault Vault { get; set; }
 
         public override void ExecuteCmdlet()
         {
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
             }
             catch (Exception exception)
             {
-                this.HandleException(exception);
+                HandleException(exception);
             }           
            
         }

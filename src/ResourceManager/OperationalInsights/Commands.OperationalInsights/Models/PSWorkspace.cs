@@ -31,19 +31,19 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
                 throw new ArgumentNullException("workspace");
             }
 
-            this.ResourceGroupName = resourceGroupName;
-            this.Name = workspace.Name;
-            this.ResourceId = workspace.Id;
-            this.Location = workspace.Location;
-            this.Tags = workspace.Tags;
+            ResourceGroupName = resourceGroupName;
+            Name = workspace.Name;
+            ResourceId = workspace.Id;
+            Location = workspace.Location;
+            Tags = workspace.Tags;
 
             if (workspace!= null)
             {
-                this.Sku = workspace.Sku != null ? workspace.Sku.Name : null;
-                this.retentionInDays = workspace.RetentionInDays;
-                this.CustomerId = new Guid(workspace.CustomerId);
-                this.PortalUrl = workspace.PortalUrl;
-                this.ProvisioningState = workspace.ProvisioningState;
+                Sku = workspace.Sku != null ? workspace.Sku.Name : null;
+                retentionInDays = workspace.RetentionInDays;
+                CustomerId = new Guid(workspace.CustomerId);
+                PortalUrl = workspace.PortalUrl;
+                ProvisioningState = workspace.ProvisioningState;
             }
         }
 

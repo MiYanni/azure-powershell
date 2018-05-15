@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.EventHub.Models
 {
-    using Azure.Management.EventHub.Models;
+    using Management.EventHub.Models;
     using System;
 
     /// <summary>

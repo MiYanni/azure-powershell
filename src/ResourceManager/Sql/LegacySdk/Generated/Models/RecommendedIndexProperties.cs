@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Action
         {
-            get { return this._action; }
-            set { this._action = value; }
+            get { return _action; }
+            set { _action = value; }
         }
         
         private IList<string> _columns;
@@ -53,8 +53,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<string> Columns
         {
-            get { return this._columns; }
-            set { this._columns = value; }
+            get { return _columns; }
+            set { _columns = value; }
         }
         
         private DateTime _created;
@@ -65,8 +65,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime Created
         {
-            get { return this._created; }
-            set { this._created = value; }
+            get { return _created; }
+            set { _created = value; }
         }
         
         private IList<OperationImpact> _estimatedImpact;
@@ -77,8 +77,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<OperationImpact> EstimatedImpact
         {
-            get { return this._estimatedImpact; }
-            set { this._estimatedImpact = value; }
+            get { return _estimatedImpact; }
+            set { _estimatedImpact = value; }
         }
         
         private IList<string> _includedColumns;
@@ -88,8 +88,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<string> IncludedColumns
         {
-            get { return this._includedColumns; }
-            set { this._includedColumns = value; }
+            get { return _includedColumns; }
+            set { _includedColumns = value; }
         }
         
         private string _indexScript;
@@ -99,8 +99,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string IndexScript
         {
-            get { return this._indexScript; }
-            set { this._indexScript = value; }
+            get { return _indexScript; }
+            set { _indexScript = value; }
         }
         
         private string _indexType;
@@ -111,8 +111,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string IndexType
         {
-            get { return this._indexType; }
-            set { this._indexType = value; }
+            get { return _indexType; }
+            set { _indexType = value; }
         }
         
         private DateTime _lastModified;
@@ -123,8 +123,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime LastModified
         {
-            get { return this._lastModified; }
-            set { this._lastModified = value; }
+            get { return _lastModified; }
+            set { _lastModified = value; }
         }
         
         private IList<OperationImpact> _reportedImpact;
@@ -134,8 +134,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<OperationImpact> ReportedImpact
         {
-            get { return this._reportedImpact; }
-            set { this._reportedImpact = value; }
+            get { return _reportedImpact; }
+            set { _reportedImpact = value; }
         }
         
         private string _schema;
@@ -145,8 +145,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Schema
         {
-            get { return this._schema; }
-            set { this._schema = value; }
+            get { return _schema; }
+            set { _schema = value; }
         }
         
         private string _state;
@@ -159,8 +159,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         private string _table;
@@ -170,8 +170,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Table
         {
-            get { return this._table; }
-            set { this._table = value; }
+            get { return _table; }
+            set { _table = value; }
         }
         
         /// <summary>
@@ -179,10 +179,10 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedIndexProperties()
         {
-            this.Columns = new LazyList<string>();
-            this.EstimatedImpact = new LazyList<OperationImpact>();
-            this.IncludedColumns = new LazyList<string>();
-            this.ReportedImpact = new LazyList<OperationImpact>();
+            Columns = new LazyList<string>();
+            EstimatedImpact = new LazyList<OperationImpact>();
+            IncludedColumns = new LazyList<string>();
+            ReportedImpact = new LazyList<OperationImpact>();
         }
     }
 }

@@ -43,21 +43,21 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!this.IsVirtualNetworkGatewayPresent(this.VirtualNetworkGateway.ResourceGroupName, this.VirtualNetworkGateway.Name))
+            if (!IsVirtualNetworkGatewayPresent(VirtualNetworkGateway.ResourceGroupName, VirtualNetworkGateway.Name))
             {
-                throw new ArgumentException(string.Format(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound, this.VirtualNetworkGateway.Name));
+                throw new ArgumentException(string.Format(Properties.Resources.ResourceNotFound, VirtualNetworkGateway.Name));
             }
 
-            this.VirtualNetworkGateway.GatewayDefaultSite = new PSResourceId();
-            this.VirtualNetworkGateway.GatewayDefaultSite.Id = this.GatewayDefaultSite.Id;
+            VirtualNetworkGateway.GatewayDefaultSite = new PSResourceId();
+            VirtualNetworkGateway.GatewayDefaultSite.Id = GatewayDefaultSite.Id;
 
             // Map to the sdk object
-            var virtualnetGatewayModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkGateway>(this.VirtualNetworkGateway);
-            virtualnetGatewayModel.Tags = TagsConversionHelper.CreateTagDictionary(this.VirtualNetworkGateway.Tag, validate: true);
+            var virtualnetGatewayModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkGateway>(VirtualNetworkGateway);
+            virtualnetGatewayModel.Tags = TagsConversionHelper.CreateTagDictionary(VirtualNetworkGateway.Tag, validate: true);
 
-            this.VirtualNetworkGatewayClient.CreateOrUpdate(this.VirtualNetworkGateway.ResourceGroupName, this.VirtualNetworkGateway.Name, virtualnetGatewayModel);
+            VirtualNetworkGatewayClient.CreateOrUpdate(VirtualNetworkGateway.ResourceGroupName, VirtualNetworkGateway.Name, virtualnetGatewayModel);
 
-            var getvirtualnetGateway = this.GetVirtualNetworkGateway(this.VirtualNetworkGateway.ResourceGroupName, this.VirtualNetworkGateway.Name);
+            var getvirtualnetGateway = GetVirtualNetworkGateway(VirtualNetworkGateway.ResourceGroupName, VirtualNetworkGateway.Name);
 
             WriteObject(getvirtualnetGateway);
         }

@@ -28,15 +28,15 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         {
             get
             {
-                if (this.dataFactoryClient == null)
+                if (dataFactoryClient == null)
                 {
-                    this.dataFactoryClient = new DataFactoryClient(DefaultContext);
+                    dataFactoryClient = new DataFactoryClient(DefaultContext);
                 }
-                return this.dataFactoryClient;
+                return dataFactoryClient;
             }
             set
             {
-                this.dataFactoryClient = value;
+                dataFactoryClient = value;
             }
         }
 
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                     {
                         foreach (Exception innerEx in castAggrException.InnerExceptions)
                         {
-                            this.WriteExceptionError(innerEx);
+                            WriteExceptionError(innerEx);
                         }
 
                         return;

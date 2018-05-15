@@ -35,15 +35,15 @@ namespace Microsoft.Azure.Commands.Automation.Model
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
             Requires.Argument("Node", node).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = automationAccountName;
-            this.Name = node.Name;
-            this.Id = node.NodeId.ToString("D");
-            this.IpAddress = node.Ip;
-            this.LastSeen = node.LastSeen.ToLocalTime();
-            this.RegistrationTime = node.RegistrationTime.ToLocalTime();
-            this.Status = node.Status;
-            this.NodeConfigurationName = node.NodeConfiguration.Name;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = automationAccountName;
+            Name = node.Name;
+            Id = node.NodeId.ToString("D");
+            IpAddress = node.Ip;
+            LastSeen = node.LastSeen.ToLocalTime();
+            RegistrationTime = node.RegistrationTime.ToLocalTime();
+            Status = node.Status;
+            NodeConfigurationName = node.NodeConfiguration.Name;
         }
 
         /// <summary>

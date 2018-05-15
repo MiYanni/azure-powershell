@@ -33,17 +33,17 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
                 throw new ArgumentNullException("storageInsight");
             }
 
-            this.ResourceGroupName = resourceGroupName;
-            this.WorkspaceName = workspaceName;
-            this.Name = storageInsight.Name;
-            this.ResourceId = storageInsight.Id;
+            ResourceGroupName = resourceGroupName;
+            WorkspaceName = workspaceName;
+            Name = storageInsight.Name;
+            ResourceId = storageInsight.Id;
 
             if (storageInsight != null)
             {
-                this.StorageAccountResourceId = storageInsight.StorageAccount != null ? storageInsight.StorageAccount.Id : null;
-                this.Tables = storageInsight.Tables.ToList();
-                this.Containers = storageInsight.Containers.ToList();
-                this.State = storageInsight.Status != null ? storageInsight.Status.State : null;
+                StorageAccountResourceId = storageInsight.StorageAccount != null ? storageInsight.StorageAccount.Id : null;
+                Tables = storageInsight.Tables.ToList();
+                Containers = storageInsight.Containers.ToList();
+                State = storageInsight.Status != null ? storageInsight.Status.State : null;
             }
         }
 

@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
         public ResourceCommonException(Type resourceType, string message)
             : base(message)
         {
-            this.ResourceType = resourceType;
+            ResourceType = resourceType;
         }
 
         [NonSerialized]
@@ -32,12 +32,12 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
             get
             {
-                return this.resourceType;
+                return resourceType;
             }
 
             private set
             {
-                this.resourceType = value;
+                resourceType = value;
             }
         }
     }

@@ -45,8 +45,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlServerBackupLongTermRetentionVaultModel> GetEntity()
         {
-            return new List<AzureSqlServerBackupLongTermRetentionVaultModel>() { 
-                ModelAdapter.GetBackupLongTermRetentionVault(this.ResourceGroupName, this.ServerName) 
+            return new List<AzureSqlServerBackupLongTermRetentionVaultModel>
+            { 
+                ModelAdapter.GetBackupLongTermRetentionVault(ResourceGroupName, ServerName) 
             };
         }
 
@@ -58,9 +59,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         protected override IEnumerable<AzureSqlServerBackupLongTermRetentionVaultModel> ApplyUserInputToModel(
             IEnumerable<AzureSqlServerBackupLongTermRetentionVaultModel> model)
         {
-            List<Model.AzureSqlServerBackupLongTermRetentionVaultModel> newEntity = 
+            List<AzureSqlServerBackupLongTermRetentionVaultModel> newEntity = 
                 new List<AzureSqlServerBackupLongTermRetentionVaultModel>();
-            newEntity.Add(new AzureSqlServerBackupLongTermRetentionVaultModel()
+            newEntity.Add(new AzureSqlServerBackupLongTermRetentionVaultModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
@@ -80,14 +81,12 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
         {
             if (ShouldProcess(ServerName))
             {
-                return new List<AzureSqlServerBackupLongTermRetentionVaultModel>() {
-                    ModelAdapter.SetBackupLongTermRetentionVault(this.ResourceGroupName, this.ServerName, entity.First())
+                return new List<AzureSqlServerBackupLongTermRetentionVaultModel>
+                {
+                    ModelAdapter.SetBackupLongTermRetentionVault(ResourceGroupName, ServerName, entity.First())
                 };
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

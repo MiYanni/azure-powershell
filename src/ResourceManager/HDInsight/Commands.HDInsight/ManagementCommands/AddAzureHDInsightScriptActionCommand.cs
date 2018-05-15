@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.HDInsight
     OutputType(typeof(AzureHDInsightConfig))]
     public class AddAzureHDInsightScriptActionCommand : HDInsightCmdletBase
     {
-        private AzureHDInsightScriptAction _action;
+        private readonly AzureHDInsightScriptAction _action;
         #region Input Parameter Definitions
 
         [Parameter(Position = 0,

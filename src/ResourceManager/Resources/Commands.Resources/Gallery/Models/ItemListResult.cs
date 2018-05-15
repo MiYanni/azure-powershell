@@ -21,8 +21,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery.Models
         /// </summary>
         public IList<GalleryItem> Items
         {
-            get { return this._items; }
-            set { this._items = value; }
+            get { return _items; }
+            set { _items = value; }
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery.Models
         /// </summary>
         public ItemListResult()
         {
-            this.Items = new LazyList<GalleryItem>();
+            Items = new LazyList<GalleryItem>();
         }
     }
 }

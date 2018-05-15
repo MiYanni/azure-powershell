@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
             Position = 0,
             Mandatory = false,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -120,15 +120,15 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
             BlobUri destinationUri;
             if (!BlobUri.TryParseUri(Destination, out destinationUri))
             {
-                throw new ArgumentOutOfRangeException("Destination", this.Destination.ToString());
+                throw new ArgumentOutOfRangeException("Destination", Destination.ToString());
             }
 
             BlobUri baseImageUri = null;
-            if (this.BaseImageUriToPatch != null)
+            if (BaseImageUriToPatch != null)
             {
                 if (!BlobUri.TryParseUri(BaseImageUriToPatch, out baseImageUri))
                 {
-                    throw new ArgumentOutOfRangeException("BaseImageUriToPatch", this.BaseImageUriToPatch.ToString());
+                    throw new ArgumentOutOfRangeException("BaseImageUriToPatch", BaseImageUriToPatch.ToString());
                 }
 
                 if (!String.IsNullOrEmpty(destinationUri.Uri.Query))
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
 
             var parameters = new UploadParameters(
                 destinationUri, baseImageUri, filePath, OverWrite.IsPresent,
-                (NumberOfUploaderThreads) ?? DefaultNumberOfUploaderThreads)
+                NumberOfUploaderThreads ?? DefaultNumberOfUploaderThreads)
             {
                 Cmdlet = this,
                 BlobObjectFactory = new CloudPageBlobObjectFactory(storageCredentialsFactory, TimeSpan.FromMinutes(1))
@@ -177,7 +177,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
 
             if (StorageCredentialsFactory.IsChannelRequired(Destination))
             {
-                storageCredentialsFactory = new StorageCredentialsFactory(this.ResourceGroupName, storageClient, DefaultContext.Subscription);
+                storageCredentialsFactory = new StorageCredentialsFactory(ResourceGroupName, storageClient, DefaultContext.Subscription);
             }
             else
             {

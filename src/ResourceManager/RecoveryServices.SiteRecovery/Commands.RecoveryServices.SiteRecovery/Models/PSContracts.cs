@@ -275,11 +275,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public Error(
             ServiceError se)
         {
-            this.ClientRequestId = se.ActivityId;
-            this.Code = se.Code;
-            this.Message = se.Message;
-            this.PossibleCauses = se.PossibleCauses;
-            this.RecommendedAction = se.RecommendedAction;
+            ClientRequestId = se.ActivityId;
+            Code = se.Code;
+            Message = se.Message;
+            PossibleCauses = se.PossibleCauses;
+            RecommendedAction = se.RecommendedAction;
         }
 
         /// <summary>
@@ -297,11 +297,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string recommendedAction,
             string activityId)
         {
-            this.Code = errorCode;
-            this.Message = message;
-            this.PossibleCauses = possibleCauses;
-            this.RecommendedAction = recommendedAction;
-            this.ClientRequestId = activityId;
+            Code = errorCode;
+            Message = message;
+            PossibleCauses = possibleCauses;
+            RecommendedAction = recommendedAction;
+            ClientRequestId = activityId;
         }
 
         /// <summary>
@@ -397,10 +397,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("NotBeforeTimestamp: " + this.NotBeforeTimestamp);
-            sb.AppendLine("NotAfterTimestamp: " + this.NotAfterTimestamp);
-            sb.AppendLine("ClientRequestId: " + this.ClientRequestId);
-            sb.AppendLine("Hmac: " + this.Hmac);
+            sb.AppendLine("NotBeforeTimestamp: " + NotBeforeTimestamp);
+            sb.AppendLine("NotAfterTimestamp: " + NotAfterTimestamp);
+            sb.AppendLine("ClientRequestId: " + ClientRequestId);
+            sb.AppendLine("Hmac: " + Hmac);
             return sb.ToString();
         }
     }

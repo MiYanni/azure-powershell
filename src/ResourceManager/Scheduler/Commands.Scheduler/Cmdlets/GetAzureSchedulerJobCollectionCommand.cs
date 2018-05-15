@@ -15,10 +15,10 @@
 namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Commands.Scheduler.Utilities;
-    using Microsoft.Azure.Management.Scheduler.Models;
-    using Microsoft.Azure.Commands.Scheduler.Models;
+    using Properties;
+    using Utilities;
+    using Management.Scheduler.Models;
+    using Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -44,9 +44,9 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            this.WriteObject(
-                this.SchedulerClient.ListJobCollectionPS(this.ResourceGroupName, this.JobCollectionName),
-                enumerateCollection: true);
+            WriteObject(
+                SchedulerClient.ListJobCollectionPS(ResourceGroupName, JobCollectionName),
+                true);
         }
     }
 }

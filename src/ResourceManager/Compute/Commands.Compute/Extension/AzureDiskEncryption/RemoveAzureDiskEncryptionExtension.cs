@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -66,26 +66,26 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             ExecuteClientAction(() =>
             {
-                VirtualMachine virtualMachineResponse = (this.ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName));
+                VirtualMachine virtualMachineResponse = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
 
                 var currentOSType = virtualMachineResponse.StorageProfile.OsDisk.OsType;
                 if (OperatingSystemTypes.Windows.Equals(currentOSType))
                 {
-                    this.Name = this.Name ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultName;
+                    Name = Name ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultName;
                 }
                 else if (OperatingSystemTypes.Linux.Equals(currentOSType))
                 {
-                    this.Name = this.Name ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
+                    Name = Name ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
                 }
 
-                if (this.ShouldProcess(VMName, Properties.Resources.RemoveDiskEncryptionAction)
-                    && (this.Force.IsPresent
-                    || this.ShouldContinue(Properties.Resources.VirtualMachineExtensionRemovalConfirmation, Properties.Resources.VirtualMachineExtensionRemovalCaption)))
+                if (ShouldProcess(VMName, Properties.Resources.RemoveDiskEncryptionAction)
+                    && (Force.IsPresent
+                    || ShouldContinue(Properties.Resources.VirtualMachineExtensionRemovalConfirmation, Properties.Resources.VirtualMachineExtensionRemovalCaption)))
                 {
-                    var op = this.VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name).GetAwaiter().GetResult();
+                    var op = VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
                     WriteObject(result);
                 }

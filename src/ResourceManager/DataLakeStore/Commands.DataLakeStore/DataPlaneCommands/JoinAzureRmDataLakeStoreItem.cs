@@ -53,8 +53,8 @@ namespace Microsoft.Azure.Commands.DataLakeStore
             if (ShouldProcess(Destination.TransformedPath, "Join"))
             {
                 DirectoryEntryType fileType;
-                if (Force.IsPresent && (DataLakeStoreFileSystemClient.TestFileOrFolderExistence(Destination.TransformedPath, Account,
-                        out fileType) && fileType == DirectoryEntryType.FILE))
+                if (Force.IsPresent && DataLakeStoreFileSystemClient.TestFileOrFolderExistence(Destination.TransformedPath, Account,
+                        out fileType) && fileType == DirectoryEntryType.FILE)
                     // If it is a directory you are trying to overwrite with a concatenated file, we will error out.
                 {
                     DataLakeStoreFileSystemClient.DeleteFileOrFolder(Destination.TransformedPath, Account, false);

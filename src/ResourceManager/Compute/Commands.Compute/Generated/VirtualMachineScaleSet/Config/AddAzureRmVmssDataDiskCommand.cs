@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Add", "AzureRmVmssDataDisk", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class AddAzureRmVmssDataDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class AddAzureRmVmssDataDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -92,39 +92,39 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // VirtualMachineProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
             }
 
             // StorageProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetStorageProfile();
+                VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile = new VirtualMachineScaleSetStorageProfile();
             }
 
             // DataDisks
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks == null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks = new List<Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetDataDisk>();
+                VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks = new List<VirtualMachineScaleSetDataDisk>();
             }
 
-            var vDataDisks = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetDataDisk();
+            var vDataDisks = new VirtualMachineScaleSetDataDisk();
 
-            vDataDisks.Name = this.MyInvocation.BoundParameters.ContainsKey("Name") ? this.Name : null;
-            vDataDisks.Lun = this.Lun;
-            vDataDisks.Caching = this.MyInvocation.BoundParameters.ContainsKey("Caching") ? this.Caching : (CachingTypes?) null;
-            vDataDisks.WriteAcceleratorEnabled = this.WriteAccelerator.IsPresent;
-            vDataDisks.CreateOption = this.MyInvocation.BoundParameters.ContainsKey("CreateOption") ? this.CreateOption : null;
-            vDataDisks.DiskSizeGB = this.MyInvocation.BoundParameters.ContainsKey("DiskSizeGB") ? this.DiskSizeGB : (int?) null;
-            if (this.MyInvocation.BoundParameters.ContainsKey("StorageAccountType"))
+            vDataDisks.Name = MyInvocation.BoundParameters.ContainsKey("Name") ? Name : null;
+            vDataDisks.Lun = Lun;
+            vDataDisks.Caching = MyInvocation.BoundParameters.ContainsKey("Caching") ? Caching : null;
+            vDataDisks.WriteAcceleratorEnabled = WriteAccelerator.IsPresent;
+            vDataDisks.CreateOption = MyInvocation.BoundParameters.ContainsKey("CreateOption") ? CreateOption : null;
+            vDataDisks.DiskSizeGB = MyInvocation.BoundParameters.ContainsKey("DiskSizeGB") ? DiskSizeGB : (int?) null;
+            if (MyInvocation.BoundParameters.ContainsKey("StorageAccountType"))
             {
                 // ManagedDisk
-                vDataDisks.ManagedDisk = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetManagedDiskParameters();
-                vDataDisks.ManagedDisk.StorageAccountType = this.StorageAccountType;
+                vDataDisks.ManagedDisk = new VirtualMachineScaleSetManagedDiskParameters();
+                vDataDisks.ManagedDisk.StorageAccountType = StorageAccountType;
             }
-            this.VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks.Add(vDataDisks);
-            WriteObject(this.VirtualMachineScaleSet);
+            VirtualMachineScaleSet.VirtualMachineProfile.StorageProfile.DataDisks.Add(vDataDisks);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

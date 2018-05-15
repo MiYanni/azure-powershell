@@ -37,14 +37,14 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var inboundNatRule = this.LoadBalancer.InboundNatRules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var inboundNatRule = LoadBalancer.InboundNatRules.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (inboundNatRule != null)
             {
-                this.LoadBalancer.InboundNatRules.Remove(inboundNatRule);
+                LoadBalancer.InboundNatRules.Remove(inboundNatRule);
             }
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

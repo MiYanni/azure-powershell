@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PartnerServer
         {
-            get { return this._partnerServer; }
-            set { this._partnerServer = value; }
+            get { return _partnerServer; }
+            set { _partnerServer = value; }
         }
         
         /// <summary>

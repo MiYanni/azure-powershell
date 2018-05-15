@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string FailoverPolicy
         {
-            get { return this._failoverPolicy; }
-            set { this._failoverPolicy = value; }
+            get { return _failoverPolicy; }
+            set { _failoverPolicy = value; }
         }
         
         private int? _failoverWithDataLossGracePeriodMinutes;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int? FailoverWithDataLossGracePeriodMinutes
         {
-            get { return this._failoverWithDataLossGracePeriodMinutes; }
-            set { this._failoverWithDataLossGracePeriodMinutes = value; }
+            get { return _failoverWithDataLossGracePeriodMinutes; }
+            set { _failoverWithDataLossGracePeriodMinutes = value; }
         }
         
         /// <summary>

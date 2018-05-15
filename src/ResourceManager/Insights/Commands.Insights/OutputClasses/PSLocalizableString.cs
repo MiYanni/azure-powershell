@@ -29,8 +29,8 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         {
             if (localizableString != null)
             {
-                this.LocalizedValue = localizableString.LocalizedValue;
-                this.Value = localizableString.Value;
+                LocalizedValue = localizableString.LocalizedValue;
+                Value = localizableString.Value;
             }
         }
 
@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <returns>A string representation of the LocalizableString object including indentation</returns>
         public override string ToString()
         {
-            return this.ToString(indentationTabs: 1);
+            return this.ToString(1);
         }
     }
 }

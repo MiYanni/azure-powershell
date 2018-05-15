@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.HDInsight
         typeof(AzureHDInsightMapReduceJobDefinition))]
     public class NewAzureHDInsightMapReduceJobDefinitionCommand : HDInsightCmdletBase
     {
-        private AzureHDInsightMapReduceJobDefinition job;
+        private readonly AzureHDInsightMapReduceJobDefinition _job;
 
         #region Input Parameter Definitions
 
@@ -40,15 +40,15 @@ namespace Microsoft.Azure.Commands.HDInsight
         [Parameter(HelpMessage = "The output location to use for the job.")]
         public string StatusFolder
         {
-            get { return job.StatusFolder; }
-            set { job.StatusFolder = value; }
+            get { return _job.StatusFolder; }
+            set { _job.StatusFolder = value; }
         }
 
         [Parameter(Mandatory = true, HelpMessage = "The class name to use for the jobDetails.")]
         public string ClassName
         {
-            get { return job.ClassName; }
-            set { job.ClassName = value; }
+            get { return _job.ClassName; }
+            set { _job.ClassName = value; }
         }
 
         [Parameter(HelpMessage = "The parameters for the jobDetails.")]
@@ -57,15 +57,15 @@ namespace Microsoft.Azure.Commands.HDInsight
         [Parameter(Mandatory = true, HelpMessage = "The jar file to use for the jobDetails.")]
         public string JarFile
         {
-            get { return job.JarFile; }
-            set { job.JarFile = value; }
+            get { return _job.JarFile; }
+            set { _job.JarFile = value; }
         }
 
         [Parameter(HelpMessage = "The name of the jobDetails.")]
         public string JobName
         {
-            get { return job.JobName; }
-            set { job.JobName = value; }
+            get { return _job.JobName; }
+            set { _job.JobName = value; }
         }
 
         [Parameter(HelpMessage = "The lib jars for the jobDetails.")]
@@ -79,33 +79,33 @@ namespace Microsoft.Azure.Commands.HDInsight
             Files = new string[] { };
             Defines = new Hashtable();
             LibJars = new string[] { };
-            job = new AzureHDInsightMapReduceJobDefinition();
+            _job = new AzureHDInsightMapReduceJobDefinition();
         }
 
         public override void ExecuteCmdlet()
         {
             foreach (var arg in Arguments)
             {
-                job.Arguments.Add(arg);
+                _job.Arguments.Add(arg);
             }
 
             foreach (var file in Files)
             {
-                job.Files.Add(file);
+                _job.Files.Add(file);
             }
 
             var defineDic = Defines.ToDictionary(false);
             foreach (var define in defineDic)
             {
-                job.Defines.Add(define.Key, define.Value.ToString());
+                _job.Defines.Add(define.Key, define.Value.ToString());
             }
 
             foreach (var libjar in LibJars)
             {
-                job.LibJars.Add(libjar);
+                _job.LibJars.Add(libjar);
             }
 
-            WriteObject(job);
+            WriteObject(_job);
         }
     }
 }

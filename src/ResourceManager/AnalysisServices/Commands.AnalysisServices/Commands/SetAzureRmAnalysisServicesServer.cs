@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices
 
         [Parameter(ValueFromPipelineByPropertyName = true, Position = 1, Mandatory = false,
             HelpMessage = "Name of resource group under which you want to update the server.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -97,10 +97,10 @@ namespace Microsoft.Azure.Commands.AnalysisServices
 
             if (ShouldProcess(Name, Resources.UpdatingAnalysisServicesServer))
             {
-                AnalysisServicesServer currentServer = null;
+                AnalysisServicesServer currentServer;
                 if (!AnalysisServicesClient.TestServer(ResourceGroupName, Name, out currentServer))
                 {
-                    throw new InvalidOperationException(string.Format(Properties.Resources.ServerDoesNotExist, Name));
+                    throw new InvalidOperationException(string.Format(Resources.ServerDoesNotExist, Name));
                 }
 
                 var availableSkus = AnalysisServicesClient.ListSkusForExisting(ResourceGroupName, Name);
@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices
                     {
                         foreach (var rule in FirewallConfig.FirewallRules)
                         {
-                            setting.FirewallRules.Add(new IPv4FirewallRule()
+                            setting.FirewallRules.Add(new IPv4FirewallRule
                             {
                                 FirewallRuleName = rule.FirewallRuleName,
                                 RangeStart = rule.RangeStart,

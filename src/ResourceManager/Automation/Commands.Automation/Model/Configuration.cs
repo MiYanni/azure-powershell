@@ -42,31 +42,31 @@ namespace Microsoft.Azure.Commands.Automation.Model
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
             Requires.Argument("Configuration", configuration).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = automationAccountName;
-            this.Name = configuration.Name;
-            this.Location = configuration.Location;
-            this.Tags = null;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = automationAccountName;
+            Name = configuration.Name;
+            Location = configuration.Location;
+            Tags = null;
 
             if (configuration.Properties == null) return;
 
-            this.CreationTime = configuration.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = configuration.Properties.LastModifiedTime.ToLocalTime();
-            this.Description = configuration.Properties.Description;
-            this.LogVerbose = configuration.Properties.LogVerbose;
-            this.State = configuration.Properties.State;
-            this.Location = configuration.Location;
+            CreationTime = configuration.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = configuration.Properties.LastModifiedTime.ToLocalTime();
+            Description = configuration.Properties.Description;
+            LogVerbose = configuration.Properties.LogVerbose;
+            State = configuration.Properties.State;
+            Location = configuration.Location;
 
-            this.Tags = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            Tags = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in configuration.Tags)
             {
-                this.Tags.Add(kvp.Key, kvp.Value);
+                Tags.Add(kvp.Key, kvp.Value);
             }
 
-            this.Parameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            Parameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in configuration.Properties.Parameters)
             {
-                this.Parameters.Add(kvp.Key, (object)kvp.Value);
+                Parameters.Add(kvp.Key, kvp.Value);
             }
         }
 

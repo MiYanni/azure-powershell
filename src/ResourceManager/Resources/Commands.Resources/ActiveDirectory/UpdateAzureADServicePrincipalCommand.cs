@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     }
                     else
                     {
-                        ADObjectFilterOptions options = new ADObjectFilterOptions()
+                        ADObjectFilterOptions options = new ADObjectFilterOptions
                         {
                             SPN = ServicePrincipalName,
                             Id = ObjectId.ToString()
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
 
                 // Get AppObjectId
                 var applicationObjectId = sp.Id;
-                ApplicationUpdateParameters parameters = new ApplicationUpdateParameters()
+                ApplicationUpdateParameters parameters = new ApplicationUpdateParameters
                 {
                     DisplayName = DisplayName,
                     Homepage = Homepage,
@@ -110,10 +110,10 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     PasswordCredentials = PasswordCredential
                 };
 
-                if (ShouldProcess(target: sp.Id.ToString(), action: string.Format("Updating properties on application associated with a service principal with object id '{0}'", sp.Id)))
+                if (ShouldProcess(sp.Id.ToString(), string.Format("Updating properties on application associated with a service principal with object id '{0}'", sp.Id)))
                 {
                     ActiveDirectoryClient.UpdateApplication(applicationObjectId, parameters);
-                    WriteObject(ActiveDirectoryClient.FilterServicePrincipals(new ADObjectFilterOptions() { Id = applicationObjectId.ToString() }).FirstOrDefault());
+                    WriteObject(ActiveDirectoryClient.FilterServicePrincipals(new ADObjectFilterOptions { Id = applicationObjectId.ToString() }).FirstOrDefault());
                 }
             });
         }

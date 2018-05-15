@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             Mandatory = true,
             ParameterSetName = "ResourceNameParameterSet",
             HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -58,17 +58,17 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             {
                 if (ParameterSetName.Equals("InputObjectParameterSet", StringComparison.InvariantCulture))
                 {
-                    this.ResourceGroupName = InputObject.ResourceGroupName;
-                    this.Name = InputObject.AccountName;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    Name = InputObject.AccountName;
                 }
                 else if (ParameterSetName.Equals("ResourceIdParameterSet", StringComparison.InvariantCulture))
                 {
-                    var id = new ResourceIdentifier(this.ResourceId);
-                    this.ResourceGroupName = id.ResourceGroupName;
-                    this.Name = id.ResourceName;
+                    var id = new ResourceIdentifier(ResourceId);
+                    ResourceGroupName = id.ResourceGroupName;
+                    Name = id.ResourceName;
                 }
 
-                var cognitiveServicesUsages = this.CognitiveServicesClient.Accounts
+                var cognitiveServicesUsages = CognitiveServicesClient.Accounts
                                                    .GetUsages(ResourceGroupName, Name)
                                                    .Value?.Select(u => new PSCognitiveServicesUsage(u));
 

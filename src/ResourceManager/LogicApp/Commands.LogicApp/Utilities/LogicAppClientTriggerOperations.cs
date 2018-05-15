@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
-    using Microsoft.Azure.Management.Logic;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Management.Logic;
+    using Management.Logic.Models;
 
     /// <summary>
     /// LogicApp client partial class for trigger operations
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         public Page<WorkflowTrigger> GetWorkflowTriggers(string resourceGroupName, string workflowName)
         {
             return (Page<WorkflowTrigger>)
-                    this.LogicManagementClient.WorkflowTriggers.List(resourceGroupName, workflowName);
+                    LogicManagementClient.WorkflowTriggers.List(resourceGroupName, workflowName);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Workflow trigger</returns>
         public WorkflowTrigger GetWorkflowTrigger(string resourceGroupName, string workflowName, string triggerName)
         {
-            return this.LogicManagementClient.WorkflowTriggers.Get(resourceGroupName, workflowName, triggerName);
+            return LogicManagementClient.WorkflowTriggers.Get(resourceGroupName, workflowName, triggerName);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Workflow trigger</returns>
         public WorkflowTriggerCallbackUrl GetWorkflowTriggerCallbackUrl(string resourceGroupName, string workflowName, string triggerName)
         {
-            return this.LogicManagementClient.WorkflowTriggers.ListCallbackUrl(resourceGroupName, workflowName, triggerName);
+            return LogicManagementClient.WorkflowTriggers.ListCallbackUrl(resourceGroupName, workflowName, triggerName);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         {
             return
                 (Page<WorkflowTriggerHistory>)
-                    this.LogicManagementClient.WorkflowTriggerHistories.List(resourceGroupName, workflowName,
+                    LogicManagementClient.WorkflowTriggerHistories.List(resourceGroupName, workflowName,
                         triggerName);
         }
 
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         public WorkflowTriggerHistory GetWorkflowTriggerHistory(string resourceGroupName, string workflowName,
             string triggerName, string historyName)
         {
-            return this.LogicManagementClient.WorkflowTriggerHistories.Get(resourceGroupName, workflowName, triggerName, historyName);
+            return LogicManagementClient.WorkflowTriggerHistories.Get(resourceGroupName, workflowName, triggerName, historyName);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         public void RunWorkflowTrigger(string resourceGroupName, string workflowName,
             string triggerName)
         {
-            this.LogicManagementClient.WorkflowTriggers.Run(resourceGroupName, workflowName, triggerName);
+            LogicManagementClient.WorkflowTriggers.Run(resourceGroupName, workflowName, triggerName);
         }
     }
 }

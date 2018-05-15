@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncAgent SyncAgent
         {
-            get { return this._syncAgent; }
-            set { this._syncAgent = value; }
+            get { return _syncAgent; }
+            set { _syncAgent = value; }
         }
         
         /// <summary>

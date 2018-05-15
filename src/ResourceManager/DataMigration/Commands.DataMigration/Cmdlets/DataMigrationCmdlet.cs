@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
             if (errorContent == null)
             {
-                ODataError error = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ODataError>(ex.Response.Content);
+                ODataError error = Rest.Serialization.SafeJsonConvert.DeserializeObject<ODataError>(ex.Response.Content);
                 if (error != null)
                 {
                     errorContent = error.Message;

@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string vmScaleSetName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName" },
+                 new[] { "ResourceGroupName", "VMScaleSetName" },
                  new object[] { resourceGroupName, vmScaleSetName });
         }
     }
@@ -116,8 +116,8 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                string resourceGroupName = this.ResourceGroupName;
-                string vmScaleSetName = this.VMScaleSetName;
+                string resourceGroupName = ResourceGroupName;
+                string vmScaleSetName = VMScaleSetName;
 
                 var result = VirtualMachineScaleSetsClient.ListSkus(resourceGroupName, vmScaleSetName);
                 var resultList = result.ToList();
@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

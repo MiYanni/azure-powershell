@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSOutputFileDestination
     {
         
-        internal Microsoft.Azure.Batch.OutputFileDestination omObject;
+        internal OutputFileDestination omObject;
         
         private PSOutputFileBlobContainerDestination container;
         
         public PSOutputFileDestination(PSOutputFileBlobContainerDestination container)
         {
-            this.omObject = new Microsoft.Azure.Batch.OutputFileDestination(container.omObject);
+            omObject = new OutputFileDestination(container.omObject);
         }
         
-        internal PSOutputFileDestination(Microsoft.Azure.Batch.OutputFileDestination omObject)
+        internal PSOutputFileDestination(OutputFileDestination omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,12 +54,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.container == null) 
-                            && (this.omObject.Container != null)))
+                if (container == null 
+                    && omObject.Container != null)
                 {
-                    this.container = new PSOutputFileBlobContainerDestination(this.omObject.Container);
+                    container = new PSOutputFileBlobContainerDestination(omObject.Container);
                 }
-                return this.container;
+                return container;
             }
         }
     }

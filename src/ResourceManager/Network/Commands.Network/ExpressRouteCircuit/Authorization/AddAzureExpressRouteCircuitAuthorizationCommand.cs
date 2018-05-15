@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var authorization = this.ExpressRouteCircuit.Authorizations.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var authorization = ExpressRouteCircuit.Authorizations.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (authorization != null)
             {
@@ -47,10 +47,10 @@ namespace Microsoft.Azure.Commands.Network
 
             authorization = new PSExpressRouteCircuitAuthorization();
 
-            authorization.Name = this.Name;
-            this.ExpressRouteCircuit.Authorizations.Add(authorization);
+            authorization.Name = Name;
+            ExpressRouteCircuit.Authorizations.Add(authorization);
 
-            WriteObject(this.ExpressRouteCircuit);
+            WriteObject(ExpressRouteCircuit);
         }
     }
 }

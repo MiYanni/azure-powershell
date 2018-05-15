@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string IssuesText
         {
-            get { return JsonConvert.SerializeObject(this.Issues, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Issues, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

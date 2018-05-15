@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Compute
         ProfileNouns.DataDisk),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class AddAzureVMDataDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class AddAzureVMDataDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Alias("VMProfile")]
         [Parameter(
@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            var storageProfile = this.VM.StorageProfile;
+            var storageProfile = VM.StorageProfile;
 
             if (storageProfile == null)
             {
@@ -128,32 +128,32 @@ namespace Microsoft.Azure.Commands.Compute
 
             storageProfile.DataDisks.Add(new DataDisk
             {
-                Name = this.Name,
-                Caching = this.Caching,
-                DiskSizeGB = this.DiskSizeInGB,
-                Lun = this.Lun.GetValueOrDefault(),
-                Vhd = string.IsNullOrEmpty(this.VhdUri) ? null : new VirtualHardDisk
+                Name = Name,
+                Caching = Caching,
+                DiskSizeGB = DiskSizeInGB,
+                Lun = Lun.GetValueOrDefault(),
+                Vhd = string.IsNullOrEmpty(VhdUri) ? null : new VirtualHardDisk
                 {
-                    Uri = this.VhdUri
+                    Uri = VhdUri
                 },
-                CreateOption = this.CreateOption,
-                Image = string.IsNullOrEmpty(this.SourceImageUri) ? null : new VirtualHardDisk
+                CreateOption = CreateOption,
+                Image = string.IsNullOrEmpty(SourceImageUri) ? null : new VirtualHardDisk
                 {
-                    Uri = this.SourceImageUri
+                    Uri = SourceImageUri
                 },
-                ManagedDisk = (this.ManagedDiskId == null && this.StorageAccountType == null)
+                ManagedDisk = ManagedDiskId == null && StorageAccountType == null
                               ? null
                               : new ManagedDiskParameters
                               {
-                                  Id = this.ManagedDiskId,
-                                  StorageAccountType = this.StorageAccountType
+                                  Id = ManagedDiskId,
+                                  StorageAccountType = StorageAccountType
                               },
-                WriteAcceleratorEnabled = this.WriteAccelerator.IsPresent
+                WriteAcceleratorEnabled = WriteAccelerator.IsPresent
             });
 
-            this.VM.StorageProfile = storageProfile;
+            VM.StorageProfile = storageProfile;
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Management.Automation;
 
@@ -50,13 +50,13 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            if (string.IsNullOrWhiteSpace(this.Version))
+            if (string.IsNullOrWhiteSpace(Version))
             {
-                this.WriteObject(LogicAppClient.GetWorkflow(this.ResourceGroupName, this.Name), true);
+                WriteObject(LogicAppClient.GetWorkflow(ResourceGroupName, Name), true);
             }
             else
             {
-                this.WriteObject(LogicAppClient.GetWorkflowVersion(this.ResourceGroupName, this.Name, this.Version), true);
+                WriteObject(LogicAppClient.GetWorkflowVersion(ResourceGroupName, Name, Version), true);
             }
         }
     }

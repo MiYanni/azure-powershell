@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            BatchAccountContext context = BatchClient.UpdateAccount(this.ResourceGroupName, this.AccountName, this.Tag, this.AutoStorageAccountId);
+            BatchAccountContext context = BatchClient.UpdateAccount(ResourceGroupName, AccountName, Tag, AutoStorageAccountId);
             WriteObject(context);
         }
     }

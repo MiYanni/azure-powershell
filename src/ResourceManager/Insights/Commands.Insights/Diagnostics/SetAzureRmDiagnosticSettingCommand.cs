@@ -118,24 +118,24 @@ namespace Microsoft.Azure.Commands.Insights.Diagnostics
 
         protected override void ProcessRecordInternal()
         {
-            HashSet<string> usedParams = new HashSet<string>(this.MyInvocation.BoundParameters.Keys, StringComparer.OrdinalIgnoreCase);
+            HashSet<string> usedParams = new HashSet<string>(MyInvocation.BoundParameters.Keys, StringComparer.OrdinalIgnoreCase);
 
-            this.isStorageParamPresent = usedParams.Contains(StorageAccountIdParamName);
-            this.isServiceBusParamPresent = usedParams.Contains(ServiceBusRuleIdParamName);
-            this.isEventHubRuleParamPresent = usedParams.Contains(EventHubRuleIdParamName);
-            this.isWorkspaceParamPresent = usedParams.Contains(WorkspacetIdParamName);
-            this.isEnbledParameterPresent = usedParams.Contains(EnabledParamName);
+            isStorageParamPresent = usedParams.Contains(StorageAccountIdParamName);
+            isServiceBusParamPresent = usedParams.Contains(ServiceBusRuleIdParamName);
+            isEventHubRuleParamPresent = usedParams.Contains(EventHubRuleIdParamName);
+            isWorkspaceParamPresent = usedParams.Contains(WorkspacetIdParamName);
+            isEnbledParameterPresent = usedParams.Contains(EnabledParamName);
 
-            if (!this.isStorageParamPresent &&
-                !this.isServiceBusParamPresent &&
-                !this.isEventHubRuleParamPresent &&
-                !this.isWorkspaceParamPresent &&
-                !this.isEnbledParameterPresent)
+            if (!isStorageParamPresent &&
+                !isServiceBusParamPresent &&
+                !isEventHubRuleParamPresent &&
+                !isWorkspaceParamPresent &&
+                !isEnbledParameterPresent)
             {
                 throw new ArgumentException("No operation is specified");
             }
 
-            ServiceDiagnosticSettingsResource getResponse = this.MonitorManagementClient.ServiceDiagnosticSettings.GetAsync(resourceUri: this.ResourceId, cancellationToken: CancellationToken.None).Result;
+            ServiceDiagnosticSettingsResource getResponse = MonitorManagementClient.ServiceDiagnosticSettings.GetAsync(ResourceId, CancellationToken.None).Result;
 
             ServiceDiagnosticSettingsResource properties = getResponse;
 
@@ -147,24 +147,24 @@ namespace Microsoft.Azure.Commands.Insights.Diagnostics
 
             SetWorkspace(properties);
 
-            if (this.Categories == null && this.Timegrains == null)
+            if (Categories == null && Timegrains == null)
             {
                 SetAllCategoriesAndTimegrains(properties);
             }
             else
             {
-                if (this.Categories != null)
+                if (Categories != null)
                 {
                     SetSelectedCategories(properties);
                 }
 
-                if (this.Timegrains != null)
+                if (Timegrains != null)
                 {
                     SetSelectedTimegrains(properties);
                 }
             }
 
-            if (this.RetentionEnabled.HasValue)
+            if (RetentionEnabled.HasValue)
             {
                 SetRetention(properties);
             }
@@ -172,10 +172,10 @@ namespace Microsoft.Azure.Commands.Insights.Diagnostics
             var putParameters = CopySettings(properties);
 
             if (ShouldProcess(
-                target: string.Format("Create/update a diagnostic setting for resource Id: {0}", this.ResourceId),
-                action: "Create/update a diagnostic setting"))
+                string.Format("Create/update a diagnostic setting for resource Id: {0}", ResourceId),
+                "Create/update a diagnostic setting"))
             {
-                ServiceDiagnosticSettingsResource result = this.MonitorManagementClient.ServiceDiagnosticSettings.CreateOrUpdateAsync(resourceUri: this.ResourceId, parameters: putParameters, cancellationToken: CancellationToken.None).Result;
+                ServiceDiagnosticSettingsResource result = MonitorManagementClient.ServiceDiagnosticSettings.CreateOrUpdateAsync(ResourceId, putParameters, CancellationToken.None).Result;
                 WriteObject(new PSServiceDiagnosticSettings(result));
             }
         }
@@ -183,7 +183,7 @@ namespace Microsoft.Azure.Commands.Insights.Diagnostics
         private static ServiceDiagnosticSettingsResource CopySettings(ServiceDiagnosticSettingsResource properties)
         {
             // Location is marked as required, but the get operation returns Location as null. So use an empty string instead of null to avoid validation errors
-            var putParameters = new ServiceDiagnosticSettingsResource(location: properties.Location ?? string.Empty, name: properties.Name, id: properties.Id, type: properties.Type)
+            var putParameters = new ServiceDiagnosticSettingsResource(properties.Location ?? string.Empty, name: properties.Name, id: properties.Id, type: properties.Type)
             {
                 Logs = properties.Logs,
                 Metrics = properties.Metrics,
@@ -200,8 +200,8 @@ namespace Microsoft.Azure.Commands.Insights.Diagnostics
         {
             var retentionPolicy = new RetentionPolicy
             {
-                Enabled = this.RetentionEnabled.Value,
-                Days = this.RetentionInDays.Value
+                Enabled = RetentionEnabled.Value,
+                Days = RetentionInDays.Value
             };
 
             if (properties.Logs != null)
@@ -223,12 +223,12 @@ namespace Microsoft.Azure.Commands.Insights.Diagnostics
 
         private void SetSelectedTimegrains(ServiceDiagnosticSettingsResource properties)
         {
-            if (!this.isEnbledParameterPresent)
+            if (!isEnbledParameterPresent)
             {
                 throw new ArgumentException("Parameter 'Enabled' is required by 'Timegrains' parameter.");
             }
 
-            foreach (string timegrainString in this.Timegrains)
+            foreach (string timegrainString in Timegrains)
             {
                 TimeSpan timegrain = XmlConvert.ToTimeSpan(timegrainString);
                 MetricSettings metricSettings = properties.Metrics.FirstOrDefault(x => TimeSpan.Equals(x.TimeGrain, timegrain));
@@ -237,18 +237,18 @@ namespace Microsoft.Azure.Commands.Insights.Diagnostics
                 {
                     throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Metric timegrain '{0}' is not available", timegrainString));
                 }
-                metricSettings.Enabled = this.Enabled;
+                metricSettings.Enabled = Enabled;
             }
         }
 
         private void SetSelectedCategories(ServiceDiagnosticSettingsResource properties)
         {
-            if (!this.isEnbledParameterPresent)
+            if (!isEnbledParameterPresent)
             {
                 throw new ArgumentException("Parameter 'Enabled' is required by 'Categories' parameter.");
             }
 
-            foreach (string category in this.Categories)
+            foreach (string category in Categories)
             {
                 LogSettings logSettings = properties.Logs.FirstOrDefault(x => string.Equals(x.Category, category, StringComparison.OrdinalIgnoreCase));
 
@@ -257,58 +257,58 @@ namespace Microsoft.Azure.Commands.Insights.Diagnostics
                     throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Log category '{0}' is not available", category));
                 }
 
-                logSettings.Enabled = this.Enabled;
+                logSettings.Enabled = Enabled;
             }
         }
 
         private void SetAllCategoriesAndTimegrains(ServiceDiagnosticSettingsResource properties)
         {
-            if (!this.isEnbledParameterPresent)
+            if (!isEnbledParameterPresent)
             {
                 return;
             }
 
             foreach (var log in properties.Logs)
             {
-                log.Enabled = this.Enabled;
+                log.Enabled = Enabled;
             }
 
             foreach (var metric in properties.Metrics)
             {
-                metric.Enabled = this.Enabled;
+                metric.Enabled = Enabled;
             }
         }
 
         private void SetWorkspace(ServiceDiagnosticSettingsResource properties)
         {
-            if (this.isWorkspaceParamPresent)
+            if (isWorkspaceParamPresent)
             {
-                properties.WorkspaceId = this.WorkspaceId;
+                properties.WorkspaceId = WorkspaceId;
             }
         }
 
         private void SetServiceBus(ServiceDiagnosticSettingsResource properties)
         {
-            if (this.isServiceBusParamPresent)
+            if (isServiceBusParamPresent)
             {
-                properties.ServiceBusRuleId = this.ServiceBusRuleId;
+                properties.ServiceBusRuleId = ServiceBusRuleId;
             }
         }
 
         private void SetEventHubRule(ServiceDiagnosticSettingsResource properties)
         {
-            if (this.isEventHubRuleParamPresent)
+            if (isEventHubRuleParamPresent)
             {
-                properties.EventHubAuthorizationRuleId = this.EventHubAuthorizationRuleId;
+                properties.EventHubAuthorizationRuleId = EventHubAuthorizationRuleId;
             }
         }
 
 
         private void SetStorage(ServiceDiagnosticSettingsResource properties)
         {
-            if (this.isStorageParamPresent)
+            if (isStorageParamPresent)
             {
-                properties.StorageAccountId = this.StorageAccountId;
+                properties.StorageAccountId = StorageAccountId;
             }
         }
     }

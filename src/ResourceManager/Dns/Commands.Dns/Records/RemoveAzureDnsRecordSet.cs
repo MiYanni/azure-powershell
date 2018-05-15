@@ -66,61 +66,61 @@ namespace Microsoft.Azure.Commands.Dns
             bool deleted = false;
             DnsRecordSet recordSetToDelete = null;
 
-            if (this.ParameterSetName == "Fields")
+            if (ParameterSetName == "Fields")
             {
-                if (this.Name.EndsWith("."))
+                if (Name.EndsWith("."))
                 {
-                    this.Name = this.Name.TrimEnd('.');
-                    this.WriteWarning(string.Format("Modifying recordset name to remove terminating '.'.  Recordset name used is \"{0}\".", this.Name));
+                    Name = Name.TrimEnd('.');
+                    WriteWarning(string.Format("Modifying recordset name to remove terminating '.'.  Recordset name used is \"{0}\".", Name));
                 }
 
                 recordSetToDelete = new DnsRecordSet
                 {
-                    Name = this.Name,
+                    Name = Name,
                     Etag = null,
-                    RecordType = this.RecordType,
-                    ResourceGroupName = this.ResourceGroupName,
-                    ZoneName = this.ZoneName,
+                    RecordType = RecordType,
+                    ResourceGroupName = ResourceGroupName,
+                    ZoneName = ZoneName,
                 };
             }
-            else if (this.ParameterSetName == "Mixed")
+            else if (ParameterSetName == "Mixed")
             {
-                if (this.Name.EndsWith("."))
+                if (Name.EndsWith("."))
                 {
-                    this.Name = this.Name.TrimEnd('.');
-                    this.WriteWarning(string.Format("Modifying recordset name to remove terminating '.'.  Recordset name used is \"{0}\".", this.Name));
+                    Name = Name.TrimEnd('.');
+                    WriteWarning(string.Format("Modifying recordset name to remove terminating '.'.  Recordset name used is \"{0}\".", Name));
                 }
 
                 recordSetToDelete = new DnsRecordSet
                 {
-                    Name = this.Name,
+                    Name = Name,
                     Etag = null,
-                    RecordType = this.RecordType,
-                    ResourceGroupName = this.Zone.ResourceGroupName,
-                    ZoneName = this.Zone.Name,
+                    RecordType = RecordType,
+                    ResourceGroupName = Zone.ResourceGroupName,
+                    ZoneName = Zone.Name,
                 };
             }
-            else if (this.ParameterSetName == "Object")
+            else if (ParameterSetName == "Object")
             {
-                if ((string.IsNullOrWhiteSpace(this.RecordSet.Etag) || this.RecordSet.Etag == "*") && !this.Overwrite.IsPresent)
+                if ((string.IsNullOrWhiteSpace(RecordSet.Etag) || RecordSet.Etag == "*") && !Overwrite.IsPresent)
                 {
                     throw new PSArgumentException(string.Format(ProjectResources.Error_EtagNotSpecified, typeof(DnsRecordSet).Name));
                 }
 
-                recordSetToDelete = this.RecordSet;
+                recordSetToDelete = RecordSet;
             }
 
             if (recordSetToDelete.ZoneName != null && recordSetToDelete.ZoneName.EndsWith("."))
             {
                 recordSetToDelete.ZoneName = recordSetToDelete.ZoneName.TrimEnd('.');
-                this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", recordSetToDelete.ZoneName));
+                WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", recordSetToDelete.ZoneName));
             }
 
-            bool overwrite = this.Overwrite.IsPresent || this.ParameterSetName != "Object";
+            bool overwrite = Overwrite.IsPresent || ParameterSetName != "Object";
 
             ConfirmAction(
                 ProjectResources.Progress_RemovingRecordSet,
-                this.Name,
+                Name,
                 () =>
                 {
                     deleted = DnsClient.DeleteDnsRecordSet(recordSetToDelete, overwrite);
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.Dns
                         WriteVerbose(ProjectResources.Success_RemoveRecordSet);
                     }
 
-                    if (this.PassThru)
+                    if (PassThru)
                     {
                         WriteObject(deleted);
                     }

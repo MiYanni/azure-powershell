@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsVirtualNetworkPresent(this.ResourceGroupName, this.Name);
+            var present = IsVirtualNetworkPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
@@ -123,36 +123,36 @@ namespace Microsoft.Azure.Commands.Network
         private PSVirtualNetwork CreateVirtualNetwork()
         {
             var vnet = new PSVirtualNetwork();
-            vnet.Name = this.Name;
-            vnet.ResourceGroupName = this.ResourceGroupName;
-            vnet.Location = this.Location;
+            vnet.Name = Name;
+            vnet.ResourceGroupName = ResourceGroupName;
+            vnet.Location = Location;
             vnet.AddressSpace = new PSAddressSpace();
-            vnet.AddressSpace.AddressPrefixes = this.AddressPrefix;
+            vnet.AddressSpace.AddressPrefixes = AddressPrefix;
 
-            if (this.DnsServer != null)
+            if (DnsServer != null)
             {
                 vnet.DhcpOptions = new PSDhcpOptions();
-                vnet.DhcpOptions.DnsServers = this.DnsServer;
+                vnet.DhcpOptions.DnsServers = DnsServer;
             }
 
-            vnet.Subnets = this.Subnet;
-            vnet.EnableDdosProtection = this.EnableDdosProtection;
-            vnet.EnableVmProtection = this.EnableVmProtection;
+            vnet.Subnets = Subnet;
+            vnet.EnableDdosProtection = EnableDdosProtection;
+            vnet.EnableVmProtection = EnableVmProtection;
 
-            if (!string.IsNullOrEmpty(this.DdosProtectionPlanId))
+            if (!string.IsNullOrEmpty(DdosProtectionPlanId))
             {
                 vnet.DdosProtectionPlan = new PSResourceId();
-                vnet.DdosProtectionPlan.Id = this.DdosProtectionPlanId;
+                vnet.DdosProtectionPlan.Id = DdosProtectionPlanId;
             }
 
             // Map to the sdk object
             var vnetModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetwork>(vnet);
-            vnetModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            vnetModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
             // Execute the Create VirtualNetwork call
-            this.VirtualNetworkClient.CreateOrUpdate(this.ResourceGroupName, this.Name, vnetModel);
+            VirtualNetworkClient.CreateOrUpdate(ResourceGroupName, Name, vnetModel);
 
-            var getVirtualNetwork = this.GetVirtualNetwork(this.ResourceGroupName, this.Name);
+            var getVirtualNetwork = GetVirtualNetwork(ResourceGroupName, Name);
 
             return getVirtualNetwork;
         }

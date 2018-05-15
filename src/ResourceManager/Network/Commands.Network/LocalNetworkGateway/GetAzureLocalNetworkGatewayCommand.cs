@@ -43,24 +43,24 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var localnetGateway = this.GetLocalNetworkGateway(this.ResourceGroupName, this.Name);
+                var localnetGateway = GetLocalNetworkGateway(ResourceGroupName, Name);
 
                 WriteObject(localnetGateway);
             }
-            else if (!string.IsNullOrEmpty(this.ResourceGroupName))
+            else if (!string.IsNullOrEmpty(ResourceGroupName))
             {
-                var localnetGatewayPage = this.LocalNetworkGatewayClient.List(this.ResourceGroupName);
+                var localnetGatewayPage = LocalNetworkGatewayClient.List(ResourceGroupName);
 
                 // Get all resources by polling on next page link
-                var localnetGatewayList = ListNextLink<LocalNetworkGateway>.GetAllResourcesByPollingNextLink(localnetGatewayPage, this.LocalNetworkGatewayClient.ListNext);
+                var localnetGatewayList = ListNextLink<LocalNetworkGateway>.GetAllResourcesByPollingNextLink(localnetGatewayPage, LocalNetworkGatewayClient.ListNext);
 
                 var psLocalnetGateways = new List<PSLocalNetworkGateway>();
                 foreach (var localNetworkGateway in localnetGatewayList)
                 {
-                    var psLocalnetGateway = this.ToPsLocalNetworkGateway(localNetworkGateway);
-                    psLocalnetGateway.ResourceGroupName = this.ResourceGroupName;
+                    var psLocalnetGateway = ToPsLocalNetworkGateway(localNetworkGateway);
+                    psLocalnetGateway.ResourceGroupName = ResourceGroupName;
                     psLocalnetGateways.Add(psLocalnetGateway);
                 }
 

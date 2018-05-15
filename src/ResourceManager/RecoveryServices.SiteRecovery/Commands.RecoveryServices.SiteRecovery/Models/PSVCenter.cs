@@ -41,16 +41,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <param name="vServer">vCenter server object</param>
         public ASRvCenter(VCenter vCenterServer)
         {
-            this.ID = vCenterServer.Id;
-            this.Name = vCenterServer.Name;
-            this.FriendlyName = vCenterServer.Properties.FriendlyName;
-            this.IpOrHostName = vCenterServer.Properties.IpAddress;
-            this.Port = vCenterServer.Properties.Port;
-            this.FabricArmResourceName = vCenterServer.Properties.FabricArmResourceName;
-            this.ProcessServerId = vCenterServer.Properties.ProcessServerId;
-            this.AccountId = vCenterServer.Properties.RunAsAccountId;
-            this.DiscoveryStatus = vCenterServer.Properties.DiscoveryStatus;
-            this.LastHeartbeat = vCenterServer.Properties.LastHeartbeat;
+            ID = vCenterServer.Id;
+            Name = vCenterServer.Name;
+            FriendlyName = vCenterServer.Properties.FriendlyName;
+            IpOrHostName = vCenterServer.Properties.IpAddress;
+            Port = vCenterServer.Properties.Port;
+            FabricArmResourceName = vCenterServer.Properties.FabricArmResourceName;
+            ProcessServerId = vCenterServer.Properties.ProcessServerId;
+            AccountId = vCenterServer.Properties.RunAsAccountId;
+            DiscoveryStatus = vCenterServer.Properties.DiscoveryStatus;
+            LastHeartbeat = vCenterServer.Properties.LastHeartbeat;
         }
 
         #region Properties

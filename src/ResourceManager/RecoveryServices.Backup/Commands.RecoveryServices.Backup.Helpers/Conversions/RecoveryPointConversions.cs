@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                         recPoint.IsInstantILRSessionActive.HasValue ?
                             (bool)recPoint.IsInstantILRSessionActive : false;
 
-                    AzureVmRecoveryPoint rpBase = new AzureVmRecoveryPoint()
+                    AzureVmRecoveryPoint rpBase = new AzureVmRecoveryPoint
                     {
                         RecoveryPointId = rp.Name,
                         BackupManagementType = item.BackupManagementType,
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                             recPoint.IsSourceVMEncrypted.Value : false,
                         IlrSessionActive = isInstantILRSessionActive,
                         OriginalSAEnabled = recPoint.OriginalStorageAccountOption.HasValue ?
-                            recPoint.OriginalStorageAccountOption.Value : false,
+                            recPoint.OriginalStorageAccountOption.Value : false
                     };
                     result.Add(rpBase);
                 }
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                         throw new ArgumentNullException("RecoveryPointTime is null");
                     }
 
-                    AzureSqlRecoveryPoint rpBase = new AzureSqlRecoveryPoint()
+                    AzureSqlRecoveryPoint rpBase = new AzureSqlRecoveryPoint
                     {
                         RecoveryPointId = rp.Name,
                         BackupManagementType = item.BackupManagementType,
@@ -116,7 +116,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                         Id = rp.Id,
                         WorkloadType = item.WorkloadType,
                         RecoveryPointAdditionalInfo = recPoint.RecoveryPointAdditionalInfo,
-                        FriendlyName = recPoint.FriendlyName,
+                        FriendlyName = recPoint.FriendlyName
                     };
 
                     result.Add(rpBase);
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                 bool isInstantILRSessionActive =
                     recPoint.IsInstantILRSessionActive.HasValue ?
                         (bool)recPoint.IsInstantILRSessionActive : false;
-                AzureVmRecoveryPoint vmResult = new AzureVmRecoveryPoint()
+                AzureVmRecoveryPoint vmResult = new AzureVmRecoveryPoint
                 {
                     RecoveryPointId = rpResponse.Name,
                     BackupManagementType = item.BackupManagementType,
@@ -183,19 +183,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                     SourceResourceId = item.SourceResourceId,
                     SourceVMStorageType = recPoint.SourceVMStorageType,
                     OriginalSAEnabled = recPoint.OriginalStorageAccountOption.HasValue ?
-                        recPoint.OriginalStorageAccountOption.Value : false,
+                        recPoint.OriginalStorageAccountOption.Value : false
                 };
 
                 if (vmResult.EncryptionEnabled && recPoint.KeyAndSecret != null)
                 {
-                    vmResult.KeyAndSecretDetails = new KeyAndSecretDetails()
+                    vmResult.KeyAndSecretDetails = new KeyAndSecretDetails
                     {
                         SecretUrl = recPoint.KeyAndSecret.BekDetails.SecretUrl,
                         KeyUrl = recPoint.KeyAndSecret.KekDetails.KeyUrl,
                         SecretData = recPoint.KeyAndSecret.BekDetails.SecretData,
                         KeyBackupData = recPoint.KeyAndSecret.KekDetails.KeyBackupData,
                         KeyVaultId = recPoint.KeyAndSecret.KekDetails.KeyVaultId,
-                        SecretVaultId = recPoint.KeyAndSecret.BekDetails.SecretVaultId,
+                        SecretVaultId = recPoint.KeyAndSecret.BekDetails.SecretVaultId
                     };
                 }
 
@@ -218,7 +218,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                     throw new ArgumentNullException("RecoveryPointTime is null");
                 }
 
-                AzureSqlRecoveryPoint sqlResult = new AzureSqlRecoveryPoint()
+                AzureSqlRecoveryPoint sqlResult = new AzureSqlRecoveryPoint
                 {
                     RecoveryPointId = rpResponse.Name,
                     BackupManagementType = item.BackupManagementType,

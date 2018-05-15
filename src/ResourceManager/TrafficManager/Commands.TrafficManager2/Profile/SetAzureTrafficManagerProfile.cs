@@ -28,10 +28,10 @@ namespace Microsoft.Azure.Commands.TrafficManager
 
         public override void ExecuteCmdlet()
         {
-            TrafficManagerProfile profile = this.TrafficManagerClient.SetTrafficManagerProfile(this.TrafficManagerProfile);
+            TrafficManagerProfile profile = TrafficManagerClient.SetTrafficManagerProfile(TrafficManagerProfile);
 
-            this.WriteVerbose(ProjectResources.Success);
-            this.WriteObject(profile);
+            WriteVerbose(ProjectResources.Success);
+            WriteObject(profile);
         }
     }
 }

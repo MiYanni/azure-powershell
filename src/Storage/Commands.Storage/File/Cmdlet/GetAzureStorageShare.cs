@@ -16,8 +16,8 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
     using Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Storage.File;
+    using Commands.Common.Storage;
+    using WindowsAzure.Storage.File;
     using System;
     using System.Globalization;
     using System.Management.Automation;
@@ -61,32 +61,32 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
         public override void ExecuteCmdlet()
         {
-            this.RunTask(async taskId =>
+            RunTask(async taskId =>
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case Constants.SpecificParameterSetName:
-                        NamingUtil.ValidateShareName(this.Name, false);
-                        var share = this.Channel.GetShareReference(this.Name, this.SnapshotTime);
-                        await this.Channel.FetchShareAttributesAsync(share, null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
-                        this.OutputStream.WriteObject(taskId, share);
+                        NamingUtil.ValidateShareName(Name, false);
+                        var share = Channel.GetShareReference(Name, SnapshotTime);
+                        await Channel.FetchShareAttributesAsync(share, null, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
+                        OutputStream.WriteObject(taskId, share);
 
                         break;
 
                     case Constants.MatchingPrefixParameterSetName:
-                        NamingUtil.ValidateShareName(this.Prefix, true);
-                        await this.Channel.EnumerateSharesAsync(
-                            this.Prefix,
+                        NamingUtil.ValidateShareName(Prefix, true);
+                        await Channel.EnumerateSharesAsync(
+                            Prefix,
                             ShareListingDetails.All,
-                            item => this.OutputStream.WriteObject(taskId, item),
-                            this.RequestOptions,
-                            this.OperationContext,
-                            this.CmdletCancellationToken).ConfigureAwait(false);
+                            item => OutputStream.WriteObject(taskId, item),
+                            RequestOptions,
+                            OperationContext,
+                            CmdletCancellationToken).ConfigureAwait(false);
 
                         break;
 
                     default:
-                        throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", this.ParameterSetName));
+                        throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", ParameterSetName));
                 }
             });
         }

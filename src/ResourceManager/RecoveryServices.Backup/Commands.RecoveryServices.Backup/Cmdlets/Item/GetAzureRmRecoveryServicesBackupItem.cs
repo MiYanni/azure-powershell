@@ -87,19 +87,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 base.ExecuteCmdlet();
 
                 PsBackupProviderManager providerManager =
-                    new PsBackupProviderManager(new Dictionary<Enum, object>()
-                {
+                    new PsBackupProviderManager(new Dictionary<Enum, object>
+                    {
                     {ItemParams.Container, Container},
                     {ItemParams.BackupManagementType, BackupManagementType},
                     {ItemParams.AzureVMName, Name},
                     {ItemParams.ProtectionStatus, ProtectionStatus},
                     {ItemParams.ProtectionState, ProtectionState},
-                    {ItemParams.WorkloadType, WorkloadType},
+                    {ItemParams.WorkloadType, WorkloadType}
                 }, ServiceClientAdapter);
 
-                IPsBackupProvider psBackupProvider = null;
+                IPsBackupProvider psBackupProvider;
 
-                if (this.ParameterSetName == GetItemsForVaultParamSet)
+                if (ParameterSetName == GetItemsForVaultParamSet)
                 {
                     psBackupProvider =
                         providerManager.GetProviderInstance(WorkloadType, BackupManagementType);
@@ -107,12 +107,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 else
                 {
                     psBackupProvider = providerManager.GetProviderInstance(WorkloadType,
-                    (Container as ManagementContext).BackupManagementType);
+                    Container.BackupManagementType);
                 }
 
                 var itemModels = psBackupProvider.ListProtectedItems();
 
-                WriteObject(itemModels, enumerateCollection: true);
+                WriteObject(itemModels, true);
             });
         }
     }

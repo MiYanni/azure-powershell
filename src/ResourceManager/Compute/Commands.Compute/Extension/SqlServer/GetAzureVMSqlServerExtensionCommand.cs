@@ -39,14 +39,14 @@ namespace Microsoft.Azure.Commands.Compute
 
         // These maps are needed due to mismatch in the values while we set/get these parameters.
         protected static readonly Dictionary<string, string> AutoBackupScheduleTypeMap =
-            new Dictionary<string, string>() 
+            new Dictionary<string, string>
             {
                 { "NOTSET" , null },
                 { "SYSTEM" , "Automated" },
                 { "CUSTOM" , "Manual" }
             };
         protected static readonly Dictionary<string, string> AutoPatchingCategoryMap =
-            new Dictionary<string, string>() 
+            new Dictionary<string, string>
             {
                 { "WindowsMandatoryUpdates" , "Important" },
             };
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -84,13 +84,13 @@ namespace Microsoft.Azure.Commands.Compute
 
             if (String.IsNullOrEmpty(Name))
             {
-                VirtualMachine vm = ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName);
+                VirtualMachine vm = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
                 if (vm != null)
                 {
                     VirtualMachineExtension virtualMachineExtension = vm.Resources.Where(x => x.Publisher.Equals(VirtualMachineSqlServerExtensionContext.ExtensionPublishedNamespace)).FirstOrDefault();
                     if (virtualMachineExtension != null)
                     {
-                        this.Name = virtualMachineExtension.Name;
+                        Name = virtualMachineExtension.Name;
                     }
                 }
 
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.Compute
             }
 
             var result = VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName, VMName, Name);
-            var extension = result.ToPSVirtualMachineExtension(this.ResourceGroupName, this.VMName);
+            var extension = result.ToPSVirtualMachineExtension(ResourceGroupName, VMName);
 
             if (
                 extension.Publisher.Equals(VirtualMachineSqlServerExtensionContext.ExtensionPublishedNamespace,
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Commands.Compute
                     PublicSettings = JsonConvert.SerializeObject(extensionPublicSettings),
                     ProtectedSettings = extension.ProtectedSettings,
                     ProvisioningState = extension.ProvisioningState,
-                    AutoBackupSettings = settings.AutoBackup == null ? null : new AutoBackupSettings()
+                    AutoBackupSettings = settings.AutoBackup == null ? null : new AutoBackupSettings
                     {
                         Enable = settings.AutoBackup.Enable,
                         EnableEncryption = settings.AutoBackup.EnableEncryption,
@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Commands.Compute
                         FullBackupWindowHours = settings.AutoBackup.FullBackupWindowHours,
                         LogBackupFrequency = settings.AutoBackup.LogBackupFrequency
                     },
-                    AutoPatchingSettings = settings.AutoPatching == null ? null : new AutoPatchingSettings()
+                    AutoPatchingSettings = settings.AutoPatching == null ? null : new AutoPatchingSettings
                     {
                         Enable = settings.AutoPatching.Enable,
                         DayOfWeek = settings.AutoPatching.DayOfWeek,
@@ -180,12 +180,12 @@ namespace Microsoft.Azure.Commands.Compute
                         MaintenanceWindowStartingHour = settings.AutoPatching.MaintenanceWindowStartingHour,
                         PatchCategory = string.IsNullOrEmpty(settings.AutoPatching.PatchCategory) ? null : AutoPatchingCategoryMap[settings.AutoPatching.PatchCategory]
                     },
-                    KeyVaultCredentialSettings = settings.AzureKeyVault == null ? null : new KeyVaultCredentialSettings()
+                    KeyVaultCredentialSettings = settings.AzureKeyVault == null ? null : new KeyVaultCredentialSettings
                     {
                         Enable = settings.AzureKeyVault.Enable,
                         Credentials = settings.AzureKeyVault.CredentialsList
                     },
-                    AutoTelemetrySettings = settings.AutoTelemetryReport == null ? null : new AutoTelemetrySettings()
+                    AutoTelemetrySettings = settings.AutoTelemetryReport == null ? null : new AutoTelemetrySettings
                     {
                         Region = settings.AutoTelemetryReport.Location,
                     },

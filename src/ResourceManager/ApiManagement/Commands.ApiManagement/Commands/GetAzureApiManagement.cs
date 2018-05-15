@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ApiManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.Models;
+    using Models;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Collections.Generic;
     using System.Linq;
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.Commands
             ValueFromPipelineByPropertyName = true,
             Mandatory = true,
             HelpMessage = "Name of resource group under which want to create API Management service.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

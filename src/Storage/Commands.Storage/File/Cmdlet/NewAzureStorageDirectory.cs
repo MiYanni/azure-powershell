@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
-    using Microsoft.WindowsAzure.Storage.File;
+    using WindowsAzure.Storage.File;
     using System.Globalization;
     using System.Management.Automation;
 
@@ -58,33 +58,33 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
         public override void ExecuteCmdlet()
         {
-            string[] path = NamingUtil.ValidatePath(this.Path);
+            string[] path = NamingUtil.ValidatePath(Path);
 
             CloudFileDirectory baseDirectory;
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case Constants.DirectoryParameterSetName:
-                    baseDirectory = this.Directory;
+                    baseDirectory = Directory;
                     break;
 
                 case Constants.ShareNameParameterSetName:
-                    var share = this.BuildFileShareObjectFromName(this.ShareName);
+                    var share = BuildFileShareObjectFromName(ShareName);
                     baseDirectory = share.GetRootDirectoryReference();
                     break;
 
                 case Constants.ShareParameterSetName:
-                    baseDirectory = this.Share.GetRootDirectoryReference();
+                    baseDirectory = Share.GetRootDirectoryReference();
                     break;
 
                 default:
-                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", this.ParameterSetName));
+                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", ParameterSetName));
             }
 
             var directoryToBeCreated = baseDirectory.GetDirectoryReferenceByPath(path);
-            this.RunTask(async taskId =>
+            RunTask(async taskId =>
             {
-                await this.Channel.CreateDirectoryAsync(directoryToBeCreated, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
-                this.OutputStream.WriteObject(taskId, directoryToBeCreated);
+                await Channel.CreateDirectoryAsync(directoryToBeCreated, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
+                OutputStream.WriteObject(taskId, directoryToBeCreated);
             });
         }
     }

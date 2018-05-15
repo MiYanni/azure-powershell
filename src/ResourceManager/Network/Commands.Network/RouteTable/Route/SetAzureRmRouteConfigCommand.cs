@@ -64,21 +64,21 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void Execute()
         {
-            var vRoutesIndex = this.RouteTable.Routes.IndexOf(
-                this.RouteTable.Routes.SingleOrDefault(
-                    resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase)));
+            var vRoutesIndex = RouteTable.Routes.IndexOf(
+                RouteTable.Routes.SingleOrDefault(
+                    resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase)));
             if (vRoutesIndex == -1)
             {
                 throw new ArgumentException("Routes with the specified name does not exist");
             }
             var vRoutes = new PSRoute();
 
-            vRoutes.AddressPrefix = this.AddressPrefix;
-            vRoutes.NextHopType = this.NextHopType;
-            vRoutes.NextHopIpAddress = this.NextHopIpAddress;
-            vRoutes.Name = this.Name;
-            this.RouteTable.Routes[vRoutesIndex] = vRoutes;
-            WriteObject(this.RouteTable, true);
+            vRoutes.AddressPrefix = AddressPrefix;
+            vRoutes.NextHopType = NextHopType;
+            vRoutes.NextHopIpAddress = NextHopIpAddress;
+            vRoutes.Name = Name;
+            RouteTable.Routes[vRoutesIndex] = vRoutes;
+            WriteObject(RouteTable, true);
         }
     }
 }

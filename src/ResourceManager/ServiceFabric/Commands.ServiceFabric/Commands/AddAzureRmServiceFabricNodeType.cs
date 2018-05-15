@@ -60,12 +60,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
@@ -76,41 +76,41 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         [Parameter(Mandatory = true, ValueFromPipeline = true,
                    HelpMessage = "The user name for logging to Vm")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string VmUserName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true,
                    HelpMessage = "The password for login to the Vm")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public SecureString VmPassword { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipeline = true,
                    HelpMessage = "The sku name")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string VmSku
         {
-            get { return string.IsNullOrWhiteSpace(this.sku) ? Constants.DefaultSku : this.sku; }
-            set { this.sku = value; }
+            get { return string.IsNullOrWhiteSpace(sku) ? Constants.DefaultSku : sku; }
+            set { sku = value; }
         }
 
         private string tier;
         [Parameter(Mandatory = false, ValueFromPipeline = true,
                    HelpMessage = "Vm Sku Tier")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string Tier
         {
-            get { return string.IsNullOrWhiteSpace(this.tier) ? Constants.DefaultTier : this.tier; }
-            set { this.tier = value; }
+            get { return string.IsNullOrWhiteSpace(tier) ? Constants.DefaultTier : tier; }
+            set { tier = value; }
         }
 
         [Parameter(Mandatory = false, ValueFromPipeline = true,
                    HelpMessage = "Specify the durability level of the NodeType.")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public DurabilityLevel DurabilityLevel { get; set; } = DurabilityLevel.Bronze;
 
         public override void ExecuteCmdlet()
         {
-            if (this.DurabilityLevel == DurabilityLevel.Gold && !skusSupportGoldDurability.Contains(this.VmSku))
+            if (DurabilityLevel == DurabilityLevel.Gold && !skusSupportGoldDurability.Contains(VmSku))
             {
                 throw new PSArgumentException(
                     string.Format(
@@ -118,10 +118,10 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                         string.Join(" / ", skusSupportGoldDurability)));
             }
 
-            if (ShouldProcess(target: this.NodeType, action: string.Format("Add an new node type {0}", this.NodeType)))
+            if (ShouldProcess(NodeType, string.Format("Add an new node type {0}", NodeType)))
             {
                 var cluster = GetCurrentCluster();
-                this.diagnosticsStorageName = cluster.DiagnosticsStorageAccountConfig.StorageAccountName;
+                diagnosticsStorageName = cluster.DiagnosticsStorageAccountConfig.StorageAccountName;
                 CreateVmss();
                 var pscluster = AddNodeTypeToSfrp(cluster);
                 WriteObject(pscluster, true);
@@ -135,36 +135,36 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSInvalidOperationException(
                     string.Format(
                         ServiceFabricProperties.Resources.NoneNodeTypeFound,
-                        this.ResourceGroupName));
+                        ResourceGroupName));
             }
 
-            var existingNodeType = GetNodeType(cluster, this.NodeType, ignoreErrors:true);
+            var existingNodeType = GetNodeType(cluster, NodeType, true);
             if (existingNodeType != null)
             {
                 return new PSCluster(cluster);
             }
 
-            cluster.NodeTypes.Add(new Management.ServiceFabric.Models.NodeTypeDescription()
+            cluster.NodeTypes.Add(new NodeTypeDescription
             {
-                Name = this.NodeType,
-                ApplicationPorts = new Management.ServiceFabric.Models.EndpointRangeDescription()
+                Name = NodeType,
+                ApplicationPorts = new EndpointRangeDescription
                 {
                     StartPort = Constants.DefaultApplicationStartPort,
                     EndPort = Constants.DefaultApplicationEndPort
                 },
                 ClientConnectionEndpointPort = Constants.DefaultClientConnectionEndpoint,
-                DurabilityLevel = this.DurabilityLevel.ToString(),
-                EphemeralPorts = new Management.ServiceFabric.Models.EndpointRangeDescription()
+                DurabilityLevel = DurabilityLevel.ToString(),
+                EphemeralPorts = new EndpointRangeDescription
                 {
                     StartPort = Constants.DefaultEphemeralStart,
                     EndPort = Constants.DefaultEphemeralEnd
                 },
                 HttpGatewayEndpointPort = Constants.DefaultHttpGatewayEndpoint,
                 IsPrimary = false,
-                VmInstanceCount = this.Capacity
+                VmInstanceCount = Capacity
             });
 
-            return SendPatchRequest(new Management.ServiceFabric.Models.ClusterUpdateParameters()
+            return SendPatchRequest(new ClusterUpdateParameters
             {
                 NodeTypes = cluster.NodeTypes
             });
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             GetProfiles(out vmExtProfile, out osProfile, out storageProfile, out networkProfile);
 
-            var virtualMachineScaleSetProfile = new VirtualMachineScaleSetVMProfile()
+            var virtualMachineScaleSetProfile = new VirtualMachineScaleSetVMProfile
             {
                 ExtensionProfile = vmExtProfile,
                 OsProfile = osProfile,
@@ -190,27 +190,27 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             virtualMachineScaleSetProfile.Validate();
 
             var vmssTask = ComputeClient.VirtualMachineScaleSets.CreateOrUpdateAsync(
-                 this.ResourceGroupName,
-                 this.NodeType,
-                 new VirtualMachineScaleSet()
+                 ResourceGroupName,
+                 NodeType,
+                 new VirtualMachineScaleSet
                  {
                      Location = GetLocation(),
-                     Sku = new Management.Compute.Models.Sku(this.VmSku, this.Tier, this.Capacity),
+                     Sku = new Management.Compute.Models.Sku(VmSku, Tier, Capacity),
                      Overprovision = false,
                      Tags = GetServiceFabricTags(),
-                     UpgradePolicy = new UpgradePolicy()
+                     UpgradePolicy = new UpgradePolicy
                      {
                          Mode = UpgradeMode.Automatic
                      },
                      VirtualMachineProfile = virtualMachineScaleSetProfile
                  });
 
-            WriteClusterAndVmssVerboseWhenUpdate(new List<Task>() { vmssTask }, false, this.NodeType);
+            WriteClusterAndVmssVerboseWhenUpdate(new List<Task> { vmssTask }, false, NodeType);
         }
 
         private string GetLocation()
         {
-            return this.ResourcesClient.ResourceGroups.Get(this.ResourceGroupName).Location;
+            return ResourcesClient.ResourceGroups.Get(ResourceGroupName).Location;
         }
 
         private void GetProfiles(
@@ -229,7 +229,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             VirtualMachineScaleSetStorageProfile existingStorageProfile = null;
             VirtualMachineScaleSetNetworkProfile existingNetworkProfile = null;
-            var vmss = ComputeClient.VirtualMachineScaleSets.List(this.ResourceGroupName);
+            var vmss = ComputeClient.VirtualMachineScaleSets.List(ResourceGroupName);
             if (vmss != null)
             {
                 foreach (var vm in vmss)
@@ -280,21 +280,21 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             storageProfile = GetStorageProfile(existingStorageProfile);
             networkProfile = CreateNetworkResource(existingNetworkProfile.NetworkInterfaceConfigurations.FirstOrDefault());
 
-            existingFabricExtension.Name = string.Format("{0}_ServiceFabricNode", this.NodeType);
+            existingFabricExtension.Name = string.Format("{0}_ServiceFabricNode", NodeType);
             existingFabricExtension = GetFabricExtension(existingFabricExtension);
 
             if (diagnosticsVmExt != null)
             {
-                diagnosticsVmExt.Name = string.Format("{0}_VMDiagnosticsVmExt", this.NodeType);
+                diagnosticsVmExt.Name = string.Format("{0}_VMDiagnosticsVmExt", NodeType);
                 diagnosticsVmExt = GetDiagnosticsExtension(diagnosticsVmExt);
-                vmExtProfile = new VirtualMachineScaleSetExtensionProfile()
+                vmExtProfile = new VirtualMachineScaleSetExtensionProfile
                 {
                     Extensions = new[] { existingFabricExtension, diagnosticsVmExt }
                 };
             }
             else
             {
-                vmExtProfile = new VirtualMachineScaleSetExtensionProfile()
+                vmExtProfile = new VirtualMachineScaleSetExtensionProfile
                 {
                     Extensions = new[] { existingFabricExtension }
                 };
@@ -303,9 +303,9 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         private VirtualMachineScaleSetOSProfile GetOsProfile(VirtualMachineScaleSetOSProfile osProfile)
         {
-            osProfile.ComputerNamePrefix = this.NodeType;
-            osProfile.AdminPassword = this.VmPassword.ConvertToString();
-            osProfile.AdminUsername = this.VmUserName;
+            osProfile.ComputerNamePrefix = NodeType;
+            osProfile.AdminPassword = VmPassword.ConvertToString();
+            osProfile.AdminUsername = VmUserName;
             return osProfile;
         }
 
@@ -317,15 +317,15 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSInvalidOperationException(ServiceFabricProperties.Resources.InvalidVmssConfiguration);
             }
 
-            settings["nodeTypeRef"] = this.NodeType;
-            settings["durabilityLevel"] = this.DurabilityLevel.ToString();
+            settings["nodeTypeRef"] = NodeType;
+            settings["durabilityLevel"] = DurabilityLevel.ToString();
 
             if (settings["nicPrefixOverride"] != null)
             {
-                settings["nicPrefixOverride"] = this.addressPrefix;
+                settings["nicPrefixOverride"] = addressPrefix;
             }
 
-            var keys = GetStorageAccountKey(this.diagnosticsStorageName);
+            var keys = GetStorageAccountKey(diagnosticsStorageName);
 
             var protectedSettings = new JObject
             {
@@ -355,7 +355,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             var protectedSettings = new JObject
             {
                 ["storageAccountName"] = accountName,
-                ["storageAccountKey"] = GetStorageAccountKey((string)accountName).First(),
+                ["storageAccountKey"] = GetStorageAccountKey(accountName).First(),
                 ["storageAccountEndPoint"] = "https://core.windows.net/"
             };
 
@@ -365,8 +365,8 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         private List<string> GetStorageAccountKey(string accoutName)
         {
-            var keys = this.StorageManagementClient.StorageAccounts.ListKeys(this.ResourceGroupName, accoutName);
-            return new List<string>() { keys.Keys.ElementAt(0).Value, keys.Keys.ElementAt(1).Value };
+            var keys = StorageManagementClient.StorageAccounts.ListKeys(ResourceGroupName, accoutName);
+            return new List<string> { keys.Keys.ElementAt(0).Value, keys.Keys.ElementAt(1).Value };
         }
 
         private VirtualMachineScaleSetStorageProfile GetStorageProfile(VirtualMachineScaleSetStorageProfile existingProfile)
@@ -375,18 +375,18 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 ? existingProfile.OsDisk.ManagedDisk.StorageAccountType
                 : StorageAccountTypes.StandardLRS;
 
-            var osDisk = new VirtualMachineScaleSetOSDisk()
+            var osDisk = new VirtualMachineScaleSetOSDisk
             {
                 Caching = existingProfile.OsDisk.Caching,
                 OsType = existingProfile.OsDisk.OsType,
                 CreateOption = existingProfile.OsDisk.CreateOption,
-                ManagedDisk = new VirtualMachineScaleSetManagedDiskParameters()
+                ManagedDisk = new VirtualMachineScaleSetManagedDiskParameters
                 {
                     StorageAccountType = storageType
                 }
             };
 
-            return new VirtualMachineScaleSetStorageProfile()
+            return new VirtualMachineScaleSetStorageProfile
             {
                 ImageReference = existingProfile.ImageReference,
                 OsDisk = osDisk
@@ -395,7 +395,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         private VirtualMachineScaleSetNetworkProfile CreateNetworkResource(VirtualMachineScaleSetNetworkConfiguration existingNetworkConfig)
         {
-            var suffix = $"{this.Name.ToLower()}-{this.NodeType.ToLower()}";
+            var suffix = $"{Name.ToLower()}-{NodeType.ToLower()}";
             var publicAddressName = $"LBIP-{suffix}";
             var dnsLabel = $"dns-{suffix}";
             var lbName = $"LB-{suffix}";
@@ -409,12 +409,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSInvalidOperationException(ServiceFabricProperties.Resources.InvalidVmssNetworkConfiguration);
             }
 
-            this.addressPrefix = GetSubnetAddressPrefix(ipConfiguration);
+            addressPrefix = GetSubnetAddressPrefix(ipConfiguration);
 
             var publicIp = NetworkManagementClient.PublicIPAddresses.CreateOrUpdate(
-                this.ResourceGroupName,
+                ResourceGroupName,
                 publicAddressName,
-                new PublicIPAddress()
+                new PublicIPAddress
                 {
                     PublicIPAllocationMethod = "Dynamic",
                     Location = GetLocation(),
@@ -429,116 +429,116 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             var newLoadBalancerId = string.Format(
                 LoadBalancerIdFormat,
-                this.NetworkManagementClient.SubscriptionId,
-                this.ResourceGroupName,
+                NetworkManagementClient.SubscriptionId,
+                ResourceGroupName,
                 lbName);
 
             var newLoadBalancer = new LoadBalancer(newLoadBalancerId, lbName)
             {
                 Location = GetLocation(),
-                FrontendIPConfigurations = new List<FrontendIPConfiguration>()
+                FrontendIPConfigurations = new List<FrontendIPConfiguration>
                 {
-                    new FrontendIPConfiguration()
+                    new FrontendIPConfiguration
                     {
                         Name= frontendIpConfigurationName,
-                        PublicIPAddress = new PublicIPAddress()
+                        PublicIPAddress = new PublicIPAddress
                         {
                             Id = publicIp.Id
                         }
                     }
                 },
-                BackendAddressPools = new List<BackendAddressPool>()
+                BackendAddressPools = new List<BackendAddressPool>
                 {
-                    new BackendAddressPool()
+                    new BackendAddressPool
                     {
                         Name = backendAddressPoolName
                     }
                 },
-                LoadBalancingRules = new List<LoadBalancingRule>()
+                LoadBalancingRules = new List<LoadBalancingRule>
                 {
-                    new LoadBalancingRule()
+                    new LoadBalancingRule
                     {
                         Name = "LBRule",
-                        BackendAddressPool = new Management.Network.Models.SubResource()
+                        BackendAddressPool = new Management.Network.Models.SubResource
                         {
                            Id = string.Format(
                                BackendAddressIdFormat,
                                NetworkManagementClient.SubscriptionId,
-                               this.ResourceGroupName,
+                               ResourceGroupName,
                                lbName,
                                backendAddressPoolName)
                         },
                         BackendPort = Constants.DefaultTcpPort,
                         EnableFloatingIP = false,
-                        FrontendIPConfiguration = new Management.Network.Models.SubResource()
+                        FrontendIPConfiguration = new Management.Network.Models.SubResource
                         {
                             Id = string.Format(
                                 FrontendIdFormat,
                                 NetworkManagementClient.SubscriptionId,
-                                this.ResourceGroupName,
+                                ResourceGroupName,
                                 lbName,
                                 frontendIpConfigurationName)
                         },
                        FrontendPort = Constants.DefaultTcpPort,
                        IdleTimeoutInMinutes = 5,
                        Protocol = "tcp",
-                       Probe = new Management.Network.Models.SubResource()
+                       Probe = new Management.Network.Models.SubResource
                        {
                            Id = string.Format(
                                 ProbeIdFormat,
                                 NetworkManagementClient.SubscriptionId,
-                                this.ResourceGroupName,
+                                ResourceGroupName,
                                 lbName,
                                 probeName)
                        }
                     },
-                    new LoadBalancingRule()
+                    new LoadBalancingRule
                     {
                         Name = "LBHttpRule",
-                        BackendAddressPool = new Management.Network.Models.SubResource()
+                        BackendAddressPool = new Management.Network.Models.SubResource
                         {
                            Id = string.Format(
                                BackendAddressIdFormat,
                                NetworkManagementClient.SubscriptionId,
-                               this.ResourceGroupName,
+                               ResourceGroupName,
                                lbName,
                                backendAddressPoolName)
                         },
                         BackendPort = Constants.DefaultHttpPort,
                         EnableFloatingIP = false,
-                        FrontendIPConfiguration = new Management.Network.Models.SubResource()
+                        FrontendIPConfiguration = new Management.Network.Models.SubResource
                         {
                             Id = string.Format(
                                 FrontendIdFormat,
                                 NetworkManagementClient.SubscriptionId,
-                                this.ResourceGroupName,
+                                ResourceGroupName,
                                 lbName,
                                 frontendIpConfigurationName)
                         },
                         FrontendPort = Constants.DefaultHttpPort,
                         IdleTimeoutInMinutes = 5,
                         Protocol = "tcp",
-                        Probe = new Management.Network.Models.SubResource()
+                        Probe = new Management.Network.Models.SubResource
                         {
                            Id = string.Format(
                                 ProbeIdFormat,
                                 NetworkManagementClient.SubscriptionId,
-                                this.ResourceGroupName,
+                                ResourceGroupName,
                                 lbName,
                                 probeHTTPName)
                        }
                     }
                 },
-                Probes = new List<Probe>()
+                Probes = new List<Probe>
                 {
-                    new Probe()
+                    new Probe
                     {
                         Name = probeName,
                         IntervalInSeconds = 5,
                         NumberOfProbes = 2,
                         Port= Constants.DefaultTcpPort
                     },
-                    new Probe()
+                    new Probe
                     {
                         Name = probeHTTPName,
                         IntervalInSeconds = 5,
@@ -546,18 +546,18 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                         Port= Constants.DefaultHttpPort
                     },
                 },
-                InboundNatPools = new List<InboundNatPool>()
+                InboundNatPools = new List<InboundNatPool>
                 {
-                    new InboundNatPool()
+                    new InboundNatPool
                     {
                         Name = inboundNatPoolName,
                         BackendPort = Constants.DefaultBackendPort,
-                        FrontendIPConfiguration = new Management.Network.Models.SubResource()
+                        FrontendIPConfiguration = new Management.Network.Models.SubResource
                         {
                              Id = string.Format(
                                 FrontendIdFormat,
                                 NetworkManagementClient.SubscriptionId,
-                                this.ResourceGroupName,
+                                ResourceGroupName,
                                 lbName,
                                 frontendIpConfigurationName)
                         },
@@ -569,37 +569,37 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             };
 
             NetworkManagementClient.LoadBalancers.BeginCreateOrUpdate(
-                this.ResourceGroupName,
+                ResourceGroupName,
                 lbName,
                 newLoadBalancer);
 
-            newLoadBalancer = NetworkManagementClient.LoadBalancers.Get(this.ResourceGroupName, lbName);
+            newLoadBalancer = NetworkManagementClient.LoadBalancers.Get(ResourceGroupName, lbName);
 
-            return new VirtualMachineScaleSetNetworkProfile()
+            return new VirtualMachineScaleSetNetworkProfile
             {
-                NetworkInterfaceConfigurations = new List<VirtualMachineScaleSetNetworkConfiguration>()
+                NetworkInterfaceConfigurations = new List<VirtualMachineScaleSetNetworkConfiguration>
                 {
-                    new VirtualMachineScaleSetNetworkConfiguration()
+                    new VirtualMachineScaleSetNetworkConfiguration
                     {
-                        IpConfigurations = new List<VirtualMachineScaleSetIPConfiguration>()
+                        IpConfigurations = new List<VirtualMachineScaleSetIPConfiguration>
                         {
-                            new VirtualMachineScaleSetIPConfiguration()
+                            new VirtualMachineScaleSetIPConfiguration
                             {
                                 Name = ipconfigName,
                                 LoadBalancerBackendAddressPools = newLoadBalancer.BackendAddressPools.Select(
-                                    b => new Management.Compute.Models.SubResource()
+                                    b => new Management.Compute.Models.SubResource
                                     {
                                         Id = b.Id
                                     }
                                     ).ToList(),
 
                                 LoadBalancerInboundNatPools = newLoadBalancer.InboundNatPools.Select(
-                                    p => new Management.Compute.Models.SubResource()
+                                    p => new Management.Compute.Models.SubResource
                                     {
                                         Id = p.Id
                                     }
                                     ).ToList(),
-                                Subnet = new ApiEntityReference() {Id = ipConfiguration.Subnet.Id}
+                                Subnet = new ApiEntityReference {Id = ipConfiguration.Subnet.Id}
                             }
                         },
                         Name = nicName,
@@ -630,7 +630,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             var subnetName = segments[segments.Length - 1];
             var virtualNetworkName = segments[segments.Length - 3];
 
-            var subnet = NetworkManagementClient.Subnets.Get(this.ResourceGroupName, virtualNetworkName, subnetName);
+            var subnet = NetworkManagementClient.Subnets.Get(ResourceGroupName, virtualNetworkName, subnetName);
             return subnet.AddressPrefix;
         }
     }

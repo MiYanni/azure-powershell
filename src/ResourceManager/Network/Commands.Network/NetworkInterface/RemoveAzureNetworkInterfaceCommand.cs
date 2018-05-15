@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.NetworkInterfaceClient.Delete(this.ResourceGroupName, this.Name);
+                    NetworkInterfaceClient.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

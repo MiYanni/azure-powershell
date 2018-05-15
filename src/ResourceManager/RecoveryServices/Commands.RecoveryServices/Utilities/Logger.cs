@@ -23,13 +23,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     /// </summary>
     public class Logger
     {
-        private Action<string> writeWarningAction;
+        private readonly Action<string> _writeWarningAction;
 
-        private Action<string> writeDebugAction;
+        private readonly Action<string> _writeDebugAction;
 
-        private Action<string> writeVerboseAction;
+        private readonly Action<string> _writeVerboseAction;
 
-        private Action<ErrorRecord> throwTerminatingErrorAction;
+        private readonly Action<ErrorRecord> _throwTerminatingErrorAction;
 
         public static Logger Instance { get; set; }
 
@@ -45,10 +45,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                       Action<string> writeVerbose,
                       Action<ErrorRecord> throwTerminatingError)
         {
-            writeWarningAction = writeWarning;
-            writeDebugAction = writeDebug;
-            writeVerboseAction = writeVerbose;
-            throwTerminatingErrorAction = throwTerminatingError;
+            _writeWarningAction = writeWarning;
+            _writeDebugAction = writeDebug;
+            _writeVerboseAction = writeVerbose;
+            _throwTerminatingErrorAction = throwTerminatingError;
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="text"></param>
         public void WriteVerbose(string text)
         {
-            writeVerboseAction(text);
+            _writeVerboseAction(text);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="text"></param>
         public void WriteDebug(string text)
         {
-            writeDebugAction(text);
+            _writeDebugAction(text);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="text"></param>
         public void WriteWarning(string text)
         {
-            writeWarningAction(text);
+            _writeWarningAction(text);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="errorRecord"></param>
         public void ThrowTerminatingError(ErrorRecord errorRecord)
         {
-            throwTerminatingErrorAction(errorRecord);
+            _throwTerminatingErrorAction(errorRecord);
         }
     }
 }

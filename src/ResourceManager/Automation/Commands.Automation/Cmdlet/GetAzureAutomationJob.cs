@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
     /// Gets a Job object for automation.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureRmAutomationJob", DefaultParameterSetName = AutomationCmdletParameterSets.ByAll)]
-    [OutputType(typeof(Microsoft.Azure.Commands.Automation.Model.Job))]
+    [OutputType(typeof(Model.Job))]
     public class GetAzureAutomationJob : AzureAutomationBaseCmdlet
     {
         /// <summary> 
@@ -69,23 +69,23 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            IEnumerable<Microsoft.Azure.Commands.Automation.Model.Job> jobs = null;
+            IEnumerable<Model.Job> jobs = null;
 
-            if (this.Id != null && !Guid.Empty.Equals(this.Id))
+            if (Id != null && !Guid.Empty.Equals(Id))
             {
                 // ByJobId 
-                jobs = new List<Microsoft.Azure.Commands.Automation.Model.Job> { this.AutomationClient.GetJob(this.ResourceGroupName, this.AutomationAccountName, this.Id) };
-                this.WriteObject(jobs, true);
+                jobs = new List<Model.Job> { AutomationClient.GetJob(ResourceGroupName, AutomationAccountName, Id) };
+                WriteObject(jobs, true);
             }
-            else if (this.RunbookName != null)
+            else if (RunbookName != null)
             {
                 // ByRunbookName 
                 var nextLink = string.Empty;
 
                 do
                 {
-                    jobs = this.AutomationClient.ListJobsByRunbookName(this.ResourceGroupName, this.AutomationAccountName, this.RunbookName, this.StartTime, this.EndTime, this.Status, ref nextLink);
-                    this.WriteObject(jobs, true);
+                    jobs = AutomationClient.ListJobsByRunbookName(ResourceGroupName, AutomationAccountName, RunbookName, StartTime, EndTime, Status, ref nextLink);
+                    WriteObject(jobs, true);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }
@@ -96,8 +96,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
                 do
                 {
-                    jobs = this.AutomationClient.ListJobs(this.ResourceGroupName, this.AutomationAccountName, this.StartTime, this.EndTime, this.Status, ref nextLink);
-                    this.WriteObject(jobs, true);
+                    jobs = AutomationClient.ListJobs(ResourceGroupName, AutomationAccountName, StartTime, EndTime, Status, ref nextLink);
+                    WriteObject(jobs, true);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

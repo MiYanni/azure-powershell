@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         /// <returns>List of elastic pool activies</returns>
         protected override IEnumerable<AzureSqlElasticPoolActivityModel> GetEntity()
         {
-            return ModelAdapter.GetElasticPoolActivity(this.ResourceGroupName, this.ServerName, this.ElasticPoolName);
+            return ModelAdapter.GetElasticPoolActivity(ResourceGroupName, ServerName, ElasticPoolName);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlElasticPoolActivityModel> PersistChanges(IEnumerable<AzureSqlElasticPoolActivityModel> entity)
         {
-            return ModelAdapter.CancelElasticPoolActivity(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.OperationId);
+            return ModelAdapter.CancelElasticPoolActivity(ResourceGroupName, ServerName, ElasticPoolName, OperationId);
         }
 
         /// <summary>

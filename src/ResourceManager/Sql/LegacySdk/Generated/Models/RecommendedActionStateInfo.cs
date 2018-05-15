@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ActionInitiatedBy
         {
-            get { return this._actionInitiatedBy; }
-            set { this._actionInitiatedBy = value; }
+            get { return _actionInitiatedBy; }
+            set { _actionInitiatedBy = value; }
         }
         
         private string _currentValue;
@@ -65,8 +65,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string CurrentValue
         {
-            get { return this._currentValue; }
-            set { this._currentValue = value; }
+            get { return _currentValue; }
+            set { _currentValue = value; }
         }
         
         private DateTime _lastModified;
@@ -76,8 +76,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime LastModified
         {
-            get { return this._lastModified; }
-            set { this._lastModified = value; }
+            get { return _lastModified; }
+            set { _lastModified = value; }
         }
         
         /// <summary>

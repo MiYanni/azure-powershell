@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            ComputeNodeOperationParameters parameters = new ComputeNodeOperationParameters(this.BatchContext, this.PoolId, this.ComputeNodeId, this.ComputeNode, this.AdditionalBehaviors);
+            ComputeNodeOperationParameters parameters = new ComputeNodeOperationParameters(BatchContext, PoolId, ComputeNodeId, ComputeNode, AdditionalBehaviors);
 
             PSRemoteLoginSettings remoteLoginSettings = BatchClient.ListComputeNodeRemoteLoginSettings(parameters);
             WriteObject(remoteLoginSettings);

@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Commands.Network
         private PSPublicIpTag CreatePublicIpTag()
         {
             var ipTag = new PSPublicIpTag();
-            ipTag.IpTagType = this.IpTagType;
-            ipTag.Tag = this.Tag;
+            ipTag.IpTagType = IpTagType;
+            ipTag.Tag = Tag;
             return ipTag;
         }
     }

@@ -31,9 +31,9 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            TerminateJobParameters parameters = new TerminateJobParameters(this.BatchContext, this.Id, null, this.AdditionalBehaviors)
+            TerminateJobParameters parameters = new TerminateJobParameters(BatchContext, Id, null, AdditionalBehaviors)
             {
-                TerminateReason = this.TerminateReason
+                TerminateReason = TerminateReason
             };
             BatchClient.TerminateJob(parameters);
         }

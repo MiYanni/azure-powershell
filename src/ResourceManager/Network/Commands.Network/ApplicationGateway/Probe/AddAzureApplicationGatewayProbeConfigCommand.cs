@@ -32,17 +32,17 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var probe = this.ApplicationGateway.Probes.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var probe = ApplicationGateway.Probes.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (probe != null)
             {
                 throw new ArgumentException("Probe with the specified name already exists");
             }
 
-            probe = base.NewObject();
-            this.ApplicationGateway.Probes.Add(probe);
+            probe = NewObject();
+            ApplicationGateway.Probes.Add(probe);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

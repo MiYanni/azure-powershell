@@ -19,11 +19,11 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System.Globalization;
     using System.Management.Automation;
     using System.Linq;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
-    using PSIotHubProperties = Microsoft.Azure.Commands.Management.IotHub.Properties;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
+    using PSIotHubProperties = Properties;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Remove, "AzureRmIotHubKey", SupportsShouldProcess = true)]
@@ -60,12 +60,12 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (ShouldProcess(KeyName, Properties.Resources.RemoveIotHubKey))
             {
-                IotHubDescription iothubDesc = this.IotHubClient.IotHubResource.Get(this.ResourceGroupName, this.Name);
-                IList<SharedAccessSignatureAuthorizationRule> authRules = (List<SharedAccessSignatureAuthorizationRule>)this.IotHubClient.IotHubResource.ListKeys(this.ResourceGroupName, this.Name).ToList();
+                IotHubDescription iothubDesc = IotHubClient.IotHubResource.Get(ResourceGroupName, Name);
+                IList<SharedAccessSignatureAuthorizationRule> authRules = IotHubClient.IotHubResource.ListKeys(ResourceGroupName, Name).ToList();
 
                 foreach (var authRule in authRules)
                 {
-                    if (authRule.KeyName.Equals(this.KeyName, StringComparison.OrdinalIgnoreCase))
+                    if (authRule.KeyName.Equals(KeyName, StringComparison.OrdinalIgnoreCase))
                     {
                         authRules.Remove(authRule);
                         break;
@@ -74,9 +74,9 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 
                 iothubDesc.Properties.AuthorizationPolicies = authRules;
 
-                this.IotHubClient.IotHubResource.CreateOrUpdate(this.ResourceGroupName, this.Name, iothubDesc);
-                IEnumerable<SharedAccessSignatureAuthorizationRule> updatedAuthRules = this.IotHubClient.IotHubResource.ListKeys(this.ResourceGroupName, this.Name);
-                this.WriteObject(IotHubUtils.ToPSSharedAccessSignatureAuthorizationRules(updatedAuthRules), true);
+                IotHubClient.IotHubResource.CreateOrUpdate(ResourceGroupName, Name, iothubDesc);
+                IEnumerable<SharedAccessSignatureAuthorizationRule> updatedAuthRules = IotHubClient.IotHubResource.ListKeys(ResourceGroupName, Name);
+                WriteObject(IotHubUtils.ToPSSharedAccessSignatureAuthorizationRules(updatedAuthRules), true);
             }
         }
     }

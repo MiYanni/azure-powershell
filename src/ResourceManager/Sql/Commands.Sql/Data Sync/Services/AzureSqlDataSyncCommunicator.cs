@@ -227,7 +227,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Services
         /// <summary>
         /// List all sync agents
         /// </summary>
-        public IList<Management.Sql.LegacySdk.Models.SyncAgent> ListSyncAgents(string resourceGroupName, string serverName)
+        public IList<SyncAgent> ListSyncAgents(string resourceGroupName, string serverName)
         {
             return GetLegacySqlClient().DataSync.ListSyncAgent(resourceGroupName, serverName).SyncAgents;
         }
@@ -266,12 +266,12 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Services
         /// id tracing headers for the current cmdlet invocation.
         /// </summary>
         /// <returns>The SQL Management client for the currently selected subscription.</returns>
-        private Management.Sql.LegacySdk.SqlManagementClient GetLegacySqlClient()
+        private SqlManagementClient GetLegacySqlClient()
         {
             // Get the SQL management client for the current subscription
             if (LegacySqlClient == null)
             {
-                LegacySqlClient = AzureSession.Instance.ClientFactory.CreateClient<Management.Sql.LegacySdk.SqlManagementClient>(Context, AzureEnvironment.Endpoint.ResourceManager);
+                LegacySqlClient = AzureSession.Instance.ClientFactory.CreateClient<SqlManagementClient>(Context, AzureEnvironment.Endpoint.ResourceManager);
             }
             return LegacySqlClient;
         }

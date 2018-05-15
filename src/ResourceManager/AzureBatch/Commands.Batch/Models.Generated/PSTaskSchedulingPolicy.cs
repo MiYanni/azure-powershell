@@ -26,33 +26,33 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskSchedulingPolicy
     {
         
-        internal Microsoft.Azure.Batch.TaskSchedulingPolicy omObject;
+        internal TaskSchedulingPolicy omObject;
         
-        public PSTaskSchedulingPolicy(Microsoft.Azure.Batch.Common.ComputeNodeFillType computeNodeFillType)
+        public PSTaskSchedulingPolicy(Azure.Batch.Common.ComputeNodeFillType computeNodeFillType)
         {
-            this.omObject = new Microsoft.Azure.Batch.TaskSchedulingPolicy(computeNodeFillType);
+            omObject = new TaskSchedulingPolicy(computeNodeFillType);
         }
         
-        internal PSTaskSchedulingPolicy(Microsoft.Azure.Batch.TaskSchedulingPolicy omObject)
+        internal PSTaskSchedulingPolicy(TaskSchedulingPolicy omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.ComputeNodeFillType ComputeNodeFillType
+        public Azure.Batch.Common.ComputeNodeFillType ComputeNodeFillType
         {
             get
             {
-                return this.omObject.ComputeNodeFillType;
+                return omObject.ComputeNodeFillType;
             }
         }
     }

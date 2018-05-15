@@ -57,53 +57,53 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.Default:
 
-                    this.fabricName = Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                    fabricName = Utilities.GetValueFromArmId(
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationFabrics);
 
-                    this.protectionContainerName = Utilities.GetValueFromArmId(
-                        this.ReplicationProtectedItem.ID,
+                    protectionContainerName = Utilities.GetValueFromArmId(
+                        ReplicationProtectedItem.ID,
                         ARMResourceTypeConstants.ReplicationProtectionContainers);
 
-                    this.rpiName = this.ReplicationProtectedItem.Name;
+                    rpiName = ReplicationProtectedItem.Name;
 
                     break;
                 case ASRParameterSets.ByResourceId:
 
-                    this.fabricName = Utilities.GetValueFromArmId(
-                        this.ResourceId,
+                    fabricName = Utilities.GetValueFromArmId(
+                        ResourceId,
                         ARMResourceTypeConstants.ReplicationFabrics);
 
-                    this.protectionContainerName = Utilities.GetValueFromArmId(
-                        this.ResourceId,
+                    protectionContainerName = Utilities.GetValueFromArmId(
+                        ResourceId,
                         ARMResourceTypeConstants.ReplicationProtectionContainers);
 
-                    this.rpiName = Utilities.GetValueFromArmId(
-                        this.ResourceId,
+                    rpiName = Utilities.GetValueFromArmId(
+                        ResourceId,
                         ARMResourceTypeConstants.ReplicationProtectedItems);
 
                     break;
             }
 
-            if (this.ShouldProcess(
-                this.rpiName,
+            if (ShouldProcess(
+                rpiName,
                 "Resyncronize replicated item "))
             {
                 
                 // Resync Replication of the Protected Item.
-                var response = this.RecoveryServicesClient.StartAzureSiteRecoveryResynchronizeReplication(
-                    this.fabricName,
-                    this.protectionContainerName,
-                    this.rpiName);
+                var response = RecoveryServicesClient.StartAzureSiteRecoveryResynchronizeReplication(
+                    fabricName,
+                    protectionContainerName,
+                    rpiName);
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails
                     (PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
 

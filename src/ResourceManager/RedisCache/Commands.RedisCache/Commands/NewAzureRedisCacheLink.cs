@@ -14,9 +14,9 @@
 
 namespace Microsoft.Azure.Commands.RedisCache
 {
-    using Microsoft.Azure.Commands.RedisCache.Models;
-    using Microsoft.Azure.Commands.RedisCache.Properties;
-    using Microsoft.Azure.Management.Redis.Models;
+    using Models;
+    using Properties;
+    using Management.Redis.Models;
     using ResourceManager.Common.ArgumentCompleters;
     using System;
     using System.Management.Automation;
@@ -47,12 +47,12 @@ namespace Microsoft.Azure.Commands.RedisCache
                 () =>
                 {
                     RedisLinkedServerWithProperties redisLinkedServer = CacheClient.SetLinkedServer(
-                       resourceGroupName: Utility.GetResourceGroupNameFromRedisCacheId(primaryCache.Id),
-                       cacheName: primaryCache.Name,
-                       linkedCacheName: secondaryCache.Name,
-                       linkedCacheId: secondaryCache.Id,
-                       linkedCacheLocation: secondaryCache.Location,
-                       serverRole: ReplicationRole.Secondary);
+                       Utility.GetResourceGroupNameFromRedisCacheId(primaryCache.Id),
+                       primaryCache.Name,
+                       secondaryCache.Name,
+                       secondaryCache.Id,
+                       secondaryCache.Location,
+                       ReplicationRole.Secondary);
 
                     if (redisLinkedServer == null)
                     {

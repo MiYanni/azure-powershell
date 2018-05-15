@@ -82,13 +82,13 @@ namespace Microsoft.Azure.Commands.OperationalInsights
 
         public override void ExecuteCmdlet()
         {
-            List<PerformanceCounterIdentifier> counterNameSubscription = this.CounterNames.Select(counterName => new PerformanceCounterIdentifier { CounterName = counterName }).ToList();
+            List<PerformanceCounterIdentifier> counterNameSubscription = CounterNames.Select(counterName => new PerformanceCounterIdentifier { CounterName = counterName }).ToList();
             
             var dsProperties = new PSLinuxPerformanceObjectDataSourceProperties
             {
-                ObjectName = this.ObjectName,
-                InstanceName = this.InstanceName,
-                IntervalSeconds = this.IntervalSeconds,
+                ObjectName = ObjectName,
+                InstanceName = InstanceName,
+                IntervalSeconds = IntervalSeconds,
                 PerformanceCounters = counterNameSubscription
             };
             

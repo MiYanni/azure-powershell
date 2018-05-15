@@ -36,18 +36,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var frontendIpConfiguration =
-                    this.LoadBalancer.FrontendIpConfigurations.First(
+                    LoadBalancer.FrontendIpConfigurations.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(frontendIpConfiguration);
             }
             else
             {
-                var frontendIpConfigurations = this.LoadBalancer.FrontendIpConfigurations;
+                var frontendIpConfigurations = LoadBalancer.FrontendIpConfigurations;
                 WriteObject(frontendIpConfigurations, true);
             }
 

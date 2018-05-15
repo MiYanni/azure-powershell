@@ -33,19 +33,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (ShouldProcess(Name, Microsoft.Azure.Commands.Network.Properties.Resources.CreatingResourceMessage))
+            if (ShouldProcess(Name, Properties.Resources.CreatingResourceMessage))
             {
-                var authCertificate = this.ApplicationGateway.AuthenticationCertificates.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                var authCertificate = ApplicationGateway.AuthenticationCertificates.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
                 if (authCertificate != null)
                 {
                     throw new ArgumentException("Authentication certificate with the specified name already exists");
                 }
 
-                authCertificate = base.NewObject();
-                this.ApplicationGateway.AuthenticationCertificates.Add(authCertificate);
+                authCertificate = NewObject();
+                ApplicationGateway.AuthenticationCertificates.Add(authCertificate);
 
-                WriteObject(this.ApplicationGateway);
+                WriteObject(ApplicationGateway);
             }
         }
     }

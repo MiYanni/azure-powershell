@@ -40,13 +40,13 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.DeploymentSlots
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            if ((RemoveAllAppSettingNames)
+            if (RemoveAllAppSettingNames
                 && AppSettingNames != null)
             {
                 throw new ValidationMetadataException("Please either provide a list of app setting names or set RemoveAllSettingNames option to true");
             }
 
-            if((RemoveAllConnectionStringNames)
+            if(RemoveAllConnectionStringNames
                 && ConnectionStringNames != null)
             {
                 throw new ValidationMetadataException("Please either provide a list of connection string names or set RemoveAllConnectionStringNames option to true");

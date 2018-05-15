@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private string _status;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         private IList<EditionCapability> _supportedEditions;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<EditionCapability> SupportedEditions
         {
-            get { return this._supportedEditions; }
-            set { this._supportedEditions = value; }
+            get { return _supportedEditions; }
+            set { _supportedEditions = value; }
         }
         
         /// <summary>
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerVersionCapability()
         {
-            this.SupportedEditions = new LazyList<EditionCapability>();
+            SupportedEditions = new LazyList<EditionCapability>();
         }
     }
 }

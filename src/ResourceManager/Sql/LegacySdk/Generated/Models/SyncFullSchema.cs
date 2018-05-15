@@ -32,15 +32,15 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
     /// </summary>
     public partial class SyncFullSchema
     {
-        private System.DateTime? _lastUpdateTime;
+        private DateTime? _lastUpdateTime;
         
         /// <summary>
         /// Optional. Last Update time of this schema.
         /// </summary>
-        public System.DateTime? LastUpdateTime
+        public DateTime? LastUpdateTime
         {
-            get { return this._lastUpdateTime; }
-            set { this._lastUpdateTime = value; }
+            get { return _lastUpdateTime; }
+            set { _lastUpdateTime = value; }
         }
         
         private IList<SyncFullSchemaTable> _tables;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SyncFullSchemaTable> Tables
         {
-            get { return this._tables; }
-            set { this._tables = value; }
+            get { return _tables; }
+            set { _tables = value; }
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncFullSchema()
         {
-            this.Tables = new LazyList<SyncFullSchemaTable>();
+            Tables = new LazyList<SyncFullSchemaTable>();
         }
     }
 }

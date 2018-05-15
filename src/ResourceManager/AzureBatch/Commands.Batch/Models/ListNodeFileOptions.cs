@@ -24,25 +24,25 @@ namespace Microsoft.Azure.Commands.Batch.Models
         public ListNodeFileOptions(BatchAccountContext context, string jobId, string taskId, PSCloudTask task, string poolId, string computeNodeId, PSComputeNode computeNode,
             IEnumerable<BatchClientBehavior> additionalBehaviors = null) : base(context, additionalBehaviors)
         {
-            if ((!string.IsNullOrWhiteSpace(jobId) && !string.IsNullOrWhiteSpace(taskId)) || task != null)
+            if (!string.IsNullOrWhiteSpace(jobId) && !string.IsNullOrWhiteSpace(taskId) || task != null)
             {
-                this.NodeFileType = PSNodeFileType.Task;
+                NodeFileType = PSNodeFileType.Task;
             }
-            else if ((!string.IsNullOrWhiteSpace(poolId) && !string.IsNullOrWhiteSpace(computeNodeId)) || computeNode != null)
+            else if (!string.IsNullOrWhiteSpace(poolId) && !string.IsNullOrWhiteSpace(computeNodeId) || computeNode != null)
             {
-                this.NodeFileType = PSNodeFileType.ComputeNode;
+                NodeFileType = PSNodeFileType.ComputeNode;
             }
             else
             {
                 throw new ArgumentException(Resources.NoNodeFileParent);
             }
 
-            this.JobId = jobId;
-            this.TaskId = taskId;
-            this.Task = task;
-            this.PoolId = poolId;
-            this.ComputeNodeId = computeNodeId;
-            this.ComputeNode = computeNode;
+            JobId = jobId;
+            TaskId = taskId;
+            Task = task;
+            PoolId = poolId;
+            ComputeNodeId = computeNodeId;
+            ComputeNode = computeNode;
         }
 
         /// <summary>

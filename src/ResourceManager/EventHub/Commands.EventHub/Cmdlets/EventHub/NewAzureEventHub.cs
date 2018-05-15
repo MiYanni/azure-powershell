@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.EventHub
                     eventHub.PartitionCount = PartitionCount;     
             }
 
-            if(ShouldProcess(target:eventHub.Name, action:string.Format(Resources.CreateEventHub,eventHub.Name,Namespace)))
+            if(ShouldProcess(eventHub.Name, string.Format(Resources.CreateEventHub,eventHub.Name,Namespace)))
             {
                 WriteObject(Client.CreateOrUpdateEventHub(ResourceGroupName, Namespace, eventHub.Name, eventHub));
             }

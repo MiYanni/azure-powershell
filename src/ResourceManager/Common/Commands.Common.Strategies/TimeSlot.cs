@@ -46,25 +46,22 @@ namespace Microsoft.Azure.Commands.Common.Strategies
             {
                 return this;
             }
-            else if (IsLast)
+            if (IsLast)
             {                
                 Next = new TimeSlot();
                 Duration = duration;
                 TaskCount = 1;
                 return Next;
             }
-            else if (duration < Duration)
+            if (duration < Duration)
             {
                 Next = new TimeSlot(Duration - duration, TaskCount, Next);
                 Duration = duration;
                 TaskCount++;
                 return Next;
             }
-            else // if (Duration <= duration)
-            {
-                TaskCount++;
-                return Next.AddTask(duration - Duration);
-            }
+            TaskCount++;
+            return Next.AddTask(duration - Duration);
         }
 
         public double GetTaskProgress(int duration)

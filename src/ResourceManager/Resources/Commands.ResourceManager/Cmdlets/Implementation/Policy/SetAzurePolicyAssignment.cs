@@ -14,10 +14,10 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Policy;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.WindowsAzure.Commands.Common;
+    using Components;
+    using Entities.Policy;
+    using Extensions;
+    using WindowsAzure.Commands.Common;
     using Newtonsoft.Json.Linq;
     using System.Collections;
     using System.Management.Automation;
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// <summary>
     /// Sets the policy assignment.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureRmPolicyAssignment", DefaultParameterSetName = SetAzurePolicyAssignmentCmdlet.PolicyAssignmentNameParameterSet), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsCommon.Set, "AzureRmPolicyAssignment", DefaultParameterSetName = PolicyAssignmentNameParameterSet), OutputType(typeof(PSObject))]
     public class SetAzurePolicyAssignmentCmdlet : PolicyCmdletBase
     {
         /// <summary>
@@ -42,21 +42,21 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the policy assignment name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = SetAzurePolicyAssignmentCmdlet.PolicyAssignmentNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment name.")]
+        [Parameter(ParameterSetName = PolicyAssignmentNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the policy assignment scope parameter.
         /// </summary>
-        [Parameter(ParameterSetName = SetAzurePolicyAssignmentCmdlet.PolicyAssignmentNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment scope.")]
+        [Parameter(ParameterSetName = PolicyAssignmentNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment scope.")]
         [ValidateNotNullOrEmpty]
         public string Scope { get; set; }
 
         /// <summary>
         /// Gets or sets the policy assignment not scopes parameter.
         /// </summary>
-        [Parameter(ParameterSetName = SetAzurePolicyAssignmentCmdlet.PolicyAssignmentNameParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment not scopes.")]
+        [Parameter(ParameterSetName = PolicyAssignmentNameParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment not scopes.")]
         [ValidateNotNullOrEmpty]
         public string[] NotScope { get; set; }
 
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the policy assignment id parameter
         /// </summary>
         [Alias("ResourceId")]
-        [Parameter(ParameterSetName = SetAzurePolicyAssignmentCmdlet.PolicyAssignmentIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified policy assignment Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
+        [Parameter(ParameterSetName = PolicyAssignmentIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified policy assignment Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
         [ValidateNotNullOrEmpty]
         public string Id { get; set; }
 
@@ -96,29 +96,29 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected override void OnProcessRecord()
         {
             base.OnProcessRecord();
-            string resourceId = this.Id ?? this.GetResourceId();
-            var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.PolicyAssignmentApiVersion : this.ApiVersion;
+            string resourceId = Id ?? GetResourceId();
+            var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.PolicyAssignmentApiVersion : ApiVersion;
 
-            var operationResult = this.GetResourcesClient()
+            var operationResult = GetResourcesClient()
                         .PutResource(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            resource: this.GetResource(resourceId, apiVersion),
-                            cancellationToken: this.CancellationToken.Value,
-                            odataQuery: null)
+                            resourceId,
+                            apiVersion,
+                            GetResource(resourceId, apiVersion),
+                            CancellationToken.Value,
+                            null)
                         .Result;
 
-            var managementUri = this.GetResourcesClient()
+            var managementUri = GetResourcesClient()
               .GetResourceManagementRequestUri(
-                  resourceId: resourceId,
-                  apiVersion: apiVersion,
+                  resourceId,
+                  apiVersion,
                   odataQuery: null);
 
             var activity = string.Format("PUT {0}", managementUri.PathAndQuery);
-            var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: true)
-                .WaitOnOperation(operationResult: operationResult);
+            var result = GetLongRunningOperationTracker(activity, true)
+                .WaitOnOperation(operationResult);
 
-            this.WriteObject(this.GetOutputObjects("PolicyAssignmentId", JObject.Parse(result)), enumerateCollection: true);
+            WriteObject(GetOutputObjects("PolicyAssignmentId", JObject.Parse(result)), true);
         }
 
         /// <summary>
@@ -126,24 +126,24 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private JToken GetResource(string resourceId, string apiVersion)
         {
-            var resource = this.GetExistingResource(resourceId, apiVersion).Result.ToResource();
+            var resource = GetExistingResource(resourceId, apiVersion).Result.ToResource();
 
             var policyAssignmentObject = new PolicyAssignment
             {
-                Name = this.Name ?? ResourceIdUtility.GetResourceName(this.Id),
-                Sku = this.Sku != null
-                    ? this.Sku.ToDictionary(addValueLayer: false).ToJson().FromJson<PolicySku>()
+                Name = Name ?? ResourceIdUtility.GetResourceName(Id),
+                Sku = Sku != null
+                    ? Sku.ToDictionary(false).ToJson().FromJson<PolicySku>()
                     : (resource.Sku == null ? new PolicySku { Name = "A0", Tier = "Free" } : resource.Sku.ToJson().FromJson<PolicySku>()),
                 Properties = new PolicyAssignmentProperties
                 {
-                    DisplayName = this.DisplayName ?? (resource.Properties["displayName"] != null
+                    DisplayName = DisplayName ?? (resource.Properties["displayName"] != null
                         ? resource.Properties["displayName"].ToString()
                         : null),
-                    Description = this.Description ?? (resource.Properties["description"] != null
+                    Description = Description ?? (resource.Properties["description"] != null
                         ? resource.Properties["description"].ToString()
                         : null),
                     Scope = resource.Properties["scope"].ToString(),
-                    NotScopes = this.NotScope ?? (resource.Properties["NotScopes"] == null ? null : resource.Properties["NotScopes"].ToString().Split(',')),
+                    NotScopes = NotScope ?? (resource.Properties["NotScopes"] == null ? null : resource.Properties["NotScopes"].ToString().Split(',')),
                     PolicyDefinitionId = resource.Properties["policyDefinitionId"].ToString()
                 }
             };
@@ -156,13 +156,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private async Task<JObject> GetExistingResource(string resourceId, string apiVersion)
         {
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .GetResource<JObject>(
-                    resourceId: resourceId,
-                    apiVersion: apiVersion,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    resourceId,
+                    apiVersion,
+                    CancellationToken.Value)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -171,9 +170,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected string GetResourceId()
         {
             return ResourceIdUtility.GetResourceId(
-                resourceId: this.Scope,
-                extensionResourceType: Constants.MicrosoftAuthorizationPolicyAssignmentType,
-                extensionResourceName: this.Name);
+                Scope,
+                Constants.MicrosoftAuthorizationPolicyAssignmentType,
+                Name);
         }
     }
 }

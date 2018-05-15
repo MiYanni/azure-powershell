@@ -26,9 +26,9 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
 
         public PSDailyCap(ApplicationInsightsComponentBillingFeatures billing)
         {
-            this.Cap = billing.DataVolumeCap.Cap;
-            this.ResetTime = billing.DataVolumeCap.ResetTime;
-            this.StopSendNotificationWhenHitCap = billing.DataVolumeCap.StopSendNotificationWhenHitCap.Value;
+            Cap = billing.DataVolumeCap.Cap;
+            ResetTime = billing.DataVolumeCap.ResetTime;
+            StopSendNotificationWhenHitCap = billing.DataVolumeCap.StopSendNotificationWhenHitCap.Value;
         }
     }
 }

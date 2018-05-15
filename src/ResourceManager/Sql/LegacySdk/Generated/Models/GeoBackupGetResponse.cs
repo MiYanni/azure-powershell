@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public GeoBackup GeoBackup
         {
-            get { return this._geoBackup; }
-            set { this._geoBackup = value; }
+            get { return _geoBackup; }
+            set { _geoBackup = value; }
         }
         
         /// <summary>

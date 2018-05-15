@@ -57,13 +57,13 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            NewComputeNodeUserParameters parameters = new NewComputeNodeUserParameters(this.BatchContext, this.PoolId, this.ComputeNodeId,
-                this.ComputeNode, this.AdditionalBehaviors)
+            NewComputeNodeUserParameters parameters = new NewComputeNodeUserParameters(BatchContext, PoolId, ComputeNodeId,
+                ComputeNode, AdditionalBehaviors)
             {
-                ComputeNodeUserName = this.Name,
-                Password = this.Password?.ConvertToString(),
-                ExpiryTime = this.ExpiryTime,
-                IsAdmin = this.IsAdmin.IsPresent
+                ComputeNodeUserName = Name,
+                Password = Password?.ConvertToString(),
+                ExpiryTime = ExpiryTime,
+                IsAdmin = IsAdmin.IsPresent
             };
 
             BatchClient.CreateComputeNodeUser(parameters);

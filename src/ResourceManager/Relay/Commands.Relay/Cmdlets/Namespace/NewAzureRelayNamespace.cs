@@ -78,8 +78,8 @@ namespace Microsoft.Azure.Commands.Relay.Commands.Namespace
         public override void ExecuteCmdlet()
         {
             // Create a new Relay namespaces
-            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
-            if (ShouldProcess(target: Name, action: string.Format("Create a new Relay-Namespace:{0} under Resource Group:{1}", Name, ResourceGroupName)))
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(Tag, true);
+            if (ShouldProcess(Name, string.Format("Create a new Relay-Namespace:{0} under Resource Group:{1}", Name, ResourceGroupName)))
             {
                 WriteObject(Client.BeginCreateNamespace(ResourceGroupName, Name, Location, tagDictionary));
             }

@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.File;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Auth;
+    using WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.File;
     using System;
     using System.Globalization;
     using System.Net;
@@ -89,7 +89,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             catch (AggregateException e) when (e.InnerException is StorageException)
             {
                 if (((StorageException)e.InnerException).RequestInformation == null ||
-                    (((StorageException)e.InnerException).RequestInformation.HttpStatusCode != (int)HttpStatusCode.NotFound))
+                    ((StorageException)e.InnerException).RequestInformation.HttpStatusCode != (int)HttpStatusCode.NotFound)
                 {
                     throw e.InnerException;
                 }
@@ -99,7 +99,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             catch (StorageException se)
             {
                 if (se.RequestInformation == null ||
-                    (se.RequestInformation.HttpStatusCode != (int)HttpStatusCode.NotFound))
+                    se.RequestInformation.HttpStatusCode != (int)HttpStatusCode.NotFound)
                 {
                     throw;
                 }
@@ -194,10 +194,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return new IPAddressOrRange(inputIPACL);
             }
-            else
-            {
-                return new IPAddressOrRange(inputIPACL.Substring(0, separator), inputIPACL.Substring(separator + 1));
-            }
+            return new IPAddressOrRange(inputIPACL.Substring(0, separator), inputIPACL.Substring(separator + 1));
         }
 
         /// <summary>

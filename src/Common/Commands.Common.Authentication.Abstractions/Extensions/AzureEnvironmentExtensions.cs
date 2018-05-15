@@ -338,8 +338,8 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
             if (url != null && environment.IsEndpointSet(endpoint))
             {
                 return environment.GetEndpoint(endpoint)
-                    .Trim(new[] { '/' })
-                    .Equals(url.Trim(new[] { '/' }), StringComparison.InvariantCultureIgnoreCase);
+                    .Trim('/')
+                    .Equals(url.Trim('/'), StringComparison.InvariantCultureIgnoreCase);
             }
 
             return false;

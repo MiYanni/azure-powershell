@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using System.Globalization;
     using System.Linq;
     using ResourceManager.Common.ArgumentCompleters;
@@ -114,92 +114,92 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
             base.ExecuteCmdlet();
 
             var integrationAccountAgreement =
-                IntegrationAccountClient.GetIntegrationAccountAgreement(this.ResourceGroupName,
-                    this.Name, this.AgreementName);
+                IntegrationAccountClient.GetIntegrationAccountAgreement(ResourceGroupName,
+                    Name, AgreementName);
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                integrationAccountAgreement.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                integrationAccountAgreement.Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
-            var hostPartner = IntegrationAccountClient.GetIntegrationAccountPartner(this.ResourceGroupName, this.Name,
-                string.IsNullOrEmpty(this.HostPartner)
+            var hostPartner = IntegrationAccountClient.GetIntegrationAccountPartner(ResourceGroupName, Name,
+                string.IsNullOrEmpty(HostPartner)
                     ? integrationAccountAgreement.HostPartner
-                    : this.HostPartner);
+                    : HostPartner);
             integrationAccountAgreement.HostPartner = hostPartner.Name;
 
-            var guestPartner = IntegrationAccountClient.GetIntegrationAccountPartner(this.ResourceGroupName, this.Name,
-                string.IsNullOrEmpty(this.GuestPartner)
+            var guestPartner = IntegrationAccountClient.GetIntegrationAccountPartner(ResourceGroupName, Name,
+                string.IsNullOrEmpty(GuestPartner)
                     ? integrationAccountAgreement.GuestPartner
-                    : this.GuestPartner);
+                    : GuestPartner);
             integrationAccountAgreement.GuestPartner = guestPartner.Name;
 
-            if (!string.IsNullOrEmpty(this.HostIdentityQualifier) && !string.IsNullOrEmpty(this.HostIdentityQualifierValue))
+            if (!string.IsNullOrEmpty(HostIdentityQualifier) && !string.IsNullOrEmpty(HostIdentityQualifierValue))
             {
                 var hostIdentity =
                     hostPartner.Content.B2b.BusinessIdentities.FirstOrDefault(
-                        s => (s.Qualifier == this.HostIdentityQualifier && s.Value == this.HostIdentityQualifierValue));
+                        s => s.Qualifier == HostIdentityQualifier && s.Value == HostIdentityQualifierValue);
 
                 if (hostIdentity == null)
                 {
                     throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                        Properties.Resource.InvalidQualifierSpecified, this.HostIdentityQualifier, hostPartner.Name));
+                        Properties.Resource.InvalidQualifierSpecified, HostIdentityQualifier, hostPartner.Name));
                 }
 
                 integrationAccountAgreement.HostIdentity = hostIdentity;
             }
-            else  if (string.IsNullOrEmpty(this.HostIdentityQualifier) ^ string.IsNullOrEmpty(this.HostIdentityQualifierValue))
+            else  if (string.IsNullOrEmpty(HostIdentityQualifier) ^ string.IsNullOrEmpty(HostIdentityQualifierValue))
             {
                 throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,Properties.Resource.QualifierWithValueNotSpecified, "Host"));
             }
 
-            if (!string.IsNullOrEmpty(this.GuestIdentityQualifier) && !string.IsNullOrEmpty(this.GuestIdentityQualifierValue))
+            if (!string.IsNullOrEmpty(GuestIdentityQualifier) && !string.IsNullOrEmpty(GuestIdentityQualifierValue))
             {
                 var guestIdentity =
                     guestPartner.Content.B2b.BusinessIdentities.FirstOrDefault(
-                        s => (s.Qualifier == this.GuestIdentityQualifier && s.Value == this.GuestIdentityQualifierValue));
+                        s => s.Qualifier == GuestIdentityQualifier && s.Value == GuestIdentityQualifierValue);
 
                 if (guestIdentity == null)
                 {
                     throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                        Properties.Resource.InvalidQualifierSpecified, this.GuestIdentityQualifier, guestPartner.Name));
+                        Properties.Resource.InvalidQualifierSpecified, GuestIdentityQualifier, guestPartner.Name));
                 }
 
                 integrationAccountAgreement.GuestIdentity = guestIdentity;
             }
-            else if (string.IsNullOrEmpty(this.GuestIdentityQualifier) ^ string.IsNullOrEmpty(this.GuestIdentityQualifierValue))
+            else if (string.IsNullOrEmpty(GuestIdentityQualifier) ^ string.IsNullOrEmpty(GuestIdentityQualifierValue))
             {
                 throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, Properties.Resource.QualifierWithValueNotSpecified, "Guest"));
             }
 
-            if (!string.IsNullOrEmpty(this.AgreementType))
+            if (!string.IsNullOrEmpty(AgreementType))
             {
                 integrationAccountAgreement.AgreementType =
-                    (AgreementType) Enum.Parse(typeof(AgreementType), this.AgreementType);
+                    (AgreementType) Enum.Parse(typeof(AgreementType), AgreementType);
             }
 
-            if (!string.IsNullOrEmpty(this.AgreementContentFilePath))
+            if (!string.IsNullOrEmpty(AgreementContentFilePath))
             {
-                this.AgreementContent =
-                    CmdletHelper.GetContentFromFile(this.TryResolvePath(this.AgreementContentFilePath));
+                AgreementContent =
+                    CmdletHelper.GetContentFromFile(this.TryResolvePath(AgreementContentFilePath));
             }
 
-            if (!string.IsNullOrEmpty(this.AgreementContent))
+            if (!string.IsNullOrEmpty(AgreementContent))
             {
-                integrationAccountAgreement.Content = CmdletHelper.ConvertToAgreementContent(this.AgreementContent);
+                integrationAccountAgreement.Content = CmdletHelper.ConvertToAgreementContent(AgreementContent);
             }
 
             ConfirmAction(Force.IsPresent,
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceWarning,
-                    "Microsoft.Logic/integrationAccounts/agreements", this.Name),
+                    "Microsoft.Logic/integrationAccounts/agreements", Name),
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceMessage,
-                    "Microsoft.Logic/integrationAccounts/agreements", this.Name),
+                    "Microsoft.Logic/integrationAccounts/agreements", Name),
                 Name,
                 () =>
                 {
-                    this.WriteObject(
-                        IntegrationAccountClient.UpdateIntegrationAccountAgreement(this.ResourceGroupName, this.Name,
-                            this.AgreementName,
+                    WriteObject(
+                        IntegrationAccountClient.UpdateIntegrationAccountAgreement(ResourceGroupName, Name,
+                            AgreementName,
                             integrationAccountAgreement), true);
 
                 },

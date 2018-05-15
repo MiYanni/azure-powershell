@@ -31,10 +31,10 @@ namespace Microsoft.Azure.Commands.Sql.Common
         protected virtual string GetResourceId(M model)
         {
             var serverProperty = model.GetType().GetProperty("ServerName");
-            var serverName = (serverProperty == null)? string.Empty: serverProperty.GetValue(model).ToString();
+            var serverName = serverProperty == null? string.Empty: serverProperty.GetValue(model).ToString();
 
             var databaseProperty = model.GetType().GetProperty("DatabaseName");
-            var databaseName = (databaseProperty == null) ? string.Empty : databaseProperty.GetValue(model).ToString();
+            var databaseName = databaseProperty == null ? string.Empty : databaseProperty.GetValue(model).ToString();
 
             if (!string.IsNullOrEmpty(serverName))
             {

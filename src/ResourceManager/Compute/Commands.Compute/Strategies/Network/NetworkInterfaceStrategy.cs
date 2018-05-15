@@ -23,13 +23,13 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
     {
         public static ResourceStrategy<NetworkInterface> Strategy { get; }
             = NetworkStrategy.Create(
-                provider: "networkInterfaces",
-                getOperations: client => client.NetworkInterfaces,
-                getAsync: (o, p) => o.GetAsync(
+                "networkInterfaces",
+                client => client.NetworkInterfaces,
+                (o, p) => o.GetAsync(
                     p.ResourceGroupName, p.Name, null, p.CancellationToken),
-                createOrUpdateAsync: (o, p) => o.CreateOrUpdateAsync(
+                (o, p) => o.CreateOrUpdateAsync(
                     p.ResourceGroupName, p.Name, p.Model, p.CancellationToken),
-                createTime: _ => 5);
+                _ => 5);
 
         public static ResourceConfig<NetworkInterface> CreateNetworkInterfaceConfig(
             this ResourceConfig<ResourceGroup> resourceGroup,
@@ -38,9 +38,9 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
             ResourceConfig<PublicIPAddress> publicIPAddress,
             ResourceConfig<NetworkSecurityGroup> networkSecurityGroup = null)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: engine => new NetworkInterface
+                resourceGroup,
+                name,
+                engine => new NetworkInterface
                 {
                     IpConfigurations = new []
                     {

@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsNetworkSecurityGroupPresent(this.ResourceGroupName, this.Name);
+            var present = IsNetworkSecurityGroupPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    var networkSecurityGroup = this.CreateNetworkSecurityGroup();
+                    var networkSecurityGroup = CreateNetworkSecurityGroup();
                     WriteObject(networkSecurityGroup);
                 },
                 () => present);
@@ -93,22 +93,22 @@ namespace Microsoft.Azure.Commands.Network
         private PSNetworkSecurityGroup CreateNetworkSecurityGroup()
         {
             var nsg = new PSNetworkSecurityGroup();
-            nsg.Name = this.Name;
-            nsg.ResourceGroupName = this.ResourceGroupName;
-            nsg.Location = this.Location;
-            nsg.SecurityRules = this.SecurityRules;
+            nsg.Name = Name;
+            nsg.ResourceGroupName = ResourceGroupName;
+            nsg.Location = Location;
+            nsg.SecurityRules = SecurityRules;
 
             // Map to the sdk object
             var nsgModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkSecurityGroup>(nsg);
 
-			this.NullifyApplicationSecurityGroupsIfAbsent(nsgModel);
+			NullifyApplicationSecurityGroupsIfAbsent(nsgModel);
 
-			nsgModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+			nsgModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
             // Execute the Create NetworkSecurityGroup call
-            this.NetworkSecurityGroupClient.CreateOrUpdate(this.ResourceGroupName, this.Name, nsgModel);
+            NetworkSecurityGroupClient.CreateOrUpdate(ResourceGroupName, Name, nsgModel);
 
-            var getNetworkSecurityGroup = this.GetNetworkSecurityGroup(this.ResourceGroupName, this.Name);
+            var getNetworkSecurityGroup = GetNetworkSecurityGroup(ResourceGroupName, Name);
 
             return getNetworkSecurityGroup;
         }

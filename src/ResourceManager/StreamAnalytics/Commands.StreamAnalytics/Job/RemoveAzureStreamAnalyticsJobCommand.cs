@@ -37,19 +37,19 @@ namespace Microsoft.Azure.Commands.StreamAnalytics
                 throw new PSArgumentNullException("ResourceGroupName");
             }
 
-            this.ConfirmAction(
+            ConfirmAction(
                 string.Format(
                     CultureInfo.InvariantCulture,
                     Resources.JobRemoving,
-                    this.Name,
-                    this.ResourceGroupName),
-                this.Name,
-                this.ExecuteDelete);
+                    Name,
+                    ResourceGroupName),
+                Name,
+                ExecuteDelete);
         }
 
         private void ExecuteDelete()
         {
-            JobParametersBase parameter = new JobParametersBase()
+            JobParametersBase parameter = new JobParametersBase
             {
                 ResourceGroupName = ResourceGroupName,
                 JobName = Name

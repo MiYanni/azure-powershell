@@ -32,25 +32,25 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
     {
         private static readonly Regex AccessIdRegex = new Regex(@"^/subscriptions/(?<SubscriptionId>[^/]+)/resourceGroups/(?<ResourceGroup>[^/]+)/providers/microsoft.insights/components/(?<ResourceName>[^/]+)/(?<Permission>[^/]+).*$", RegexOptions.IgnoreCase);
 
-        internal static ApiKeyRole ReadTelemetry = new ApiKeyRole()
+        internal static ApiKeyRole ReadTelemetry = new ApiKeyRole
         {
             roleName = "ReadTelemetry",
             displayName = "Read Telemetry",
-            readProperties = new string[] { "api" },
+            readProperties = new[] { "api" },
         };
 
-        internal static ApiKeyRole WriteAnnotations = new ApiKeyRole()
+        internal static ApiKeyRole WriteAnnotations = new ApiKeyRole
         {
             roleName = "WriteAnnotations",
             displayName = "Write Annotations",
-            writeProperties = new string[] { "annotations" },
+            writeProperties = new[] { "annotations" },
         };
 
-        internal static ApiKeyRole ReadAgentConfiguration = new ApiKeyRole()
+        internal static ApiKeyRole ReadAgentConfiguration = new ApiKeyRole
         {
             roleName = "AuthenticateSDKControlChannel",
             displayName = "Authenticate SDK control channel",
-            readProperties = new string[] { "agentconfig" },
+            readProperties = new[] { "agentconfig" },
         };
 
         public string ApiKey { get; }
@@ -65,14 +65,14 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
 
         public PSApiKey(ApplicationInsightsComponentAPIKey key)
         {
-            this.ApiKey = key.ApiKey;
-            this.CreatedDate = key.CreatedDate;
-            this.Id = key.Id.Split('/')[10];
-            this.Description = key.Name;
+            ApiKey = key.ApiKey;
+            CreatedDate = key.CreatedDate;
+            Id = key.Id.Split('/')[10];
+            Description = key.Name;
 
             List<string> accessPermission = new List<string>();
 
-            ApiKeyRole[] roles = new ApiKeyRole[] {
+            ApiKeyRole[] roles = new[] {
                 ReadTelemetry,
                 WriteAnnotations,
                 ReadAgentConfiguration
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
                 }
             }
 
-            this.Permissions = accessPermission.ToArray();
+            Permissions = accessPermission.ToArray();
         }
 
         private static ApiKeyRole ExtraRole(ApiKeyRole[] roles, string readaccess)
@@ -113,8 +113,8 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
                 string permission = matches.Groups["Permission"].Value;
 
                 return roles.FirstOrDefault(r =>
-                    (r.readProperties != null && r.readProperties.Any(p => StringComparer.OrdinalIgnoreCase.Equals(p, permission))) ||
-                    (r.writeProperties != null && r.writeProperties.Any(p => StringComparer.OrdinalIgnoreCase.Equals(p, permission)))
+                    r.readProperties != null && r.readProperties.Any(p => StringComparer.OrdinalIgnoreCase.Equals(p, permission)) ||
+                    r.writeProperties != null && r.writeProperties.Any(p => StringComparer.OrdinalIgnoreCase.Equals(p, permission))
                     );
             }
 
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Commands.ApplicationInsights.Models
 
         internal static Tuple<string[], string[]> BuildApiKeyAccess(string subscriptionId, string resourceGroup, string componentName, string[] permissions)
         {
-            ApiKeyRole[] roles = new ApiKeyRole[] {
+            ApiKeyRole[] roles = new[] {
                 ReadTelemetry,
                 WriteAnnotations,
                 ReadAgentConfiguration

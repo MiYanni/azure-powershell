@@ -293,7 +293,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
             {
                 var other = obj as ComponentKey;
                 return other != null
-                    && this.Equals(other);
+                    && Equals(other);
             }
 
             public int CompareTo(ComponentKey other)
@@ -303,15 +303,15 @@ namespace Microsoft.Azure.Commands.Common.Authentication
                     return 1;
                 }
 
-                var stringCompare = this.Name.ToLowerInvariant().CompareTo(other.Name.ToLowerInvariant());
-                return (stringCompare != 0 ? stringCompare : this.Type.CompareTo(other.Type));
+                var stringCompare = Name.ToLowerInvariant().CompareTo(other.Name.ToLowerInvariant());
+                return stringCompare != 0 ? stringCompare : Type.CompareTo(other.Type);
             }
 
             public bool Equals(ComponentKey other)
             {
                 return other != null
-                    && string.Equals(this.Name, other.Name, StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(this.Type, other.Type, StringComparison.OrdinalIgnoreCase);
+                    && string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(Type, other.Type, StringComparison.OrdinalIgnoreCase);
             }
         }
 

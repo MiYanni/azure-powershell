@@ -54,36 +54,36 @@ namespace Microsoft.Azure.Commands.TrafficManager
             var disabled = false;
             TrafficManagerEndpoint endpointToDisable = null;
 
-            if (this.ParameterSetName == "Fields")
+            if (ParameterSetName == "Fields")
             {
                 endpointToDisable = new TrafficManagerEndpoint
                 {
-                    Name = this.Name,
-                    Type = this.Type,
-                    ProfileName = this.ProfileName,
-                    ResourceGroupName = this.ResourceGroupName
+                    Name = Name,
+                    Type = Type,
+                    ProfileName = ProfileName,
+                    ResourceGroupName = ResourceGroupName
                 };
             }
-            else if (this.ParameterSetName == "Object")
+            else if (ParameterSetName == "Object")
             {
-                endpointToDisable = this.TrafficManagerEndpoint;
+                endpointToDisable = TrafficManagerEndpoint;
             }
 
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(ProjectResources.Confirm_DisableEndpoint, endpointToDisable.Name, endpointToDisable.ProfileName),
                 ProjectResources.Progress_DisablingEndpoint,
-                this.Name,
+                Name,
                 () =>
                 {
-                    disabled = this.TrafficManagerClient.EnableDisableTrafficManagerEndpoint(endpointToDisable, shouldEnableEndpointStatus: false);
+                    disabled = TrafficManagerClient.EnableDisableTrafficManagerEndpoint(endpointToDisable, false);
                     if (disabled)
                     {
-                        this.WriteVerbose(ProjectResources.Success);
-                        this.WriteVerbose(string.Format(ProjectResources.Success_DisableEndpoint, endpointToDisable.Name, endpointToDisable.Name, endpointToDisable.ResourceGroupName));
+                        WriteVerbose(ProjectResources.Success);
+                        WriteVerbose(string.Format(ProjectResources.Success_DisableEndpoint, endpointToDisable.Name, endpointToDisable.Name, endpointToDisable.ResourceGroupName));
                     }
 
-                    this.WriteObject(disabled);
+                    WriteObject(disabled);
                 });
         }
     }

@@ -108,13 +108,13 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlDatabaseCopyModel> GetEntity()
         {
-            string copyResourceGroupName = string.IsNullOrWhiteSpace(this.CopyResourceGroupName) ? this.ResourceGroupName : this.CopyResourceGroupName;
-            string copyServerName = string.IsNullOrWhiteSpace(this.CopyServerName) ? this.ServerName : this.CopyServerName;
+            string copyResourceGroupName = string.IsNullOrWhiteSpace(CopyResourceGroupName) ? ResourceGroupName : CopyResourceGroupName;
+            string copyServerName = string.IsNullOrWhiteSpace(CopyServerName) ? ServerName : CopyServerName;
 
             // We try to get the database.  Since this is a create copy, we don't want the copy database to exist
             try
             {
-                ModelAdapter.GetDatabase(copyResourceGroupName, copyServerName, this.CopyDatabaseName);
+                ModelAdapter.GetDatabase(copyResourceGroupName, copyServerName, CopyDatabaseName);
             }
             catch (CloudException ex)
             {
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
 
             // The database already exists
             throw new PSArgumentException(
-                string.Format(Resources.DatabaseNameExists, this.CopyDatabaseName, copyServerName),
+                string.Format(Resources.DatabaseNameExists, CopyDatabaseName, copyServerName),
                 "CopyDatabaseName");
         }
 
@@ -146,8 +146,8 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
 
             string location = ModelAdapter.GetServerLocation(ResourceGroupName, ServerName);
             string copyLocation = copyServer.Equals(ServerName) ? location : ModelAdapter.GetServerLocation(copyResourceGroup, copyServer);
-            List<Model.AzureSqlDatabaseCopyModel> newEntity = new List<AzureSqlDatabaseCopyModel>();
-            newEntity.Add(new AzureSqlDatabaseCopyModel()
+            List<AzureSqlDatabaseCopyModel> newEntity = new List<AzureSqlDatabaseCopyModel>();
+            newEntity.Add(new AzureSqlDatabaseCopyModel
             {
                 Location = location,
                 ResourceGroupName = ResourceGroupName,
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
                 CopyLocation = copyLocation,
                 ServiceObjectiveName = ServiceObjectiveName,
                 ElasticPoolName = ElasticPoolName,
-                Tags = TagsConversionHelper.CreateTagDictionary(Tags, validate: true),
+                Tags = TagsConversionHelper.CreateTagDictionary(Tags, true),
             });
             return newEntity;
         }
@@ -171,7 +171,8 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlDatabaseCopyModel> PersistChanges(IEnumerable<AzureSqlDatabaseCopyModel> entity)
         {
-            return new List<AzureSqlDatabaseCopyModel>() {
+            return new List<AzureSqlDatabaseCopyModel>
+            {
                 ModelAdapter.CopyDatabase(entity.First().CopyResourceGroupName, entity.First().CopyServerName, entity.First())
             };
         }

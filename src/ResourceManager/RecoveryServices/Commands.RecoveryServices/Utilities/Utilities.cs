@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         public static string WriteToFile<T>(T fileContent, string filePath, string fileName)
         {
             string fullFileName = Path.Combine(filePath, fileName);
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@fullFileName, false))
+            using (StreamWriter file = new StreamWriter(@fullFileName, false))
             {
                 string contentToWrite = Serialize<T>(fileContent);
                 file.WriteLine(contentToWrite);
@@ -196,7 +196,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             where T : class
         {
             var resources = new List<T>();
-            string nextLink = null;
+            string nextLink;
 
             var pagedResources = listResources();
 

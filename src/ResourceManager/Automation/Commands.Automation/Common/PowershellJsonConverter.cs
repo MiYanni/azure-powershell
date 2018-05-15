@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             Hashtable parameters = new Hashtable();
             parameters.Add(Constants.PsCommandParamInputObject, inputObject);
             parameters.Add(Constants.PsCommandParamDepth, Constants.PsCommandValueDepth);
-            var result = PowerShellJsonConverter.InvokeScript(Constants.PsCommandConvertToJson, parameters);
+            var result = InvokeScript(Constants.PsCommandConvertToJson, parameters);
 
             if (result.Count != 1)
             {
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
             Hashtable parameters = new Hashtable();
             parameters.Add(Constants.PsCommandParamInputObject, json);
-            var result = PowerShellJsonConverter.InvokeScript(Constants.PsCommandConvertFromJson, parameters);
+            var result = InvokeScript(Constants.PsCommandConvertFromJson, parameters);
             if (result.Count != 1)
             {
                 return null;

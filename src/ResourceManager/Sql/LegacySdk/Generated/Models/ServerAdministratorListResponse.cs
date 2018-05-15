@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServerAdministrator> Administrators
         {
-            get { return this._administrators; }
-            set { this._administrators = value; }
+            get { return _administrators; }
+            set { _administrators = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerAdministratorListResponse()
         {
-            this.Administrators = new LazyList<ServerAdministrator>();
+            Administrators = new LazyList<ServerAdministrator>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<ServerAdministrator> GetEnumerator()
         {
-            return this.Administrators.GetEnumerator();
+            return Administrators.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

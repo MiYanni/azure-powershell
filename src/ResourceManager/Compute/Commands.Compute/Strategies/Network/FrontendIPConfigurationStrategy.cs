@@ -22,20 +22,20 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
     {
         public static NestedResourceStrategy<FrontendIPConfiguration, LoadBalancer> Strategy { get; }
             = NestedResourceStrategy.Create<FrontendIPConfiguration, LoadBalancer>(
-                provider: "frontendIPConfigurations",
-                getList: parentModel => parentModel.FrontendIPConfigurations,
-                setList: (parentModel, list) => parentModel.FrontendIPConfigurations = list,
-                getName: model => model.Name,
-                setName: (model, name) => model.Name = name);
+                "frontendIPConfigurations",
+                parentModel => parentModel.FrontendIPConfigurations,
+                (parentModel, list) => parentModel.FrontendIPConfigurations = list,
+                model => model.Name,
+                (model, name) => model.Name = name);
 
         public static NestedResourceConfig<FrontendIPConfiguration, LoadBalancer> CreateFrontendIPConfiguration(
             this ResourceConfig<LoadBalancer> loadBalancer,
             string name,
             ResourceConfig<PublicIPAddress> publicIpAddress)
                 => loadBalancer.CreateNested(
-                    strategy: Strategy,
-                    name: name,
-                    createModel: engine => new FrontendIPConfiguration
+                    Strategy,
+                    name,
+                    engine => new FrontendIPConfiguration
                     {
                         PublicIPAddress = engine.GetReference(publicIpAddress)
                     });

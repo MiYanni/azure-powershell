@@ -142,7 +142,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
             {
                 case ParameterSet.ApplicationWithPasswordPlain:
                     string decodedPassword = SecureStringExtensions.ConvertToString(Password);
-                    createParameters.PasswordCredentials = new PSADPasswordCredential[]
+                    createParameters.PasswordCredentials = new[]
                     {
                         new PSADPasswordCredential
                         {
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     break;
 
                 case ParameterSet.ApplicationWithKeyPlain:
-                    createParameters.KeyCredentials = new PSADKeyCredential[]
+                    createParameters.KeyCredentials = new[]
                     {
                         new PSADKeyCredential
                         {
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
 
             ExecutionBlock(() =>
             {
-                if (ShouldProcess(target: createParameters.DisplayName, action: string.Format("Adding a new application with display name '{0}'", createParameters.DisplayName)))
+                if (ShouldProcess(createParameters.DisplayName, string.Format("Adding a new application with display name '{0}'", createParameters.DisplayName)))
                 {
                     WriteObject(ActiveDirectoryClient.CreateApplication(createParameters));
                 }

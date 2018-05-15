@@ -226,7 +226,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                 VaultName = resourceIdentifier.ResourceName;
             }
 
-            if (ShouldProcess(Name, Properties.Resources.AddKey))
+            if (ShouldProcess(Name, Resources.AddKey))
             {
                 PSKeyVaultKey keyBundle;
                 if (InputObject != null)
@@ -236,7 +236,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
                 if (string.IsNullOrEmpty(KeyFilePath))
                 {
-                    keyBundle = this.DataServiceClient.CreateKey(
+                    keyBundle = DataServiceClient.CreateKey(
                             VaultName,
                             Name,
                             CreateKeyAttributes(),
@@ -245,14 +245,14 @@ namespace Microsoft.Azure.Commands.KeyVault
                 else
                 {
                     bool? importToHsm = null;
-                    keyBundle = this.DataServiceClient.ImportKey(
+                    keyBundle = DataServiceClient.ImportKey(
                         VaultName, Name,
                         CreateKeyAttributes(),
                         CreateWebKeyFromFile(),
                         string.IsNullOrEmpty(Destination) ? importToHsm : HsmDestination.Equals(Destination, StringComparison.OrdinalIgnoreCase));
                 }
 
-                this.WriteObject(keyBundle);
+                WriteObject(keyBundle);
             }
         }
 
@@ -262,10 +262,10 @@ namespace Microsoft.Azure.Commands.KeyVault
 
             if (!string.IsNullOrEmpty(Destination))
             {
-                keyType = (HsmDestination.Equals(Destination, StringComparison.OrdinalIgnoreCase)) ? JsonWebKeyType.RsaHsm : JsonWebKeyType.Rsa;
+                keyType = HsmDestination.Equals(Destination, StringComparison.OrdinalIgnoreCase) ? JsonWebKeyType.RsaHsm : JsonWebKeyType.Rsa;
             }
 
-            return new Models.PSKeyVaultKeyAttributes(
+            return new PSKeyVaultKeyAttributes(
                 !Disable.IsPresent,
                 Expires,
                 NotBefore,
@@ -276,10 +276,10 @@ namespace Microsoft.Azure.Commands.KeyVault
 
         internal JsonWebKey CreateWebKeyFromFile()
         {
-            FileInfo keyFile = new FileInfo(this.GetUnresolvedProviderPathFromPSPath(this.KeyFilePath));
+            FileInfo keyFile = new FileInfo(GetUnresolvedProviderPathFromPSPath(KeyFilePath));
             if (!keyFile.Exists)
             {
-                throw new FileNotFoundException(string.Format(Resources.KeyFileNotFound, this.KeyFilePath));
+                throw new FileNotFoundException(string.Format(Resources.KeyFileNotFound, KeyFilePath));
             }
 
             var converterChain = WebKeyConverterFactory.CreateConverterChain();

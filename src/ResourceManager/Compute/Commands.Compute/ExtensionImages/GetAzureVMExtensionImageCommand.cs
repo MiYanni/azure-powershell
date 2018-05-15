@@ -48,15 +48,15 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                if (string.IsNullOrEmpty(this.Version))
+                if (string.IsNullOrEmpty(Version))
                 {
-                    var filter = new ODataQuery<VirtualMachineExtensionImage>(this.FilterExpression);
+                    var filter = new ODataQuery<VirtualMachineExtensionImage>(FilterExpression);
 
-                    var result = this.VirtualMachineExtensionImageClient.ListVersionsWithHttpMessagesAsync(
-                        this.Location.Canonicalize(),
-                        this.PublisherName,
-                        this.Type,
-                        odataQuery: filter).GetAwaiter().GetResult();
+                    var result = VirtualMachineExtensionImageClient.ListVersionsWithHttpMessagesAsync(
+                        Location.Canonicalize(),
+                        PublisherName,
+                        Type,
+                        filter).GetAwaiter().GetResult();
 
                     var images = from r in result.Body
                                  select new PSVirtualMachineExtensionImage
@@ -66,20 +66,20 @@ namespace Microsoft.Azure.Commands.Compute
                                      Id = r.Id,
                                      Location = r.Location,
                                      Version = r.Name,
-                                     PublisherName = this.PublisherName,
-                                     Type = this.Type,
-                                     FilterExpression = this.FilterExpression
+                                     PublisherName = PublisherName,
+                                     Type = Type,
+                                     FilterExpression = FilterExpression
                                  };
 
                     WriteObject(images, true);
                 }
                 else
                 {
-                    var result = this.VirtualMachineExtensionImageClient.GetWithHttpMessagesAsync(
-                        this.Location.Canonicalize(),
-                        this.PublisherName,
-                        this.Type,
-                        this.Version).GetAwaiter().GetResult();
+                    var result = VirtualMachineExtensionImageClient.GetWithHttpMessagesAsync(
+                        Location.Canonicalize(),
+                        PublisherName,
+                        Type,
+                        Version).GetAwaiter().GetResult();
 
 
                     var image = new PSVirtualMachineExtensionImageDetails
@@ -94,9 +94,9 @@ namespace Microsoft.Azure.Commands.Compute
                         SupportsMultipleExtensions = result.Body.SupportsMultipleExtensions,
                         VMScaleSetEnabled = result.Body.VmScaleSetEnabled,
                         Version = result.Body.Name,
-                        PublisherName = this.PublisherName,
-                        Type = this.Type,
-                        FilterExpression = this.FilterExpression
+                        PublisherName = PublisherName,
+                        Type = Type,
+                        FilterExpression = FilterExpression
                     };
 
                     WriteObject(image);

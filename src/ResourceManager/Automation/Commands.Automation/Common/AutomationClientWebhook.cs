@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 var rbAssociationProperty = new RunbookAssociationProperty { Name = runbookName };
                 var createOrUpdateProperties = new WebhookCreateOrUpdateProperties
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     ExpiryTime = expiryTime,
                     Runbook = rbAssociationProperty,
                     Uri =
-                                                           this.automationManagementClient
+                                                           automationManagementClient
                                                            .Webhooks.GenerateUri(
                                                                resourceGroupName,
                                                                automationAccountName).Uri,
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 };
                 if (runbookParameters != null)
                 {
-                    createOrUpdateProperties.Parameters = this.ProcessRunbookParameters(resourceGroupName, automationAccountName, runbookName, runbookParameters);
+                    createOrUpdateProperties.Parameters = ProcessRunbookParameters(resourceGroupName, automationAccountName, runbookName, runbookParameters);
                 }
 
                 var webhookCreateOrUpdateParameters = new WebhookCreateOrUpdateParameters(
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     createOrUpdateProperties);
 
                 var webhook =
-                    this.automationManagementClient.Webhooks.CreateOrUpdate(
+                    automationManagementClient.Webhooks.CreateOrUpdate(
                         resourceGroupName,
                         automationAccountName,
                         webhookCreateOrUpdateParameters).Webhook;
@@ -82,12 +82,12 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 try
                 {
                     var webhook =
-                        this.automationManagementClient.Webhooks.Get(resourceGroupName, automationAccountName, name)
+                        automationManagementClient.Webhooks.Get(resourceGroupName, automationAccountName, name)
                             .Webhook;
                     if (webhook == null)
                     {
@@ -117,20 +117,20 @@ namespace Microsoft.Azure.Commands.Automation.Common
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
             WebhookListResponse response;
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 if (string.IsNullOrEmpty(nextLink))
                 {
                     if (runbookName == null)
                     {
-                        response = this.automationManagementClient.Webhooks.List(
+                        response = automationManagementClient.Webhooks.List(
                             resourceGroupName,
                             automationAccountName,
                             null);
                     }
                     else
                     {
-                        response = this.automationManagementClient.Webhooks.List(
+                        response = automationManagementClient.Webhooks.List(
                             resourceGroupName,
                             automationAccountName,
                             runbookName);
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 }
                 else
                 {
-                    response = this.automationManagementClient.Webhooks.ListNext(nextLink);
+                    response = automationManagementClient.Webhooks.ListNext(nextLink);
                 }
 
                 nextLink = response.NextLink;
@@ -157,10 +157,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 var webhookModel =
-                    this.automationManagementClient.Webhooks.Get(resourceGroupName, automationAccountName, name).Webhook;
+                    automationManagementClient.Webhooks.Get(resourceGroupName, automationAccountName, name).Webhook;
                 var webhookPatchProperties = new WebhookPatchProperties();
                 if (webhookModel != null)
                 {
@@ -171,13 +171,13 @@ namespace Microsoft.Azure.Commands.Automation.Common
                     if (parameters != null)
                     {
                         webhookPatchProperties.Parameters =
-                            this.ProcessRunbookParameters(resourceGroupName, automationAccountName, webhookModel.Properties.Runbook.Name, parameters);
+                            ProcessRunbookParameters(resourceGroupName, automationAccountName, webhookModel.Properties.Runbook.Name, parameters);
                     }
                 }
 
                 var webhookPatchParameters = new WebhookPatchParameters(name) { Properties = webhookPatchProperties };
                 var webhook =
-                    this.automationManagementClient.Webhooks.Patch(
+                    automationManagementClient.Webhooks.Patch(
                         resourceGroupName,
                         automationAccountName,
                         webhookPatchParameters).Webhook;
@@ -190,11 +190,11 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
             Requires.Argument("ResourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("AutomationAccountName", automationAccountName).NotNull();
-            using (var request = new RequestSettings(this.automationManagementClient))
+            using (var request = new RequestSettings(automationManagementClient))
             {
                 try
                 {
-                    this.automationManagementClient.Webhooks.Delete(resourceGroupName, automationAccountName, name);
+                    automationManagementClient.Webhooks.Delete(resourceGroupName, automationAccountName, name);
                 }
                 catch (CloudException cloudException)
                 {

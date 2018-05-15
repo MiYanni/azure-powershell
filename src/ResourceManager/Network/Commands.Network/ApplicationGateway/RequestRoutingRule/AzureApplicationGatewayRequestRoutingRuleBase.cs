@@ -96,27 +96,27 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
                 if (BackendHttpSettings != null)
                 {
-                    this.BackendHttpSettingsId = this.BackendHttpSettings.Id;
+                    BackendHttpSettingsId = BackendHttpSettings.Id;
                 }
                 if (BackendAddressPool != null)
                 {
-                    this.BackendAddressPoolId = this.BackendAddressPool.Id;
+                    BackendAddressPoolId = BackendAddressPool.Id;
                 }
                 if (HttpListener != null)
                 {
-                    this.HttpListenerId = this.HttpListener.Id;
+                    HttpListenerId = HttpListener.Id;
                 }
                 if (UrlPathMap != null)
                 {
-                    this.UrlPathMapId = this.UrlPathMap.Id;
+                    UrlPathMapId = UrlPathMap.Id;
                 }
                 if (RedirectConfiguration != null)
                 {
-                    this.RedirectConfigurationId = this.RedirectConfiguration.Id;
+                    RedirectConfigurationId = RedirectConfiguration.Id;
                 }
             }
         }
@@ -124,40 +124,40 @@ namespace Microsoft.Azure.Commands.Network
         public PSApplicationGatewayRequestRoutingRule NewObject()
         {
             var requestRoutingRule = new PSApplicationGatewayRequestRoutingRule();
-            requestRoutingRule.Name = this.Name;
-            requestRoutingRule.RuleType = this.RuleType;
+            requestRoutingRule.Name = Name;
+            requestRoutingRule.RuleType = RuleType;
 
-            if (!string.IsNullOrEmpty(this.BackendHttpSettingsId))
+            if (!string.IsNullOrEmpty(BackendHttpSettingsId))
             {
                 requestRoutingRule.BackendHttpSettings = new PSResourceId();
-                requestRoutingRule.BackendHttpSettings.Id = this.BackendHttpSettingsId;
+                requestRoutingRule.BackendHttpSettings.Id = BackendHttpSettingsId;
             }
 
-            if (!string.IsNullOrEmpty(this.HttpListenerId))
+            if (!string.IsNullOrEmpty(HttpListenerId))
             {
                 requestRoutingRule.HttpListener = new PSResourceId();
-                requestRoutingRule.HttpListener.Id = this.HttpListenerId;
+                requestRoutingRule.HttpListener.Id = HttpListenerId;
             }
-            if (!string.IsNullOrEmpty(this.BackendAddressPoolId))
+            if (!string.IsNullOrEmpty(BackendAddressPoolId))
             {
                 requestRoutingRule.BackendAddressPool = new PSResourceId();
-                requestRoutingRule.BackendAddressPool.Id = this.BackendAddressPoolId;
+                requestRoutingRule.BackendAddressPool.Id = BackendAddressPoolId;
             }
-            if (!string.IsNullOrEmpty(this.UrlPathMapId))
+            if (!string.IsNullOrEmpty(UrlPathMapId))
             {
                 requestRoutingRule.UrlPathMap = new PSResourceId();
-                requestRoutingRule.UrlPathMap.Id = this.UrlPathMapId;
+                requestRoutingRule.UrlPathMap.Id = UrlPathMapId;
             }
-            if (!string.IsNullOrEmpty(this.RedirectConfigurationId))
+            if (!string.IsNullOrEmpty(RedirectConfigurationId))
             {
                 requestRoutingRule.RedirectConfiguration = new PSResourceId();
-                requestRoutingRule.RedirectConfiguration.Id = this.RedirectConfigurationId;
+                requestRoutingRule.RedirectConfiguration.Id = RedirectConfigurationId;
             }
 
             requestRoutingRule.Id = ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                                this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayRequestRoutingRuleName,
-                                this.Name);
+                                NetworkClient.NetworkManagementClient.SubscriptionId,
+                                Properties.Resources.ApplicationGatewayRequestRoutingRuleName,
+                                Name);
 
             return requestRoutingRule;
         }

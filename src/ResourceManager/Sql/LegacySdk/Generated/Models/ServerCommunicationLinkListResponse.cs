@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServerCommunicationLink> ServerCommunicationLinks
         {
-            get { return this._serverCommunicationLinks; }
-            set { this._serverCommunicationLinks = value; }
+            get { return _serverCommunicationLinks; }
+            set { _serverCommunicationLinks = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerCommunicationLinkListResponse()
         {
-            this.ServerCommunicationLinks = new LazyList<ServerCommunicationLink>();
+            ServerCommunicationLinks = new LazyList<ServerCommunicationLink>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<ServerCommunicationLink> GetEnumerator()
         {
-            return this.ServerCommunicationLinks.GetEnumerator();
+            return ServerCommunicationLinks.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

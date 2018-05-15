@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         {
             return headers.GetFirstOrDefault(
                 "Azure-AsyncOperationPercentComplete",
-                (value) =>
+                value =>
                 {
                     double percentComplete;
                     if (double.TryParse(value, out percentComplete))

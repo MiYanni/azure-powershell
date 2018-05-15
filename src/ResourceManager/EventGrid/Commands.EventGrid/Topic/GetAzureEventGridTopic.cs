@@ -73,32 +73,32 @@ namespace Microsoft.Azure.Commands.EventGrid
             string resourceGroupName = string.Empty;
             string topicName = string.Empty;
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                EventGridUtils.GetResourceGroupNameAndTopicName(this.ResourceId, out resourceGroupName, out topicName);
+                EventGridUtils.GetResourceGroupNameAndTopicName(ResourceId, out resourceGroupName, out topicName);
             }
-            else if (!string.IsNullOrEmpty(this.Name))
+            else if (!string.IsNullOrEmpty(Name))
             {
                 // If Name is provided, ResourceGroup should be non-empty as well
-                resourceGroupName = this.ResourceGroupName;
-                topicName = this.Name;
+                resourceGroupName = ResourceGroupName;
+                topicName = Name;
             }
-            else if (!string.IsNullOrEmpty(this.ResourceGroupName))
+            else if (!string.IsNullOrEmpty(ResourceGroupName))
             {
-                resourceGroupName = this.ResourceGroupName;
+                resourceGroupName = ResourceGroupName;
             }
                 
             if (!string.IsNullOrEmpty(resourceGroupName) && !string.IsNullOrEmpty(topicName))
             {
                 // Get details of the Event Grid topic
-                Topic topic = this.Client.GetTopic(resourceGroupName, topicName);
+                Topic topic = Client.GetTopic(resourceGroupName, topicName);
                 PSTopic psTopic = new PSTopic(topic);
-                this.WriteObject(psTopic);
+                WriteObject(psTopic);
             }
             else if (!string.IsNullOrEmpty(resourceGroupName) && string.IsNullOrEmpty(topicName))
             {
                 // List all Event Grid topics in the given resource group
-                IEnumerable<Topic> topicsList = this.Client.ListTopicsByResourceGroup(resourceGroupName);
+                IEnumerable<Topic> topicsList = Client.ListTopicsByResourceGroup(resourceGroupName);
 
                 List<PSTopicListInstance> psTopicsList = new List<PSTopicListInstance>();
                 foreach (Topic topic in topicsList)
@@ -106,12 +106,12 @@ namespace Microsoft.Azure.Commands.EventGrid
                     psTopicsList.Add(new PSTopicListInstance(topic));
                 }
 
-                this.WriteObject(psTopicsList, true);
+                WriteObject(psTopicsList, true);
             }
             else
             {
                 // List all Event Grid topics in the given subscription
-                IEnumerable<Topic> topicsList = this.Client.ListTopicsBySubscription();
+                IEnumerable<Topic> topicsList = Client.ListTopicsBySubscription();
 
                 List<PSTopicListInstance> psTopicsList = new List<PSTopicListInstance>();
                 foreach (Topic topic in topicsList)
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                     psTopicsList.Add(new PSTopicListInstance(topic));
                 }
 
-                this.WriteObject(psTopicsList, true);
+                WriteObject(psTopicsList, true);
             }
         }
     }

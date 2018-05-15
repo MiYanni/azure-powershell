@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string NextLink
         {
-            get { return this._nextLink; }
-            set { this._nextLink = value; }
+            get { return _nextLink; }
+            set { _nextLink = value; }
         }
         
         private IList<SyncGroupLog> _syncGroupLogs;
@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SyncGroupLog> SyncGroupLogs
         {
-            get { return this._syncGroupLogs; }
-            set { this._syncGroupLogs = value; }
+            get { return _syncGroupLogs; }
+            set { _syncGroupLogs = value; }
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncGroupLogListResponse()
         {
-            this.SyncGroupLogs = new LazyList<SyncGroupLog>();
+            SyncGroupLogs = new LazyList<SyncGroupLog>();
         }
     }
 }

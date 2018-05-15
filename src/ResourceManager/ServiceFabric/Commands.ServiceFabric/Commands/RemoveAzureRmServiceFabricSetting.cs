@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             var cluster = GetCurrentCluster();
             var settings = FabricSettingsToDictionary(cluster.FabricSettings);
 
-            foreach (var setting in this.UpdatedSettingsSectionDescriptionList)
+            foreach (var setting in UpdatedSettingsSectionDescriptionList)
             {
                 foreach (var ps in setting.Parameters)
                 {
@@ -54,9 +54,9 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             var fabricSettings = DictionaryToFabricSettings(settings);
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Remove fabric settings from")))
+            if (ShouldProcess(Name, string.Format("Remove fabric settings from")))
             {
-                cluster = SendPatchRequest(new ClusterUpdateParameters()
+                cluster = SendPatchRequest(new ClusterUpdateParameters
                 {
                     FabricSettings = fabricSettings
                 });

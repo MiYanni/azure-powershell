@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
             // We try to get the failover group.  Since this is a create, we don't want the failover group to exist
             try
             {
-                ModelAdapter.GetFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName);
+                ModelAdapter.GetFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName);
             }
             catch (CloudException ex)
             {
@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
             }
 
             // The Failover Group already exists
-            throw new PSArgumentException(string.Format(Properties.Resources.FailoverGroupNameExists, this.FailoverGroupName, this.ServerName), "FailoverGroupName");
+            throw new PSArgumentException(string.Format(Properties.Resources.FailoverGroupNameExists, FailoverGroupName, ServerName), "FailoverGroupName");
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         {
             string location = ModelAdapter.GetServerLocation(ResourceGroupName, ServerName);
             List<AzureSqlFailoverGroupModel> newEntity = new List<AzureSqlFailoverGroupModel>();
-            newEntity.Add(new AzureSqlFailoverGroupModel()
+            newEntity.Add(new AzureSqlFailoverGroupModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
                 PartnerResourceGroupName = MyInvocation.BoundParameters.ContainsKey("PartnerResourceGroupName") ? PartnerResourceGroupName : ResourceGroupName,
                 PartnerServerName = PartnerServerName,
                 ReadWriteFailoverPolicy = FailoverPolicy.ToString(),
-                FailoverWithDataLossGracePeriodHours = ComputeEffectiveGracePeriod(FailoverPolicy, originalGracePeriod: null),
+                FailoverWithDataLossGracePeriodHours = ComputeEffectiveGracePeriod(FailoverPolicy, null),
                 ReadOnlyFailoverPolicy = MyInvocation.BoundParameters.ContainsKey("AllowReadOnlyFailoverToPrimary") ? AllowReadOnlyFailoverToPrimary.ToString() : AllowReadOnlyFailoverToPrimary.Disabled.ToString(),
             });
             return newEntity;
@@ -148,7 +148,8 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> PersistChanges(IEnumerable<AzureSqlFailoverGroupModel> entity)
         {
-            return new List<AzureSqlFailoverGroupModel>() {
+            return new List<AzureSqlFailoverGroupModel>
+            {
                 ModelAdapter.UpsertFailoverGroup(entity.First())
             };
         }

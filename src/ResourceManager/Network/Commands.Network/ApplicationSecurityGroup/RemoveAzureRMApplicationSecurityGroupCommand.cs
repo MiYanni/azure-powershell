@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.Delete(ResourceGroupName, Name);
+                    NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

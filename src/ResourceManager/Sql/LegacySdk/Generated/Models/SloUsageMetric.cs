@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double InRangeTimeRatio
         {
-            get { return this._inRangeTimeRatio; }
-            set { this._inRangeTimeRatio = value; }
+            get { return _inRangeTimeRatio; }
+            set { _inRangeTimeRatio = value; }
         }
         
         private string _serviceLevelObjective;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServiceLevelObjective
         {
-            get { return this._serviceLevelObjective; }
-            set { this._serviceLevelObjective = value; }
+            get { return _serviceLevelObjective; }
+            set { _serviceLevelObjective = value; }
         }
         
         private Guid _serviceLevelObjectiveId;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Guid ServiceLevelObjectiveId
         {
-            get { return this._serviceLevelObjectiveId; }
-            set { this._serviceLevelObjectiveId = value; }
+            get { return _serviceLevelObjectiveId; }
+            set { _serviceLevelObjectiveId = value; }
         }
         
         /// <summary>

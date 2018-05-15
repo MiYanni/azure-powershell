@@ -23,8 +23,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
 
         public PSHighlight(string pre, string post)
         {
-            this.Pre = pre;
-            this.Post = post;
+            Pre = pre;
+            Post = post;
         }
 
         public string Pre { get; set; }

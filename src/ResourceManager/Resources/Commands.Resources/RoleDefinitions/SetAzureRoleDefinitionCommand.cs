@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Resources
             if (!string.IsNullOrEmpty(InputFile))
             {
                 string fileName = this.TryResolvePath(InputFile);
-                if (!(new FileInfo(fileName)).Exists)
+                if (!new FileInfo(fileName).Exists)
                 {
                     throw new PSArgumentException(string.Format("File {0} does not exist", fileName));
                 }

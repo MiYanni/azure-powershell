@@ -14,9 +14,9 @@
 
 namespace Microsoft.Azure.Commands.RedisCache
 {
-    using Microsoft.Azure.Commands.RedisCache.Models;
-    using Microsoft.Azure.Commands.RedisCache.Properties;
-    using Microsoft.Azure.Management.Redis.Models;
+    using Models;
+    using Properties;
+    using Management.Redis.Models;
     using System.Collections.Generic;
     using System.Management.Automation;
     using Rest.Azure;
@@ -67,9 +67,9 @@ namespace Microsoft.Azure.Commands.RedisCache
                 // specific link only
                 string resourceGroupName = CacheClient.GetResourceGroupNameIfNotProvided(null, PrimaryServerName);
                 RedisLinkedServerWithProperties redisLinkedServer = CacheClient.GetLinkedServer(
-                    resourceGroupName: resourceGroupName,
-                    cacheName: PrimaryServerName,
-                    linkedCacheName: SecondaryServerName);
+                    resourceGroupName,
+                    PrimaryServerName,
+                    SecondaryServerName);
 
                 if (redisLinkedServer == null || redisLinkedServer.ServerRole != ReplicationRole.Secondary)
                 {
@@ -129,18 +129,15 @@ namespace Microsoft.Azure.Commands.RedisCache
                 }
                 return allPrimary;
             }
-            else
+            List<PSRedisLinkedServer> allSecondary = new List<PSRedisLinkedServer>();
+            foreach (var link in list)
             {
-                List<PSRedisLinkedServer> allSecondary = new List<PSRedisLinkedServer>();
-                foreach (var link in list)
+                if (link.SecondaryServerName.Equals(cacheName, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (link.SecondaryServerName.Equals(cacheName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        allSecondary.Add(link);
-                    }
+                    allSecondary.Add(link);
                 }
-                return allSecondary;
             }
+            return allSecondary;
         }
     }
 }

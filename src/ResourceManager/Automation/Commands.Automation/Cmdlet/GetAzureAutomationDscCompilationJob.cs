@@ -72,24 +72,24 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             IEnumerable<CompilationJob> jobs;
 
-            if (this.Id != null && !Guid.Empty.Equals(this.Id))
+            if (Id != null && !Guid.Empty.Equals(Id))
             {
                 // ByJobId 
-                jobs = new List<CompilationJob> { this.AutomationClient.GetCompilationJob(this.ResourceGroupName, this.AutomationAccountName, this.Id) };
+                jobs = new List<CompilationJob> { AutomationClient.GetCompilationJob(ResourceGroupName, AutomationAccountName, Id) };
 
-                this.GenerateCmdletOutput(jobs);
+                GenerateCmdletOutput(jobs);
             }
-            else if (this.ConfigurationName != null)
+            else if (ConfigurationName != null)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
                     // ByConfiguration 
-                    jobs = this.AutomationClient.ListCompilationJobsByConfigurationName(this.ResourceGroupName, this.AutomationAccountName, this.ConfigurationName, this.StartTime, this.EndTime, this.Status, ref nextLink);
+                    jobs = AutomationClient.ListCompilationJobsByConfigurationName(ResourceGroupName, AutomationAccountName, ConfigurationName, StartTime, EndTime, Status, ref nextLink);
                     if (jobs != null)
                     {
-                        this.GenerateCmdletOutput(jobs);
+                        GenerateCmdletOutput(jobs);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));
@@ -101,10 +101,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                 do
                 {
                     // ByAll 
-                    jobs = this.AutomationClient.ListCompilationJobs(this.ResourceGroupName, this.AutomationAccountName, this.StartTime, this.EndTime, this.Status, ref nextLink);
+                    jobs = AutomationClient.ListCompilationJobs(ResourceGroupName, AutomationAccountName, StartTime, EndTime, Status, ref nextLink);
                     if (jobs != null)
                     {
-                        this.GenerateCmdletOutput(jobs);
+                        GenerateCmdletOutput(jobs);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));

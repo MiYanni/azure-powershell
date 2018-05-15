@@ -26,32 +26,32 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSPoolStatistics
     {
         
-        internal Microsoft.Azure.Batch.PoolStatistics omObject;
+        internal PoolStatistics omObject;
         
         private PSResourceStatistics resourceStatistics;
         
         private PSUsageStatistics usageStatistics;
         
-        internal PSPoolStatistics(Microsoft.Azure.Batch.PoolStatistics omObject)
+        internal PSPoolStatistics(PoolStatistics omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.DateTime LastUpdateTime
+        public DateTime LastUpdateTime
         {
             get
             {
-                return this.omObject.LastUpdateTime;
+                return omObject.LastUpdateTime;
             }
         }
         
@@ -59,20 +59,20 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.resourceStatistics == null) 
-                            && (this.omObject.ResourceStatistics != null)))
+                if (resourceStatistics == null 
+                    && omObject.ResourceStatistics != null)
                 {
-                    this.resourceStatistics = new PSResourceStatistics(this.omObject.ResourceStatistics);
+                    resourceStatistics = new PSResourceStatistics(omObject.ResourceStatistics);
                 }
-                return this.resourceStatistics;
+                return resourceStatistics;
             }
         }
         
-        public System.DateTime StartTime
+        public DateTime StartTime
         {
             get
             {
-                return this.omObject.StartTime;
+                return omObject.StartTime;
             }
         }
         
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Url;
+                return omObject.Url;
             }
         }
         
@@ -88,12 +88,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.usageStatistics == null) 
-                            && (this.omObject.UsageStatistics != null)))
+                if (usageStatistics == null 
+                    && omObject.UsageStatistics != null)
                 {
-                    this.usageStatistics = new PSUsageStatistics(this.omObject.UsageStatistics);
+                    usageStatistics = new PSUsageStatistics(omObject.UsageStatistics);
                 }
-                return this.usageStatistics;
+                return usageStatistics;
             }
         }
     }

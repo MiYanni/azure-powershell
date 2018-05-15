@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="receiver">The receiver to wrap.</param>
         public PSWebhookReceiver(WebhookReceiver receiver)
         {
-            this.Name = receiver.Name;
-            this.ServiceUri = receiver.ServiceUri;
+            Name = receiver.Name;
+            ServiceUri = receiver.ServiceUri;
         }
     }
 }

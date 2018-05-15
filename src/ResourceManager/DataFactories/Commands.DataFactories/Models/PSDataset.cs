@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
 
         public PSDataset()
         {
-            this.dataset = new Dataset() { Properties = new DatasetProperties() };
+            dataset = new Dataset { Properties = new DatasetProperties() };
         }
 
         public PSDataset(Dataset dataset)
@@ -47,11 +47,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this.dataset.Name;
+                return dataset.Name;
             }
             set
             {
-                this.dataset.Name = value;
+                dataset.Name = value;
             }
         }
 
@@ -63,11 +63,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this.dataset.Properties.Availability;
+                return dataset.Properties.Availability;
             }
             set
             {
-                this.dataset.Properties.Availability = value;
+                dataset.Properties.Availability = value;
             }
         }
 
@@ -75,11 +75,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this.dataset.Properties.TypeProperties;
+                return dataset.Properties.TypeProperties;
             }
             set
             {
-                this.dataset.Properties.TypeProperties = value;
+                dataset.Properties.TypeProperties = value;
             }
         }
 
@@ -87,11 +87,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this.dataset.Properties.Policy;
+                return dataset.Properties.Policy;
             }
             set
             {
-                this.dataset.Properties.Policy = value;
+                dataset.Properties.Policy = value;
             }
         }
 
@@ -99,11 +99,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this.dataset.Properties.Structure;
+                return dataset.Properties.Structure;
             }
             set
             {
-                this.dataset.Properties.Structure = value;
+                dataset.Properties.Structure = value;
             }
         }
 
@@ -111,11 +111,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this.dataset.Properties;
+                return dataset.Properties;
             }
             set
             {
-                this.dataset.Properties = value;
+                dataset.Properties = value;
             }
         }
 

@@ -143,8 +143,8 @@ namespace Microsoft.Azure.Commands.Compute.Common
 
             // Now extract the local resource directory element
             var node = doc.Descendants().FirstOrDefault(e => e.Name.LocalName == "LocalResourceDirectory");
-            string localDirectory = (node != null && node.Attribute(Path) != null) ? node.Attribute(Path).Value : null;
-            string localDirectoryExpand = (node != null && node.Attribute("expandEnvironment") != null)
+            string localDirectory = node != null && node.Attribute(Path) != null ? node.Attribute(Path).Value : null;
+            string localDirectoryExpand = node != null && node.Attribute("expandEnvironment") != null
                 ? node.Attribute("expandEnvironment").Value
                 : null;
             if (localDirectoryExpand == "0")
@@ -497,7 +497,7 @@ namespace Microsoft.Azure.Commands.Compute.Common
                 {
                     // Special handling as private storage config is flattened
                     targetConfig = privateConfig;
-                    var attributeNameMapping = new Dictionary<string, string>()
+                    var attributeNameMapping = new Dictionary<string, string>
                     {
                         { PrivConfNameAttr, "storageAccountName" },
                         { PrivConfKeyAttr, "storageAccountKey" },

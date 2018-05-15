@@ -68,16 +68,16 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
         [Parameter(
             Mandatory = true,
             HelpMessage = "Document types that need exported.")]
-        [ValidateSet(ApplicationInsightsBaseCmdlet.DocumentTypes.Requests,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.Exceptions,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.Event,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.Messages,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.Metrics,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.PageViewPerformance,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.PageViews,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.RemoteDependency,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.Availability,
-            ApplicationInsightsBaseCmdlet.DocumentTypes.PerformanceCounters,
+        [ValidateSet(DocumentTypes.Requests,
+            DocumentTypes.Exceptions,
+            DocumentTypes.Event,
+            DocumentTypes.Messages,
+            DocumentTypes.Metrics,
+            DocumentTypes.PageViewPerformance,
+            DocumentTypes.PageViews,
+            DocumentTypes.RemoteDependency,
+            DocumentTypes.Availability,
+            DocumentTypes.PerformanceCounters,
             IgnoreCase = true)]
         public string[] DocumentType { get; set; }
 
@@ -109,21 +109,21 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
         {
             base.ExecuteCmdlet();
 
-            if (this.ApplicationInsightsComponent != null)
+            if (ApplicationInsightsComponent != null)
             {
-                this.ResourceGroupName = this.ApplicationInsightsComponent.ResourceGroupName;
-                this.Name = this.ApplicationInsightsComponent.Name;
+                ResourceGroupName = ApplicationInsightsComponent.ResourceGroupName;
+                Name = ApplicationInsightsComponent.Name;
             }
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                ResourceIdentifier identifier = new ResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = identifier.ResourceGroupName;
-                this.Name = identifier.ResourceName;
+                ResourceIdentifier identifier = new ResourceIdentifier(ResourceId);
+                ResourceGroupName = identifier.ResourceGroupName;
+                Name = identifier.ResourceName;
             }
 
             ApplicationInsightsComponentExportRequest exportRequest = new ApplicationInsightsComponentExportRequest();
-            if (this.DisableConfiguration)
+            if (DisableConfiguration)
             {
                 exportRequest.IsEnabled = "false";
             }
@@ -131,21 +131,21 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
             {
                 exportRequest.IsEnabled = "true";
             }
-            exportRequest.DestinationAccountId = this.StorageAccountId;
-            exportRequest.DestinationStorageSubscriptionId = ParseSubscriptionFromId(this.StorageAccountId);
-            exportRequest.DestinationAddress = this.StorageSASUri;
-            exportRequest.DestinationStorageLocationId = this.StorageLocation;
+            exportRequest.DestinationAccountId = StorageAccountId;
+            exportRequest.DestinationStorageSubscriptionId = ParseSubscriptionFromId(StorageAccountId);
+            exportRequest.DestinationAddress = StorageSASUri;
+            exportRequest.DestinationStorageLocationId = StorageLocation;
             exportRequest.DestinationType = "Blob";
-            exportRequest.RecordTypes = string.Join(",", ConvertToRecordType(this.DocumentType));
+            exportRequest.RecordTypes = string.Join(",", ConvertToRecordType(DocumentType));
 
-            if (this.ShouldProcess(this.Name, $"Update Application Insights Continuous Export {this.ExportId}"))
+            if (ShouldProcess(Name, $"Update Application Insights Continuous Export {ExportId}"))
             {
-                var exportResponse = this.AppInsightsManagementClient
+                var exportResponse = AppInsightsManagementClient
                                             .ExportConfigurations
                                             .UpdateWithHttpMessagesAsync(
-                                                this.ResourceGroupName,
-                                                this.Name,
-                                                this.ExportId,
+                                                ResourceGroupName,
+                                                Name,
+                                                ExportId,
                                                 exportRequest)
                                             .GetAwaiter()
                                             .GetResult();

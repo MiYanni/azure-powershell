@@ -4,9 +4,9 @@
 
 namespace Microsoft.Azure.Graph.RBAC.Version1_6
 {
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
-    using Microsoft.Rest.Azure.OData;
+    using Rest;
+    using Rest.Azure;
+    using Rest.Azure.OData;
     using Models;
     using Newtonsoft.Json;
     using System.Collections.Generic;

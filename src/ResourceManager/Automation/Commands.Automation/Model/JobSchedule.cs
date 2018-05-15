@@ -37,20 +37,20 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// <param name="jobSchedule">
         /// The job schedule.
         /// </param>
-        public JobSchedule(string resourceGroupName, string automationAccountName, Azure.Management.Automation.Models.JobSchedule jobSchedule)
+        public JobSchedule(string resourceGroupName, string automationAccountName, Management.Automation.Models.JobSchedule jobSchedule)
         {
             Requires.Argument("jobSchedule", jobSchedule).NotNull();
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = automationAccountName;
-            this.JobScheduleId = jobSchedule.Properties.Id.ToString();
-            this.RunbookName = jobSchedule.Properties.Runbook.Name;
-            this.ScheduleName = jobSchedule.Properties.Schedule.Name;
-            this.Parameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-            this.HybridWorker = jobSchedule.Properties.RunOn;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = automationAccountName;
+            JobScheduleId = jobSchedule.Properties.Id.ToString();
+            RunbookName = jobSchedule.Properties.Runbook.Name;
+            ScheduleName = jobSchedule.Properties.Schedule.Name;
+            Parameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            HybridWorker = jobSchedule.Properties.RunOn;
             foreach (var kvp in jobSchedule.Properties.Parameters.Where(kvp => 0 != String.Compare(kvp.Key, Constants.JobStartedByParameterName, CultureInfo.InvariantCulture,
                 CompareOptions.IgnoreCase)))
             {
-                this.Parameters.Add(kvp.Key, (object)PowerShellJsonConverter.Deserialize(kvp.Value));
+                Parameters.Add(kvp.Key, PowerShellJsonConverter.Deserialize(kvp.Value));
             }
         }
 

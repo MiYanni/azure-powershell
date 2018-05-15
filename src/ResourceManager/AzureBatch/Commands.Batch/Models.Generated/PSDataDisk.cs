@@ -26,33 +26,33 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSDataDisk
     {
         
-        internal Microsoft.Azure.Batch.DataDisk omObject;
+        internal DataDisk omObject;
         
-        public PSDataDisk(int lun, int diskSizeGB, System.Nullable<Microsoft.Azure.Batch.Common.CachingType> caching = null, System.Nullable<Microsoft.Azure.Batch.Common.StorageAccountType> storageAccountType = null)
+        public PSDataDisk(int lun, int diskSizeGB, Nullable<Azure.Batch.Common.CachingType> caching = null, Nullable<Azure.Batch.Common.StorageAccountType> storageAccountType = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.DataDisk(lun, diskSizeGB, caching, storageAccountType);
+            omObject = new DataDisk(lun, diskSizeGB, caching, storageAccountType);
         }
         
-        internal PSDataDisk(Microsoft.Azure.Batch.DataDisk omObject)
+        internal PSDataDisk(DataDisk omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.CachingType? Caching
+        public Azure.Batch.Common.CachingType? Caching
         {
             get
             {
-                return this.omObject.Caching;
+                return omObject.Caching;
             }
         }
         
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.DiskSizeGB;
+                return omObject.DiskSizeGB;
             }
         }
         
@@ -68,15 +68,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Lun;
+                return omObject.Lun;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.StorageAccountType? StorageAccountType
+        public Azure.Batch.Common.StorageAccountType? StorageAccountType
         {
             get
             {
-                return this.omObject.StorageAccountType;
+                return omObject.StorageAccountType;
             }
         }
     }

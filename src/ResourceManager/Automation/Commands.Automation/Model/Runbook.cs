@@ -18,7 +18,7 @@ using System.Collections;
 
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using AutomationManagement = Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The Runbook.
@@ -44,33 +44,33 @@ namespace Microsoft.Azure.Commands.Automation.Model
             Requires.Argument("runbook", runbook).NotNull();
             Requires.Argument("accountName", accountName).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = accountName;
-            this.Name = runbook.Name;
-            this.Location = runbook.Location;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = accountName;
+            Name = runbook.Name;
+            Location = runbook.Location;
 
             if (runbook.Properties == null) return;
 
-            this.CreationTime = runbook.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = runbook.Properties.LastModifiedTime.ToLocalTime();
-            this.Description = runbook.Properties.Description;
+            CreationTime = runbook.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = runbook.Properties.LastModifiedTime.ToLocalTime();
+            Description = runbook.Properties.Description;
 
-            this.LogVerbose = runbook.Properties.LogVerbose;
-            this.LogProgress = runbook.Properties.LogProgress;
-            this.State = runbook.Properties.State;
-            this.JobCount = runbook.Properties.JobCount;
-            this.RunbookType = runbook.Properties.RunbookType;
-            this.LastModifiedBy = runbook.Properties.LastModifiedBy;
-            this.Tags = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            LogVerbose = runbook.Properties.LogVerbose;
+            LogProgress = runbook.Properties.LogProgress;
+            State = runbook.Properties.State;
+            JobCount = runbook.Properties.JobCount;
+            RunbookType = runbook.Properties.RunbookType;
+            LastModifiedBy = runbook.Properties.LastModifiedBy;
+            Tags = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in runbook.Tags)
             {
-                this.Tags.Add(kvp.Key, kvp.Value);
+                Tags.Add(kvp.Key, kvp.Value);
             }
 
-            this.Parameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            Parameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in runbook.Properties.Parameters)
             {
-                this.Parameters.Add(kvp.Key, (object)kvp.Value);
+                Parameters.Add(kvp.Key, kvp.Value);
             }
         }
 

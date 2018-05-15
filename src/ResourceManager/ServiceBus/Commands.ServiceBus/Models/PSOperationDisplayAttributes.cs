@@ -15,7 +15,7 @@
 
 namespace Microsoft.Azure.Commands.ServiceBus.Models
 {
-    using Azure.Management.ServiceBus.Models;
+    using Management.ServiceBus.Models;
 
     /// <summary>
     /// The object that represents the operation.

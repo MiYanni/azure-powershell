@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.WebApps.Models.WebApp
                     { "webAppName", destinationWebAppName },
                     { "sourceWebAppId", sourceWebAppId }
                 },
-                Resources = new WebAppResource[]
+                Resources = new[]
                 {
                    new WebAppResource
                    {

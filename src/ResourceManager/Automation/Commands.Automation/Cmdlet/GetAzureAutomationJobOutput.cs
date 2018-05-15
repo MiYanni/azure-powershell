@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
             do
             {
-                var ret = this.AutomationClient.GetJobStream(this.ResourceGroupName, this.AutomationAccountName, this.Id, this.StartTime, this.Stream.ToString(), ref nextLink);
-                this.GenerateCmdletOutput(ret);
+                var ret = AutomationClient.GetJobStream(ResourceGroupName, AutomationAccountName, Id, StartTime, Stream.ToString(), ref nextLink);
+                GenerateCmdletOutput(ret);
 
             } while (!string.IsNullOrEmpty(nextLink));
         }

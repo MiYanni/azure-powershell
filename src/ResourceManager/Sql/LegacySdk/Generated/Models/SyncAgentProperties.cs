@@ -30,15 +30,15 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
     /// </summary>
     public partial class SyncAgentProperties
     {
-        private System.DateTime? _expiryTime;
+        private DateTime? _expiryTime;
         
         /// <summary>
         /// Optional. The expires time of the sync agent.
         /// </summary>
-        public System.DateTime? ExpiryTime
+        public DateTime? ExpiryTime
         {
-            get { return this._expiryTime; }
-            set { this._expiryTime = value; }
+            get { return _expiryTime; }
+            set { _expiryTime = value; }
         }
         
         private bool? _isUpToDate;
@@ -48,31 +48,31 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool? IsUpToDate
         {
-            get { return this._isUpToDate; }
-            set { this._isUpToDate = value; }
+            get { return _isUpToDate; }
+            set { _isUpToDate = value; }
         }
         
-        private System.DateTime? _lastAliveTime;
+        private DateTime? _lastAliveTime;
         
         /// <summary>
         /// Optional. Specifies the last alive time of the sync agent.
         /// </summary>
-        public System.DateTime? LastAliveTime
+        public DateTime? LastAliveTime
         {
-            get { return this._lastAliveTime; }
-            set { this._lastAliveTime = value; }
+            get { return _lastAliveTime; }
+            set { _lastAliveTime = value; }
         }
         
-        private Microsoft.Azure.Management.Sql.LegacySdk.Models.SyncAgentState? _state;
+        private SyncAgentState? _state;
         
         /// <summary>
         /// Optional. The state of the sync agent . The possible values: Enum
         /// ('NotConnected', 'Offline', 'Online').
         /// </summary>
-        public Microsoft.Azure.Management.Sql.LegacySdk.Models.SyncAgentState? State
+        public SyncAgentState? State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         private string _syncDatabaseId;
@@ -82,8 +82,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SyncDatabaseId
         {
-            get { return this._syncDatabaseId; }
-            set { this._syncDatabaseId = value; }
+            get { return _syncDatabaseId; }
+            set { _syncDatabaseId = value; }
         }
         
         private string _version;
@@ -93,8 +93,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Version
         {
-            get { return this._version; }
-            set { this._version = value; }
+            get { return _version; }
+            set { _version = value; }
         }
         
         /// <summary>

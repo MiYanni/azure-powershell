@@ -43,14 +43,14 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
         {
             ICollection<AzureSqlServerFirewallRuleModel> results = null;
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("FirewallRuleName"))
+            if (MyInvocation.BoundParameters.ContainsKey("FirewallRuleName"))
             {
                 results = new List<AzureSqlServerFirewallRuleModel>();
-                results.Add(ModelAdapter.GetFirewallRule(this.ResourceGroupName, this.ServerName, this.FirewallRuleName));
+                results.Add(ModelAdapter.GetFirewallRule(ResourceGroupName, ServerName, FirewallRuleName));
             }
             else
             {
-                results = ModelAdapter.ListFirewallRules(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListFirewallRules(ResourceGroupName, ServerName);
             }
 
             return results;

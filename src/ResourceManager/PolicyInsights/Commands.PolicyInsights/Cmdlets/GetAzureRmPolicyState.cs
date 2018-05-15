@@ -18,11 +18,11 @@ namespace Microsoft.Azure.Commands.PolicyInsights.Cmdlets
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.PolicyInsights.Common;
-    using Microsoft.Azure.Commands.PolicyInsights.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.PolicyInsights;
-    using RestApiModels = Microsoft.Azure.Management.PolicyInsights.Models;
+    using Common;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Management.PolicyInsights;
+    using RestApiModels = Management.PolicyInsights.Models;
 
     /// <summary>
     /// Gets policy states

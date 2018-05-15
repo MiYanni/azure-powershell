@@ -29,13 +29,13 @@ namespace Microsoft.Azure.Commands.Common.Strategies.WebApps
             Func<TModel, int> createTime,
             bool compulsoryLocation = false) where TModel : Resource
             => ResourceStrategy.Create(
-                type: new ResourceType("Microsoft.Web", provider),
-                getOperations: getOperations,
-                getAsync: getAsync,
-                createOrUpdateAsync: createOrUpdateAsync,
-                getLocation: config => config.Location,
-                setLocation: (config, location) => config.Location = location,
-                createTime: createTime,
-                compulsoryLocation: compulsoryLocation);
+                new ResourceType("Microsoft.Web", provider),
+                getOperations,
+                getAsync,
+                createOrUpdateAsync,
+                config => config.Location,
+                (config, location) => config.Location = location,
+                createTime,
+                compulsoryLocation);
     }
 }

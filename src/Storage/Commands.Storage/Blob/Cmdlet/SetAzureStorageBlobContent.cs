@@ -104,13 +104,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         [Parameter(HelpMessage = "Azure Blob Container Object", Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = ContainerParameterSet)]
-        public StorageBlob.CloudBlobContainer CloudBlobContainer { get; set; }
+        public CloudBlobContainer CloudBlobContainer { get; set; }
 
         [Alias("ICloudBlob")]
         [Parameter(HelpMessage = "Azure Blob Object", Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = BlobParameterSet)]
-        public StorageBlob.CloudBlob CloudBlob { get; set; }
+        public CloudBlob CloudBlob { get; set; }
 
         [Parameter(HelpMessage = "Blob Type('Block', 'Page', 'Append')")]
         [ValidateSet(BlockBlobType, PageBlobType, AppendBlobType, IgnoreCase = true)]
@@ -158,16 +158,16 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         {
             get
             {
-                return pageBlobTier.Value;
+                return _pageBlobTier.Value;
             }
 
             set
             {
-                pageBlobTier = value;
+                _pageBlobTier = value;
             }
         }
 
-        private PremiumPageBlobTier? pageBlobTier = null;
+        private PremiumPageBlobTier? _pageBlobTier = null;
 
         private BlobUploadRequestQueue UploadRequests = new BlobUploadRequestQueue();
 
@@ -194,7 +194,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         /// <param name="taskId">Task id</param>
         /// <param name="filePath">local file path</param>
         /// <param name="blob">destination azure blob object</param>
-        internal virtual async Task Upload2Blob(long taskId, IStorageBlobManagement localChannel, string filePath, StorageBlob.CloudBlob blob)
+        internal virtual async Task Upload2Blob(long taskId, IStorageBlobManagement localChannel, string filePath, CloudBlob blob)
         {
             string activity = String.Format(Resources.SendAzureBlobActivity, filePath, blob.Name, blob.Container.Name);
             string status = Resources.PrepareUploadingBlob;
@@ -202,7 +202,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
 
             FileInfo fileInfo = new FileInfo(filePath);
 
-            DataMovementUserData data = new DataMovementUserData()
+            DataMovementUserData data = new DataMovementUserData
             {
                 Data = blob,
                 TaskId = taskId,
@@ -213,21 +213,21 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
 
             await DataMovementTransferHelper.DoTransfer(() =>
                 {
-                    return this.TransferManager.UploadAsync(filePath,
+                    return TransferManager.UploadAsync(filePath,
                         blob,
                         null,
-                        this.GetTransferContext(data),
-                        this.CmdletCancellationToken);
+                        GetTransferContext(data),
+                        CmdletCancellationToken);
                 },
                 data.Record,
-                this.OutputStream).ConfigureAwait(false);
+                OutputStream).ConfigureAwait(false);
 
-            if (this.BlobProperties != null || this.BlobMetadata != null || this.pageBlobTier != null)
+            if (BlobProperties != null || BlobMetadata != null || _pageBlobTier != null)
             {
                 await Task.WhenAll(
-                    this.SetBlobProperties(localChannel, blob, this.BlobProperties),
-                    this.SetBlobMeta(localChannel, blob, this.BlobMetadata),
-                    this.SetBlobTier(localChannel, blob, pageBlobTier)).ConfigureAwait(false);
+                    SetBlobProperties(localChannel, blob, BlobProperties),
+                    SetBlobMeta(localChannel, blob, BlobMetadata),
+                    SetBlobTier(localChannel, blob, _pageBlobTier)).ConfigureAwait(false);
             }
 
             try
@@ -235,9 +235,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
                 await localChannel.FetchBlobAttributesAsync(
                     blob,
                     AccessCondition.GenerateEmptyCondition(),
-                    this.RequestOptions,
-                    this.OperationContext,
-                    this.CmdletCancellationToken).ConfigureAwait(false);
+                    RequestOptions,
+                    OperationContext,
+                    CmdletCancellationToken).ConfigureAwait(false);
             }
             catch (StorageException e)
             {
@@ -277,7 +277,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         /// <returns>null if user cancel the overwrite operation, otherwise return destination blob object</returns>
         internal void SetAzureBlobContent(string fileName, string blobName)
         {
-            StorageBlob.BlobType type = StorageBlob.BlobType.BlockBlob;
+            BlobType type = StorageBlob.BlobType.BlockBlob;
 
             if (string.Equals(blobType, BlockBlobType, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -319,9 +319,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         {
             while (!UploadRequests.IsEmpty())
             {
-                Tuple<string, StorageBlob.CloudBlob> uploadRequest = UploadRequests.DequeueRequest();
+                Tuple<string, CloudBlob> uploadRequest = UploadRequests.DequeueRequest();
                 IStorageBlobManagement localChannel = Channel;
-                Func<long, Task> taskGenerator = (taskId) => Upload2Blob(taskId, localChannel, uploadRequest.Item1, uploadRequest.Item2);
+                Func<long, Task> taskGenerator = taskId => Upload2Blob(taskId, localChannel, uploadRequest.Item1, uploadRequest.Item2);
                 RunTask(taskGenerator);
             }
 
@@ -330,8 +330,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
 
         //only support the common blob properties for block blob and page blob
         //http://msdn.microsoft.com/en-us/library/windowsazure/ee691966.aspx
-        private Dictionary<string, Action<StorageBlob.BlobProperties, string>> validCloudBlobProperties =
-            new Dictionary<string, Action<StorageBlob.BlobProperties, string>>(StringComparer.OrdinalIgnoreCase)
+        private Dictionary<string, Action<BlobProperties, string>> validCloudBlobProperties =
+            new Dictionary<string, Action<BlobProperties, string>>(StringComparer.OrdinalIgnoreCase)
             {
                 {"CacheControl", (p, v) => p.CacheControl = v},
                 {"ContentDisposition", (p, v) => p.ContentDisposition = v},
@@ -366,7 +366,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         /// </summary>
         /// <param name="azureBlob">CloudBlob object</param>
         /// <param name="meta">blob properties hashtable</param>
-        private async Task SetBlobProperties(IStorageBlobManagement localChannel, StorageBlob.CloudBlob blob, Hashtable properties)
+        private async Task SetBlobProperties(IStorageBlobManagement localChannel, CloudBlob blob, Hashtable properties)
         {
             if (properties == null)
             {
@@ -377,7 +377,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
             {
                 string key = entry.Key.ToString();
                 string value = entry.Value.ToString();
-                Action<StorageBlob.BlobProperties, string> action = validCloudBlobProperties[key];
+                Action<BlobProperties, string> action = validCloudBlobProperties[key];
 
                 if (action != null)
                 {
@@ -386,7 +386,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
             }
 
             AccessCondition accessCondition = null;
-            StorageBlob.BlobRequestOptions requestOptions = RequestOptions;
+            BlobRequestOptions requestOptions = RequestOptions;
 
             await Channel.SetBlobPropertiesAsync(blob, accessCondition, requestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
         }
@@ -396,7 +396,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         /// </summary>
         /// <param name="azureBlob">CloudBlob object</param>
         /// <param name="meta">meta data hashtable</param>
-        private async Task SetBlobMeta(IStorageBlobManagement localChannel, StorageBlob.CloudBlob blob, Hashtable meta)
+        private async Task SetBlobMeta(IStorageBlobManagement localChannel, CloudBlob blob, Hashtable meta)
         {
             if (meta == null)
             {
@@ -419,7 +419,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
             }
 
             AccessCondition accessCondition = null;
-            StorageBlob.BlobRequestOptions requestOptions = RequestOptions;
+            BlobRequestOptions requestOptions = RequestOptions;
 
             await Channel.SetBlobMetadataAsync(blob, accessCondition, requestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
         }
@@ -430,14 +430,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         /// <param name="azureBlob">CloudBlob object</param>
         /// <param name="blockBlobTier">Block Blob Tier</param>
         /// <param name="pageBlobTier">Page Blob Tier</param>
-        private async Task SetBlobTier(IStorageBlobManagement localChannel, StorageBlob.CloudBlob blob, PremiumPageBlobTier? pageBlobTier)
+        private async Task SetBlobTier(IStorageBlobManagement localChannel, CloudBlob blob, PremiumPageBlobTier? pageBlobTier)
         {
             if (pageBlobTier == null)
             {
                 return;
             }
             
-            StorageBlob.BlobRequestOptions requestOptions = RequestOptions;
+            BlobRequestOptions requestOptions = RequestOptions;
 
             // The Blob Type and Blob Tier must match, since already checked they are match at the begin of ExecuteCmdlet().
             if (pageBlobTier != null)
@@ -452,20 +452,20 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         /// <param name="data">User data</param>
         protected override void OnTaskSuccessful(DataMovementUserData data)
         {
-            StorageBlob.CloudBlob blob = data.Data as StorageBlob.CloudBlob;
+            CloudBlob blob = data.Data as CloudBlob;
             IStorageBlobManagement localChannel = data.Channel;
 
             if (blob != null)
             {
                 AccessCondition accessCondition = null;
-                StorageBlob.BlobRequestOptions requestOptions = RequestOptions;
+                BlobRequestOptions requestOptions = RequestOptions;
 
-                if (BlobProperties != null || BlobMetadata != null || this.pageBlobTier != null)
+                if (BlobProperties != null || BlobMetadata != null || _pageBlobTier != null)
                 {
                     Task[] tasks = new Task[3];
                     tasks[0] = SetBlobProperties(localChannel, blob, BlobProperties);
                     tasks[1] = SetBlobMeta(localChannel, blob, BlobMetadata);
-                    tasks[2] = SetBlobTier(localChannel, blob, pageBlobTier);
+                    tasks[2] = SetBlobTier(localChannel, blob, _pageBlobTier);
                     Task.WaitAll(tasks);
                 }
 
@@ -493,7 +493,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
         public override void ExecuteCmdlet()
         {
             ValidateBlobTier(string.Equals(blobType, PageBlobType, StringComparison.InvariantCultureIgnoreCase)? StorageBlob.BlobType.PageBlob : StorageBlob.BlobType.Unspecified, 
-                pageBlobTier);
+                _pageBlobTier);
 
             if (BlobProperties != null)
             {

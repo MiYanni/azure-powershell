@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
     {
         public virtual HttpStatusCode DeleteTrigger(string resourceGroupName, string dataFactoryName, string triggerName)
         {
-            Rest.Azure.AzureOperationResponse response = this.DataFactoryManagementClient.Triggers.DeleteWithHttpMessagesAsync(resourceGroupName,
+            Rest.Azure.AzureOperationResponse response = DataFactoryManagementClient.Triggers.DeleteWithHttpMessagesAsync(resourceGroupName,
                 dataFactoryName, triggerName).Result;
 
             return response.Response.StatusCode;
@@ -98,12 +98,12 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
         public virtual void StartTrigger(string resourceGroupName, string dataFactoryName, string triggerName)
         {
-            this.DataFactoryManagementClient.Triggers.Start(resourceGroupName, dataFactoryName, triggerName);
+            DataFactoryManagementClient.Triggers.Start(resourceGroupName, dataFactoryName, triggerName);
         }
 
         public virtual void StopTrigger(string resourceGroupName, string dataFactoryName, string triggerName)
         {
-            this.DataFactoryManagementClient.Triggers.Stop(resourceGroupName, dataFactoryName, triggerName);
+            DataFactoryManagementClient.Triggers.Stop(resourceGroupName, dataFactoryName, triggerName);
         }
 
         private TriggerResource CreateOrUpdateTrigger(string resourceGroupName, string dataFactoryName,
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             TriggerResource triggerResource;
             try
             {
-                triggerResource = SafeJsonConvert.DeserializeObject<TriggerResource>(rawJsonContent, this.DataFactoryManagementClient.DeserializationSettings);
+                triggerResource = SafeJsonConvert.DeserializeObject<TriggerResource>(rawJsonContent, DataFactoryManagementClient.DeserializationSettings);
             }
             catch (Exception ex)
             {
@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             }
 
             // If create or update failed, the current behavior is to throw
-            return this.DataFactoryManagementClient.Triggers.CreateOrUpdate(
+            return DataFactoryManagementClient.Triggers.CreateOrUpdate(
                     resourceGroupName,
                     dataFactoryName,
                     triggerName,
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         private PSTrigger GetTrigger(string resourceGroupName, string dataFactoryName,
             string triggerName)
         {
-            TriggerResource response = this.DataFactoryManagementClient.Triggers.Get(resourceGroupName, dataFactoryName,
+            TriggerResource response = DataFactoryManagementClient.Triggers.Get(resourceGroupName, dataFactoryName,
                 triggerName);
 
             if (response == null)
@@ -152,11 +152,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             IPage<TriggerResource> response;
             if (filterOptions.NextLink.IsNextPageLink())
             {
-                response = this.DataFactoryManagementClient.Triggers.ListByFactoryNext(filterOptions.NextLink);
+                response = DataFactoryManagementClient.Triggers.ListByFactoryNext(filterOptions.NextLink);
             }
             else
             {
-                response = this.DataFactoryManagementClient.Triggers.ListByFactory(filterOptions.ResourceGroupName,
+                response = DataFactoryManagementClient.Triggers.ListByFactory(filterOptions.ResourceGroupName,
                     filterOptions.DataFactoryName);
             }
             filterOptions.NextLink = response != null ? response.NextPageLink : null;
@@ -184,10 +184,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 {
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
     }

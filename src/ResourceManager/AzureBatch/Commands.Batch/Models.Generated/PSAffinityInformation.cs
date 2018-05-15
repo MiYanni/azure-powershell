@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSAffinityInformation
     {
         
-        internal Microsoft.Azure.Batch.AffinityInformation omObject;
+        internal AffinityInformation omObject;
         
         public PSAffinityInformation(string affinityId)
         {
-            this.omObject = new Microsoft.Azure.Batch.AffinityInformation(affinityId);
+            omObject = new AffinityInformation(affinityId);
         }
         
-        internal PSAffinityInformation(Microsoft.Azure.Batch.AffinityInformation omObject)
+        internal PSAffinityInformation(AffinityInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.AffinityId;
+                return omObject.AffinityId;
             }
         }
     }

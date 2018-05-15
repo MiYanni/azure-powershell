@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                     throw new ArgumentException(Resources.VaultCredPathException);
                 }
 
-                string subscriptionId = DefaultContext.Subscription.Id.ToString();
+                string subscriptionId = DefaultContext.Subscription.Id;
                 string resourceType = "BackupVault";
                 string displayName = subscriptionId + "_" + Vault.ResourceGroupName + "_" + Vault.Name;
 
@@ -62,10 +62,9 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                                                                        CertUtils.GenerateCertFriendlyName(subscriptionId, Vault.Name),
                                                                        CertUtils.DefaultPassword,
                                                                        DateTime.UtcNow.AddMinutes(-10),
-                                                                       DateTime.UtcNow.AddHours(this.GetCertificateExpiryInHours()));
+                                                                       DateTime.UtcNow.AddHours(GetCertificateExpiryInHours()));
 
                 AcsNamespace acsNamespace = new AcsNamespace();
-                string channelIntegrityKey = string.Empty;
                 try
                 {
                     // Upload cert into ID Mgmt
@@ -121,9 +120,9 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
         private AcsNamespace UploadCert(X509Certificate2 cert, string subscriptionId, string resourceName, string resourceType, string resourceGroupName)
         {
             string rawCertDataString = Convert.ToBase64String(cert.RawData);
-            VaultCredUploadCertRequest vaultCredUploadCertRequest = new VaultCredUploadCertRequest()
+            VaultCredUploadCertRequest vaultCredUploadCertRequest = new VaultCredUploadCertRequest
             {
-                RawCertificateData = new RawCertificateData()
+                RawCertificateData = new RawCertificateData
                 {
                     Certificate = rawCertDataString,
                 },

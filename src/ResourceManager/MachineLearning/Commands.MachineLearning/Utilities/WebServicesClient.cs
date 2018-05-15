@@ -34,12 +34,12 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
 
         public WebServicesClient(IAzureContext context)
         {
-            this.apiClient = AzureSession.Instance.ClientFactory.
+            apiClient = AzureSession.Instance.ClientFactory.
                                             CreateArmClient<APIClient>(
                                                 context,
                                                 AzureEnvironment.Endpoint.ResourceManager);
-            this.apiClient.LongRunningOperationRetryTimeout =
-                    WebServicesClient.AsyncOperationPollingIntervalSeconds;
+            apiClient.LongRunningOperationRetryTimeout =
+                    AsyncOperationPollingIntervalSeconds;
         }
 
         public WebService CreateAzureMlWebService(
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                             string webServiceName,
                             WebService serviceDefinition)
         {
-            return this.apiClient.WebServices.CreateOrUpdateWithRequestId(
+            return apiClient.WebServices.CreateOrUpdateWithRequestId(
                                                 serviceDefinition,
                                                 resourceGroupName,
                                                 webServiceName);
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                             string webServiceName,
                             WebService serviceDefinition)
         {
-            return this.apiClient.WebServices.PatchWithRequestId(
+            return apiClient.WebServices.PatchWithRequestId(
                                                 serviceDefinition,
                                                 resourceGroupName,
                                                 webServiceName);
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                         string resourceGroupName,
                         string webServiceName)
         {
-            this.apiClient.WebServices.RemoveWithRequestId(resourceGroupName, webServiceName);
+            apiClient.WebServices.RemoveWithRequestId(resourceGroupName, webServiceName);
         }
 
         public WebService GetAzureMlWebService(
@@ -76,13 +76,13 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                             string webServiceName,
                             string region)
         {
-            return this.apiClient.WebServices.Get(resourceGroupName, webServiceName, region);
+            return apiClient.WebServices.Get(resourceGroupName, webServiceName, region);
         }
 
         public WebServiceKeys GetAzureMlWebServiceKeys(
                                 string resourceGroupName, string webServiceName)
         {
-            return this.apiClient.WebServices.ListKeys(resourceGroupName, webServiceName);
+            return apiClient.WebServices.ListKeys(resourceGroupName, webServiceName);
         }
 
         public async Task<ResponseWithContinuation<WebService[]>> 
@@ -91,9 +91,9 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                                                     string nextLink,
                                                     CancellationToken? cancellationToken)
         {
-            string skipToken = WebServicesClient.GetSkipTokenFromLink(nextLink);
+            string skipToken = GetSkipTokenFromLink(nextLink);
             var cancellationTokenParam = cancellationToken ?? CancellationToken.None;
-            var paginatedResponse = await this.apiClient.WebServices.ListByResourceGroupWithHttpMessagesAsync(
+            var paginatedResponse = await apiClient.WebServices.ListByResourceGroupWithHttpMessagesAsync(
                                                                         resourceGroupName,
                                                                         skipToken,
                                                                         null,
@@ -111,11 +111,11 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                                                     string nextLink,
                                                     CancellationToken? cancellationToken)
         {
-            string skipToken = WebServicesClient.GetSkipTokenFromLink(nextLink);
+            string skipToken = GetSkipTokenFromLink(nextLink);
             var cancellationTokenParam = cancellationToken ?? CancellationToken.None;
 
             var paginatedResponse =
-                    await this.apiClient.WebServices.ListBySubscriptionIdWithHttpMessagesAsync(
+                    await apiClient.WebServices.ListBySubscriptionIdWithHttpMessagesAsync(
                                                         skipToken,
                                                         null,
                                                         cancellationTokenParam).ConfigureAwait(false);
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Utilities
                         string region
                         )
         {
-            this.apiClient.WebServices.CreateRegionalPropertiesWithRequestId(resourceGroupName, webServiceName, region);
+            apiClient.WebServices.CreateRegionalPropertiesWithRequestId(resourceGroupName, webServiceName, region);
         }
     }
 }

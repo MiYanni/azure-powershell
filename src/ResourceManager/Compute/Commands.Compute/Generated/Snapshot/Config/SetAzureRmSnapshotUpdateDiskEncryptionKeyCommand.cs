@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Set", "AzureRmSnapshotUpdateDiskEncryptionKey", SupportsShouldProcess = true)]
     [OutputType(typeof(PSSnapshotUpdate))]
-    public partial class SetAzureRmSnapshotUpdateDiskEncryptionKeyCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class SetAzureRmSnapshotUpdateDiskEncryptionKeyCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -62,42 +62,42 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
         private void Run()
         {
-            if (this.MyInvocation.BoundParameters.ContainsKey("SecretUrl"))
+            if (MyInvocation.BoundParameters.ContainsKey("SecretUrl"))
             {
                 // EncryptionSettings
-                if (this.SnapshotUpdate.EncryptionSettings == null)
+                if (SnapshotUpdate.EncryptionSettings == null)
                 {
-                    this.SnapshotUpdate.EncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    SnapshotUpdate.EncryptionSettings = new EncryptionSettings();
                 }
                 // DiskEncryptionKey
-                if (this.SnapshotUpdate.EncryptionSettings.DiskEncryptionKey == null)
+                if (SnapshotUpdate.EncryptionSettings.DiskEncryptionKey == null)
                 {
-                    this.SnapshotUpdate.EncryptionSettings.DiskEncryptionKey = new Microsoft.Azure.Management.Compute.Models.KeyVaultAndSecretReference();
+                    SnapshotUpdate.EncryptionSettings.DiskEncryptionKey = new KeyVaultAndSecretReference();
                 }
-                this.SnapshotUpdate.EncryptionSettings.DiskEncryptionKey.SecretUrl = this.SecretUrl;
+                SnapshotUpdate.EncryptionSettings.DiskEncryptionKey.SecretUrl = SecretUrl;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SourceVaultId"))
+            if (MyInvocation.BoundParameters.ContainsKey("SourceVaultId"))
             {
                 // EncryptionSettings
-                if (this.SnapshotUpdate.EncryptionSettings == null)
+                if (SnapshotUpdate.EncryptionSettings == null)
                 {
-                    this.SnapshotUpdate.EncryptionSettings = new Microsoft.Azure.Management.Compute.Models.EncryptionSettings();
+                    SnapshotUpdate.EncryptionSettings = new EncryptionSettings();
                 }
                 // DiskEncryptionKey
-                if (this.SnapshotUpdate.EncryptionSettings.DiskEncryptionKey == null)
+                if (SnapshotUpdate.EncryptionSettings.DiskEncryptionKey == null)
                 {
-                    this.SnapshotUpdate.EncryptionSettings.DiskEncryptionKey = new Microsoft.Azure.Management.Compute.Models.KeyVaultAndSecretReference();
+                    SnapshotUpdate.EncryptionSettings.DiskEncryptionKey = new KeyVaultAndSecretReference();
                 }
                 // SourceVault
-                if (this.SnapshotUpdate.EncryptionSettings.DiskEncryptionKey.SourceVault == null)
+                if (SnapshotUpdate.EncryptionSettings.DiskEncryptionKey.SourceVault == null)
                 {
-                    this.SnapshotUpdate.EncryptionSettings.DiskEncryptionKey.SourceVault = new Microsoft.Azure.Management.Compute.Models.SourceVault();
+                    SnapshotUpdate.EncryptionSettings.DiskEncryptionKey.SourceVault = new SourceVault();
                 }
-                this.SnapshotUpdate.EncryptionSettings.DiskEncryptionKey.SourceVault.Id = this.SourceVaultId;
+                SnapshotUpdate.EncryptionSettings.DiskEncryptionKey.SourceVault.Id = SourceVaultId;
             }
 
-            WriteObject(this.SnapshotUpdate);
+            WriteObject(SnapshotUpdate);
         }
     }
 }

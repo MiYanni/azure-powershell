@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Billing.Cmdlets.Invoices
             {
                 if (ParameterSetName.Equals(Constants.ParameterSetNames.ListParameterSet))
                 {
-                    string expand = this.GenerateDownloadUrl.IsPresent ? DownloadUrlExpand : null;
+                    string expand = GenerateDownloadUrl.IsPresent ? DownloadUrlExpand : null;
 
                     WriteObject(BillingManagementClient.Invoices.List(expand, null, null, MaxCount).Select(x => new PSInvoice(x)), true);
                     return;

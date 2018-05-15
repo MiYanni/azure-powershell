@@ -16,9 +16,9 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Application;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
+    using Components;
+    using Entities.Application;
+    using Extensions;
     using Newtonsoft.Json.Linq;
     using System.Collections;
     using System.Management.Automation;
@@ -112,45 +112,45 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected override void OnProcessRecord()
         {
             base.OnProcessRecord();
-            if (this.ShouldProcess(this.Name, "Create Managed Application Definition"))
+            if (ShouldProcess(Name, "Create Managed Application Definition"))
             {
-                if (!string.IsNullOrEmpty(this.PackageFileUri))
+                if (!string.IsNullOrEmpty(PackageFileUri))
                 {
-                    if (!string.IsNullOrEmpty(this.MainTemplate) || !string.IsNullOrEmpty(this.CreateUiDefinition))
+                    if (!string.IsNullOrEmpty(MainTemplate) || !string.IsNullOrEmpty(CreateUiDefinition))
                     {
                         throw new PSInvalidOperationException("If PackageFileUri is specified, MainTemplate and CreateUiDefinition cannot have a value.");
                     }
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(this.MainTemplate) || string.IsNullOrEmpty(this.CreateUiDefinition))
+                    if (string.IsNullOrEmpty(MainTemplate) || string.IsNullOrEmpty(CreateUiDefinition))
                     {
                         throw new PSInvalidOperationException("If PackageFileUri is not specified, both MainTemplate and CreateUiDefinition should have a valid value.");
                     }
                 }
                 string resourceId = GetResourceId();
 
-                var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.ApplicationApiVersion : this.ApiVersion;
+                var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.ApplicationApiVersion : ApiVersion;
 
-                var operationResult = this.GetResourcesClient()
+                var operationResult = GetResourcesClient()
                     .PutResource(
-                        resourceId: resourceId,
-                        apiVersion: apiVersion,
-                        resource: this.GetResource(),
-                        cancellationToken: this.CancellationToken.Value,
-                        odataQuery: null)
+                        resourceId,
+                        apiVersion,
+                        GetResource(),
+                        CancellationToken.Value,
+                        null)
                     .Result;
 
-                var managementUri = this.GetResourcesClient()
+                var managementUri = GetResourcesClient()
                   .GetResourceManagementRequestUri(
-                      resourceId: resourceId,
-                      apiVersion: apiVersion,
+                      resourceId,
+                      apiVersion,
                       odataQuery: null);
 
                 var activity = string.Format("PUT {0}", managementUri.PathAndQuery);
-                var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: true)
-                    .WaitOnOperation(operationResult: operationResult);
-                this.WriteObject(this.GetOutputObjects("ManagedApplicationDefinitionId", JObject.Parse(result)), enumerateCollection: true);
+                var result = GetLongRunningOperationTracker(activity, true)
+                    .WaitOnOperation(operationResult);
+                WriteObject(GetOutputObjects("ManagedApplicationDefinitionId", JObject.Parse(result)), true);
             }
         }
 
@@ -162,9 +162,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             var subscriptionId = DefaultContext.Subscription.Id;
             return string.Format("/subscriptions/{0}/resourcegroups/{1}/providers/{2}/{3}",
                 subscriptionId.ToString(),
-                this.ResourceGroupName,
+                ResourceGroupName,
                 Constants.MicrosoftApplicationDefinitionType,
-                this.Name);
+                Name);
         }
 
         /// <summary>
@@ -174,23 +174,23 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             var applicationDefinitionObject = new ApplicationDefinition
             {
-                Name = this.Name,
-                Location = this.Location,
+                Name = Name,
+                Location = Location,
                 Properties = new ApplicationDefinitionProperties
                 {
-                    LockLevel = this.LockLevel,
-                    Description = this.Description,
-                    DisplayName = this.DisplayName,
-                    PackageFileUri = this.PackageFileUri ?? null,
-                    Authorizations = JArray.Parse(this.GetAuthorizationObject(this.Authorization).ToString()).ToJson().FromJson<ApplicationProviderAuthorization[]>()
+                    LockLevel = LockLevel,
+                    Description = Description,
+                    DisplayName = DisplayName,
+                    PackageFileUri = PackageFileUri ?? null,
+                    Authorizations = JArray.Parse(GetAuthorizationObject(Authorization).ToString()).ToJson().FromJson<ApplicationProviderAuthorization[]>()
                 },
-                Tags = TagsHelper.GetTagsDictionary(this.Tag)
+                Tags = TagsHelper.GetTagsDictionary(Tag)
             };
 
-            if (!string.IsNullOrEmpty(this.MainTemplate) && !string.IsNullOrEmpty(this.CreateUiDefinition))
+            if (!string.IsNullOrEmpty(MainTemplate) && !string.IsNullOrEmpty(CreateUiDefinition))
             {
-                applicationDefinitionObject.Properties.MainTemplate = JObject.Parse(this.GetObjectFromParameter(this.MainTemplate).ToString());
-                applicationDefinitionObject.Properties.CreateUiDefinition = JObject.Parse(this.GetObjectFromParameter(this.CreateUiDefinition).ToString());
+                applicationDefinitionObject.Properties.MainTemplate = JObject.Parse(GetObjectFromParameter(MainTemplate).ToString());
+                applicationDefinitionObject.Properties.CreateUiDefinition = JObject.Parse(GetObjectFromParameter(CreateUiDefinition).ToString());
             }
 
             return applicationDefinitionObject.ToJToken();

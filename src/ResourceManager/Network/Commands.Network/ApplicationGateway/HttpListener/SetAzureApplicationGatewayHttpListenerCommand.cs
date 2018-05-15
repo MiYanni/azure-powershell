@@ -31,20 +31,20 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var oldHttpListener = this.ApplicationGateway.HttpListeners.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var oldHttpListener = ApplicationGateway.HttpListeners.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (oldHttpListener == null)
             {
                 throw new ArgumentException("Http Listener with the specified name does not exist");
             }
 
-            var newHttpListener = base.NewObject();
+            var newHttpListener = NewObject();
 
-            this.ApplicationGateway.HttpListeners.Remove(oldHttpListener);
-            this.ApplicationGateway.HttpListeners.Add(newHttpListener);
+            ApplicationGateway.HttpListeners.Remove(oldHttpListener);
+            ApplicationGateway.HttpListeners.Add(newHttpListener);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

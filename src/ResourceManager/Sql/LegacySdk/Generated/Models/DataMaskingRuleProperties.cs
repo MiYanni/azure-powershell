@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ColumnName
         {
-            get { return this._columnName; }
-            set { this._columnName = value; }
+            get { return _columnName; }
+            set { _columnName = value; }
         }
         
         private string _id;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Id
         {
-            get { return this._id; }
-            set { this._id = value; }
+            get { return _id; }
+            set { _id = value; }
         }
         
         private string _maskingFunction;
@@ -60,8 +60,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string MaskingFunction
         {
-            get { return this._maskingFunction; }
-            set { this._maskingFunction = value; }
+            get { return _maskingFunction; }
+            set { _maskingFunction = value; }
         }
         
         private string _numberFrom;
@@ -71,8 +71,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string NumberFrom
         {
-            get { return this._numberFrom; }
-            set { this._numberFrom = value; }
+            get { return _numberFrom; }
+            set { _numberFrom = value; }
         }
         
         private string _numberTo;
@@ -83,8 +83,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string NumberTo
         {
-            get { return this._numberTo; }
-            set { this._numberTo = value; }
+            get { return _numberTo; }
+            set { _numberTo = value; }
         }
         
         private string _prefixSize;
@@ -95,8 +95,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PrefixSize
         {
-            get { return this._prefixSize; }
-            set { this._prefixSize = value; }
+            get { return _prefixSize; }
+            set { _prefixSize = value; }
         }
         
         private string _replacementString;
@@ -107,8 +107,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ReplacementString
         {
-            get { return this._replacementString; }
-            set { this._replacementString = value; }
+            get { return _replacementString; }
+            set { _replacementString = value; }
         }
         
         private string _ruleState;
@@ -118,8 +118,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RuleState
         {
-            get { return this._ruleState; }
-            set { this._ruleState = value; }
+            get { return _ruleState; }
+            set { _ruleState = value; }
         }
         
         private string _schemaName;
@@ -130,8 +130,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SchemaName
         {
-            get { return this._schemaName; }
-            set { this._schemaName = value; }
+            get { return _schemaName; }
+            set { _schemaName = value; }
         }
         
         private string _suffixSize;
@@ -142,8 +142,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SuffixSize
         {
-            get { return this._suffixSize; }
-            set { this._suffixSize = value; }
+            get { return _suffixSize; }
+            set { _suffixSize = value; }
         }
         
         private string _tableName;
@@ -154,8 +154,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string TableName
         {
-            get { return this._tableName; }
-            set { this._tableName = value; }
+            get { return _tableName; }
+            set { _tableName = value; }
         }
         
         /// <summary>
@@ -184,9 +184,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("maskingFunction");
             }
-            this.Id = id;
-            this.RuleState = ruleState;
-            this.MaskingFunction = maskingFunction;
+            Id = id;
+            RuleState = ruleState;
+            MaskingFunction = maskingFunction;
         }
     }
 }

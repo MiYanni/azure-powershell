@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Commands.Common.Authentication
 
         public AdalTokenProvider(IWin32Window parentWindow)
         {
-            this.userTokenProvider = new UserTokenProvider(parentWindow);
-            this.servicePrincipalTokenProvider = new ServicePrincipalTokenProvider();
+            userTokenProvider = new UserTokenProvider(parentWindow);
+            servicePrincipalTokenProvider = new ServicePrincipalTokenProvider();
         }
 
         public IAccessToken GetAccessToken(
@@ -80,8 +80,8 @@ namespace Microsoft.Azure.Commands.Common.Authentication
 #else
         public AdalTokenProvider()
         {
-            this.userTokenProvider = new UserTokenProvider();
-            this.servicePrincipalTokenProvider = new ServicePrincipalTokenProvider();
+            userTokenProvider = new UserTokenProvider();
+            servicePrincipalTokenProvider = new ServicePrincipalTokenProvider();
         }
 		
 		public IAccessToken GetAccessToken(

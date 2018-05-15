@@ -82,27 +82,27 @@ namespace Microsoft.Azure.Commands.EventGrid
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(this.TopicName, $"Regenerate key {this.KeyName} for topic {this.TopicName} in Resource Group {this.ResourceGroupName}"))
+            if (ShouldProcess(TopicName, $"Regenerate key {KeyName} for topic {TopicName} in Resource Group {ResourceGroupName}"))
             {
                 string resourceGroupName;
                 string topicName;
 
-                if (!string.IsNullOrEmpty(this.ResourceId))
+                if (!string.IsNullOrEmpty(ResourceId))
                 {
-                    EventGridUtils.GetResourceGroupNameAndTopicName(this.ResourceId, out resourceGroupName, out topicName);
+                    EventGridUtils.GetResourceGroupNameAndTopicName(ResourceId, out resourceGroupName, out topicName);
                 }
-                else if (this.InputObject != null)
+                else if (InputObject != null)
                 {
-                    resourceGroupName = this.InputObject.ResourceGroupName;
-                    topicName = this.InputObject.TopicName;
+                    resourceGroupName = InputObject.ResourceGroupName;
+                    topicName = InputObject.TopicName;
                 }
                 else
                 {
-                    resourceGroupName = this.ResourceGroupName;
-                    topicName = this.TopicName;
+                    resourceGroupName = ResourceGroupName;
+                    topicName = TopicName;
                 }
 
-                this.WriteObject(this.Client.RegenerateTopicKey(resourceGroupName, topicName, this.KeyName));
+                WriteObject(Client.RegenerateTopicKey(resourceGroupName, topicName, KeyName));
             }
         }
     }

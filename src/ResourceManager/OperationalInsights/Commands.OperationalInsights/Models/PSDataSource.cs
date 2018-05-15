@@ -73,41 +73,41 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
                 throw new ArgumentNullException("dataSource");
             }
 
-            this.ResourceGroupName = resourceGroupName;
-            this.WorkspaceName = workspaceName;
-            this.Name = dataSource.Name;
-            this.ResourceId = dataSource.Id;
-            this.Kind = dataSource.Kind;
-            switch(this.Kind){
+            ResourceGroupName = resourceGroupName;
+            WorkspaceName = workspaceName;
+            Name = dataSource.Name;
+            ResourceId = dataSource.Id;
+            Kind = dataSource.Kind;
+            switch(Kind){
                 case PSDataSourceKinds.AzureActivityLog:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSAzureActivityLogDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSAzureActivityLogDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.WindowsEvent:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSWindowsEventDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSWindowsEventDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.WindowsPerformanceCounter:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSWindowsPerformanceCounterDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSWindowsPerformanceCounterDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.LinuxSyslog:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSLinuxSyslogDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSLinuxSyslogDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.LinuxSyslogCollection:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSLinuxSyslogCollectionDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSLinuxSyslogCollectionDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.LinuxPerformanceObject:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSLinuxPerformanceObjectDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSLinuxPerformanceObjectDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.LinuxPerformanceCollection:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSLinuxPerformanceCollectionDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSLinuxPerformanceCollectionDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.CustomLog:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSCustomLogDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSCustomLogDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.CustomLogCollection:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSCustomLogCollectionDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSCustomLogCollectionDataSourceProperties>();
                     break;
                 case PSDataSourceKinds.IISLogs:
-                    this.Properties = ((JToken)dataSource.Properties).ToObject<PSIISLogsDataSourceProperties>();
+                    Properties = ((JToken)dataSource.Properties).ToObject<PSIISLogsDataSourceProperties>();
                     break;
             }
 

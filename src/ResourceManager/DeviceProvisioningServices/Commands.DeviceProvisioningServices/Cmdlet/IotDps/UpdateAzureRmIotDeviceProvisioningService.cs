@@ -18,11 +18,11 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System.Collections;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
-    using DPSResources = Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Properties.Resources;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices;
+    using Azure.Management.DeviceProvisioningServices.Models;
+    using DPSResources = Properties.Resources;
 
     [Cmdlet(VerbsData.Update, "AzureRmIoTDeviceProvisioningService", DefaultParameterSetName = ResourceUpdateParameterSet, SupportsShouldProcess = true)]
     [Alias("Update-AzureRmIoTDps")]
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
             ParameterSetName = ResourceCreateUpdateParameterSet,
             HelpMessage = "IoT Device Provisioning Service Allocation policy")]
         [ValidateNotNullOrEmpty]
-        [ValidateSet(new string[] { "Hashed", "GeoLatency", "Static" }, IgnoreCase = true)]
+        [ValidateSet("Hashed", "GeoLatency", "Static", IgnoreCase = true)]
         public string AllocationPolicy { get; set; }
 
         [Parameter(
@@ -150,14 +150,14 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
             {
                 if (ParameterSetName.Equals(InputObjectCreateUpdateParameterSet) || ParameterSetName.Equals(InputObjectUpdateParameterSet))
                 {
-                    this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                    this.Name = this.InputObject.Name;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    Name = InputObject.Name;
                 }
 
                 if (ParameterSetName.Equals(ResourceIdCreateUpdateParameterSet) || ParameterSetName.Equals(ResourceIdUpdateParameterSet))
                 {
-                    this.ResourceGroupName = IotDpsUtils.GetResourceGroupName(this.ResourceId);
-                    this.Name = IotDpsUtils.GetIotDpsName(this.ResourceId);
+                    ResourceGroupName = IotDpsUtils.GetResourceGroupName(ResourceId);
+                    Name = IotDpsUtils.GetIotDpsName(ResourceId);
                 }
                 
                 switch(ParameterSetName)
@@ -165,13 +165,13 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
                     case InputObjectCreateUpdateParameterSet:
                     case ResourceIdCreateUpdateParameterSet:
                     case ResourceCreateUpdateParameterSet:
-                        this.CreateUpdateIotDps();
+                        CreateUpdateIotDps();
                         break;
 
                     case InputObjectUpdateParameterSet:
                     case ResourceIdUpdateParameterSet:
                     case ResourceUpdateParameterSet:
-                        this.UpdateIotDps();
+                        UpdateIotDps();
                         break;
                 }
             }
@@ -179,17 +179,17 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 
         private void WritePSObject(ProvisioningServiceDescription provisioningServiceDescription)
         {
-            this.WriteObject(IotDpsUtils.ToPSProvisioningServiceDescription(provisioningServiceDescription), false);
+            WriteObject(IotDpsUtils.ToPSProvisioningServiceDescription(provisioningServiceDescription), false);
         }
 
         private void CreateUpdateIotDps()
         {
             PSAllocationPolicy psAllocationPolicy;
-            if (Enum.TryParse<PSAllocationPolicy>(this.AllocationPolicy, true, out psAllocationPolicy))
+            if (Enum.TryParse<PSAllocationPolicy>(AllocationPolicy, true, out psAllocationPolicy))
             {
-                ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(this.ResourceGroupName, this.Name);
+                ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(ResourceGroupName, Name);
                 provisioningServiceDescription.Properties.AllocationPolicy = psAllocationPolicy.ToString();
-                this.WritePSObject(IotDpsCreateOrUpdate(this.ResourceGroupName, this.Name, provisioningServiceDescription));
+                WritePSObject(IotDpsCreateOrUpdate(ResourceGroupName, Name, provisioningServiceDescription));
             }
             else
             {
@@ -200,24 +200,24 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
         private void UpdateIotDps()
         {
             ProvisioningServiceDescription updatedProvisioningServiceDescription = new ProvisioningServiceDescription();
-            if (this.Reset.IsPresent)
+            if (Reset.IsPresent)
             {
-                updatedProvisioningServiceDescription = this.IotDpsClient.IotDpsResource.Update(this.ResourceGroupName, this.Name, IotDpsUtils.ToTagsResource(this.Tag.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)));
+                updatedProvisioningServiceDescription = IotDpsClient.IotDpsResource.Update(ResourceGroupName, Name, IotDpsUtils.ToTagsResource(Tag.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)));
             }
             else
             {
-                ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(this.ResourceGroupName, this.Name);
+                ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(ResourceGroupName, Name);
                 foreach (var tag in provisioningServiceDescription.Tags)
                 {
-                    if (!this.Tag.ContainsKey(tag.Key))
+                    if (!Tag.ContainsKey(tag.Key))
                     {
-                        this.Tag.Add(tag.Key, tag.Value);
+                        Tag.Add(tag.Key, tag.Value);
                     }
                 }
-                updatedProvisioningServiceDescription = this.IotDpsClient.IotDpsResource.Update(this.ResourceGroupName, this.Name, IotDpsUtils.ToTagsResource(this.Tag.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)));
+                updatedProvisioningServiceDescription = IotDpsClient.IotDpsResource.Update(ResourceGroupName, Name, IotDpsUtils.ToTagsResource(Tag.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)));
             }
 
-            this.WritePSObject(updatedProvisioningServiceDescription);
+            WritePSObject(updatedProvisioningServiceDescription);
         }
     }
 }

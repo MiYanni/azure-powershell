@@ -43,10 +43,10 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            ReimageComputeNodeParameters parameters = new ReimageComputeNodeParameters(this.BatchContext, this.PoolId,
-                this.Id, this.ComputeNode, this.AdditionalBehaviors)
+            ReimageComputeNodeParameters parameters = new ReimageComputeNodeParameters(BatchContext, PoolId,
+                Id, ComputeNode, AdditionalBehaviors)
             {
-                ReimageOption = this.ReimageOption
+                ReimageOption = ReimageOption
             };
             BatchClient.ReimageComputeNode(parameters);
         }

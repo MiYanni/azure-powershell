@@ -51,8 +51,9 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlSyncMemberModel> GetEntity()
         {
-            return new List<AzureSqlSyncMemberModel>() { 
-               ModelAdapter.GetSyncMember(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName, this.Name)
+            return new List<AzureSqlSyncMemberModel>
+            { 
+               ModelAdapter.GetSyncMember(ResourceGroupName, ServerName, DatabaseName, SyncGroupName, Name)
             };
         }
 
@@ -67,8 +68,8 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
 
             if (MyInvocation.BoundParameters.ContainsKey("MemberDatabaseCredential"))
             {
-                newModel.MemberDatabaseUserName = this.MemberDatabaseCredential.UserName;
-                newModel.MemberDatabasePassword = this.MemberDatabaseCredential.Password;
+                newModel.MemberDatabaseUserName = MemberDatabaseCredential.UserName;
+                newModel.MemberDatabasePassword = MemberDatabaseCredential.Password;
             }
             else
             {
@@ -86,7 +87,8 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlSyncMemberModel> PersistChanges(IEnumerable<AzureSqlSyncMemberModel> entity)
         {
-            return new List<AzureSqlSyncMemberModel>() {
+            return new List<AzureSqlSyncMemberModel>
+            {
                 ModelAdapter.UpdateSyncMember(entity.First())
             };
         }

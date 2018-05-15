@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Queue
                 queueAttributes = InputObject;
                }
 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.UpdateQueue, Name, Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.UpdateQueue, Name, Namespace)))
             {
                 WriteObject(Client.CreateUpdateQueue(ResourceGroupName, Namespace, queueAttributes.Name, queueAttributes));
             }

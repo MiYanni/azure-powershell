@@ -176,7 +176,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public void LogCustomEvent<T>(string eventName, T payload, bool force = false)
         {
-            if (payload == null || (!force && !IsMetricTermAccepted()))
+            if (payload == null || !force && !IsMetricTermAccepted())
             {
                 return;
             }

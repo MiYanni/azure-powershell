@@ -38,14 +38,14 @@ namespace Microsoft.Azure.Commands.Network
 
             base.Execute();
             // Verify if the subnet exists in the VirtualNetwork
-            var subnet = this.VirtualNetwork.Subnets.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var subnet = VirtualNetwork.Subnets.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (subnet != null)
             {
-                this.VirtualNetwork.Subnets.Remove(subnet);
+                VirtualNetwork.Subnets.Remove(subnet);
             }
 
-            WriteObject(this.VirtualNetwork);
+            WriteObject(VirtualNetwork);
         }
     }
 }

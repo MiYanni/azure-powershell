@@ -29,16 +29,16 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             {
                 if (dataServiceClient == null)
                 {
-                    this.dataServiceClient = new KeyVaultDataServiceClient(
+                    dataServiceClient = new KeyVaultDataServiceClient(
                         AzureSession.Instance.AuthenticationFactory,
                         DefaultContext);
                 }
 
-                return this.dataServiceClient;
+                return dataServiceClient;
             }
             set
             {
-                this.dataServiceClient = value;
+                dataServiceClient = value;
             }
         }
 

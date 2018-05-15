@@ -17,12 +17,12 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System.Collections.Generic;
     using System.Linq;
     using Azure.Management.Internal.Resources;
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
-    using Microsoft.Azure.Management.DeviceProvisioningServices;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Rest.Azure;
+    using Common.Authentication;
+    using Common.Authentication.Abstractions;
+    using ResourceManager.Common;
+    using Azure.Management.DeviceProvisioningServices;
+    using Azure.Management.DeviceProvisioningServices.Models;
+    using Rest.Azure;
 
     public class IotDpsBaseCmdlet : AzureRMCmdlet
     {
@@ -34,12 +34,12 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
         {
             get
             {
-                if (this.iotDpsClient == null)
+                if (iotDpsClient == null)
                 {
-                    this.iotDpsClient = AzureSession.Instance.ClientFactory.CreateArmClient<IotDpsClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
+                    iotDpsClient = AzureSession.Instance.ClientFactory.CreateArmClient<IotDpsClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
                 }
 
-                return this.iotDpsClient;
+                return iotDpsClient;
             }
         }
 
@@ -47,62 +47,62 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
         {
             get
             {
-                if (this.resourceManagementClient == null)
+                if (resourceManagementClient == null)
                 {
-                    this.resourceManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
+                    resourceManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
                 }
 
-                return this.resourceManagementClient;
+                return resourceManagementClient;
             }
         }
 
         public string SubscriptionId
         {
-            get { return DefaultProfile.DefaultContext.Subscription.Id.ToString(); }
+            get { return DefaultProfile.DefaultContext.Subscription.Id; }
         }
 
         public ProvisioningServiceDescription GetIotDpsResource(string resourceGroupName, string provisioningServiceName)
         {
-            return this.IotDpsClient.IotDpsResource.Get(provisioningServiceName, resourceGroupName);
+            return IotDpsClient.IotDpsResource.Get(provisioningServiceName, resourceGroupName);
         }
 
         public ProvisioningServiceDescription IotDpsCreateOrUpdate(string resourceGroupName, string provisioningServiceName, ProvisioningServiceDescription provisioningServiceDescription)
         {
-            return this.IotDpsClient.IotDpsResource.CreateOrUpdate(resourceGroupName, provisioningServiceName, provisioningServiceDescription);
+            return IotDpsClient.IotDpsResource.CreateOrUpdate(resourceGroupName, provisioningServiceName, provisioningServiceDescription);
         }
 
         public IList<SharedAccessSignatureAuthorizationRuleAccessRightsDescription> GetIotDpsAccessPolicy(string resourceGroupName, string provisioningServiceName)
         {
-            IPage<SharedAccessSignatureAuthorizationRuleAccessRightsDescription> iotDpsAccessPolicies = this.IotDpsClient.IotDpsResource.ListKeys(provisioningServiceName, resourceGroupName);
+            IPage<SharedAccessSignatureAuthorizationRuleAccessRightsDescription> iotDpsAccessPolicies = IotDpsClient.IotDpsResource.ListKeys(provisioningServiceName, resourceGroupName);
             return new List<SharedAccessSignatureAuthorizationRuleAccessRightsDescription>(iotDpsAccessPolicies);
         }
 
         public SharedAccessSignatureAuthorizationRuleAccessRightsDescription GetIotDpsAccessPolicy(string resourceGroupName, string provisioningServiceName, string keyName)
         {
-            return this.IotDpsClient.IotDpsResource.ListKeysForKeyName(provisioningServiceName, keyName, resourceGroupName);
+            return IotDpsClient.IotDpsResource.ListKeysForKeyName(provisioningServiceName, keyName, resourceGroupName);
         }
 
         public IList<IotHubDefinitionDescription> GetIotDpsHubs(string resourceGroupName, string provisioningServiceName)
         {
-            ProvisioningServiceDescription provisioningServiceDescription = this.GetIotDpsResource(resourceGroupName, provisioningServiceName);
+            ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(resourceGroupName, provisioningServiceName);
             return provisioningServiceDescription.Properties.IotHubs;
         }
 
         public IotHubDefinitionDescription GetIotDpsHubs(string resourceGroupName, string provisioningServiceName, string linkedHubName)
         {
-            IList<IotHubDefinitionDescription> linkedHubs = this.GetIotDpsHubs(resourceGroupName, provisioningServiceName);
+            IList<IotHubDefinitionDescription> linkedHubs = GetIotDpsHubs(resourceGroupName, provisioningServiceName);
             return linkedHubs.FirstOrDefault(hubs => hubs.Name.Equals(linkedHubName));
         }
 
         public IList<CertificateResponse> GetIotDpsCertificates(string resourceGroupName, string provisioningServiceName)
         {
-            CertificateListDescription certificates = this.IotDpsClient.DpsCertificates.List(resourceGroupName, provisioningServiceName);
+            CertificateListDescription certificates = IotDpsClient.DpsCertificates.List(resourceGroupName, provisioningServiceName);
             return certificates.Value;
         }
 
         public CertificateResponse GetIotDpsCertificates(string resourceGroupName, string provisioningServiceName, string certificateName)
         {
-            return this.IotDpsClient.DpsCertificate.Get(certificateName, resourceGroupName, provisioningServiceName);
+            return IotDpsClient.DpsCertificate.Get(certificateName, resourceGroupName, provisioningServiceName);
         }
     }
 }

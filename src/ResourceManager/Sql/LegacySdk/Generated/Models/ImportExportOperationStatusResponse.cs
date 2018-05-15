@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Id
         {
-            get { return this._id; }
-            set { this._id = value; }
+            get { return _id; }
+            set { _id = value; }
         }
         
         private string _name;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private string _operationResultType;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string OperationResultType
         {
-            get { return this._operationResultType; }
-            set { this._operationResultType = value; }
+            get { return _operationResultType; }
+            set { _operationResultType = value; }
         }
         
         private ImportExportOperationStatusResponseProperties _properties;
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ImportExportOperationStatusResponseProperties Properties
         {
-            get { return this._properties; }
-            set { this._properties = value; }
+            get { return _properties; }
+            set { _properties = value; }
         }
         
         /// <summary>

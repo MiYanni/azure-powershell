@@ -21,17 +21,17 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
     {
         public static NestedResourceStrategy<Subnet, VirtualNetwork> Strategy { get; }
             = NestedResourceStrategy.Create<Subnet, VirtualNetwork>(
-                provider: "subnets",
-                getList: parentModel => parentModel.Subnets,
-                setList: (parentModel, list) => parentModel.Subnets = list,
-                getName: model => model.Name,
-                setName: (model, name) => model.Name = name);
+                "subnets",
+                parentModel => parentModel.Subnets,
+                (parentModel, list) => parentModel.Subnets = list,
+                model => model.Name,
+                (model, name) => model.Name = name);
 
         public static NestedResourceConfig<Subnet, VirtualNetwork> CreateSubnet(
             this ResourceConfig<VirtualNetwork> virtualNetwork, string name, string addressPrefix)
             => virtualNetwork.CreateNested(
-                strategy: Strategy,
-                name: name,
-                createModel: _ => new Subnet { Name = name, AddressPrefix = addressPrefix });
+                Strategy,
+                name,
+                _ => new Subnet { Name = name, AddressPrefix = addressPrefix });
     }
 }

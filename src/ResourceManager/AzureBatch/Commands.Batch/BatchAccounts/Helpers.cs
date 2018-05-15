@@ -84,11 +84,8 @@ namespace Microsoft.Azure.Commands.Batch
                 {
                     return ContainsTagWithName(account.Tags, tagValuePair.Name);
                 }
-                else
-                {
-                    return ContainsTagWithName(account.Tags, tagValuePair.Name) &&
-                           account.Tags[tagValuePair.Name] == tagValuePair.Value;
-                }
+                return ContainsTagWithName(account.Tags, tagValuePair.Name) &&
+                       account.Tags[tagValuePair.Name] == tagValuePair.Value;
             }
 
             return true;

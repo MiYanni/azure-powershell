@@ -26,17 +26,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>Storage classification list response</returns>
         public List<StorageClassification> GetAzureSiteRecoveryStorageClassification()
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationStorageClassifications
-                .ListWithHttpMessagesAsync(this.GetRequestHeaders(true))
+                .ListWithHttpMessagesAsync(GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationStorageClassifications.ListNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);
@@ -50,17 +50,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>Storage classification Mapping list response</returns>
         public List<StorageClassificationMapping> GetAzureSiteRecoveryStorageClassificationMapping()
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationStorageClassificationMappings
-                .ListWithHttpMessagesAsync(this.GetRequestHeaders(true))
+                .ListWithHttpMessagesAsync(GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationStorageClassificationMappings.ListNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);
@@ -84,13 +84,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 primaryClassification.Id.UnFormatArmId(
                     ARMResourceIdPaths.StorageClassificationResourceIdPath);
 
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationStorageClassificationMappings.BeginCreateWithHttpMessagesAsync(
                     tokens[0],
                     tokens[1],
                     armName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);
@@ -109,12 +109,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string storageClassificationName,
             string mappingName)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationStorageClassificationMappings.BeginDeleteWithHttpMessagesAsync(
                     fabricName,
                     storageClassificationName,
                     mappingName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);

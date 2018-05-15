@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public EncryptionProtector EncryptionProtector
         {
-            get { return this._encryptionProtector; }
-            set { this._encryptionProtector = value; }
+            get { return _encryptionProtector; }
+            set { _encryptionProtector = value; }
         }
         
         /// <summary>

@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System;
     using System.Globalization;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -79,33 +79,33 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 
             if (string.IsNullOrEmpty(AgreementType))
             {
-                this.WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
+                WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
                 AgreementType = "X12";
             }
 
-            var integrationAccountGeneratedIcn = this.IntegrationAccountClient.GetIntegrationAccountGeneratedIcn(
-                resourceGroupName: this.ResourceGroupName,
-                integrationAccountName: this.Name,
-                integrationAccountAgreementName: this.AgreementName);
+            var integrationAccountGeneratedIcn = IntegrationAccountClient.GetIntegrationAccountGeneratedIcn(
+                ResourceGroupName,
+                Name,
+                AgreementName);
 
-            integrationAccountGeneratedIcn.MessageType = (MessageType)Enum.Parse(enumType: typeof(MessageType), value: AgreementType, ignoreCase: true);
-            integrationAccountGeneratedIcn.ControlNumber = this.ControlNumber;
+            integrationAccountGeneratedIcn.MessageType = (MessageType)Enum.Parse(typeof(MessageType), AgreementType, true);
+            integrationAccountGeneratedIcn.ControlNumber = ControlNumber;
             integrationAccountGeneratedIcn.ControlNumberChangedTime = DateTime.UtcNow > integrationAccountGeneratedIcn.ControlNumberChangedTime ?
                 DateTime.UtcNow :
                 integrationAccountGeneratedIcn.ControlNumberChangedTime.AddTicks(1);
 
-            this.ConfirmAction(
-                processMessage: string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateGeneratedControlNumberMessage, "Microsoft.Logic/integrationAccounts/agreements", this.Name),
-                target: this.Name,
-                action: () =>
+            ConfirmAction(
+                string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateGeneratedControlNumberMessage, "Microsoft.Logic/integrationAccounts/agreements", Name),
+                Name,
+                () =>
                 {
-                    this.WriteObject(
-                        sendToPipeline: this.IntegrationAccountClient.UpdateIntegrationAccountGeneratedIcn(
-                            resourceGroupName: this.ResourceGroupName,
-                            integrationAccountName: this.Name,
-                            integrationAccountAgreementName: this.AgreementName,
-                            integrationAccountControlNumber: integrationAccountGeneratedIcn),
-                        enumerateCollection: true);
+                    WriteObject(
+                        IntegrationAccountClient.UpdateIntegrationAccountGeneratedIcn(
+                            ResourceGroupName,
+                            Name,
+                            AgreementName,
+                            integrationAccountGeneratedIcn),
+                        true);
                 });
         }
     }

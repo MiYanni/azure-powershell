@@ -48,13 +48,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
                 {
                     heads = 4;
                 }
-                if (cylinderTimesHeads >= (heads * 1024) || heads > 16)
+                if (cylinderTimesHeads >= heads * 1024 || heads > 16)
                 {
                     sectorsPerTrack = 31;
                     heads = 16;
                     cylinderTimesHeads = totalSectors / sectorsPerTrack;
                 }
-                if (cylinderTimesHeads >= (heads * 1024))
+                if (cylinderTimesHeads >= heads * 1024)
                 {
                     sectorsPerTrack = 63;
                     heads = 16;
@@ -84,9 +84,9 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
         {
             return new DiskGeometry
             {
-                Cylinder = this.Cylinder,
-                Heads = this.Heads,
-                Sectors = this.Sectors
+                Cylinder = Cylinder,
+                Heads = Heads,
+                Sectors = Sectors
             };
         }
 

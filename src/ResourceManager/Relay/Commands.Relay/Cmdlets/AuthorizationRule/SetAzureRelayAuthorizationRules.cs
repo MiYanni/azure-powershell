@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands
 
             // update Namespace Authorization Rule
             if (ParameterSetName == NamespaceAuthoRuleParameterSet)
-                if (ShouldProcess(target: sasRule.Name, action: string.Format(Resources.UpdateNamespaceAuthorizationrule, Name, Namespace)))
+                if (ShouldProcess(sasRule.Name, string.Format(Resources.UpdateNamespaceAuthorizationrule, Name, Namespace)))
                 {
                     WriteObject(Client.CreateOrUpdateNamespaceAuthorizationRules(ResourceGroupName, Namespace, Name, sasRule));
                 }
@@ -114,14 +114,14 @@ namespace Microsoft.Azure.Commands.Relay.Commands
 
             // Update WcfRelay authorizationRule
             if (ParameterSetName == WcfRelayAuthoRuleParameterSet)
-                if (ShouldProcess(target: sasRule.Name, action: string.Format(Resources.UpdateWcfRelayAuthorizationrule, Name, WcfRelay)))
+                if (ShouldProcess(sasRule.Name, string.Format(Resources.UpdateWcfRelayAuthorizationrule, Name, WcfRelay)))
                 {
                     WriteObject(Client.CreateOrUpdateWcfRelayAuthorizationRules(ResourceGroupName, Namespace, WcfRelay, Name, sasRule));
                 }
 
             // Update HybridConnection authorizationRule
             if (ParameterSetName == HybridConnectionAuthoRuleParameterSet)
-                if (ShouldProcess(target: sasRule.Name, action: string.Format(Resources.UpdateHybirdconnectionAuthorizationrule, Name, HybridConnection)))
+                if (ShouldProcess(sasRule.Name, string.Format(Resources.UpdateHybirdconnectionAuthorizationrule, Name, HybridConnection)))
                 {
                     WriteObject(Client.CreateOrUpdateHybridConnectionsAuthorizationRules(ResourceGroupName, Namespace, HybridConnection, Name, sasRule));
                 }

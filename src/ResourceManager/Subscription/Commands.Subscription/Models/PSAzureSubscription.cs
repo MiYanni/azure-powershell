@@ -138,10 +138,10 @@ namespace Microsoft.Azure.Commands.Subscription.Models
             {
                 try
                 {
-                    var pairs = result.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    var pairs = result.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var pair in pairs)
                     {
-                        var sides = pair.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                        var sides = pair.Split(new[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries);
                         if (string.Equals("AccountName", sides[0].Trim(), StringComparison.OrdinalIgnoreCase))
                         {
                             result = sides[1].Trim();

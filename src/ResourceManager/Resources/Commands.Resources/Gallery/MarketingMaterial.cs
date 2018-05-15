@@ -19,8 +19,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Path
         {
-            get { return this._path; }
-            set { this._path = value; }
+            get { return _path; }
+            set { _path = value; }
         }
 
         /// <summary>

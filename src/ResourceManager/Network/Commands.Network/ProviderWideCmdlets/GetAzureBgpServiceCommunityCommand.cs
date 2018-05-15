@@ -15,8 +15,8 @@
 namespace Microsoft.Azure.Commands.Network
 {
 
-    using Microsoft.Azure.Commands.Network.Models;
-    using Microsoft.Azure.Management.Network;
+    using Models;
+    using Management.Network;
     using System.Collections.Generic;
     using System.Management.Automation;
 
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var communityList = this.NetworkClient.NetworkManagementClient.BgpServiceCommunities.List();
+            var communityList = NetworkClient.NetworkManagementClient.BgpServiceCommunities.List();
 
             var psCommunities = new List<PSBgpServiceCommunity>();
 

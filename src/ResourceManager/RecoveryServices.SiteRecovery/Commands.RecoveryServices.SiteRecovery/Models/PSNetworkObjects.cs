@@ -45,12 +45,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRNetwork(
             Network network)
         {
-            this.ID = network.Id;
-            this.Name = network.Name;
-            this.Type = network.Type;
-            this.FriendlyName = network.Properties.FriendlyName;
-            this.FabricType = network.Properties.FabricType;
-            this.VmNetworkSubnetList = network.Properties.Subnets;
+            ID = network.Id;
+            Name = network.Name;
+            Type = network.Type;
+            FriendlyName = network.Properties.FriendlyName;
+            FabricType = network.Properties.FabricType;
+            VmNetworkSubnetList = network.Properties.Subnets;
         }
 
         #region Properties
@@ -146,18 +146,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRNetworkMapping(
             NetworkMapping networkMapping)
         {
-            this.ID = networkMapping.Id;
-            this.Name = networkMapping.Name;
-            this.FriendlyName = networkMapping.Name;
-            this.PrimaryNetworkId = networkMapping.Properties.PrimaryNetworkId;
-            this.PrimaryNetworkFriendlyName = networkMapping.Properties.PrimaryNetworkFriendlyName;
-            this.PrimaryFabricFriendlyName = networkMapping.Properties.PrimaryFabricFriendlyName;
-            this.RecoveryNetworkId = networkMapping.Properties.RecoveryNetworkId;
-            this.RecoveryNetworkFriendlyName = networkMapping.Properties
+            ID = networkMapping.Id;
+            Name = networkMapping.Name;
+            FriendlyName = networkMapping.Name;
+            PrimaryNetworkId = networkMapping.Properties.PrimaryNetworkId;
+            PrimaryNetworkFriendlyName = networkMapping.Properties.PrimaryNetworkFriendlyName;
+            PrimaryFabricFriendlyName = networkMapping.Properties.PrimaryFabricFriendlyName;
+            RecoveryNetworkId = networkMapping.Properties.RecoveryNetworkId;
+            RecoveryNetworkFriendlyName = networkMapping.Properties
                 .RecoveryNetworkFriendlyName;
-            this.RecoveryFabricFriendlyName = networkMapping.Properties.RecoveryFabricFriendlyName;
-            this.PairingStatus = networkMapping.Properties.State;
-            this.FabricSpecificNetworkMappingDetails =
+            RecoveryFabricFriendlyName = networkMapping.Properties.RecoveryFabricFriendlyName;
+            PairingStatus = networkMapping.Properties.State;
+            FabricSpecificNetworkMappingDetails =
                 ASRFabricSpecificNetworkMappingDetails.Load(networkMapping);
         }
 
@@ -168,18 +168,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("Id: " + this.ID);
-            sb.AppendLine("Name: " + this.Name);
-            sb.AppendLine("FriendlyName: " + this.FriendlyName);
-            sb.AppendLine("PrimaryNetworkId: " + this.PrimaryNetworkId);
-            sb.AppendLine("PrimaryNetworkFriendlyName: " + this.PrimaryNetworkFriendlyName);
-            sb.AppendLine("PrimaryFabricFriendlyName: " + this.PrimaryFabricFriendlyName);
-            sb.AppendLine("RecoveryNetworkId: " + this.RecoveryNetworkId);
-            sb.AppendLine("RecoveryNetworkFriendlyName: " + this.RecoveryNetworkFriendlyName);
-            sb.AppendLine("RecoveryFabricFriendlyName: " + this.RecoveryFabricFriendlyName);
-            sb.AppendLine("PairingStatus: " + this.PairingStatus);
+            sb.AppendLine("Id: " + ID);
+            sb.AppendLine("Name: " + Name);
+            sb.AppendLine("FriendlyName: " + FriendlyName);
+            sb.AppendLine("PrimaryNetworkId: " + PrimaryNetworkId);
+            sb.AppendLine("PrimaryNetworkFriendlyName: " + PrimaryNetworkFriendlyName);
+            sb.AppendLine("PrimaryFabricFriendlyName: " + PrimaryFabricFriendlyName);
+            sb.AppendLine("RecoveryNetworkId: " + RecoveryNetworkId);
+            sb.AppendLine("RecoveryNetworkFriendlyName: " + RecoveryNetworkFriendlyName);
+            sb.AppendLine("RecoveryFabricFriendlyName: " + RecoveryFabricFriendlyName);
+            sb.AppendLine("PairingStatus: " + PairingStatus);
 
-            var fabricSpecificDetails = this.FabricSpecificNetworkMappingDetails.ToString();
+            var fabricSpecificDetails = FabricSpecificNetworkMappingDetails.ToString();
             if (!string.IsNullOrEmpty(fabricSpecificDetails))
             {
                 sb.AppendLine(fabricSpecificDetails);
@@ -390,8 +390,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("PrimaryNetworkLocation: " + this.PrimaryNetworkLocation);
-            sb.AppendLine("RecoveryNetworkLocation: " + this.RecoveryNetworkLocation);
+            sb.AppendLine("PrimaryNetworkLocation: " + PrimaryNetworkLocation);
+            sb.AppendLine("RecoveryNetworkLocation: " + RecoveryNetworkLocation);
             return sb.ToString();
         }
 

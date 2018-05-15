@@ -52,29 +52,29 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.InputObject.FriendlyName,
+            if (ShouldProcess(
+                InputObject.FriendlyName,
                 VerbsCommon.Remove))
             {
                 PSSiteRecoveryLongRunningOperation response;
 
-                if (!this.Force.IsPresent)
+                if (!Force.IsPresent)
                 {
                     response =
-                        this.RecoveryServicesClient.DeleteAzureSiteRecoveryFabric(
-                            this.InputObject.Name);
+                        RecoveryServicesClient.DeleteAzureSiteRecoveryFabric(
+                            InputObject.Name);
                 }
                 else
                 {
                     response =
-                        this.RecoveryServicesClient.PurgeAzureSiteRecoveryFabric(
-                            this.InputObject.Name);
+                        RecoveryServicesClient.PurgeAzureSiteRecoveryFabric(
+                            InputObject.Name);
                 }
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
     }

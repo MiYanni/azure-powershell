@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()		
          {
              base.Execute();
-             var routeTables = this.NetworkClient.NetworkManagementClient.ExpressRouteCircuits.ListRoutesTable
+             var routeTables = NetworkClient.NetworkManagementClient.ExpressRouteCircuits.ListRoutesTable
                  (ResourceGroupName, ExpressRouteCircuitName, PeeringType, DevicePath.ToString()).Value.Cast<object>().ToList();
              var psRoutes = new List<PSExpressRouteCircuitRoutesTable>();
              foreach (var routeTable in routeTables)

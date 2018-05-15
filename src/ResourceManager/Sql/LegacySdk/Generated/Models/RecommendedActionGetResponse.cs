@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedAction RecommendedAction
         {
-            get { return this._recommendedAction; }
-            set { this._recommendedAction = value; }
+            get { return _recommendedAction; }
+            set { _recommendedAction = value; }
         }
         
         /// <summary>

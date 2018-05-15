@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedDatabaseProperties> DatabaseCollection
         {
-            get { return this._databaseCollection; }
-            set { this._databaseCollection = value; }
+            get { return _databaseCollection; }
+            set { _databaseCollection = value; }
         }
         
         private IList<UpgradeRecommendedElasticPoolProperties> _elasticPoolCollection;
@@ -52,20 +52,20 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<UpgradeRecommendedElasticPoolProperties> ElasticPoolCollection
         {
-            get { return this._elasticPoolCollection; }
-            set { this._elasticPoolCollection = value; }
+            get { return _elasticPoolCollection; }
+            set { _elasticPoolCollection = value; }
         }
         
-        private System.DateTime? _scheduleUpgradeAfterUtcDateTime;
+        private DateTime? _scheduleUpgradeAfterUtcDateTime;
         
         /// <summary>
         /// Optional. Gets or sets the earliest time to upgrade the Azure SQL
         /// Database Server.
         /// </summary>
-        public System.DateTime? ScheduleUpgradeAfterUtcDateTime
+        public DateTime? ScheduleUpgradeAfterUtcDateTime
         {
-            get { return this._scheduleUpgradeAfterUtcDateTime; }
-            set { this._scheduleUpgradeAfterUtcDateTime = value; }
+            get { return _scheduleUpgradeAfterUtcDateTime; }
+            set { _scheduleUpgradeAfterUtcDateTime = value; }
         }
         
         private string _version;
@@ -76,8 +76,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Version
         {
-            get { return this._version; }
-            set { this._version = value; }
+            get { return _version; }
+            set { _version = value; }
         }
         
         /// <summary>
@@ -85,8 +85,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerUpgradeProperties()
         {
-            this.DatabaseCollection = new LazyList<RecommendedDatabaseProperties>();
-            this.ElasticPoolCollection = new LazyList<UpgradeRecommendedElasticPoolProperties>();
+            DatabaseCollection = new LazyList<RecommendedDatabaseProperties>();
+            ElasticPoolCollection = new LazyList<UpgradeRecommendedElasticPoolProperties>();
         }
         
         /// <summary>
@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("version");
             }
-            this.Version = version;
+            Version = version;
         }
     }
 }

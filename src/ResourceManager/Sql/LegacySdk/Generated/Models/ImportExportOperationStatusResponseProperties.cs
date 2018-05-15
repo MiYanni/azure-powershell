@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string BlobUri
         {
-            get { return this._blobUri; }
-            set { this._blobUri = value; }
+            get { return _blobUri; }
+            set { _blobUri = value; }
         }
         
         private string _databaseName;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseName
         {
-            get { return this._databaseName; }
-            set { this._databaseName = value; }
+            get { return _databaseName; }
+            set { _databaseName = value; }
         }
         
         private string _errorMessage;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ErrorMessage
         {
-            get { return this._errorMessage; }
-            set { this._errorMessage = value; }
+            get { return _errorMessage; }
+            set { _errorMessage = value; }
         }
         
         private string _lastModifiedTime;
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string LastModifiedTime
         {
-            get { return this._lastModifiedTime; }
-            set { this._lastModifiedTime = value; }
+            get { return _lastModifiedTime; }
+            set { _lastModifiedTime = value; }
         }
         
         private string _queuedTime;
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string QueuedTime
         {
-            get { return this._queuedTime; }
-            set { this._queuedTime = value; }
+            get { return _queuedTime; }
+            set { _queuedTime = value; }
         }
         
         private string _requestType;
@@ -92,8 +92,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RequestType
         {
-            get { return this._requestType; }
-            set { this._requestType = value; }
+            get { return _requestType; }
+            set { _requestType = value; }
         }
         
         private string _serverName;
@@ -103,8 +103,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServerName
         {
-            get { return this._serverName; }
-            set { this._serverName = value; }
+            get { return _serverName; }
+            set { _serverName = value; }
         }
         
         private string _statusMessage;
@@ -114,8 +114,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StatusMessage
         {
-            get { return this._statusMessage; }
-            set { this._statusMessage = value; }
+            get { return _statusMessage; }
+            set { _statusMessage = value; }
         }
         
         /// <summary>

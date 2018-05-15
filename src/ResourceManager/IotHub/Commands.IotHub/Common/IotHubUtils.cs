@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Commands.Management.IotHub.Common
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Models;
+    using Azure.Management.IotHub.Models;
     using Newtonsoft.Json;
 
     public static class IotHubUtils
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.Commands.Management.IotHub.Common
 
         public static PSIotHubConnectionString ToPSIotHubConnectionString(this SharedAccessSignatureAuthorizationRule authorizationPolicy, string hostName)
         {
-            return new PSIotHubConnectionString()
+            return new PSIotHubConnectionString
             {
                 KeyName = authorizationPolicy.KeyName,
                 PrimaryConnectionString = String.Format(IotHubConnectionStringTemplate, hostName, authorizationPolicy.KeyName, authorizationPolicy.PrimaryKey),
@@ -187,7 +187,7 @@ namespace Microsoft.Azure.Commands.Management.IotHub.Common
 
         public static PSIotHubQuotaMetric ToPSIotHubQuotaMetric(this IotHubQuotaMetricInfo iotHubQuotaMetric)
         {
-            return new PSIotHubQuotaMetric()
+            return new PSIotHubQuotaMetric
             {
                 Name = iotHubQuotaMetric.Name,
                 CurrentValue = ((long)iotHubQuotaMetric.CurrentValue).ToString(),

@@ -15,7 +15,7 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
     using Common;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.Blob;
     using Model.Contract;
     using System;
     using System.Globalization;

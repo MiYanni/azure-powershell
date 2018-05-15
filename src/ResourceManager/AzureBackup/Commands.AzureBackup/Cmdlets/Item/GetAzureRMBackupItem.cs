@@ -49,17 +49,17 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 List<CSMItemResponse> azureBackupPOObjects = null;
 
                 WriteDebug(Resources.MakingClientCall);
-                CSMProtectedItemQueryObject DSQueryParam = new CSMProtectedItemQueryObject()
+                CSMProtectedItemQueryObject DSQueryParam = new CSMProtectedItemQueryObject
                 {
-                    ProtectionStatus = this.ProtectionStatus,
-                    Status = this.Status,
-                    Type = GetItemType(this.Type)
+                    ProtectionStatus = ProtectionStatus,
+                    Status = Status,
+                    Type = GetItemType(Type)
                 };
 
-                CSMItemQueryObject POQueryParam = new CSMItemQueryObject()
+                CSMItemQueryObject POQueryParam = new CSMItemQueryObject
                 {
-                    Status = this.ProtectionStatus,
-                    Type = GetItemType(this.Type)
+                    Status = ProtectionStatus,
+                    Type = GetItemType(Type)
                 };
 
                 var azureBackupDatasourceListResponse = AzureBackupClient.ListDataSources(Container.ResourceGroupName, Container.ResourceName, DSQueryParam);
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                     azureBackupDatasourceObjects = azureBackupDatasourceListResponse.Where(x => x.Properties.ContainerId.Split('/').Last().Equals(Container.ContainerUniqueName, System.StringComparison.InvariantCultureIgnoreCase)).ToList();
                 }
 
-                if (this.Status == null)
+                if (Status == null)
                 {
                     var azureBackupPOListResponse = AzureBackupClient.ListProtectableObjects(Container.ResourceGroupName, Container.ResourceName, POQueryParam);
                     if (azureBackupPOListResponse != null)
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
 
         public void WriteAzureBackupItem(CSMProtectedItemResponse sourceItem, AzureRMBackupContainer azureBackupItem)
         {
-            this.WriteObject(new AzureRMBackupItem(sourceItem, azureBackupItem));
+            WriteObject(new AzureRMBackupItem(sourceItem, azureBackupItem));
         }
 
         public void WriteAzureBackupItem(List<CSMProtectedItemResponse> sourceDataSourceList, List<CSMItemResponse> sourcePOList, AzureRMBackupContainer azureBackupContainer)
@@ -113,13 +113,13 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 }
             }
 
-            if (targetList.Count() == 1)
+            if (targetList.Count == 1)
             {
-                this.WriteObject(targetList.First(), true);
+                WriteObject(targetList.First(), true);
             }
             else
             {
-                this.WriteObject(targetList, true);
+                WriteObject(targetList, true);
             }
         }
 

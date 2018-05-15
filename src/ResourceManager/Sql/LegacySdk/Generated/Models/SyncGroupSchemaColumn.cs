@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DataSize
         {
-            get { return this._dataSize; }
-            set { this._dataSize = value; }
+            get { return _dataSize; }
+            set { _dataSize = value; }
         }
         
         private string _dataType;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DataType
         {
-            get { return this._dataType; }
-            set { this._dataType = value; }
+            get { return _dataType; }
+            set { _dataType = value; }
         }
         
         private string _quotedName;
@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string QuotedName
         {
-            get { return this._quotedName; }
-            set { this._quotedName = value; }
+            get { return _quotedName; }
+            set { _quotedName = value; }
         }
         
         /// <summary>

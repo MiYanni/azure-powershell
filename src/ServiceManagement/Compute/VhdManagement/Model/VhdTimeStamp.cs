@@ -29,7 +29,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
                 throw new ArgumentOutOfRangeException("dateTime", message);
             }
 
-            this.TotalSeconds = (uint)dateTime.Subtract(VhdBaseTime).TotalSeconds;
+            TotalSeconds = (uint)dateTime.Subtract(VhdBaseTime).TotalSeconds;
         }
 
         public VhdTimeStamp(uint value)

@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.HDInsight
         typeof(AzureHDInsightSqoopJobDefinition))]
     public class NewAzureHDInsightSqoopJobDefinitionCommand : HDInsightCmdletBase
     {
-        private AzureHDInsightSqoopJobDefinition job;
+        private readonly AzureHDInsightSqoopJobDefinition _job;
 
         #region Input Parameter Definitions
 
@@ -35,29 +35,29 @@ namespace Microsoft.Azure.Commands.HDInsight
         [Parameter(HelpMessage = "The output location to use for the job.")]
         public string StatusFolder
         {
-            get { return job.StatusFolder; }
-            set { job.StatusFolder = value; }
+            get { return _job.StatusFolder; }
+            set { _job.StatusFolder = value; }
         }
 
         [Parameter(HelpMessage = "The query file to run in the jobDetails.")]
         public string File
         {
-            get { return job.File; }
-            set { job.File = value; }
+            get { return _job.File; }
+            set { _job.File = value; }
         }
 
         [Parameter(HelpMessage = "The command to use for a sqoop job.")]
         public string Command
         {
-            get { return job.Command; }
-            set { job.Command = value; }
+            get { return _job.Command; }
+            set { _job.Command = value; }
         }
 
         [Parameter(HelpMessage = "The directory where the libjar can be found for the Sqoop job.")]
         public string LibDir
         {
-            get { return job.LibDir; }
-            set { job.LibDir = value; }
+            get { return _job.LibDir; }
+            set { _job.LibDir = value; }
         }
 
         #endregion
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.HDInsight
         public NewAzureHDInsightSqoopJobDefinitionCommand()
         {
             Files = new string[] { };
-            job = new AzureHDInsightSqoopJobDefinition();
+            _job = new AzureHDInsightSqoopJobDefinition();
         }
 
         public override void ExecuteCmdlet()
@@ -79,9 +79,9 @@ namespace Microsoft.Azure.Commands.HDInsight
         {
             foreach (var file in Files)
             {
-                job.Files.Add(file);
+                _job.Files.Add(file);
             }
-            return job;
+            return _job;
         }
     }
 }

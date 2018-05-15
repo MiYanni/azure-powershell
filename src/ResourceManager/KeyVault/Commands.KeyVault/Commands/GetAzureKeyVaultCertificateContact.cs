@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
             try
             {
-                contacts = this.DataServiceClient.GetCertificateContacts(this.VaultName);
+                contacts = DataServiceClient.GetCertificateContacts(VaultName);
             }
             catch (KeyVaultErrorException exception)
             {
@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                 contacts = null;
             }
 
-            this.WriteObject(contacts, true);
+            WriteObject(contacts, true);
         }
     }
 }

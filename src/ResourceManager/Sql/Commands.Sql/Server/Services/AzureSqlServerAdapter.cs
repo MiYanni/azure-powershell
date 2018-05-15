@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.Sql.Server.Adapter
         public List<AzureSqlServerModel> ListServers()
         {
             var resp = Communicator.List();
-            return resp.Select((s) =>
+            return resp.Select(s =>
             {
                 return CreateServerModelFromResponse(s);
             }).ToList();
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Sql.Server.Adapter
         public List<AzureSqlServerModel> ListServersByResourceGroup(string resourceGroupName)
         {
             var resp = Communicator.ListByResourceGroup(resourceGroupName);
-            return resp.Select((s) =>
+            return resp.Select(s =>
             {
                 return CreateServerModelFromResponse(s);
             }).ToList();
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.Sql.Server.Adapter
         /// <returns>The updated server model</returns>
         public AzureSqlServerModel UpsertServer(AzureSqlServerModel model)
         {
-            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, new Management.Sql.Models.Server()
+            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, new Management.Sql.Models.Server
             {
                 Location = model.Location,
                 Tags = model.Tags,

@@ -46,11 +46,11 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("Name"))
             {
                 results = new List<AzureSqlSyncGroupModel>();
-                results.Add(ModelAdapter.GetSyncGroup(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.Name));
+                results.Add(ModelAdapter.GetSyncGroup(ResourceGroupName, ServerName, DatabaseName, Name));
             }
             else
             {
-                results = ModelAdapter.ListSyncGroups(this.ResourceGroupName, this.ServerName, this.DatabaseName);
+                results = ModelAdapter.ListSyncGroups(ResourceGroupName, ServerName, DatabaseName);
             }
 
             return results;

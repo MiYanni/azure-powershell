@@ -40,12 +40,12 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             get
             {
-                return this.automationClient = this.automationClient ?? new AutomationClient(DefaultProfile.DefaultContext);
+                return automationClient = automationClient ?? new AutomationClient(DefaultProfile.DefaultContext);
             }
 
             set
             {
-                this.automationClient = value;
+                automationClient = value;
             }
         }
 
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         /// </summary>
         [Parameter(ParameterSetName = AutomationCmdletParameterSets.ByAll, Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
         [Parameter(ParameterSetName = AutomationCmdletParameterSets.ByAutomationAccountName, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         /// <summary>
@@ -72,13 +72,13 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         public override void ExecuteCmdlet()
         {
             IEnumerable<AutomationAccount> ret = null;
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByAutomationAccountName)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByAutomationAccountName)
             {
                 ret = new List<AutomationAccount>
                 {
-                   this.AutomationClient.GetAutomationAccount(this.ResourceGroupName, this.Name)
+                   AutomationClient.GetAutomationAccount(ResourceGroupName, Name)
                 };
-                this.WriteObject(ret, true);
+                WriteObject(ret, true);
             }
             else
             {
@@ -86,8 +86,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
                 do
                 {
-                    ret = this.AutomationClient.ListAutomationAccounts(this.ResourceGroupName, ref nextLink);
-                    this.WriteObject(ret, true);
+                    ret = AutomationClient.ListAutomationAccounts(ResourceGroupName, ref nextLink);
+                    WriteObject(ret, true);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

@@ -105,10 +105,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 return string.Empty;
             }
-            else
-            {
-                return resourceType.Substring(0, indexOfSlash);
-            }
+            return resourceType.Substring(0, indexOfSlash);
         }
 
         public static string GetTypeFromResourceType(string resourceType)
@@ -123,10 +120,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 return string.Empty;
             }
-            else
-            {
-                return resourceType.Substring(lastIndexOfSlash + 1);
-            }
+            return resourceType.Substring(lastIndexOfSlash + 1);
         }
 
         public override string ToString()
@@ -155,8 +149,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 {
                     ResourceName = ResourceName,
                     ParentResourcePath = ParentResource,
-                    ResourceProviderNamespace = ResourceIdentifier.GetProviderFromResourceType(ResourceType),
-                    ResourceType = ResourceIdentifier.GetTypeFromResourceType(ResourceType)
+                    ResourceProviderNamespace = GetProviderFromResourceType(ResourceType),
+                    ResourceType = GetTypeFromResourceType(ResourceType)
                 };
             }
 
@@ -178,8 +172,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 ResourceName = ResourceName,
                 ParentResourcePath = ParentResource,
-                ResourceProviderNamespace = ResourceIdentifier.GetProviderFromResourceType(ResourceType),
-                ResourceType = ResourceIdentifier.GetTypeFromResourceType(ResourceType),
+                ResourceProviderNamespace = GetProviderFromResourceType(ResourceType),
+                ResourceType = GetTypeFromResourceType(ResourceType),
                 ResourceProviderApiVersion = apiVersion
             };
 

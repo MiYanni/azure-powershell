@@ -250,28 +250,28 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.Name,
+            if (ShouldProcess(
+                Name,
                 VerbsCommon.New))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.EnterpriseToEnterprise:
-                        this.EnterpriseToEnterprisePolicyObject();
+                        EnterpriseToEnterprisePolicyObject();
                         break;
                     case ASRParameterSets.HyperVToAzure:
-                        this.HyperVToAzurePolicyObject();
+                        HyperVToAzurePolicyObject();
                         break;
                     case ASRParameterSets.VMwareToAzure:
                     case ASRParameterSets.AzureToVMware:
-                        this.ReplicationProvider = (this.ParameterSetName == ASRParameterSets.VMwareToAzure) ?
+                        ReplicationProvider = ParameterSetName == ASRParameterSets.VMwareToAzure ?
                             Constants.InMageAzureV2
                             : Constants.InMage;
-                        this.V2AandV2VPolicyObject();
+                        V2AandV2VPolicyObject();
                         break;
                     case ASRParameterSets.AzureToAzure:
-                        this.ReplicationProvider = Constants.A2A;
-                        this.CreateA2APolicy();
+                        ReplicationProvider = Constants.A2A;
+                        CreateA2APolicy();
                         break;
                 }
             }
@@ -283,7 +283,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void HyperVToAzurePolicyObject()
         {
             if (string.Compare(
-                    this.ReplicationProvider,
+                    ReplicationProvider,
                     Constants.HyperVReplicaAzure,
                     StringComparison.OrdinalIgnoreCase) !=
                 0)
@@ -291,34 +291,34 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.IncorrectReplicationProvider,
-                        this.ReplicationProvider));
+                        ReplicationProvider));
             }
 
-            PSRecoveryServicesClient.ValidateReplicationStartTime(this.ReplicationStartTime);
+            PSRecoveryServicesClient.ValidateReplicationStartTime(ReplicationStartTime);
 
             var replicationFrequencyInSeconds =
                 PSRecoveryServicesClient.ConvertReplicationFrequencyToUshort(
-                    this.ReplicationFrequencyInSeconds);
+                    ReplicationFrequencyInSeconds);
 
             var hyperVReplicaAzurePolicyInput = new HyperVReplicaAzurePolicyInput
             {
                 ApplicationConsistentSnapshotFrequencyInHours =
-                    this.ApplicationConsistentSnapshotFrequencyInHours,
+                    ApplicationConsistentSnapshotFrequencyInHours,
                 Encryption =
-                    this.MyInvocation.BoundParameters.ContainsKey(
-                        Utilities.GetMemberName(() => this.Encryption)) ? this.Encryption
+                    MyInvocation.BoundParameters.ContainsKey(
+                        Utilities.GetMemberName(() => Encryption)) ? Encryption
                         : Constants.Disable,
                 OnlineReplicationStartTime =
-                    this.ReplicationStartTime == null ? null : this.ReplicationStartTime.ToString(),
-                RecoveryPointHistoryDuration = this.NumberOfRecoveryPointsToRetain,
+                    ReplicationStartTime == null ? null : ReplicationStartTime.ToString(),
+                RecoveryPointHistoryDuration = NumberOfRecoveryPointsToRetain,
                 ReplicationInterval = replicationFrequencyInSeconds
             };
 
             hyperVReplicaAzurePolicyInput.StorageAccounts = new List<string>();
 
-            if (this.RecoveryAzureStorageAccountId != null)
+            if (RecoveryAzureStorageAccountId != null)
             {
-                var storageAccount = this.RecoveryAzureStorageAccountId;
+                var storageAccount = RecoveryAzureStorageAccountId;
                 hyperVReplicaAzurePolicyInput.StorageAccounts.Add(storageAccount);
             }
 
@@ -331,14 +331,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var createPolicyInput =
                 new CreatePolicyInput { Properties = createPolicyInputProperties };
 
-            var response = this.RecoveryServicesClient.CreatePolicy(
-                this.Name,
+            var response = RecoveryServicesClient.CreatePolicy(
+                Name,
                 createPolicyInput);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -346,33 +346,33 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void EnterpriseToEnterprisePolicyObject()
         {
-            if ((string.Compare(
-                     this.ReplicationProvider,
-                     Constants.HyperVReplica2012,
-                     StringComparison.OrdinalIgnoreCase) !=
-                 0) &&
-                (string.Compare(
-                     this.ReplicationProvider,
-                     Constants.HyperVReplica2012R2,
-                     StringComparison.OrdinalIgnoreCase) !=
-                 0))
+            if (string.Compare(
+                    ReplicationProvider,
+                    Constants.HyperVReplica2012,
+                    StringComparison.OrdinalIgnoreCase) !=
+                0 &&
+                string.Compare(
+                    ReplicationProvider,
+                    Constants.HyperVReplica2012R2,
+                    StringComparison.OrdinalIgnoreCase) !=
+                0)
             {
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.IncorrectReplicationProvider,
-                        this.ReplicationProvider));
+                        ReplicationProvider));
             }
 
-            PSRecoveryServicesClient.ValidateReplicationStartTime(this.ReplicationStartTime);
+            PSRecoveryServicesClient.ValidateReplicationStartTime(ReplicationStartTime);
 
             var replicationFrequencyInSeconds =
                 PSRecoveryServicesClient.ConvertReplicationFrequencyToUshort(
-                    this.ReplicationFrequencyInSeconds);
+                    ReplicationFrequencyInSeconds);
 
             var createPolicyInputProperties = new CreatePolicyInputProperties();
 
             if (string.Compare(
-                    this.ReplicationProvider,
+                    ReplicationProvider,
                     Constants.HyperVReplica2012,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
@@ -380,28 +380,28 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 createPolicyInputProperties.ProviderSpecificInput = new HyperVReplicaPolicyInput
                 {
                     AllowedAuthenticationType = (ushort)(string.Compare(
-                                                             this.Authentication,
+                                                             Authentication,
                                                              Constants.AuthenticationTypeKerberos,
                                                              StringComparison.OrdinalIgnoreCase) ==
                                                          0 ? 1 : 2),
                     ApplicationConsistentSnapshotFrequencyInHours =
-                        this.ApplicationConsistentSnapshotFrequencyInHours,
+                        ApplicationConsistentSnapshotFrequencyInHours,
                     Compression =
-                        this.MyInvocation.BoundParameters.ContainsKey(
-                            Utilities.GetMemberName(() => this.Compression)) ? this.Compression
+                        MyInvocation.BoundParameters.ContainsKey(
+                            Utilities.GetMemberName(() => Compression)) ? Compression
                             : Constants.Disable,
                     InitialReplicationMethod = string.Compare(
-                                                   this.ReplicationMethod,
+                                                   ReplicationMethod,
                                                    Constants.OnlineReplicationMethod,
                                                    StringComparison.OrdinalIgnoreCase) ==
                                                0 ? "OverNetwork" : "Offline",
-                    OnlineReplicationStartTime = this.ReplicationStartTime.ToString(),
-                    RecoveryPoints = this.NumberOfRecoveryPointsToRetain,
+                    OnlineReplicationStartTime = ReplicationStartTime.ToString(),
+                    RecoveryPoints = NumberOfRecoveryPointsToRetain,
                     ReplicaDeletion =
-                        this.MyInvocation.BoundParameters.ContainsKey(
-                            Utilities.GetMemberName(() => this.ReplicaDeletion))
-                            ? this.ReplicaDeletion : Constants.NotRequired,
-                    ReplicationPort = this.ReplicationPort
+                        MyInvocation.BoundParameters.ContainsKey(
+                            Utilities.GetMemberName(() => ReplicaDeletion))
+                            ? ReplicaDeletion : Constants.NotRequired,
+                    ReplicationPort = ReplicationPort
                 };
             }
             else
@@ -410,45 +410,45 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     new HyperVReplicaBluePolicyInput
                     {
                         AllowedAuthenticationType = (ushort)(string.Compare(
-                                                                 this.Authentication,
+                                                                 Authentication,
                                                                  Constants
                                                                      .AuthenticationTypeKerberos,
                                                                  StringComparison
                                                                      .OrdinalIgnoreCase) ==
                                                              0 ? 1 : 2),
                         ApplicationConsistentSnapshotFrequencyInHours =
-                            this.ApplicationConsistentSnapshotFrequencyInHours,
+                            ApplicationConsistentSnapshotFrequencyInHours,
                         Compression =
-                            this.MyInvocation.BoundParameters.ContainsKey(
-                                Utilities.GetMemberName(() => this.Compression)) ? this.Compression
+                            MyInvocation.BoundParameters.ContainsKey(
+                                Utilities.GetMemberName(() => Compression)) ? Compression
                                 : Constants.Disable,
                         InitialReplicationMethod = string.Compare(
-                                                       this.ReplicationMethod,
+                                                       ReplicationMethod,
                                                        Constants.OnlineReplicationMethod,
                                                        StringComparison.OrdinalIgnoreCase) ==
                                                    0 ? "OverNetwork" : "Offline",
-                        OnlineReplicationStartTime = this.ReplicationStartTime.ToString(),
-                        RecoveryPoints = this.NumberOfRecoveryPointsToRetain,
+                        OnlineReplicationStartTime = ReplicationStartTime.ToString(),
+                        RecoveryPoints = NumberOfRecoveryPointsToRetain,
                         ReplicaDeletion =
-                            this.MyInvocation.BoundParameters.ContainsKey(
-                                Utilities.GetMemberName(() => this.ReplicaDeletion))
-                                ? this.ReplicaDeletion : Constants.NotRequired,
+                            MyInvocation.BoundParameters.ContainsKey(
+                                Utilities.GetMemberName(() => ReplicaDeletion))
+                                ? ReplicaDeletion : Constants.NotRequired,
                         ReplicationFrequencyInSeconds = replicationFrequencyInSeconds,
-                        ReplicationPort = this.ReplicationPort
+                        ReplicationPort = ReplicationPort
                     };
             }
 
             var createPolicyInput =
                 new CreatePolicyInput { Properties = createPolicyInputProperties };
 
-            var responseBlue = this.RecoveryServicesClient.CreatePolicy(
-                this.Name,
+            var responseBlue = RecoveryServicesClient.CreatePolicy(
+                Name,
                 createPolicyInput);
 
-            var jobResponseBlue = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponseBlue = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(responseBlue.Location));
 
-            this.WriteObject(new ASRJob(jobResponseBlue));
+            WriteObject(new ASRJob(jobResponseBlue));
         }
 
         /// <summary>
@@ -458,12 +458,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             // Validate the Replication Provider.
             if (string.Compare(
-                    this.ReplicationProvider,
+                    ReplicationProvider,
                     Constants.InMageAzureV2,
                     StringComparison.OrdinalIgnoreCase) !=
                 0 &&
                 string.Compare(
-                    this.ReplicationProvider,
+                    ReplicationProvider,
                     Constants.InMage,
                     StringComparison.OrdinalIgnoreCase) !=
                 0)
@@ -471,25 +471,25 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.IncorrectReplicationProvider,
-                        this.ReplicationProvider));
+                        ReplicationProvider));
             }
 
             // Set the Default Parameters.
-            this.ApplicationConsistentSnapshotFrequencyInHours = this.ApplicationConsistentSnapshotFrequencyInHours;
-            this.RecoveryPointRetentionInHours =
-                this.MyInvocation.BoundParameters.ContainsKey(
-                    Utilities.GetMemberName(() => this.RecoveryPointRetentionInHours))
-                    ? this.RecoveryPointRetentionInHours
+            ApplicationConsistentSnapshotFrequencyInHours = ApplicationConsistentSnapshotFrequencyInHours;
+            RecoveryPointRetentionInHours =
+                MyInvocation.BoundParameters.ContainsKey(
+                    Utilities.GetMemberName(() => RecoveryPointRetentionInHours))
+                    ? RecoveryPointRetentionInHours
                     : 24;
-            this.RPOWarningThresholdInMinutes =
-                this.MyInvocation.BoundParameters.ContainsKey(
-                    Utilities.GetMemberName(() => this.RPOWarningThresholdInMinutes))
-                    ? this.RPOWarningThresholdInMinutes
+            RPOWarningThresholdInMinutes =
+                MyInvocation.BoundParameters.ContainsKey(
+                    Utilities.GetMemberName(() => RPOWarningThresholdInMinutes))
+                    ? RPOWarningThresholdInMinutes
                     : 15;
-            this.MultiVmSyncStatus =
-                this.MyInvocation.BoundParameters.ContainsKey(
-                    Utilities.GetMemberName(() => this.MultiVmSyncStatus))
-                    ? this.MultiVmSyncStatus
+            MultiVmSyncStatus =
+                MyInvocation.BoundParameters.ContainsKey(
+                    Utilities.GetMemberName(() => MultiVmSyncStatus))
+                    ? MultiVmSyncStatus
                     : Constants.Enable;
             var crashConsistentFrequencyInMinutes = 5;
 
@@ -501,7 +501,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             // Check the Replication Provider Type.
             if (string.Compare(
-                    this.ReplicationProvider,
+                    ReplicationProvider,
                     Constants.InMageAzureV2,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
@@ -510,13 +510,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 createPolicyInput.Properties.ProviderSpecificInput = new InMageAzureV2PolicyInput
                 {
                     AppConsistentFrequencyInMinutes =
-                        this.ApplicationConsistentSnapshotFrequencyInHours * 60,
+                        ApplicationConsistentSnapshotFrequencyInHours * 60,
                     RecoveryPointHistory =
-                        this.RecoveryPointRetentionInHours * 60, // Convert from hours to minutes.
-                    RecoveryPointThresholdInMinutes = this.RPOWarningThresholdInMinutes,
+                        RecoveryPointRetentionInHours * 60, // Convert from hours to minutes.
+                    RecoveryPointThresholdInMinutes = RPOWarningThresholdInMinutes,
                     MultiVmSyncStatus = (SetMultiVmSyncStatus)Enum.Parse(
                                             typeof(SetMultiVmSyncStatus),
-                                            this.MultiVmSyncStatus),
+                                            MultiVmSyncStatus),
                     CrashConsistentFrequencyInMinutes = crashConsistentFrequencyInMinutes
                 };
             }
@@ -526,23 +526,23 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 createPolicyInput.Properties.ProviderSpecificInput = new InMagePolicyInput
                 {
                     AppConsistentFrequencyInMinutes =
-                        this.ApplicationConsistentSnapshotFrequencyInHours * 60,
+                        ApplicationConsistentSnapshotFrequencyInHours * 60,
                     RecoveryPointHistory =
-                        this.RecoveryPointRetentionInHours * 60, // Convert from hours to minutes.
-                    RecoveryPointThresholdInMinutes = this.RPOWarningThresholdInMinutes,
+                        RecoveryPointRetentionInHours * 60, // Convert from hours to minutes.
+                    RecoveryPointThresholdInMinutes = RPOWarningThresholdInMinutes,
                     MultiVmSyncStatus = (SetMultiVmSyncStatus)Enum.Parse(
                                             typeof(SetMultiVmSyncStatus),
-                                            this.MultiVmSyncStatus)
+                                            MultiVmSyncStatus)
                 };
             }
 
-            var response = this.RecoveryServicesClient.CreatePolicy(this.Name, createPolicyInput);
+            var response = RecoveryServicesClient.CreatePolicy(Name, createPolicyInput);
 
             var jobId = PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location);
-            var jobResponse = this.RecoveryServicesClient
+            var jobResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryJobDetails(jobId);
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -550,20 +550,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void CreateA2APolicy()
         {
-            this.MultiVmSyncStatus =
-                this.MyInvocation.BoundParameters.ContainsKey(
-                    Utilities.GetMemberName(() => this.MultiVmSyncStatus))
-                    ? this.MultiVmSyncStatus
+            MultiVmSyncStatus =
+                MyInvocation.BoundParameters.ContainsKey(
+                    Utilities.GetMemberName(() => MultiVmSyncStatus))
+                    ? MultiVmSyncStatus
                     : Constants.Enable;
             var crashConsistentFrequencyInMinutes = 5;
             var a2aPolicyCreationInput = new A2APolicyCreationInput()
             {
-                AppConsistentFrequencyInMinutes = this.ApplicationConsistentSnapshotFrequencyInHours * 60,
+                AppConsistentFrequencyInMinutes = ApplicationConsistentSnapshotFrequencyInHours * 60,
                 CrashConsistentFrequencyInMinutes = crashConsistentFrequencyInMinutes,
                 MultiVmSyncStatus = (SetMultiVmSyncStatus)Enum.Parse(
                                             typeof(SetMultiVmSyncStatus),
-                                            this.MultiVmSyncStatus),
-                RecoveryPointHistory = this.RecoveryPointRetentionInHours * 60
+                                            MultiVmSyncStatus),
+                RecoveryPointHistory = RecoveryPointRetentionInHours * 60
             };
 
             var createPolicyInputProperties = new CreatePolicyInputProperties()
@@ -577,7 +577,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             };
 
             var response =
-                RecoveryServicesClient.CreatePolicy(this.Name, createPolicyInput);
+                RecoveryServicesClient.CreatePolicy(Name, createPolicyInput);
 
             string jobId = PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location);
 

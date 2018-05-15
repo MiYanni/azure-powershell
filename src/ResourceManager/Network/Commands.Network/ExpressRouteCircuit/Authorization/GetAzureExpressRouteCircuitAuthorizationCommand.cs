@@ -36,21 +36,21 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var authorization =
-                    this.ExpressRouteCircuit.Authorizations.First(
+                    ExpressRouteCircuit.Authorizations.First(
                         resource =>
                         string.Equals(
                             resource.Name,
-                            this.Name,
+                            Name,
                             System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(authorization);
             }
             else
             {
-                var authorizations = this.ExpressRouteCircuit.Authorizations;
+                var authorizations = ExpressRouteCircuit.Authorizations;
                 WriteObject(authorizations, true);
             }
         }

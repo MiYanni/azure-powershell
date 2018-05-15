@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ScaleRule rule = this.CreateSettingRule();
+            ScaleRule rule = CreateSettingRule();
             WriteObject(rule);
         }
 
@@ -129,38 +129,38 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         /// <returns>A ScaleRule created based on the properties of the object</returns>
         public ScaleRule CreateSettingRule()
         {
-            if (this.TimeWindow != default(TimeSpan) && this.TimeWindow < MinimumTimeWindow)
+            if (TimeWindow != default(TimeSpan) && TimeWindow < MinimumTimeWindow)
             {
-                throw new ArgumentOutOfRangeException("TimeWindow", this.TimeWindow, ResourcesForAutoscaleCmdlets.MinimumTimeWindow5min);
+                throw new ArgumentOutOfRangeException("TimeWindow", TimeWindow, ResourcesForAutoscaleCmdlets.MinimumTimeWindow5min);
             }
 
-            if (this.TimeGrain < MinimumTimeGrain)
+            if (TimeGrain < MinimumTimeGrain)
             {
-                throw new ArgumentOutOfRangeException("TimeGrain", this.TimeGrain, ResourcesForAutoscaleCmdlets.MinimumTimeGrain1min);
+                throw new ArgumentOutOfRangeException("TimeGrain", TimeGrain, ResourcesForAutoscaleCmdlets.MinimumTimeGrain1min);
             }
 
-            MetricTrigger trigger = new MetricTrigger()
+            MetricTrigger trigger = new MetricTrigger
             {
-                MetricName = this.MetricName,
-                MetricResourceUri = this.MetricResourceId,
-                OperatorProperty = this.Operator,
-                Statistic = this.MetricStatistic,
-                Threshold = this.Threshold,
-                TimeAggregation = this.TimeAggregationOperator,
-                TimeGrain = this.TimeGrain,
-                TimeWindow = this.TimeWindow == default(TimeSpan) ? MinimumTimeWindow : this.TimeWindow,
+                MetricName = MetricName,
+                MetricResourceUri = MetricResourceId,
+                OperatorProperty = Operator,
+                Statistic = MetricStatistic,
+                Threshold = Threshold,
+                TimeAggregation = TimeAggregationOperator,
+                TimeGrain = TimeGrain,
+                TimeWindow = TimeWindow == default(TimeSpan) ? MinimumTimeWindow : TimeWindow,
             };
 
             // Notice ChangeCount is (ScaleType)0, so this is the default in this version. It was the only value in the previous version.
-            ScaleAction action = new ScaleAction()
+            ScaleAction action = new ScaleAction
             {
-                Cooldown = this.ScaleActionCooldown,
-                Direction = this.ScaleActionDirection,
-                Value = this.ScaleActionValue,
-                Type = this.ScaleActionScaleType
+                Cooldown = ScaleActionCooldown,
+                Direction = ScaleActionDirection,
+                Value = ScaleActionValue,
+                Type = ScaleActionScaleType
             };
 
-            return new ScaleRule()
+            return new ScaleRule
             {
                 MetricTrigger = trigger,
                 ScaleAction = action,

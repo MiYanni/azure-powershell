@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Aks
             _authClient ?? (_authClient = BuildClient<AuthorizationManagementClient>());
 
         protected IGraphRbacManagementClient GraphClient =>
-            _graphClient ?? (_graphClient = BuildClient<GraphRbacManagementClient>(endpoint: AzureEnvironment.Endpoint.Graph, postBuild: instance =>
+            _graphClient ?? (_graphClient = BuildClient<GraphRbacManagementClient>(AzureEnvironment.Endpoint.Graph, instance =>
             {
                 instance.TenantID = DefaultContext.Tenant.Id;
                 return instance;

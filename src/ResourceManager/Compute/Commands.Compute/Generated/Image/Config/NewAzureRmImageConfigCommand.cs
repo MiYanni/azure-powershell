@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("New", "AzureRmImageConfig", SupportsShouldProcess = true)]
     [OutputType(typeof(PSImage))]
-    public partial class NewAzureRmImageConfigCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class NewAzureRmImageConfigCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = false,
@@ -78,48 +78,48 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // SourceVirtualMachine
-            Microsoft.Azure.Management.Compute.Models.SubResource vSourceVirtualMachine = null;
+            SubResource vSourceVirtualMachine = null;
 
             // StorageProfile
-            Microsoft.Azure.Management.Compute.Models.ImageStorageProfile vStorageProfile = null;
+            ImageStorageProfile vStorageProfile = null;
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SourceVirtualMachineId"))
+            if (MyInvocation.BoundParameters.ContainsKey("SourceVirtualMachineId"))
             {
                 if (vSourceVirtualMachine == null)
                 {
-                    vSourceVirtualMachine = new Microsoft.Azure.Management.Compute.Models.SubResource();
+                    vSourceVirtualMachine = new SubResource();
                 }
-                vSourceVirtualMachine.Id = this.SourceVirtualMachineId;
+                vSourceVirtualMachine.Id = SourceVirtualMachineId;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("OsDisk"))
+            if (MyInvocation.BoundParameters.ContainsKey("OsDisk"))
             {
                 if (vStorageProfile == null)
                 {
-                    vStorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    vStorageProfile = new ImageStorageProfile();
                 }
-                vStorageProfile.OsDisk = this.OsDisk;
+                vStorageProfile.OsDisk = OsDisk;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("DataDisk"))
+            if (MyInvocation.BoundParameters.ContainsKey("DataDisk"))
             {
                 if (vStorageProfile == null)
                 {
-                    vStorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    vStorageProfile = new ImageStorageProfile();
                 }
-                vStorageProfile.DataDisks = this.DataDisk;
+                vStorageProfile.DataDisks = DataDisk;
             }
 
             if (vStorageProfile == null)
             {
-                vStorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                vStorageProfile = new ImageStorageProfile();
             }
-            vStorageProfile.ZoneResilient = this.ZoneResilient.IsPresent;
+            vStorageProfile.ZoneResilient = ZoneResilient.IsPresent;
 
             var vImage = new PSImage
             {
-                Location = this.MyInvocation.BoundParameters.ContainsKey("Location") ? this.Location : null,
-                Tags = this.MyInvocation.BoundParameters.ContainsKey("Tag") ? this.Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
+                Location = MyInvocation.BoundParameters.ContainsKey("Location") ? Location : null,
+                Tags = MyInvocation.BoundParameters.ContainsKey("Tag") ? Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
                 SourceVirtualMachine = vSourceVirtualMachine,
                 StorageProfile = vStorageProfile,
             };

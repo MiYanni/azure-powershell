@@ -46,11 +46,11 @@ namespace Microsoft.Azure.Commands.StreamAnalytics
                 throw new PSArgumentNullException("ResourceGroupName");
             }
 
-            StartPSJobParameter parameter = new StartPSJobParameter()
+            StartPSJobParameter parameter = new StartPSJobParameter
             {
                 ResourceGroupName = ResourceGroupName,
                 JobName = Name,
-                StartParameters = new StartStreamingJobParameters()
+                StartParameters = new StartStreamingJobParameters
                 {
                     OutputStartMode = OutputStartMode,
                     OutputStartTime = OutputStartTime

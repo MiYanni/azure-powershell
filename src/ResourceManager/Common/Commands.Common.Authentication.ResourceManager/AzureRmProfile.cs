@@ -58,14 +58,14 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
                 IAzureContext result = null;
                 if (!string.IsNullOrEmpty(DefaultContextKey) && Contexts != null && Contexts.ContainsKey(DefaultContextKey))
                 {
-                    result = this.Contexts[DefaultContextKey];
+                    result = Contexts[DefaultContextKey];
                 }
 
                 return result;
             }
             set
             {
-                this.Contexts[DefaultContextKey] = value;
+                Contexts[DefaultContextKey] = value;
             }
         }
 
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
         {
             get
             {
-                return Contexts.Values.Select((c) => c.Subscription);
+                return Contexts.Values.Select(c => c.Subscription);
             }
         }
 
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
         {
             get
             {
-                return Contexts.Values.Select((c) => c.Account);
+                return Contexts.Values.Select(c => c.Account);
             }
         }
 
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
 
         private void Load(string path)
         {
-            this.ProfilePath = path;
+            ProfilePath = path;
             var session = AzureSession.Instance;
             var store = session.DataStore;
             if (!store.DirectoryExists(session.ProfileDirectory))
@@ -119,8 +119,8 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
                 string contents = GetJsonText(store.ReadFileAsText(ProfilePath));
                 LegacyAzureRmProfile oldProfile;
                 AzureRmProfile profile = null;
-                if ((SafeDeserializeObject<LegacyAzureRmProfile>(contents, out oldProfile)
-                     && oldProfile.TryConvert(out profile))
+                if (SafeDeserializeObject<LegacyAzureRmProfile>(contents, out oldProfile)
+                    && oldProfile.TryConvert(out profile)
                     || SafeDeserializeObject<AzureRmProfile>(contents, out profile, new AzureRmProfileConverter()))
                 {
                     Initialize(profile);
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
 
         private void Load(IFileProvider provider)
         {
-            this.ProfilePath = provider.FilePath;
+            ProfilePath = provider.FilePath;
             string contents = provider.CreateReader().ReadToEnd();
             LegacyAzureRmProfile oldProfile;
             AzureRmProfile profile = null;
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
                 foreach (var context in profile.Contexts)
                 {
                     context.Value.TokenCache = AzureSession.Instance.TokenCache;
-                    this.Contexts.Add(context.Key, context.Value);
+                    Contexts.Add(context.Key, context.Value);
                 }
 
                 DefaultContextKey = profile.DefaultContextKey ?? "Default";
@@ -364,17 +364,17 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
             name = null;
             if (context != null)
             {
-                var foundContext = Contexts.FirstOrDefault((c) =>
+                var foundContext = Contexts.FirstOrDefault(c =>
                     c.Value != null
                     && (
-                        (c.Value.Account != null && context.Account != null && string.Equals(c.Value.Account.Id, context.Account.Id, StringComparison.OrdinalIgnoreCase))
-                        || (c.Value.Account == context.Account))
+                        c.Value.Account != null && context.Account != null && string.Equals(c.Value.Account.Id, context.Account.Id, StringComparison.OrdinalIgnoreCase)
+                        || c.Value.Account == context.Account)
                     && (
-                        (c.Value.Tenant != null && context.Tenant != null && c.Value.Tenant.GetId() == context.Tenant.GetId())
-                        || (c.Value.Tenant == context.Tenant))
+                        c.Value.Tenant != null && context.Tenant != null && c.Value.Tenant.GetId() == context.Tenant.GetId()
+                        || c.Value.Tenant == context.Tenant)
                     && (
-                        (c.Value.Subscription != null && context.Subscription != null && c.Value.Subscription.GetId() == context.Subscription.GetId())
-                        || (c.Value.Subscription == context.Subscription)));
+                        c.Value.Subscription != null && context.Subscription != null && c.Value.Subscription.GetId() == context.Subscription.GetId()
+                        || c.Value.Subscription == context.Subscription));
                 if (!string.IsNullOrEmpty(foundContext.Key))
                 {
                     name = foundContext.Key;
@@ -561,10 +561,10 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
 
         public bool TryCopyProfile(AzureRmProfile other)
         {
-            this.Clear();
-            foreach (var environment in other.EnvironmentTable.Where((e) => !AzureEnvironment.PublicEnvironments.ContainsKey(e.Key)))
+            Clear();
+            foreach (var environment in other.EnvironmentTable.Where(e => !AzureEnvironment.PublicEnvironments.ContainsKey(e.Key)))
             {
-                this.EnvironmentTable.Add(environment.Key, environment.Value);
+                EnvironmentTable.Add(environment.Key, environment.Value);
             }
 
             foreach (var context in other.Contexts)
@@ -574,7 +574,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
 
             if (other.DefaultContext != null)
             {
-                this.TrySetDefaultContext(other.DefaultContext);
+                TrySetDefaultContext(other.DefaultContext);
             }
 
             this.CopyPropertiesFrom(other);

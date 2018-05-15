@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
     {
         public PSContainerRegistryEventInfo(EventInfo info)
         {
-            this.Id = info?.Id;
+            Id = info?.Id;
         }
 
         public string Id { get; set; }

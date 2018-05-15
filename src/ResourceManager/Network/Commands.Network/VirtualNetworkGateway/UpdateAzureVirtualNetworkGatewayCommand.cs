@@ -139,131 +139,131 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!this.IsVirtualNetworkGatewayPresent(this.VirtualNetworkGateway.ResourceGroupName, this.VirtualNetworkGateway.Name))
+            if (!IsVirtualNetworkGatewayPresent(VirtualNetworkGateway.ResourceGroupName, VirtualNetworkGateway.Name))
             {
-                throw new ArgumentException(string.Format(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound, this.VirtualNetworkGateway.Name));
+                throw new ArgumentException(string.Format(Properties.Resources.ResourceNotFound, VirtualNetworkGateway.Name));
             }
 
-            if (this.EnableActiveActiveFeature.IsPresent && this.DisableActiveActiveFeature.IsPresent)
+            if (EnableActiveActiveFeature.IsPresent && DisableActiveActiveFeature.IsPresent)
             {
                 throw new ArgumentException("Both EnableActiveActiveFeature and DisableActiveActiveFeature Parameters can not be passed.");
             }
 
-            if (this.EnableActiveActiveFeature.IsPresent)
+            if (EnableActiveActiveFeature.IsPresent)
             {
-                this.VirtualNetworkGateway.ActiveActive = true;
+                VirtualNetworkGateway.ActiveActive = true;
             }
 
-            if (this.DisableActiveActiveFeature.IsPresent)
+            if (DisableActiveActiveFeature.IsPresent)
             {
-                this.VirtualNetworkGateway.ActiveActive = false;
+                VirtualNetworkGateway.ActiveActive = false;
             }
 
 
             if (!string.IsNullOrEmpty(GatewaySku))
             {
-                this.VirtualNetworkGateway.Sku = new PSVirtualNetworkGatewaySku();
-                this.VirtualNetworkGateway.Sku.Tier = this.GatewaySku;
-                this.VirtualNetworkGateway.Sku.Name = this.GatewaySku;
+                VirtualNetworkGateway.Sku = new PSVirtualNetworkGatewaySku();
+                VirtualNetworkGateway.Sku.Tier = GatewaySku;
+                VirtualNetworkGateway.Sku.Name = GatewaySku;
             }
 
-            if (this.VirtualNetworkGateway.ActiveActive && !this.VirtualNetworkGateway.VpnType.Equals(MNM.VpnType.RouteBased))
+            if (VirtualNetworkGateway.ActiveActive && !VirtualNetworkGateway.VpnType.Equals(MNM.VpnType.RouteBased))
             {
                 throw new ArgumentException("Virtual Network Gateway VpnType should be " + MNM.VpnType.RouteBased + " when Active-Active feature flag is set to True.");
             }
 
-            if (this.VirtualNetworkGateway.ActiveActive && this.VirtualNetworkGateway.IpConfigurations.Count != 2)
+            if (VirtualNetworkGateway.ActiveActive && VirtualNetworkGateway.IpConfigurations.Count != 2)
             {
                 throw new ArgumentException("Virtual Network Gateway should have 2 Gateway IpConfigurations specified when Active-Active feature flag is True.");
             }
 
-            if (!this.VirtualNetworkGateway.ActiveActive && this.VirtualNetworkGateway.IpConfigurations.Count == 2)
+            if (!VirtualNetworkGateway.ActiveActive && VirtualNetworkGateway.IpConfigurations.Count == 2)
             {
                 throw new ArgumentException("Virtual Network Gateway should have Active-Active feature flag set to True as there are 2 Gateway IpConfigurations specified. OR there should be only one Gateway IpConfiguration specified.");
             }
 
-            if (this.GatewayDefaultSite != null)
+            if (GatewayDefaultSite != null)
             {
-                this.VirtualNetworkGateway.GatewayDefaultSite = new PSResourceId();
-                this.VirtualNetworkGateway.GatewayDefaultSite.Id = this.GatewayDefaultSite.Id;
+                VirtualNetworkGateway.GatewayDefaultSite = new PSResourceId();
+                VirtualNetworkGateway.GatewayDefaultSite.Id = GatewayDefaultSite.Id;
             }
 
-            if ((this.VpnClientAddressPool != null ||
-                 this.VpnClientRootCertificates != null ||
-                 this.VpnClientRevokedCertificates != null ||
-                 this.RadiusServerAddress != null ||
-                 this.RadiusServerSecret != null) &&
-                this.VirtualNetworkGateway.VpnClientConfiguration == null)
+            if ((VpnClientAddressPool != null ||
+                 VpnClientRootCertificates != null ||
+                 VpnClientRevokedCertificates != null ||
+                 RadiusServerAddress != null ||
+                 RadiusServerSecret != null) &&
+                VirtualNetworkGateway.VpnClientConfiguration == null)
             {
-                this.VirtualNetworkGateway.VpnClientConfiguration = new PSVpnClientConfiguration();
+                VirtualNetworkGateway.VpnClientConfiguration = new PSVpnClientConfiguration();
             }
 
-            if (this.VpnClientAddressPool != null)
+            if (VpnClientAddressPool != null)
             {
-                this.VirtualNetworkGateway.VpnClientConfiguration.VpnClientAddressPool = new PSAddressSpace();
-                this.VirtualNetworkGateway.VpnClientConfiguration.VpnClientAddressPool.AddressPrefixes = this.VpnClientAddressPool;
+                VirtualNetworkGateway.VpnClientConfiguration.VpnClientAddressPool = new PSAddressSpace();
+                VirtualNetworkGateway.VpnClientConfiguration.VpnClientAddressPool.AddressPrefixes = VpnClientAddressPool;
             }
 
-            if (this.VpnClientProtocol != null)
+            if (VpnClientProtocol != null)
             {
-                this.VirtualNetworkGateway.VpnClientConfiguration.VpnClientProtocols = this.VpnClientProtocol;
+                VirtualNetworkGateway.VpnClientConfiguration.VpnClientProtocols = VpnClientProtocol;
             }
 
-            if (this.VpnClientRootCertificates != null)
+            if (VpnClientRootCertificates != null)
             {
-                this.VirtualNetworkGateway.VpnClientConfiguration.VpnClientRootCertificates = this.VpnClientRootCertificates;
+                VirtualNetworkGateway.VpnClientConfiguration.VpnClientRootCertificates = VpnClientRootCertificates;
             }
 
-            if (this.VpnClientRevokedCertificates != null)
+            if (VpnClientRevokedCertificates != null)
             {
-                this.VirtualNetworkGateway.VpnClientConfiguration.VpnClientRevokedCertificates = this.VpnClientRevokedCertificates;
+                VirtualNetworkGateway.VpnClientConfiguration.VpnClientRevokedCertificates = VpnClientRevokedCertificates;
             }
 
-            if ((this.RadiusServerAddress != null && this.RadiusServerSecret == null) ||
-                (this.RadiusServerAddress == null && this.RadiusServerSecret != null))
+            if (RadiusServerAddress != null && RadiusServerSecret == null ||
+                RadiusServerAddress == null && RadiusServerSecret != null)
             {
                 throw new ArgumentException("Both radius server address and secret must be specified if external radius is being configured");
             }
 
-            if (this.RadiusServerAddress != null)
+            if (RadiusServerAddress != null)
             {
-                this.VirtualNetworkGateway.VpnClientConfiguration.RadiusServerAddress = this.RadiusServerAddress;
-                this.VirtualNetworkGateway.VpnClientConfiguration.RadiusServerSecret = SecureStringExtensions.ConvertToString(this.RadiusServerSecret);
+                VirtualNetworkGateway.VpnClientConfiguration.RadiusServerAddress = RadiusServerAddress;
+                VirtualNetworkGateway.VpnClientConfiguration.RadiusServerSecret = SecureStringExtensions.ConvertToString(RadiusServerSecret);
             }
 
-            if ((this.Asn > 0 || this.PeerWeight > 0) && this.VirtualNetworkGateway.BgpSettings == null)
+            if ((Asn > 0 || PeerWeight > 0) && VirtualNetworkGateway.BgpSettings == null)
             {
-                this.VirtualNetworkGateway.BgpSettings = new PSBgpSettings();
-                this.VirtualNetworkGateway.BgpSettings.BgpPeeringAddress = null; // The gateway's BGP peering address (private IP address assigned within the vnet) can't be changed
+                VirtualNetworkGateway.BgpSettings = new PSBgpSettings();
+                VirtualNetworkGateway.BgpSettings.BgpPeeringAddress = null; // The gateway's BGP peering address (private IP address assigned within the vnet) can't be changed
             }
 
-            if (this.Asn > 0)
+            if (Asn > 0)
             {
-                this.VirtualNetworkGateway.BgpSettings.Asn = this.Asn;
+                VirtualNetworkGateway.BgpSettings.Asn = Asn;
             }
 
-            if (this.PeerWeight > 0)
+            if (PeerWeight > 0)
             {
-                this.VirtualNetworkGateway.BgpSettings.PeerWeight = this.PeerWeight;
+                VirtualNetworkGateway.BgpSettings.PeerWeight = PeerWeight;
             }
-            else if (this.PeerWeight < 0)
+            else if (PeerWeight < 0)
             {
                 throw new ArgumentException("PeerWeight must be a positive integer");
             }
 
             // Map to the sdk object
-            MNM.VirtualNetworkGateway sdkVirtualNetworkGateway = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkGateway>(this.VirtualNetworkGateway);
-            sdkVirtualNetworkGateway.Tags = TagsConversionHelper.CreateTagDictionary(this.VirtualNetworkGateway.Tag, validate: true);
+            MNM.VirtualNetworkGateway sdkVirtualNetworkGateway = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkGateway>(VirtualNetworkGateway);
+            sdkVirtualNetworkGateway.Tags = TagsConversionHelper.CreateTagDictionary(VirtualNetworkGateway.Tag, validate: true);
 
-            string shouldProcessMessage = string.Format("Execute AzureRmVirtualNetworkGateway for ResourceGroupName {0} VirtualNetworkGateway {1}", this.VirtualNetworkGateway.ResourceGroupName, this.VirtualNetworkGateway.Name);
+            string shouldProcessMessage = string.Format("Execute AzureRmVirtualNetworkGateway for ResourceGroupName {0} VirtualNetworkGateway {1}", VirtualNetworkGateway.ResourceGroupName, VirtualNetworkGateway.Name);
             if (ShouldProcess(shouldProcessMessage, VerbsCommon.Set))
             {
-                this.VirtualNetworkGatewayClient.CreateOrUpdate(this.VirtualNetworkGateway.ResourceGroupName,
-                    this.VirtualNetworkGateway.Name, sdkVirtualNetworkGateway);
+                VirtualNetworkGatewayClient.CreateOrUpdate(VirtualNetworkGateway.ResourceGroupName,
+                    VirtualNetworkGateway.Name, sdkVirtualNetworkGateway);
 
                 var getVirtualNetworkGateway =
-                    this.GetVirtualNetworkGateway(this.VirtualNetworkGateway.ResourceGroupName,
-                        this.VirtualNetworkGateway.Name);
+                    GetVirtualNetworkGateway(VirtualNetworkGateway.ResourceGroupName,
+                        VirtualNetworkGateway.Name);
 
                 WriteObject(getVirtualNetworkGateway);
             }

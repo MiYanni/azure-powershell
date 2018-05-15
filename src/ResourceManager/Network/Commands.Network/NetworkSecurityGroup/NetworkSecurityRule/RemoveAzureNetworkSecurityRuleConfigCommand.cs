@@ -38,14 +38,14 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
 
             // Verify if the rule exists in the NetworkSecurityGroup
-            var rule = this.NetworkSecurityGroup.SecurityRules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var rule = NetworkSecurityGroup.SecurityRules.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (rule != null)
             {
-                this.NetworkSecurityGroup.SecurityRules.Remove(rule);
+                NetworkSecurityGroup.SecurityRules.Remove(rule);
             }
 
-            WriteObject(this.NetworkSecurityGroup);
+            WriteObject(NetworkSecurityGroup);
         }
     }
 }

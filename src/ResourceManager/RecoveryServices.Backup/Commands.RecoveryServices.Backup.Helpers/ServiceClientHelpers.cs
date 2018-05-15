@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (containerType)
             {
                 case CmdletModel.ContainerType.AzureVM:
-                    providerType = ServiceClientModel.BackupManagementType.AzureIaasVM.ToString();
+                    providerType = ServiceClientModel.BackupManagementType.AzureIaasVM;
                     break;
                 default:
                     break;
@@ -68,10 +68,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (workloadType)
             {
                 case CmdletModel.WorkloadType.AzureVM:
-                    providerType = ServiceClientModel.BackupManagementType.AzureIaasVM.ToString();
+                    providerType = ServiceClientModel.BackupManagementType.AzureIaasVM;
                     break;
                 case CmdletModel.WorkloadType.AzureSQLDatabase:
-                    providerType = ServiceClientModel.BackupManagementType.AzureSql.ToString();
+                    providerType = ServiceClientModel.BackupManagementType.AzureSql;
                     break;
                 default:
                     break;
@@ -96,10 +96,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (backupManagementType)
             {
                 case CmdletModel.BackupManagementType.AzureVM:
-                    providerType = ServiceClientModel.BackupManagementType.AzureIaasVM.ToString();
+                    providerType = ServiceClientModel.BackupManagementType.AzureIaasVM;
                     break;
                 case CmdletModel.BackupManagementType.AzureSQL:
-                    providerType = ServiceClientModel.BackupManagementType.AzureSql.ToString();
+                    providerType = ServiceClientModel.BackupManagementType.AzureSql;
                     break;
                 default:
                     break;
@@ -145,22 +145,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (pSJobStatus)
             {
                 case CmdletModel.JobStatus.Cancelled:
-                    jobStatus = ServiceClientModel.JobStatus.Cancelled.ToString();
+                    jobStatus = ServiceClientModel.JobStatus.Cancelled;
                     break;
                 case CmdletModel.JobStatus.Cancelling:
-                    jobStatus = ServiceClientModel.JobStatus.Cancelling.ToString();
+                    jobStatus = ServiceClientModel.JobStatus.Cancelling;
                     break;
                 case CmdletModel.JobStatus.Completed:
-                    jobStatus = ServiceClientModel.JobStatus.Completed.ToString();
+                    jobStatus = ServiceClientModel.JobStatus.Completed;
                     break;
                 case CmdletModel.JobStatus.CompletedWithWarnings:
-                    jobStatus = ServiceClientModel.JobStatus.CompletedWithWarnings.ToString();
+                    jobStatus = ServiceClientModel.JobStatus.CompletedWithWarnings;
                     break;
                 case CmdletModel.JobStatus.Failed:
-                    jobStatus = ServiceClientModel.JobStatus.Failed.ToString();
+                    jobStatus = ServiceClientModel.JobStatus.Failed;
                     break;
                 case CmdletModel.JobStatus.InProgress:
-                    jobStatus = ServiceClientModel.JobStatus.InProgress.ToString();
+                    jobStatus = ServiceClientModel.JobStatus.InProgress;
                     break;
                 default:
                     break;
@@ -185,16 +185,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (pSRetentionDurationType)
             {
                 case CmdletModel.RetentionDurationType.Days:
-                    retentionDurationtype = ServiceClientModel.RetentionDurationType.Days.ToString();
+                    retentionDurationtype = ServiceClientModel.RetentionDurationType.Days;
                     break;
                 case CmdletModel.RetentionDurationType.Weeks:
-                    retentionDurationtype = ServiceClientModel.RetentionDurationType.Weeks.ToString();
+                    retentionDurationtype = ServiceClientModel.RetentionDurationType.Weeks;
                     break;
                 case CmdletModel.RetentionDurationType.Months:
-                    retentionDurationtype = ServiceClientModel.RetentionDurationType.Months.ToString();
+                    retentionDurationtype = ServiceClientModel.RetentionDurationType.Months;
                     break;
                 case CmdletModel.RetentionDurationType.Years:
-                    retentionDurationtype = ServiceClientModel.RetentionDurationType.Years.ToString();
+                    retentionDurationtype = ServiceClientModel.RetentionDurationType.Years;
                     break;
                 default:
                     break;
@@ -219,10 +219,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (pSRetentionScheduleFormat)
             {
                 case CmdletModel.RetentionScheduleFormat.Daily:
-                    retentionScheduleFormat = ServiceClientModel.RetentionScheduleFormat.Daily.ToString();
+                    retentionScheduleFormat = ServiceClientModel.RetentionScheduleFormat.Daily;
                     break;
                 case CmdletModel.RetentionScheduleFormat.Weekly:
-                    retentionScheduleFormat = ServiceClientModel.RetentionScheduleFormat.Weekly.ToString();
+                    retentionScheduleFormat = ServiceClientModel.RetentionScheduleFormat.Weekly;
                     break;
                 default:
                     break;
@@ -247,10 +247,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (pSScheduleRunType)
             {
                 case CmdletModel.ScheduleRunType.Daily:
-                    scheduleRunType = ServiceClientModel.ScheduleRunType.Daily.ToString();
+                    scheduleRunType = ServiceClientModel.ScheduleRunType.Daily;
                     break;
                 case CmdletModel.ScheduleRunType.Weekly:
-                    scheduleRunType = ServiceClientModel.ScheduleRunType.Weekly.ToString();
+                    scheduleRunType = ServiceClientModel.ScheduleRunType.Weekly;
                     break;
                 default:
                     break;
@@ -317,7 +317,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (containerType)
             {
                 case CmdletModel.ContainerType.AzureVM:
-                    serviceClientContainerType = ServiceClientModel.MabServerType.IaasVMContainer.ToString();
+                    serviceClientContainerType = ServiceClientModel.MabServerType.IaasVMContainer;
                     break;
                 default:
                     break;
@@ -338,7 +338,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (workloadType)
             {
                 case CmdletModel.WorkloadType.AzureVM:
-                    serviceClientWorkloadType = ServiceClientModel.WorkloadType.VM.ToString();
+                    serviceClientWorkloadType = ServiceClientModel.WorkloadType.VM;
                     break;
                 default:
                     break;

@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSAutoPoolSpecification
     {
         
-        internal Microsoft.Azure.Batch.AutoPoolSpecification omObject;
+        internal AutoPoolSpecification omObject;
         
         private PSPoolSpecification poolSpecification;
         
         public PSAutoPoolSpecification()
         {
-            this.omObject = new Microsoft.Azure.Batch.AutoPoolSpecification();
+            omObject = new AutoPoolSpecification();
         }
         
-        internal PSAutoPoolSpecification(Microsoft.Azure.Batch.AutoPoolSpecification omObject)
+        internal PSAutoPoolSpecification(AutoPoolSpecification omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,35 +54,35 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.AutoPoolIdPrefix;
+                return omObject.AutoPoolIdPrefix;
             }
             set
             {
-                this.omObject.AutoPoolIdPrefix = value;
+                omObject.AutoPoolIdPrefix = value;
             }
         }
         
-        public System.Boolean? KeepAlive
+        public Boolean? KeepAlive
         {
             get
             {
-                return this.omObject.KeepAlive;
+                return omObject.KeepAlive;
             }
             set
             {
-                this.omObject.KeepAlive = value;
+                omObject.KeepAlive = value;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.PoolLifetimeOption PoolLifetimeOption
+        public Azure.Batch.Common.PoolLifetimeOption PoolLifetimeOption
         {
             get
             {
-                return this.omObject.PoolLifetimeOption;
+                return omObject.PoolLifetimeOption;
             }
             set
             {
-                this.omObject.PoolLifetimeOption = value;
+                omObject.PoolLifetimeOption = value;
             }
         }
         
@@ -90,24 +90,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.poolSpecification == null) 
-                            && (this.omObject.PoolSpecification != null)))
+                if (poolSpecification == null 
+                    && omObject.PoolSpecification != null)
                 {
-                    this.poolSpecification = new PSPoolSpecification(this.omObject.PoolSpecification);
+                    poolSpecification = new PSPoolSpecification(omObject.PoolSpecification);
                 }
-                return this.poolSpecification;
+                return poolSpecification;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.PoolSpecification = null;
+                    omObject.PoolSpecification = null;
                 }
                 else
                 {
-                    this.omObject.PoolSpecification = value.omObject;
+                    omObject.PoolSpecification = value.omObject;
                 }
-                this.poolSpecification = value;
+                poolSpecification = value;
             }
         }
     }

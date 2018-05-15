@@ -72,19 +72,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
                 if (BackendAddressPool != null)
                 {
-                    this.BackendAddressPoolId = this.BackendAddressPool.Id;
+                    BackendAddressPoolId = BackendAddressPool.Id;
                 }
                 if (BackendHttpSettings != null)
                 {
-                    this.BackendHttpSettingsId = this.BackendHttpSettings.Id;
+                    BackendHttpSettingsId = BackendHttpSettings.Id;
                 }
                 if (RedirectConfiguration != null)
                 {
-                    this.RedirectConfigurationId = this.RedirectConfiguration.Id;
+                    RedirectConfigurationId = RedirectConfiguration.Id;
                 }
             }
         }
@@ -93,25 +93,25 @@ namespace Microsoft.Azure.Commands.Network
         {
             var pathRule = new PSApplicationGatewayPathRule();
 
-            pathRule.Name = this.Name;
-            pathRule.Paths = this.Paths;
+            pathRule.Name = Name;
+            pathRule.Paths = Paths;
 
-            if (!string.IsNullOrEmpty(this.BackendAddressPoolId))
+            if (!string.IsNullOrEmpty(BackendAddressPoolId))
             {
                 pathRule.BackendAddressPool = new PSResourceId();
-                pathRule.BackendAddressPool.Id = this.BackendAddressPoolId;
+                pathRule.BackendAddressPool.Id = BackendAddressPoolId;
             }
 
-            if (!string.IsNullOrEmpty(this.BackendHttpSettingsId))
+            if (!string.IsNullOrEmpty(BackendHttpSettingsId))
             {
                 pathRule.BackendHttpSettings = new PSResourceId();
-                pathRule.BackendHttpSettings.Id = this.BackendHttpSettingsId;
+                pathRule.BackendHttpSettings.Id = BackendHttpSettingsId;
             }
 
-            if (!string.IsNullOrEmpty(this.RedirectConfigurationId))
+            if (!string.IsNullOrEmpty(RedirectConfigurationId))
             {
                 pathRule.RedirectConfiguration = new PSResourceId();
-                pathRule.RedirectConfiguration.Id = this.RedirectConfigurationId;
+                pathRule.RedirectConfiguration.Id = RedirectConfigurationId;
             }
 
             return pathRule;

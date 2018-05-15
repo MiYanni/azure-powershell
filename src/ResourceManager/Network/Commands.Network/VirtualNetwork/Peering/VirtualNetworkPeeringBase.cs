@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSVirtualNetworkPeering GetVirtualNetworkPeering(string resouceGroupName, string virtualNetworkName, string virtualNetworkPeeringName)
         {
-            var virtualNetworkPeering = this.VirtualNetworkPeeringClient.Get(resouceGroupName, virtualNetworkName, virtualNetworkPeeringName);
+            var virtualNetworkPeering = VirtualNetworkPeeringClient.Get(resouceGroupName, virtualNetworkName, virtualNetworkPeeringName);
 
             var psVirtualNetworkPeering = ToPsVirtualNetworkPeering(virtualNetworkPeering);
 
@@ -54,9 +54,9 @@ namespace Microsoft.Azure.Commands.Network
         {
             try
             {
-                this.GetVirtualNetworkPeering(resouceGroupName, virtualNetworkName, virtualNetworkPeeringName);
+                GetVirtualNetworkPeering(resouceGroupName, virtualNetworkName, virtualNetworkPeeringName);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {

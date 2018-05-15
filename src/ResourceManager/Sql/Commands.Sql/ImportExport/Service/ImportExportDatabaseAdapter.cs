@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Sql.ImportExport.Service
         /// <returns>Operation response including the OperationStatusLink to get the operation status</returns>
         public AzureSqlDatabaseImportExportBaseModel Export(AzureSqlDatabaseImportExportBaseModel exportRequest)
         {
-            ExportRequestParameters parameters = new ExportRequestParameters()
+            ExportRequestParameters parameters = new ExportRequestParameters
             {
                 AdministratorLogin = exportRequest.AdministratorLogin,
                 AdministratorLoginPassword = AzureSqlServerAdapter.Decrypt(exportRequest.AdministratorLoginPassword),
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Sql.ImportExport.Service
         /// <returns>Operation response including the OperationStatusLink to get the operation status</returns>
         public AzureSqlDatabaseImportExportBaseModel Import(AzureSqlDatabaseImportModel importRequest)
         {
-            ImportRequestParameters parameters = new ImportRequestParameters()
+            ImportRequestParameters parameters = new ImportRequestParameters
             {
                 AdministratorLogin = importRequest.AdministratorLogin,
                 AdministratorLoginPassword = AzureSqlServerAdapter.Decrypt(importRequest.AdministratorLoginPassword),
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Commands.Sql.ImportExport.Service
         {
             ImportExportOperationStatusResponse resposne = Communicator.GetStatus(operationStatusLink);
 
-            AzureSqlDatabaseImportExportStatusModel status = new AzureSqlDatabaseImportExportStatusModel()
+            AzureSqlDatabaseImportExportStatusModel status = new AzureSqlDatabaseImportExportStatusModel
             {
                 ErrorMessage = resposne.ErrorMessage,
                 LastModifiedTime = resposne.LastModifiedTime,

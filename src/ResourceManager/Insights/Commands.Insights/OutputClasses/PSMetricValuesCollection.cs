@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="metricValues">The list of metric values</param>
         public PSMetricValuesCollection(IEnumerable<MetricValue> metricValues)
         {
-            this.AddRange(metricValues.Select(mv => new PSMetricValue(mv)));
+            AddRange(metricValues.Select(mv => new PSMetricValue(mv)));
         }
 
 /*        /// <summary>

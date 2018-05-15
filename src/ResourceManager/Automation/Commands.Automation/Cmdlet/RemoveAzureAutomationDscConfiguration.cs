@@ -47,10 +47,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                 string.Format(Resources.RemovingAzureAutomationDscConfigurationWarning, "DSC Configuration"),
                 string.Format(Resources.RemoveAzureAutomationResourceDescription, "DSC Configuration"),
                 Name,
-                () => this.AutomationClient.DeleteConfiguration(
-                    this.ResourceGroupName,
-                    this.AutomationAccountName,
-                    this.Name));
+                () => AutomationClient.DeleteConfiguration(
+                    ResourceGroupName,
+                    AutomationAccountName,
+                    Name));
         }
     }
 }

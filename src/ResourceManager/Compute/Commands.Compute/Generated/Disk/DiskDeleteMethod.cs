@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string diskName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "DiskName" },
+                 new[] { "ResourceGroupName", "DiskName" },
                  new object[] { resourceGroupName, diskName });
         }
     }
@@ -105,13 +105,13 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.DiskName, VerbsCommon.Remove)
-                    && (this.Force.IsPresent ||
-                        this.ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
+                if (ShouldProcess(DiskName, VerbsCommon.Remove)
+                    && (Force.IsPresent ||
+                        ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
                                             "Remove-AzureRmDisk operation")))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string diskName = this.DiskName;
+                    string resourceGroupName = ResourceGroupName;
+                    string diskName = DiskName;
 
                     var result = DisksClient.Delete(resourceGroupName, diskName);
                     var psObject = new PSOperationStatusResponse();
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

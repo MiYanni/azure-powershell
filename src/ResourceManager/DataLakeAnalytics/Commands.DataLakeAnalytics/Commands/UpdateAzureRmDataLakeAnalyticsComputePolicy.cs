@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics
     {
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = false,
             HelpMessage = "Name of resource group under which you the account exists. Optional and will attempt to discover if not provided.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics
                 Name, () =>
                 {
                     WriteObject(
-                        this.DataLakeAnalyticsClient.UpdateComputePolicy(
+                        DataLakeAnalyticsClient.UpdateComputePolicy(
                             ResourceGroupName,
                             Account,
                             Name,

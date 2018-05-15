@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string CurrentElasticPoolName
         {
-            get { return this._currentElasticPoolName; }
-            set { this._currentElasticPoolName = value; }
+            get { return _currentElasticPoolName; }
+            set { _currentElasticPoolName = value; }
         }
         
         private string _currentServiceObjectiveName;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string CurrentServiceObjectiveName
         {
-            get { return this._currentServiceObjectiveName; }
-            set { this._currentServiceObjectiveName = value; }
+            get { return _currentServiceObjectiveName; }
+            set { _currentServiceObjectiveName = value; }
         }
         
         private string _databaseName;
@@ -61,19 +61,19 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseName
         {
-            get { return this._databaseName; }
-            set { this._databaseName = value; }
+            get { return _databaseName; }
+            set { _databaseName = value; }
         }
         
-        private System.DateTime? _endTime;
+        private DateTime? _endTime;
         
         /// <summary>
         /// Optional. Gets the time the operation finished.
         /// </summary>
-        public System.DateTime? EndTime
+        public DateTime? EndTime
         {
-            get { return this._endTime; }
-            set { this._endTime = value; }
+            get { return _endTime; }
+            set { _endTime = value; }
         }
         
         private int? _errorCode;
@@ -83,8 +83,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int? ErrorCode
         {
-            get { return this._errorCode; }
-            set { this._errorCode = value; }
+            get { return _errorCode; }
+            set { _errorCode = value; }
         }
         
         private string _errorMessage;
@@ -94,8 +94,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ErrorMessage
         {
-            get { return this._errorMessage; }
-            set { this._errorMessage = value; }
+            get { return _errorMessage; }
+            set { _errorMessage = value; }
         }
         
         private int? _errorSeverity;
@@ -105,8 +105,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int? ErrorSeverity
         {
-            get { return this._errorSeverity; }
-            set { this._errorSeverity = value; }
+            get { return _errorSeverity; }
+            set { _errorSeverity = value; }
         }
         
         private string _operation;
@@ -116,8 +116,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Operation
         {
-            get { return this._operation; }
-            set { this._operation = value; }
+            get { return _operation; }
+            set { _operation = value; }
         }
         
         private Guid _operationId;
@@ -127,8 +127,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Guid OperationId
         {
-            get { return this._operationId; }
-            set { this._operationId = value; }
+            get { return _operationId; }
+            set { _operationId = value; }
         }
         
         private int? _percentComplete;
@@ -138,8 +138,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int? PercentComplete
         {
-            get { return this._percentComplete; }
-            set { this._percentComplete = value; }
+            get { return _percentComplete; }
+            set { _percentComplete = value; }
         }
         
         private string _requestedElasticPoolName;
@@ -150,8 +150,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RequestedElasticPoolName
         {
-            get { return this._requestedElasticPoolName; }
-            set { this._requestedElasticPoolName = value; }
+            get { return _requestedElasticPoolName; }
+            set { _requestedElasticPoolName = value; }
         }
         
         private string _requestedServiceObjectiveName;
@@ -162,8 +162,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RequestedServiceObjectiveName
         {
-            get { return this._requestedServiceObjectiveName; }
-            set { this._requestedServiceObjectiveName = value; }
+            get { return _requestedServiceObjectiveName; }
+            set { _requestedServiceObjectiveName = value; }
         }
         
         private string _serverName;
@@ -174,19 +174,19 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServerName
         {
-            get { return this._serverName; }
-            set { this._serverName = value; }
+            get { return _serverName; }
+            set { _serverName = value; }
         }
         
-        private System.DateTime? _startTime;
+        private DateTime? _startTime;
         
         /// <summary>
         /// Optional. Gets the time the operation started.
         /// </summary>
-        public System.DateTime? StartTime
+        public DateTime? StartTime
         {
-            get { return this._startTime; }
-            set { this._startTime = value; }
+            get { return _startTime; }
+            set { _startTime = value; }
         }
         
         private string _state;
@@ -196,8 +196,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         /// <summary>

@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     ObjectId = ActiveDirectoryClient.GetAppObjectIdFromDisplayName(DisplayName);
                 }
 
-                WriteObject(ActiveDirectoryClient.GetAppCredentials(ObjectId), enumerateCollection: true);
+                WriteObject(ActiveDirectoryClient.GetAppCredentials(ObjectId), true);
             });
         }
     }

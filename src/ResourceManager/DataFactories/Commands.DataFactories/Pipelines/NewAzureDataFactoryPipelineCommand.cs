@@ -62,7 +62,7 @@ HelpMessage = "The data factory object.")]
 
             Name = ResolveResourceName(rawJsonContent, Name, "Pipeline");
 
-            CreatePSPipelineParameters parameters = new CreatePSPipelineParameters()
+            CreatePSPipelineParameters parameters = new CreatePSPipelineParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = DataFactoryName,

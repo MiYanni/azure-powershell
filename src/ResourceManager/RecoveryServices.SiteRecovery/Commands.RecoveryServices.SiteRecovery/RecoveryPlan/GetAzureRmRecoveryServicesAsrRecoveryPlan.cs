@@ -73,16 +73,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override void ExecuteSiteRecoveryCmdlet()
         {
             base.ExecuteSiteRecoveryCmdlet();
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByFriendlyName:
-                    this.GetByFriendlyName();
+                    GetByFriendlyName();
                     break;
                 case ASRParameterSets.ByName:
-                    this.GetByName();
+                    GetByName();
                     break;
                 case ASRParameterSets.Default:
-                    this.GetAll();
+                    GetAll();
                     break;
             }
         }
@@ -92,10 +92,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetAll()
         {
-            var recoveryPlanListResponse = this.RecoveryServicesClient
+            var recoveryPlanListResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryRecoveryPlan();
 
-            this.WriteRecoveryPlans(recoveryPlanListResponse);
+            WriteRecoveryPlans(recoveryPlanListResponse);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetByFriendlyName()
         {
-            var recoveryPlanListResponse = this.RecoveryServicesClient
+            var recoveryPlanListResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryRecoveryPlan();
             var found = false;
 
@@ -111,16 +111,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             {
                 if (0 ==
                     string.Compare(
-                        this.FriendlyName,
+                        FriendlyName,
                         recoveryPlan.Properties.FriendlyName,
                         StringComparison.OrdinalIgnoreCase))
                 {
-                    var rp = this.RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(
+                    var rp = RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(
                         recoveryPlan.Name);
-                    this.WriteRecoveryPlan(rp);
-                    if (!string.IsNullOrEmpty(this.Path))
+                    WriteRecoveryPlan(rp);
+                    if (!string.IsNullOrEmpty(Path))
                     {
-                        this.GetRecoveryPlanFile(rp);
+                        GetRecoveryPlanFile(rp);
                     }
 
                     found = true;
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.RecoveryPlanNotFound,
-                        this.FriendlyName,
+                        FriendlyName,
                         PSRecoveryServicesClient.asrVaultCreds.ResourceName));
             }
         }
@@ -144,16 +144,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             try
             {
-                var recoveryPlanResponse = this.RecoveryServicesClient
-                    .GetAzureSiteRecoveryRecoveryPlan(this.Name);
+                var recoveryPlanResponse = RecoveryServicesClient
+                    .GetAzureSiteRecoveryRecoveryPlan(Name);
 
                 if (recoveryPlanResponse != null)
                 {
-                    this.WriteRecoveryPlan(recoveryPlanResponse);
+                    WriteRecoveryPlan(recoveryPlanResponse);
 
-                    if (!string.IsNullOrEmpty(this.Path))
+                    if (!string.IsNullOrEmpty(Path))
                     {
-                        this.GetRecoveryPlanFile(recoveryPlanResponse);
+                        GetRecoveryPlanFile(recoveryPlanResponse);
                     }
                 }
             }
@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.RecoveryPlanNotFound,
-                            this.Name,
+                            Name,
                             PSRecoveryServicesClient.asrVaultCreds.ResourceName));
                 }
 
@@ -180,18 +180,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             RecoveryPlan recoveryPlan)
         {
             recoveryPlan =
-                this.RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(recoveryPlan.Name);
+                RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(recoveryPlan.Name);
 
-            if (string.IsNullOrEmpty(this.Path) ||
-                !Directory.Exists(System.IO.Path.GetDirectoryName(this.Path)))
+            if (string.IsNullOrEmpty(Path) ||
+                !Directory.Exists(System.IO.Path.GetDirectoryName(Path)))
             {
                 throw new DirectoryNotFoundException(
                     string.Format(
                         Resources.DirectoryNotFound,
-                        System.IO.Path.GetDirectoryName(this.Path)));
+                        System.IO.Path.GetDirectoryName(Path)));
             }
 
-            var fullFileName = this.Path;
+            var fullFileName = Path;
             using (var file = new StreamWriter(
                 fullFileName,
                 false))
@@ -210,9 +210,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteRecoveryPlan(
             RecoveryPlan recoveryPlan)
         {
-            var replicationProtectedItemListResponse = this.RecoveryServicesClient
+            var replicationProtectedItemListResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryReplicationProtectedItemInRP(recoveryPlan.Name);
-            this.WriteObject(
+            WriteObject(
                 new ASRRecoveryPlan(
                     recoveryPlan,
                     replicationProtectedItemListResponse));
@@ -230,7 +230,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             foreach (var recoveryPlan in recoveryPlanList)
             {
                 var replicationProtectedItemListResponse =
-                    this.RecoveryServicesClient.GetAzureSiteRecoveryReplicationProtectedItemInRP(
+                    RecoveryServicesClient.GetAzureSiteRecoveryReplicationProtectedItemInRP(
                         recoveryPlan.Name);
                 asrRecoveryPlans.Add(
                     new ASRRecoveryPlan(
@@ -238,7 +238,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         replicationProtectedItemListResponse));
             }
 
-            this.WriteObject(
+            WriteObject(
                 asrRecoveryPlans,
                 true);
         }

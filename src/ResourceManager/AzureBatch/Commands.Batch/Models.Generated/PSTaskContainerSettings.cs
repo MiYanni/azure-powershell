@@ -26,31 +26,31 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskContainerSettings
     {
         
-        internal Microsoft.Azure.Batch.TaskContainerSettings omObject;
+        internal TaskContainerSettings omObject;
         
         private PSContainerRegistry registry;
         
         public PSTaskContainerSettings(string imageName, string containerRunOptions = null, PSContainerRegistry registry = default(PSContainerRegistry))
         {
-            Microsoft.Azure.Batch.ContainerRegistry registryOmObject = null;
-            if ((registry != null))
+            ContainerRegistry registryOmObject = null;
+            if (registry != null)
             {
                 registryOmObject = registry.omObject;
             }
-            this.omObject = new Microsoft.Azure.Batch.TaskContainerSettings(imageName, containerRunOptions, registryOmObject);
+            omObject = new TaskContainerSettings(imageName, containerRunOptions, registryOmObject);
         }
         
-        internal PSTaskContainerSettings(Microsoft.Azure.Batch.TaskContainerSettings omObject)
+        internal PSTaskContainerSettings(TaskContainerSettings omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ContainerRunOptions;
+                return omObject.ContainerRunOptions;
             }
         }
         
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ImageName;
+                return omObject.ImageName;
             }
         }
         
@@ -75,12 +75,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.registry == null) 
-                            && (this.omObject.Registry != null)))
+                if (registry == null 
+                    && omObject.Registry != null)
                 {
-                    this.registry = new PSContainerRegistry(this.omObject.Registry);
+                    registry = new PSContainerRegistry(omObject.Registry);
                 }
-                return this.registry;
+                return registry;
             }
         }
     }

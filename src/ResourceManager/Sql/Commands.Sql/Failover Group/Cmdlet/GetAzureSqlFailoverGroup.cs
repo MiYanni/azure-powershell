@@ -52,11 +52,11 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("FailoverGroupName")) 
             {
                 results = new List<AzureSqlFailoverGroupModel>();
-                results.Add(ModelAdapter.GetFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName));
+                results.Add(ModelAdapter.GetFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName));
             }
             else
             {
-                results = ModelAdapter.ListFailoverGroups(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListFailoverGroups(ResourceGroupName, ServerName);
             }
 
             return results;

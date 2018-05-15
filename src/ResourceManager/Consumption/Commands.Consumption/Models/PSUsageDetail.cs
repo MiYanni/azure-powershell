@@ -60,34 +60,34 @@ namespace Microsoft.Azure.Commands.Consumption.Models
         {
             if (usageDetail != null)
             {
-                this.AccountName = usageDetail.AccountName;
-                this.AdditionalInfo = usageDetail.AdditionalProperties;
-                this.BillableQuantity = usageDetail.BillableQuantity;
-                this.BillingPeriodId = usageDetail.BillingPeriodId;
-                this.BillingPeriodName = Utilities.GetResourceNameFromId(usageDetail.BillingPeriodId);
-                this.ConsumedService = usageDetail.ConsumedService;
-                this.CostCenter = usageDetail.CostCenter;
-                this.Currency = usageDetail.Currency;
-                this.DepartmentName = usageDetail.DepartmentName;
-                this.Id = usageDetail.Id;
-                this.InstanceId = usageDetail.InstanceId;
-                this.InstanceLocation = usageDetail.InstanceLocation;
-                this.InstanceName = usageDetail.InstanceName;
-                this.InvoiceId = usageDetail.InvoiceId;
-                this.InvoiceName = Utilities.GetResourceNameFromId(usageDetail.InvoiceId);
-                this.IsEstimated = usageDetail.IsEstimated;
-                this.MeterDetails = usageDetail.MeterDetails;
-                this.MeterId = usageDetail.MeterId;
-                this.Name = usageDetail.Name;
-                this.PretaxCost = usageDetail.PretaxCost;
-                this.Product = usageDetail.Product;
-                this.SubscriptionGuid = usageDetail.SubscriptionGuid;
-                this.SubscriptionName = usageDetail.SubscriptionName;
-                this.Tags = usageDetail.Tags;
-                this.Type = usageDetail.Type;
-                this.UsageEnd = usageDetail.UsageEnd;
-                this.UsageQuantity = usageDetail.UsageQuantity;
-                this.UsageStart = usageDetail.UsageStart;              
+                AccountName = usageDetail.AccountName;
+                AdditionalInfo = usageDetail.AdditionalProperties;
+                BillableQuantity = usageDetail.BillableQuantity;
+                BillingPeriodId = usageDetail.BillingPeriodId;
+                BillingPeriodName = Utilities.GetResourceNameFromId(usageDetail.BillingPeriodId);
+                ConsumedService = usageDetail.ConsumedService;
+                CostCenter = usageDetail.CostCenter;
+                Currency = usageDetail.Currency;
+                DepartmentName = usageDetail.DepartmentName;
+                Id = usageDetail.Id;
+                InstanceId = usageDetail.InstanceId;
+                InstanceLocation = usageDetail.InstanceLocation;
+                InstanceName = usageDetail.InstanceName;
+                InvoiceId = usageDetail.InvoiceId;
+                InvoiceName = Utilities.GetResourceNameFromId(usageDetail.InvoiceId);
+                IsEstimated = usageDetail.IsEstimated;
+                MeterDetails = usageDetail.MeterDetails;
+                MeterId = usageDetail.MeterId;
+                Name = usageDetail.Name;
+                PretaxCost = usageDetail.PretaxCost;
+                Product = usageDetail.Product;
+                SubscriptionGuid = usageDetail.SubscriptionGuid;
+                SubscriptionName = usageDetail.SubscriptionName;
+                Tags = usageDetail.Tags;
+                Type = usageDetail.Type;
+                UsageEnd = usageDetail.UsageEnd;
+                UsageQuantity = usageDetail.UsageQuantity;
+                UsageStart = usageDetail.UsageStart;              
             }
         }
     }

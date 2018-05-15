@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Commands.Resources
 
         public override void ExecuteCmdlet()
         {
-            FilterRoleAssignmentsOptions parameters = new FilterRoleAssignmentsOptions()
+            FilterRoleAssignmentsOptions parameters = new FilterRoleAssignmentsOptions
             {
                 Scope = Scope,
                 RoleDefinitionName = RoleDefinitionName,
@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Commands.Resources
                     SPN = ApplicationId,
                     Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 },
-                ResourceIdentifier = new ResourceIdentifier()
+                ResourceIdentifier = new ResourceIdentifier
                 {
                     ParentResource = ParentResource,
                     ResourceGroupName = ResourceGroupName,

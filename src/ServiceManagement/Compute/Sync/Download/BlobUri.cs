@@ -76,7 +76,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
             blobContainerName = null;
             blobName = null;
 
-            string[] segments = blobUri.AbsolutePath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] segments = blobUri.AbsolutePath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (segments.Length < 2)
             {
@@ -141,7 +141,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
             BlobName = blobName;
             QueryString = queryString;
             BaseUri = uri.Scheme + Uri.SchemeDelimiter + uri.DnsSafeHost;
-            BlobPath = this.BaseUri + uri.LocalPath;
+            BlobPath = BaseUri + uri.LocalPath;
         }
 
     }
@@ -179,26 +179,26 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
                 {
                     ch = ' ';
                 }
-                else if ((ch == '%') && (i < (length - 2)))
+                else if (ch == '%' && i < length - 2)
                 {
-                    if ((s[i + 1] == 'u') && (i < (length - 5)))
+                    if (s[i + 1] == 'u' && i < length - 5)
                     {
                         int num3 = HexToInt(s[i + 2]);
                         int num4 = HexToInt(s[i + 3]);
                         int num5 = HexToInt(s[i + 4]);
                         int num6 = HexToInt(s[i + 5]);
-                        if (((num3 < 0) || (num4 < 0)) || ((num5 < 0) || (num6 < 0)))
+                        if (num3 < 0 || num4 < 0 || num5 < 0 || num6 < 0)
                         {
                             goto Label_0106;
                         }
-                        ch = (char)((((num3 << 12) | (num4 << 8)) | (num5 << 4)) | num6);
+                        ch = (char)((num3 << 12) | (num4 << 8) | (num5 << 4) | num6);
                         i += 5;
                         decoder.AddChar(ch);
                         continue;
                     }
                     int num7 = HexToInt(s[i + 1]);
                     int num8 = HexToInt(s[i + 2]);
-                    if ((num7 >= 0) && (num8 >= 0))
+                    if (num7 >= 0 && num8 >= 0)
                     {
                         byte b = (byte)((num7 << 4) | num8);
                         i += 2;
@@ -221,17 +221,17 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
 
         private static int HexToInt(char h)
         {
-            if ((h >= '0') && (h <= '9'))
+            if (h >= '0' && h <= '9')
             {
-                return (h - '0');
+                return h - '0';
             }
-            if ((h >= 'a') && (h <= 'f'))
+            if (h >= 'a' && h <= 'f')
             {
-                return ((h - 'a') + 10);
+                return h - 'a' + 10;
             }
-            if ((h >= 'A') && (h <= 'F'))
+            if (h >= 'A' && h <= 'F')
             {
-                return ((h - 'A') + 10);
+                return h - 'A' + 10;
             }
             return -1;
         }
@@ -283,7 +283,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
 
         internal static bool IsSafe(char ch)
         {
-            if ((((ch >= 'a') && (ch <= 'z')) || ((ch >= 'A') && (ch <= 'Z'))) || ((ch >= '0') && (ch <= '9')))
+            if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9')
             {
                 return true;
             }
@@ -308,7 +308,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
             {
                 return (char)(n + 0x30);
             }
-            return (char)((n - 10) + 0x61);
+            return (char)(n - 10 + 0x61);
         }
 
         public static NameValueCollection ParseQueryString(string query)
@@ -326,7 +326,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
             {
                 throw new ArgumentNullException("encoding");
             }
-            if ((query.Length > 0) && (query[0] == '?'))
+            if (query.Length > 0 && query[0] == '?')
             {
                 query = query.Substring(1);
             }
@@ -346,47 +346,47 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
             // Methods
             internal UrlDecoder(int bufferSize, Encoding encoding)
             {
-                this._bufferSize = bufferSize;
-                this._encoding = encoding;
-                this._charBuffer = new char[bufferSize];
+                _bufferSize = bufferSize;
+                _encoding = encoding;
+                _charBuffer = new char[bufferSize];
             }
 
             internal void AddByte(byte b)
             {
-                if (this._byteBuffer == null)
+                if (_byteBuffer == null)
                 {
-                    this._byteBuffer = new byte[this._bufferSize];
+                    _byteBuffer = new byte[_bufferSize];
                 }
-                this._byteBuffer[this._numBytes++] = b;
+                _byteBuffer[_numBytes++] = b;
             }
 
             internal void AddChar(char ch)
             {
-                if (this._numBytes > 0)
+                if (_numBytes > 0)
                 {
-                    this.FlushBytes();
+                    FlushBytes();
                 }
-                this._charBuffer[this._numChars++] = ch;
+                _charBuffer[_numChars++] = ch;
             }
 
             private void FlushBytes()
             {
-                if (this._numBytes > 0)
+                if (_numBytes > 0)
                 {
-                    this._numChars += this._encoding.GetChars(this._byteBuffer, 0, this._numBytes, this._charBuffer, this._numChars);
-                    this._numBytes = 0;
+                    _numChars += _encoding.GetChars(_byteBuffer, 0, _numBytes, _charBuffer, _numChars);
+                    _numBytes = 0;
                 }
             }
 
             internal string GetString()
             {
-                if (this._numBytes > 0)
+                if (_numBytes > 0)
                 {
-                    this.FlushBytes();
+                    FlushBytes();
                 }
-                if (this._numChars > 0)
+                if (_numChars > 0)
                 {
-                    return new string(this._charBuffer, 0, this._numChars);
+                    return new string(_charBuffer, 0, _numChars);
                 }
                 return string.Empty;
             }
@@ -404,7 +404,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
         }
 
         internal HttpValueCollection(int capacity)
-            : base(capacity, (IEqualityComparer)StringComparer.OrdinalIgnoreCase)
+            : base(capacity, StringComparer.OrdinalIgnoreCase)
         {
         }
 
@@ -418,20 +418,20 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
         {
             if (!string.IsNullOrEmpty(str))
             {
-                this.FillFromString(str, urlencoded, encoding);
+                FillFromString(str, urlencoded, encoding);
             }
-            base.IsReadOnly = readOnly;
+            IsReadOnly = readOnly;
         }
 
 
         internal void FillFromString(string s)
         {
-            this.FillFromString(s, false, null);
+            FillFromString(s, false, null);
         }
 
         internal void FillFromString(string s, bool urlencoded, Encoding encoding)
         {
-            int num = (s != null) ? s.Length : 0;
+            int num = s != null ? s.Length : 0;
             for (int i = 0; i < num; i++)
             {
                 int startIndex = i;
@@ -457,7 +457,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
                 if (num4 >= 0)
                 {
                     str = s.Substring(startIndex, num4 - startIndex);
-                    str2 = s.Substring(num4 + 1, (i - num4) - 1);
+                    str2 = s.Substring(num4 + 1, i - num4 - 1);
                 }
                 else
                 {
@@ -465,66 +465,66 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Download
                 }
                 if (urlencoded)
                 {
-                    base.Add(HttpUtility.UrlDecode(str, encoding), HttpUtility.UrlDecode(str2, encoding));
+                    Add(HttpUtility.UrlDecode(str, encoding), HttpUtility.UrlDecode(str2, encoding));
                 }
                 else
                 {
-                    base.Add(str, str2);
+                    Add(str, str2);
                 }
-                if ((i == (num - 1)) && (s[i] == '&'))
+                if (i == num - 1 && s[i] == '&')
                 {
-                    base.Add(null, string.Empty);
+                    Add(null, string.Empty);
                 }
             }
         }
 
         internal void MakeReadOnly()
         {
-            base.IsReadOnly = true;
+            IsReadOnly = true;
         }
 
         internal void MakeReadWrite()
         {
-            base.IsReadOnly = false;
+            IsReadOnly = false;
         }
 
         internal void Reset()
         {
-            base.Clear();
+            Clear();
         }
 
         public override string ToString()
         {
-            return this.ToString(true);
+            return ToString(true);
         }
 
         internal virtual string ToString(bool urlencoded)
         {
-            return this.ToString(urlencoded, null);
+            return ToString(urlencoded, null);
         }
 
         internal virtual string ToString(bool urlencoded, IDictionary excludeKeys)
         {
-            int count = this.Count;
+            int count = Count;
             if (count == 0)
             {
                 return string.Empty;
             }
             StringBuilder builder = new StringBuilder();
-            bool flag = (excludeKeys != null) && (excludeKeys["__VIEWSTATE"] != null);
+            bool flag = excludeKeys != null && excludeKeys["__VIEWSTATE"] != null;
             for (int i = 0; i < count; i++)
             {
-                string key = this.GetKey(i);
-                if (((!flag || (key == null)) || !key.StartsWith("__VIEWSTATE", StringComparison.Ordinal)) && (((excludeKeys == null) || (key == null)) || (excludeKeys[key] == null)))
+                string key = GetKey(i);
+                if ((!flag || key == null || !key.StartsWith("__VIEWSTATE", StringComparison.Ordinal)) && (excludeKeys == null || key == null || excludeKeys[key] == null))
                 {
                     string str3;
                     if (urlencoded)
                     {
                         key = HttpUtility.UrlEncodeUnicode(key);
                     }
-                    string str2 = !string.IsNullOrEmpty(key) ? (key + "=") : string.Empty;
-                    ArrayList list = (ArrayList)base.BaseGet(i);
-                    int num3 = (list != null) ? list.Count : 0;
+                    string str2 = !string.IsNullOrEmpty(key) ? key + "=" : string.Empty;
+                    ArrayList list = (ArrayList)BaseGet(i);
+                    int num3 = list != null ? list.Count : 0;
                     if (builder.Length > 0)
                     {
                         builder.Append('&');

@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Compute
         Position = 0,
         ValueFromPipelineByPropertyName = true,
         HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -198,25 +198,25 @@ namespace Microsoft.Azure.Commands.Compute
         {
             AutoBackupSettings autoBackupSettings = new AutoBackupSettings();
 
-            autoBackupSettings.Enable = (Enable.IsPresent) ? Enable.ToBool() : false;
-            autoBackupSettings.EnableEncryption = (EnableEncryption.IsPresent) ? EnableEncryption.ToBool() : false;
+            autoBackupSettings.Enable = Enable.IsPresent ? Enable.ToBool() : false;
+            autoBackupSettings.EnableEncryption = EnableEncryption.IsPresent ? EnableEncryption.ToBool() : false;
             autoBackupSettings.RetentionPeriod = RetentionPeriodInDays;
 
             switch (ParameterSetName)
             {
                 case StorageContextParamSetName:
                     autoBackupSettings.StorageUrl = StorageContext.BlobEndPoint;
-                    autoBackupSettings.StorageAccessKey = this.GetStorageKey();
+                    autoBackupSettings.StorageAccessKey = GetStorageKey();
                     break;
 
                 case StorageUriParamSetName:
-                    autoBackupSettings.StorageUrl = (StorageUri == null) ? null : StorageUri.ToString();
-                    autoBackupSettings.StorageAccessKey = (StorageKey == null) ? null : ConversionUtilities.SecureStringToString(StorageKey);
+                    autoBackupSettings.StorageUrl = StorageUri == null ? null : StorageUri.ToString();
+                    autoBackupSettings.StorageAccessKey = StorageKey == null ? null : ConversionUtilities.SecureStringToString(StorageKey);
                     break;
             }
 
             // Check if certificate password was set
-            autoBackupSettings.Password = (CertificatePassword == null) ? null : ConversionUtilities.SecureStringToString(CertificatePassword);
+            autoBackupSettings.Password = CertificatePassword == null ? null : ConversionUtilities.SecureStringToString(CertificatePassword);
 
             autoBackupSettings.BackupSystemDbs = BackupSystemDbs.IsPresent ? BackupSystemDbs.ToBool() : false;
             autoBackupSettings.BackupScheduleType = BackupScheduleType;
@@ -238,18 +238,18 @@ namespace Microsoft.Azure.Commands.Compute
         protected string GetStorageKey()
         {
             string storageKey = string.Empty;
-            string storageName = (this.StorageContext == null) ? null : this.StorageContext.StorageAccountName;
+            string storageName = StorageContext == null ? null : StorageContext.StorageAccountName;
 
             if (!string.IsNullOrEmpty(storageName))
             {
                 var storageClient = AzureSession.Instance.ClientFactory.CreateArmClient<StorageManagementClient>(DefaultProfile.DefaultContext,
                         AzureEnvironment.Endpoint.ResourceManager);
 
-                var storageAccount = storageClient.StorageAccounts.GetProperties(this.ResourceGroupName, storageName);
+                var storageAccount = storageClient.StorageAccounts.GetProperties(ResourceGroupName, storageName);
 
                 if (storageAccount != null)
                 {
-                    var keys = storageClient.StorageAccounts.ListKeys(this.ResourceGroupName, storageName);
+                    var keys = storageClient.StorageAccounts.ListKeys(ResourceGroupName, storageName);
 
                     if (keys != null)
                     {

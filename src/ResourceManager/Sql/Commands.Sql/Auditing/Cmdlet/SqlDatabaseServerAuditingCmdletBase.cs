@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Cmdlet
                 var blobPolicy = GetEntityHelper();
 
                 // If the user has blob auditing on on the resource we return that policy no matter what is his table auditing policy
-                if ((blobPolicy != null) && (blobPolicy.AuditState == AuditStateType.Enabled))
+                if (blobPolicy != null && blobPolicy.AuditState == AuditStateType.Enabled)
                 {
                     return blobPolicy;
                 }

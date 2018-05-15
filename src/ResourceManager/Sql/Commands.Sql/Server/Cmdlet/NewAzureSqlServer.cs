@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         {
             try
             {
-                ModelAdapter.GetServer(this.ResourceGroupName, this.ServerName);
+                ModelAdapter.GetServer(ResourceGroupName, ServerName);
             }
             catch (CloudException ex)
             {
@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
 
             // The server already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.ServerNameExists, this.ServerName),
+                string.Format(Properties.Resources.ServerNameExists, ServerName),
                 "ServerName");
         }
 
@@ -126,16 +126,16 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         protected override IEnumerable<Model.AzureSqlServerModel> ApplyUserInputToModel(IEnumerable<Model.AzureSqlServerModel> model)
         {
             List<Model.AzureSqlServerModel> newEntity = new List<Model.AzureSqlServerModel>();
-            newEntity.Add(new Model.AzureSqlServerModel()
+            newEntity.Add(new Model.AzureSqlServerModel
             {
-                Location = this.Location,
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                ServerVersion = this.ServerVersion,
-                SqlAdministratorPassword = this.SqlAdministratorCredentials.Password,
-                SqlAdministratorLogin = this.SqlAdministratorCredentials.UserName,
-                Tags = TagsConversionHelper.CreateTagDictionary(Tags, validate: true),
-                Identity = ResourceIdentityHelper.GetIdentityObjectFromType(this.AssignIdentity.IsPresent),
+                Location = Location,
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                ServerVersion = ServerVersion,
+                SqlAdministratorPassword = SqlAdministratorCredentials.Password,
+                SqlAdministratorLogin = SqlAdministratorCredentials.UserName,
+                Tags = TagsConversionHelper.CreateTagDictionary(Tags, true),
+                Identity = ResourceIdentityHelper.GetIdentityObjectFromType(AssignIdentity.IsPresent),
             });
             return newEntity;
         }
@@ -147,7 +147,8 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         /// <returns>The created server</returns>
         protected override IEnumerable<Model.AzureSqlServerModel> PersistChanges(IEnumerable<Model.AzureSqlServerModel> entity)
         {
-            return new List<Model.AzureSqlServerModel>() {
+            return new List<Model.AzureSqlServerModel>
+            {
                 ModelAdapter.UpsertServer(entity.First())
             };
         }

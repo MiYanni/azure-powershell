@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Responses
         /// </summary>
         public LocationCapability Capabilities
         {
-            get { return this._capabilities; }
-            set { this._capabilities = value; }
+            get { return _capabilities; }
+            set { _capabilities = value; }
         }
         
         /// <summary>

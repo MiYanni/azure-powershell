@@ -84,8 +84,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 throw new ArgumentNullException(nameof(cmdlet));
             }
 
-            return (cmdlet.MyInvocation?.BoundParameters != null
-                && cmdlet.MyInvocation.BoundParameters.ContainsKey("AsJob"));
+            return cmdlet.MyInvocation?.BoundParameters != null
+                   && cmdlet.MyInvocation.BoundParameters.ContainsKey("AsJob");
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 {
                     StringBuilder details = new StringBuilder();
                     powershell.Streams.Error.ForEach(e => details.AppendFormat("Error: {0}\n", e.ToString()));
-                    throw new InvalidOperationException(string.Format("Errors while running cmdlet:\n {0}", details.ToString()));
+                    throw new InvalidOperationException(string.Format("Errors while running cmdlet:\n {0}", details));
                 }
 
                 if (result != null && result.Count > 0)
@@ -388,13 +388,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public static void InvokeBeginProcessing(this PSCmdlet cmdlt)
         {
-            MethodInfo dynMethod = (typeof(PSCmdlet)).GetMethod("BeginProcessing", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo dynMethod = typeof(PSCmdlet).GetMethod("BeginProcessing", BindingFlags.NonPublic | BindingFlags.Instance);
             dynMethod.Invoke(cmdlt, null);
         }
 
         public static void SetParameterSet(this PSCmdlet cmdlt, string value)
         {
-            FieldInfo dynField = (typeof(Cmdlet)).GetField("_parameterSetName", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo dynField = typeof(Cmdlet).GetField("_parameterSetName", BindingFlags.NonPublic | BindingFlags.Instance);
             dynField.SetValue(cmdlt, value);
         }
 
@@ -408,19 +408,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public static void InvokeEndProcessing(this PSCmdlet cmdlt)
         {
-            MethodInfo dynMethod = (typeof(PSCmdlet)).GetMethod("EndProcessing", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo dynMethod = typeof(PSCmdlet).GetMethod("EndProcessing", BindingFlags.NonPublic | BindingFlags.Instance);
             dynMethod.Invoke(cmdlt, null);
         }
 
         public static void EnableDataCollection(this AzurePSCmdlet cmdlt)
         {
-            PropertyInfo dynField = (typeof(AzurePSCmdlet)).GetProperty("_dataCollectionProfile", BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo dynField = typeof(AzurePSCmdlet).GetProperty("_dataCollectionProfile", BindingFlags.NonPublic | BindingFlags.Instance);
             dynField.SetValue(cmdlt, new AzurePSDataCollectionProfile(true));
         }
 
         public static void DisableDataCollection(this AzurePSCmdlet cmdlt)
         {
-            PropertyInfo dynField = (typeof(AzurePSCmdlet)).GetProperty("_dataCollectionProfile", BindingFlags.NonPublic | BindingFlags.Instance);
+            PropertyInfo dynField = typeof(AzurePSCmdlet).GetProperty("_dataCollectionProfile", BindingFlags.NonPublic | BindingFlags.Instance);
             dynField.SetValue(cmdlt, new AzurePSDataCollectionProfile(false));
         }
 

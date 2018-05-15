@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             ParameterSetName = AccountNameParameterSet,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -63,15 +63,15 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
 
             RunCmdLet(() =>
             {
-                if (string.IsNullOrEmpty(this.ResourceGroupName))
+                if (string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    var cognitiveServicesAccounts = GetWithPaging(this.CognitiveServicesClient.Accounts.List(), false);
+                    var cognitiveServicesAccounts = GetWithPaging(CognitiveServicesClient.Accounts.List(), false);
 
                     WriteCognitiveServicesAccountList(cognitiveServicesAccounts);
                 }
-                else if (string.IsNullOrEmpty(this.Name))
+                else if (string.IsNullOrEmpty(Name))
                 {
-                    var cognitiveServicesAccounts = GetWithPaging(this.CognitiveServicesClient.Accounts.ListByResourceGroup(this.ResourceGroupName), true);
+                    var cognitiveServicesAccounts = GetWithPaging(CognitiveServicesClient.Accounts.ListByResourceGroup(ResourceGroupName), true);
                     if (cognitiveServicesAccounts == null)
                     {
                         WriteWarningWithTimestamp("Received empty accounts list");
@@ -80,9 +80,9 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
                 }
                 else
                 {
-                    var cognitiveServicesAccount = this.CognitiveServicesClient.Accounts.GetProperties(
-                        this.ResourceGroupName,
-                        this.Name);
+                    var cognitiveServicesAccount = CognitiveServicesClient.Accounts.GetProperties(
+                        ResourceGroupName,
+                        Name);
 
                     WriteCognitiveServicesAccount(cognitiveServicesAccount);
                 }
@@ -97,11 +97,11 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             {
                 if (isResourceGroup)
                 {
-                    nextPage = this.CognitiveServicesClient.Accounts.ListByResourceGroupNext(nextLink);
+                    nextPage = CognitiveServicesClient.Accounts.ListByResourceGroupNext(nextLink);
                 }
                 else
                 {
-                    nextPage = this.CognitiveServicesClient.Accounts.ListNext(nextLink);
+                    nextPage = CognitiveServicesClient.Accounts.ListNext(nextLink);
                 }
 
                 cognitiveServicesAccounts.AddRange(nextPage);

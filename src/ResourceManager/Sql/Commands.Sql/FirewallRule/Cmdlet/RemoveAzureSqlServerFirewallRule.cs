@@ -47,8 +47,9 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
         /// <returns>The entity going to be deleted</returns>
         protected override IEnumerable<Model.AzureSqlServerFirewallRuleModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerFirewallRuleModel>() {
-                ModelAdapter.GetFirewallRule(this.ResourceGroupName, this.ServerName, this.FirewallRuleName)
+            return new List<Model.AzureSqlServerFirewallRuleModel>
+            {
+                ModelAdapter.GetFirewallRule(ResourceGroupName, ServerName, FirewallRuleName)
             };
         }
 
@@ -69,7 +70,7 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
         /// <returns>The server that was deleted</returns>
         protected override IEnumerable<Model.AzureSqlServerFirewallRuleModel> PersistChanges(IEnumerable<Model.AzureSqlServerFirewallRuleModel> entity)
         {
-            ModelAdapter.RemoveFirewallRule(this.ResourceGroupName, this.ServerName, this.FirewallRuleName);
+            ModelAdapter.RemoveFirewallRule(ResourceGroupName, ServerName, FirewallRuleName);
             return entity;
         }
 
@@ -79,9 +80,9 @@ namespace Microsoft.Azure.Commands.Sql.FirewallRule.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerFirewallRuleDescription, this.FirewallRuleName, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerFirewallRuleWarning, this.FirewallRuleName, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerFirewallRuleDescription, FirewallRuleName, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerFirewallRuleWarning, FirewallRuleName, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }

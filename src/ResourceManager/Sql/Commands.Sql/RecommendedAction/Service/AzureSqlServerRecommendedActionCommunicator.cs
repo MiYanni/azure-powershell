@@ -56,9 +56,9 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Service
             return GetCurrentSqlClient().ServerRecommendedActions.Update(resourceGroupName, serverName, advisorName, recommendedActionName,
                     new RecommendedActionUpdateParameters
                     {
-                        Properties = new RecommendedActionUpdateProperties()
+                        Properties = new RecommendedActionUpdateProperties
                         {
-                            State = new RecommendedActionUpdateStateInfo()
+                            State = new RecommendedActionUpdateStateInfo
                             {
                                 CurrentValue = newStateValue
                             }

@@ -64,18 +64,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 try
                 {
                     Vault vaultCreateArgs = new Vault();
-                    vaultCreateArgs.Location = this.Location;
+                    vaultCreateArgs.Location = Location;
                     vaultCreateArgs.Properties = new VaultProperties();
                     vaultCreateArgs.Sku = new Sku();
                     vaultCreateArgs.Sku.Name = SkuName.Standard;
 
-                    Vault response = RecoveryServicesClient.CreateVault(this.ResourceGroupName, this.Name, vaultCreateArgs);
+                    Vault response = RecoveryServicesClient.CreateVault(ResourceGroupName, Name, vaultCreateArgs);
 
-                    this.WriteObject(new ARSVault(response));
+                    WriteObject(new ARSVault(response));
                 }
                 catch (Exception exception)
                 {
-                    this.HandleException(exception);
+                    HandleException(exception);
                 }
             }
         }

@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             AvailabilitySet parameters = new AvailabilitySet();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "AvailabilitySetName", "Parameters" },
+                 new[] { "ResourceGroupName", "AvailabilitySetName", "Parameters" },
                  new object[] { resourceGroupName, availabilitySetName, parameters });
         }
     }

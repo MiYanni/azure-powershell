@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </param>
         internal RecommendedIndexOperations(SqlManagementClient client)
         {
-            this._client = client;
+            _client = client;
         }
         
         private SqlManagementClient _client;
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
         /// </summary>
         public SqlManagementClient Client
         {
-            get { return this._client; }
+            get { return _client; }
         }
         
         /// <summary>
@@ -140,9 +140,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -189,7 +189,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Send Request
                 HttpResponseMessage httpResponse = null;
@@ -200,7 +200,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -245,81 +245,81 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken actionValue = propertiesValue["action"];
                                 if (actionValue != null && actionValue.Type != JTokenType.Null)
                                 {
-                                    string actionInstance = ((string)actionValue);
+                                    string actionInstance = (string)actionValue;
                                     propertiesInstance.Action = actionInstance;
                                 }
                                 
                                 JToken stateValue = propertiesValue["state"];
                                 if (stateValue != null && stateValue.Type != JTokenType.Null)
                                 {
-                                    string stateInstance = ((string)stateValue);
+                                    string stateInstance = (string)stateValue;
                                     propertiesInstance.State = stateInstance;
                                 }
                                 
                                 JToken createdValue = propertiesValue["created"];
                                 if (createdValue != null && createdValue.Type != JTokenType.Null)
                                 {
-                                    DateTime createdInstance = ((DateTime)createdValue);
+                                    DateTime createdInstance = (DateTime)createdValue;
                                     propertiesInstance.Created = createdInstance;
                                 }
                                 
                                 JToken lastModifiedValue = propertiesValue["lastModified"];
                                 if (lastModifiedValue != null && lastModifiedValue.Type != JTokenType.Null)
                                 {
-                                    DateTime lastModifiedInstance = ((DateTime)lastModifiedValue);
+                                    DateTime lastModifiedInstance = (DateTime)lastModifiedValue;
                                     propertiesInstance.LastModified = lastModifiedInstance;
                                 }
                                 
                                 JToken indexTypeValue = propertiesValue["indexType"];
                                 if (indexTypeValue != null && indexTypeValue.Type != JTokenType.Null)
                                 {
-                                    string indexTypeInstance = ((string)indexTypeValue);
+                                    string indexTypeInstance = (string)indexTypeValue;
                                     propertiesInstance.IndexType = indexTypeInstance;
                                 }
                                 
                                 JToken schemaValue = propertiesValue["schema"];
                                 if (schemaValue != null && schemaValue.Type != JTokenType.Null)
                                 {
-                                    string schemaInstance = ((string)schemaValue);
+                                    string schemaInstance = (string)schemaValue;
                                     propertiesInstance.Schema = schemaInstance;
                                 }
                                 
                                 JToken tableValue = propertiesValue["table"];
                                 if (tableValue != null && tableValue.Type != JTokenType.Null)
                                 {
-                                    string tableInstance = ((string)tableValue);
+                                    string tableInstance = (string)tableValue;
                                     propertiesInstance.Table = tableInstance;
                                 }
                                 
                                 JToken columnsArray = propertiesValue["columns"];
                                 if (columnsArray != null && columnsArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken columnsValue in ((JArray)columnsArray))
+                                    foreach (JToken columnsValue in (JArray)columnsArray)
                                     {
-                                        propertiesInstance.Columns.Add(((string)columnsValue));
+                                        propertiesInstance.Columns.Add((string)columnsValue);
                                     }
                                 }
                                 
                                 JToken includedColumnsArray = propertiesValue["includedColumns"];
                                 if (includedColumnsArray != null && includedColumnsArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken includedColumnsValue in ((JArray)includedColumnsArray))
+                                    foreach (JToken includedColumnsValue in (JArray)includedColumnsArray)
                                     {
-                                        propertiesInstance.IncludedColumns.Add(((string)includedColumnsValue));
+                                        propertiesInstance.IncludedColumns.Add((string)includedColumnsValue);
                                     }
                                 }
                                 
                                 JToken indexScriptValue = propertiesValue["indexScript"];
                                 if (indexScriptValue != null && indexScriptValue.Type != JTokenType.Null)
                                 {
-                                    string indexScriptInstance = ((string)indexScriptValue);
+                                    string indexScriptInstance = (string)indexScriptValue;
                                     propertiesInstance.IndexScript = indexScriptInstance;
                                 }
                                 
                                 JToken estimatedImpactArray = propertiesValue["estimatedImpact"];
                                 if (estimatedImpactArray != null && estimatedImpactArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken estimatedImpactValue in ((JArray)estimatedImpactArray))
+                                    foreach (JToken estimatedImpactValue in (JArray)estimatedImpactArray)
                                     {
                                         OperationImpact operationImpactInstance = new OperationImpact();
                                         propertiesInstance.EstimatedImpact.Add(operationImpactInstance);
@@ -327,28 +327,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken nameValue = estimatedImpactValue["name"];
                                         if (nameValue != null && nameValue.Type != JTokenType.Null)
                                         {
-                                            string nameInstance = ((string)nameValue);
+                                            string nameInstance = (string)nameValue;
                                             operationImpactInstance.Name = nameInstance;
                                         }
                                         
                                         JToken unitValue = estimatedImpactValue["unit"];
                                         if (unitValue != null && unitValue.Type != JTokenType.Null)
                                         {
-                                            string unitInstance = ((string)unitValue);
+                                            string unitInstance = (string)unitValue;
                                             operationImpactInstance.Unit = unitInstance;
                                         }
                                         
                                         JToken changeValueAbsoluteValue = estimatedImpactValue["changeValueAbsolute"];
                                         if (changeValueAbsoluteValue != null && changeValueAbsoluteValue.Type != JTokenType.Null)
                                         {
-                                            double changeValueAbsoluteInstance = ((double)changeValueAbsoluteValue);
+                                            double changeValueAbsoluteInstance = (double)changeValueAbsoluteValue;
                                             operationImpactInstance.ChangeValueAbsolute = changeValueAbsoluteInstance;
                                         }
                                         
                                         JToken changeValueRelativeValue = estimatedImpactValue["changeValueRelative"];
                                         if (changeValueRelativeValue != null && changeValueRelativeValue.Type != JTokenType.Null)
                                         {
-                                            double changeValueRelativeInstance = ((double)changeValueRelativeValue);
+                                            double changeValueRelativeInstance = (double)changeValueRelativeValue;
                                             operationImpactInstance.ChangeValueRelative = changeValueRelativeInstance;
                                         }
                                     }
@@ -357,7 +357,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken reportedImpactArray = propertiesValue["reportedImpact"];
                                 if (reportedImpactArray != null && reportedImpactArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken reportedImpactValue in ((JArray)reportedImpactArray))
+                                    foreach (JToken reportedImpactValue in (JArray)reportedImpactArray)
                                     {
                                         OperationImpact operationImpactInstance2 = new OperationImpact();
                                         propertiesInstance.ReportedImpact.Add(operationImpactInstance2);
@@ -365,28 +365,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken nameValue2 = reportedImpactValue["name"];
                                         if (nameValue2 != null && nameValue2.Type != JTokenType.Null)
                                         {
-                                            string nameInstance2 = ((string)nameValue2);
+                                            string nameInstance2 = (string)nameValue2;
                                             operationImpactInstance2.Name = nameInstance2;
                                         }
                                         
                                         JToken unitValue2 = reportedImpactValue["unit"];
                                         if (unitValue2 != null && unitValue2.Type != JTokenType.Null)
                                         {
-                                            string unitInstance2 = ((string)unitValue2);
+                                            string unitInstance2 = (string)unitValue2;
                                             operationImpactInstance2.Unit = unitInstance2;
                                         }
                                         
                                         JToken changeValueAbsoluteValue2 = reportedImpactValue["changeValueAbsolute"];
                                         if (changeValueAbsoluteValue2 != null && changeValueAbsoluteValue2.Type != JTokenType.Null)
                                         {
-                                            double changeValueAbsoluteInstance2 = ((double)changeValueAbsoluteValue2);
+                                            double changeValueAbsoluteInstance2 = (double)changeValueAbsoluteValue2;
                                             operationImpactInstance2.ChangeValueAbsolute = changeValueAbsoluteInstance2;
                                         }
                                         
                                         JToken changeValueRelativeValue2 = reportedImpactValue["changeValueRelative"];
                                         if (changeValueRelativeValue2 != null && changeValueRelativeValue2.Type != JTokenType.Null)
                                         {
-                                            double changeValueRelativeInstance2 = ((double)changeValueRelativeValue2);
+                                            double changeValueRelativeInstance2 = (double)changeValueRelativeValue2;
                                             operationImpactInstance2.ChangeValueRelative = changeValueRelativeInstance2;
                                         }
                                     }
@@ -396,38 +396,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue = responseDoc["id"];
                             if (idValue != null && idValue.Type != JTokenType.Null)
                             {
-                                string idInstance = ((string)idValue);
+                                string idInstance = (string)idValue;
                                 recommendedIndexInstance.Id = idInstance;
                             }
                             
                             JToken nameValue3 = responseDoc["name"];
                             if (nameValue3 != null && nameValue3.Type != JTokenType.Null)
                             {
-                                string nameInstance3 = ((string)nameValue3);
+                                string nameInstance3 = (string)nameValue3;
                                 recommendedIndexInstance.Name = nameInstance3;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 recommendedIndexInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue = responseDoc["location"];
                             if (locationValue != null && locationValue.Type != JTokenType.Null)
                             {
-                                string locationInstance = ((string)locationValue);
+                                string locationInstance = (string)locationValue;
                                 recommendedIndexInstance.Location = locationInstance;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey = ((string)property.Name);
-                                    string tagsValue = ((string)property.Value);
+                                    string tagsKey = property.Name;
+                                    string tagsValue = (string)property.Value;
                                     recommendedIndexInstance.Tags.Add(tagsKey, tagsValue);
                                 }
                             }
@@ -559,9 +559,9 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             // Construct URL
             string url = "";
             url = url + "/subscriptions/";
-            if (this.Client.Credentials.SubscriptionId != null)
+            if (Client.Credentials.SubscriptionId != null)
             {
-                url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
+                url = url + Uri.EscapeDataString(Client.Credentials.SubscriptionId);
             }
             url = url + "/resourceGroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
@@ -583,7 +583,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
             {
                 url = url + "?" + string.Join("&", queryParameters);
             }
-            string baseUrl = this.Client.BaseUri.AbsoluteUri;
+            string baseUrl = Client.BaseUri.AbsoluteUri;
             // Trim '/' character from the end of baseUrl and beginning of url.
             if (baseUrl[baseUrl.Length - 1] == '/')
             {
@@ -608,7 +608,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                 
                 // Set Credentials
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                await Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Serialize Request
                 string requestContent = null;
@@ -638,7 +638,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                         TracingAdapter.SendRequest(invocationId, httpRequest);
                     }
                     cancellationToken.ThrowIfCancellationRequested();
-                    httpResponse = await this.Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+                    httpResponse = await Client.HttpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                     if (shouldTrace)
                     {
                         TracingAdapter.ReceiveResponse(invocationId, httpResponse);
@@ -677,21 +677,21 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken codeValue = responseDoc["code"];
                             if (codeValue != null && codeValue.Type != JTokenType.Null)
                             {
-                                string codeInstance = ((string)codeValue);
+                                string codeInstance = (string)codeValue;
                                 errorInstance.Code = codeInstance;
                             }
                             
                             JToken messageValue = responseDoc["message"];
                             if (messageValue != null && messageValue.Type != JTokenType.Null)
                             {
-                                string messageInstance = ((string)messageValue);
+                                string messageInstance = (string)messageValue;
                                 errorInstance.Message = messageInstance;
                             }
                             
                             JToken targetValue = responseDoc["target"];
                             if (targetValue != null && targetValue.Type != JTokenType.Null)
                             {
-                                string targetInstance = ((string)targetValue);
+                                string targetInstance = (string)targetValue;
                                 errorInstance.Target = targetInstance;
                             }
                             
@@ -707,81 +707,81 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken actionValue = propertiesValue2["action"];
                                 if (actionValue != null && actionValue.Type != JTokenType.Null)
                                 {
-                                    string actionInstance = ((string)actionValue);
+                                    string actionInstance = (string)actionValue;
                                     propertiesInstance.Action = actionInstance;
                                 }
                                 
                                 JToken stateValue = propertiesValue2["state"];
                                 if (stateValue != null && stateValue.Type != JTokenType.Null)
                                 {
-                                    string stateInstance = ((string)stateValue);
+                                    string stateInstance = (string)stateValue;
                                     propertiesInstance.State = stateInstance;
                                 }
                                 
                                 JToken createdValue = propertiesValue2["created"];
                                 if (createdValue != null && createdValue.Type != JTokenType.Null)
                                 {
-                                    DateTime createdInstance = ((DateTime)createdValue);
+                                    DateTime createdInstance = (DateTime)createdValue;
                                     propertiesInstance.Created = createdInstance;
                                 }
                                 
                                 JToken lastModifiedValue = propertiesValue2["lastModified"];
                                 if (lastModifiedValue != null && lastModifiedValue.Type != JTokenType.Null)
                                 {
-                                    DateTime lastModifiedInstance = ((DateTime)lastModifiedValue);
+                                    DateTime lastModifiedInstance = (DateTime)lastModifiedValue;
                                     propertiesInstance.LastModified = lastModifiedInstance;
                                 }
                                 
                                 JToken indexTypeValue = propertiesValue2["indexType"];
                                 if (indexTypeValue != null && indexTypeValue.Type != JTokenType.Null)
                                 {
-                                    string indexTypeInstance = ((string)indexTypeValue);
+                                    string indexTypeInstance = (string)indexTypeValue;
                                     propertiesInstance.IndexType = indexTypeInstance;
                                 }
                                 
                                 JToken schemaValue = propertiesValue2["schema"];
                                 if (schemaValue != null && schemaValue.Type != JTokenType.Null)
                                 {
-                                    string schemaInstance = ((string)schemaValue);
+                                    string schemaInstance = (string)schemaValue;
                                     propertiesInstance.Schema = schemaInstance;
                                 }
                                 
                                 JToken tableValue = propertiesValue2["table"];
                                 if (tableValue != null && tableValue.Type != JTokenType.Null)
                                 {
-                                    string tableInstance = ((string)tableValue);
+                                    string tableInstance = (string)tableValue;
                                     propertiesInstance.Table = tableInstance;
                                 }
                                 
                                 JToken columnsArray = propertiesValue2["columns"];
                                 if (columnsArray != null && columnsArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken columnsValue in ((JArray)columnsArray))
+                                    foreach (JToken columnsValue in (JArray)columnsArray)
                                     {
-                                        propertiesInstance.Columns.Add(((string)columnsValue));
+                                        propertiesInstance.Columns.Add((string)columnsValue);
                                     }
                                 }
                                 
                                 JToken includedColumnsArray = propertiesValue2["includedColumns"];
                                 if (includedColumnsArray != null && includedColumnsArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken includedColumnsValue in ((JArray)includedColumnsArray))
+                                    foreach (JToken includedColumnsValue in (JArray)includedColumnsArray)
                                     {
-                                        propertiesInstance.IncludedColumns.Add(((string)includedColumnsValue));
+                                        propertiesInstance.IncludedColumns.Add((string)includedColumnsValue);
                                     }
                                 }
                                 
                                 JToken indexScriptValue = propertiesValue2["indexScript"];
                                 if (indexScriptValue != null && indexScriptValue.Type != JTokenType.Null)
                                 {
-                                    string indexScriptInstance = ((string)indexScriptValue);
+                                    string indexScriptInstance = (string)indexScriptValue;
                                     propertiesInstance.IndexScript = indexScriptInstance;
                                 }
                                 
                                 JToken estimatedImpactArray = propertiesValue2["estimatedImpact"];
                                 if (estimatedImpactArray != null && estimatedImpactArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken estimatedImpactValue in ((JArray)estimatedImpactArray))
+                                    foreach (JToken estimatedImpactValue in (JArray)estimatedImpactArray)
                                     {
                                         OperationImpact operationImpactInstance = new OperationImpact();
                                         propertiesInstance.EstimatedImpact.Add(operationImpactInstance);
@@ -789,28 +789,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken nameValue = estimatedImpactValue["name"];
                                         if (nameValue != null && nameValue.Type != JTokenType.Null)
                                         {
-                                            string nameInstance = ((string)nameValue);
+                                            string nameInstance = (string)nameValue;
                                             operationImpactInstance.Name = nameInstance;
                                         }
                                         
                                         JToken unitValue = estimatedImpactValue["unit"];
                                         if (unitValue != null && unitValue.Type != JTokenType.Null)
                                         {
-                                            string unitInstance = ((string)unitValue);
+                                            string unitInstance = (string)unitValue;
                                             operationImpactInstance.Unit = unitInstance;
                                         }
                                         
                                         JToken changeValueAbsoluteValue = estimatedImpactValue["changeValueAbsolute"];
                                         if (changeValueAbsoluteValue != null && changeValueAbsoluteValue.Type != JTokenType.Null)
                                         {
-                                            double changeValueAbsoluteInstance = ((double)changeValueAbsoluteValue);
+                                            double changeValueAbsoluteInstance = (double)changeValueAbsoluteValue;
                                             operationImpactInstance.ChangeValueAbsolute = changeValueAbsoluteInstance;
                                         }
                                         
                                         JToken changeValueRelativeValue = estimatedImpactValue["changeValueRelative"];
                                         if (changeValueRelativeValue != null && changeValueRelativeValue.Type != JTokenType.Null)
                                         {
-                                            double changeValueRelativeInstance = ((double)changeValueRelativeValue);
+                                            double changeValueRelativeInstance = (double)changeValueRelativeValue;
                                             operationImpactInstance.ChangeValueRelative = changeValueRelativeInstance;
                                         }
                                     }
@@ -819,7 +819,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                 JToken reportedImpactArray = propertiesValue2["reportedImpact"];
                                 if (reportedImpactArray != null && reportedImpactArray.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken reportedImpactValue in ((JArray)reportedImpactArray))
+                                    foreach (JToken reportedImpactValue in (JArray)reportedImpactArray)
                                     {
                                         OperationImpact operationImpactInstance2 = new OperationImpact();
                                         propertiesInstance.ReportedImpact.Add(operationImpactInstance2);
@@ -827,28 +827,28 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                                         JToken nameValue2 = reportedImpactValue["name"];
                                         if (nameValue2 != null && nameValue2.Type != JTokenType.Null)
                                         {
-                                            string nameInstance2 = ((string)nameValue2);
+                                            string nameInstance2 = (string)nameValue2;
                                             operationImpactInstance2.Name = nameInstance2;
                                         }
                                         
                                         JToken unitValue2 = reportedImpactValue["unit"];
                                         if (unitValue2 != null && unitValue2.Type != JTokenType.Null)
                                         {
-                                            string unitInstance2 = ((string)unitValue2);
+                                            string unitInstance2 = (string)unitValue2;
                                             operationImpactInstance2.Unit = unitInstance2;
                                         }
                                         
                                         JToken changeValueAbsoluteValue2 = reportedImpactValue["changeValueAbsolute"];
                                         if (changeValueAbsoluteValue2 != null && changeValueAbsoluteValue2.Type != JTokenType.Null)
                                         {
-                                            double changeValueAbsoluteInstance2 = ((double)changeValueAbsoluteValue2);
+                                            double changeValueAbsoluteInstance2 = (double)changeValueAbsoluteValue2;
                                             operationImpactInstance2.ChangeValueAbsolute = changeValueAbsoluteInstance2;
                                         }
                                         
                                         JToken changeValueRelativeValue2 = reportedImpactValue["changeValueRelative"];
                                         if (changeValueRelativeValue2 != null && changeValueRelativeValue2.Type != JTokenType.Null)
                                         {
-                                            double changeValueRelativeInstance2 = ((double)changeValueRelativeValue2);
+                                            double changeValueRelativeInstance2 = (double)changeValueRelativeValue2;
                                             operationImpactInstance2.ChangeValueRelative = changeValueRelativeInstance2;
                                         }
                                     }
@@ -858,38 +858,38 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk
                             JToken idValue = responseDoc["id"];
                             if (idValue != null && idValue.Type != JTokenType.Null)
                             {
-                                string idInstance = ((string)idValue);
+                                string idInstance = (string)idValue;
                                 recommendedIndexInstance.Id = idInstance;
                             }
                             
                             JToken nameValue3 = responseDoc["name"];
                             if (nameValue3 != null && nameValue3.Type != JTokenType.Null)
                             {
-                                string nameInstance3 = ((string)nameValue3);
+                                string nameInstance3 = (string)nameValue3;
                                 recommendedIndexInstance.Name = nameInstance3;
                             }
                             
                             JToken typeValue = responseDoc["type"];
                             if (typeValue != null && typeValue.Type != JTokenType.Null)
                             {
-                                string typeInstance = ((string)typeValue);
+                                string typeInstance = (string)typeValue;
                                 recommendedIndexInstance.Type = typeInstance;
                             }
                             
                             JToken locationValue = responseDoc["location"];
                             if (locationValue != null && locationValue.Type != JTokenType.Null)
                             {
-                                string locationInstance = ((string)locationValue);
+                                string locationInstance = (string)locationValue;
                                 recommendedIndexInstance.Location = locationInstance;
                             }
                             
-                            JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
+                            JToken tagsSequenceElement = responseDoc["tags"];
                             if (tagsSequenceElement != null && tagsSequenceElement.Type != JTokenType.Null)
                             {
                                 foreach (JProperty property in tagsSequenceElement)
                                 {
-                                    string tagsKey = ((string)property.Name);
-                                    string tagsValue = ((string)property.Value);
+                                    string tagsKey = property.Name;
+                                    string tagsValue = (string)property.Value;
                                     recommendedIndexInstance.Tags.Add(tagsKey, tagsValue);
                                 }
                             }

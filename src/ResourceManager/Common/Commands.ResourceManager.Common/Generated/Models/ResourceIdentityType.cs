@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Management.Internal.Resources.Models
     /// <summary>
     /// Defines values for ResourceIdentityType.
     /// </summary>
-    [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ResourceIdentityType
     {
         [EnumMember(Value = "SystemAssigned")]

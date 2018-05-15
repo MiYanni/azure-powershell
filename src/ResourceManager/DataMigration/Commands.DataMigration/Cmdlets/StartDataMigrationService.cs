@@ -63,19 +63,19 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(this.Name, Resources.startService))
+            if (ShouldProcess(Name, Resources.startService))
             {
-                if (this.ParameterSetName.Equals(ComponentObjectParameterSet))
+                if (ParameterSetName.Equals(ComponentObjectParameterSet))
                 {
-                    this.ResourceGroupName = InputObject.ResourceGroupName;
-                    this.Name = InputObject.Name;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    Name = InputObject.Name;
                 }
 
-                if (this.ParameterSetName.Equals(ResourceIdParameterSet))
+                if (ParameterSetName.Equals(ResourceIdParameterSet))
                 {
-                    DmsResourceIdentifier ids = new DmsResourceIdentifier(this.ResourceId);
-                    this.ResourceGroupName = ids.ResourceGroupName;
-                    this.Name = ids.ServiceName;
+                    DmsResourceIdentifier ids = new DmsResourceIdentifier(ResourceId);
+                    ResourceGroupName = ids.ResourceGroupName;
+                    Name = ids.ServiceName;
                 }
 
                 bool result = false;

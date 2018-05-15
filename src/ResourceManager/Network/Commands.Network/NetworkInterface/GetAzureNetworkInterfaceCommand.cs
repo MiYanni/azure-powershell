@@ -118,64 +118,64 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 PSNetworkInterface networkInterface;
 
                 if (ParameterSetName.Contains("ScaleSetNic"))
                 {
-                    networkInterface = this.GetScaleSetNetworkInterface(this.ResourceGroupName, this.VirtualMachineScaleSetName, this.VirtualMachineIndex, this.Name, this.ExpandResource);
+                    networkInterface = GetScaleSetNetworkInterface(ResourceGroupName, VirtualMachineScaleSetName, VirtualMachineIndex, Name, ExpandResource);
                 }
                 else
                 {
-                    networkInterface = this.GetNetworkInterface(this.ResourceGroupName, this.Name, this.ExpandResource);
+                    networkInterface = GetNetworkInterface(ResourceGroupName, Name, ExpandResource);
                 }
 
                 WriteObject(networkInterface);
             }
             else
             {
-                IPage<MNM.NetworkInterface> nicPage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                IPage<NetworkInterface> nicPage;
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
                     if (ParameterSetName.Contains("ScaleSetNic"))
                     {
-                        if (string.IsNullOrEmpty(this.VirtualMachineIndex))
+                        if (string.IsNullOrEmpty(VirtualMachineIndex))
                         {
                             nicPage =
-                                this.NetworkInterfaceClient.ListVirtualMachineScaleSetNetworkInterfaces(
-                                    this.ResourceGroupName,
-                                    this.VirtualMachineScaleSetName);
+                                NetworkInterfaceClient.ListVirtualMachineScaleSetNetworkInterfaces(
+                                    ResourceGroupName,
+                                    VirtualMachineScaleSetName);
                         }
                         else
                         {
                             nicPage =
-                                this.NetworkInterfaceClient.ListVirtualMachineScaleSetVMNetworkInterfaces(
-                                    this.ResourceGroupName,
-                                    this.VirtualMachineScaleSetName,
-                                    this.VirtualMachineIndex);
+                                NetworkInterfaceClient.ListVirtualMachineScaleSetVMNetworkInterfaces(
+                                    ResourceGroupName,
+                                    VirtualMachineScaleSetName,
+                                    VirtualMachineIndex);
                         }
                     }
                     else
                     {
-                        nicPage = this.NetworkInterfaceClient.List(this.ResourceGroupName);
+                        nicPage = NetworkInterfaceClient.List(ResourceGroupName);
                     }                    
                 }
 
                 else
                 {
-                    nicPage = this.NetworkInterfaceClient.ListAll();
+                    nicPage = NetworkInterfaceClient.ListAll();
                 }
 
                 // Get all resources by polling on next page link
-                var nicList = ListNextLink<NetworkInterface>.GetAllResourcesByPollingNextLink(nicPage, this.NetworkInterfaceClient.ListNext);
+                var nicList = ListNextLink<NetworkInterface>.GetAllResourcesByPollingNextLink(nicPage, NetworkInterfaceClient.ListNext);
 
                 var psNetworkInterfaces = new List<PSNetworkInterface>();
 
                 foreach (var nic in nicList)
                 {
-                    var psNic = this.ToPsNetworkInterface(nic);
-                    psNic.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(psNic.Id);
+                    var psNic = ToPsNetworkInterface(nic);
+                    psNic.ResourceGroupName = GetResourceGroup(psNic.Id);
                     psNetworkInterfaces.Add(psNic);
                 }
 

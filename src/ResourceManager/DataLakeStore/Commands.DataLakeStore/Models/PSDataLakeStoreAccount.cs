@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
             // be removed.
             if (EncryptionState == Management.DataLake.Store.Models.EncryptionState.Disabled)
             {
-                this.EncryptionConfig = null;
+                EncryptionConfig = null;
             }
         }
     }

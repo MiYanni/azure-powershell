@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Services
         {
             var resp = Communicator.List(resourceGroupName, serverName);
 
-            return resp.Select((l) =>
+            return resp.Select(l =>
             {
                 return CreateServerCommunicationLinkModelFromResponse(resourceGroupName, serverName, l);
             }).ToList();
@@ -93,10 +93,10 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Services
         /// <returns>The upserted Azure Sql server communication link</returns>
         internal AzureSqlServerCommunicationLinkModel UpsertServerCommunicationLink(AzureSqlServerCommunicationLinkModel model)
         {
-            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.Name, new ServerCommunicationLinkCreateOrUpdateParameters()
+            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.Name, new ServerCommunicationLinkCreateOrUpdateParameters
             {
                 Location = model.Location,
-                Properties = new ServerCommunicationLinkCreateOrUpdateProperties()
+                Properties = new ServerCommunicationLinkCreateOrUpdateProperties
                 {
                     PartnerServer = model.PartnerServer,
                 }

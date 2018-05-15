@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Profile
         {
             var profileClient = new RMProfileClient(AzureRmProfileProvider.Instance.GetProfile<AzureRmProfile>());
 
-            WriteObject(profileClient.ListTenants(TenantId).Select((t) => new PSAzureTenant(t)), enumerateCollection: true);
+            WriteObject(profileClient.ListTenants(TenantId).Select(t => new PSAzureTenant(t)), true);
         }
     }
 }

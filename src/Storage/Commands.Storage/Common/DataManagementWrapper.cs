@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Microsoft.WindowsAzure.Commands.Common;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.DataMovement;
-    using Microsoft.WindowsAzure.Storage.File;
+    using Commands.Common;
+    using WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.DataMovement;
+    using WindowsAzure.Storage.File;
     using System.Threading;
     using System.Threading.Tasks;
 

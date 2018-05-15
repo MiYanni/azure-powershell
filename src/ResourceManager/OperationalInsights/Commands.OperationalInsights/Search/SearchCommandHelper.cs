@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Management.OperationalInsights.Models;
+    using Management.OperationalInsights.Models;
 
     internal class SearchCommandHelper
     {
@@ -41,9 +41,9 @@ namespace Microsoft.Azure.Commands.OperationalInsights
             {
                 if (tags[key] != null)
                 {
-                    tagList.Add(new Tag() { Name = key, Value = tags[key].ToString() });
+                    tagList.Add(new Tag { Name = key, Value = tags[key].ToString() });
 
-                    if (key.Equals("group", System.StringComparison.InvariantCultureIgnoreCase))
+                    if (key.Equals("group", StringComparison.InvariantCultureIgnoreCase))
                     {
                         groupKey = key;
                     }

@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using System.Globalization;
     using ResourceManager.Common.ArgumentCompleters;
 
@@ -76,16 +76,16 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [ValidateNotNullOrEmpty]
         public string MapType
         {
-            get { return this.mapType; }
-            set { value = this.mapType; }
+            get { return mapType; }
+            set { value = mapType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account map content type.")]
         [ValidateNotNullOrEmpty]
         public string ContentType
         {
-            get { return this.contentType; }
-            set { value = this.contentType; }
+            get { return contentType; }
+            set { value = contentType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account map metadata.",
@@ -105,62 +105,62 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
-            var integrationAccountMap = IntegrationAccountClient.GetIntegrationAccountMap(this.ResourceGroupName,
-                this.Name,
-                this.MapName);
+            var integrationAccountMap = IntegrationAccountClient.GetIntegrationAccountMap(ResourceGroupName,
+                Name,
+                MapName);
 
-            var integrationAccountMapCopy = new IntegrationAccountMap(mapType: integrationAccountMap.MapType,
-                id: integrationAccountMap.Id,
-                name: integrationAccountMap.Name,
-                type: integrationAccountMap.Type,
-                location: integrationAccountMap.Location,
-                tags: integrationAccountMap.Tags,
-                parametersSchema: integrationAccountMap.ParametersSchema,
-                createdTime: integrationAccountMap.CreatedTime,
-                changedTime: integrationAccountMap.ChangedTime,
-                content: integrationAccountMap.Content,
+            var integrationAccountMapCopy = new IntegrationAccountMap(integrationAccountMap.MapType,
+                integrationAccountMap.Id,
+                integrationAccountMap.Name,
+                integrationAccountMap.Type,
+                integrationAccountMap.Location,
+                integrationAccountMap.Tags,
+                integrationAccountMap.ParametersSchema,
+                integrationAccountMap.CreatedTime,
+                integrationAccountMap.ChangedTime,
+                integrationAccountMap.Content,
                 contentLink: null,
                 metadata: integrationAccountMap.Metadata);
 
-            if (!string.IsNullOrEmpty(this.MapFilePath))
+            if (!string.IsNullOrEmpty(MapFilePath))
             {
-                integrationAccountMapCopy.Content = CmdletHelper.GetContentFromFile(this.TryResolvePath(this.MapFilePath));
+                integrationAccountMapCopy.Content = CmdletHelper.GetContentFromFile(this.TryResolvePath(MapFilePath));
             }
 
-            if (!string.IsNullOrEmpty(this.MapDefinition))
+            if (!string.IsNullOrEmpty(MapDefinition))
             {
-                integrationAccountMapCopy.Content = this.MapDefinition;
-                CmdletHelper.GetContentFromFile(this.TryResolvePath(this.MapFilePath));
+                integrationAccountMapCopy.Content = MapDefinition;
+                CmdletHelper.GetContentFromFile(this.TryResolvePath(MapFilePath));
             }
 
-            if (!string.IsNullOrEmpty(this.ContentType))
+            if (!string.IsNullOrEmpty(ContentType))
             {
-                integrationAccountMapCopy.ContentType = this.contentType;
+                integrationAccountMapCopy.ContentType = contentType;
             }
 
-            if (!string.IsNullOrEmpty(this.MapType))
+            if (!string.IsNullOrEmpty(MapType))
             {
-                integrationAccountMapCopy.MapType = (MapType)Enum.Parse(typeof(MapType), this.MapType);
+                integrationAccountMapCopy.MapType = (MapType)Enum.Parse(typeof(MapType), MapType);
             }
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                integrationAccountMapCopy.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                integrationAccountMapCopy.Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
             ConfirmAction(Force.IsPresent,
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceWarning,
-                    "Microsoft.Logic/integrationAccounts/maps", this.Name),
+                    "Microsoft.Logic/integrationAccounts/maps", Name),
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceMessage,
-                    "Microsoft.Logic/integrationAccounts/maps", this.Name),
+                    "Microsoft.Logic/integrationAccounts/maps", Name),
                 Name,
                 () =>
                 {
-                    this.WriteObject(
-                        IntegrationAccountClient.UpdateIntegrationAccountMap(this.ResourceGroupName, this.Name,
-                            this.MapName,
+                    WriteObject(
+                        IntegrationAccountClient.UpdateIntegrationAccountMap(ResourceGroupName, Name,
+                            MapName,
                             integrationAccountMapCopy), true);
                 },
                 null);

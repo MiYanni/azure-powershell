@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
 {
-    using Microsoft.WindowsAzure.Storage.Shared.Protocol;
+    using WindowsAzure.Storage.Shared.Protocol;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -99,18 +99,18 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// <summary>
         /// Get metrics level
         /// </summary>
-        /// <param name="MetricsLevel">The string type of Metrics level</param>
+        /// <param name="metricsLevel">The string type of Metrics level</param>
         /// <example>GetMetricsLevel("None"), GetMetricsLevel("Service")</example>
         /// <returns>MetricsLevel object</returns>
-        internal MetricsLevel GetMetricsLevel(string MetricsLevel)
+        internal MetricsLevel GetMetricsLevel(string metricsLevel)
         {
             try
             {
-                return (MetricsLevel)Enum.Parse(typeof(MetricsLevel), MetricsLevel, true);
+                return (MetricsLevel)Enum.Parse(typeof(MetricsLevel), metricsLevel, true);
             }
             catch
             {
-                throw new ArgumentException(String.Format(Resources.InvalidEnumName, MetricsLevel));
+                throw new ArgumentException(String.Format(Resources.InvalidEnumName, metricsLevel));
             }
         }
 

@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System;
     using System.Globalization;
     using System.Management.Automation;
-    using Microsoft.Azure.Management.IotHub;
-    using PSIotHubProperties = Microsoft.Azure.Commands.Management.IotHub.Properties;
+    using Azure.Management.IotHub;
+    using PSIotHubProperties = Properties;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Remove, "AzureRmIotHub", SupportsShouldProcess = true)]
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Management.IotHub
             {
                 try
                 {
-                    this.IotHubClient.IotHubResource.Delete(this.ResourceGroupName, this.Name);
+                    IotHubClient.IotHubResource.Delete(ResourceGroupName, Name);
                 }
                 catch (Exception e)
                 {

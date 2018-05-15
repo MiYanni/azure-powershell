@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
             LastBackupTime = protectedItem.LastBackupTime;
             ProtectionPolicyName = policyName;
             ProtectionState =
-                EnumUtils.GetEnum<ItemProtectionState>(protectedItem.ProtectionState.ToString());
+                EnumUtils.GetEnum<ItemProtectionState>(protectedItem.ProtectionState);
             ProtectionStatus = EnumUtils.GetEnum<ItemProtectionStatus>(protectedItem.ProtectionStatus);
             VirtualMachineId = protectedItem.VirtualMachineId;
         }

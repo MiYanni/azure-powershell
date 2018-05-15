@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private string _status;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         private IList<ServiceObjectiveCapability> _supportedServiceObjectives;
@@ -62,8 +62,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServiceObjectiveCapability> SupportedServiceObjectives
         {
-            get { return this._supportedServiceObjectives; }
-            set { this._supportedServiceObjectives = value; }
+            get { return _supportedServiceObjectives; }
+            set { _supportedServiceObjectives = value; }
         }
         
         /// <summary>
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public EditionCapability()
         {
-            this.SupportedServiceObjectives = new LazyList<ServiceObjectiveCapability>();
+            SupportedServiceObjectives = new LazyList<ServiceObjectiveCapability>();
         }
     }
 }

@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DataMaskingPolicyProperties Properties
         {
-            get { return this._properties; }
-            set { this._properties = value; }
+            get { return _properties; }
+            set { _properties = value; }
         }
         
         /// <summary>
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("properties");
             }
-            this.Properties = properties;
+            Properties = properties;
         }
     }
 }

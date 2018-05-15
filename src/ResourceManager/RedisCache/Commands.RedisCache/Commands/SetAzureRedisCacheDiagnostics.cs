@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.RedisCache
 {
-    using Microsoft.Azure.Commands.RedisCache.Models;
-    using Microsoft.Azure.Commands.RedisCache.Properties;
+    using Models;
+    using Properties;
     using ResourceManager.Common.ArgumentCompleters;
     using System;
     using System.Management.Automation;
@@ -59,16 +59,13 @@ namespace Microsoft.Azure.Commands.RedisCache
             {
                 throw new ArgumentException(Resources.StorageAccountIdException);
             }
-            else
+            string[] resourceParts = storageAccountId.Split('/');
+            // Valid ARM uri when split on '/' should have 9 parts. Ex: /subscriptions/<sub-id>/resourceGroups/<resource group name>/providers/Microsoft.ClassicStorage/storageAccounts/<account name>
+            if (resourceParts.Length != 9)
             {
-                string[] resourceParts = storageAccountId.Split('/');
-                // Valid ARM uri when split on '/' should have 9 parts. Ex: /subscriptions/<sub-id>/resourceGroups/<resource group name>/providers/Microsoft.ClassicStorage/storageAccounts/<account name>
-                if (resourceParts.Length != 9)
-                {
-                    throw new ArgumentException(Resources.StorageAccountIdException);
-                }
-                return resourceParts[8];
+                throw new ArgumentException(Resources.StorageAccountIdException);
             }
+            return resourceParts[8];
         }
     }
 }

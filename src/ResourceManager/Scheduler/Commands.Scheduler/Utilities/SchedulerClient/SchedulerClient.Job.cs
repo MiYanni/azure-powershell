@@ -18,12 +18,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Net;
-    using Microsoft.Azure.Management.Scheduler;
-    using Microsoft.Azure.Management.Scheduler.Models;
-    using Microsoft.Rest.Azure;
-    using Microsoft.Rest.Azure.OData;
+    using Management.Scheduler;
+    using Management.Scheduler.Models;
+    using Rest.Azure;
+    using Rest.Azure.OData;
     using PSManagement = System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Models;
+    using Models;
     
     /// <summary>
     /// Client for Job.
@@ -42,30 +42,30 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSManagement.PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSManagement.PSArgumentNullException("JobCollectionName");
             }
 
-            JobState? jobStateEnum = jobState.GetValueOrDefaultEnum<JobState?>(defaultValue: null);
+            JobState? jobStateEnum = jobState.GetValueOrDefaultEnum<JobState?>(null);
 
             IList<JobDefinition> listOfJobs;
 
             if (!string.IsNullOrWhiteSpace(jobName))
             {
-                JobDefinition job = this.GetJob(resourceGroupName, jobCollectionName, jobName);
+                JobDefinition job = GetJob(resourceGroupName, jobCollectionName, jobName);
 
-                listOfJobs = new List<JobDefinition>()
+                listOfJobs = new List<JobDefinition>
                 {
                     job
                 };
             }
             else
             {
-                listOfJobs = this.ListJobs(resourceGroupName, jobCollectionName, jobStateEnum);
+                listOfJobs = ListJobs(resourceGroupName, jobCollectionName, jobStateEnum);
             }
 
             return Converter.ConvertJobDefinitionListToPSList(listOfJobs);
@@ -87,17 +87,17 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
             if (jobState != null)
             {
-                Expression<Func<JobStateFilter, bool>> jobFilterExpression = (jobStateFilter) => jobStateFilter.State == jobState;
+                Expression<Func<JobStateFilter, bool>> jobFilterExpression = jobStateFilter => jobStateFilter.State == jobState;
                 oDataQuery.SetFilter(jobFilterExpression);
             }
 
-            IPage<JobDefinition> jobsPage = this.SchedulerManagementClient.Jobs.List(resourceGroupName, jobCollectionName, oDataQuery);
+            IPage<JobDefinition> jobsPage = SchedulerManagementClient.Jobs.List(resourceGroupName, jobCollectionName, oDataQuery);
 
             listOfJobs.AddRange(jobsPage);
 
             while (!string.IsNullOrWhiteSpace(jobsPage.NextPageLink))
             {
-                jobsPage = this.SchedulerManagementClient.Jobs.ListNext(jobsPage.NextPageLink);
+                jobsPage = SchedulerManagementClient.Jobs.ListNext(jobsPage.NextPageLink);
                 listOfJobs.AddRange(jobsPage);
             }
 
@@ -117,38 +117,38 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSManagement.PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSManagement.PSArgumentNullException("JobCollectionName");
             }
 
             if(string.IsNullOrWhiteSpace(jobName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobName");
+                throw new PSManagement.PSArgumentNullException("JobName");
             }
 
             var oDataQuery = new ODataQuery<JobHistoryFilter>(); 
 
-            JobExecutionStatus? executionStatus = jobStatus.GetValueOrDefaultEnum<JobExecutionStatus?>(defaultValue: null);
+            JobExecutionStatus? executionStatus = jobStatus.GetValueOrDefaultEnum<JobExecutionStatus?>(null);
 
             if (executionStatus != null)
             {
-                Expression<Func<JobHistoryFilter, bool>> jobHistoryFilterExpression = (jobHistoryFilter) => jobHistoryFilter.Status == executionStatus;
+                Expression<Func<JobHistoryFilter, bool>> jobHistoryFilterExpression = jobHistoryFilter => jobHistoryFilter.Status == executionStatus;
                 oDataQuery.SetFilter(jobHistoryFilterExpression);
             }
 
             var listOfJobHistory = new List<JobHistoryDefinition>();
 
-            IPage<JobHistoryDefinition> jobHistoryPage = this.SchedulerManagementClient.Jobs.ListJobHistory(resourceGroupName, jobCollectionName, jobName, oDataQuery);
+            IPage<JobHistoryDefinition> jobHistoryPage = SchedulerManagementClient.Jobs.ListJobHistory(resourceGroupName, jobCollectionName, jobName, oDataQuery);
 
             listOfJobHistory.AddRange(jobHistoryPage);
 
             while (!string.IsNullOrWhiteSpace(jobHistoryPage.NextPageLink))
             {
-                jobHistoryPage = this.SchedulerManagementClient.Jobs.ListJobHistoryNext(jobHistoryPage.NextPageLink);
+                jobHistoryPage = SchedulerManagementClient.Jobs.ListJobHistoryNext(jobHistoryPage.NextPageLink);
                 listOfJobHistory.AddRange(jobHistoryPage);
             }
 
@@ -165,20 +165,20 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSManagement.PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSManagement.PSArgumentNullException("JobCollectionName");
             }
 
             if (string.IsNullOrWhiteSpace(jobName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "JobName");
+                throw new PSManagement.PSArgumentNullException("JobName");
             }
 
-            this.SchedulerManagementClient.Jobs.Delete(resourceGroupName, jobCollectionName, jobName);
+            SchedulerManagementClient.Jobs.Delete(resourceGroupName, jobCollectionName, jobName);
         }
 
         /// <summary>
@@ -192,22 +192,22 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "resourceGroupName");
+                throw new PSManagement.PSArgumentNullException("resourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "jobCollectionName");
+                throw new PSManagement.PSArgumentNullException("jobCollectionName");
             }
 
             if (string.IsNullOrWhiteSpace(jobName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "jobName");
+                throw new PSManagement.PSArgumentNullException("jobName");
             }
 
             try
             {
-                return this.SchedulerManagementClient.Jobs.Get(resourceGroupName, jobCollectionName, jobName);
+                return SchedulerManagementClient.Jobs.Get(resourceGroupName, jobCollectionName, jobName);
             }
             catch (CloudException e)
             {
@@ -231,20 +231,20 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "resourceGroupName");
+                throw new PSManagement.PSArgumentNullException("resourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "jobCollectionName");
+                throw new PSManagement.PSArgumentNullException("jobCollectionName");
             }
 
             if (string.IsNullOrWhiteSpace(jobName))
             {
-                throw new PSManagement.PSArgumentNullException(paramName: "jobName");
+                throw new PSManagement.PSArgumentNullException("jobName");
             }
 
-            JobDefinition job = this.GetJob(resourceGroupName, jobCollectionName, jobName);
+            JobDefinition job = GetJob(resourceGroupName, jobCollectionName, jobName);
 
             return job != null;
         }

@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
-    using Microsoft.Azure.Management.Logic;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Management.Logic;
+    using Management.Logic.Models;
 
     /// <summary>
     /// LogicApp client partial class for run operations
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         public void CancelWorkflowRun(string resourceGroupName, string workflowName,
             string runName)
         {
-            this.LogicManagementClient.WorkflowRuns.Cancel(resourceGroupName, workflowName, runName);
+            LogicManagementClient.WorkflowRuns.Cancel(resourceGroupName, workflowName, runName);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>List of workflow runs</returns>
         public Page<WorkflowRun> GetWorkflowRuns(string resourceGroupName, string workflowName)
         {
-            return (Page<WorkflowRun>)this.LogicManagementClient.WorkflowRuns.List(resourceGroupName, workflowName);
+            return (Page<WorkflowRun>)LogicManagementClient.WorkflowRuns.List(resourceGroupName, workflowName);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         public WorkflowRun GetWorkflowRun(string resourceGroupName, string workflowName,
             string runName)
         {
-            return this.LogicManagementClient.WorkflowRuns.Get(resourceGroupName, workflowName, runName);
+            return LogicManagementClient.WorkflowRuns.Get(resourceGroupName, workflowName, runName);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         public WorkflowRunAction GetWorkflowRunAction(string resourceGroupName, string workflowName,
             string runName, string actionName)
         {
-            return this.LogicManagementClient.WorkflowRunActions.Get(resourceGroupName, workflowName, runName,
+            return LogicManagementClient.WorkflowRunActions.Get(resourceGroupName, workflowName, runName,
                 actionName);
         }
 
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Actions of the specified workflow run</returns>
         public Page<WorkflowRunAction> GetWorkflowRunActions(string resourceGroupName, string workflowName, string runName)
         {
-            return (Page<WorkflowRunAction>)this.LogicManagementClient.WorkflowRunActions.List(resourceGroupName, workflowName, runName);
+            return (Page<WorkflowRunAction>)LogicManagementClient.WorkflowRunActions.List(resourceGroupName, workflowName, runName);
         }
     }
 }

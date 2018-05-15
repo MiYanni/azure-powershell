@@ -50,18 +50,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             try
             {
-                if (string.IsNullOrEmpty(this.ResourceGroupName))
+                if (string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    this.GetVaultsUnderAllResourceGroups();
+                    GetVaultsUnderAllResourceGroups();
                 }
                 else
                 {
-                    this.GetVaultsUnderResourceGroup(this.ResourceGroupName);
+                    GetVaultsUnderResourceGroup(ResourceGroupName);
                 }
             }
             catch (Exception exception)
             {
-                this.HandleException(exception);
+                HandleException(exception);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             List<Vault> vaultListResponse =
                 RecoveryServicesClient.GetVaultsInResouceGroup(resourceGroupName);
 
-            this.WriteVaults(vaultListResponse);
+            WriteVaults(vaultListResponse);
         }
 
         /// <summary>
@@ -101,17 +101,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="vaults">List of Vaults</param>
         private void WriteVaults(IList<Vault> vaults)
         {
-            if (string.IsNullOrEmpty(this.Name))
+            if (string.IsNullOrEmpty(Name))
             {
-                this.WriteObject(vaults.Select(v => new ARSVault(v)), true);
+                WriteObject(vaults.Select(v => new ARSVault(v)), true);
             }
             else
             {
                 foreach (Vault vault in vaults)
                 {
-                    if (0 == string.Compare(this.Name, vault.Name, true))
+                    if (0 == string.Compare(Name, vault.Name, true))
                     {
-                        this.WriteObject(new ARSVault(vault));
+                        WriteObject(new ARSVault(vault));
                     }
                 }
             }

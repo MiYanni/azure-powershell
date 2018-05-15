@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models.ManagedStorageAccounts
         public PSDeletedKeyVaultManagedStorageSasDefinition()
         { }
 
-        internal PSDeletedKeyVaultManagedStorageSasDefinition(Microsoft.Azure.KeyVault.Models.DeletedSasDefinitionBundle deletedSasDefinitionBundle, VaultUriHelper vaultUriHelper)
+        internal PSDeletedKeyVaultManagedStorageSasDefinition(Azure.KeyVault.Models.DeletedSasDefinitionBundle deletedSasDefinitionBundle, VaultUriHelper vaultUriHelper)
         {
             if (deletedSasDefinitionBundle == null)
                 throw new ArgumentNullException(nameof(deletedSasDefinitionBundle));
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models.ManagedStorageAccounts
             if (deletedSasDefinitionBundle.Id == null)
                 throw new ArgumentException(KeyVaultProperties.Resources.InvalidStorageSasDefinitionIdentifier);
 
-            var identifier = new Microsoft.Azure.KeyVault.SasDefinitionIdentifier(deletedSasDefinitionBundle.Id);
+            var identifier = new Azure.KeyVault.SasDefinitionIdentifier(deletedSasDefinitionBundle.Id);
             SetObjectIdentifier(vaultUriHelper, identifier);
 
             Attributes = deletedSasDefinitionBundle.Attributes == null ? null : new PSKeyVaultManagedStorageSasDefinitionAttributes(deletedSasDefinitionBundle.Attributes);

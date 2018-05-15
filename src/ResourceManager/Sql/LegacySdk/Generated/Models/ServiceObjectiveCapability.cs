@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Guid Id
         {
-            get { return this._id; }
-            set { this._id = value; }
+            get { return _id; }
+            set { _id = value; }
         }
         
         private string _name;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private string _status;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         private IList<MaxSizeCapability> _supportedMaxSizes;
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<MaxSizeCapability> SupportedMaxSizes
         {
-            get { return this._supportedMaxSizes; }
-            set { this._supportedMaxSizes = value; }
+            get { return _supportedMaxSizes; }
+            set { _supportedMaxSizes = value; }
         }
         
         /// <summary>
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServiceObjectiveCapability()
         {
-            this.SupportedMaxSizes = new LazyList<MaxSizeCapability>();
+            SupportedMaxSizes = new LazyList<MaxSizeCapability>();
         }
     }
 }

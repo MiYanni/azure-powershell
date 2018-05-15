@@ -19,11 +19,11 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
     using System.Linq;
     using System.Management.Automation;
     using System.Net;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Management.Scheduler;
-    using Microsoft.Azure.Management.Scheduler.Models;
-    using Microsoft.Rest.Azure;
+    using Models;
+    using Properties;
+    using Management.Scheduler;
+    using Management.Scheduler.Models;
+    using Rest.Azure;
 
     public partial class SchedulerClient
     {
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <returns>list of job collection definition.</returns>
         public IList<PSJobCollectionDefinition> ListJobCollectionPS(string resourceGroupName = null, string jobCollectionName = null)
         {
-            var jobCollectionDefinitionList = this.ListJobCollection(resourceGroupName, jobCollectionName);
+            var jobCollectionDefinitionList = ListJobCollection(resourceGroupName, jobCollectionName);
             return Converter.ConvertJobCollectionDefinitionListToPSList(jobCollectionDefinitionList);
         }
 
@@ -48,17 +48,17 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(createJobCollectionParams.ResourceGroupName))
             {
-                throw new PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(createJobCollectionParams.JobCollectionName))
             {
-                throw new PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSArgumentNullException("JobCollectionName");
             }
 
             if (string.IsNullOrWhiteSpace(createJobCollectionParams.Region))
             {
-                throw new PSArgumentNullException(paramName: "Region");
+                throw new PSArgumentNullException("Region");
             }
 
             if (!DoesResourceGroupExists(createJobCollectionParams.ResourceGroupName))
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 throw new PSArgumentException(Resources.SchedulerInvalidResourceGroup);
             }
 
-            if (!this.AvailableRegions.Contains(createJobCollectionParams.Region))
+            if (!AvailableRegions.Contains(createJobCollectionParams.Region))
             {
                 throw new PSArgumentException(Resources.SchedulerInvalidLocation);
             }
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 throw new PSInvalidOperationException(string.Format(Resources.SchedulerExistingJobCollection, createJobCollectionParams.JobCollectionName, createJobCollectionParams.ResourceGroupName));
             }
 
-            var skuDefinition = createJobCollectionParams.Plan.GetValueOrDefaultEnum<SkuDefinition>(defaultValue: SkuDefinition.Standard);
+            var skuDefinition = createJobCollectionParams.Plan.GetValueOrDefaultEnum<SkuDefinition>(SkuDefinition.Standard);
 
             if (skuDefinition == SkuDefinition.Free &&
                 HasFreeJobCollection())
@@ -86,22 +86,22 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
             var quota = new JobCollectionQuota();
 
-            this.PopulateJobCollectionQuota(quota, skuDefinition, createJobCollectionParams, newQuota: true);
+            PopulateJobCollectionQuota(quota, skuDefinition, createJobCollectionParams, true);
 
-            var jcProperties = new JobCollectionProperties()
+            var jcProperties = new JobCollectionProperties
             {
                 Sku = new Sku(skuDefinition),
                 Quota = quota,
             };
 
-            var jobCollectionDefinition = new JobCollectionDefinition()
+            var jobCollectionDefinition = new JobCollectionDefinition
             {
                 Location = createJobCollectionParams.Region,
                 Name = createJobCollectionParams.JobCollectionName,
                 Properties = jcProperties,
             };
 
-            var jobCollectionDefinitionResult = this.SchedulerManagementClient.JobCollections.CreateOrUpdate(
+            var jobCollectionDefinitionResult = SchedulerManagementClient.JobCollections.CreateOrUpdate(
                 createJobCollectionParams.ResourceGroupName,
                 createJobCollectionParams.JobCollectionName,
                 jobCollectionDefinition);
@@ -118,21 +118,21 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(updateJobCollectionParams.ResourceGroupName))
             {
-                throw new PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(updateJobCollectionParams.JobCollectionName))
             {
-                throw new PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSArgumentNullException("JobCollectionName");
             }
 
             if (!string.IsNullOrWhiteSpace(updateJobCollectionParams.Region) &&
-               !this.AvailableRegions.Contains(updateJobCollectionParams.Region))
+               !AvailableRegions.Contains(updateJobCollectionParams.Region))
             {
                 throw new PSArgumentException(Resources.SchedulerInvalidLocation);
             }
 
-            IList<JobCollectionDefinition> jobCollectionsDefition = this.ListJobCollection(
+            IList<JobCollectionDefinition> jobCollectionsDefition = ListJobCollection(
                 updateJobCollectionParams.ResourceGroupName,
                 updateJobCollectionParams.JobCollectionName);
 
@@ -147,7 +147,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             if (jobCollectionDefinition.Properties.Sku.Name != SkuDefinition.Free &&
                !string.IsNullOrWhiteSpace(updateJobCollectionParams.Plan) &&
                updateJobCollectionParams.Plan.Equals(Constants.FreePlan, StringComparison.InvariantCultureIgnoreCase) &&
-               this.HasFreeJobCollection())
+               HasFreeJobCollection())
             {
                 throw new PSInvalidOperationException(Resources.SchedulerNoMoreFreeJobCollection);
             }
@@ -159,13 +159,13 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
             if (!string.IsNullOrWhiteSpace(updateJobCollectionParams.Plan))
             {
-                skuDefinition = updateJobCollectionParams.Plan.GetValueOrDefaultEnum<SkuDefinition>(defaultValue:SkuDefinition.Standard);
+                skuDefinition = updateJobCollectionParams.Plan.GetValueOrDefaultEnum<SkuDefinition>(SkuDefinition.Standard);
                 newQuota = true;
             }
 
-            this.PopulateJobCollectionQuota(quota, skuDefinition, updateJobCollectionParams, newQuota);
+            PopulateJobCollectionQuota(quota, skuDefinition, updateJobCollectionParams, newQuota);
 
-            var jcProperties = new JobCollectionProperties()
+            var jcProperties = new JobCollectionProperties
             {
                 Sku = new Sku(skuDefinition),
                 Quota = quota,
@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             jobCollectionDefinition.Location = updateJobCollectionParams.Region != null ? updateJobCollectionParams.Region : jobCollectionDefinition.Location;
             jobCollectionDefinition.Properties = jcProperties;
 
-            var jobCollectionDefinitionResult = this.SchedulerManagementClient.JobCollections.CreateOrUpdate(
+            var jobCollectionDefinitionResult = SchedulerManagementClient.JobCollections.CreateOrUpdate(
                 updateJobCollectionParams.ResourceGroupName,
                 updateJobCollectionParams.JobCollectionName,
                 jobCollectionDefinition);
@@ -192,15 +192,15 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                throw new PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                throw new PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSArgumentNullException("JobCollectionName");
             }
 
-            this.SchedulerManagementClient.JobCollections.Delete(resourceGroupName, jobCollectionName);
+            SchedulerManagementClient.JobCollections.Delete(resourceGroupName, jobCollectionName);
         }
 
         /// <summary>
@@ -212,15 +212,15 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                throw new PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                throw new PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSArgumentNullException("JobCollectionName");
             }
 
-            this.SchedulerManagementClient.JobCollections.Disable(resourceGroupName, jobCollectionName);
+            SchedulerManagementClient.JobCollections.Disable(resourceGroupName, jobCollectionName);
         }
 
         /// <summary>
@@ -232,15 +232,15 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                throw new PSArgumentNullException(paramName: "ResourceGroupName");
+                throw new PSArgumentNullException("ResourceGroupName");
             }
 
             if (string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                throw new PSArgumentNullException(paramName: "JobCollectionName");
+                throw new PSArgumentNullException("JobCollectionName");
             }
 
-            this.SchedulerManagementClient.JobCollections.Enable(resourceGroupName, jobCollectionName);
+            SchedulerManagementClient.JobCollections.Enable(resourceGroupName, jobCollectionName);
         }
 
         /// <summary>
@@ -255,20 +255,20 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
             if (!string.IsNullOrWhiteSpace(resourceGroupName) && !string.IsNullOrWhiteSpace(jobCollectionName))
             {
-                JobCollectionDefinition jobCollectionDefinition = this.SchedulerManagementClient.JobCollections.Get(resourceGroupName, jobCollectionName);
-                jobCollectionsDefinition = new List<JobCollectionDefinition>() { jobCollectionDefinition };
+                JobCollectionDefinition jobCollectionDefinition = SchedulerManagementClient.JobCollections.Get(resourceGroupName, jobCollectionName);
+                jobCollectionsDefinition = new List<JobCollectionDefinition> { jobCollectionDefinition };
             }
             else if (!string.IsNullOrWhiteSpace(resourceGroupName))
             {
-                jobCollectionsDefinition = this.ListJobCollectionsByResourceGroupName(resourceGroupName);
+                jobCollectionsDefinition = ListJobCollectionsByResourceGroupName(resourceGroupName);
             }
             else
             {
-                jobCollectionsDefinition = this.ListJobCollectionsBySubscription();
+                jobCollectionsDefinition = ListJobCollectionsBySubscription();
 
                 if (!string.IsNullOrWhiteSpace(jobCollectionName))
                 {
-                    jobCollectionsDefinition = jobCollectionsDefinition.Where((jobCollectionDefinition) => jobCollectionDefinition.Name.Equals(jobCollectionName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    jobCollectionsDefinition = jobCollectionsDefinition.Where(jobCollectionDefinition => jobCollectionDefinition.Name.Equals(jobCollectionName, StringComparison.InvariantCultureIgnoreCase)).ToList();
                 }
             }
 
@@ -283,16 +283,13 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             try
             {
-                IList<JobCollectionDefinition> jobCollections = this.ListJobCollectionsBySubscription();
+                IList<JobCollectionDefinition> jobCollections = ListJobCollectionsBySubscription();
 
                 if (VerifyFreeJobCollectionExists(jobCollections))
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
             catch (CloudException e)
             {
@@ -315,16 +312,13 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             try
             {
-                IList<JobCollectionDefinition> jobCollections = this.ListJobCollection(resourceGroupName, jobCollectionName);
+                IList<JobCollectionDefinition> jobCollections = ListJobCollection(resourceGroupName, jobCollectionName);
 
                 if (jobCollections != null && jobCollections.Count >= 1)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
             catch(CloudException e)
             {
@@ -344,13 +338,13 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         private IList<JobCollectionDefinition> ListJobCollectionsBySubscription()
         {
             var listOfJobCollections = new List<JobCollectionDefinition>();
-            IPage<JobCollectionDefinition> jobCollections = this.SchedulerManagementClient.JobCollections.ListBySubscription();
+            IPage<JobCollectionDefinition> jobCollections = SchedulerManagementClient.JobCollections.ListBySubscription();
 
             listOfJobCollections.AddRange(jobCollections);
 
             while (!string.IsNullOrWhiteSpace(jobCollections.NextPageLink))
             {
-                jobCollections = this.SchedulerManagementClient.JobCollections.ListBySubscriptionNext(jobCollections.NextPageLink);
+                jobCollections = SchedulerManagementClient.JobCollections.ListBySubscriptionNext(jobCollections.NextPageLink);
                 listOfJobCollections.AddRange(jobCollections);
             }
 
@@ -365,13 +359,13 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         private IList<JobCollectionDefinition> ListJobCollectionsByResourceGroupName(string resourceGroupName)
         {
             var listOfJobCollections = new List<JobCollectionDefinition>();
-            IPage<JobCollectionDefinition> jobCollections = this.SchedulerManagementClient.JobCollections.ListByResourceGroup(resourceGroupName);
+            IPage<JobCollectionDefinition> jobCollections = SchedulerManagementClient.JobCollections.ListByResourceGroup(resourceGroupName);
 
             listOfJobCollections.AddRange(jobCollections);
 
             while (!string.IsNullOrWhiteSpace(jobCollections.NextPageLink))
             {
-                jobCollections = this.SchedulerManagementClient.JobCollections.ListByResourceGroupNext(jobCollections.NextPageLink);
+                jobCollections = SchedulerManagementClient.JobCollections.ListByResourceGroupNext(jobCollections.NextPageLink);
                 listOfJobCollections.AddRange(jobCollections);
             }
 
@@ -409,12 +403,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             switch (skuDefinition)
             {
                 case SkuDefinition.Free:
-                    quota.MaxJobCount = this.GetMaxJobCount(
+                    quota.MaxJobCount = GetMaxJobCount(
                         jobCollectionParams.MaxJobCount,
                         newQuota ? Constants.MaxJobCountQuotaFree : existingMaxCountValue,
                         Resources.JobCollectionMaxJobQuotaTooLargeForFree);
 
-                    quota.MaxRecurrence = this.GetMaxRecurrence(
+                    quota.MaxRecurrence = GetMaxRecurrence(
                         jobCollectionParams.Frequency,
                         jobCollectionParams.Interval,
                         newQuota ? Constants.MinRecurrenceQuotaFree : existingMinRecurrenceValue,
@@ -424,12 +418,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 case SkuDefinition.Standard:
                 case SkuDefinition.P10Premium:
                 default:
-                    quota.MaxJobCount = this.GetMaxJobCount(
+                    quota.MaxJobCount = GetMaxJobCount(
                         jobCollectionParams.MaxJobCount,
                         newQuota ? Constants.MaxJobCountQuotaStandard : existingMaxCountValue,
                         Resources.JobCollectionMaxJobQuotaTooLargeForPaid);
 
-                    quota.MaxRecurrence = this.GetMaxRecurrence(
+                    quota.MaxRecurrence = GetMaxRecurrence(
                         jobCollectionParams.Frequency,
                         jobCollectionParams.Interval,
                         newQuota ? Constants.MinRecurrenceQuotaStandard : existingMinRecurrenceValue,
@@ -437,12 +431,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                     break;
 
                 case SkuDefinition.P20Premium:
-                    quota.MaxJobCount = this.GetMaxJobCount(
+                    quota.MaxJobCount = GetMaxJobCount(
                     jobCollectionParams.MaxJobCount,
                     newQuota ? Constants.MaxJobCountQuotaP20Premium : existingMaxCountValue,
                     Resources.JobCollectionMaxJobQuotaTooLargeForPaid);
 
-                    quota.MaxRecurrence = this.GetMaxRecurrence(
+                    quota.MaxRecurrence = GetMaxRecurrence(
                         jobCollectionParams.Frequency,
                         jobCollectionParams.Interval,
                         newQuota ? Constants.MinRecurrenceQuotaP20Premium : existingMinRecurrenceValue,
@@ -488,7 +482,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         private JobMaxRecurrence GetMaxRecurrence(string frequencyInput, int? intervalInput, TimeSpan minRecurrenceQuota, string errorMessage)
         {
             int interval = intervalInput.HasValue ? intervalInput.Value : minRecurrenceQuota.GetInterval();
-            RecurrenceFrequency frequency = frequencyInput.GetValueOrDefaultEnum<RecurrenceFrequency>(defaultValue: minRecurrenceQuota.GetFrequency());
+            RecurrenceFrequency frequency = frequencyInput.GetValueOrDefaultEnum<RecurrenceFrequency>(minRecurrenceQuota.GetFrequency());
 
             TimeSpan recurrenceTimeSpan = SchedulerUtility.ToTimeSpan(frequency, interval);
 
@@ -508,7 +502,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         private bool VerifyFreeJobCollectionExists(IEnumerable<JobCollectionDefinition> jobCollections)
         {
 
-            return jobCollections.Any((jobCollectionDefinition) =>
+            return jobCollections.Any(jobCollectionDefinition =>
             {
                 return jobCollectionDefinition.Properties.Sku.Name == SkuDefinition.Free;
             });
@@ -522,7 +516,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <returns>True, if job collectio exists, otherwise false.</returns>
         private bool VerifyJobCollectionAlreadyExists(IEnumerable<JobCollectionDefinition> jobCollections, string jobCollectionName)
         {
-            return jobCollections.Any((jobCollectionDefinition) =>
+            return jobCollections.Any(jobCollectionDefinition =>
             {
                 return jobCollectionDefinition.Name.Equals(jobCollectionName, StringComparison.InvariantCultureIgnoreCase);
             });

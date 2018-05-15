@@ -46,14 +46,14 @@ namespace Microsoft.Azure.Commands.Compute
             base.ExecuteCmdlet();
             ExecuteClientAction(() =>
             {
-                if (this.ShouldProcess(Name, VerbsCommon.Remove)
-                    && (this.Force.IsPresent || 
-                        this.ShouldContinue(Properties.Resources.VirtualMachineRemovalConfirmation, 
+                if (ShouldProcess(Name, VerbsCommon.Remove)
+                    && (Force.IsPresent || 
+                        ShouldContinue(Properties.Resources.VirtualMachineRemovalConfirmation, 
                         Properties.Resources.VirtualMachineRemovalCaption)))
                 {
-                    var op = this.VirtualMachineClient.DeleteWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.Name).GetAwaiter().GetResult();
+                    var op = VirtualMachineClient.DeleteWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        Name).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSComputeLongRunningOperation>(op);
                     WriteObject(result);
                 }

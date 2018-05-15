@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         
         private string _targetEdition;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string TargetEdition
         {
-            get { return this._targetEdition; }
-            set { this._targetEdition = value; }
+            get { return _targetEdition; }
+            set { _targetEdition = value; }
         }
         
         private string _targetServiceLevelObjective;
@@ -62,8 +62,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string TargetServiceLevelObjective
         {
-            get { return this._targetServiceLevelObjective; }
-            set { this._targetServiceLevelObjective = value; }
+            get { return _targetServiceLevelObjective; }
+            set { _targetServiceLevelObjective = value; }
         }
         
         /// <summary>

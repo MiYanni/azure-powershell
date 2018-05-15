@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Namespace
         public override void ExecuteCmdlet()
         {
             // delete a namespace             
-            if (ShouldProcess(target: Name, action: string.Format(Resources.RemoveNamespace, Name, ResourceGroupName)))
+            if (ShouldProcess(Name, string.Format(Resources.RemoveNamespace, Name, ResourceGroupName)))
             {
                 Client.BeginDeleteNamespace(ResourceGroupName, Name);
             }

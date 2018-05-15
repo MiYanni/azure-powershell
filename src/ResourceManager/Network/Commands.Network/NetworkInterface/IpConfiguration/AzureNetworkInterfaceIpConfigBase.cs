@@ -130,16 +130,16 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void Execute()
         {        
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
-                if (this.Subnet != null)
+                if (Subnet != null)
                 {
-                    this.SubnetId = this.Subnet.Id;
+                    SubnetId = Subnet.Id;
                 }
 
-                if (this.PublicIpAddress != null)
+                if (PublicIpAddress != null)
                 {
-                    this.PublicIpAddressId = this.PublicIpAddress.Id;
+                    PublicIpAddressId = PublicIpAddress.Id;
                 }
             }
         }

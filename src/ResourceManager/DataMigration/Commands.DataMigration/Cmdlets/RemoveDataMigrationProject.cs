@@ -83,19 +83,19 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
                 Name,
                 () =>
                 {
-                    if (this.ParameterSetName.Equals(ComponentObjectParameterSet))
+                    if (ParameterSetName.Equals(ComponentObjectParameterSet))
                     {
-                        this.ResourceGroupName = InputObject.ResourceGroupName;
-                        this.ServiceName = InputObject.ServiceName;
-                        this.Name = InputObject.Name;
+                        ResourceGroupName = InputObject.ResourceGroupName;
+                        ServiceName = InputObject.ServiceName;
+                        Name = InputObject.Name;
                     }
 
-                    if (this.ParameterSetName.Equals(ResourceIdParameterSet))
+                    if (ParameterSetName.Equals(ResourceIdParameterSet))
                     {
-                        DmsResourceIdentifier ids = new DmsResourceIdentifier(this.ResourceId);
-                        this.ResourceGroupName = ids.ResourceGroupName;
-                        this.ServiceName = ids.ServiceName;
-                        this.Name = ids.ProjectName;
+                        DmsResourceIdentifier ids = new DmsResourceIdentifier(ResourceId);
+                        ResourceGroupName = ids.ResourceGroupName;
+                        ServiceName = ids.ServiceName;
+                        Name = ids.ProjectName;
                     }
 
                     bool result = false;

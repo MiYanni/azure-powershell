@@ -75,16 +75,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByName:
-                    this.GetByName();
+                    GetByName();
                     break;
                 case ASRParameterSets.ByFriendlyName:
-                    this.GetByFriendlyName();
+                    GetByFriendlyName();
                     break;
                 case ASRParameterSets.Default:
-                    this.GetAll();
+                    GetAll();
                     break;
             }
         }
@@ -95,11 +95,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void GetAll()
         {
             var recoveryServicesProviderListResponse =
-                this.RecoveryServicesClient.GetAzureSiteRecoveryProvider(this.Fabric.Name);
+                RecoveryServicesClient.GetAzureSiteRecoveryProvider(Fabric.Name);
 
             foreach (var recoveryServicesProvider in recoveryServicesProviderListResponse)
             {
-                this.WriteServicesProvider(recoveryServicesProvider);
+                WriteServicesProvider(recoveryServicesProvider);
             }
         }
 
@@ -111,17 +111,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var found = false;
 
             var recoveryServicesProviderListResponse =
-                this.RecoveryServicesClient.GetAzureSiteRecoveryProvider(this.Fabric.Name);
+                RecoveryServicesClient.GetAzureSiteRecoveryProvider(Fabric.Name);
 
             foreach (var recoveryServicesProvider in recoveryServicesProviderListResponse)
             {
                 if (0 ==
                     string.Compare(
-                        this.FriendlyName,
+                        FriendlyName,
                         recoveryServicesProvider.Properties.FriendlyName,
                         true))
                 {
-                    this.WriteServicesProvider(recoveryServicesProvider);
+                    WriteServicesProvider(recoveryServicesProvider);
                     found = true;
                 }
             }
@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.ServicesProviderNotFound,
-                        this.FriendlyName,
+                        FriendlyName,
                         PSRecoveryServicesClient.asrVaultCreds.ResourceName));
             }
         }
@@ -144,13 +144,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             try
             {
                 var recoveryServicesProviderResponse =
-                    this.RecoveryServicesClient.GetAzureSiteRecoveryProvider(
-                        this.Fabric.Name,
-                        this.Name);
+                    RecoveryServicesClient.GetAzureSiteRecoveryProvider(
+                        Fabric.Name,
+                        Name);
 
                 if (recoveryServicesProviderResponse != null)
                 {
-                    this.WriteServicesProvider(recoveryServicesProviderResponse);
+                    WriteServicesProvider(recoveryServicesProviderResponse);
                 }
             }
             catch (CloudException ex)
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.ServicesProviderNotFound,
-                            this.Name,
+                            Name,
                             PSRecoveryServicesClient.asrVaultCreds.ResourceName));
                 }
 
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteServicesProvider(
             RecoveryServicesProvider provider)
         {
-            this.WriteObject(new ASRRecoveryServicesProvider(provider));
+            WriteObject(new ASRRecoveryServicesProvider(provider));
         }
     }
 }

@@ -16,7 +16,7 @@ using Microsoft.Azure.Management.Logic.Models;
 
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Management.Automation;
 
@@ -58,15 +58,15 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (string.IsNullOrEmpty(this.ActionName))
+            if (string.IsNullOrEmpty(ActionName))
             {
-                var enumerator = LogicAppClient.GetWorkflowRunActions(this.ResourceGroupName, this.Name, this.RunName).GetEnumerator();
-                this.WriteObject(enumerator.ToIEnumerable<WorkflowRunAction>(), true);
+                var enumerator = LogicAppClient.GetWorkflowRunActions(ResourceGroupName, Name, RunName).GetEnumerator();
+                WriteObject(enumerator.ToIEnumerable<WorkflowRunAction>(), true);
             }
             else
             {
-                this.WriteObject(
-                    LogicAppClient.GetWorkflowRunAction(this.ResourceGroupName, this.Name, this.RunName, this.ActionName),
+                WriteObject(
+                    LogicAppClient.GetWorkflowRunAction(ResourceGroupName, Name, RunName, ActionName),
                     true);
             }
         }

@@ -75,10 +75,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(this.Name, VerbsCommon.New))
+            if (ShouldProcess(Name, VerbsCommon.New))
             {
-                Utilities.ValidateIpOrHostName(this.IpOrHostName);
-                this.DiscovervCenter();
+                Utilities.ValidateIpOrHostName(IpOrHostName);
+                DiscovervCenter();
             }
         }
 
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void DiscovervCenter()
         {
             var fabricResponse =
-                this.RecoveryServicesClient.GetAzureSiteRecoveryFabric(this.Fabric.Name);
+                RecoveryServicesClient.GetAzureSiteRecoveryFabric(Fabric.Name);
 
             var vmwareFabricDetails =
                 (VMwareDetails)fabricResponse.Properties.CustomDetails;
@@ -97,30 +97,29 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             var addvCenterRequestProperties =
                 new AddVCenterRequestProperties();
-            addvCenterRequestProperties.FriendlyName = this.Name;
-            addvCenterRequestProperties.IpAddress = this.IpOrHostName;
-            addvCenterRequestProperties.Port = this.Port.ToString();
+            addvCenterRequestProperties.FriendlyName = Name;
+            addvCenterRequestProperties.IpAddress = IpOrHostName;
+            addvCenterRequestProperties.Port = Port.ToString();
             string processServerId = vmwareFabricDetails.ProcessServers.First(
-                vmd => (
-                vmd.IpAddress.Equals(vmwareFabricDetails.IpAddress)
-                || string.Compare(
-                    vmwareFabricDetails.HostName,
-                    vmd.FriendlyName,
-                    StringComparison.OrdinalIgnoreCase) == 0)).Id;
+                vmd => vmd.IpAddress.Equals(vmwareFabricDetails.IpAddress)
+                       || string.Compare(
+                           vmwareFabricDetails.HostName,
+                           vmd.FriendlyName,
+                           StringComparison.OrdinalIgnoreCase) == 0).Id;
             addvCenterRequestProperties.ProcessServerId = processServerId;
-            addvCenterRequestProperties.RunAsAccountId = this.Account.AccountId;
+            addvCenterRequestProperties.RunAsAccountId = Account.AccountId;
 
             addvCenterRequest.Properties = addvCenterRequestProperties;
 
-            var response = this.RecoveryServicesClient.NewAzureRmSiteRecoveryvCenter(
-                this.Fabric.Name,
-                this.Name,
+            var response = RecoveryServicesClient.NewAzureRmSiteRecoveryvCenter(
+                Fabric.Name,
+                Name,
                 addvCenterRequest);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
     }
 }

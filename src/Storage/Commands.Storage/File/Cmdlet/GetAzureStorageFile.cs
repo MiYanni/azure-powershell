@@ -14,8 +14,8 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.File;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.File;
     using System.Globalization;
     using System.Management.Automation;
     using System.Net;
@@ -57,52 +57,52 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         public override void ExecuteCmdlet()
         {
             CloudFileDirectory baseDirectory;
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case Constants.DirectoryParameterSetName:
-                    baseDirectory = this.Directory;
+                    baseDirectory = Directory;
                     break;
 
                 case Constants.ShareNameParameterSetName:
-                    baseDirectory = this.BuildFileShareObjectFromName(this.ShareName).GetRootDirectoryReference();
+                    baseDirectory = BuildFileShareObjectFromName(ShareName).GetRootDirectoryReference();
                     break;
 
                 case Constants.ShareParameterSetName:
-                    baseDirectory = this.Share.GetRootDirectoryReference();
+                    baseDirectory = Share.GetRootDirectoryReference();
                     break;
 
                 default:
-                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", this.ParameterSetName));
+                    throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, "Invalid parameter set name: {0}", ParameterSetName));
             }
 
-            if (string.IsNullOrEmpty(this.Path))
+            if (string.IsNullOrEmpty(Path))
             {
-                this.RunTask(async (taskId) =>
+                RunTask(async taskId =>
                 {
-                    await this.Channel.EnumerateFilesAndDirectoriesAsync(
+                    await Channel.EnumerateFilesAndDirectoriesAsync(
                         baseDirectory,
-                        item => this.OutputStream.WriteObject(taskId, item),
-                        this.RequestOptions,
-                        this.OperationContext,
-                        this.CmdletCancellationToken).ConfigureAwait(false);
+                        item => OutputStream.WriteObject(taskId, item),
+                        RequestOptions,
+                        OperationContext,
+                        CmdletCancellationToken).ConfigureAwait(false);
                 });
             }
             else
             {
-                this.RunTask(async (taskId) =>
+                RunTask(async taskId =>
                 {
                     bool foundAFolder = true;
-                    string[] subfolders = NamingUtil.ValidatePath(this.Path);
+                    string[] subfolders = NamingUtil.ValidatePath(Path);
                     CloudFileDirectory targetDir = baseDirectory.GetDirectoryReferenceByPath(subfolders);
 
                     try
                     {
-                        await this.Channel.FetchDirectoryAttributesAsync(
+                        await Channel.FetchDirectoryAttributesAsync(
                             targetDir,
                             null,
-                            this.RequestOptions,
-                            this.OperationContext,
-                            this.CmdletCancellationToken).ConfigureAwait(false);
+                            RequestOptions,
+                            OperationContext,
+                            CmdletCancellationToken).ConfigureAwait(false);
                     }
                     catch (StorageException se)
                     {
@@ -117,21 +117,21 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
                     if (foundAFolder)
                     {
-                        this.OutputStream.WriteObject(taskId, targetDir);
+                        OutputStream.WriteObject(taskId, targetDir);
                         return;
                     }
 
-                    string[] filePath = NamingUtil.ValidatePath(this.Path, true);
+                    string[] filePath = NamingUtil.ValidatePath(Path, true);
                     CloudFile targetFile = baseDirectory.GetFileReferenceByPath(filePath);
 
-                    await this.Channel.FetchFileAttributesAsync(
+                    await Channel.FetchFileAttributesAsync(
                         targetFile,
                         null,
-                        this.RequestOptions,
-                        this.OperationContext,
-                        this.CmdletCancellationToken).ConfigureAwait(false);
+                        RequestOptions,
+                        OperationContext,
+                        CmdletCancellationToken).ConfigureAwait(false);
 
-                    this.OutputStream.WriteObject(taskId, targetFile);
+                    OutputStream.WriteObject(taskId, targetFile);
                 });
             }
         }

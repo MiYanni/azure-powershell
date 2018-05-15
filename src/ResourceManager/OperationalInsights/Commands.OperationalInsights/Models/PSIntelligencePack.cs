@@ -23,8 +23,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
 
         public PSIntelligencePack(string name, bool enabled)
         {
-            this.Name = name;
-            this.Enabled = enabled;
+            Name = name;
+            Enabled = enabled;
         }
 
         public string Name { get; set; }

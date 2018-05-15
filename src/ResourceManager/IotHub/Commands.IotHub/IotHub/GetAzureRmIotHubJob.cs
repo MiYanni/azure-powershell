@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIotHubJob")]
@@ -55,13 +55,13 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (JobId != null)
             { 
-                JobResponse jobResponse = this.IotHubClient.IotHubResource.GetJob(this.ResourceGroupName, this.Name, this.JobId);
-                this.WriteObject(IotHubUtils.ToPSIotHubJobResponse(jobResponse), false);
+                JobResponse jobResponse = IotHubClient.IotHubResource.GetJob(ResourceGroupName, Name, JobId);
+                WriteObject(IotHubUtils.ToPSIotHubJobResponse(jobResponse), false);
             }
             else
             {
-                IEnumerable<JobResponse> jobResponseList = this.IotHubClient.IotHubResource.ListJobs(this.ResourceGroupName, this.Name);
-                this.WriteObject(IotHubUtils.ToPSIotHubJobResponseList(jobResponseList), true);
+                IEnumerable<JobResponse> jobResponseList = IotHubClient.IotHubResource.ListJobs(ResourceGroupName, Name);
+                WriteObject(IotHubUtils.ToPSIotHubJobResponseList(jobResponseList), true);
             }
         }
     }

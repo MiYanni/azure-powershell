@@ -51,10 +51,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
             // check if any connections exists that use this connection type
             do
             {
-                var ret = this.AutomationClient.ListConnections(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
+                var ret = AutomationClient.ListConnections(ResourceGroupName, AutomationAccountName, ref nextLink);
 
                 if (ret.ToList().Any(connection => 0 ==
-                                                   string.Compare(connection.ConnectionTypeName, this.Name,
+                                                   string.Compare(connection.ConnectionTypeName, Name,
                                                        StringComparison.CurrentCultureIgnoreCase)))
                 {
                     removeMessageWarning = Resources.RemoveConnectionTypeThatHasConnectionWarning;
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                        string.Format(removeMessageWarning, "ConnectionType"),
                        string.Format(Resources.RemoveAzureAutomationResourceDescription, "ConnectionType"),
                        Name,
-                       () => this.AutomationClient.DeleteConnectionType(this.ResourceGroupName, this.AutomationAccountName, Name),
+                       () => AutomationClient.DeleteConnectionType(ResourceGroupName, AutomationAccountName, Name),
                        () => shouldConfirm);
         }
     }

@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DataMaskingState
         {
-            get { return this._dataMaskingState; }
-            set { this._dataMaskingState = value; }
+            get { return _dataMaskingState; }
+            set { _dataMaskingState = value; }
         }
         
         private string _exemptPrincipals;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ExemptPrincipals
         {
-            get { return this._exemptPrincipals; }
-            set { this._exemptPrincipals = value; }
+            get { return _exemptPrincipals; }
+            set { _exemptPrincipals = value; }
         }
         
         /// <summary>
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
             {
                 throw new ArgumentNullException("exemptPrincipals");
             }
-            this.DataMaskingState = dataMaskingState;
-            this.ExemptPrincipals = exemptPrincipals;
+            DataMaskingState = dataMaskingState;
+            ExemptPrincipals = exemptPrincipals;
         }
     }
 }

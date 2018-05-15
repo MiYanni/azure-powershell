@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         /// <returns>The server being updated</returns>
         protected override IEnumerable<Model.AzureSqlServerModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerModel>() { ModelAdapter.GetServer(this.ResourceGroupName, this.ServerName) };
+            return new List<Model.AzureSqlServerModel> { ModelAdapter.GetServer(ResourceGroupName, ServerName) };
         }
 
         /// <summary>
@@ -93,15 +93,15 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         {
             // Construct a new entity so we only send the relevant data to the server
             List<Model.AzureSqlServerModel> updateData = new List<Model.AzureSqlServerModel>();
-            updateData.Add(new Model.AzureSqlServerModel()
+            updateData.Add(new Model.AzureSqlServerModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                SqlAdministratorPassword = this.SqlAdministratorPassword,
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                SqlAdministratorPassword = SqlAdministratorPassword,
                 Tags = TagsConversionHelper.ReadOrFetchTags(this, model.FirstOrDefault().Tags),
-                ServerVersion = this.ServerVersion,
+                ServerVersion = ServerVersion,
                 Location = model.FirstOrDefault().Location,
-                Identity = model.FirstOrDefault().Identity ?? ResourceIdentityHelper.GetIdentityObjectFromType(this.AssignIdentity.IsPresent),
+                Identity = model.FirstOrDefault().Identity ?? ResourceIdentityHelper.GetIdentityObjectFromType(AssignIdentity.IsPresent),
             });
             return updateData;
         }
@@ -113,7 +113,7 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         /// <returns>The response object from the service</returns>
         protected override IEnumerable<Model.AzureSqlServerModel> PersistChanges(IEnumerable<Model.AzureSqlServerModel> entity)
         {
-            return new List<Model.AzureSqlServerModel>() { ModelAdapter.UpsertServer(entity.First()) };
+            return new List<Model.AzureSqlServerModel> { ModelAdapter.UpsertServer(entity.First()) };
         }
     }
 }

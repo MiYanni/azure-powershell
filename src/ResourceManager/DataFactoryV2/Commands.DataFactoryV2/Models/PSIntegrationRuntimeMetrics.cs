@@ -34,9 +34,9 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
                 throw new ArgumentNullException(nameof(data));
             }
 
-            this._monitoringData = data;
-            this.ResourceGroupName = resourceGroupName;
-            this.DataFactoryName = factoryName;
+            _monitoringData = data;
+            ResourceGroupName = resourceGroupName;
+            DataFactoryName = factoryName;
         }
 
         public string IntegrationRuntimeName => _monitoringData.Name;

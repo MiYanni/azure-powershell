@@ -18,9 +18,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using ResourceManager.Common.ArgumentCompleters;
 
@@ -74,15 +74,15 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [ValidateNotNullOrEmpty]
         public string State
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The definition of the workflow.")]
         public object Definition
         {
-            get { return this._definition; }
-            set { this._definition = value; }
+            get { return _definition; }
+            set { _definition = value; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The physical file path of the workflow definition.")]
@@ -96,8 +96,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [Parameter(Mandatory = false, HelpMessage = "The parameters parameter for the logic app.")]
         public object Parameters
         {
-            get { return this._parameters; }
-            set { this._parameters = value; }
+            get { return _parameters; }
+            set { _parameters = value; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The parameter file path.")]
@@ -116,57 +116,57 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var workflow = LogicAppClient.GetWorkflow(this.ResourceGroupName, this.Name);
+            var workflow = LogicAppClient.GetWorkflow(ResourceGroupName, Name);
 
-            if (this.Definition == null)
+            if (Definition == null)
             {
                 workflow.Definition = null;
             }
-            else if (this.Definition.ToString() != string.Empty)
+            else if (Definition.ToString() != string.Empty)
             {
-                workflow.Definition = JToken.Parse(this.Definition.ToString());
+                workflow.Definition = JToken.Parse(Definition.ToString());
             }
 
-            if (!string.IsNullOrEmpty(this.DefinitionFilePath))
+            if (!string.IsNullOrEmpty(DefinitionFilePath))
             {
-                workflow.Definition = CmdletHelper.GetDefinitionFromFile(this.TryResolvePath(this.DefinitionFilePath));
+                workflow.Definition = CmdletHelper.GetDefinitionFromFile(this.TryResolvePath(DefinitionFilePath));
             }
 
-            if (!string.IsNullOrEmpty(this.IntegrationAccountId))
+            if (!string.IsNullOrEmpty(IntegrationAccountId))
             {
-                workflow.IntegrationAccount = new ResourceReference(this.IntegrationAccountId);
+                workflow.IntegrationAccount = new ResourceReference(IntegrationAccountId);
             }
 
-            if (this.Parameters == null)
+            if (Parameters == null)
             {
                 workflow.Parameters = null;
             }
-            else if (this.Parameters.ToString() != string.Empty)
+            else if (Parameters.ToString() != string.Empty)
             {
-                workflow.Parameters = CmdletHelper.ConvertToWorkflowParameterDictionary(this.Parameters);
+                workflow.Parameters = CmdletHelper.ConvertToWorkflowParameterDictionary(Parameters);
             }
 
-            if (!string.IsNullOrEmpty(this.ParameterFilePath))
+            if (!string.IsNullOrEmpty(ParameterFilePath))
             {
-                workflow.Parameters = CmdletHelper.GetParametersFromFile(this.TryResolvePath(this.ParameterFilePath));
+                workflow.Parameters = CmdletHelper.GetParametersFromFile(this.TryResolvePath(ParameterFilePath));
             }
 
-            if (!string.IsNullOrEmpty(this.State))
+            if (!string.IsNullOrEmpty(State))
             {
-                workflow.State = (WorkflowState) Enum.Parse(typeof(WorkflowState), this.State);
+                workflow.State = (WorkflowState) Enum.Parse(typeof(WorkflowState), State);
             }
 
             if (UseConsumptionModel.IsPresent)
             {
                 workflow.Sku = null;
             }
-            else if (!string.IsNullOrEmpty(this.AppServicePlan))
+            else if (!string.IsNullOrEmpty(AppServicePlan))
             {
-                var servicePlan = WebsitesClient.GetAppServicePlan(this.ResourceGroupName, this.AppServicePlan);
+                var servicePlan = WebsitesClient.GetAppServicePlan(ResourceGroupName, AppServicePlan);
                 workflow.Sku = new Sku
                 {
                     Name = (SkuName) Enum.Parse(typeof(SkuName), servicePlan.Sku.Tier),
-                    Plan = new ResourceReference(id: servicePlan.Id)
+                    Plan = new ResourceReference(servicePlan.Id)
                 };
             }
 
@@ -177,13 +177,13 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 
             ConfirmAction(Force.IsPresent,
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceWarning,
-                    "Microsoft.Logic/workflows", this.Name),
+                    "Microsoft.Logic/workflows", Name),
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceMessage,
-                    "Microsoft.Logic/workflows", this.Name),
+                    "Microsoft.Logic/workflows", Name),
                 Name,
                 () =>
                 {
-                    this.WriteObject(LogicAppClient.UpdateWorkflow(this.ResourceGroupName, this.Name, workflow), true);
+                    WriteObject(LogicAppClient.UpdateWorkflow(ResourceGroupName, Name, workflow), true);
                 },
                 null);
         }

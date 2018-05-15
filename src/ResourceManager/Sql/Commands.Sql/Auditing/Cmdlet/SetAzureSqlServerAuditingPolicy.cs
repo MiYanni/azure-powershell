@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Cmdlet
             }
             if (MyInvocation.BoundParameters.ContainsKey(SecurityConstants.StorageKeyType)) // the user enter a key type - we use it (and running over the previously defined key type)
             {
-                model.StorageKeyType = (StorageKeyType == SecurityConstants.Primary) ? StorageKeyKind.Primary : StorageKeyKind.Secondary;
+                model.StorageKeyType = StorageKeyType == SecurityConstants.Primary ? StorageKeyKind.Primary : StorageKeyKind.Secondary;
             }
 
             EventType = Util.ProcessAuditEvents(EventType);
@@ -142,7 +142,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Cmdlet
 
             if (TableIdentifier == null)
             {
-                if ((orgAuditStateType == AuditStateType.New) && (model.RetentionInDays > 0))
+                if (orgAuditStateType == AuditStateType.New && model.RetentionInDays > 0)
                 {
                     // If retention days is greater than 0 and no audit table identifier is supplied , we throw exception giving the user hint on the recommended TableIdentifier we got from the CSM
                     throw new Exception(string.Format(Properties.Resources.InvalidRetentionTypeSet, model.TableIdentifier));
@@ -169,7 +169,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Cmdlet
 
             if (MyInvocation.BoundParameters.ContainsKey(SecurityConstants.StorageKeyType)) // the user enter a key type - we use it (and running over the previously defined key type)
             {
-                model.StorageKeyType = (StorageKeyType == SecurityConstants.Primary) ? StorageKeyKind.Primary : StorageKeyKind.Secondary;
+                model.StorageKeyType = StorageKeyType == SecurityConstants.Primary ? StorageKeyKind.Primary : StorageKeyKind.Secondary;
             }
 
             if (AuditActionGroup != null && AuditActionGroup.Length != 0)

@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var getEffectiveRouteTable = this.NetworkInterfaceClient.GetEffectiveRouteTable(this.ResourceGroupName, this.NetworkInterfaceName);
+            var getEffectiveRouteTable = NetworkInterfaceClient.GetEffectiveRouteTable(ResourceGroupName, NetworkInterfaceName);
 
             var psEffectiveRouteTable = NetworkResourceManagerProfile.Mapper.Map<List<PSEffectiveRoute>>(getEffectiveRouteTable.Value);
 

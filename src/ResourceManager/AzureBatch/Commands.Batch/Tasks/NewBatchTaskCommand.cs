@@ -130,28 +130,28 @@ namespace Microsoft.Azure.Commands.Batch
         {
             if (Tasks != null)
             {
-                NewBulkTaskParameters parameters = new NewBulkTaskParameters(this.BatchContext, this.JobId, this.Job, this.Tasks, this.AdditionalBehaviors);
+                NewBulkTaskParameters parameters = new NewBulkTaskParameters(BatchContext, JobId, Job, Tasks, AdditionalBehaviors);
                 BatchClient.AddTaskCollection(parameters);
             }
             else
             {
-                NewTaskParameters parameters = new NewTaskParameters(this.BatchContext, this.JobId, this.Job,
-                    this.Id, this.AdditionalBehaviors)
+                NewTaskParameters parameters = new NewTaskParameters(BatchContext, JobId, Job,
+                    Id, AdditionalBehaviors)
                 {
-                    DisplayName = this.DisplayName,
-                    CommandLine = this.CommandLine,
-                    ResourceFiles = this.ResourceFiles,
-                    EnvironmentSettings = this.EnvironmentSettings,
-                    AuthenticationTokenSettings = this.AuthenticationTokenSettings,
-                    UserIdentity = this.UserIdentity,
-                    AffinityInformation = this.AffinityInformation,
-                    Constraints = this.Constraints,
-                    MultiInstanceSettings = this.MultiInstanceSettings,
-                    DependsOn = this.DependsOn,
-                    ApplicationPackageReferences = this.ApplicationPackageReferences,
-                    ExitConditions = this.ExitConditions,
-                    OutputFiles = this.OutputFile,
-                    ContainerSettings = this.ContainerSettings
+                    DisplayName = DisplayName,
+                    CommandLine = CommandLine,
+                    ResourceFiles = ResourceFiles,
+                    EnvironmentSettings = EnvironmentSettings,
+                    AuthenticationTokenSettings = AuthenticationTokenSettings,
+                    UserIdentity = UserIdentity,
+                    AffinityInformation = AffinityInformation,
+                    Constraints = Constraints,
+                    MultiInstanceSettings = MultiInstanceSettings,
+                    DependsOn = DependsOn,
+                    ApplicationPackageReferences = ApplicationPackageReferences,
+                    ExitConditions = ExitConditions,
+                    OutputFiles = OutputFile,
+                    ContainerSettings = ContainerSettings
                 };
 
                 BatchClient.CreateTask(parameters);

@@ -78,20 +78,20 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            NewJobParameters parameters = new NewJobParameters(this.BatchContext, this.Id, this.AdditionalBehaviors)
+            NewJobParameters parameters = new NewJobParameters(BatchContext, Id, AdditionalBehaviors)
             {
-                CommonEnvironmentSettings = this.CommonEnvironmentSettings,
-                DisplayName = this.DisplayName,
-                Constraints = this.Constraints,
-                JobManagerTask = this.JobManagerTask,
-                JobPreparationTask = this.JobPreparationTask,
-                JobReleaseTask = this.JobReleaseTask,
-                Metadata = this.Metadata,
-                PoolInformation = this.PoolInformation,
-                Priority = this.Priority,
-                UsesTaskDependencies = this.UsesTaskDependencies.IsPresent,
-                OnAllTasksComplete = this.OnAllTasksComplete,
-                OnTaskFailure = this.OnTaskFailure,
+                CommonEnvironmentSettings = CommonEnvironmentSettings,
+                DisplayName = DisplayName,
+                Constraints = Constraints,
+                JobManagerTask = JobManagerTask,
+                JobPreparationTask = JobPreparationTask,
+                JobReleaseTask = JobReleaseTask,
+                Metadata = Metadata,
+                PoolInformation = PoolInformation,
+                Priority = Priority,
+                UsesTaskDependencies = UsesTaskDependencies.IsPresent,
+                OnAllTasksComplete = OnAllTasksComplete,
+                OnTaskFailure = OnTaskFailure,
             };
 
             BatchClient.CreateJob(parameters);

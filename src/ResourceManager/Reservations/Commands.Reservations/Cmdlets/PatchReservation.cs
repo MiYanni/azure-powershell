@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Reservations.Cmdlets
                     string subscriptionId = ValidateAndGetAppliedSubscription();
                     PreRegister(subscriptionId);
 
-                    Patch = new Patch(AppliedScopeType, new List<string>() { AppliedScope });
+                    Patch = new Patch(AppliedScopeType, new List<string> { AppliedScope });
                 }
                 else
                 {
@@ -132,10 +132,7 @@ namespace Microsoft.Azure.Commands.Reservations.Cmdlets
             {
                 return result.ToString();
             }
-            else
-            {
-                throw new PSArgumentException("Invalid applied scope provided");
-            }
+            throw new PSArgumentException("Invalid applied scope provided");
         }
     }
 }

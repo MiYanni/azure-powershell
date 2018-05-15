@@ -61,27 +61,27 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Recovery plan",
                 VerbsData.Update))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByRPObject:
-                        this.UpdateRecoveryPlan(this.InputObject);
+                        UpdateRecoveryPlan(InputObject);
                         break;
                     case ASRParameterSets.ByRPFile:
 
-                        if (!File.Exists(this.Path))
+                        if (!File.Exists(Path))
                         {
                             throw new FileNotFoundException(
                                 string.Format(
                                     Resources.FileNotFound,
-                                    this.Path));
+                                    Path));
                             ;
                         }
 
-                        var filePath = this.Path;
+                        var filePath = Path;
 
                         RecoveryPlan recoveryPlan = null;
 
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                                 new RecoveryPlanActionDetailsConverter());
                         }
 
-                        this.UpdateRecoveryPlan(recoveryPlan);
+                        UpdateRecoveryPlan(recoveryPlan);
 
                         break;
                 }
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var updateRecoveryPlanInput =
                 new UpdateRecoveryPlanInput { Properties = updateRecoveryPlanInputProperties };
 
-            this.UpdateRecoveryPlan(
+            UpdateRecoveryPlan(
                 asrRecoveryPlan.Name,
                 updateRecoveryPlanInput);
         }
@@ -195,7 +195,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var updateRecoveryPlanInput =
                 new UpdateRecoveryPlanInput { Properties = updateRecoveryPlanInputProperties };
 
-            this.UpdateRecoveryPlan(
+            UpdateRecoveryPlan(
                 recoveryPlan.Name,
                 updateRecoveryPlanInput);
         }
@@ -207,14 +207,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string recoveryPlanName,
             UpdateRecoveryPlanInput updateRecoveryPlanInput)
         {
-            var response = this.RecoveryServicesClient.UpdateAzureSiteRecoveryRecoveryPlan(
+            var response = RecoveryServicesClient.UpdateAzureSiteRecoveryRecoveryPlan(
                 recoveryPlanName,
                 updateRecoveryPlanInput);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
     }
 }

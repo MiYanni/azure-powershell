@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
 
         public StorageCredentialsFactory()
         {
-            this.resourceGroupName = null;
+            resourceGroupName = null;
         }
 
         public StorageCredentialsFactory(string resourceGroupName, StorageManagementClient client, IAzureSubscription currentSubscription)
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
                 {
                     throw new ArgumentException(Rsrc.StorageCredentialsFactoryCurrentSubscriptionNotSet, "SubscriptionId");
                 }
-                var storageKeys = this.client.StorageAccounts.ListKeys(this.resourceGroupName, destination.StorageAccountName);
+                var storageKeys = client.StorageAccounts.ListKeys(resourceGroupName, destination.StorageAccountName);
                 return new StorageCredentials(destination.StorageAccountName, storageKeys.GetKey1());
             }
 

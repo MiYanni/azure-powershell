@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Profile
         {
             var profileClient = new RMProfileClient(AzureRmProfileProvider.Instance.GetProfile<AzureRmProfile>());
             var result = profileClient.ListEnvironments(Name).Select(s => new PSAzureEnvironment(s)).ToList();
-            WriteObject(result, enumerateCollection: true);
+            WriteObject(result, true);
         }
     }
 }

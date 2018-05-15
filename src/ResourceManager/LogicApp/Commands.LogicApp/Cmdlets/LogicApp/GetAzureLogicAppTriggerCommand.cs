@@ -16,7 +16,7 @@ using Microsoft.Azure.Management.Logic.Models;
 
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Management.Automation;
 
@@ -54,15 +54,15 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            if (string.IsNullOrEmpty(this.TriggerName))
+            if (string.IsNullOrEmpty(TriggerName))
             {
-                var enumerator = LogicAppClient.GetWorkflowTriggers(this.ResourceGroupName, this.Name).GetEnumerator();
-                this.WriteObject(enumerator.ToIEnumerable<WorkflowTrigger>(), true);
+                var enumerator = LogicAppClient.GetWorkflowTriggers(ResourceGroupName, Name).GetEnumerator();
+                WriteObject(enumerator.ToIEnumerable<WorkflowTrigger>(), true);
             }
             else
             {
-                this.WriteObject(
-                    LogicAppClient.GetWorkflowTrigger(this.ResourceGroupName, this.Name, this.TriggerName), true);
+                WriteObject(
+                    LogicAppClient.GetWorkflowTrigger(ResourceGroupName, Name, TriggerName), true);
             }
         }
     }

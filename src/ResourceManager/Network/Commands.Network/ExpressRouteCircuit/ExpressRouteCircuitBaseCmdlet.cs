@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetExpressRouteCircuit(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSExpressRouteCircuit GetExpressRouteCircuit(string resourceGroupName, string name)
         {
-            var circuit = this.ExpressRouteCircuitClient.Get(resourceGroupName, name);
+            var circuit = ExpressRouteCircuitClient.Get(resourceGroupName, name);
 
             var psExpressRouteCircuit = NetworkResourceManagerProfile.Mapper.Map<PSExpressRouteCircuit>(circuit);
             psExpressRouteCircuit.ResourceGroupName = resourceGroupName;

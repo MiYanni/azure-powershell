@@ -49,14 +49,14 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(CultureInfo.CurrentCulture, Resources.RemoveDscNodeWarning),
-                string.Format(CultureInfo.CurrentCulture, Resources.RemoveDscNodeDescription, this.Id.ToString()),
-                this.Id.ToString(),
+                string.Format(CultureInfo.CurrentCulture, Resources.RemoveDscNodeDescription, Id.ToString()),
+                Id.ToString(),
                 () =>
                 {
-                    AutomationClient.DeleteDscNode(this.ResourceGroupName, this.AutomationAccountName, this.Id);
+                    AutomationClient.DeleteDscNode(ResourceGroupName, AutomationAccountName, Id);
                 });
         }
     }

@@ -31,12 +31,12 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string ResultsText
         {
-            get { return JsonConvert.SerializeObject(Results, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Results, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         public bool ShouldSerializeResults()
         {
-            return !string.IsNullOrEmpty(this.Name);
+            return !string.IsNullOrEmpty(Name);
         }
     }
 }

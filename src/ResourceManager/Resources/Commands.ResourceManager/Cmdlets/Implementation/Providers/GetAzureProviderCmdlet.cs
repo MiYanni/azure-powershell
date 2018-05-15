@@ -15,20 +15,20 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkExtensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
+    using Commands.Common.Authentication.Abstractions;
+    using Extensions;
+    using SdkExtensions;
+    using SdkModels;
     using System;
     using System.Linq;
     using System.Management.Automation;
     using WindowsAzure.Commands.Utilities.Common;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
 
     /// <summary>
     /// Get an existing resource.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRmResourceProvider", DefaultParameterSetName = GetAzureProviderCmdlet.ListAvailableParameterSet), OutputType(typeof(PSResourceProvider))]
+    [Cmdlet(VerbsCommon.Get, "AzureRmResourceProvider", DefaultParameterSetName = ListAvailableParameterSet), OutputType(typeof(PSResourceProvider))]
     public class GetAzureProviderCmdlet : ResourceManagerCmdletBase
     {
         /// <summary>
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the provider namespace
         /// </summary>
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource provider namespace.", ParameterSetName = GetAzureProviderCmdlet.IndividualProviderParameterSet)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource provider namespace.", ParameterSetName = IndividualProviderParameterSet)]
         [ValidateNotNullOrEmpty]
         public string[] ProviderNamespace { get; set; }
 
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets a value indicating if unregistered providers should be included in the listing
         /// </summary>
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = false, HelpMessage = "When specified, lists all the resource providers available, including those not registered with the current subscription.", ParameterSetName = GetAzureProviderCmdlet.ListAvailableParameterSet)]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = false, HelpMessage = "When specified, lists all the resource providers available, including those not registered with the current subscription.", ParameterSetName = ListAvailableParameterSet)]
         public SwitchParameter ListAvailable { get; set; }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            var providers = this.ListPSResourceProviders();
+            var providers = ListPSResourceProviders();
 
             if (this.IsParameterBound(c => c.ProviderNamespace))
             {
@@ -92,35 +92,35 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                                     ZoneMappings = type.ZoneMappings
                                 }));
 
-                this.WriteObject(expandedProviders, enumerateCollection: true);
+                WriteObject(expandedProviders, true);
             }
             else
             {
-                this.WriteObject(providers, enumerateCollection: true);
+                WriteObject(providers, true);
             }
         }
 
         private PSResourceProvider[] ListPSResourceProviders()
         {
-            var allProviders = this.ResourceManagerSdkClient.ListResourceProviders(
-                providerName: null,
-                listAvailable: true);
+            var allProviders = ResourceManagerSdkClient.ListResourceProviders(
+                null,
+                true);
 
             var providers = allProviders;
             if (this.IsParameterBound(c => c.ProviderNamespace))
             {
                 providers = new System.Collections.Generic.List<Management.ResourceManager.Models.Provider>();
-                foreach (var providerNamespace in this.ProviderNamespace)
+                foreach (var providerNamespace in ProviderNamespace)
                 {
-                    providers.AddRange(this.ResourceManagerSdkClient.ListResourceProviders(providerName: providerNamespace));
+                    providers.AddRange(ResourceManagerSdkClient.ListResourceProviders(providerNamespace));
                 }
             }
-            else if (this.ListAvailable == false)
+            else if (ListAvailable == false)
             {
-                providers = this.ResourceManagerSdkClient.GetRegisteredProviders(providers);
+                providers = ResourceManagerSdkClient.GetRegisteredProviders(providers);
             }
 
-            if (string.IsNullOrEmpty(this.Location))
+            if (string.IsNullOrEmpty(Location))
             {
                 return providers
                     .Select(provider => provider.ToPSResourceProvider())
@@ -131,23 +131,22 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                 .SelectMany(provider => provider.ResourceTypes.CoalesceEnumerable().SelectMany(type => type.Locations))
                 .Distinct(StringComparer.InvariantCultureIgnoreCase);
 
-            var validLocations = this
-                .SubscriptionSdkClient
+            var validLocations = SubscriptionSdkClient
                 .ListLocations(DefaultContext.Subscription.Id.ToString())
                 .Select(location => location.DisplayName)
                 .Concat(allRPLocations)
                 .Distinct(StringComparer.InvariantCultureIgnoreCase);
 
-            if (!validLocations.Any(loc => loc.EqualsAsLocation(this.Location)))
+            if (!validLocations.Any(loc => loc.EqualsAsLocation(Location)))
             {
-                this.WriteErrorWithTimestamp(ProjectResources.InvalidLocation);
+                WriteErrorWithTimestamp(ProjectResources.InvalidLocation);
                 return new PSResourceProvider[] { };
             }
 
             var providerWithResourceTypes = providers.ToDictionary(
                 provider => provider,
                 provider => provider.ResourceTypes
-                    .Where(type => !type.Locations.Any() || type.Locations.Any(loc => loc.EqualsAsLocation(this.Location)))
+                    .Where(type => !type.Locations.Any() || type.Locations.Any(loc => loc.EqualsAsLocation(Location)))
                     .ToList());
 
             return providerWithResourceTypes

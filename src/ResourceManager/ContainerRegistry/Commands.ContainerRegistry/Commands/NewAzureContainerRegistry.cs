@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
     public class NewAzureContainerRegistry : ContainerRegistryCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
                     throw new InvalidOperationException(registryNameStatus.Message);
                 }
 
-                var tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
+                var tags = TagsConversionHelper.CreateTagDictionary(Tag, true);
 
                 if (Location == null)
                 {
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
                 {
                     var registry = new Registry
                     {
-                        Sku = new Microsoft.Azure.Management.ContainerRegistry.Models.Sku(Sku),
+                        Sku = new Management.ContainerRegistry.Models.Sku(Sku),
                         AdminUserEnabled = EnableAdminUser,
                         Tags = tags,
                         Location = Location

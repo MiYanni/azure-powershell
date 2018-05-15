@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName = DataFactory.ResourceGroupName;
             }
 
-            LinkedServiceFilterOptions filterOptions = new LinkedServiceFilterOptions()
+            LinkedServiceFilterOptions filterOptions = new LinkedServiceFilterOptions
             {
                 Name = Name,
                 ResourceGroupName = ResourceGroupName,

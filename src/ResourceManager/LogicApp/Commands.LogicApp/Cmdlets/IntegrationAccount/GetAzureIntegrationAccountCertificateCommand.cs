@@ -15,9 +15,9 @@
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.Rest.Azure;
+    using Utilities;
+    using Management.Logic.Models;
+    using Rest.Azure;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -53,13 +53,13 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            if (string.IsNullOrEmpty(this.CertificateName))
+            if (string.IsNullOrEmpty(CertificateName))
             {
-                this.WriteObject(IntegrationAccountClient.ListIntegrationAccountCertificates(this.ResourceGroupName, this.Name), true);
+                WriteObject(IntegrationAccountClient.ListIntegrationAccountCertificates(ResourceGroupName, Name), true);
             }
             else
             {
-                this.WriteObject(IntegrationAccountClient.GetIntegrationAccountCertifcate(this.ResourceGroupName, this.Name, this.CertificateName), true);
+                WriteObject(IntegrationAccountClient.GetIntegrationAccountCertifcate(ResourceGroupName, Name, CertificateName), true);
             }
         }
     }

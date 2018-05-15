@@ -28,9 +28,9 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void CustomInit()
         {
-            this.SourceConnectionInfoParam(true);
-            this.SimpleParam(CollectLogins, typeof(SwitchParameter), "Collect logins for this server.");
-            this.SimpleParam(CollectAgentJobs, typeof(SwitchParameter), "Collect agent jobs for this server.");
+            SourceConnectionInfoParam(true);
+            SimpleParam(CollectLogins, typeof(SwitchParameter), "Collect logins for this server.");
+            SimpleParam(CollectAgentJobs, typeof(SwitchParameter), "Collect agent jobs for this server.");
         }
 
         public override ProjectTaskProperties ProcessTaskCmdlet()

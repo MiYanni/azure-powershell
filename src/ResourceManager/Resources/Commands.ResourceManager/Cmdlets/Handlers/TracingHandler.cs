@@ -15,7 +15,7 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
 {
     using Hyak.Common;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
+    using Extensions;
     using System;
     using System.Net.Http;
     using System.Threading;
@@ -35,17 +35,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
         {
             if (!TracingAdapter.IsEnabled)
             {
-                return await base.SendAsync(request: request, cancellationToken: cancellationToken)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                return await base.SendAsync(request, cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             var invocationId = TracingAdapter.NextInvocationId.ToString();
             try
             {
-                TracingAdapter.SendRequest(invocationId: invocationId, request: request);
-                var response = await base.SendAsync(request: request, cancellationToken: cancellationToken)
-                    .ConfigureAwait(continueOnCapturedContext: false);
-                TracingAdapter.ReceiveResponse(invocationId: invocationId, response: response);
+                TracingAdapter.SendRequest(invocationId, request);
+                var response = await base.SendAsync(request, cancellationToken)
+                    .ConfigureAwait(false);
+                TracingAdapter.ReceiveResponse(invocationId, response);
                 return response;
             }
             catch (Exception ex)
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
                     throw;
                 }
 
-                TracingAdapter.Error(invocationId: invocationId, ex: ex);
+                TracingAdapter.Error(invocationId, ex);
                 throw;
             }
         }

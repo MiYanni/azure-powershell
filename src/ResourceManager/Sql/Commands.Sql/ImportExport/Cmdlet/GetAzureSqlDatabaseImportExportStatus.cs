@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Sql.ImportExport.Cmdlet
 
             if (model != null)
             {
-                this.WriteObject(model, true);
+                WriteObject(model, true);
             }
         }
     }

@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices
         [Parameter(Position = 0,
             ValueFromPipelineByPropertyName = true, Mandatory = false,
             HelpMessage = "Name of resource group under which the user want to retrieve the server.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore
         {
             var aclSpec = ParameterSetName.Equals(BaseParameterSetName)
                 ? Acl.Select(entry => entry.ParseDataLakeStoreItemAce()).ToList()
-                : new List<AclEntry>() { new AclEntry((AclType)AceType, Id.ToString(), Default ? AclScope.Default : AclScope.Access, AclAction.None) };// Action doesnt have any affect here so just hardcoded some constant
+                : new List<AclEntry> { new AclEntry((AclType)AceType, Id.ToString(), Default ? AclScope.Default : AclScope.Access, AclAction.None) };// Action doesnt have any affect here so just hardcoded some constant
 
             ConfirmAction(
                 string.Format(Resources.RemoveDataLakeStoreItemAcl, string.Empty, Path.OriginalPath),

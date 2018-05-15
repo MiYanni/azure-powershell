@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Tags.Tag
 
         public override void ExecuteCmdlet()
         {
-            List<PSTag> tags = string.IsNullOrEmpty(Name) ? TagsClient.ListTags() : new List<PSTag>() { TagsClient.GetTag(Name) };
+            List<PSTag> tags = string.IsNullOrEmpty(Name) ? TagsClient.ListTags() : new List<PSTag> { TagsClient.GetTag(Name) };
             if (tags != null && tags.Count > 0)
             {
                 if (Name != null)
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.Tags.Tag
                     else
                     {
                         List<PSObject> output = new List<PSObject>();
-                        tags.ForEach(t => output.Add(base.ConstructPSObject(
+                        tags.ForEach(t => output.Add(ConstructPSObject(
                             null,
                             "Name", t.Name,
                             "Count", t.Count)));

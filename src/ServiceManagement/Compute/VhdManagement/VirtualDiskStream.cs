@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
     /// </remarks>
     public class VirtualDiskStream : SparseStream
     {
-        private long position;
+        private long _position;
         private VhdFile vhdFile;
         private IBlockFactory blockFactory;
         private IndexRange footerRange;
@@ -39,10 +39,10 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
 
         public VirtualDiskStream(string vhdPath)
         {
-            this.vhdFile = new VhdFileFactory().Create(vhdPath);
-            this.blockFactory = vhdFile.GetBlockFactory();
-            footerRange = this.blockFactory.GetFooterRange();
-            fileDataRange = IndexRange.FromLength(0, this.Length - footerRange.Length);
+            vhdFile = new VhdFileFactory().Create(vhdPath);
+            blockFactory = vhdFile.GetBlockFactory();
+            footerRange = blockFactory.GetFooterRange();
+            fileDataRange = IndexRange.FromLength(0, Length - footerRange.Length);
         }
 
         public override bool CanRead
@@ -66,17 +66,17 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
 
         public override sealed long Length
         {
-            get { return this.footerRange.EndIndex + 1; }
+            get { return footerRange.EndIndex + 1; }
         }
 
         public override long Position
         {
-            get { return this.position; }
+            get { return _position; }
             set
             {
                 if (value < 0) throw new ArgumentException();
-                if (value >= this.Length) throw new EndOfStreamException();
-                this.position = value;
+                if (value >= Length) throw new EndOfStreamException();
+                _position = value;
             }
         }
 
@@ -104,24 +104,24 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
                 yield return new StreamExtent
                 {
                     Owner = vhdFile.Footer.UniqueId,
-                    StartOffset = this.footerRange.StartIndex,
-                    EndOffset = this.footerRange.EndIndex,
-                    Range = this.footerRange
+                    StartOffset = footerRange.StartIndex,
+                    EndOffset = footerRange.EndIndex,
+                    Range = footerRange
                 };
             }
         }
 
         public DiskType DiskType
         {
-            get { return this.vhdFile.DiskType; }
+            get { return vhdFile.DiskType; }
         }
 
         public DiskType RootDiskType
         {
             get
             {
-                var diskType = this.vhdFile.DiskType;
-                for (var parent = this.vhdFile.Parent; parent != null; parent = parent.Parent)
+                var diskType = vhdFile.DiskType;
+                for (var parent = vhdFile.Parent; parent != null; parent = parent.Parent)
                 {
                     diskType = parent.DiskType;
                 }
@@ -140,7 +140,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
 
             try
             {
-                var rangeToRead = IndexRange.FromLength(this.position, count);
+                var rangeToRead = IndexRange.FromLength(_position, count);
 
                 int writtenCount = 0;
                 if (fileDataRange.Intersection(rangeToRead) == null)
@@ -168,7 +168,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
 
                     writtenCount += (int)rangeToReadInBlock.Length;
                 }
-                this.position += writtenCount;
+                _position += writtenCount;
 
                 return writtenCount;
             }
@@ -181,13 +181,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
         public bool TryReadFromFooter(IndexRange rangeToRead, byte[] buffer, int offset, out int readCount)
         {
             readCount = 0;
-            var rangeToReadFromFooter = this.footerRange.Intersection(rangeToRead);
+            var rangeToReadFromFooter = footerRange.Intersection(rangeToRead);
             if (rangeToReadFromFooter != null)
             {
                 var footerData = GenerateFooter();
                 var copyStartIndex = rangeToReadFromFooter.StartIndex - footerRange.StartIndex;
                 Buffer.BlockCopy(footerData, (int)copyStartIndex, buffer, offset, (int)rangeToReadFromFooter.Length);
-                this.position += (int)rangeToReadFromFooter.Length;
+                _position += (int)rangeToReadFromFooter.Length;
                 readCount = (int)rangeToReadFromFooter.Length;
                 return true;
             }
@@ -196,8 +196,8 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
 
         private uint ByteToBlock(long position)
         {
-            uint sectorsPerBlock = (uint)(this.blockFactory.GetBlockSize() / VhdConstants.VHD_SECTOR_LENGTH);
-            return (uint)Math.Floor((position / VhdConstants.VHD_SECTOR_LENGTH) * 1.0m / sectorsPerBlock);
+            uint sectorsPerBlock = (uint)(blockFactory.GetBlockSize() / VhdConstants.VHD_SECTOR_LENGTH);
+            return (uint)Math.Floor(position / VhdConstants.VHD_SECTOR_LENGTH * 1.0m / sectorsPerBlock);
         }
 
         private byte[] GenerateFooter()
@@ -218,18 +218,18 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
             switch (origin)
             {
                 case SeekOrigin.Begin:
-                    this.Position = offset;
+                    Position = offset;
                     break;
                 case SeekOrigin.Current:
-                    this.Position += offset;
+                    Position += offset;
                     break;
                 case SeekOrigin.End:
-                    this.Position -= offset;
+                    Position -= offset;
                     break;
                 default:
                     throw new NotSupportedException();
             }
-            return this.Position;
+            return Position;
         }
 
         public override void SetLength(long value)
@@ -248,7 +248,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
             {
                 if (disposing)
                 {
-                    this.vhdFile.Dispose();
+                    vhdFile.Dispose();
                     isDisposed = true;
                 }
             }

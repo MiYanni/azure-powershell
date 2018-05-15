@@ -26,44 +26,44 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSUsageStatistics
     {
         
-        internal Microsoft.Azure.Batch.UsageStatistics omObject;
+        internal UsageStatistics omObject;
         
-        internal PSUsageStatistics(Microsoft.Azure.Batch.UsageStatistics omObject)
+        internal PSUsageStatistics(UsageStatistics omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.TimeSpan DedicatedCoreTime
+        public TimeSpan DedicatedCoreTime
         {
             get
             {
-                return this.omObject.DedicatedCoreTime;
+                return omObject.DedicatedCoreTime;
             }
         }
         
-        public System.DateTime LastUpdateTime
+        public DateTime LastUpdateTime
         {
             get
             {
-                return this.omObject.LastUpdateTime;
+                return omObject.LastUpdateTime;
             }
         }
         
-        public System.DateTime StartTime
+        public DateTime StartTime
         {
             get
             {
-                return this.omObject.StartTime;
+                return omObject.StartTime;
             }
         }
     }

@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Details
         {
-            get { return this._details; }
-            set { this._details = value; }
+            get { return _details; }
+            set { _details = value; }
         }
         
         private string _source;
@@ -48,31 +48,31 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Source
         {
-            get { return this._source; }
-            set { this._source = value; }
+            get { return _source; }
+            set { _source = value; }
         }
         
-        private System.DateTime? _timeStamp;
+        private DateTime? _timeStamp;
         
         /// <summary>
         /// Optional. Time stamp of the log.
         /// </summary>
-        public System.DateTime? TimeStamp
+        public DateTime? TimeStamp
         {
-            get { return this._timeStamp; }
-            set { this._timeStamp = value; }
+            get { return _timeStamp; }
+            set { _timeStamp = value; }
         }
         
-        private Microsoft.Azure.Management.Sql.LegacySdk.Models.LogType? _type;
+        private LogType? _type;
         
         /// <summary>
         /// Optional. Type of the log. The possible values: 'Error', 'Warning',
         /// 'Success' and 'All'.
         /// </summary>
-        public Microsoft.Azure.Management.Sql.LegacySdk.Models.LogType? Type
+        public LogType? Type
         {
-            get { return this._type; }
-            set { this._type = value; }
+            get { return _type; }
+            set { _type = value; }
         }
         
         /// <summary>

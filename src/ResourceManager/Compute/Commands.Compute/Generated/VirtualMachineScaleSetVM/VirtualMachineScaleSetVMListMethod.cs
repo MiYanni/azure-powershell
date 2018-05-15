@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             string resourceGroupName = (string)ParseParameter(invokeMethodInputParameters[0]);
             string virtualMachineScaleSetName = (string)ParseParameter(invokeMethodInputParameters[1]);
-            Microsoft.Rest.Azure.OData.ODataQuery<VirtualMachineScaleSetVM> odataQuery = (Microsoft.Rest.Azure.OData.ODataQuery<VirtualMachineScaleSetVM>)ParseParameter(invokeMethodInputParameters[2]);
+            Rest.Azure.OData.ODataQuery<VirtualMachineScaleSetVM> odataQuery = (Rest.Azure.OData.ODataQuery<VirtualMachineScaleSetVM>)ParseParameter(invokeMethodInputParameters[2]);
             string select = (string)ParseParameter(invokeMethodInputParameters[3]);
 
             var result = VirtualMachineScaleSetVMsClient.List(resourceGroupName, virtualMachineScaleSetName, odataQuery, select);
@@ -115,11 +115,11 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             string resourceGroupName = string.Empty;
             string virtualMachineScaleSetName = string.Empty;
-            Microsoft.Rest.Azure.OData.ODataQuery<VirtualMachineScaleSetVM> odataQuery = new Microsoft.Rest.Azure.OData.ODataQuery<VirtualMachineScaleSetVM>();
+            Rest.Azure.OData.ODataQuery<VirtualMachineScaleSetVM> odataQuery = new Rest.Azure.OData.ODataQuery<VirtualMachineScaleSetVM>();
             string select = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VirtualMachineScaleSetName", "OdataQuery", "Select" },
+                 new[] { "ResourceGroupName", "VirtualMachineScaleSetName", "OdataQuery", "Select" },
                  new object[] { resourceGroupName, virtualMachineScaleSetName, odataQuery, select });
         }
     }

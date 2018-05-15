@@ -40,25 +40,25 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// <param name="schedule">
         /// The schedule.
         /// </param>
-        public Schedule(string resourceGroupName, string automationAccountName, Azure.Management.Automation.Models.Schedule schedule)
+        public Schedule(string resourceGroupName, string automationAccountName, Management.Automation.Models.Schedule schedule)
         {
             Requires.Argument("schedule", schedule).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = automationAccountName;
-            this.Name = schedule.Name;
-            this.Description = schedule.Properties.Description;
-            this.StartTime = AdjustOffset(schedule.Properties.StartTime, schedule.Properties.StartTimeOffsetMinutes);
-            this.ExpiryTime = AdjustOffset(schedule.Properties.ExpiryTime, schedule.Properties.ExpiryTimeOffsetMinutes);
-            this.CreationTime = schedule.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = schedule.Properties.LastModifiedTime.ToLocalTime();
-            this.IsEnabled = schedule.Properties.IsEnabled;
-            this.NextRun = AdjustOffset(schedule.Properties.NextRun, schedule.Properties.NextRunOffsetMinutes);
-            this.Interval = schedule.Properties.Interval ?? this.Interval;
-            this.Frequency = (ScheduleFrequency)Enum.Parse(typeof(ScheduleFrequency), schedule.Properties.Frequency, true);
-            this.WeeklyScheduleOptions = this.CreateWeeklyScheduleOptions(schedule);
-            this.MonthlyScheduleOptions = this.CreateMonthlyScheduleOptions(schedule);
-            this.TimeZone = schedule.Properties.TimeZone;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = automationAccountName;
+            Name = schedule.Name;
+            Description = schedule.Properties.Description;
+            StartTime = AdjustOffset(schedule.Properties.StartTime, schedule.Properties.StartTimeOffsetMinutes);
+            ExpiryTime = AdjustOffset(schedule.Properties.ExpiryTime, schedule.Properties.ExpiryTimeOffsetMinutes);
+            CreationTime = schedule.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = schedule.Properties.LastModifiedTime.ToLocalTime();
+            IsEnabled = schedule.Properties.IsEnabled;
+            NextRun = AdjustOffset(schedule.Properties.NextRun, schedule.Properties.NextRunOffsetMinutes);
+            Interval = schedule.Properties.Interval ?? Interval;
+            Frequency = (ScheduleFrequency)Enum.Parse(typeof(ScheduleFrequency), schedule.Properties.Frequency, true);
+            WeeklyScheduleOptions = CreateWeeklyScheduleOptions(schedule);
+            MonthlyScheduleOptions = CreateMonthlyScheduleOptions(schedule);
+            TimeZone = schedule.Properties.TimeZone;
         }
 
         #region Public Properties
@@ -118,23 +118,23 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// </returns>
         public AdvancedSchedule GetAdvancedSchedule()
         {
-            if (this.AdvancedScheduleIsNull(this))
+            if (AdvancedScheduleIsNull(this))
             {
                 return null;
             }
 
-            var advancedSchedule = new AdvancedSchedule()
+            var advancedSchedule = new AdvancedSchedule
             {
-                WeekDays = this.WeeklyScheduleOptions == null ? null : this.WeeklyScheduleOptions.DaysOfWeek,
-                MonthDays = (this.MonthlyScheduleOptions == null || this.MonthlyScheduleOptions.DaysOfMonth == null) ? null : this.MonthlyScheduleOptions.DaysOfMonth.Select(v => Convert.ToInt32(v)).ToList(),
-                MonthlyOccurrences = (this.MonthlyScheduleOptions == null || this.MonthlyScheduleOptions.DayOfWeek == null)
+                WeekDays = WeeklyScheduleOptions == null ? null : WeeklyScheduleOptions.DaysOfWeek,
+                MonthDays = MonthlyScheduleOptions == null || MonthlyScheduleOptions.DaysOfMonth == null ? null : MonthlyScheduleOptions.DaysOfMonth.Select(v => Convert.ToInt32(v)).ToList(),
+                MonthlyOccurrences = MonthlyScheduleOptions == null || MonthlyScheduleOptions.DayOfWeek == null
                     ? null
-                    : new AdvancedScheduleMonthlyOccurrence[]
+                    : new[]
                     {
-                        new AdvancedScheduleMonthlyOccurrence()
+                        new AdvancedScheduleMonthlyOccurrence
                         {
-                            Day = this.MonthlyScheduleOptions.DayOfWeek.Day,
-                            Occurrence = this.GetDayOfWeekOccurrence(this.MonthlyScheduleOptions.DayOfWeek.Occurrence)
+                            Day = MonthlyScheduleOptions.DayOfWeek.Day,
+                            Occurrence = GetDayOfWeekOccurrence(MonthlyScheduleOptions.DayOfWeek.Occurrence)
                         }
                     }
             };
@@ -176,9 +176,9 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private bool IsMonthlyOccurrenceNull(Azure.Management.Automation.Models.AdvancedSchedule advancedSchedule)
+        private bool IsMonthlyOccurrenceNull(AdvancedSchedule advancedSchedule)
         {
-            return advancedSchedule == null || this.IsNullOrEmptyList(advancedSchedule.MonthlyOccurrences);
+            return advancedSchedule == null || IsNullOrEmptyList(advancedSchedule.MonthlyOccurrences);
         }
 
         /// <summary>
@@ -224,11 +224,11 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// <returns>
         /// The <see cref="WeeklyScheduleOptions"/>.
         /// </returns>
-        private WeeklyScheduleOptions CreateWeeklyScheduleOptions(Microsoft.Azure.Management.Automation.Models.Schedule schedule)
+        private WeeklyScheduleOptions CreateWeeklyScheduleOptions(Management.Automation.Models.Schedule schedule)
         {
             return schedule.Properties.AdvancedSchedule == null
                 ? null
-                : new WeeklyScheduleOptions()
+                : new WeeklyScheduleOptions
                 {
                     DaysOfWeek = schedule.Properties.AdvancedSchedule.WeekDays
                 };
@@ -244,20 +244,20 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// The <see cref="MonthlyScheduleOptions"/>.
         /// </returns>
         private MonthlyScheduleOptions CreateMonthlyScheduleOptions(
-            Microsoft.Azure.Management.Automation.Models.Schedule schedule)
+            Management.Automation.Models.Schedule schedule)
         {
             return schedule.Properties.AdvancedSchedule == null
-                || (schedule.Properties.AdvancedSchedule.MonthDays == null && schedule.Properties.AdvancedSchedule.MonthlyOccurrences == null)
+                || schedule.Properties.AdvancedSchedule.MonthDays == null && schedule.Properties.AdvancedSchedule.MonthlyOccurrences == null
                 ? null
-                : new MonthlyScheduleOptions()
+                : new MonthlyScheduleOptions
                 {
-                    DaysOfMonth = this.GetDaysOfMonth(schedule.Properties.AdvancedSchedule.MonthDays),
-                    DayOfWeek = this.IsMonthlyOccurrenceNull(schedule.Properties.AdvancedSchedule)
+                    DaysOfMonth = GetDaysOfMonth(schedule.Properties.AdvancedSchedule.MonthDays),
+                    DayOfWeek = IsMonthlyOccurrenceNull(schedule.Properties.AdvancedSchedule)
                         ? null
-                        : new DayOfWeek()
+                        : new DayOfWeek
                         {
                             Day = schedule.Properties.AdvancedSchedule.MonthlyOccurrences.First().Day,
-                            Occurrence = this.GetDayOfWeekOccurrence(schedule.Properties.AdvancedSchedule.MonthlyOccurrences.First().Occurrence)
+                            Occurrence = GetDayOfWeekOccurrence(schedule.Properties.AdvancedSchedule.MonthlyOccurrences.First().Occurrence)
                         }
                 };
         }

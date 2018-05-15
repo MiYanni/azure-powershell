@@ -142,7 +142,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string expand = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "ImageName", "Expand" },
+                 new[] { "ResourceGroupName", "ImageName", "Expand" },
                  new object[] { resourceGroupName, imageName, expand });
         }
     }
@@ -155,9 +155,9 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                string resourceGroupName = this.ResourceGroupName;
-                string imageName = this.ImageName;
-                string expand = this.Expand;
+                string resourceGroupName = ResourceGroupName;
+                string imageName = ImageName;
+                string expand = Expand;
 
                 if (!string.IsNullOrEmpty(resourceGroupName) && !string.IsNullOrEmpty(imageName))
                 {
@@ -215,7 +215,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             ParameterSetName = "DefaultParameter",
             Position = 1,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

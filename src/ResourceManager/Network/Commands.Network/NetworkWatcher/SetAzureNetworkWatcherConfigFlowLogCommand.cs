@@ -99,13 +99,13 @@ namespace Microsoft.Azure.Commands.Network
 
             if (ParameterSetName.Contains("SetByResource"))
             {
-                resourceGroupName = this.NetworkWatcher.ResourceGroupName;
-                name = this.NetworkWatcher.Name;
+                resourceGroupName = NetworkWatcher.ResourceGroupName;
+                name = NetworkWatcher.Name;
             }
             else
             {
-                resourceGroupName = this.ResourceGroupName;
-                name = this.NetworkWatcherName;
+                resourceGroupName = ResourceGroupName;
+                name = NetworkWatcherName;
             }
 
             ConfirmAction(
@@ -114,15 +114,15 @@ namespace Microsoft.Azure.Commands.Network
                 () =>
                 {
                     MNM.FlowLogInformation parameters = new MNM.FlowLogInformation();
-                    parameters.TargetResourceId = this.TargetResourceId;
-                    parameters.Enabled = this.EnableFlowLog;
-                    parameters.StorageId = this.StorageAccountId;
+                    parameters.TargetResourceId = TargetResourceId;
+                    parameters.Enabled = EnableFlowLog;
+                    parameters.StorageId = StorageAccountId;
 
-                    if (this.EnableRetention == true || this.EnableRetention == false)
+                    if (EnableRetention == true || EnableRetention == false)
                     {
                         parameters.RetentionPolicy = new MNM.RetentionPolicyParameters();
-                        parameters.RetentionPolicy.Enabled = this.EnableRetention;
-                        parameters.RetentionPolicy.Days = this.RetentionInDays;
+                        parameters.RetentionPolicy.Enabled = EnableRetention;
+                        parameters.RetentionPolicy.Days = RetentionInDays;
                     }
 
                     PSFlowLog flowLog = new PSFlowLog();
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Commands.Network
         }
         public PSFlowLog SetFlowLogConfig(string resourceGroupName, string name, MNM.FlowLogInformation parameters)
         {
-            MNM.FlowLogInformation flowLog = this.NetworkWatcherClient.SetFlowLogConfiguration(resourceGroupName, name, parameters);
+            MNM.FlowLogInformation flowLog = NetworkWatcherClient.SetFlowLogConfiguration(resourceGroupName, name, parameters);
             PSFlowLog psFlowLog = NetworkResourceManagerProfile.Mapper.Map<PSFlowLog>(flowLog);
 
             return psFlowLog;

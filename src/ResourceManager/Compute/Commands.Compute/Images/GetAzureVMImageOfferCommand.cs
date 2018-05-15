@@ -36,9 +36,9 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                var result = this.VirtualMachineImageClient.ListOffersWithHttpMessagesAsync(
-                    this.Location.Canonicalize(),
-                    this.PublisherName).GetAwaiter().GetResult();
+                var result = VirtualMachineImageClient.ListOffersWithHttpMessagesAsync(
+                    Location.Canonicalize(),
+                    PublisherName).GetAwaiter().GetResult();
 
                 var images = from r in result.Body
                              select new PSVirtualMachineImageOffer
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Compute
                                  Id = r.Id,
                                  Location = r.Location,
                                  Offer = r.Name,
-                                 PublisherName = this.PublisherName
+                                 PublisherName = PublisherName
                              };
 
                 WriteObject(images, true);

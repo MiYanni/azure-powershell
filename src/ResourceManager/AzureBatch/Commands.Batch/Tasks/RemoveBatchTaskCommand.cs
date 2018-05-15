@@ -43,9 +43,9 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            string taskId = InputObject == null ? this.Id : InputObject.Id;
-            TaskOperationParameters parameters = new TaskOperationParameters(this.BatchContext, this.JobId,
-                this.Id, this.InputObject, this.AdditionalBehaviors);
+            string taskId = InputObject == null ? Id : InputObject.Id;
+            TaskOperationParameters parameters = new TaskOperationParameters(BatchContext, JobId,
+                Id, InputObject, AdditionalBehaviors);
 
             ConfirmAction(
                 Force.IsPresent,

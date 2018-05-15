@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <param name="resourceGroup">The name of the resource group</param>
         /// <param name="serverName">The name of the Azure SQL Server</param>
         /// <returns>List of restore points</returns>
-        public IList<Management.Sql.LegacySdk.Models.GeoBackup> ListGeoBackups(string resourceGroupName, string serverName)
+        public IList<GeoBackup> ListGeoBackups(string resourceGroupName, string serverName)
         {
             return GetLegacySqlClient().DatabaseBackup.ListGeoBackups(resourceGroupName, serverName).GeoBackups;
         }
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <param name="resourceGroup">The name of the resource group</param>
         /// <param name="serverName">The name of the Azure SQL Server</param>
         /// <returns>List of restore points</returns>
-        public IList<Management.Sql.LegacySdk.Models.DeletedDatabaseBackup> ListDeletedDatabaseBackups(string resourceGroupName, string serverName)
+        public IList<DeletedDatabaseBackup> ListDeletedDatabaseBackups(string resourceGroupName, string serverName)
         {
             return GetLegacySqlClient().DatabaseBackup.ListDeletedDatabaseBackups(resourceGroupName, serverName).DeletedDatabaseBackups;
         }
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <param name="serverName">The name of the Azure SQL Server</param>
         /// <param name="databaseName">The name of the Azure SQL database</param>
         /// <returns>List of restore points</returns>
-        public Management.Sql.LegacySdk.Models.GeoBackup GetGeoBackup(string resourceGroupName, string serverName, string databaseName)
+        public GeoBackup GetGeoBackup(string resourceGroupName, string serverName, string databaseName)
         {
             return GetLegacySqlClient().DatabaseBackup.GetGeoBackup(resourceGroupName, serverName, databaseName).GeoBackup;
         }
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <param name="serverName">The name of the Azure SQL Server</param>
         /// <param name="databaseName">The name of the Azure SQL database</param>
         /// <returns>List of restore points</returns>
-        public Management.Sql.LegacySdk.Models.DeletedDatabaseBackup GetDeletedDatabaseBackup(string resourceGroupName, string serverName, string databaseName)
+        public DeletedDatabaseBackup GetDeletedDatabaseBackup(string resourceGroupName, string serverName, string databaseName)
         {
             return GetLegacySqlClient().DatabaseBackup.GetDeletedDatabaseBackup(resourceGroupName, serverName, databaseName).DeletedDatabaseBackup;
         }
@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <param name="resourceGroup">The name of the resource group</param>
         /// <param name="serverName">The name of the Azure SQL Server</param>
         /// <returns>A backup vault</returns>
-        public Management.Sql.LegacySdk.Models.BackupLongTermRetentionVault GetBackupLongTermRetentionVault(
+        public BackupLongTermRetentionVault GetBackupLongTermRetentionVault(
             string resourceGroupName, 
             string serverName, 
             string baVaultName)
@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <param name="serverName">The name of the Azure SQL Server</param>
         /// <param name="databaseName">The name of the Azure SQL Database</param>
         /// <returns>A backup LongTermRetention policy</returns>
-        public Management.Sql.LegacySdk.Models.DatabaseBackupLongTermRetentionPolicy GetDatabaseBackupLongTermRetentionPolicy(
+        public DatabaseBackupLongTermRetentionPolicy GetDatabaseBackupLongTermRetentionPolicy(
             string resourceGroupName, 
             string serverName, 
             string databaseName, 
@@ -191,7 +191,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <summary>
         /// Creates or updates a backup LongTermRetention vault
         /// </summary>
-        public Management.Sql.LegacySdk.Models.BackupLongTermRetentionVault SetBackupLongTermRetentionVault(
+        public BackupLongTermRetentionVault SetBackupLongTermRetentionVault(
             string resourceGroupName, 
             string serverName, 
             string baVaultName, 
@@ -207,7 +207,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <summary>
         /// Creates or updates a backup LongTermRetention policy
         /// </summary>
-        public Management.Sql.LegacySdk.Models.DatabaseBackupLongTermRetentionPolicy SetDatabaseBackupLongTermRetentionPolicy(
+        public DatabaseBackupLongTermRetentionPolicy SetDatabaseBackupLongTermRetentionPolicy(
             string resourceGroupName, 
             string serverName, 
             string databaseName, 
@@ -287,14 +287,11 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
             {
                 return GetCurrentSqlClient().LongTermRetentionBackups.ListByDatabase(locationName, serverName, databaseName, onlyLatestPerDatabase, databaseState);
             }
-            else if (!string.IsNullOrWhiteSpace(serverName))
+            if (!string.IsNullOrWhiteSpace(serverName))
             {
                 return GetCurrentSqlClient().LongTermRetentionBackups.ListByServer(locationName, serverName, onlyLatestPerDatabase, databaseState);
             }
-            else
-            {
-                return GetCurrentSqlClient().LongTermRetentionBackups.ListByLocation(locationName, onlyLatestPerDatabase, databaseState);
-            }
+            return GetCurrentSqlClient().LongTermRetentionBackups.ListByLocation(locationName, onlyLatestPerDatabase, databaseState);
         }
 
         /// <summary>
@@ -320,7 +317,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <param name="serverName">The name of the Azure SQL Server</param>
         /// <param name="databaseName">The name of the Azure SQL Database</param>
         /// <returns>A geo backup policy</returns>
-        public Management.Sql.LegacySdk.Models.GeoBackupPolicy GetDatabaseGeoBackupPolicy(
+        public GeoBackupPolicy GetDatabaseGeoBackupPolicy(
             string resourceGroupName,
             string serverName,
             string databaseName,
@@ -336,7 +333,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         /// <summary>
         /// Creates or updates a geo backup policy
         /// </summary>
-        public Management.Sql.LegacySdk.Models.GeoBackupPolicy SetDatabaseGeoBackupPolicy(
+        public GeoBackupPolicy SetDatabaseGeoBackupPolicy(
             string resourceGroupName,
             string serverName,
             string databaseName,
@@ -391,7 +388,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                 sku.Name = model.RequestedServiceObjectiveName;
             }
 
-            if (model.Edition != Database.Model.DatabaseEdition.None)
+            if (model.Edition != DatabaseEdition.None)
             {
                 sku.Tier = model.Edition.ToString();
                 if (string.IsNullOrWhiteSpace(model.RequestedServiceObjectiveName))
@@ -400,25 +397,25 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                     //
                     switch (model.Edition)
                     {
-                        case Database.Model.DatabaseEdition.Free:
+                        case DatabaseEdition.Free:
                             sku.Name = "Free";
                             break;
-                        case Database.Model.DatabaseEdition.Basic:
+                        case DatabaseEdition.Basic:
                             sku.Name = "Basic";
                             break;
-                        case Database.Model.DatabaseEdition.Standard:
+                        case DatabaseEdition.Standard:
                             sku.Name = "S0";
                             break;
-                        case Database.Model.DatabaseEdition.Premium:
+                        case DatabaseEdition.Premium:
                             sku.Name = "P1";
                             break;
-                        case Database.Model.DatabaseEdition.PremiumRS:
+                        case DatabaseEdition.PremiumRS:
                             sku.Name = "PRS1";
                             break;
-                        case Database.Model.DatabaseEdition.DataWarehouse:
+                        case DatabaseEdition.DataWarehouse:
                             sku.Name = "DW100";
                             break;
-                        case Database.Model.DatabaseEdition.Stretch:
+                        case DatabaseEdition.Stretch:
                             sku.Name = "DS100";
                             break;
                     }
@@ -436,10 +433,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
             {
                 return GetCurrentSqlClient().Databases.Get(resourceGroupName, serverName, databaseName);
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         /// <summary>

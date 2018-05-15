@@ -19,10 +19,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System.IO;
     using System.Management.Automation;
     using System.Text;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Set, "AzureRmIotHubVerifiedCertificate", DefaultParameterSetName = ResourceParameterSet, SupportsShouldProcess = true)]
@@ -115,34 +115,34 @@ namespace Microsoft.Azure.Commands.Management.IotHub
             if (ShouldProcess(CertificateName, Properties.Resources.VerifyIotHubCertificate))
             {
                 string certificate = string.Empty;
-                FileInfo fileInfo = new FileInfo(this.Path);
+                FileInfo fileInfo = new FileInfo(Path);
                 switch (fileInfo.Extension.ToLower(CultureInfo.InvariantCulture))
                 {
                     case ".cer":
-                        var certificateByteContent = File.ReadAllBytes(this.Path);
+                        var certificateByteContent = File.ReadAllBytes(Path);
                         certificate = Convert.ToBase64String(certificateByteContent);
                         break;
                     case ".pem":
-                        certificate = File.ReadAllText(this.Path);
+                        certificate = File.ReadAllText(Path);
                         break;
                     default:
-                        certificate = this.Path;
+                        certificate = Path;
                         break;
                 }
 
                 if (ParameterSetName.Equals(InputObjectParameterSet))
                 {
-                    this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                    this.Name = this.InputObject.Name;
-                    this.CertificateName = this.InputObject.CertificateName;
-                    this.Etag = this.InputObject.Etag;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    Name = InputObject.Name;
+                    CertificateName = InputObject.CertificateName;
+                    Etag = InputObject.Etag;
                 }
 
                 if (ParameterSetName.Equals(ResourceIdParameterSet))
                 {
-                    this.ResourceGroupName = IotHubUtils.GetResourceGroupName(this.ResourceId);
-                    this.Name = IotHubUtils.GetIotHubName(this.ResourceId);
-                    this.CertificateName = IotHubUtils.GetIotHubCertificateName(this.ResourceId);
+                    ResourceGroupName = IotHubUtils.GetResourceGroupName(ResourceId);
+                    Name = IotHubUtils.GetIotHubName(ResourceId);
+                    CertificateName = IotHubUtils.GetIotHubCertificateName(ResourceId);
                 }
 
                 try
@@ -152,8 +152,8 @@ namespace Microsoft.Azure.Commands.Management.IotHub
                     CertificateVerificationDescription certificateVerificationDescription = new CertificateVerificationDescription();
                     certificateVerificationDescription.Certificate = certificate;
 
-                    CertificateDescription certificateDescription = this.IotHubClient.Certificates.Verify(this.ResourceGroupName, this.Name, this.CertificateName, certificateVerificationDescription, this.Etag);
-                    this.WriteObject(IotHubUtils.ToPSCertificateDescription(certificateDescription));
+                    CertificateDescription certificateDescription = IotHubClient.Certificates.Verify(ResourceGroupName, Name, CertificateName, certificateVerificationDescription, Etag);
+                    WriteObject(IotHubUtils.ToPSCertificateDescription(certificateDescription));
                 }
                 catch(Exception e)
                 {

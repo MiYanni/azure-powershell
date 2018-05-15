@@ -26,23 +26,23 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSJobPreparationAndReleaseTaskExecutionInformation
     {
         
-        internal Microsoft.Azure.Batch.JobPreparationAndReleaseTaskExecutionInformation omObject;
+        internal JobPreparationAndReleaseTaskExecutionInformation omObject;
         
         private PSJobPreparationTaskExecutionInformation jobPreparationTaskExecutionInformation;
         
         private PSJobReleaseTaskExecutionInformation jobReleaseTaskExecutionInformation;
         
-        internal PSJobPreparationAndReleaseTaskExecutionInformation(Microsoft.Azure.Batch.JobPreparationAndReleaseTaskExecutionInformation omObject)
+        internal PSJobPreparationAndReleaseTaskExecutionInformation(JobPreparationAndReleaseTaskExecutionInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ComputeNodeId;
+                return omObject.ComputeNodeId;
             }
         }
         
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ComputeNodeUrl;
+                return omObject.ComputeNodeUrl;
             }
         }
         
@@ -67,12 +67,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.jobPreparationTaskExecutionInformation == null) 
-                            && (this.omObject.JobPreparationTaskExecutionInformation != null)))
+                if (jobPreparationTaskExecutionInformation == null 
+                    && omObject.JobPreparationTaskExecutionInformation != null)
                 {
-                    this.jobPreparationTaskExecutionInformation = new PSJobPreparationTaskExecutionInformation(this.omObject.JobPreparationTaskExecutionInformation);
+                    jobPreparationTaskExecutionInformation = new PSJobPreparationTaskExecutionInformation(omObject.JobPreparationTaskExecutionInformation);
                 }
-                return this.jobPreparationTaskExecutionInformation;
+                return jobPreparationTaskExecutionInformation;
             }
         }
         
@@ -80,12 +80,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.jobReleaseTaskExecutionInformation == null) 
-                            && (this.omObject.JobReleaseTaskExecutionInformation != null)))
+                if (jobReleaseTaskExecutionInformation == null 
+                    && omObject.JobReleaseTaskExecutionInformation != null)
                 {
-                    this.jobReleaseTaskExecutionInformation = new PSJobReleaseTaskExecutionInformation(this.omObject.JobReleaseTaskExecutionInformation);
+                    jobReleaseTaskExecutionInformation = new PSJobReleaseTaskExecutionInformation(omObject.JobReleaseTaskExecutionInformation);
                 }
-                return this.jobReleaseTaskExecutionInformation;
+                return jobReleaseTaskExecutionInformation;
             }
         }
         
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PoolId;
+                return omObject.PoolId;
             }
         }
     }

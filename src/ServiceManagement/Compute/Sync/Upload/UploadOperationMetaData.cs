@@ -48,14 +48,14 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 
         public DateTime CreatedDateUtc
         {
-            get { return DateTime.Parse(this.InternalCreatedDateUtc, DateTimeFormatInfo.InvariantInfo); }
-            set { this.InternalCreatedDateUtc = value.ToString(DateTimeFormatInfo.InvariantInfo); }
+            get { return DateTime.Parse(InternalCreatedDateUtc, DateTimeFormatInfo.InvariantInfo); }
+            set { InternalCreatedDateUtc = value.ToString(DateTimeFormatInfo.InvariantInfo); }
         }
 
         public DateTime LastModifiedDateUtc
         {
-            get { return DateTime.Parse(this.InternalLastModifiedDateUtc, DateTimeFormatInfo.InvariantInfo); }
-            set { this.InternalLastModifiedDateUtc = value.ToString(DateTimeFormatInfo.InvariantInfo); }
+            get { return DateTime.Parse(InternalLastModifiedDateUtc, DateTimeFormatInfo.InvariantInfo); }
+            set { InternalLastModifiedDateUtc = value.ToString(DateTimeFormatInfo.InvariantInfo); }
         }
 
         public static FileMetaData Create(string filePath)

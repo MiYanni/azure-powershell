@@ -49,34 +49,34 @@ namespace Microsoft.Azure.Commands.MarketplaceOrdering.Models
         {
             if (agreementTerms != null)
             {
-                this.Id = agreementTerms.Id;
-                this.Type = agreementTerms.Type;
-                this.Name = agreementTerms.Name;
-                this.Accepted = agreementTerms.Accepted;
-                this.LicenseTextLink = agreementTerms.LicenseTextLink;
-                this.PrivacyPolicyLink = agreementTerms.PrivacyPolicyLink;
-                this.Publisher = agreementTerms.Publisher;
-                this.Product = agreementTerms.Product;
-                this.Plan = agreementTerms.Plan;
-                this.RetrieveDatetime = agreementTerms.RetrieveDatetime;
-                this.Signature = agreementTerms.Signature;
+                Id = agreementTerms.Id;
+                Type = agreementTerms.Type;
+                Name = agreementTerms.Name;
+                Accepted = agreementTerms.Accepted;
+                LicenseTextLink = agreementTerms.LicenseTextLink;
+                PrivacyPolicyLink = agreementTerms.PrivacyPolicyLink;
+                Publisher = agreementTerms.Publisher;
+                Product = agreementTerms.Product;
+                Plan = agreementTerms.Plan;
+                RetrieveDatetime = agreementTerms.RetrieveDatetime;
+                Signature = agreementTerms.Signature;
             }
         }
 
         public ApiAgreementTerms ToAgreementTerms()
         {
             return new ApiAgreementTerms(
-                this.Id,
-                this.Name,
-                this.Type,
-                this.Publisher,
-                this.Product,
-                this.Plan,
-                this.LicenseTextLink,
-                this.PrivacyPolicyLink,
-                this.RetrieveDatetime,
-                this.Signature,
-                this.Accepted);
+                Id,
+                Name,
+                Type,
+                Publisher,
+                Product,
+                Plan,
+                LicenseTextLink,
+                PrivacyPolicyLink,
+                RetrieveDatetime,
+                Signature,
+                Accepted);
         }
     }
 }

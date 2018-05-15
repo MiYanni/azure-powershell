@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AdvisorStatus
         {
-            get { return this._advisorStatus; }
-            set { this._advisorStatus = value; }
+            get { return _advisorStatus; }
+            set { _advisorStatus = value; }
         }
         
         private string _autoExecuteStatus;
@@ -55,8 +55,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AutoExecuteStatus
         {
-            get { return this._autoExecuteStatus; }
-            set { this._autoExecuteStatus = value; }
+            get { return _autoExecuteStatus; }
+            set { _autoExecuteStatus = value; }
         }
         
         private string _autoExecuteStatusInheritedFrom;
@@ -71,20 +71,20 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AutoExecuteStatusInheritedFrom
         {
-            get { return this._autoExecuteStatusInheritedFrom; }
-            set { this._autoExecuteStatusInheritedFrom = value; }
+            get { return _autoExecuteStatusInheritedFrom; }
+            set { _autoExecuteStatusInheritedFrom = value; }
         }
         
-        private System.DateTime? _lastChecked;
+        private DateTime? _lastChecked;
         
         /// <summary>
         /// Optional. Gets the time when the current resource was analyzed for
         /// recommendations by this Advisor.
         /// </summary>
-        public System.DateTime? LastChecked
+        public DateTime? LastChecked
         {
-            get { return this._lastChecked; }
-            set { this._lastChecked = value; }
+            get { return _lastChecked; }
+            set { _lastChecked = value; }
         }
         
         private string _recommendationsStatus;
@@ -98,8 +98,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RecommendationsStatus
         {
-            get { return this._recommendationsStatus; }
-            set { this._recommendationsStatus = value; }
+            get { return _recommendationsStatus; }
+            set { _recommendationsStatus = value; }
         }
         
         private IList<RecommendedAction> _recommendedActions;
@@ -109,8 +109,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedAction> RecommendedActions
         {
-            get { return this._recommendedActions; }
-            set { this._recommendedActions = value; }
+            get { return _recommendedActions; }
+            set { _recommendedActions = value; }
         }
         
         /// <summary>
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public AdvisorProperties()
         {
-            this.RecommendedActions = new LazyList<RecommendedAction>();
+            RecommendedActions = new LazyList<RecommendedAction>();
         }
     }
 }

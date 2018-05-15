@@ -16,7 +16,7 @@ using Microsoft.Azure.Commands.Automation.Common;
 
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using AutomationManagement = Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The Variable.
@@ -41,23 +41,23 @@ namespace Microsoft.Azure.Commands.Automation.Model
         {
             Requires.Argument("variable", variable).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.Name = variable.Name;
-            this.CreationTime = variable.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = variable.Properties.LastModifiedTime.ToLocalTime();
+            ResourceGroupName = resourceGroupName;
+            Name = variable.Name;
+            CreationTime = variable.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = variable.Properties.LastModifiedTime.ToLocalTime();
 
             if (variable.Properties.Value == null || variable.Properties.IsEncrypted)
             {
-                this.Value = null;
+                Value = null;
             }
             else
             {
-                this.Value = PowerShellJsonConverter.Deserialize(variable.Properties.Value);
+                Value = PowerShellJsonConverter.Deserialize(variable.Properties.Value);
             }
 
-            this.Description = variable.Properties.Description;
-            this.Encrypted = variable.Properties.IsEncrypted;
-            this.AutomationAccountName = automationAccoutName;
+            Description = variable.Properties.Description;
+            Encrypted = variable.Properties.IsEncrypted;
+            AutomationAccountName = automationAccoutName;
         }
 
         /// <summary>

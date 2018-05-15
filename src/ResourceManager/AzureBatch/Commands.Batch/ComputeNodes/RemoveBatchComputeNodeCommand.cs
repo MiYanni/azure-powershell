@@ -52,12 +52,12 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            string computeNodeIds = ComputeNode == null ? string.Join(",", this.Ids) : ComputeNode.Id;
-            RemoveComputeNodeParameters parameters = new RemoveComputeNodeParameters(this.BatchContext, this.PoolId,
-                this.Ids, this.ComputeNode, this.AdditionalBehaviors)
+            string computeNodeIds = ComputeNode == null ? string.Join(",", Ids) : ComputeNode.Id;
+            RemoveComputeNodeParameters parameters = new RemoveComputeNodeParameters(BatchContext, PoolId,
+                Ids, ComputeNode, AdditionalBehaviors)
             {
-                DeallocationOption = this.DeallocationOption,
-                ResizeTimeout = this.ResizeTimeout
+                DeallocationOption = DeallocationOption,
+                ResizeTimeout = ResizeTimeout
             };
 
             ConfirmAction(

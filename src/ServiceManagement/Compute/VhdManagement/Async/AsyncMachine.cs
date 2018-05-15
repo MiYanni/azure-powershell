@@ -124,8 +124,8 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         {
             Debug.Assert(checkOperationCompletion != null);
 
-            this.CheckOperationCompletion = checkOperationCompletion;
-            this.CompletionCallback = this.AsyncCallback;
+            CheckOperationCompletion = checkOperationCompletion;
+            CompletionCallback = AsyncCallback;
         }
 
         #endregion
@@ -136,12 +136,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         {
             get
             {
-                if (this.completionResult == null)
+                if (completionResult == null)
                 {
                     throw new InvalidOperationException("Completion result is not available yet.");
                 }
 
-                return this.completionResult;
+                return completionResult;
             }
         }
 
@@ -157,12 +157,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 throw new ArgumentNullException("endAsyncOperation");
             }
 
-            this.EndAsynchronousOperation = endAsyncOperation;
+            EndAsynchronousOperation = endAsyncOperation;
 
-            if (this.CompletionResult != null && Interlocked.CompareExchange(ref this.isEndOperationCalled, True, False) == False)
+            if (CompletionResult != null && Interlocked.CompareExchange(ref isEndOperationCalled, True, False) == False)
             {
                 // The operation is completed but end async operation is not called yet, need to call it
-                this.EndAsynchronousOperation(this.CompletionResult);
+                EndAsynchronousOperation(CompletionResult);
             }
         }
 
@@ -176,18 +176,18 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 throw new ArgumentNullException("result");
             }
 
-            this.completionResult = result;
+            completionResult = result;
 
             // this.CheckOperationCompletion will set AsyncOperation.IsCompleted to false if quorum is reached or timeout is expired,
             // and async machine has resumed its execution. In this case we'll consider the operation not completed in time and 
             // require user to schedule cancelation on completion port
-            this.CheckOperationCompletion(this);
+            CheckOperationCompletion(this);
 
-            if (!this.IsCompleted && this.EndAsynchronousOperation != null && Interlocked.CompareExchange(ref this.isEndOperationCalled, True, False) == False)
+            if (!IsCompleted && EndAsynchronousOperation != null && Interlocked.CompareExchange(ref isEndOperationCalled, True, False) == False)
             {
                 // Call an end of asynchronous operation method if callback above returned false, this means
                 // it's us who is responsible for calling the end of asynchronous operation
-                this.EndAsynchronousOperation(this.CompletionResult);
+                EndAsynchronousOperation(CompletionResult);
             }
         }
 
@@ -225,20 +225,20 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 throw new ArgumentException("Invalid quorum operations count.");
             }
 
-            this.AsyncMachineResume = callback;
-            this.TotalOperationsCount = totalOperationsCount;
-            this.QuorumOperationsCount = quorumOperationsCount;
-            this.Timeout = timeout;
+            AsyncMachineResume = callback;
+            TotalOperationsCount = totalOperationsCount;
+            QuorumOperationsCount = quorumOperationsCount;
+            Timeout = timeout;
 
-            this.OperationsLock = new object();
-            this.Operations = new Dictionary<object, AsyncOperation>(totalOperationsCount);
+            OperationsLock = new object();
+            Operations = new Dictionary<object, AsyncOperation>(totalOperationsCount);
         }
 
         internal CompletionPort(bool isSingleOperation)
         {
             Debug.Assert(isSingleOperation);
 
-            this.IsSingleOperation = isSingleOperation;
+            IsSingleOperation = isSingleOperation;
         }
 
         #endregion
@@ -248,26 +248,26 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         {
             get
             {
-                if (this.Operations == null)
+                if (Operations == null)
                 {
                     throw new InvalidOperationException("CompletionPort.SingleOperation is not mutable.");
                 }
 
                 AsyncOperation operation;
 
-                lock (this.OperationsLock)
+                lock (OperationsLock)
                 {
-                    if (!this.Operations.TryGetValue(actor, out operation))
+                    if (!Operations.TryGetValue(actor, out operation))
                     {
                         // Check if async machine resume callback is already called, this means that
                         // this completion port is being reused which we don't allow
-                        if (this.asyncMachineResumed == True)
+                        if (asyncMachineResumed == True)
                         {
                             throw new InvalidOperationException("Attempt to reuse a completion port.");
                         }
 
-                        operation = new AsyncOperation(this.CheckOperationCompletion);
-                        this.Operations.Add(actor, operation);
+                        operation = new AsyncOperation(CheckOperationCompletion);
+                        Operations.Add(actor, operation);
                     }
                 }
 
@@ -292,7 +292,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         // Called by the async machine when this port is timed out and all operations have to marked as such
         internal void TimeOutPort()
         {
-            if (Interlocked.CompareExchange(ref this.asyncMachineResumed, True, False) == False)
+            if (Interlocked.CompareExchange(ref asyncMachineResumed, True, False) == False)
             {
                 //
                 // Async machine is not resumed at this point despite that some operations may be completed by this time.
@@ -300,17 +300,17 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 // cancelation on all port operations.
                 //
 
-                lock (this.OperationsLock)
+                lock (OperationsLock)
                 {
-                    foreach (var pair in this.Operations)
+                    foreach (var pair in Operations)
                     {
                         pair.Value.IsCompleted = false;
                     }
                 }
 
-                Debug.Assert(this.AsyncMachineResume != null);
+                Debug.Assert(AsyncMachineResume != null);
 
-                this.AsyncMachineResume();
+                AsyncMachineResume();
             }
         }
 
@@ -325,14 +325,14 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         // asynchronous operations
         static CompletionPort()
         {
-            CompletionPort.SingleOperation = new CompletionPort(true);
+            SingleOperation = new CompletionPort(true);
         }
 
         // Invoked by a completed asynchronous operation
         private void CheckOperationCompletion(AsyncOperation operation)
         {
             // Mark async operation as completed if async machine is not resumed yet
-            operation.IsCompleted = this.asyncMachineResumed == False;
+            operation.IsCompleted = asyncMachineResumed == False;
 
             if (operation.IsCompleted)
             {
@@ -341,14 +341,14 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 // in this case we need to notify the state machine that it can resume
                 //
 
-                Debug.Assert(this.QuorumOperationsCount > 0);
+                Debug.Assert(QuorumOperationsCount > 0);
 
-                if (Interlocked.Increment(ref this.completedOperations) >= this.QuorumOperationsCount &&
-                    Interlocked.CompareExchange(ref this.asyncMachineResumed, True, False) == False)
+                if (Interlocked.Increment(ref completedOperations) >= QuorumOperationsCount &&
+                    Interlocked.CompareExchange(ref asyncMachineResumed, True, False) == False)
                 {
-                    Debug.Assert(this.AsyncMachineResume != null);
+                    Debug.Assert(AsyncMachineResume != null);
 
-                    this.AsyncMachineResume();
+                    AsyncMachineResume();
                 }
             }
         }
@@ -495,11 +495,11 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
 
         public AsyncMachine(AsyncCallback callback, object state)
         {
-            this.asyncMachineCompletionCallback = callback;
-            this.AsyncState = state;
+            asyncMachineCompletionCallback = callback;
+            AsyncState = state;
 
-            this.CompletionCallback = this.SingleOperationCompletionCallback;
-            this.moveNextLock = new object();
+            CompletionCallback = SingleOperationCompletionCallback;
+            moveNextLock = new object();
         }
 
         #endregion
@@ -531,13 +531,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         // for infinite timeout)
         public CompletionPort CreateCompletionPort(int totalOperationsCount, int quorumOperationsCount, TimeSpan timeout)
         {
-            if (this.Enumerator == null)
+            if (Enumerator == null)
             {
                 throw new InvalidOperationException("Async machine either hasn't started yet or has already completed.");
             }
 
             return new CompletionPort(
-                this.AsyncMachineResumeCallback,
+                AsyncMachineResumeCallback,
                 totalOperationsCount,
                 quorumOperationsCount,
                 timeout);
@@ -551,31 +551,31 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         // Starts executing of the async machine
         public void Start(IEnumerable<CompletionPort> machine)
         {
-            Debug.Assert(null == this.Enumerator || this.IsCompleted);
+            Debug.Assert(null == Enumerator || IsCompleted);
 
             if (null == machine)
             {
                 throw new ArgumentNullException("machine");
             }
 
-            this.Enumerator = machine.GetEnumerator();
-            this.IsCompleted = false;
-            this.Error = null;
+            Enumerator = machine.GetEnumerator();
+            IsCompleted = false;
+            Error = null;
 
-            if (this.waitHandle != null)
+            if (waitHandle != null)
             {
-                this.waitHandle.Reset();
+                waitHandle.Reset();
             }
 
-            lock (this.moveNextLock)
+            lock (moveNextLock)
             {
-                this.CompletedSynchronously = true;
+                CompletedSynchronously = true;
 
-                this.MoveNext();
+                MoveNext();
 
-                if (!this.IsCompleted)
+                if (!IsCompleted)
                 {
-                    this.CompletedSynchronously = false;
+                    CompletedSynchronously = false;
                 }
             }
         }
@@ -583,16 +583,16 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         // Ends the async machine and waits for its completion if necessary
         public void End()
         {
-            if (!this.IsCompleted)
+            if (!IsCompleted)
             {
-                this.AsyncWaitHandle.WaitOne();
+                AsyncWaitHandle.WaitOne();
             }
 
-            Debug.Assert(this.IsCompleted);
+            Debug.Assert(IsCompleted);
 
-            if (this.Error != null)
+            if (Error != null)
             {
-                throw this.Error.PrepareServerStackForRethrow();
+                throw Error.PrepareServerStackForRethrow();
             }
         }
 
@@ -604,12 +604,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         {
             get
             {
-                if (this.completionResult == null)
+                if (completionResult == null)
                 {
                     throw new InvalidOperationException("Completion result is not available yet.");
                 }
 
-                return this.completionResult;
+                return completionResult;
             }
         }
 
@@ -621,18 +621,18 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         {
             get
             {
-                if (null == this.waitHandle)
+                if (null == waitHandle)
                 {
-                    lock (this.moveNextLock)
+                    lock (moveNextLock)
                     {
-                        if (null == this.waitHandle)
+                        if (null == waitHandle)
                         {
-                            this.waitHandle = new EventWaitHandle(this.IsCompleted, EventResetMode.ManualReset);
+                            waitHandle = new EventWaitHandle(IsCompleted, EventResetMode.ManualReset);
                         }
                     }
                 }
 
-                return this.waitHandle;
+                return waitHandle;
             }
         }
 
@@ -654,16 +654,16 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         {
             if (isDisposing)
             {
-                if (this.waitHandle != null)
+                if (waitHandle != null)
                 {
-                    this.waitHandle.Close();
-                    this.waitHandle = null;
+                    waitHandle.Close();
+                    waitHandle = null;
                 }
 
-                if (this.WakeUpTimer != null)
+                if (WakeUpTimer != null)
                 {
-                    this.WakeUpTimer.Dispose();
-                    this.WakeUpTimer = null;
+                    WakeUpTimer.Dispose();
+                    WakeUpTimer = null;
                 }
             }
         }
@@ -674,64 +674,64 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
 
         private void MoveNext()
         {
-            lock (this.moveNextLock)
+            lock (moveNextLock)
             {
-                using (this.EnterThreadContext())
+                using (EnterThreadContext())
                 {
-                    this.MoveNextInternal();
+                    MoveNextInternal();
                 }
             }
         }
 
         private void MoveNextInternal()
         {
-            Debug.Assert(this.Enumerator != null);
-            Debug.Assert(!this.IsCompleted);
-            Debug.Assert(null == this.Error);
+            Debug.Assert(Enumerator != null);
+            Debug.Assert(!IsCompleted);
+            Debug.Assert(null == Error);
 
-            if (!this.InsideMoveNext)
+            if (!InsideMoveNext)
             {
                 try
                 {
                     try
                     {
-                        this.InsideMoveNext = true;
-                        this.IsCompleted = !this.Enumerator.MoveNext();
+                        InsideMoveNext = true;
+                        IsCompleted = !Enumerator.MoveNext();
 
-                        if (!this.IsCompleted)
+                        if (!IsCompleted)
                         {
-                            if (this.Enumerator.Current == null)
+                            if (Enumerator.Current == null)
                             {
                                 throw new InvalidOperationException("Completion port for current iteration is null.");
                             }
 
-                            if (!this.Enumerator.Current.IsSingleOperation)
+                            if (!Enumerator.Current.IsSingleOperation)
                             {
-                                if (this.Enumerator.Current.TotalOperationsCount == 0)
+                                if (Enumerator.Current.TotalOperationsCount == 0)
                                 {
                                     // No operations are specified on the port, do another machine iteration
-                                    this.InsideMoveNext = false;
-                                    this.MoveNext();
+                                    InsideMoveNext = false;
+                                    MoveNext();
                                     return;
                                 }
                                 else
                                 {
                                     // Check if we should schedule a wake up for the current completion port. That needs to happen
                                     // when we use non-optimized completion port with a timeout
-                                    if (!this.Enumerator.Current.Timeout.Equals(CompletionPort.InfiniteWait))
+                                    if (!Enumerator.Current.Timeout.Equals(CompletionPort.InfiniteWait))
                                     {
-                                        if (this.WakeUpTimer != null)
+                                        if (WakeUpTimer != null)
                                         {
-                                            this.WakeUpTimer.Dispose();
+                                            WakeUpTimer.Dispose();
                                         }
 
                                         //
                                         // BUGBUG: Too expensive. Use single active task to implement timers
                                         //
-                                        this.WakeUpTimer = new Timer(
-                                            this.CompletionPortTimeoutCallback,
-                                            this.Enumerator.Current,
-                                            this.Enumerator.Current.Timeout,
+                                        WakeUpTimer = new Timer(
+                                            CompletionPortTimeoutCallback,
+                                            Enumerator.Current,
+                                            Enumerator.Current.Timeout,
                                             CompletionPort.InfiniteWait);
                                     }
                                 }
@@ -740,7 +740,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                     }
                     finally
                     {
-                        this.InsideMoveNext = false;
+                        InsideMoveNext = false;
                     }
                 }
                 catch (Exception e)
@@ -753,22 +753,22 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
 
                     Trace.TraceWarning("Failed to forward message: {0}", e);
 
-                    this.Error = e;
-                    this.IsCompleted = true;
+                    Error = e;
+                    IsCompleted = true;
 
-                    if (this.ExceptionCleanup != null)
+                    if (ExceptionCleanup != null)
                     {
-                        this.ExceptionCleanup(this, EventArgs.Empty);
+                        ExceptionCleanup(this, EventArgs.Empty);
                     }
                 }
 
-                this.CompletedMoveNext();
+                CompletedMoveNext();
 
-                if (this.AsyncMethodCompletedSynchronously && !this.IsCompleted)
+                if (AsyncMethodCompletedSynchronously && !IsCompleted)
                 {
-                    this.AsyncMethodCompletedSynchronously = false;
+                    AsyncMethodCompletedSynchronously = false;
 
-                    this.MoveNext();
+                    MoveNext();
                 }
             }
             else
@@ -777,26 +777,26 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 // Call to asynchronous I/O was completed synchronously (i.e. this thread is currently executing MoveNext down the stack)
                 //
 
-                Debug.Assert(!this.AsyncMethodCompletedSynchronously);
+                Debug.Assert(!AsyncMethodCompletedSynchronously);
 
-                this.AsyncMethodCompletedSynchronously = true;
+                AsyncMethodCompletedSynchronously = true;
             }
         }
 
         private void CompletedMoveNext()
         {
-            if (this.IsCompleted)
+            if (IsCompleted)
             {
-                this.Enumerator = null;
+                Enumerator = null;
 
-                if (null != this.waitHandle)
+                if (null != waitHandle)
                 {
-                    this.waitHandle.Set();
+                    waitHandle.Set();
                 }
 
-                if (this.asyncMachineCompletionCallback != null)
+                if (asyncMachineCompletionCallback != null)
                 {
-                    this.asyncMachineCompletionCallback((IAsyncResult)this);
+                    asyncMachineCompletionCallback(this);
                 }
             }
         }
@@ -816,9 +816,9 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
         private void AsyncMachineResumeCallback()
         {
             // Check if quorum was reached with all operations finishing synchronously
-            if (!this.InsideMoveNext)
+            if (!InsideMoveNext)
             {
-                IEnumerator<CompletionPort> enumerator = this.Enumerator;
+                IEnumerator<CompletionPort> enumerator = Enumerator;
 
                 // It should never happen that this callback is called for CompletionPort with single operation
                 if (enumerator != null && enumerator.Current != null && enumerator.Current.IsSingleOperation)
@@ -827,7 +827,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 }
             }
 
-            this.MoveNext();
+            MoveNext();
         }
 
         // Called by the completed single asynchronous operation
@@ -838,12 +838,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
                 throw new ArgumentNullException("asyncResult");
             }
 
-            Debug.Assert(this.InsideMoveNext || this.Enumerator != null);
-            Debug.Assert(this.InsideMoveNext || this.Enumerator.Current != null);
+            Debug.Assert(InsideMoveNext || Enumerator != null);
+            Debug.Assert(InsideMoveNext || Enumerator.Current != null);
 
-            this.completionResult = asyncResult;
+            completionResult = asyncResult;
 
-            this.MoveNext();
+            MoveNext();
         }
 
         #region Thread Context helpers

@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey(SecurityConstants.StorageKeyType))
             {
                 // the user enter a key type - we use it (and override the previously defined key type)
-                model.StorageKeyType = (StorageKeyType == SecurityConstants.Primary)
+                model.StorageKeyType = StorageKeyType == SecurityConstants.Primary
                     ? StorageKeyKind.Primary
                     : StorageKeyKind.Secondary;
             }

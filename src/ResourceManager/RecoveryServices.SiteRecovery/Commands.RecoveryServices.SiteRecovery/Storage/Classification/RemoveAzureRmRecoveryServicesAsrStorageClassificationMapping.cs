@@ -53,21 +53,21 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.InputObject.Name,
+            if (ShouldProcess(
+                InputObject.Name,
                 VerbsCommon.Remove))
             {
-                var tokens = this.InputObject.Id.UnFormatArmId(
+                var tokens = InputObject.Id.UnFormatArmId(
                     ARMResourceIdPaths.StorageClassificationMappingResourceIdPath);
-                var operationResponse = this.RecoveryServicesClient.UnmapStorageClassifications(
+                var operationResponse = RecoveryServicesClient.UnmapStorageClassifications(
                     tokens[0],
                     tokens[1],
                     tokens[2]);
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient
                         .GetJobIdFromReponseLocation(operationResponse.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
     }

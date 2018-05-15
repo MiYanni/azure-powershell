@@ -26,21 +26,21 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSAutoScaleRun
     {
         
-        internal Microsoft.Azure.Batch.AutoScaleRun omObject;
+        internal AutoScaleRun omObject;
         
         private PSAutoScaleRunError error;
         
-        internal PSAutoScaleRun(Microsoft.Azure.Batch.AutoScaleRun omObject)
+        internal PSAutoScaleRun(AutoScaleRun omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -49,12 +49,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.error == null) 
-                            && (this.omObject.Error != null)))
+                if (error == null 
+                    && omObject.Error != null)
                 {
-                    this.error = new PSAutoScaleRunError(this.omObject.Error);
+                    error = new PSAutoScaleRunError(omObject.Error);
                 }
-                return this.error;
+                return error;
             }
         }
         
@@ -62,15 +62,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Results;
+                return omObject.Results;
             }
         }
         
-        public System.DateTime Timestamp
+        public DateTime Timestamp
         {
             get
             {
-                return this.omObject.Timestamp;
+                return omObject.Timestamp;
             }
         }
     }

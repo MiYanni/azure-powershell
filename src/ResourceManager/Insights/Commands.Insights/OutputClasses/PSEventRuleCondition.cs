@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="ruleCondition">The rule condition</param>
         public PSEventRuleCondition(ManagementEventRuleCondition ruleCondition)
         {
-            this.DataSource = ruleCondition.DataSource as RuleManagementEventDataSource;
-            this.AggregationCondition = ruleCondition.Aggregation;
+            DataSource = ruleCondition.DataSource as RuleManagementEventDataSource;
+            AggregationCondition = ruleCondition.Aggregation;
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         {
             StringBuilder output = new StringBuilder();
             output.AppendLine();
-            output.AppendLine("    DataSource : " + this.DataSource.ToString(indentationTabs: 2));
-            output.Append("    Condition  : " + this.AggregationCondition.ToString(indentationTabs: 2));
+            output.AppendLine("    DataSource : " + DataSource.ToString(2));
+            output.Append("    Condition  : " + AggregationCondition.ToString(2));
             return output.ToString();
         }
     }

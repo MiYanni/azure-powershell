@@ -41,12 +41,12 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            ComputeNodeUserOperationParameters parameters = new ComputeNodeUserOperationParameters(this.BatchContext, this.PoolId, this.ComputeNodeId,
-                this.Name, this.AdditionalBehaviors);
+            ComputeNodeUserOperationParameters parameters = new ComputeNodeUserOperationParameters(BatchContext, PoolId, ComputeNodeId,
+                Name, AdditionalBehaviors);
 
             ConfirmAction(
                 Resources.RemoveComputeNodeUser,
-                this.Name,
+                Name,
                 () => BatchClient.DeleteComputeNodeUser(parameters));
         }
     }

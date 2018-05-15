@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
         /// </summary>
         public AsAzureProfile()
         {
-            this.Environments = new Hashtable();
+            Environments = new Hashtable();
         }
 
         /// <summary>

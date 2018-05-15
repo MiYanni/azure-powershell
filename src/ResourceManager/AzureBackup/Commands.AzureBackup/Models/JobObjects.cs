@@ -46,34 +46,34 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
         public AzureRMBackupJob(AzureRMBackupVault vault, Mgmt.CSMJobProperties serviceJob, string jobName)
             : base(vault)
         {
-            this.InstanceId = jobName;
-            this.WorkloadType = AzureBackupJobHelper.GetTypeForPS(serviceJob.WorkloadType);
-            this.WorkloadName = serviceJob.EntityFriendlyName;
-            this.Operation = serviceJob.Operation;
-            this.Status = serviceJob.Status;
-            this.Duration = serviceJob.Duration;
-            this.StartTime = serviceJob.StartTimestamp;
-            this.EndTime = serviceJob.EndTimestamp;
-            this.ErrorDetails = new List<ErrorInfo>();
+            InstanceId = jobName;
+            WorkloadType = AzureBackupJobHelper.GetTypeForPS(serviceJob.WorkloadType);
+            WorkloadName = serviceJob.EntityFriendlyName;
+            Operation = serviceJob.Operation;
+            Status = serviceJob.Status;
+            Duration = serviceJob.Duration;
+            StartTime = serviceJob.StartTimestamp;
+            EndTime = serviceJob.EndTimestamp;
+            ErrorDetails = new List<ErrorInfo>();
 
             if (serviceJob.ErrorDetails != null)
             {
                 foreach (Mgmt.CSMJobErrorInfo error in serviceJob.ErrorDetails)
                 {
-                    this.ErrorDetails.Add(new ErrorInfo(error));
+                    ErrorDetails.Add(new ErrorInfo(error));
                 }
             }
 
-            this.IsRetriable = this.IsCancellable = false;
+            IsRetriable = IsCancellable = false;
 
             if (serviceJob.ActionsInfo != null)
             {
                 for (int i = 0; i < serviceJob.ActionsInfo.Count; i++)
                 {
                     if (serviceJob.ActionsInfo[i] == Mgmt.JobSupportedAction.Cancellable)
-                        this.IsCancellable = true;
+                        IsCancellable = true;
                     else if (serviceJob.ActionsInfo[i] == Mgmt.JobSupportedAction.Retriable)
-                        this.IsRetriable = true;
+                        IsRetriable = true;
                 }
             }
         }
@@ -91,12 +91,12 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
 
         public ErrorInfo(Mgmt.CSMJobErrorInfo serviceErrorInfo)
         {
-            this.ErrorCode = serviceErrorInfo.ErrorCode;
-            this.ErrorMessage = serviceErrorInfo.ErrorString;
-            this.Recommendations = new List<string>();
+            ErrorCode = serviceErrorInfo.ErrorCode;
+            ErrorMessage = serviceErrorInfo.ErrorString;
+            Recommendations = new List<string>();
             foreach (string recommendation in serviceErrorInfo.Recommendations)
             {
-                this.Recommendations.Add(recommendation);
+                Recommendations.Add(recommendation);
             }
         }
     }
@@ -111,16 +111,16 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
             : base(vault, serviceJobProperties, jobName)
         {
             if (serviceJobProperties.PropertyBag != null)
-                this.Properties = new Dictionary<string, string>(serviceJobProperties.PropertyBag);
+                Properties = new Dictionary<string, string>(serviceJobProperties.PropertyBag);
             else
-                this.Properties = new Dictionary<string, string>();
+                Properties = new Dictionary<string, string>();
 
-            this.SubTasks = new List<AzureBackupJobSubTask>();
+            SubTasks = new List<AzureBackupJobSubTask>();
             if (serviceJobProperties.TasksList != null)
             {
                 foreach (Mgmt.CSMJobTaskDetails serviceSubTask in serviceJobProperties.TasksList)
                 {
-                    this.SubTasks.Add(new AzureBackupJobSubTask(serviceSubTask));
+                    SubTasks.Add(new AzureBackupJobSubTask(serviceSubTask));
                 }
             }
         }
@@ -136,8 +136,8 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
 
         public AzureBackupJobSubTask(Mgmt.CSMJobTaskDetails serviceTask)
         {
-            this.Name = serviceTask.TaskId;
-            this.Status = serviceTask.Status;
+            Name = serviceTask.TaskId;
+            Status = serviceTask.Status;
         }
     }
 }

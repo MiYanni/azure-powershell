@@ -43,12 +43,12 @@ namespace Microsoft.Azure.Commands.OperationalInsights
 
         protected void CreatePSDataSourceWithProperties(PSDataSourcePropertiesBase createParameters, string dataSourceName)
         {
-            CreatePSDataSourceParameters parameters = new CreatePSDataSourceParameters()
+            CreatePSDataSourceParameters parameters = new CreatePSDataSourceParameters
             {
                 Name = dataSourceName,
                 Properties = createParameters,
-                ResourceGroupName = this.ResourceGroupName,
-                WorkspaceName = this.WorkspaceName,
+                ResourceGroupName = ResourceGroupName,
+                WorkspaceName = WorkspaceName,
                 Force = Force.IsPresent,
                 ConfirmAction = ConfirmAction
             };

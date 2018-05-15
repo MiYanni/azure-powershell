@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string resourceGroupName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName" },
+                 new[] { "ResourceGroupName" },
                  new object[] { resourceGroupName });
         }
     }

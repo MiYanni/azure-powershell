@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ProxyDnsName
         {
-            get { return this._proxyDnsName; }
-            set { this._proxyDnsName = value; }
+            get { return _proxyDnsName; }
+            set { _proxyDnsName = value; }
         }
         
         private string _proxyPort;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ProxyPort
         {
-            get { return this._proxyPort; }
-            set { this._proxyPort = value; }
+            get { return _proxyPort; }
+            set { _proxyPort = value; }
         }
         
         private string _securityEnabledAccess;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SecurityEnabledAccess
         {
-            get { return this._securityEnabledAccess; }
-            set { this._securityEnabledAccess = value; }
+            get { return _securityEnabledAccess; }
+            set { _securityEnabledAccess = value; }
         }
         
         /// <summary>

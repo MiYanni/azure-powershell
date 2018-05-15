@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
     using ResourceManager.Common.ArgumentCompleters;
     using Rest.Azure;
 
-    [Cmdlet(VerbsCommon.Get, CommitmentPlansCmdletBase.CommitmentPlanUsageHistorySuffix)]
+    [Cmdlet(VerbsCommon.Get, CommitmentPlanUsageHistorySuffix)]
     [OutputType(typeof(PlanUsageHistory[]))]
     public class GetAzureMLCommitmentPlanUsageHistory : CommitmentPlansCmdletBase
     {
@@ -36,15 +36,15 @@ namespace Microsoft.Azure.Commands.MachineLearning
         protected override void RunCmdlet()
         {
             IPage<PlanUsageHistory> usageHistories =
-                this.CommitmentPlansClient.GetAzureMlCommitmentPlanUsageHistoryAsync(
-                    this.ResourceGroupName,
-                    this.Name,
+                CommitmentPlansClient.GetAzureMlCommitmentPlanUsageHistoryAsync(
+                    ResourceGroupName,
+                    Name,
                     null,
-                    this.CancellationToken).Result;
+                    CancellationToken).Result;
 
             foreach (var usageHistory in usageHistories)
             {
-                this.WriteObject(usageHistory, true);
+                WriteObject(usageHistory, true);
             }
         }
     }

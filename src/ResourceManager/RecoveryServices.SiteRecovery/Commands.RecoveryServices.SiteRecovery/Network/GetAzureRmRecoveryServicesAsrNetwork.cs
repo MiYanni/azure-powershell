@@ -73,16 +73,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByFabricObject:
-                    this.GetByFabric();
+                    GetByFabric();
                     break;
                 case ASRParameterSets.ByName:
-                    this.GetByName();
+                    GetByName();
                     break;
                 case ASRParameterSets.ByFriendlyName:
-                    this.GetByFriendlyName();
+                    GetByFriendlyName();
                     break;
             }
         }
@@ -93,9 +93,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void GetByFabric()
         {
             var networkListResponse =
-                this.RecoveryServicesClient.GetAzureSiteRecoveryNetworks(this.Fabric.Name);
+                RecoveryServicesClient.GetAzureSiteRecoveryNetworks(Fabric.Name);
 
-            this.WriteNetworks(networkListResponse);
+            WriteNetworks(networkListResponse);
         }
 
         /// <summary>
@@ -104,17 +104,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void GetByFriendlyName()
         {
             var networkListResponse =
-                this.RecoveryServicesClient.GetAzureSiteRecoveryNetworks(this.Fabric.Name);
+                RecoveryServicesClient.GetAzureSiteRecoveryNetworks(Fabric.Name);
 
             foreach (var network in networkListResponse)
             {
                 if (0 ==
                     string.Compare(
-                        this.FriendlyName,
+                        FriendlyName,
                         network.Properties.FriendlyName,
                         true))
                 {
-                    this.WriteNetwork(network);
+                    WriteNetwork(network);
                 }
             }
         }
@@ -124,11 +124,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetByName()
         {
-            var networkResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryNetwork(
-                this.Fabric.Name,
-                this.Name);
+            var networkResponse = RecoveryServicesClient.GetAzureSiteRecoveryNetwork(
+                Fabric.Name,
+                Name);
 
-            this.WriteNetwork(networkResponse);
+            WriteNetwork(networkResponse);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteNetwork(
             Network network)
         {
-            this.WriteObject(new ASRNetwork(network));
+            WriteObject(new ASRNetwork(network));
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteNetworks(
             IList<Network> networks)
         {
-            this.WriteObject(
+            WriteObject(
                 networks.Select(n => new ASRNetwork(n)),
                 true);
         }

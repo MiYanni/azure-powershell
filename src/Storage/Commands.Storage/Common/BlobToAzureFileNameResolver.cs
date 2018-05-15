@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
     class BlobToAzureFileNameResolver : BlobToFileNameResolver
     {
-        private static char[] invalidPathChars = new char[] { '"', '\\', ':', '|', '<', '>', '*', '?' };
+        private static char[] invalidPathChars = new[] { '"', '\\', ':', '|', '<', '>', '*', '?' };
 
         public BlobToAzureFileNameResolver(Func<int> getMaxFileNameLength)
             : base(getMaxFileNameLength)
@@ -39,14 +39,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         {
             get
             {
-                return BlobToAzureFileNameResolver.invalidPathChars;
+                return invalidPathChars;
             }
         }
 
         protected override string EscapeInvalidCharacters(string fileName)
         {
             StringBuilder sb = new StringBuilder();
-            char separator = this.DirSeparator.ToCharArray()[0];
+            char separator = DirSeparator.ToCharArray()[0];
             string escapedSeparator = string.Format(CultureInfo.InvariantCulture, "%{0:X2}", (int)separator);
 
             bool followSeparator = false;
@@ -57,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 if (fileNameChars[i] == separator)
                 {
-                    if (followSeparator || (0 == i) || (lastIndex == i))
+                    if (followSeparator || 0 == i || lastIndex == i)
                     {
                         sb.Append(escapedSeparator);
                     }

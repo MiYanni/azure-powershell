@@ -55,19 +55,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Vault Setting file",
                 VerbsData.Import))
             {
-                this.WriteVerbose("Vault Settings File path: " + this.Path);
+                WriteVerbose("Vault Settings File path: " + Path);
 
                 ASRVaultCreds asrVaultCreds = null;
 
-                if (File.Exists(this.Path))
+                if (File.Exists(Path))
                 {
                     try
                     {
-                        if (FileUtilities.DataStore.ReadFileAsText(this.Path).ToLower().Contains("<asrvaultcreds"))
+                        if (FileUtilities.DataStore.ReadFileAsText(Path).ToLower().Contains("<asrvaultcreds"))
                         {
                             asrVaultCreds = ReadAcsASRVaultCreds();
                         }
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 {
                     throw new FileNotFoundException(
                         Resources.VaultSettingFileNotFound,
-                        this.Path);
+                        Path);
                 }
 
                 // Validate required parameters taken from the Vault settings file.
@@ -115,11 +115,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
                 Utilities.UpdateCurrentVaultContext(asrVaultCreds);
 
-                this.RecoveryServicesClient.ValidateVaultSettings(
+                RecoveryServicesClient.ValidateVaultSettings(
                     asrVaultCreds.ResourceName,
                     asrVaultCreds.ResourceGroupName);
 
-                this.WriteObject(new ASRVaultSettings(asrVaultCreds));
+                WriteObject(new ASRVaultSettings(asrVaultCreds));
             }
         }
 
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             ASRVaultCreds asrVaultCreds;
             var serializer = new DataContractSerializer(typeof(ASRVaultCreds));
                 using (var s = new FileStream(
-                    this.Path,
+                    Path,
                     FileMode.Open,
                     FileAccess.Read,
                     FileShare.Read))
@@ -143,7 +143,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             ASRVaultCreds asrVaultCreds;
             var serializer = new DataContractSerializer(typeof(RSVaultAsrCreds));
             using (var s = new FileStream(
-                this.Path,
+                Path,
                 FileMode.Open,
                 FileAccess.Read,
                 FileShare.Read))

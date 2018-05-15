@@ -17,9 +17,9 @@ namespace Microsoft.Azure.Commands.RedisCache
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.RedisCache.Models;
-    using Microsoft.Azure.Management.Redis.Models;
-    using Microsoft.Rest.Azure;
+    using Models;
+    using Management.Redis.Models;
+    using Rest.Azure;
     using Properties;
     using ResourceManager.Common.ArgumentCompleters;
 

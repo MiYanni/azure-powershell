@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("jobScheduleId");
             }
 
-            this.JobScheduleId = jobScheduleId;
+            JobScheduleId = jobScheduleId;
         }
 
         /// <summary>

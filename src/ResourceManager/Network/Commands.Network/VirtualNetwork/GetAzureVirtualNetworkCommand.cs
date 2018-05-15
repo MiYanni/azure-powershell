@@ -65,32 +65,32 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var vnet = this.GetVirtualNetwork(this.ResourceGroupName, this.Name, this.ExpandResource);
+                var vnet = GetVirtualNetwork(ResourceGroupName, Name, ExpandResource);
 
                 WriteObject(vnet);
             }
             else
             {
                 IPage<VirtualNetwork> vnetPage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    vnetPage = this.VirtualNetworkClient.List(this.ResourceGroupName);
+                    vnetPage = VirtualNetworkClient.List(ResourceGroupName);
                 }
                 else
                 {
-                    vnetPage = this.VirtualNetworkClient.ListAll();
+                    vnetPage = VirtualNetworkClient.ListAll();
                 }
 
                 // Get all resources by polling on next page link
-                var vnetList = ListNextLink<VirtualNetwork>.GetAllResourcesByPollingNextLink(vnetPage, this.VirtualNetworkClient.ListNext);
+                var vnetList = ListNextLink<VirtualNetwork>.GetAllResourcesByPollingNextLink(vnetPage, VirtualNetworkClient.ListNext);
 
                 var psVnets = new List<PSVirtualNetwork>();
                 foreach (var virtualNetwork in vnetList)
                 {
-                    var psVnet = this.ToPsVirtualNetwork(virtualNetwork);
-                    psVnet.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(virtualNetwork.Id);
+                    var psVnet = ToPsVirtualNetwork(virtualNetwork);
+                    psVnet.ResourceGroupName = GetResourceGroup(virtualNetwork.Id);
                     psVnets.Add(psVnet);
                 }
 

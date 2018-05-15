@@ -24,8 +24,8 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
         public BlockAllocationTable(uint size, uint blockSize, uint[] bat)
         {
             this.blockSize = blockSize;
-            this.Size = size;
-            this.Data = bat;
+            Size = size;
+            Data = bat;
         }
 
         public uint Size { get; internal set; }
@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public long GetBitMapAddress(uint block)
         {
-            return ((long)this.Data[block]) * VhdConstants.VHD_SECTOR_LENGTH;
+            return Data[block] * VhdConstants.VHD_SECTOR_LENGTH;
         }
 
         public int GetSectorPaddedBitmapSizeInBytes()

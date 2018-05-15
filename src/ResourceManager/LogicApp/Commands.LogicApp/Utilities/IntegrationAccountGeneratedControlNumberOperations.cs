@@ -19,8 +19,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Management.Logic;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Management.Logic;
+    using Management.Logic.Models;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -39,27 +39,27 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Updated integration account control number</returns>
         public IntegrationAccountControlNumber UpdateIntegrationAccountGeneratedIcn(string resourceGroupName, string integrationAccountName, string integrationAccountAgreementName, IntegrationAccountControlNumber integrationAccountControlNumber)
         {
-            if (!this.DoesIntegrationAccountAgreementExist(resourceGroupName, integrationAccountName, integrationAccountAgreementName))
+            if (!DoesIntegrationAccountAgreementExist(resourceGroupName, integrationAccountName, integrationAccountAgreementName))
             {
-                throw new PSArgumentException(message: string.Format(
+                throw new PSArgumentException(string.Format(
                     CultureInfo.InvariantCulture,
                     Properties.Resource.ResourceNotFound,
                     integrationAccountAgreementName,
                     resourceGroupName));
             }
 
-            return IntegrationAccountClient.SessionContentToIntegrationAccountControlNumber(
-                sessionContent: this.LogicManagementClient.Sessions
+            return SessionContentToIntegrationAccountControlNumber(
+                LogicManagementClient.Sessions
                     .CreateOrUpdate(
-                        resourceGroupName: resourceGroupName,
-                        integrationAccountName: integrationAccountName,
-                        sessionName: IntegrationAccountClient.SessionNameForGeneratedIcn(integrationAccountAgreementName),
-                        session: new IntegrationAccountSession
+                        resourceGroupName,
+                        integrationAccountName,
+                        SessionNameForGeneratedIcn(integrationAccountAgreementName),
+                        new IntegrationAccountSession
                         {
                             Content = integrationAccountControlNumber
                         })
                     .Content,
-                integrationAccountAgreementName: integrationAccountAgreementName);
+                integrationAccountAgreementName);
         }
 
         /// <summary>
@@ -71,14 +71,14 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Integration account control number object.</returns>
         public IntegrationAccountControlNumber GetIntegrationAccountGeneratedIcn(string resourceGroupName, string integrationAccountName, string integrationAccountAgreementName)
         {
-            return IntegrationAccountClient.SessionContentToIntegrationAccountControlNumber(
-                sessionContent: this.LogicManagementClient.Sessions
+            return SessionContentToIntegrationAccountControlNumber(
+                LogicManagementClient.Sessions
                     .Get(
-                        resourceGroupName: resourceGroupName,
-                        integrationAccountName: integrationAccountName,
-                        sessionName: IntegrationAccountClient.SessionNameForGeneratedIcn(integrationAccountAgreementName))
+                        resourceGroupName,
+                        integrationAccountName,
+                        SessionNameForGeneratedIcn(integrationAccountAgreementName))
                      .Content,
-                integrationAccountAgreementName: integrationAccountAgreementName);
+                integrationAccountAgreementName);
         }
 
         /// <summary>
@@ -93,14 +93,14 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         {
             try
             {
-                return IntegrationAccountClient.SessionContentToIntegrationAccountControlNumber(
-                    sessionContent: this.LogicManagementClient.Sessions
+                return SessionContentToIntegrationAccountControlNumber(
+                    LogicManagementClient.Sessions
                         .Get(
-                            resourceGroupName: resourceGroupName,
-                            integrationAccountName: integrationAccountName,
-                            sessionName: IntegrationAccountClient.SessionNameForGeneratedIcn(integrationAccountAgreementName))
+                            resourceGroupName,
+                            integrationAccountName,
+                            SessionNameForGeneratedIcn(integrationAccountAgreementName))
                          .Content,
-                    integrationAccountAgreementName: integrationAccountAgreementName);
+                    integrationAccountAgreementName);
             }
             catch (ErrorResponseException ex)
             {
@@ -122,17 +122,16 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>List of integration account agreements.</returns>
         public IList<QualifiedIntegrationAccountControlNumber> ListIntegrationAccountGeneratedIcns(string resourceGroupName, string integrationAccountName, AgreementType agreementType)
         {
-            return this
-                .ListIntegrationAccountAgreements(
-                    resourceGroupName: resourceGroupName,
-                    integrationAccountName: integrationAccountName)
+            return ListIntegrationAccountAgreements(
+                    resourceGroupName,
+                    integrationAccountName)
                 .Where(agreement => agreement.AgreementType == agreementType)
                 .Select(agreement => new QualifiedIntegrationAccountControlNumber(
-                    icn: this.TryGetIntegrationAccountGeneratedIcn(
-                        resourceGroupName: resourceGroupName,
-                        integrationAccountName: integrationAccountName,
-                        integrationAccountAgreementName: agreement.Name),
-                    agreementName: agreement.Name))
+                    TryGetIntegrationAccountGeneratedIcn(
+                        resourceGroupName,
+                        integrationAccountName,
+                        agreement.Name),
+                    agreement.Name))
                 .ToList();
         }
 
@@ -162,17 +161,14 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
 
             if (string.IsNullOrEmpty(controlNumber))
             {
-                throw new PSInvalidOperationException(message: string.Format(
+                throw new PSInvalidOperationException(string.Format(
                     Properties.Resource.GeneratedControlNumberInvalidFormat,
                     integrationAccountAgreementName));
             }
-            else
-            {
-                throw new PSInvalidOperationException(message: string.Format(
-                    Properties.Resource.ReceivedControlNumberInvalidFormat,
-                    controlNumber,
-                    integrationAccountAgreementName));
-            }
+            throw new PSInvalidOperationException(string.Format(
+                Properties.Resource.ReceivedControlNumberInvalidFormat,
+                controlNumber,
+                integrationAccountAgreementName));
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("jobId");
             }
 
-            this.JobId = jobId;
+            JobId = jobId;
         }
 
         /// <summary>

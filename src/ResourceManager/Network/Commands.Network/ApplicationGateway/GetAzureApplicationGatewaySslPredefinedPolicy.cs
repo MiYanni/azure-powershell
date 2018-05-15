@@ -15,8 +15,8 @@
 namespace Microsoft.Azure.Commands.Network
 {
     using AutoMapper;
-    using Microsoft.Azure.Commands.Network.Models;
-    using Microsoft.Azure.Management.Network;
+    using Models;
+    using Management.Network;
     using System.Collections.Generic;
     using System.Management.Automation;
 
@@ -34,15 +34,15 @@ namespace Microsoft.Azure.Commands.Network
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            if (this.Name != null)
+            if (Name != null)
             {
-                var policy = this.ApplicationGatewayClient.GetSslPredefinedPolicy(this.Name);
+                var policy = ApplicationGatewayClient.GetSslPredefinedPolicy(Name);
                 var psPolicy = NetworkResourceManagerProfile.Mapper.Map<PSApplicationGatewaySslPredefinedPolicy>(policy);
                 WriteObject(psPolicy, true);
             }
             else
             {
-                var policies = this.ApplicationGatewayClient.ListAvailableSslPredefinedPolicies();
+                var policies = ApplicationGatewayClient.ListAvailableSslPredefinedPolicies();
                 var psPolicies = new List<PSApplicationGatewaySslPredefinedPolicy>();
                 foreach (var policy in policies)
                 {

@@ -45,8 +45,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string CurrentValue
         {
-            get { return this._currentValue; }
-            set { this._currentValue = value; }
+            get { return _currentValue; }
+            set { _currentValue = value; }
         }
         
         /// <summary>

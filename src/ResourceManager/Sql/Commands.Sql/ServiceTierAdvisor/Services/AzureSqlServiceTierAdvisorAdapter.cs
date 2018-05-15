@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.Sql.ServiceTierAdvisor.Services
         /// <returns>Returns UpgradeDatabaseHint</returns>
         private RecommendedDatabaseProperties CreateUpgradeDatabaseHint(Management.Sql.LegacySdk.Models.Database database)
         {
-            return new RecommendedDatabaseProperties()
+            return new RecommendedDatabaseProperties
             {
                 Name = database.Name,
                 TargetEdition = SloToEdition(database.Properties.UpgradeHint.TargetServiceLevelObjective),

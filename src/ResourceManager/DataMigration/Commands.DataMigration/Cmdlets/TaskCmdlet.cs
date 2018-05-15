@@ -36,14 +36,14 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         protected void SourceConnectionInfoParam(bool mandatory = false)
         {
-            this.SimpleParam(SourceConnection, typeof(ConnectionInfo), "Connection Info Detail", mandatory);
-            this.SimpleParam(SourceCred, typeof(PSCredential), "Credential Detail", mandatory);
+            SimpleParam(SourceConnection, typeof(ConnectionInfo), "Connection Info Detail", mandatory);
+            SimpleParam(SourceCred, typeof(PSCredential), "Credential Detail", mandatory);
         }
 
         protected void TargetConnectionInfoParam(bool mandatory = false)
         {
-            this.SimpleParam(TargetConnection, typeof(ConnectionInfo), "Connection Info Detail", mandatory);
-            this.SimpleParam(TargetCred, typeof(PSCredential), "Credential Detail", mandatory);
+            SimpleParam(TargetConnection, typeof(ConnectionInfo), "Connection Info Detail", mandatory);
+            SimpleParam(TargetCred, typeof(PSCredential), "Credential Detail", mandatory);
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]

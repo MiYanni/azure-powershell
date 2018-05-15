@@ -31,14 +31,14 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         protected override bool IsAdmin
         {
-            get { return this.Admin.IsPresent; }
+            get { return Admin.IsPresent; }
         }
 
         public override void ExecuteCmdlet()
         {
             var cluster = GetCurrentCluster();
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Add client certificate")))
+            if (ShouldProcess(Name, string.Format("Add client certificate")))
             {
                 switch (ParameterSetName)
                 {

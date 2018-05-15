@@ -31,39 +31,39 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
-                if (this.NetworkSecurityGroup != null)
+                if (NetworkSecurityGroup != null)
                 {
-                    this.NetworkSecurityGroupId = this.NetworkSecurityGroup.Id;
+                    NetworkSecurityGroupId = NetworkSecurityGroup.Id;
                 }
 
-                if (this.RouteTable != null)
+                if (RouteTable != null)
                 {
-                    this.RouteTableId = this.RouteTable.Id;
+                    RouteTableId = RouteTable.Id;
                 }
             }
 
             var subnet = new PSSubnet();
-            subnet.Name = this.Name;
-            subnet.AddressPrefix = this.AddressPrefix;
+            subnet.Name = Name;
+            subnet.AddressPrefix = AddressPrefix;
 
-            if (!string.IsNullOrEmpty(this.NetworkSecurityGroupId))
+            if (!string.IsNullOrEmpty(NetworkSecurityGroupId))
             {
                 subnet.NetworkSecurityGroup = new PSNetworkSecurityGroup();
-                subnet.NetworkSecurityGroup.Id = this.NetworkSecurityGroupId;
+                subnet.NetworkSecurityGroup.Id = NetworkSecurityGroupId;
             }
 
-            if (!string.IsNullOrEmpty(this.RouteTableId))
+            if (!string.IsNullOrEmpty(RouteTableId))
             {
                 subnet.RouteTable = new PSRouteTable();
-                subnet.RouteTable.Id = this.RouteTableId;
+                subnet.RouteTable.Id = RouteTableId;
             }
 
-            if (this.ServiceEndpoint != null)
+            if (ServiceEndpoint != null)
             {
                 subnet.ServiceEndpoints = new List<PSServiceEndpoint>();
-                foreach (var item in this.ServiceEndpoint)
+                foreach (var item in ServiceEndpoint)
                 {
                     var service = new PSServiceEndpoint();
                     service.Service = item;

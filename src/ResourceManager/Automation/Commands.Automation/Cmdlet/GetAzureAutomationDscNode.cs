@@ -73,59 +73,59 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             IEnumerable<DscNode> ret = null;
 
-            var nodeStatus = this.Status.ToString();
+            var nodeStatus = Status.ToString();
             if (nodeStatus.Equals("0"))
             {
                 nodeStatus = null;
             }
 
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ById)
+            if (ParameterSetName == AutomationCmdletParameterSets.ById)
             {
                 ret = new List<DscNode>
                 {
-                   this.AutomationClient.GetDscNodeById(this.ResourceGroupName, this.AutomationAccountName, this.Id)
+                   AutomationClient.GetDscNodeById(ResourceGroupName, AutomationAccountName, Id)
                 };
 
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByName)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByName)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    ret = this.AutomationClient.ListDscNodesByName(this.ResourceGroupName, this.AutomationAccountName, this.Name, nodeStatus, ref nextLink);
+                    ret = AutomationClient.ListDscNodesByName(ResourceGroupName, AutomationAccountName, Name, nodeStatus, ref nextLink);
                     if (ret != null)
                     {
-                        this.GenerateCmdletOutput(ret);
+                        GenerateCmdletOutput(ret);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByNodeConfiguration)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByNodeConfiguration)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    ret = this.AutomationClient.ListDscNodesByNodeConfiguration(this.ResourceGroupName, this.AutomationAccountName, this.NodeConfigurationName, nodeStatus, ref nextLink);
+                    ret = AutomationClient.ListDscNodesByNodeConfiguration(ResourceGroupName, AutomationAccountName, NodeConfigurationName, nodeStatus, ref nextLink);
                     if (ret != null)
                     {
-                        this.GenerateCmdletOutput(ret);
+                        GenerateCmdletOutput(ret);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByConfiguration)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByConfiguration)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    ret = this.AutomationClient.ListDscNodesByConfiguration(this.ResourceGroupName, this.AutomationAccountName, this.ConfigurationName, nodeStatus, ref nextLink);
+                    ret = AutomationClient.ListDscNodesByConfiguration(ResourceGroupName, AutomationAccountName, ConfigurationName, nodeStatus, ref nextLink);
                     if (ret != null)
                     {
-                        this.GenerateCmdletOutput(ret);
+                        GenerateCmdletOutput(ret);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));
@@ -137,10 +137,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                 do
                 {
                     // ByAll
-                    ret = this.AutomationClient.ListDscNodes(this.ResourceGroupName, this.AutomationAccountName, nodeStatus, ref nextLink);
+                    ret = AutomationClient.ListDscNodes(ResourceGroupName, AutomationAccountName, nodeStatus, ref nextLink);
                     if (ret != null)
                     {
-                        this.GenerateCmdletOutput(ret);
+                        GenerateCmdletOutput(ret);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));

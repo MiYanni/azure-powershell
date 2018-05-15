@@ -21,15 +21,15 @@ namespace Microsoft.Azure.Commands.Compute
     public static class AEMExtensionConstants
     {
         public const string VirtualMachineExtensionResourceType = "Microsoft.Compute/virtualMachines/extensions";
-        public static Dictionary<string, string> AEMExtensionDefaultName = new Dictionary<string, string>() { { OSTypeWindows, "AzureCATExtensionHandler" }, { OSTypeLinux, "AzureEnhancedMonitorForLinux" } };
-        public static Dictionary<string, string> AEMExtensionPublisher = new Dictionary<string, string>() { { OSTypeWindows, "Microsoft.AzureCAT.AzureEnhancedMonitoring" }, { OSTypeLinux, "Microsoft.OSTCExtensions" } };
-        public static Dictionary<string, string> AEMExtensionType = new Dictionary<string, string>() { { OSTypeWindows, "AzureCATExtensionHandler" }, { OSTypeLinux, "AzureEnhancedMonitorForLinux" } };
-        public static Dictionary<string, Version> AEMExtensionVersion = new Dictionary<string, Version>() { { OSTypeWindows, new Version(2, 2) }, { OSTypeLinux, new Version(3, 0) } };
+        public static Dictionary<string, string> AEMExtensionDefaultName = new Dictionary<string, string> { { OSTypeWindows, "AzureCATExtensionHandler" }, { OSTypeLinux, "AzureEnhancedMonitorForLinux" } };
+        public static Dictionary<string, string> AEMExtensionPublisher = new Dictionary<string, string> { { OSTypeWindows, "Microsoft.AzureCAT.AzureEnhancedMonitoring" }, { OSTypeLinux, "Microsoft.OSTCExtensions" } };
+        public static Dictionary<string, string> AEMExtensionType = new Dictionary<string, string> { { OSTypeWindows, "AzureCATExtensionHandler" }, { OSTypeLinux, "AzureEnhancedMonitorForLinux" } };
+        public static Dictionary<string, Version> AEMExtensionVersion = new Dictionary<string, Version> { { OSTypeWindows, new Version(2, 2) }, { OSTypeLinux, new Version(3, 0) } };
 
-        public static Dictionary<string, string> WADExtensionDefaultName = new Dictionary<string, string>() { { OSTypeWindows, "IaaSDiagnostics" }, { OSTypeLinux, "LinuxDiagnostic" } };
-        public static Dictionary<string, string> WADExtensionPublisher = new Dictionary<string, string>() { { OSTypeWindows, "Microsoft.Azure.Diagnostics" }, { OSTypeLinux, "Microsoft.OSTCExtensions" } };
-        public static Dictionary<string, string> WADExtensionType = new Dictionary<string, string>() { { OSTypeWindows, "IaaSDiagnostics" }, { OSTypeLinux, "LinuxDiagnostic" } };
-        public static Dictionary<string, Version> WADExtensionVersion = new Dictionary<string, Version>() { { OSTypeWindows, new Version(1, 5) }, { OSTypeLinux, new Version(2, 3) } };
+        public static Dictionary<string, string> WADExtensionDefaultName = new Dictionary<string, string> { { OSTypeWindows, "IaaSDiagnostics" }, { OSTypeLinux, "LinuxDiagnostic" } };
+        public static Dictionary<string, string> WADExtensionPublisher = new Dictionary<string, string> { { OSTypeWindows, "Microsoft.Azure.Diagnostics" }, { OSTypeLinux, "Microsoft.OSTCExtensions" } };
+        public static Dictionary<string, string> WADExtensionType = new Dictionary<string, string> { { OSTypeWindows, "IaaSDiagnostics" }, { OSTypeLinux, "LinuxDiagnostic" } };
+        public static Dictionary<string, Version> WADExtensionVersion = new Dictionary<string, Version> { { OSTypeWindows, new Version(1, 5) }, { OSTypeLinux, new Version(2, 3) } };
 
         public const string OSTypeWindows = "Windows";
         public const string OSTypeLinux = "Linux";
@@ -51,63 +51,63 @@ namespace Microsoft.Azure.Commands.Compute
         public const string WADConfigXML = "<WadCfg><DiagnosticMonitorConfiguration overallQuotaInMB=\"4096\"><PerformanceCounters scheduledTransferPeriod=\"PT1M\" ></PerformanceCounters></DiagnosticMonitorConfiguration></WadCfg>";
         public static Dictionary<string, List<string>> WADTablesV2 = new Dictionary<string, List<string>>(StringComparer.InvariantCultureIgnoreCase)
         {
-            { OSTypeLinux, new List<string>() { "LinuxCpuVer2v0", "LinuxDiskVer2v0", "LinuxMemoryVer2v0" } },
-            { OSTypeWindows, new List<string>() { } }
+            { OSTypeLinux, new List<string> { "LinuxCpuVer2v0", "LinuxDiskVer2v0", "LinuxMemoryVer2v0" } },
+            { OSTypeWindows, new List<string> { } }
         };
 
-        public static Dictionary<string, List<PerformanceCounter>> PerformanceCounters = new Dictionary<string, List<PerformanceCounter>>()
+        public static Dictionary<string, List<PerformanceCounter>> PerformanceCounters = new Dictionary<string, List<PerformanceCounter>>
         {
             {
-                OSTypeWindows,  new List<PerformanceCounter>()
+                OSTypeWindows,  new List<PerformanceCounter>
                 {
-                    new PerformanceCounter() { counterSpecifier="\\Processor(_Total)\\% Processor Time", sampleRate = "PT1M"},
-                    new PerformanceCounter() { counterSpecifier="\\Processor Information(_Total)\\Processor Frequency",sampleRate="PT1M"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\Available Bytes",sampleRate="PT1M"},
-                    new PerformanceCounter() { counterSpecifier="\\TCPv6\\Segments Retransmitted/sec",sampleRate="PT1M"},
-                    new PerformanceCounter() { counterSpecifier="\\TCPv4\\Segments Retransmitted/sec",sampleRate="PT1M"},
-                    new PerformanceCounter() { counterSpecifier="\\Network Interface(*)\\Bytes Sent/sec",sampleRate="PT1M"},
-                    new PerformanceCounter() { counterSpecifier="\\Network Interface(*)\\Bytes Received/sec",sampleRate="PT1M"}
+                    new PerformanceCounter { counterSpecifier="\\Processor(_Total)\\% Processor Time", sampleRate = "PT1M"},
+                    new PerformanceCounter { counterSpecifier="\\Processor Information(_Total)\\Processor Frequency",sampleRate="PT1M"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\Available Bytes",sampleRate="PT1M"},
+                    new PerformanceCounter { counterSpecifier="\\TCPv6\\Segments Retransmitted/sec",sampleRate="PT1M"},
+                    new PerformanceCounter { counterSpecifier="\\TCPv4\\Segments Retransmitted/sec",sampleRate="PT1M"},
+                    new PerformanceCounter { counterSpecifier="\\Network Interface(*)\\Bytes Sent/sec",sampleRate="PT1M"},
+                    new PerformanceCounter { counterSpecifier="\\Network Interface(*)\\Bytes Received/sec",sampleRate="PT1M"}
                 }
             },
             {
-                OSTypeLinux,  new List<PerformanceCounter>()
+                OSTypeLinux,  new List<PerformanceCounter>
                 {
-                    new PerformanceCounter() { counterSpecifier="\\Processor\\PercentProcessorTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Processor\\PercentIdleTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Processor\\PercentPrivilegedTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Processor\\PercentInterruptTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Processor\\PercentDPCTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Processor\\PercentUserTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Processor\\PercentNiceTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Processor\\PercentIOWaitTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\PercentUsedMemory",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\UsedMemory",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\PercentAvailableMemory",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\AvailableMemory",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\PercentUsedByCache",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\PercentUsedSwap",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\UsedSwap",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\AvailableSwap",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\PagesPerSec",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\PagesReadPerSec",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\Memory\\PagesWrittenPerSec",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\AverageTransferTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\AverageReadTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\AverageWriteTime",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\TransfersPerSecond",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\ReadsPerSecond",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\WritesPerSecond",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\BytesPerSecond",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\WriteBytesPerSecond",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\PhysicalDisk\\AverageDiskQueueLength",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\NetworkInterface\\BytesTotal",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\NetworkInterface\\BytesTransmitted",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\NetworkInterface\\BytesReceived",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\NetworkInterface\\PacketsTransmitted",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\NetworkInterface\\PacketsReceived",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\NetworkInterface\\TotalRxErrors",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\NetworkInterface\\TotalTxErrors",sampleRate = "PT15S"},
-                    new PerformanceCounter() { counterSpecifier="\\NetworkInterface\\TotalCollisions",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Processor\\PercentProcessorTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Processor\\PercentIdleTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Processor\\PercentPrivilegedTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Processor\\PercentInterruptTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Processor\\PercentDPCTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Processor\\PercentUserTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Processor\\PercentNiceTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Processor\\PercentIOWaitTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\PercentUsedMemory",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\UsedMemory",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\PercentAvailableMemory",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\AvailableMemory",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\PercentUsedByCache",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\PercentUsedSwap",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\UsedSwap",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\AvailableSwap",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\PagesPerSec",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\PagesReadPerSec",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\Memory\\PagesWrittenPerSec",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\AverageTransferTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\AverageReadTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\AverageWriteTime",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\TransfersPerSecond",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\ReadsPerSecond",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\WritesPerSecond",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\BytesPerSecond",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\WriteBytesPerSecond",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\PhysicalDisk\\AverageDiskQueueLength",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\NetworkInterface\\BytesTotal",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\NetworkInterface\\BytesTransmitted",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\NetworkInterface\\BytesReceived",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\NetworkInterface\\PacketsTransmitted",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\NetworkInterface\\PacketsReceived",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\NetworkInterface\\TotalRxErrors",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\NetworkInterface\\TotalTxErrors",sampleRate = "PT15S"},
+                    new PerformanceCounter { counterSpecifier="\\NetworkInterface\\TotalCollisions",sampleRate = "PT15S"},
                 }
             }
         };

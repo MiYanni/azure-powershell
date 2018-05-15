@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var httpListener =
-                    this.ApplicationGateway.HttpListeners.First(
+                    ApplicationGateway.HttpListeners.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(httpListener);
             }
             else
             {
-                var httpListeners = this.ApplicationGateway.HttpListeners;
+                var httpListeners = ApplicationGateway.HttpListeners;
                 WriteObject(httpListeners, true);
             }
 

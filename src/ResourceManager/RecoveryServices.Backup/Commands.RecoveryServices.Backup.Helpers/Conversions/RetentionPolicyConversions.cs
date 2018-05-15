@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             if (hydraRetPolicy.RetentionDuration != null)
             {
                 simplePolicy.RetentionDurationType = EnumUtils.GetEnum<RetentionDurationType>(
-                    hydraRetPolicy.RetentionDuration.DurationType.ToString());
+                    hydraRetPolicy.RetentionDuration.DurationType);
                 simplePolicy.RetentionCount = hydraRetPolicy.RetentionDuration.Count.HasValue ?
                     (int)hydraRetPolicy.RetentionDuration.Count : default(int);
             }
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
                 default:
                     throw new ArgumentException(Resources.InvalidDurationTypeException,
-                                                retentionDuration.DurationType.ToString());
+                                                retentionDuration.DurationType);
             }
 
             return daysCount;
@@ -160,7 +160,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
                 default:
                     throw new ArgumentException(Resources.InvalidDurationTypeException,
-                                                retentionDuration.DurationType.ToString());
+                                                retentionDuration.DurationType);
             }
 
             return weeksCount;
@@ -193,7 +193,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
                 default:
                     throw new ArgumentException(Resources.InvalidDurationTypeException,
-                                                retentionDuration.DurationType.ToString());
+                                                retentionDuration.DurationType);
             }
 
             return monthsCount;
@@ -226,7 +226,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
                 default:
                     throw new ArgumentException(Resources.InvalidDurationTypeException,
-                                                retentionDuration.DurationType.ToString());
+                                                retentionDuration.DurationType);
             }
 
             return yearsCount;
@@ -326,7 +326,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
                 foreach (ServiceClientModel.Day serviceClientDay in serviceClientFormat.DaysOfTheMonth)
                 {
-                    Day psDay = new Day()
+                    Day psDay = new Day
                     {
                         Date = GetIntegerFromNullableIntgerValue(serviceClientDay.Date),
                         IsLast = serviceClientDay.IsLast.HasValue ?
@@ -378,18 +378,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             {
                 return null;
             }
-            else
-            {
-                ServiceClientModel.SimpleRetentionPolicy simpleRetPolicy =
-                    new ServiceClientModel.SimpleRetentionPolicy();
+            ServiceClientModel.SimpleRetentionPolicy simpleRetPolicy =
+                new ServiceClientModel.SimpleRetentionPolicy();
 
-                simpleRetPolicy.RetentionDuration = new ServiceClientModel.RetentionDuration();
-                simpleRetPolicy.RetentionDuration.DurationType =
-                    ServiceClientHelpers.GetServiceClientRetentionDurationType(psRetPolicy.RetentionDurationType);
-                simpleRetPolicy.RetentionDuration.Count = psRetPolicy.RetentionCount;
+            simpleRetPolicy.RetentionDuration = new ServiceClientModel.RetentionDuration();
+            simpleRetPolicy.RetentionDuration.DurationType =
+                ServiceClientHelpers.GetServiceClientRetentionDurationType(psRetPolicy.RetentionDurationType);
+            simpleRetPolicy.RetentionDuration.Count = psRetPolicy.RetentionCount;
 
-                return simpleRetPolicy;
-            }
+            return simpleRetPolicy;
         }
 
         // <summary>
@@ -447,7 +444,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
             ServiceClientModel.DailyRetentionSchedule serviceClientDaily = new ServiceClientModel.DailyRetentionSchedule();
 
-            serviceClientDaily.RetentionDuration = new ServiceClientModel.RetentionDuration()
+            serviceClientDaily.RetentionDuration = new ServiceClientModel.RetentionDuration
             {
                 Count = psDaily.DurationCountInDays,
                 DurationType = ServiceClientModel.RetentionDurationType.Days
@@ -468,7 +465,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
             ServiceClientModel.WeeklyRetentionSchedule serviceClientWeekly = new ServiceClientModel.WeeklyRetentionSchedule();
 
-            serviceClientWeekly.RetentionDuration = new ServiceClientModel.RetentionDuration()
+            serviceClientWeekly.RetentionDuration = new ServiceClientModel.RetentionDuration
             {
                 Count = psWeekly.DurationCountInWeeks,
                 DurationType = ServiceClientModel.RetentionDurationType.Weeks
@@ -491,7 +488,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
             ServiceClientModel.MonthlyRetentionSchedule serviceClientMonthly = new ServiceClientModel.MonthlyRetentionSchedule();
 
-            serviceClientMonthly.RetentionDuration = new ServiceClientModel.RetentionDuration()
+            serviceClientMonthly.RetentionDuration = new ServiceClientModel.RetentionDuration
             {
                 Count = psMonthly.DurationCountInMonths,
                 DurationType = ServiceClientModel.RetentionDurationType.Months
@@ -524,7 +521,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
             ServiceClientModel.YearlyRetentionSchedule serviceClientYearly = new ServiceClientModel.YearlyRetentionSchedule();
 
-            serviceClientYearly.RetentionDuration = new ServiceClientModel.RetentionDuration()
+            serviceClientYearly.RetentionDuration = new ServiceClientModel.RetentionDuration
             {
                 Count = psYearly.DurationCountInYears,
                 DurationType = ServiceClientModel.RetentionDurationType.Years
@@ -567,7 +564,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
                 foreach (Day psDay in psFormat.DaysOfTheMonth)
                 {
-                    ServiceClientModel.Day serviceClientDay = new ServiceClientModel.Day()
+                    ServiceClientModel.Day serviceClientDay = new ServiceClientModel.Day
                     {
                         Date = psDay.Date,
                         IsLast = psDay.IsLast
@@ -611,7 +608,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
 
         private static int GetIntegerFromNullableIntgerValue(int? value)
         {
-            return (value.HasValue ? (int)value : default(int));
+            return value.HasValue ? (int)value : default(int);
         }
     }
 }

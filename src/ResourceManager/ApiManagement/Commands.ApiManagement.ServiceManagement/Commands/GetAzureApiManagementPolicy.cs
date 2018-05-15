@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models;
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Properties;
+    using Models;
+    using Properties;
     using System;
     using System.Globalization;
     using System.IO;
@@ -126,11 +126,11 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
                 var actionWarning = string.Format(CultureInfo.CurrentCulture, Resources.SavePolicyWarning, SaveAs);
 
                 // Do nothing if force is not specified and user cancelled the operation
-                if (!ShouldProcess(ApiId, actionDescription) || (File.Exists(SaveAs) &&
+                if (!ShouldProcess(ApiId, actionDescription) || File.Exists(SaveAs) &&
                     !Force.IsPresent &&
                     !ShouldContinue(
                         actionWarning,
-                        Resources.ShouldProcessCaption)))
+                        Resources.ShouldProcessCaption))
                 {
                     return;
                 }

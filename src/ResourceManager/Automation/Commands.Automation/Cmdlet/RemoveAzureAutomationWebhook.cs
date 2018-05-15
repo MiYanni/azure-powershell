@@ -42,10 +42,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
             ConfirmAction(
                 string.Format(Resources.RemoveAzureAutomationResourceDescription, "Webhook"),
                 Name,
-                () => this.AutomationClient.DeleteWebhook(
-                    this.ResourceGroupName,
-                    this.AutomationAccountName,
-                    this.Name));
+                () => AutomationClient.DeleteWebhook(
+                    ResourceGroupName,
+                    AutomationAccountName,
+                    Name));
         }
     }
 }

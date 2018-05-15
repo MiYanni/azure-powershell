@@ -155,43 +155,43 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
                 // generate a domain name label if it's not specified.
                 _cmdlet.DomainNameLabel = await PublicIPAddressStrategy.UpdateDomainNameLabelAsync(
-                    domainNameLabel: _cmdlet.DomainNameLabel,
-                    name: _cmdlet.VMScaleSetName,
-                    location: Location,
-                    client: _client);
+                    _cmdlet.DomainNameLabel,
+                    _cmdlet.VMScaleSetName,
+                    Location,
+                    _client);
 
                 var resourceGroup = ResourceGroupStrategy.CreateResourceGroupConfig(_cmdlet.ResourceGroupName);
 
                 var noZones = _cmdlet.Zone == null || _cmdlet.Zone.Count == 0;
 
                 var publicIpAddress = resourceGroup.CreatePublicIPAddressConfig(
-                    name: _cmdlet.PublicIpAddressName,
-                    domainNameLabel: _cmdlet.DomainNameLabel,
-                    allocationMethod: _cmdlet.AllocationMethod,
-                    sku: noZones 
+                    _cmdlet.PublicIpAddressName,
+                    _cmdlet.DomainNameLabel,
+                    _cmdlet.AllocationMethod,
+                    noZones 
                         ? PublicIPAddressStrategy.Sku.Basic
                         : PublicIPAddressStrategy.Sku.Standard,
-                    zones: null);
+                    null);
 
                 var virtualNetwork = resourceGroup.CreateVirtualNetworkConfig(
-                    name: _cmdlet.VirtualNetworkName,
-                    addressPrefix: _cmdlet.VnetAddressPrefix);
+                    _cmdlet.VirtualNetworkName,
+                    _cmdlet.VnetAddressPrefix);
 
                 var subnet = virtualNetwork.CreateSubnet(
                     _cmdlet.SubnetName, _cmdlet.SubnetAddressPrefix);
 
                 var loadBalancer = resourceGroup.CreateLoadBalancerConfig(
-                    name: _cmdlet.LoadBalancerName,
-                    sku: noZones
+                    _cmdlet.LoadBalancerName,
+                    noZones
                         ? LoadBalancerStrategy.Sku.Basic
                         : LoadBalancerStrategy.Sku.Standard);
 
                 var frontendIpConfiguration = loadBalancer.CreateFrontendIPConfiguration(
-                    name: _cmdlet.FrontendPoolName,
-                    publicIpAddress: publicIpAddress);
+                    _cmdlet.FrontendPoolName,
+                    publicIpAddress);
 
                 var backendAddressPool = loadBalancer.CreateBackendAddressPool(
-                    name: _cmdlet.BackendPoolName);
+                    _cmdlet.BackendPoolName);
 
                 if (_cmdlet.BackendPort != null)
                 {
@@ -199,11 +199,11 @@ namespace Microsoft.Azure.Commands.Compute.Automation
                     foreach (var backendPort in _cmdlet.BackendPort)
                     {
                         loadBalancer.CreateLoadBalancingRule(
-                            name: loadBalancingRuleName + backendPort.ToString(),
-                            fronendIpConfiguration: frontendIpConfiguration,
-                            backendAddressPool: backendAddressPool,
-                            frontendPort: backendPort,
-                            backendPort: backendPort);
+                            loadBalancingRuleName + backendPort.ToString(),
+                            frontendIpConfiguration,
+                            backendAddressPool,
+                            backendPort,
+                            backendPort);
                     }
                 }
 
@@ -221,11 +221,11 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
                 var inboundNatPools = ports
                     ?.Select(p => loadBalancer.CreateInboundNatPool(
-                        name: inboundNatPoolName + p.Item1.ToString(),
-                        frontendIpConfiguration: frontendIpConfiguration,
-                        frontendPortRangeStart: p.Item2,
-                        frontendPortRangeEnd: p.Item2 + PortRangeSize,
-                        backendPort: p.Item1))
+                        inboundNatPoolName + p.Item1.ToString(),
+                        frontendIpConfiguration,
+                        p.Item2,
+                        p.Item2 + PortRangeSize,
+                        p.Item1))
                     .ToList();
 
                 var networkSecurityGroup = noZones 
@@ -235,16 +235,16 @@ namespace Microsoft.Azure.Commands.Compute.Automation
                         _cmdlet.NatBackendPort.Concat(_cmdlet.BackendPort).ToList());
 
                 return resourceGroup.CreateVirtualMachineScaleSetConfig(
-                    name: _cmdlet.VMScaleSetName,
-                    subnet: subnet,                    
-                    backendAdressPool: backendAddressPool,
-                    inboundNatPools: inboundNatPools,
-                    networkSecurityGroup: networkSecurityGroup,
-                    imageAndOsType: ImageAndOsType,
-                    adminUsername: _cmdlet.Credential.UserName,
-                    adminPassword: new NetworkCredential(string.Empty, _cmdlet.Credential.Password).Password,
-                    vmSize: _cmdlet.VmSize,
-                    instanceCount: _cmdlet.InstanceCount,
+                    _cmdlet.VMScaleSetName,
+                    subnet,                    
+                    backendAddressPool,
+                    inboundNatPools,
+                    networkSecurityGroup,
+                    ImageAndOsType,
+                    _cmdlet.Credential.UserName,
+                    new NetworkCredential(string.Empty, _cmdlet.Credential.Password).Password,
+                    _cmdlet.VmSize,
+                    _cmdlet.InstanceCount,
                     upgradeMode: _cmdlet.MyInvocation.BoundParameters.ContainsKey(nameof(UpgradePolicyMode))
                         ? _cmdlet.UpgradePolicyMode
                         : (UpgradeMode?)null,
@@ -312,7 +312,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private VirtualMachineScaleSetIdentity GetVmssIdentityFromArgs()
         {
             var isUserAssignedEnabled = !string.IsNullOrWhiteSpace(UserAssignedIdentity);
-            return (SystemAssignedIdentity.IsPresent || isUserAssignedEnabled)
+            return SystemAssignedIdentity.IsPresent || isUserAssignedEnabled
                 ? new VirtualMachineScaleSetIdentity
                 {
                     Type = !isUserAssignedEnabled ?

@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 resourceGroupName,
                 dataFactoryName,
                 datasetName,
-                new DatasetCreateOrUpdateWithRawJsonContentParameters() { Content = rawJsonContent });
+                new DatasetCreateOrUpdateWithRawJsonContentParameters { Content = rawJsonContent });
 
             return response.Dataset;
         }
@@ -108,11 +108,11 @@ namespace Microsoft.Azure.Commands.DataFactories
 
             if (!string.IsNullOrWhiteSpace(filterOptions.Name))
             {
-                datasets.Add(this.GetDataset(filterOptions.ResourceGroupName, filterOptions.DataFactoryName, filterOptions.Name));
+                datasets.Add(GetDataset(filterOptions.ResourceGroupName, filterOptions.DataFactoryName, filterOptions.Name));
             }
             else
             {
-                datasets.AddRange(this.ListDatasets(filterOptions));
+                datasets.AddRange(ListDatasets(filterOptions));
             }
 
             return datasets;
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             Action createDataset = () =>
             {
                 dataset =
-                    new PSDataset(this.CreateOrUpdateDataset(
+                    new PSDataset(CreateOrUpdateDataset(
                         parameters.ResourceGroupName,
                         parameters.DataFactoryName,
                         parameters.Name,
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                     parameters.DataFactoryName),
                 parameters.Name,
                 createDataset,
-                () => this.CheckDatasetExists(parameters.ResourceGroupName, parameters.DataFactoryName,
+                () => CheckDatasetExists(parameters.ResourceGroupName, parameters.DataFactoryName,
                 parameters.Name));
 
             return dataset;
@@ -173,7 +173,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             // ToDo: implement HEAD to check if the dataset exists
             try
             {
-                PSDataset dataset = this.GetDataset(resourceGroupName, dataFactoryName, datasetName);
+                PSDataset dataset = GetDataset(resourceGroupName, dataFactoryName, datasetName);
 
                 return true;
             }
@@ -184,10 +184,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 {
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
     }

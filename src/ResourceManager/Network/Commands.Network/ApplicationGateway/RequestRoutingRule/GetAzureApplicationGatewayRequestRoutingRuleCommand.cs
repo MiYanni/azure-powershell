@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var requestRoutingRule =
-                    this.ApplicationGateway.RequestRoutingRules.First(
+                    ApplicationGateway.RequestRoutingRules.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(requestRoutingRule);
             }
             else
             {
-                var requestRoutingRules = this.ApplicationGateway.RequestRoutingRules;
+                var requestRoutingRules = ApplicationGateway.RequestRoutingRules;
                 WriteObject(requestRoutingRules, true);
             }
 

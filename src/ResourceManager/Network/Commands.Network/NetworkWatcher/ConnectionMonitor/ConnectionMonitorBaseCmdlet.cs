@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetConnectionMonitor(resourceGroupName, name, connectionMonitorName);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception) when (exception.Response != null && exception.Response.StatusCode == HttpStatusCode.NotFound)
+            catch (Rest.Azure.CloudException exception) when (exception.Response != null && exception.Response.StatusCode == HttpStatusCode.NotFound)
             {
                 return false;
             }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSConnectionMonitorResult GetConnectionMonitor(string resourceGroupName, string name, string connectionMonitorName)
         {
-            ConnectionMonitorResult connectionMonitor = this.ConnectionMonitors.Get(resourceGroupName, name, connectionMonitorName);
+            ConnectionMonitorResult connectionMonitor = ConnectionMonitors.Get(resourceGroupName, name, connectionMonitorName);
             PSConnectionMonitorResult psConnectionMonitor = NetworkResourceManagerProfile.Mapper.Map<PSConnectionMonitorResult>(connectionMonitor);
 
             return psConnectionMonitor;
@@ -75,9 +75,9 @@ namespace Microsoft.Azure.Commands.Network
             return cmDetails;
         }
 
-        public MNM.NetworkWatcher GetNetworkWatcherByLocation(string location)
+        public NetworkWatcher GetNetworkWatcherByLocation(string location)
         {
-            var nwList = this.NetworkClient.NetworkManagementClient.NetworkWatchers.ListAll();
+            var nwList = NetworkClient.NetworkManagementClient.NetworkWatchers.ListAll();
             foreach (var nw in nwList)
             {
                 if (nw.Location == location)

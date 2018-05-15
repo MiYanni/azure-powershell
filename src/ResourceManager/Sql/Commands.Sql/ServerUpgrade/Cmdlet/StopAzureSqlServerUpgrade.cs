@@ -37,10 +37,11 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Cmdlet
         /// Gets the entity to delete
         /// </summary>
         /// <returns>The entity going to be deleted</returns>
-        protected override IEnumerable<Model.AzureSqlServerUpgradeModel> GetEntity()
+        protected override IEnumerable<AzureSqlServerUpgradeModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerUpgradeModel>() {
-                ModelAdapter.GetUpgrade(this.ResourceGroupName, this.ServerName)
+            return new List<AzureSqlServerUpgradeModel>
+            {
+                ModelAdapter.GetUpgrade(ResourceGroupName, ServerName)
             };
         }
 
@@ -49,7 +50,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Cmdlet
         /// </summary>
         /// <param name="model">The result of GetEntity</param>
         /// <returns>The input model</returns>
-        protected override IEnumerable<Model.AzureSqlServerUpgradeModel> ApplyUserInputToModel(IEnumerable<Model.AzureSqlServerUpgradeModel> model)
+        protected override IEnumerable<AzureSqlServerUpgradeModel> ApplyUserInputToModel(IEnumerable<AzureSqlServerUpgradeModel> model)
         {
             return model;
         }
@@ -62,14 +63,14 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Cmdlet
         protected override IEnumerable<AzureSqlServerUpgradeModel> PersistChanges(IEnumerable<AzureSqlServerUpgradeModel> entity)
         {
             if (!Force.IsPresent && !ShouldProcess(
-                string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.StopAzureSqlServerUpgradeDescription, this.ServerName),
-                string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.StopAzureSqlServerUpgradeWarning, this.ServerName),
-                Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+                string.Format(CultureInfo.InvariantCulture, Properties.Resources.StopAzureSqlServerUpgradeDescription, ServerName),
+                string.Format(CultureInfo.InvariantCulture, Properties.Resources.StopAzureSqlServerUpgradeWarning, ServerName),
+                Properties.Resources.ShouldProcessCaption))
             {
                 return null;
             }
 
-            ModelAdapter.Cancel(this.ResourceGroupName, this.ServerName);
+            ModelAdapter.Cancel(ResourceGroupName, ServerName);
 
             return null;
         }

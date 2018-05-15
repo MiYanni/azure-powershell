@@ -61,9 +61,9 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Model
         {
             return new SyncGroupSchemaColumn
             {
-                DataSize = this.DataSize,
-                DataType = this.DataType,
-                QuotedName = this.QuotedName
+                DataSize = DataSize,
+                DataType = DataType,
+                QuotedName = QuotedName
             };
         }
     }

@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string commandId = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "Location", "CommandId" },
+                 new[] { "Location", "CommandId" },
                  new object[] { location, commandId });
         }
     }
@@ -125,8 +125,8 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                string location = this.Location.Canonicalize();
-                string commandId = this.CommandId;
+                string location = Location.Canonicalize();
+                string commandId = CommandId;
 
                 if (!string.IsNullOrEmpty(location) && !string.IsNullOrEmpty(commandId))
                 {

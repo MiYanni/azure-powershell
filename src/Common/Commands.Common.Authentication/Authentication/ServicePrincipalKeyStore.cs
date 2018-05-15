@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
                         Marshal.PtrToStructure(pCredential, typeof(CredStore.NativeMethods.Credential));
                     unsafe
                     {
-                        return new SecureString((char*)(credential.credentialBlob),
+                        return new SecureString((char*)credential.credentialBlob,
                             (int)(credential.credentialBlobSize / Marshal.SystemDefaultCharSize));
                     }
                 }

@@ -65,9 +65,9 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 WriteDebug("Making client call");
 
                 ProtectionPolicyHelpers.ValidateProtectionPolicyName(Name);
-                AzureBackupClient.CheckProtectionPolicyNameAvailability(Vault.ResourceGroupName, Vault.Name, this.Name);
+                AzureBackupClient.CheckProtectionPolicyNameAvailability(Vault.ResourceGroupName, Vault.Name, Name);
 
-                var ScheduleType = ProtectionPolicyHelpers.GetScheduleType(DaysOfWeek, this.ParameterSetName,
+                var ScheduleType = ProtectionPolicyHelpers.GetScheduleType(DaysOfWeek, ParameterSetName,
                                     DailyScheduleParamSet, WeeklyScheduleParamSet);
 
                 var backupSchedule = ProtectionPolicyHelpers.FillCSMBackupSchedule(ScheduleType, BackupTime,
@@ -76,15 +76,15 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 ProtectionPolicyHelpers.ValidateRetentionPolicy(RetentionPolicy, backupSchedule);
 
                 var addCSMProtectionPolicyRequest = new CSMAddProtectionPolicyRequest();
-                addCSMProtectionPolicyRequest.PolicyName = this.Name;
+                addCSMProtectionPolicyRequest.PolicyName = Name;
                 addCSMProtectionPolicyRequest.Properties = new CSMAddProtectionPolicyRequestProperties();
-                addCSMProtectionPolicyRequest.Properties.PolicyName = this.Name;
+                addCSMProtectionPolicyRequest.Properties.PolicyName = Name;
                 addCSMProtectionPolicyRequest.Properties.BackupSchedule = backupSchedule;
-                addCSMProtectionPolicyRequest.Properties.WorkloadType = ProtectionPolicyHelpers.ConvertToCSMWorkLoadType(this.Type);
+                addCSMProtectionPolicyRequest.Properties.WorkloadType = ProtectionPolicyHelpers.ConvertToCSMWorkLoadType(Type);
 
                 addCSMProtectionPolicyRequest.Properties.LtrRetentionPolicy = ProtectionPolicyHelpers.ConvertToCSMRetentionPolicyObject(RetentionPolicy, backupSchedule);
 
-                AzureBackupClient.AddProtectionPolicy(Vault.ResourceGroupName, Vault.Name, this.Name, addCSMProtectionPolicyRequest);
+                AzureBackupClient.AddProtectionPolicy(Vault.ResourceGroupName, Vault.Name, Name, addCSMProtectionPolicyRequest);
                 WriteDebug(Resources.ProtectionPolicyCreated);
 
                 var policyInfo = AzureBackupClient.GetProtectionPolicyByName(Vault.ResourceGroupName, Vault.Name, Name);

@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name to which the VM Scale Set belongs to")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             publicSettings.Add(AzureDiskEncryptionExtensionConstants.encryptionOperationKey, AzureDiskEncryptionExtensionConstants.enableEncryptionOperation);
 
             string keyEncryptAlgorithm = string.Empty;
-            if (!string.IsNullOrEmpty(this.KeyEncryptionKeyUrl))
+            if (!string.IsNullOrEmpty(KeyEncryptionKeyUrl))
             {
                 if(!string.IsNullOrEmpty(KeyEncryptionAlgorithm))
                 {
@@ -170,7 +170,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
         private Hashtable GetExtensionProtectedSettings()
         {
             Hashtable protectedSettings = new Hashtable();
-            if (OperatingSystemTypes.Linux.Equals(this.CurrentOSType))
+            if (OperatingSystemTypes.Linux.Equals(CurrentOSType))
             {
                 protectedSettings.Add(AzureDiskEncryptionExtensionConstants.passphraseKey, Passphrase ?? null);
             }
@@ -185,33 +185,33 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             VirtualMachineScaleSetExtension vmssExtensionParameters = null;
 
-            if (OperatingSystemTypes.Windows.Equals(this.CurrentOSType))
+            if (OperatingSystemTypes.Windows.Equals(CurrentOSType))
             {
-                this.ExtensionName = this.ExtensionName ?? AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultName;
+                ExtensionName = ExtensionName ?? AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultName;
                 vmssExtensionParameters = new VirtualMachineScaleSetExtension
                 {
-                    Name = this.ExtensionName,
+                    Name = ExtensionName,
                     Publisher = AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultPublisher,
                     Type = AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultName,
-                    TypeHandlerVersion = (this.TypeHandlerVersion) ?? AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultVersion,
+                    TypeHandlerVersion = TypeHandlerVersion ?? AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultVersion,
                     Settings = SettingString,
                     AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent,
-                    ForceUpdateTag = this.ForceUpdate.IsPresent ? Guid.NewGuid().ToString() : null
+                    ForceUpdateTag = ForceUpdate.IsPresent ? Guid.NewGuid().ToString() : null
                 };
 
             }
-            else if (OperatingSystemTypes.Linux.Equals(this.CurrentOSType))
+            else if (OperatingSystemTypes.Linux.Equals(CurrentOSType))
             {
-                this.ExtensionName = this.ExtensionName ?? AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
+                ExtensionName = ExtensionName ?? AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
                 vmssExtensionParameters = new VirtualMachineScaleSetExtension
                 {
-					Name = this.ExtensionName,
+					Name = ExtensionName,
                     Publisher = AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher,
                     Type = AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultName,
-                    TypeHandlerVersion = (this.TypeHandlerVersion) ?? AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultVersion,
+                    TypeHandlerVersion = TypeHandlerVersion ?? AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultVersion,
                     Settings = SettingString,
                     AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent,
-                    ForceUpdateTag = this.ForceUpdate.IsPresent ? Guid.NewGuid().ToString() : null
+                    ForceUpdateTag = ForceUpdate.IsPresent ? Guid.NewGuid().ToString() : null
                 };
             }
 
@@ -229,23 +229,23 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             ExecuteClientAction(() =>
             {
-                if (this.ShouldProcess(VMScaleSetName, Properties.Resources.EnableDiskEncryptionAction)
-                && (this.Force.IsPresent ||
-                this.ShouldContinue(Properties.Resources.EnableAzureDiskEncryptionConfirmation, Properties.Resources.EnableAzureDiskEncryptionCaption))) // Change this.
+                if (ShouldProcess(VMScaleSetName, Properties.Resources.EnableDiskEncryptionAction)
+                && (Force.IsPresent ||
+                ShouldContinue(Properties.Resources.EnableAzureDiskEncryptionConfirmation, Properties.Resources.EnableAzureDiskEncryptionCaption))) // Change this.
                 {
                     VerifyParameters();
 
-                    VirtualMachineScaleSet vmssResponse = this.VirtualMachineScaleSetClient.Get(
-                        this.ResourceGroupName, VMScaleSetName);
+                    VirtualMachineScaleSet vmssResponse = VirtualMachineScaleSetClient.Get(
+                        ResourceGroupName, VMScaleSetName);
 
                     if (vmssResponse == null || vmssResponse.VirtualMachineProfile == null)
                     {
-                        ThrowInvalidArgumentError("The given VM Scale Set, {0}, does not exist.", this.VMScaleSetName);
+                        ThrowInvalidArgumentError("The given VM Scale Set, {0}, does not exist.", VMScaleSetName);
                     }
 
                     SetOSType(vmssResponse.VirtualMachineProfile);
 
-                    this.VolumeType = GetVolumeType(this.VolumeType, vmssResponse.VirtualMachineProfile.StorageProfile);
+                    VolumeType = GetVolumeType(VolumeType, vmssResponse.VirtualMachineProfile.StorageProfile);
                     VerifyVolumeType();
 
                     VirtualMachineScaleSetExtension parameters = GetVmssExtensionParameters();
@@ -262,13 +262,13 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
                     vmssResponse.VirtualMachineProfile.ExtensionProfile.Extensions.Add(parameters);
 
-                    VirtualMachineScaleSetExtension result = this.VirtualMachineScaleSetExtensionsClient.CreateOrUpdate(
-                        this.ResourceGroupName,
-                        this.VMScaleSetName,
-                        this.ExtensionName,
+                    VirtualMachineScaleSetExtension result = VirtualMachineScaleSetExtensionsClient.CreateOrUpdate(
+                        ResourceGroupName,
+                        VMScaleSetName,
+                        ExtensionName,
                         parameters);
 
-                    var psResult = result.ToPSVirtualMachineScaleSetExtension(this.ResourceGroupName, this.VMScaleSetName);
+                    var psResult = result.ToPSVirtualMachineScaleSetExtension(ResourceGroupName, VMScaleSetName);
                     WriteObject(psResult);
                 }
             });
@@ -276,14 +276,14 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
         private void VerifyParameters()
         {
-            if (this.DiskEncryptionKeyVaultId != null)
+            if (DiskEncryptionKeyVaultId != null)
             {
-                VerifyKeyVault(this.DiskEncryptionKeyVaultId);
+                VerifyKeyVault(DiskEncryptionKeyVaultId);
             }
 
-            if (this.KeyEncryptionKeyVaultId != null)
+            if (KeyEncryptionKeyVaultId != null)
             {
-                VerifyKeyVault(this.KeyEncryptionKeyVaultId);
+                VerifyKeyVault(KeyEncryptionKeyVaultId);
             }
         }
 
@@ -297,13 +297,13 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                 string sub = m.Groups["subId"].Value;
                 string rg = m.Groups["rgName"].Value;
                 string kv = m.Groups["vaultName"].Value;
-                if (!string.IsNullOrWhiteSpace(sub) && sub.Equals(this.DefaultContext.Subscription.Id))
+                if (!string.IsNullOrWhiteSpace(sub) && sub.Equals(DefaultContext.Subscription.Id))
                 {
                     IKeyVaultManagementClient keyVaultManagementFactory =
                         AzureSession.Instance.ClientFactory.CreateArmClient<KeyVaultManagementClient>(
-                            this.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
+                            DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
 
-                    var thisVmss = this.VirtualMachineScaleSetClient.Get(this.ResourceGroupName, this.VMScaleSetName);
+                    var thisVmss = VirtualMachineScaleSetClient.Get(ResourceGroupName, VMScaleSetName);
 
                     Azure.Management.KeyVault.Models.Vault returnedKeyVault = null;
                     try
@@ -349,7 +349,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
         private void VerifyVolumeType()
         {
-            if (this.CurrentOSType == OperatingSystemTypes.Linux && this.VolumeType.Equals("OS"))
+            if (CurrentOSType == OperatingSystemTypes.Linux && VolumeType.Equals("OS"))
             {
                 ThrowInvalidArgumentError("Only data disk encryption is supported for Linux VM Scale Set.", "");
             }

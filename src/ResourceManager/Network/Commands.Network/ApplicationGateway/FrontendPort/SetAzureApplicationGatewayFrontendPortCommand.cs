@@ -33,19 +33,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var oldFrontendPort = this.ApplicationGateway.FrontendPorts.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var oldFrontendPort = ApplicationGateway.FrontendPorts.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (oldFrontendPort == null)
             {
                 throw new ArgumentException("Frontend port with the specified name does not exist");
             }
 
-            var newFrontendPort = base.NewObject();
+            var newFrontendPort = NewObject();
 
-            this.ApplicationGateway.FrontendPorts.Remove(oldFrontendPort);
-            this.ApplicationGateway.FrontendPorts.Add(newFrontendPort);
+            ApplicationGateway.FrontendPorts.Remove(oldFrontendPort);
+            ApplicationGateway.FrontendPorts.Add(newFrontendPort);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

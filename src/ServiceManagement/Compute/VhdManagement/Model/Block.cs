@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
             {
                 if (data == null)
                 {
-                    data = this.blockFactory.ReadBlockData(this);
+                    data = blockFactory.ReadBlockData(this);
                 }
                 return data;
             }
@@ -45,12 +45,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 
         public long SectorCount
         {
-            get { return this.LogicalRange.Length / VhdConstants.VHD_SECTOR_LENGTH; }
+            get { return LogicalRange.Length / VhdConstants.VHD_SECTOR_LENGTH; }
         }
 
         public Sector GetSector(uint sector)
         {
-            return this.blockFactory.GetSector(this, sector);
+            return blockFactory.GetSector(this, sector);
         }
 
         public bool Empty { get; set; }

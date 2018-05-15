@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The name of the resource group.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                 Name = DscExtensionCmdletConstants.ExtensionPublishedNamespace + "." + DscExtensionCmdletConstants.ExtensionPublishedName;
             }
 
-            if (ShouldProcess(string.Format(CultureInfo.CurrentUICulture, Microsoft.Azure.Commands.Compute.Properties.Resources.DscExtensionRemovalConfirmation, Name), Microsoft.Azure.Commands.Compute.Properties.Resources.DscExtensionRemovalCaption))
+            if (ShouldProcess(string.Format(CultureInfo.CurrentUICulture, Properties.Resources.DscExtensionRemovalConfirmation, Name), Properties.Resources.DscExtensionRemovalCaption))
             {
                 //Add retry logic due to CRP service restart known issue CRP bug: 3564713
                 var count = 1;
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.DSC
                             Name).GetAwaiter().GetResult();
                         break;
                     }
-                    catch (Rest.Azure.CloudException ex)
+                    catch (CloudException ex)
                     {
                         var errorReturned = JsonConvert.DeserializeObject<PSComputeLongRunningOperation>(ex.Response.Content);
 

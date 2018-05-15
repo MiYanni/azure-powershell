@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
                                 .GetResult()
                                 .Body;
 
-            return Utilities.GetPagedList(listAsync, listNextAsync);
+            return GetPagedList(listAsync, listNextAsync);
         }
 
         internal static List<ApplicationInsightsComponent> GetComponents(IApplicationInsightsManagementClient applicationInsightsClient, string resourceGroupName)
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
                                 .GetResult()
                                 .Body;
 
-            return Utilities.GetPagedList(listAsync, listNextAsync);
+            return GetPagedList(listAsync, listNextAsync);
         }
 
 

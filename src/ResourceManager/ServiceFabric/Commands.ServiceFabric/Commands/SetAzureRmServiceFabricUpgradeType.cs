@@ -31,14 +31,14 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = ManualSet, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ParameterSetName = AutomaticSet, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
         [Parameter(Mandatory = true, Position = 1, ParameterSetName = ManualSet, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
@@ -46,12 +46,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                    HelpMessage = "ClusterUpgradeMode")]
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = ManualSet,
                    HelpMessage = "Cluster upgrade mode, e.g. Automatic or Manual")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public ClusterUpgradeMode UpgradeMode { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = ManualSet,
                    HelpMessage = "Cluster code version")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterCodeVersion")]
         public string Version { get; set; }
 
@@ -61,12 +61,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
             if (UpgradeMode == ClusterUpgradeMode.Manual)
             {
-                patchRequest.ClusterCodeVersion = this.Version;
+                patchRequest.ClusterCodeVersion = Version;
             }
 
             patchRequest.UpgradeMode = UpgradeMode.ToString();
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Set fabric upgrade type to {0} ", this.UpgradeMode)))
+            if (ShouldProcess(Name, string.Format("Set fabric upgrade type to {0} ", UpgradeMode)))
             {
                 var cluster = SendPatchRequest(patchRequest);
                 WriteObject(cluster, true);

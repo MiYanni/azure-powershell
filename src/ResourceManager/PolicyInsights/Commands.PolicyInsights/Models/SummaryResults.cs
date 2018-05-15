@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Commands.PolicyInsights.Models
                 return;
             }
 
-            this.NonCompliantPolicies = summaryResults.NonCompliantPolicies;
-            this.NonCompliantResources = summaryResults.NonCompliantResources;
+            NonCompliantPolicies = summaryResults.NonCompliantPolicies;
+            NonCompliantResources = summaryResults.NonCompliantResources;
         }
     }
 }

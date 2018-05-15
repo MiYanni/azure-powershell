@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         public CSMProtectionPolicyResponse GetProtectionPolicyByName(string resourceGroupName, string resourceName, string name)
         {
             var policyList = ListProtectionPolicies(resourceGroupName, resourceName);
-            var filteredList = policyList.Where(x => x.Name.Equals(name, System.StringComparison.InvariantCultureIgnoreCase));
+            var filteredList = policyList.Where(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
             return filteredList.FirstOrDefault();
         }
 

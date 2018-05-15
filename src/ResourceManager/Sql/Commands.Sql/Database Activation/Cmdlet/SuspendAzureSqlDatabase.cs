@@ -50,8 +50,9 @@ namespace Microsoft.Azure.Commands.Sql.DatabaseActivation.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlDatabaseModel> PersistChanges(IEnumerable<AzureSqlDatabaseModel> entity)
         {
-            return new List<AzureSqlDatabaseModel>() {
-                ModelAdapter.PauseDatabase(this.ResourceGroupName, this.ServerName, this.DatabaseName)
+            return new List<AzureSqlDatabaseModel>
+            {
+                ModelAdapter.PauseDatabase(ResourceGroupName, ServerName, DatabaseName)
             };
         }
     }

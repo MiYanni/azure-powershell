@@ -21,13 +21,13 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
 {
     public partial class AzureBackupClientAdapter
     {
-        public IEnumerable<Mgmt.CSMJobResponse> ListJobs(string resourceGroupName, string resourceName, CSMJobQueryObject queryParams)
+        public IEnumerable<CSMJobResponse> ListJobs(string resourceGroupName, string resourceName, CSMJobQueryObject queryParams)
         {
             var response = AzureBackupClient.Job.ListAsync(resourceGroupName, resourceName, queryParams, GetCustomRequestHeaders(), CmdletCancellationToken).Result;
             return response.List.Value;
         }
 
-        public Mgmt.CSMJobDetailsResponse GetJobDetails(string resourceGroupName, string resourceName, string jobId)
+        public CSMJobDetailsResponse GetJobDetails(string resourceGroupName, string resourceName, string jobId)
         {
             var response = AzureBackupClient.Job.GetAsync(resourceGroupName, resourceName, jobId, GetCustomRequestHeaders(), CmdletCancellationToken).Result;
             return response.Value;

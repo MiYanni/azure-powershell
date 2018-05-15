@@ -38,21 +38,21 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var probe = this.LoadBalancer.Probes.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var probe = LoadBalancer.Probes.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (probe == null)
             {
                 throw new ArgumentException("Probe with the specified name does not exist");
             }
 
-            probe.Name = this.Name;
-            probe.Port = this.Port;
-            probe.Protocol = this.Protocol;
-            probe.RequestPath = this.RequestPath;
-            probe.IntervalInSeconds = this.IntervalInSeconds;
-            probe.NumberOfProbes = this.ProbeCount;
+            probe.Name = Name;
+            probe.Port = Port;
+            probe.Protocol = Protocol;
+            probe.RequestPath = RequestPath;
+            probe.IntervalInSeconds = IntervalInSeconds;
+            probe.NumberOfProbes = ProbeCount;
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

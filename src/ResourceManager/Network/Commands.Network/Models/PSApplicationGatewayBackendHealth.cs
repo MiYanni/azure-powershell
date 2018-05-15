@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string BackendAddressPoolsText
         {
-            get { return JsonConvert.SerializeObject(BackendAddressPools, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(BackendAddressPools, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

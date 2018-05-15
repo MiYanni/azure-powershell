@@ -15,10 +15,10 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.Queue
 {
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Queue.Protocol;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage.Queue;
+    using WindowsAzure.Storage.Queue.Protocol;
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
@@ -46,7 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Queue
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = NameParameterSet)]
-        [SupportsWildcards()]
+        [SupportsWildcards]
         public string Name { get; set; }
 
         [Parameter(HelpMessage = "Queue Prefix",

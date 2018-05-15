@@ -58,19 +58,19 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
             CloudFile file = null;
 
-            if (null != this.File)
+            if (null != File)
             {
-                file = this.File;
+                file = File;
             }
             else
             {
-                string[] path = NamingUtil.ValidatePath(this.FilePath);
-                file = this.BuildFileShareObjectFromName(this.ShareName).GetRootDirectoryReference().GetFileReferenceByPath(path);
+                string[] path = NamingUtil.ValidatePath(FilePath);
+                file = BuildFileShareObjectFromName(ShareName).GetRootDirectoryReference().GetFileReferenceByPath(path);
             }
 
             if (ShouldProcess(file.Name, "Stop file copy task"))
             {
-                Func<long, Task> taskGenerator = (taskId) => this.StopCopyFile(taskId, localChannel, file, CopyId);
+                Func<long, Task> taskGenerator = taskId => StopCopyFile(taskId, localChannel, file, CopyId);
 
                 RunTask(taskGenerator);
             }

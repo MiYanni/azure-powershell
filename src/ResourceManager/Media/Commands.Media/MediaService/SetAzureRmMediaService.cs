@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.Media.MediaService
                             ResourceGroupName));
                     }
 
-                    var primaryStorageAccount = mediaService.StorageAccounts.FirstOrDefault(x => (x.IsPrimary.HasValue && x.IsPrimary.Value));
+                    var primaryStorageAccount = mediaService.StorageAccounts.FirstOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value);
                     // there must be a primary storage account associated with the media service account
                     if (primaryStorageAccount == null)
                     {

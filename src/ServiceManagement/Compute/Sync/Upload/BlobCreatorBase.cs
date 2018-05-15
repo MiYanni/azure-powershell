@@ -60,12 +60,12 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
         {
             this.localVhd = localVhd;
             this.blobObjectFactory = blobObjectFactory;
-            this.destination = new Uri(blobDestination.BlobPath);
+            destination = new Uri(blobDestination.BlobPath);
             this.blobDestination = blobDestination;
             this.overWrite = overWrite;
 
-            this.destinationBlob = blobObjectFactory.Create(blobDestination);
-            this.requestOptions = this.blobObjectFactory.CreateRequestOptions();
+            destinationBlob = blobObjectFactory.Create(blobDestination);
+            requestOptions = this.blobObjectFactory.CreateRequestOptions();
         }
 
         private LocalMetaData operationMetaData;
@@ -75,9 +75,9 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
             [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
             get
             {
-                if (this.operationMetaData == null)
+                if (operationMetaData == null)
                 {
-                    this.operationMetaData = new LocalMetaData
+                    operationMetaData = new LocalMetaData
                     {
                         FileMetaData = FileMetaData.Create(localVhd.FullName),
                         SystemInformation = SystemInformation.Create()
@@ -112,7 +112,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
             AssertIfValidhVhd(localVhd);
             AssertIfValidVhdSize(localVhd);
 
-            this.blobObjectFactory.CreateContainer(blobDestination);
+            blobObjectFactory.CreateContainer(blobDestination);
 
             UploadContext context = null;
             bool completed = false;
@@ -126,7 +126,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 
                 if (overWrite)
                 {
-                    destinationBlob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, null, requestOptions, operationContext: null)
+                    destinationBlob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, null, requestOptions, null)
                         .ConfigureAwait(false).GetAwaiter().GetResult();
                 }
 

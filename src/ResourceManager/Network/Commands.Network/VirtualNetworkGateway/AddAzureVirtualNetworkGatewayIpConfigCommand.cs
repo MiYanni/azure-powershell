@@ -45,25 +45,25 @@ namespace Microsoft.Azure.Commands.Network
                 {
                     if (Subnet != null)
                     {
-                        this.SubnetId = this.Subnet.Id;
+                        SubnetId = Subnet.Id;
                     }
                     if (PublicIpAddress != null)
                     {
-                        this.PublicIpAddressId = this.PublicIpAddress.Id;
+                        PublicIpAddressId = PublicIpAddress.Id;
                     }
                 }
 
                 var vnetGatewayIpConfig = new PSVirtualNetworkGatewayIpConfiguration();
-                vnetGatewayIpConfig.Name = this.Name;
+                vnetGatewayIpConfig.Name = Name;
 
-                if (!string.IsNullOrEmpty(this.SubnetId))
+                if (!string.IsNullOrEmpty(SubnetId))
                 {
                     vnetGatewayIpConfig.Subnet = new PSResourceId();
-                    vnetGatewayIpConfig.Subnet.Id = this.SubnetId;
+                    vnetGatewayIpConfig.Subnet.Id = SubnetId;
                 }
-                if (!string.IsNullOrEmpty(this.PrivateIpAddress))
+                if (!string.IsNullOrEmpty(PrivateIpAddress))
                 {
-                    vnetGatewayIpConfig.PrivateIpAddress = this.PrivateIpAddress;
+                    vnetGatewayIpConfig.PrivateIpAddress = PrivateIpAddress;
                     vnetGatewayIpConfig.PrivateIpAllocationMethod = Management.Network.Models.IPAllocationMethod.Static;
                 }
                 else
@@ -71,25 +71,25 @@ namespace Microsoft.Azure.Commands.Network
                     vnetGatewayIpConfig.PrivateIpAllocationMethod = Management.Network.Models.IPAllocationMethod.Dynamic;
                 }
 
-                if (!string.IsNullOrEmpty(this.PublicIpAddressId))
+                if (!string.IsNullOrEmpty(PublicIpAddressId))
                 {
                     vnetGatewayIpConfig.PublicIpAddress = new PSResourceId();
-                    vnetGatewayIpConfig.PublicIpAddress.Id = this.PublicIpAddressId;
+                    vnetGatewayIpConfig.PublicIpAddress.Id = PublicIpAddressId;
                 }
 
                 vnetGatewayIpConfig.Id =
                     ChildResourceHelp.GetResourceNotSetId(
-                        this.NetworkClient.NetworkManagementClient.SubscriptionId,
+                        NetworkClient.NetworkManagementClient.SubscriptionId,
                         Properties.Resources.VirtualNetworkGatewayIpConfigName,
-                        this.Name);
+                        Name);
 
-                if (this.VirtualNetworkGateway.IpConfigurations == null)
+                if (VirtualNetworkGateway.IpConfigurations == null)
                 {
-                    this.VirtualNetworkGateway.IpConfigurations = new List<PSVirtualNetworkGatewayIpConfiguration>();
+                    VirtualNetworkGateway.IpConfigurations = new List<PSVirtualNetworkGatewayIpConfiguration>();
                 }
-                this.VirtualNetworkGateway.IpConfigurations.Add(vnetGatewayIpConfig);
+                VirtualNetworkGateway.IpConfigurations.Add(vnetGatewayIpConfig);
 
-                WriteObject(this.VirtualNetworkGateway);
+                WriteObject(VirtualNetworkGateway);
             }
         }
     }

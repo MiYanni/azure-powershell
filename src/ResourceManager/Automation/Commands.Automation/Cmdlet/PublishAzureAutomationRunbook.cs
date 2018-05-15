@@ -40,9 +40,9 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            var runbook = this.AutomationClient.PublishRunbook(this.ResourceGroupName, this.AutomationAccountName, this.Name);
+            var runbook = AutomationClient.PublishRunbook(ResourceGroupName, AutomationAccountName, Name);
 
-            this.WriteObject(runbook);
+            WriteObject(runbook);
         }
     }
 }

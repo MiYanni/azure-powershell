@@ -35,17 +35,17 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         {
             get
             {
-                this._integartionAccountClient = new IntegrationAccountClient(DefaultProfile.DefaultContext);
+                _integartionAccountClient = new IntegrationAccountClient(DefaultProfile.DefaultContext);
 
-                this._integartionAccountClient.VerboseLogger = WriteVerboseWithTimestamp;
-                this._integartionAccountClient.ErrorLogger = WriteErrorWithTimestamp;
+                _integartionAccountClient.VerboseLogger = WriteVerboseWithTimestamp;
+                _integartionAccountClient.ErrorLogger = WriteErrorWithTimestamp;
                                 
                 return _integartionAccountClient;
             }
 
             set
             {
-                this._integartionAccountClient = value;                 
+                _integartionAccountClient = value;                 
             }
         }
 
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         {
             get
             {
-                this._websitesClient = new WebsitesClient(DefaultProfile.DefaultContext)
+                _websitesClient = new WebsitesClient(DefaultProfile.DefaultContext)
                 {
                     VerboseLogger = WriteVerboseWithTimestamp,
                     ErrorLogger = WriteErrorWithTimestamp
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
 
             set
             {
-                this._websitesClient = value;
+                _websitesClient = value;
             }
         }
 
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         {
             get
             {
-                this._logicAppClient = new LogicAppClient(DefaultProfile.DefaultContext)
+                _logicAppClient = new LogicAppClient(DefaultProfile.DefaultContext)
                 {
                     VerboseLogger = WriteVerboseWithTimestamp,
                     ErrorLogger = WriteErrorWithTimestamp
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
 
             set
             {
-                this._logicAppClient = value;
+                _logicAppClient = value;
             }
         }
 

@@ -93,12 +93,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 }
 
                 PsBackupProviderManager providerManager =
-                    new PsBackupProviderManager(new Dictionary<Enum, object>()
-                {
+                    new PsBackupProviderManager(new Dictionary<Enum, object>
+                    {
                    {PolicyParams.PolicyName, Name},
                    {PolicyParams.WorkloadType, WorkloadType},
                    {PolicyParams.RetentionPolicy, RetentionPolicy},
-                   {PolicyParams.SchedulePolicy, SchedulePolicy},
+                   {PolicyParams.SchedulePolicy, SchedulePolicy}
                 }, ServiceClientAdapter);
 
                 IPsBackupProvider psBackupProvider =

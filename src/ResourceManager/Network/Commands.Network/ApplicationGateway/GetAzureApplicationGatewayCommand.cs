@@ -44,33 +44,33 @@ namespace Microsoft.Azure.Commands.Network
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var applicationGateway = this.GetApplicationGateway(this.ResourceGroupName, this.Name);
+                var applicationGateway = GetApplicationGateway(ResourceGroupName, Name);
 
                 WriteObject(applicationGateway);
             }
             else
             {
                 IPage<ApplicationGateway> appGatewayPage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    appGatewayPage = this.ApplicationGatewayClient.List(this.ResourceGroupName);
+                    appGatewayPage = ApplicationGatewayClient.List(ResourceGroupName);
                 }
                 else
                 {
-                    appGatewayPage = this.ApplicationGatewayClient.ListAll();
+                    appGatewayPage = ApplicationGatewayClient.ListAll();
                 }
 
                 // Get all resources by polling on next page link
-                var appGwResponseList = ListNextLink<ApplicationGateway>.GetAllResourcesByPollingNextLink(appGatewayPage, this.ApplicationGatewayClient.ListNext);
+                var appGwResponseList = ListNextLink<ApplicationGateway>.GetAllResourcesByPollingNextLink(appGatewayPage, ApplicationGatewayClient.ListNext);
 
                 var psApplicationGateways = new List<PSApplicationGateway>();
 
                 foreach (var appGw in appGwResponseList)
                 {
-                    var psAppGw = this.ToPsApplicationGateway(appGw);
-                    psAppGw.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(appGw.Id);
+                    var psAppGw = ToPsApplicationGateway(appGw);
+                    psAppGw.ResourceGroupName = GetResourceGroup(appGw.Id);
                     psApplicationGateways.Add(psAppGw);
                 }
 

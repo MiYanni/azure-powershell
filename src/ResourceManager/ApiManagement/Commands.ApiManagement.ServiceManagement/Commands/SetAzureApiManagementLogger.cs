@@ -14,8 +14,8 @@
 
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models;
-    using Microsoft.Azure.Management.ApiManagement.SmapiModels;
+    using Models;
+    using Management.ApiManagement.SmapiModels;
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
@@ -80,8 +80,8 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
                 credentials.Add("name", Name);
                 credentials.Add("connectionString", ConnectionString);
             }
-            else if ((string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(ConnectionString)) ||
-                (!string.IsNullOrWhiteSpace(Name) && string.IsNullOrWhiteSpace(ConnectionString)))
+            else if (string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(ConnectionString) ||
+                !string.IsNullOrWhiteSpace(Name) && string.IsNullOrWhiteSpace(ConnectionString))
             {
                 WriteWarning("When updating Logger Credentials, we need to Provide both -Name and -ConnectionString parameters");
                 return;

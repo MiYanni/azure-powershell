@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
 
         public PSTrigger()
         {
-            this.trigger = new TriggerResource();
+            trigger = new TriggerResource();
         }
 
         public PSTrigger(TriggerResource trigger, string resourceGroupName, string factoryName)
@@ -34,15 +34,15 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
             }
 
             this.trigger = trigger;
-            this.ResourceGroupName = resourceGroupName;
-            this.DataFactoryName = factoryName;
+            ResourceGroupName = resourceGroupName;
+            DataFactoryName = factoryName;
         }
 
         public override string Name
         {
             get
             {
-                return this.trigger.Name;
+                return trigger.Name;
             }
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.trigger.Properties.RuntimeState;
+                return trigger.Properties.RuntimeState;
             }
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.trigger.Properties;
+                return trigger.Properties;
             }
         }
 
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.trigger.Id;
+                return trigger.Id;
             }
         }
 
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this.trigger.Etag;
+                return trigger.Etag;
             }
         }
     }

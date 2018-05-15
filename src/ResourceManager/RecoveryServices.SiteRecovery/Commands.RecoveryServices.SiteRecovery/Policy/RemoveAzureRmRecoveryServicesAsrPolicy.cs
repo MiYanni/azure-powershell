@@ -43,16 +43,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.InputObject.FriendlyName,
+            if (ShouldProcess(
+                InputObject.FriendlyName,
                 VerbsCommon.Remove))
             {
-                var responseBlue = this.RecoveryServicesClient.DeletePolicy(this.InputObject.Name);
+                var responseBlue = RecoveryServicesClient.DeletePolicy(InputObject.Name);
 
-                var jobResponseBlue = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponseBlue = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(responseBlue.Location));
 
-                this.WriteObject(new ASRJob(jobResponseBlue));
+                WriteObject(new ASRJob(jobResponseBlue));
             }
         }
     }

@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common
             Action<TType[]> action)
         {
             ResponseWithContinuation<TType[]> batch = null;
-            while ((cancellationToken.HasValue && !cancellationToken.Value.IsCancellationRequested) && (batch == null || !string.IsNullOrWhiteSpace(batch.NextLink)))
+            while (cancellationToken.HasValue && !cancellationToken.Value.IsCancellationRequested && (batch == null || !string.IsNullOrWhiteSpace(batch.NextLink)))
             {
                 cancellationToken.Value.ThrowIfCancellationRequested();
 
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common
         {
             var result = new List<TType>();
             ResponseWithContinuation<TType[]> batch = null;
-            while ((cancellationToken.HasValue && !cancellationToken.Value.IsCancellationRequested) && (batch == null || !string.IsNullOrWhiteSpace(batch.NextLink)))
+            while (cancellationToken.HasValue && !cancellationToken.Value.IsCancellationRequested && (batch == null || !string.IsNullOrWhiteSpace(batch.NextLink)))
             {
                 cancellationToken.Value.ThrowIfCancellationRequested();
 

@@ -19,13 +19,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ErrorResponses;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities;
+    using Components;
+    using Entities.ErrorResponses;
+    using Extensions;
+    using Utilities;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
 
     /// <summary>
     /// A base class for Azure clients.
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
         /// Initializes a new instance of the <see cref="ResourceManagerRestClientBase"/> class.
         /// </summary>
         /// <param name="httpClientHelper">The azure http client wrapper to use.</param>
-        public ResourceManagerRestClientBase(Components.HttpClientHelper httpClientHelper)
+        public ResourceManagerRestClientBase(HttpClientHelper httpClientHelper)
         {
             this.httpClientHelper = httpClientHelper;
         }
@@ -57,16 +57,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             Uri requestUri,
             CancellationToken cancellationToken)
         {
-            using (var response = await this
-                .SendRequestAsync(
-                    httpMethod: httpMethod,
-                    requestUri: requestUri,
-                    cancellationToken: cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false))
+            using (var response = await SendRequestAsync(
+                    httpMethod,
+                    requestUri,
+                    cancellationToken)
+                .ConfigureAwait(false))
             {
-                return await this
-                    .GetOperationResult(response: response)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                return await GetOperationResult(response)
+                    .ConfigureAwait(false);
             }
         }
 
@@ -83,17 +81,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             JObject content,
             CancellationToken cancellationToken)
         {
-            using (var response = await this
-                .SendRequestAsync(
-                    httpMethod: httpMethod,
-                    requestUri: requestUri,
-                    content: content,
-                    cancellationToken: cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false))
+            using (var response = await SendRequestAsync(
+                    httpMethod,
+                    requestUri,
+                    content,
+                    cancellationToken)
+                .ConfigureAwait(false))
             {
-                return await this
-                    .GetOperationResult(response: response)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                return await GetOperationResult(response)
+                    .ConfigureAwait(false);
             }
         }
 
@@ -110,17 +106,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             JToken content,
             CancellationToken cancellationToken)
         {
-            using (var response = await this
-                .SendRequestAsync(
-                    httpMethod: httpMethod,
-                    requestUri: requestUri,
-                    content: content,
-                    cancellationToken: cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false))
+            using (var response = await SendRequestAsync(
+                    httpMethod,
+                    requestUri,
+                    content,
+                    cancellationToken)
+                .ConfigureAwait(false))
             {
-                return await this
-                    .GetOperationResult(response: response)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                return await GetOperationResult(response)
+                    .ConfigureAwait(false);
             }
         }
 
@@ -138,13 +132,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             JObject content,
             CancellationToken cancellationToken)
         {
-            using (var response = await this
-                .SendRequestAsync(httpMethod: httpMethod, requestUri: requestUri, content: content, cancellationToken: cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false))
+            using (var response = await SendRequestAsync(httpMethod, requestUri, content, cancellationToken)
+                .ConfigureAwait(false))
             {
                 return await response
                     .ReadContentAsJsonAsync<TResponseType>()
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                    .ConfigureAwait(false);
             }
         }
 
@@ -162,11 +155,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             CancellationToken cancellationToken)
         {
             var contentString = content == null ? string.Empty : content.ToString();
-            using (var httpContent = new StringContent(content: contentString, encoding: Encoding.UTF8, mediaType: "application/json"))
-            using (var request = new HttpRequestMessage(method: httpMethod, requestUri: requestUri) { Content = httpContent })
+            using (var httpContent = new StringContent(contentString, Encoding.UTF8, "application/json"))
+            using (var request = new HttpRequestMessage(httpMethod, requestUri) { Content = httpContent })
             {
-                return await this.SendRequestAsync(request: request, cancellationToken: cancellationToken)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                return await SendRequestAsync(request, cancellationToken)
+                    .ConfigureAwait(false);
             }
         }
 
@@ -182,13 +175,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             Uri requestUri,
             CancellationToken cancellationToken)
         {
-            using (var response = await this
-                .SendRequestAsync(httpMethod: httpMethod, requestUri: requestUri, cancellationToken: cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false))
+            using (var response = await SendRequestAsync(httpMethod, requestUri, cancellationToken)
+                .ConfigureAwait(false))
             {
                 return await response
                     .ReadContentAsJsonAsync<TResponseType>()
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                    .ConfigureAwait(false);
             }
         }
 
@@ -203,10 +195,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             Uri requestUri,
             CancellationToken cancellationToken)
         {
-            using (var request = new HttpRequestMessage(method: httpMethod, requestUri: requestUri))
+            using (var request = new HttpRequestMessage(httpMethod, requestUri))
             {
-                return await this.SendRequestAsync(request: request, cancellationToken: cancellationToken)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                return await SendRequestAsync(request, cancellationToken)
+                    .ConfigureAwait(false);
             }
         }
 
@@ -218,28 +210,26 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
         protected async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            using (var httpClient = this.httpClientHelper.CreateHttpClient())
+            using (var httpClient = httpClientHelper.CreateHttpClient())
             {
                 try
                 {
                     var response = await httpClient
-                        .SendAsync(request: request, cancellationToken: cancellationToken)
-                        .ConfigureAwait(continueOnCapturedContext: false);
+                        .SendAsync(request, cancellationToken)
+                        .ConfigureAwait(false);
 
                     if (!response.StatusCode.IsSuccessfulRequest())
                     {
-                        var errorResponse = await ResourceManagerRestClientBase
-                            .TryReadErrorResponseMessage(response, rewindContentStream: true)
-                            .ConfigureAwait(continueOnCapturedContext: false);
+                        var errorResponse = await TryReadErrorResponseMessage(response, true)
+                            .ConfigureAwait(false);
 
-                        var message = await ResourceManagerRestClientBase
-                            .GetErrorMessage(request: request, response: response, errorResponse: errorResponse)
-                            .ConfigureAwait(continueOnCapturedContext: false);
+                        var message = await GetErrorMessage(request, response, errorResponse)
+                            .ConfigureAwait(false);
 
                         throw new ErrorResponseMessageException(
-                            httpStatus: response.StatusCode,
-                            errorResponseMessage: errorResponse,
-                            errorMessage: message);
+                            response.StatusCode,
+                            errorResponse,
+                            message);
                     }
 
                     return response;
@@ -280,8 +270,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             try
             {
                 return await response
-                    .ReadContentAsJsonAsync<ErrorResponseMessage>(rewindContentStream: rewindContentStream)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                    .ReadContentAsJsonAsync<ErrorResponseMessage>(rewindContentStream)
+                    .ConfigureAwait(false);
             }
             catch (FormatException)
             {
@@ -307,10 +297,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients
             {
                 Value = await response
                     .ReadContentAsStringAsync()
-                    .ConfigureAwait(continueOnCapturedContext: false),
+                    .ConfigureAwait(false),
             };
 
-            this.PopulateOperationResult(response: response, operationResult: operationResult);
+            PopulateOperationResult(response, operationResult);
             return operationResult;
         }
 

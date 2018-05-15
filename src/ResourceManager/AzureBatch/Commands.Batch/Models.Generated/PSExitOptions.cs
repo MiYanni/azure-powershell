@@ -26,49 +26,49 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSExitOptions
     {
         
-        internal Microsoft.Azure.Batch.ExitOptions omObject;
+        internal ExitOptions omObject;
         
         public PSExitOptions()
         {
-            this.omObject = new Microsoft.Azure.Batch.ExitOptions();
+            omObject = new ExitOptions();
         }
         
-        internal PSExitOptions(Microsoft.Azure.Batch.ExitOptions omObject)
+        internal PSExitOptions(ExitOptions omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.DependencyAction? DependencyAction
+        public Azure.Batch.Common.DependencyAction? DependencyAction
         {
             get
             {
-                return this.omObject.DependencyAction;
+                return omObject.DependencyAction;
             }
             set
             {
-                this.omObject.DependencyAction = value;
+                omObject.DependencyAction = value;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.JobAction? JobAction
+        public Azure.Batch.Common.JobAction? JobAction
         {
             get
             {
-                return this.omObject.JobAction;
+                return omObject.JobAction;
             }
             set
             {
-                this.omObject.JobAction = value;
+                omObject.JobAction = value;
             }
         }
     }

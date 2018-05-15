@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<EncryptionProtector> EncryptionProtector
         {
-            get { return this._encryptionProtector; }
-            set { this._encryptionProtector = value; }
+            get { return _encryptionProtector; }
+            set { _encryptionProtector = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public EncryptionProtectorListResponse()
         {
-            this.EncryptionProtector = new LazyList<EncryptionProtector>();
+            EncryptionProtector = new LazyList<EncryptionProtector>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<EncryptionProtector> GetEnumerator()
         {
-            return this.EncryptionProtector.GetEnumerator();
+            return EncryptionProtector.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             get
             {
-                return this.recoveryServicesClient;
+                return recoveryServicesClient;
             }
         }
 
@@ -92,14 +92,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             // Get Resource provider namespace from config if needed to communicate with internal deployments
             if (string.IsNullOrEmpty(arsVaultCreds.ResourceNamespace))
             {
-                Utilities.UpdateCurrentVaultContext(new ASRVaultCreds()
+                Utilities.UpdateCurrentVaultContext(new ASRVaultCreds
                 {
                     ResourceNamespace = ProductionRpNamespace,
                     ARMResourceType = resourceType
                 });
             }
 
-            this.recoveryServicesClient =
+            recoveryServicesClient =
             AzureSession.Instance.ClientFactory.CreateArmClient<RecoveryServicesClient>(
                 defaultContext, AzureEnvironment.Endpoint.ResourceManager);
 
@@ -142,10 +142,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <returns>Custom request headers</returns>
         public Dictionary<string, List<string>> GetRequestHeaders()
         {
-            this.ClientRequestId = Guid.NewGuid().ToString() + "-" + DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ssZ") + "-P";
+            ClientRequestId = Guid.NewGuid() + "-" + DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ssZ") + "-P";
 
             var dict = new Dictionary<string, List<string>>();
-            dict["x-ms-client-request-id"] = new List<string>() { ClientRequestId };
+            dict["x-ms-client-request-id"] = new List<string> { ClientRequestId };
 
             return dict;
         }

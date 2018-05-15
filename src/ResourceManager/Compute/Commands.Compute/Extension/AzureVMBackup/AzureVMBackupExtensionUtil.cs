@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureVMBackup
         {
             string plainText = JsonConvert.SerializeObject(obj);
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            string base64EncodedPrivateConfig = System.Convert.ToBase64String(plainTextBytes);
+            string base64EncodedPrivateConfig = Convert.ToBase64String(plainTextBytes);
             return base64EncodedPrivateConfig;
         }
 
@@ -195,22 +195,19 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureVMBackup
 
             StorageCredentialsFactory storageCredentialsFactory = new StorageCredentialsFactory(vmConfig.ResourceGroupName, storageClient, virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext.Subscription);
 
-            List<string> blobUris = this.GetDiskBlobUris(virtualMachineResponse.Body);
-            AzureVMBackupBlobSasUris blobSASUris = this.GenerateBlobSasUris(blobUris, virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext);
+            List<string> blobUris = GetDiskBlobUris(virtualMachineResponse.Body);
+            AzureVMBackupBlobSasUris blobSASUris = GenerateBlobSasUris(blobUris, virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext);
 
             Dictionary<string, string> snapshotQuery = new Dictionary<string, string>();
             snapshotQuery.Add(backupExtensionMetadataName, snapshotTag);
-            List<CloudPageBlob> snapshots = this.FindSnapshot(virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext, blobSASUris.pageBlobUri, blobSASUris.storageCredentialsFactory, snapshotQuery);
+            List<CloudPageBlob> snapshots = FindSnapshot(virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext, blobSASUris.pageBlobUri, blobSASUris.storageCredentialsFactory, snapshotQuery);
             if (snapshots == null || snapshots.Count == 0)
             {
                 throw new AzureVMBackupException(AzureVMBackupErrorCodes.NoSnapshotFound, "snapshot with the tag not found.");
             }
-            else
+            foreach (CloudPageBlob snapshot in snapshots)
             {
-                foreach (CloudPageBlob snapshot in snapshots)
-                {
-                    snapshot.DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                }
+                snapshot.DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
         }
 
@@ -231,15 +228,15 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureVMBackup
                 vmConfig.ResourceGroupName,
                 vmConfig.VMName);
 
-            List<string> vmPageBlobUris = this.GetDiskBlobUris(virtualMachine.Body);
+            List<string> vmPageBlobUris = GetDiskBlobUris(virtualMachine.Body);
 
-            AzureVMBackupBlobSasUris blobSASUris = this.GenerateBlobSasUris(vmPageBlobUris, virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext);
+            AzureVMBackupBlobSasUris blobSASUris = GenerateBlobSasUris(vmPageBlobUris, virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext);
 
             string taskId = Guid.NewGuid().ToString();
 
             AzureVMBackupExtensionProtectedSettings privateConfig = new AzureVMBackupExtensionProtectedSettings();
             privateConfig.logsBlobUri = string.Empty;
-            privateConfig.objectStr = this.GetBase64Encoding(blobSASUris);
+            privateConfig.objectStr = GetBase64Encoding(blobSASUris);
 
             AzureVMBackupExtensionPublicSettings publicConfig = new AzureVMBackupExtensionPublicSettings();
             publicConfig.commandToExecute = backupSnapshotCommand;
@@ -259,7 +256,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureVMBackup
             backupMetadata.backupMetadata.Add(tagMetadataItem);
             backupMetadata.backupMetadata.Add(taskIdMetadataItem);
 
-            publicConfig.objectStr = this.GetBase64Encoding(backupMetadata);
+            publicConfig.objectStr = GetBase64Encoding(backupMetadata);
 
             VirtualMachineExtension vmExtensionParameters = new VirtualMachineExtension
             {
@@ -279,7 +276,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureVMBackup
 
             // check the snapshots with the task id are all created.
             int timePeriod = 5000;
-            int loopingTimes = ((int)TimeSpan.FromMinutes(10).TotalMilliseconds / timePeriod);
+            int loopingTimes = (int)TimeSpan.FromMinutes(10).TotalMilliseconds / timePeriod;
 
             Dictionary<string, string> snapshotQuery = new Dictionary<string, string>();
             snapshotQuery.Add(backupExtensionMetadataName, snapshotTag);
@@ -287,15 +284,12 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureVMBackup
             int i = 0;
             for (; i < loopingTimes; i++)
             {
-                List<CloudPageBlob> snapshotsFound = this.FindSnapshot(virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext, blobSASUris.pageBlobUri, blobSASUris.storageCredentialsFactory, snapshotQuery);
+                List<CloudPageBlob> snapshotsFound = FindSnapshot(virtualMachineExtensionBaseCmdlet.DefaultProfile.DefaultContext, blobSASUris.pageBlobUri, blobSASUris.storageCredentialsFactory, snapshotQuery);
                 if (snapshotsFound.Count == vmPageBlobUris.Count)
                 {
                     break;
                 }
-                else
-                {
-                    Thread.Sleep(timePeriod);
-                }
+                Thread.Sleep(timePeriod);
             }
             if (i == loopingTimes)
             {

@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetNetworkSecurityGroup(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSNetworkSecurityGroup GetNetworkSecurityGroup(string resourceGroupName, string name, string expandResource = null)
         {
-            var nsg = this.NetworkSecurityGroupClient.Get(resourceGroupName, name, expandResource);
+            var nsg = NetworkSecurityGroupClient.Get(resourceGroupName, name, expandResource);
 
             var psNetworkSecurityGroup = NetworkResourceManagerProfile.Mapper.Map<PSNetworkSecurityGroup>(nsg);
             psNetworkSecurityGroup.ResourceGroupName = resourceGroupName;
@@ -74,8 +74,8 @@ namespace Microsoft.Azure.Commands.Network
 				return;
 			}
 
-            this.NullifyApplicationSecurityRulesIfAbsent(nsg.DefaultSecurityRules);
-            this.NullifyApplicationSecurityRulesIfAbsent(nsg.SecurityRules);
+            NullifyApplicationSecurityRulesIfAbsent(nsg.DefaultSecurityRules);
+            NullifyApplicationSecurityRulesIfAbsent(nsg.SecurityRules);
         }
 
         public void NullifyApplicationSecurityRulesIfAbsent(IList<SecurityRule> rules)

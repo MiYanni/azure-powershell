@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             // Resolve any mismatch between -Name and the name written in JSON
             Name = ResolveResourceName(rawJsonContent, Name, "LinkedService");
 
-            CreatePSLinkedServiceParameters parameters = new CreatePSLinkedServiceParameters()
+            CreatePSLinkedServiceParameters parameters = new CreatePSLinkedServiceParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = DataFactoryName,

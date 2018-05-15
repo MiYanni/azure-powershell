@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string vmName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMName" },
+                 new[] { "ResourceGroupName", "VMName" },
                  new object[] { resourceGroupName, vmName });
         }
     }

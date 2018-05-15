@@ -95,14 +95,14 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                 {
                     string decodedPassword = SecureStringExtensions.ConvertToString(Password);
                     // Create object for password credential
-                    var passwordCredential = new PasswordCredential()
+                    var passwordCredential = new PasswordCredential
                     {
                         EndDate = EndDate,
                         StartDate = StartDate,
                         KeyId = Guid.NewGuid().ToString(),
                         Value = decodedPassword
                     };
-                    if (ShouldProcess(target: ObjectId.ToString(), action: string.Format("Adding a new password to service principal with objectId {0}", ObjectId)))
+                    if (ShouldProcess(ObjectId.ToString(), string.Format("Adding a new password to service principal with objectId {0}", ObjectId)))
                     {
                         WriteObject(ActiveDirectoryClient.CreateSpPasswordCredential(ObjectId, passwordCredential));
                     }
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                 else if (this.IsParameterBound(c => c.CertValue))
                 {
                     // Create object for key credential
-                    var keyCredential = new KeyCredential()
+                    var keyCredential = new KeyCredential
                     {
                         EndDate = EndDate,
                         StartDate = StartDate,
@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                         Usage = "Verify"
                     };
 
-                    if (ShouldProcess(target: ObjectId.ToString(), action: string.Format("Adding a new caertificate to service principal with objectId {0}", ObjectId)))
+                    if (ShouldProcess(ObjectId.ToString(), string.Format("Adding a new caertificate to service principal with objectId {0}", ObjectId)))
                     {
                         WriteObject(ActiveDirectoryClient.CreateSpKeyCredential(ObjectId, keyCredential));
                     }

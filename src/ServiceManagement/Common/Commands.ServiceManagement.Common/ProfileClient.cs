@@ -139,7 +139,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
         public ProfileClient(AzureSMProfile profile)
         {
             Profile = profile;
-            WarningLog = (s) => Debug.WriteLine(s);
+            WarningLog = s => Debug.WriteLine(s);
 
             try
             {
@@ -194,7 +194,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             var azureSubscription = new AzureSubscription
             {
                 Id = subscriptionId.ToString(),
-                Name = subscriptionId.ToString(),
+                Name = subscriptionId.ToString()
             };
 
             azureSubscription.SetEnvironment(environment.Name);
@@ -352,10 +352,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
 
                 return Profile.AccountTable[account.Id];
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public IAzureAccount AddOrSetAccount(IAzureAccount account)
@@ -384,14 +381,11 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 return Profile.DefaultContext.Account;
             }
-            else if (Profile.AccountTable.ContainsKey(accountName))
+            if (Profile.AccountTable.ContainsKey(accountName))
             {
                 return Profile.AccountTable[accountName];
             }
-            else
-            {
-                throw new ArgumentException(string.Format("Account with name '{0}' does not exist.", accountName), "accountName");
-            }
+            throw new ArgumentException(string.Format("Account with name '{0}' does not exist.", accountName), "accountName");
         }
 
         public IAzureAccount GetAccountOrNull(string accountName)
@@ -405,10 +399,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 return Profile.AccountTable[accountName];
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public IAzureAccount GetAccount(string accountName)
@@ -550,10 +541,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 throw new ArgumentException(string.Format(Resources.SubscriptionNameNotFoundMessage, name), "name");
             }
-            else
-            {
-                return RemoveSubscription(subscription.GetId());
-            }
+            return RemoveSubscription(subscription.GetId());
         }
 
         public IAzureSubscription RemoveSubscription(Guid id)
@@ -617,10 +605,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 return Profile.SubscriptionTable[id];
             }
-            else
-            {
-                throw new ArgumentException(string.Format(Resources.SubscriptionIdNotFoundMessage, id), "id");
-            }
+            throw new ArgumentException(string.Format(Resources.SubscriptionIdNotFoundMessage, id), "id");
         }
 
         public IAzureSubscription GetSubscription(string name)
@@ -632,10 +617,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 return subscription;
             }
-            else
-            {
-                throw new ArgumentException(string.Format(Resources.SubscriptionNameNotFoundMessage, name), "name");
-            }
+            throw new ArgumentException(string.Format(Resources.SubscriptionNameNotFoundMessage, name), "name");
         }
 
         public IAzureSubscription SetSubscriptionAsDefault(string name, string accountName)
@@ -663,7 +645,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 if (subscription.IsPropertySet(AzureSubscription.Property.StorageAccount))
                 {
-                    Microsoft.WindowsAzure.Commands.Utilities.Common.GeneralUtilities.ClearCurrentStorageAccount();
+                    GeneralUtilities.ClearCurrentStorageAccount();
                 }
 
                 Profile.DefaultSubscription = subscription;
@@ -713,7 +695,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                         Id = subscription.GetAccount(),
                         Type = AzureAccount.AccountType.Certificate
                     };
-                    account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
+                    account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id);
                     AddOrSetAccount(account);
 
                     if (!Profile.SubscriptionTable.ContainsKey(subscription.GetId()))
@@ -763,10 +745,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 return subscriptions;
             }
-            else
-            {
-                return new AzureSubscription[0];
-            }
+            return new AzureSubscription[0];
         }
 
         private IEnumerable<AzureSubscription> ListSubscriptionsFromServer(
@@ -786,7 +765,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                 else
                 {
                     var storedTenants = account.GetPropertyAsArray(AzureAccount.Property.Tenants);
-                    if (account.Type == AzureAccount.AccountType.User && storedTenants.Count() == 1)
+                    if (account.Type == AzureAccount.AccountType.User && storedTenants.Length == 1)
                     {
                         TracingAdapter.Information(Resources.AuthenticatingForSingleTenant, account.Id, storedTenants[0]);
                         AzureSession.Instance.AuthenticationFactory.Authenticate(
@@ -819,17 +798,14 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                 // Set user ID
                 foreach (var subscription in rdfeSubscriptions)
                 {
-                    account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
+                    account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id);
                 }
 
                 if (rdfeSubscriptions.Any())
                 {
                     return rdfeSubscriptions;
                 }
-                else
-                {
-                    return new AzureSubscription[0];
-                }
+                return new AzureSubscription[0];
             }
             catch (AadAuthenticationException aadEx)
             {
@@ -881,15 +857,15 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 Id = subscription1.Id,
                 Name = subscription1.Name,
-                State = (subscription1.State != null &&
-                         subscription1.State.Equals(subscription2.State, StringComparison.OrdinalIgnoreCase)) ?
+                State = subscription1.State != null &&
+                        subscription1.State.Equals(subscription2.State, StringComparison.OrdinalIgnoreCase) ?
                         subscription1.State : null
             };
 
             mergedSubscription.SetAccount(subscription1.GetAccount() ?? subscription2.GetAccount());
             mergedSubscription.SetEnvironment(subscription1.GetEnvironment());
-            var sub1Keys = (subscription1.ExtendedProperties == null || subscription1.ExtendedProperties.Count < 1) ? new string[0] : subscription1.ExtendedProperties.Keys;
-            var sub2Keys = (subscription2.ExtendedProperties == null || subscription2.ExtendedProperties.Count < 1) ? new string[0] : subscription2.ExtendedProperties.Keys;
+            var sub1Keys = subscription1.ExtendedProperties == null || subscription1.ExtendedProperties.Count < 1 ? new string[0] : subscription1.ExtendedProperties.Keys;
+            var sub2Keys = subscription2.ExtendedProperties == null || subscription2.ExtendedProperties.Count < 1 ? new string[0] : subscription2.ExtendedProperties.Keys;
 
             // Merge all properties
             foreach (string propertyKey in sub1Keys.Union(sub2Keys))
@@ -932,7 +908,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             AzureEnvironment mergedEnvironment = new AzureEnvironment
             {
                 Name = environment1.Name,
-                OnPremise = environment1.OnPremise,
+                OnPremise = environment1.OnPremise
             };
 
             foreach (var profile in environment1.VersionProfiles.Intersect(environment2.VersionProfiles))
@@ -940,8 +916,8 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                 mergedEnvironment.VersionProfiles.Add(profile);
             }
 
-            var e1Keys = (environment1.ExtendedProperties == null || environment1.ExtendedProperties.Count < 1) ? new string[0] : environment1.ExtendedProperties.Keys;
-            var e2Keys = (environment2.ExtendedProperties == null || environment2.ExtendedProperties.Count < 1) ? new string[0] : environment2.ExtendedProperties.Keys;
+            var e1Keys = environment1.ExtendedProperties == null || environment1.ExtendedProperties.Count < 1 ? new string[0] : environment1.ExtendedProperties.Keys;
+            var e2Keys = environment2.ExtendedProperties == null || environment2.ExtendedProperties.Count < 1 ? new string[0] : environment2.ExtendedProperties.Keys;
 
             // Merge all properties
             foreach (string propertyKey in e1Keys.Union(e2Keys))
@@ -993,8 +969,8 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                 Type = account1.Type
             };
 
-            var e1Keys = (account1.ExtendedProperties == null || account1.ExtendedProperties.Count < 1) ? new string[0] : account1.ExtendedProperties.Keys;
-            var e2Keys = (account2.ExtendedProperties == null || account2.ExtendedProperties.Count < 1) ? new string[0] : account2.ExtendedProperties.Keys;
+            var e1Keys = account1.ExtendedProperties == null || account1.ExtendedProperties.Count < 1 ? new string[0] : account1.ExtendedProperties.Keys;
+            var e2Keys = account2.ExtendedProperties == null || account2.ExtendedProperties.Count < 1 ? new string[0] : account2.ExtendedProperties.Keys;
 
             // Merge all properties
             foreach (string propertyKey in e1Keys.Union(e2Keys))
@@ -1007,7 +983,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             var tenants2 = account2.GetPropertyAsArray(AzureAccount.Property.Tenants);
             if (tenants1 != null || tenants2 != null)
             {
-                var tenants = (tenants1 == null ? tenants2 : (tenants2 == null ? tenants1 : tenants1.Union(tenants2)));
+                var tenants = tenants1 == null ? tenants2 : (tenants2 == null ? tenants1 : tenants1.Union(tenants2));
                 mergeAccount.SetProperty(AzureAccount.Property.Tenants, tenants.ToArray());
             }
 
@@ -1015,7 +991,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             var subscriptions2 = account2.GetPropertyAsArray(AzureAccount.Property.Subscriptions);
             if (subscriptions1 != null || subscriptions2 != null)
             {
-                var subscriptions = (subscriptions1 == null ? subscriptions2 : (subscriptions2 == null ? subscriptions1 : subscriptions1.Union(subscriptions2)));
+                var subscriptions = subscriptions1 == null ? subscriptions2 : (subscriptions2 == null ? subscriptions1 : subscriptions1.Union(subscriptions2));
                 mergeAccount.SetProperty(AzureAccount.Property.Subscriptions, subscriptions.ToArray());
             }
 
@@ -1062,7 +1038,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                         tenantAccount = account;
                     }
 
-                    tenantAccount.SetOrAppendProperty(AzureAccount.Property.Tenants, new string[] { tenant });
+                    tenantAccount.SetOrAppendProperty(AzureAccount.Property.Tenants, tenant);
                     using (var subscriptionClient = AzureSession.Instance.ClientFactory.CreateCustomClient<SubscriptionClient>(
                             new TokenCloudCredentials(tenantToken.AccessToken),
                             environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement)))
@@ -1076,14 +1052,13 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                                 AzureSubscription psSubscription = new AzureSubscription
                                 {
                                     Id = subscription.SubscriptionId,
-                                    Name = subscription.SubscriptionName,
+                                    Name = subscription.SubscriptionName
                                 };
                                 psSubscription.SetEnvironment(environment.Name);
                                 psSubscription.SetProperty(AzureSubscription.Property.Tenants,
                                     subscription.ActiveDirectoryTenantId);
                                 psSubscription.SetAccount(tenantAccount.Id);
-                                tenantAccount.SetOrAppendProperty(AzureAccount.Property.Subscriptions,
-                                    new string[] { psSubscription.Id });
+                                tenantAccount.SetOrAppendProperty(AzureAccount.Property.Subscriptions, psSubscription.Id);
                                 result.Add(psSubscription);
                             }
                         }
@@ -1136,19 +1111,16 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 return AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
             }
-            else if (string.IsNullOrEmpty(name) &&
+            if (string.IsNullOrEmpty(name) &&
                 Profile.DefaultSubscription != null)
             {
                 return Profile.DefaultContext.Environment;
             }
-            else if (Profile.EnvironmentTable.ContainsKey(name))
+            if (Profile.EnvironmentTable.ContainsKey(name))
             {
                 return Profile.EnvironmentTable[name];
             }
-            else
-            {
-                throw new ArgumentException(string.Format(Resources.EnvironmentNotFound, name));
-            }
+            throw new ArgumentException(string.Format(Resources.EnvironmentNotFound, name));
         }
 
         public IAzureEnvironment GetEnvironment(string name, string serviceEndpoint, string resourceEndpoint)
@@ -1171,17 +1143,11 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                 {
                     return Profile.EnvironmentTable[name];
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
-            else
-            {
-                return Profile.EnvironmentTable.Values.FirstOrDefault(e =>
-                    e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ServiceManagement, serviceEndpoint) ||
-                    e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ResourceManager, resourceEndpoint));
-            }
+            return Profile.EnvironmentTable.Values.FirstOrDefault(e =>
+                e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ServiceManagement, serviceEndpoint) ||
+                e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ResourceManager, resourceEndpoint));
         }
 
         public List<IAzureEnvironment> ListEnvironments(string name)
@@ -1190,14 +1156,11 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
             {
                 return Profile.EnvironmentTable.Values.ToList();
             }
-            else if (Profile.EnvironmentTable.ContainsKey(name))
+            if (Profile.EnvironmentTable.ContainsKey(name))
             {
                 return new[] { Profile.EnvironmentTable[name] }.ToList();
             }
-            else
-            {
-                return new IAzureEnvironment[0].ToList();
-            }
+            return new IAzureEnvironment[0].ToList();
         }
 
         public IAzureEnvironment RemoveEnvironment(string name)
@@ -1222,10 +1185,7 @@ namespace Microsoft.Azure.ServiceManagemenet.Common
                 Profile.EnvironmentTable.Remove(name);
                 return environment;
             }
-            else
-            {
-                throw new ArgumentException(string.Format(Resources.EnvironmentNotFound, name), "name");
-            }
+            throw new ArgumentException(string.Format(Resources.EnvironmentNotFound, name), "name");
         }
 
         public IAzureEnvironment AddOrSetEnvironment(IAzureEnvironment environment)

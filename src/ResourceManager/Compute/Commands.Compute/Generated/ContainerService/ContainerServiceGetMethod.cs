@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string containerServiceName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "ContainerServiceName" },
+                 new[] { "ResourceGroupName", "ContainerServiceName" },
                  new object[] { resourceGroupName, containerServiceName });
         }
     }
@@ -141,8 +141,8 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                string resourceGroupName = this.ResourceGroupName;
-                string containerServiceName = this.Name;
+                string resourceGroupName = ResourceGroupName;
+                string containerServiceName = Name;
 
                 if (!string.IsNullOrEmpty(resourceGroupName) && !string.IsNullOrEmpty(containerServiceName))
                 {
@@ -200,7 +200,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             ParameterSetName = "DefaultParameter",
             Position = 1,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

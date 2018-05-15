@@ -21,17 +21,17 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
     {
         public static NestedResourceStrategy<BackendAddressPool, LoadBalancer> Strategy { get; }
             = NestedResourceStrategy.Create<BackendAddressPool, LoadBalancer>(
-                provider: "backendAddressPools",
-                getList: parentModel => parentModel.BackendAddressPools,
-                setList: (parentModel, list) => parentModel.BackendAddressPools = list,
-                getName: model => model.Name,
-                setName: (model, name) => model.Name = name);
+                "backendAddressPools",
+                parentModel => parentModel.BackendAddressPools,
+                (parentModel, list) => parentModel.BackendAddressPools = list,
+                model => model.Name,
+                (model, name) => model.Name = name);
 
         public static NestedResourceConfig<BackendAddressPool, LoadBalancer> CreateBackendAddressPool(
             this ResourceConfig<LoadBalancer> loadBalancer,
             string name)
             => loadBalancer.CreateNested(
-                strategy: Strategy,
-                name: name);
+                Strategy,
+                name);
     }
 }

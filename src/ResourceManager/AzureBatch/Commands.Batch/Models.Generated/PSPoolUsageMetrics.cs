@@ -26,19 +26,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSPoolUsageMetrics
     {
         
-        internal Microsoft.Azure.Batch.PoolUsageMetrics omObject;
+        internal PoolUsageMetrics omObject;
         
-        internal PSPoolUsageMetrics(Microsoft.Azure.Batch.PoolUsageMetrics omObject)
+        internal PSPoolUsageMetrics(PoolUsageMetrics omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.DataEgressGiB;
+                return omObject.DataEgressGiB;
             }
         }
         
@@ -55,15 +55,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.DataIngressGiB;
+                return omObject.DataIngressGiB;
             }
         }
         
-        public System.DateTime EndTime
+        public DateTime EndTime
         {
             get
             {
-                return this.omObject.EndTime;
+                return omObject.EndTime;
             }
         }
         
@@ -71,15 +71,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PoolId;
+                return omObject.PoolId;
             }
         }
         
-        public System.DateTime StartTime
+        public DateTime StartTime
         {
             get
             {
-                return this.omObject.StartTime;
+                return omObject.StartTime;
             }
         }
         
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.TotalCoreHours;
+                return omObject.TotalCoreHours;
             }
         }
         
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.VirtualMachineSize;
+                return omObject.VirtualMachineSize;
             }
         }
     }

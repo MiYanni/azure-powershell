@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Set", "AzureRmImageOsDisk", SupportsShouldProcess = true)]
     [OutputType(typeof(PSImage))]
-    public partial class SetAzureRmImageOsDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class SetAzureRmImageOsDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -97,139 +97,139 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
         private void Run()
         {
-            if (this.MyInvocation.BoundParameters.ContainsKey("OsType"))
+            if (MyInvocation.BoundParameters.ContainsKey("OsType"))
             {
                 // StorageProfile
-                if (this.Image.StorageProfile == null)
+                if (Image.StorageProfile == null)
                 {
-                    this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    Image.StorageProfile = new ImageStorageProfile();
                 }
                 // OsDisk
-                if (this.Image.StorageProfile.OsDisk == null)
+                if (Image.StorageProfile.OsDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk = new Microsoft.Azure.Management.Compute.Models.ImageOSDisk();
+                    Image.StorageProfile.OsDisk = new ImageOSDisk();
                 }
 
-                this.Image.StorageProfile.OsDisk.OsType = this.OsType.Value;
+                Image.StorageProfile.OsDisk.OsType = OsType.Value;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("OsState"))
+            if (MyInvocation.BoundParameters.ContainsKey("OsState"))
             {
                 // StorageProfile
-                if (this.Image.StorageProfile == null)
+                if (Image.StorageProfile == null)
                 {
-                    this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    Image.StorageProfile = new ImageStorageProfile();
                 }
                 // OsDisk
-                if (this.Image.StorageProfile.OsDisk == null)
+                if (Image.StorageProfile.OsDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk = new Microsoft.Azure.Management.Compute.Models.ImageOSDisk();
+                    Image.StorageProfile.OsDisk = new ImageOSDisk();
                 }
 
-                this.Image.StorageProfile.OsDisk.OsState = this.OsState.Value;
+                Image.StorageProfile.OsDisk.OsState = OsState.Value;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("BlobUri"))
+            if (MyInvocation.BoundParameters.ContainsKey("BlobUri"))
             {
                 // StorageProfile
-                if (this.Image.StorageProfile == null)
+                if (Image.StorageProfile == null)
                 {
-                    this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    Image.StorageProfile = new ImageStorageProfile();
                 }
                 // OsDisk
-                if (this.Image.StorageProfile.OsDisk == null)
+                if (Image.StorageProfile.OsDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk = new Microsoft.Azure.Management.Compute.Models.ImageOSDisk();
+                    Image.StorageProfile.OsDisk = new ImageOSDisk();
                 }
-                this.Image.StorageProfile.OsDisk.BlobUri = this.BlobUri;
+                Image.StorageProfile.OsDisk.BlobUri = BlobUri;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Caching"))
+            if (MyInvocation.BoundParameters.ContainsKey("Caching"))
             {
                 // StorageProfile
-                if (this.Image.StorageProfile == null)
+                if (Image.StorageProfile == null)
                 {
-                    this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    Image.StorageProfile = new ImageStorageProfile();
                 }
                 // OsDisk
-                if (this.Image.StorageProfile.OsDisk == null)
+                if (Image.StorageProfile.OsDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk = new Microsoft.Azure.Management.Compute.Models.ImageOSDisk();
+                    Image.StorageProfile.OsDisk = new ImageOSDisk();
                 }
-                this.Image.StorageProfile.OsDisk.Caching = this.Caching;
+                Image.StorageProfile.OsDisk.Caching = Caching;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("DiskSizeGB"))
+            if (MyInvocation.BoundParameters.ContainsKey("DiskSizeGB"))
             {
                 // StorageProfile
-                if (this.Image.StorageProfile == null)
+                if (Image.StorageProfile == null)
                 {
-                    this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    Image.StorageProfile = new ImageStorageProfile();
                 }
                 // OsDisk
-                if (this.Image.StorageProfile.OsDisk == null)
+                if (Image.StorageProfile.OsDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk = new Microsoft.Azure.Management.Compute.Models.ImageOSDisk();
+                    Image.StorageProfile.OsDisk = new ImageOSDisk();
                 }
-                this.Image.StorageProfile.OsDisk.DiskSizeGB = this.DiskSizeGB;
+                Image.StorageProfile.OsDisk.DiskSizeGB = DiskSizeGB;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("StorageAccountType"))
+            if (MyInvocation.BoundParameters.ContainsKey("StorageAccountType"))
             {
                 // StorageProfile
-                if (this.Image.StorageProfile == null)
+                if (Image.StorageProfile == null)
                 {
-                    this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    Image.StorageProfile = new ImageStorageProfile();
                 }
                 // OsDisk
-                if (this.Image.StorageProfile.OsDisk == null)
+                if (Image.StorageProfile.OsDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk = new Microsoft.Azure.Management.Compute.Models.ImageOSDisk();
+                    Image.StorageProfile.OsDisk = new ImageOSDisk();
                 }
-                this.Image.StorageProfile.OsDisk.StorageAccountType = this.StorageAccountType;
+                Image.StorageProfile.OsDisk.StorageAccountType = StorageAccountType;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SnapshotId"))
+            if (MyInvocation.BoundParameters.ContainsKey("SnapshotId"))
             {
                 // StorageProfile
-                if (this.Image.StorageProfile == null)
+                if (Image.StorageProfile == null)
                 {
-                    this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    Image.StorageProfile = new ImageStorageProfile();
                 }
                 // OsDisk
-                if (this.Image.StorageProfile.OsDisk == null)
+                if (Image.StorageProfile.OsDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk = new Microsoft.Azure.Management.Compute.Models.ImageOSDisk();
+                    Image.StorageProfile.OsDisk = new ImageOSDisk();
                 }
                 // Snapshot
-                if (this.Image.StorageProfile.OsDisk.Snapshot == null)
+                if (Image.StorageProfile.OsDisk.Snapshot == null)
                 {
-                    this.Image.StorageProfile.OsDisk.Snapshot = new Microsoft.Azure.Management.Compute.Models.SubResource();
+                    Image.StorageProfile.OsDisk.Snapshot = new SubResource();
                 }
-                this.Image.StorageProfile.OsDisk.Snapshot.Id = this.SnapshotId;
+                Image.StorageProfile.OsDisk.Snapshot.Id = SnapshotId;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("ManagedDiskId"))
+            if (MyInvocation.BoundParameters.ContainsKey("ManagedDiskId"))
             {
                 // StorageProfile
-                if (this.Image.StorageProfile == null)
+                if (Image.StorageProfile == null)
                 {
-                    this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                    Image.StorageProfile = new ImageStorageProfile();
                 }
                 // OsDisk
-                if (this.Image.StorageProfile.OsDisk == null)
+                if (Image.StorageProfile.OsDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk = new Microsoft.Azure.Management.Compute.Models.ImageOSDisk();
+                    Image.StorageProfile.OsDisk = new ImageOSDisk();
                 }
                 // ManagedDisk
-                if (this.Image.StorageProfile.OsDisk.ManagedDisk == null)
+                if (Image.StorageProfile.OsDisk.ManagedDisk == null)
                 {
-                    this.Image.StorageProfile.OsDisk.ManagedDisk = new Microsoft.Azure.Management.Compute.Models.SubResource();
+                    Image.StorageProfile.OsDisk.ManagedDisk = new SubResource();
                 }
-                this.Image.StorageProfile.OsDisk.ManagedDisk.Id = this.ManagedDiskId;
+                Image.StorageProfile.OsDisk.ManagedDisk.Id = ManagedDiskId;
             }
 
-            WriteObject(this.Image);
+            WriteObject(Image);
         }
     }
 }

@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
             HelpMessage = "Forces the command to overwrite an existing Node Configuration.")]
         public SwitchParameter Force
         {
-            get { return this.overwriteExistingConfiguration; }
-            set { this.overwriteExistingConfiguration = value; }
+            get { return overwriteExistingConfiguration; }
+            set { overwriteExistingConfiguration = value; }
         }
 
         /// <summary>

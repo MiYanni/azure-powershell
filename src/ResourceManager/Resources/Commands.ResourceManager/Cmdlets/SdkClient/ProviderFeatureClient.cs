@@ -14,17 +14,17 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
 {
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.Azure.Commands.Common.Authentication.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkExtensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
-    using Microsoft.Azure.Management.ResourceManager;
-    using Microsoft.Azure.Management.ResourceManager.Models;
-    using Microsoft.Rest.Azure;
+    using Commands.Common.Authentication;
+    using Commands.Common.Authentication.Models;
+    using SdkExtensions;
+    using SdkModels;
+    using Management.ResourceManager;
+    using Management.ResourceManager.Models;
+    using Rest.Azure;
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    using ProjectResources = Microsoft.Azure.Commands.ResourceManager.Cmdlets.Properties.Resources;
+    using ProjectResources = Properties.Resources;
     using Commands.Common.Authentication.Abstractions;
 
     /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         /// <param name="context">The azure context</param>
         public ProviderFeatureClient(IAzureContext context)
         {
-            this.FeaturesManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<FeatureClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            FeaturesManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<FeatureClient>(context, AzureEnvironment.Endpoint.ResourceManager);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         /// <param name="featureName">When specified, returns all features that have this name</param>
         public virtual PSProviderFeature[] ListPSProviderFeatures(string resourceProviderNamespace = null, string featureName = null)
         {
-            return this.ListPSProviderFeatures(resourceProviderNamespace: resourceProviderNamespace, featureName: featureName, listAvailable: false);
+            return ListPSProviderFeatures(resourceProviderNamespace, featureName, false);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         /// <param name="listAvailable">When set to true, lists all features that are available including those not registered on the current subscription</param>
         public virtual PSProviderFeature[] ListPSProviderFeatures(bool listAvailable, string resourceProviderNamespace = null)
         {
-            return this.ListPSProviderFeatures(resourceProviderNamespace: resourceProviderNamespace, listAvailable: listAvailable, featureName: null);
+            return ListPSProviderFeatures(resourceProviderNamespace, listAvailable: listAvailable, featureName: null);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         {
             if (!string.IsNullOrEmpty(featureName) && !string.IsNullOrWhiteSpace(resourceProviderNamespace))
             {
-                var featureResponse = this.FeaturesManagementClient.Features.Get(resourceProviderNamespace: resourceProviderNamespace, featureName: featureName);
+                var featureResponse = FeaturesManagementClient.Features.Get(resourceProviderNamespace, featureName);
 
                 if (featureResponse == null)
                 {
@@ -98,41 +98,38 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
 
                 return new[] { featureResponse.ToPSProviderFeature() };
             }
+            Func<IPage<FeatureResult>> listFunc;
+            Func<string, IPage<FeatureResult>> listNextFunc;
+
+            if (string.IsNullOrWhiteSpace(resourceProviderNamespace))
+            {
+                listFunc = () => FeaturesManagementClient.Features.ListAll();
+                listNextFunc = next => FeaturesManagementClient.Features.ListAllNext(next);
+            }
             else
             {
-                Func<IPage<FeatureResult>> listFunc;
-                Func<string, IPage<FeatureResult>> listNextFunc;
-
-                if (string.IsNullOrWhiteSpace(resourceProviderNamespace))
-                {
-                    listFunc = () => this.FeaturesManagementClient.Features.ListAll();
-                    listNextFunc = next => this.FeaturesManagementClient.Features.ListAllNext(next);
-                }
-                else
-                {
-                    listFunc = () => this.FeaturesManagementClient.Features.List(resourceProviderNamespace);
-                    listNextFunc = next => this.FeaturesManagementClient.Features.ListNext(next);
-                }
-
-                var returnList = new List<FeatureResult>(); 
-                var tempResult = listFunc();
-
-                returnList.AddRange(tempResult);
-
-                while(!string.IsNullOrWhiteSpace(tempResult.NextPageLink))
-                {
-                    tempResult = listNextFunc(tempResult.NextPageLink);
-                    returnList.AddRange(tempResult);
-                }
-
-                var retVal = listAvailable
-                    ? returnList
-                    : returnList.Where(this.IsFeatureRegistered);
-
-                return retVal
-                    .Select(val => val.ToPSProviderFeature())
-                    .ToArray();
+                listFunc = () => FeaturesManagementClient.Features.List(resourceProviderNamespace);
+                listNextFunc = next => FeaturesManagementClient.Features.ListNext(next);
             }
+
+            var returnList = new List<FeatureResult>(); 
+            var tempResult = listFunc();
+
+            returnList.AddRange(tempResult);
+
+            while(!string.IsNullOrWhiteSpace(tempResult.NextPageLink))
+            {
+                tempResult = listNextFunc(tempResult.NextPageLink);
+                returnList.AddRange(tempResult);
+            }
+
+            var retVal = listAvailable
+                ? returnList
+                : returnList.Where(IsFeatureRegistered);
+
+            return retVal
+                .Select(val => val.ToPSProviderFeature())
+                .ToArray();
         }
 
         /// <summary>
@@ -142,7 +139,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         /// <param name="featureName">The name of the feature</param>
         public PSProviderFeature RegisterProviderFeature(string providerName, string featureName)
         {
-            return this.FeaturesManagementClient.Features.Register(providerName, featureName).ToPSProviderFeature();
+            return FeaturesManagementClient.Features.Register(providerName, featureName).ToPSProviderFeature();
         }
 
         /// <summary>
@@ -151,7 +148,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         /// <param name="feature">The feature</param>
         private bool IsFeatureRegistered(FeatureResult feature)
         {
-            return string.Equals(feature.Properties.State, ProviderFeatureClient.RegisteredStateName, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(feature.Properties.State, RegisteredStateName, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

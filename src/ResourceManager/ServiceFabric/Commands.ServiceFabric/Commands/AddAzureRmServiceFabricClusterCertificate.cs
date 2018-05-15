@@ -41,21 +41,21 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 throw new PSInvalidOperationException(
                     string.Format(
                         ServiceFabricProperties.Resources.AddCertToUnsecureCluster,
-                        this.Name));
+                        Name));
             }
 
-            if (ShouldProcess(target: this.Name, action: string.Format("Add cluster certificate")))
+            if (ShouldProcess(Name, string.Format("Add cluster certificate")))
             {
-                var certInformations = base.GetOrCreateCertificateInformation();
+                var certInformations = GetOrCreateCertificateInformation();
                 var certInformation = certInformations[0];
                 var allTasks = new List<Task>();
-                var vmssPages = ComputeClient.VirtualMachineScaleSets.List(this.ResourceGroupName);
+                var vmssPages = ComputeClient.VirtualMachineScaleSets.List(ResourceGroupName);
 
                 if (vmssPages == null || !vmssPages.Any())
                 {
                     throw new PSArgumentException(string.Format(
                         ServiceFabricProperties.Resources.NoneNodeTypeFound,
-                        this.ResourceGroupName));
+                        ResourceGroupName));
                 }
 
                 do

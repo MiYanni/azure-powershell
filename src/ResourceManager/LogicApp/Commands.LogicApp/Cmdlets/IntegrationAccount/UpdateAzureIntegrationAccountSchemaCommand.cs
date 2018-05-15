@@ -17,9 +17,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System;
     using System.Globalization;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -76,16 +76,16 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [ValidateNotNullOrEmpty]
         public string SchemaType
         {
-            get { return this.schemaType; }
-            set { value = this.schemaType; }
+            get { return schemaType; }
+            set { value = schemaType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account schema content type.")]
         [ValidateNotNullOrEmpty]
         public string ContentType
         {
-            get { return this.contentType; }
-            set { value = this.contentType; }
+            get { return contentType; }
+            set { value = contentType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account schema metadata.",
@@ -105,66 +105,66 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
-            var integrationAccountSchema = IntegrationAccountClient.GetIntegrationAccountSchema(this.ResourceGroupName,
-                this.Name,
-                this.SchemaName);
+            var integrationAccountSchema = IntegrationAccountClient.GetIntegrationAccountSchema(ResourceGroupName,
+                Name,
+                SchemaName);
 
-            var integrationAccountSchemaCopy = new IntegrationAccountSchema(schemaType: integrationAccountSchema.SchemaType,
-                id: integrationAccountSchema.Id,
-                name: integrationAccountSchema.Name,
-                type: integrationAccountSchema.Type,
-                location: integrationAccountSchema.Location,
-                tags: integrationAccountSchema.Tags,
-                targetNamespace: integrationAccountSchema.TargetNamespace,
-                documentName: integrationAccountSchema.DocumentName,
-                fileName: integrationAccountSchema.FileName,
-                createdTime: integrationAccountSchema.CreatedTime,
-                changedTime: integrationAccountSchema.ChangedTime,
-                metadata: integrationAccountSchema.Metadata,
-                content: integrationAccountSchema.Content,
-                contentType: integrationAccountSchema.ContentType,
-                contentLink: null);
+            var integrationAccountSchemaCopy = new IntegrationAccountSchema(integrationAccountSchema.SchemaType,
+                integrationAccountSchema.Id,
+                integrationAccountSchema.Name,
+                integrationAccountSchema.Type,
+                integrationAccountSchema.Location,
+                integrationAccountSchema.Tags,
+                integrationAccountSchema.TargetNamespace,
+                integrationAccountSchema.DocumentName,
+                integrationAccountSchema.FileName,
+                integrationAccountSchema.CreatedTime,
+                integrationAccountSchema.ChangedTime,
+                integrationAccountSchema.Metadata,
+                integrationAccountSchema.Content,
+                integrationAccountSchema.ContentType,
+                null);
 
-            if (!string.IsNullOrEmpty(this.SchemaFilePath))
+            if (!string.IsNullOrEmpty(SchemaFilePath))
             {
                 integrationAccountSchemaCopy.Content =
-                    CmdletHelper.GetContentFromFile(this.TryResolvePath(this.SchemaFilePath));
+                    CmdletHelper.GetContentFromFile(this.TryResolvePath(SchemaFilePath));
             }
 
-            if (!string.IsNullOrEmpty(this.SchemaDefinition))
+            if (!string.IsNullOrEmpty(SchemaDefinition))
             {
-                integrationAccountSchemaCopy.Content = this.SchemaDefinition;
+                integrationAccountSchemaCopy.Content = SchemaDefinition;
             }
 
-            if (!string.IsNullOrEmpty(this.schemaType))
+            if (!string.IsNullOrEmpty(schemaType))
             {
-                integrationAccountSchemaCopy.SchemaType = (SchemaType)Enum.Parse(typeof(SchemaType), this.SchemaType);
+                integrationAccountSchemaCopy.SchemaType = (SchemaType)Enum.Parse(typeof(SchemaType), SchemaType);
             }
 
-            if (!string.IsNullOrEmpty(this.ContentType))
+            if (!string.IsNullOrEmpty(ContentType))
             {
-                integrationAccountSchemaCopy.ContentType = this.ContentType;
+                integrationAccountSchemaCopy.ContentType = ContentType;
             }
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                integrationAccountSchemaCopy.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                integrationAccountSchemaCopy.Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
             ConfirmAction(Force.IsPresent,
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceWarning,
-                    "Microsoft.Logic/integrationAccounts/schemas", this.Name),
+                    "Microsoft.Logic/integrationAccounts/schemas", Name),
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceMessage,
-                    "Microsoft.Logic/integrationAccounts/schemas", this.Name),
+                    "Microsoft.Logic/integrationAccounts/schemas", Name),
                 Name,
                 () =>
                 {
-                    this.WriteObject(
-                        IntegrationAccountClient.UpdateIntegrationAccountSchema(this.ResourceGroupName,
+                    WriteObject(
+                        IntegrationAccountClient.UpdateIntegrationAccountSchema(ResourceGroupName,
                             integrationAccount.Name,
-                            this.SchemaName, integrationAccountSchemaCopy), true);
+                            SchemaName, integrationAccountSchemaCopy), true);
                 },
                 null);
         }

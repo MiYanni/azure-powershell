@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Operations
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ErrorResponses;
+    using ErrorResponses;
     using Newtonsoft.Json;
 
     /// <summary>

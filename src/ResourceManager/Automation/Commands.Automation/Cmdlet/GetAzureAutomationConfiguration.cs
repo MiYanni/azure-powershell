@@ -42,25 +42,25 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         public override void ExecuteCmdlet()
         {
             IEnumerable<DscConfiguration> ret = null;
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByConfigurationName)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByConfigurationName)
             {
                 ret = new List<DscConfiguration>
                 {
-                   this.AutomationClient.GetConfiguration(this.ResourceGroupName, this.AutomationAccountName, this.Name)
+                   AutomationClient.GetConfiguration(ResourceGroupName, AutomationAccountName, Name)
                 };
 
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByAll)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByAll)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    ret = this.AutomationClient.ListDscConfigurations(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
+                    ret = AutomationClient.ListDscConfigurations(ResourceGroupName, AutomationAccountName, ref nextLink);
                     if (ret != null)
                     {
-                        this.GenerateCmdletOutput(ret);
+                        GenerateCmdletOutput(ret);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));

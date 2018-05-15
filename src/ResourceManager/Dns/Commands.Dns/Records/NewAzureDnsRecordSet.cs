@@ -72,47 +72,47 @@ namespace Microsoft.Azure.Commands.Dns
 
             if (RecordType == RecordType.SOA)
             {
-                throw new System.ArgumentException(ProjectResources.Error_AddRecordSOA);
+                throw new ArgumentException(ProjectResources.Error_AddRecordSOA);
             }
 
             if (ParameterSetName == "Fields")
             {
-                zoneName = this.ZoneName;
-                resourceGroupname = this.ResourceGroupName;
+                zoneName = ZoneName;
+                resourceGroupname = ResourceGroupName;
             }
             else if (ParameterSetName == "Object")
             {
-                zoneName = this.Zone.Name;
-                resourceGroupname = this.Zone.ResourceGroupName;
+                zoneName = Zone.Name;
+                resourceGroupname = Zone.ResourceGroupName;
             }
-            if(this.Name.EndsWith(zoneName.ToString()))
+            if(Name.EndsWith(zoneName.ToString()))
             {
-                this.WriteWarning(string.Format(ProjectResources.Error_RecordSetNameEndsWithZoneName, this.Name, zoneName.ToString()));
+                WriteWarning(string.Format(ProjectResources.Error_RecordSetNameEndsWithZoneName, Name, zoneName.ToString()));
             }
 
             if (zoneName != null && zoneName.EndsWith("."))
             {
                 zoneName = zoneName.TrimEnd('.');
-                this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", zoneName));
+                WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", zoneName));
             }
 
-            if (this.DnsRecords == null)
+            if (DnsRecords == null)
             {
-                this.WriteWarning(ProjectResources.Warning_DnsRecordsParamNeedsToBeSpecified);
+                WriteWarning(ProjectResources.Warning_DnsRecordsParamNeedsToBeSpecified);
             }
 
             ConfirmAction(
                 ProjectResources.Progress_CreatingRecordSet,
-                this.Name,
+                Name,
                 () =>
                 {
-                    result = this.DnsClient.CreateDnsRecordSet(zoneName, resourceGroupname, this.Name, this.Ttl, this.RecordType, this.Metadata, this.Overwrite, this.DnsRecords);
+                    result = DnsClient.CreateDnsRecordSet(zoneName, resourceGroupname, Name, Ttl, RecordType, Metadata, Overwrite, DnsRecords);
 
                     if (result != null)
                     {
                         WriteVerbose(ProjectResources.Success);
-                        WriteVerbose(string.Format(ProjectResources.Success_NewRecordSet, this.Name, zoneName, this.RecordType));
-                        WriteVerbose(string.Format(ProjectResources.Success_RecordSetFqdn, this.Name, zoneName, this.RecordType));
+                        WriteVerbose(string.Format(ProjectResources.Success_NewRecordSet, Name, zoneName, RecordType));
+                        WriteVerbose(string.Format(ProjectResources.Success_RecordSetFqdn, Name, zoneName, RecordType));
                     }
 
                     WriteObject(result);

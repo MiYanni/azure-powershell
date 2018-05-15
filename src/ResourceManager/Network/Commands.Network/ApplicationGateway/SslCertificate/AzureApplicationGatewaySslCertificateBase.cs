@@ -44,14 +44,14 @@ namespace Microsoft.Azure.Commands.Network
         {
             var sslCertificate = new PSApplicationGatewaySslCertificate();
 
-            sslCertificate.Name = this.Name;
-            sslCertificate.Data = Convert.ToBase64String(File.ReadAllBytes(this.CertificateFile));
-            sslCertificate.Password = this.Password;
+            sslCertificate.Name = Name;
+            sslCertificate.Data = Convert.ToBase64String(File.ReadAllBytes(CertificateFile));
+            sslCertificate.Password = Password;
             sslCertificate.Id =
                 ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewaySslCertificateName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    Properties.Resources.ApplicationGatewaySslCertificateName,
+                    Name);
 
             return sslCertificate;
         }

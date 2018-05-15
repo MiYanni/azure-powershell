@@ -35,10 +35,10 @@ namespace Microsoft.Azure.Commands.Batch
         {
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Resources.RemovePoolConfirm, this.Id),
+                string.Format(Resources.RemovePoolConfirm, Id),
                 Resources.RemovePool,
-                this.Id,
-                () => BatchClient.DeletePool(this.BatchContext, this.Id, this.AdditionalBehaviors));
+                Id,
+                () => BatchClient.DeletePool(BatchContext, Id, AdditionalBehaviors));
         }
     }
 }

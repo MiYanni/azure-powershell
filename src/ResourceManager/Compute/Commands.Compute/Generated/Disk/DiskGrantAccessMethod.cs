@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             GrantAccessData grantAccessData = new GrantAccessData();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "DiskName", "GrantAccessData" },
+                 new[] { "ResourceGroupName", "DiskName", "GrantAccessData" },
                  new object[] { resourceGroupName, diskName, grantAccessData });
         }
     }
@@ -135,13 +135,13 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.DiskName, VerbsSecurity.Grant))
+                if (ShouldProcess(DiskName, VerbsSecurity.Grant))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string diskName = this.DiskName;
+                    string resourceGroupName = ResourceGroupName;
+                    string diskName = DiskName;
                     var grantAccessData = new GrantAccessData();
-                    grantAccessData.Access = this.Access;
-                    grantAccessData.DurationInSeconds = this.DurationInSecond;
+                    grantAccessData.Access = Access;
+                    grantAccessData.DurationInSeconds = DurationInSecond;
 
                     var result = DisksClient.GrantAccess(resourceGroupName, diskName, grantAccessData);
                     var psObject = new PSAccessUri();
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

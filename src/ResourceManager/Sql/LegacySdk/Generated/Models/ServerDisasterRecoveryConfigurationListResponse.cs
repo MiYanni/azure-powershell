@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServerDisasterRecoveryConfiguration> ServerDisasterRecoveryConfigurations
         {
-            get { return this._serverDisasterRecoveryConfigurations; }
-            set { this._serverDisasterRecoveryConfigurations = value; }
+            get { return _serverDisasterRecoveryConfigurations; }
+            set { _serverDisasterRecoveryConfigurations = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerDisasterRecoveryConfigurationListResponse()
         {
-            this.ServerDisasterRecoveryConfigurations = new LazyList<ServerDisasterRecoveryConfiguration>();
+            ServerDisasterRecoveryConfigurations = new LazyList<ServerDisasterRecoveryConfiguration>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<ServerDisasterRecoveryConfiguration> GetEnumerator()
         {
-            return this.ServerDisasterRecoveryConfigurations.GetEnumerator();
+            return ServerDisasterRecoveryConfigurations.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

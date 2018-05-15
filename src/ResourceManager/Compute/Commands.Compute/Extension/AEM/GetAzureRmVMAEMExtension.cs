@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -77,16 +77,16 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                if (string.IsNullOrEmpty(this.Name))
+                if (string.IsNullOrEmpty(Name))
                 {
-                    var virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName);
+                    var virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
 
                     var osdisk = virtualMachine.StorageProfile.OsDisk;
-                    if (String.IsNullOrEmpty(this.OSType))
+                    if (String.IsNullOrEmpty(OSType))
                     {
-                        this.OSType = osdisk.OsType.ToString();
+                        OSType = osdisk.OsType.ToString();
                     }
-                    if (String.IsNullOrEmpty(this.OSType))
+                    if (String.IsNullOrEmpty(OSType))
                     {
                         WriteError("Could not determine Operating System of the VM. Please provide the Operating System type ({0} or {1}) via parameter OSType",
                             AEMExtensionConstants.OSTypeWindows, AEMExtensionConstants.OSTypeLinux);
@@ -104,28 +104,26 @@ namespace Microsoft.Azure.Commands.Compute
                         WriteObject(null);
                         return;
                     }
-                    else {
-                        this.Name = aemExtension.Name;
-                    }
+                    Name = aemExtension.Name;
                 }
 
                 AzureOperationResponse<VirtualMachineExtension> virtualMachineExtensionGetResponse = null;
                 if (Status.IsPresent)
                 {
                     virtualMachineExtensionGetResponse =
-                        this.VirtualMachineExtensionClient.GetWithInstanceView(this.ResourceGroupName,
-                            this.VMName, this.Name);
+                        VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName,
+                            VMName, Name);
                 }
                 else
                 {
-                    virtualMachineExtensionGetResponse = this.VirtualMachineExtensionClient.GetWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name).GetAwaiter().GetResult();
+                    virtualMachineExtensionGetResponse = VirtualMachineExtensionClient.GetWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name).GetAwaiter().GetResult();
                 }
 
                 var returnedExtension = virtualMachineExtensionGetResponse.ToPSVirtualMachineExtension(
-                    this.ResourceGroupName, this.VMName);
+                    ResourceGroupName, VMName);
 
                 WriteObject(returnedExtension);
             });

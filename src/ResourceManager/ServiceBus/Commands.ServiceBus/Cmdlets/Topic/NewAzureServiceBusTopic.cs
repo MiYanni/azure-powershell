@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Topic
             if (SizeInBytes != null)
             { topicAttributes.SizeInBytes = SizeInBytes; }
             
-            if (ShouldProcess(target: Name, action: string.Format(Resources.CreateTopic, Name, Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.CreateTopic, Name, Namespace)))
             {
                 WriteObject(Client.CreateUpdateTopic(ResourceGroupName, Namespace, Name, topicAttributes));
             }

@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models;
+    using Models;
     using System;
     using System.Collections;
     using System.Management.Automation;
@@ -144,7 +144,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 
         public override void ExecuteApiManagementCmdlet()
         {
-            var serverId = this.ServerId ?? Guid.NewGuid().ToString("N");
+            var serverId = ServerId ?? Guid.NewGuid().ToString("N");
 
             var server = Client.AuthorizationServerCreate(
                 Context,

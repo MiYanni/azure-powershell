@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Set", "AzureRmVmssOsProfile", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class SetAzureRmVmssOsProfileCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class SetAzureRmVmssOsProfileCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -122,232 +122,232 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
         private void Run()
         {
-            if (this.MyInvocation.BoundParameters.ContainsKey("ComputerNamePrefix"))
+            if (MyInvocation.BoundParameters.ContainsKey("ComputerNamePrefix"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.ComputerNamePrefix = this.ComputerNamePrefix;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.ComputerNamePrefix = ComputerNamePrefix;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("AdminUsername"))
+            if (MyInvocation.BoundParameters.ContainsKey("AdminUsername"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.AdminUsername = this.AdminUsername;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.AdminUsername = AdminUsername;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("AdminPassword"))
+            if (MyInvocation.BoundParameters.ContainsKey("AdminPassword"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.AdminPassword = this.AdminPassword;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.AdminPassword = AdminPassword;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("CustomData"))
+            if (MyInvocation.BoundParameters.ContainsKey("CustomData"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.CustomData = this.CustomData;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.CustomData = CustomData;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("WindowsConfigurationProvisionVMAgent"))
+            if (MyInvocation.BoundParameters.ContainsKey("WindowsConfigurationProvisionVMAgent"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
                 // WindowsConfiguration
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new Microsoft.Azure.Management.Compute.Models.WindowsConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new WindowsConfiguration();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.ProvisionVMAgent = this.WindowsConfigurationProvisionVMAgent;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.ProvisionVMAgent = WindowsConfigurationProvisionVMAgent;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("WindowsConfigurationEnableAutomaticUpdate"))
+            if (MyInvocation.BoundParameters.ContainsKey("WindowsConfigurationEnableAutomaticUpdate"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
                 // WindowsConfiguration
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new Microsoft.Azure.Management.Compute.Models.WindowsConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new WindowsConfiguration();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.EnableAutomaticUpdates = this.WindowsConfigurationEnableAutomaticUpdate;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.EnableAutomaticUpdates = WindowsConfigurationEnableAutomaticUpdate;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("TimeZone"))
+            if (MyInvocation.BoundParameters.ContainsKey("TimeZone"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
                 // WindowsConfiguration
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new Microsoft.Azure.Management.Compute.Models.WindowsConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new WindowsConfiguration();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.TimeZone = this.TimeZone;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.TimeZone = TimeZone;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("AdditionalUnattendContent"))
+            if (MyInvocation.BoundParameters.ContainsKey("AdditionalUnattendContent"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
                 // WindowsConfiguration
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new Microsoft.Azure.Management.Compute.Models.WindowsConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new WindowsConfiguration();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.AdditionalUnattendContent = this.AdditionalUnattendContent;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.AdditionalUnattendContent = AdditionalUnattendContent;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Listener"))
+            if (MyInvocation.BoundParameters.ContainsKey("Listener"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
                 // WindowsConfiguration
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new Microsoft.Azure.Management.Compute.Models.WindowsConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration = new WindowsConfiguration();
                 }
                 // WinRM
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM = new Microsoft.Azure.Management.Compute.Models.WinRMConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM = new WinRMConfiguration();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM.Listeners = this.Listener;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.WindowsConfiguration.WinRM.Listeners = Listener;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("LinuxConfigurationDisablePasswordAuthentication"))
+            if (MyInvocation.BoundParameters.ContainsKey("LinuxConfigurationDisablePasswordAuthentication"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
                 // LinuxConfiguration
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration = new Microsoft.Azure.Management.Compute.Models.LinuxConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration = new LinuxConfiguration();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.DisablePasswordAuthentication = this.LinuxConfigurationDisablePasswordAuthentication;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.DisablePasswordAuthentication = LinuxConfigurationDisablePasswordAuthentication;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("PublicKey"))
+            if (MyInvocation.BoundParameters.ContainsKey("PublicKey"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
                 // LinuxConfiguration
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration = new Microsoft.Azure.Management.Compute.Models.LinuxConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration = new LinuxConfiguration();
                 }
                 // Ssh
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh = new Microsoft.Azure.Management.Compute.Models.SshConfiguration();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh = new SshConfiguration();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh.PublicKeys = this.PublicKey;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.LinuxConfiguration.Ssh.PublicKeys = PublicKey;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Secret"))
+            if (MyInvocation.BoundParameters.ContainsKey("Secret"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // OsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.OsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetOSProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.OsProfile = new VirtualMachineScaleSetOSProfile();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.Secrets = this.Secret;
+                VirtualMachineScaleSet.VirtualMachineProfile.OsProfile.Secrets = Secret;
             }
 
-            WriteObject(this.VirtualMachineScaleSet);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

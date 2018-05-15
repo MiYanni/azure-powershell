@@ -189,24 +189,18 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
             {
                 return null;
             }
-            else
+            if (string.IsNullOrEmpty(thumbprint))
             {
-                if (string.IsNullOrEmpty(thumbprint))
-                {
-                    throw new ArgumentException(string.Format(Resources.InvalidOrEmptyArgumentMessage, "certificate thumbprint"));
-                }
-
-                X509Certificate2Collection certificates;
-                if (TryFindCertificatesInStore(thumbprint, StoreLocation.CurrentUser, out certificates) ||
-                    TryFindCertificatesInStore(thumbprint, StoreLocation.LocalMachine, out certificates))
-                {
-                    return certificates[0];
-                }
-                else
-                {
-                    throw new ArgumentException(string.Format(Resources.CertificateNotFoundInStore, thumbprint));
-                }
+                throw new ArgumentException(string.Format(Resources.InvalidOrEmptyArgumentMessage, "certificate thumbprint"));
             }
+
+            X509Certificate2Collection certificates;
+            if (TryFindCertificatesInStore(thumbprint, StoreLocation.CurrentUser, out certificates) ||
+                TryFindCertificatesInStore(thumbprint, StoreLocation.LocalMachine, out certificates))
+            {
+                return certificates[0];
+            }
+            throw new ArgumentException(string.Format(Resources.CertificateNotFoundInStore, thumbprint));
         }
 
         /// <summary>
@@ -220,7 +214,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
                 throw new ArgumentException(Resources.InvalidCertificate);
             }
 
-            X509StoreWrapper(StoreName.My, StoreLocation.CurrentUser, (store) =>
+            X509StoreWrapper(StoreName.My, StoreLocation.CurrentUser, store =>
             {
                 store.Open(OpenFlags.ReadWrite);
                 store.Add(certificate);
@@ -238,7 +232,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
                 var certificate = GetCertificate(thumbprint);
                 if (certificate != null)
                 {
-                    X509StoreWrapper(StoreName.My, StoreLocation.CurrentUser, (store) =>
+                    X509StoreWrapper(StoreName.My, StoreLocation.CurrentUser, store =>
                     {
                         store.Open(OpenFlags.ReadWrite);
                         store.Remove(certificate);
@@ -292,7 +286,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
             StoreLocation location, out X509Certificate2Collection certificates)
         {
             X509Certificate2Collection found = null;
-            X509StoreWrapper(StoreName.My, location, (store) =>
+            X509StoreWrapper(StoreName.My, location, store =>
             {
                 store.Open(OpenFlags.ReadOnly);
                 found = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);

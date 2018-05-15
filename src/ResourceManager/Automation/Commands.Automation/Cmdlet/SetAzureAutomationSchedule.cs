@@ -54,9 +54,9 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            Schedule schedule = this.AutomationClient.UpdateSchedule(
-                this.ResourceGroupName, this.AutomationAccountName, this.Name, this.IsEnabled, this.Description);
-            this.WriteObject(schedule);
+            Schedule schedule = AutomationClient.UpdateSchedule(
+                ResourceGroupName, AutomationAccountName, Name, IsEnabled, Description);
+            WriteObject(schedule);
         }
     }
 }

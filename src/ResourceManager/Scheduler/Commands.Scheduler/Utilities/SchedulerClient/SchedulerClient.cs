@@ -17,9 +17,9 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.Azure.Commands.Common.Authentication.Models;
-    using Microsoft.Azure.Management.Scheduler;
+    using Common.Authentication;
+    using Common.Authentication.Models;
+    using Management.Scheduler;
     using Management.Internal.Resources;
     using Management.Internal.Resources.Models;
     using Common.Authentication.Abstractions;
@@ -61,14 +61,14 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <param name="context">The Azure context reference.</param>
         public SchedulerClient(IAzureContext context)
         {
-            this.SchedulerManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<SchedulerManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
-            this._resourceManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            SchedulerManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<SchedulerManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            _resourceManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
 
-            ProviderResourceType providerResourceType= _resourceManagementClient.Providers.Get(Constants.ProviderNamespace).ResourceTypes.First((resourceType) => resourceType.ResourceType.Equals(Constants.ResourceType, StringComparison.InvariantCultureIgnoreCase));
+            ProviderResourceType providerResourceType= _resourceManagementClient.Providers.Get(Constants.ProviderNamespace).ResourceTypes.First(resourceType => resourceType.ResourceType.Equals(Constants.ResourceType, StringComparison.InvariantCultureIgnoreCase));
 
             _availableRegions = providerResourceType != null ? providerResourceType.Locations : null;
 
-            this.SchedulerManagementClient.SubscriptionId = context.Subscription.Id.ToString();
+            SchedulerManagementClient.SubscriptionId = context.Subscription.Id.ToString();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <returns>true if resource group exists, false otherwise</returns>
         internal bool DoesResourceGroupExists(string resourceGroupName)
         {
-            return this._resourceManagementClient.ResourceGroups.CheckExistence(resourceGroupName);
+            return _resourceManagementClient.ResourceGroups.CheckExistence(resourceGroupName);
         }
     }
 }

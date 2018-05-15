@@ -23,9 +23,9 @@ namespace Microsoft.Azure.Commands.Network
 
     using AutoMapper;
 
-    using Microsoft.Azure.Commands.Network.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.Tags;
-    using Microsoft.Azure.Management.Network;
+    using Models;
+    using ResourceManager.Common.Tags;
+    using Management.Network;
 
     public class AzureRouteFilterRuleConfigBase: NetworkBaseCmdlet
     {
@@ -77,9 +77,9 @@ namespace Microsoft.Azure.Commands.Network
         {
             try
             {
-                this.GetRouteFilterRule(resourceGroupName, filterName, name);
+                GetRouteFilterRule(resourceGroupName, filterName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSRouteFilterRule GetRouteFilterRule(string resourceGroupName, string filterName, string name)
         {
-            var routeFilterRule = this.RouteFilterRuleClient.Get(resourceGroupName, filterName, name);
+            var routeFilterRule = RouteFilterRuleClient.Get(resourceGroupName, filterName, name);
 
             var psRouteFilterRule = NetworkResourceManagerProfile.Mapper.Map<PSRouteFilterRule>(routeFilterRule);
             

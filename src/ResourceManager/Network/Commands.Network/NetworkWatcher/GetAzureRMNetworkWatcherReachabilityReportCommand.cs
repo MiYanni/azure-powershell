@@ -115,56 +115,56 @@ namespace Microsoft.Azure.Commands.Network.Automation
             // ProviderLocation
             PSAzureReachabilityReportLocation vProviderLocation = null;
 
-            if (this.Country != null)
+            if (Country != null)
             {
                 if (vProviderLocation == null)
                 {
                     vProviderLocation = new PSAzureReachabilityReportLocation();
                 }
-                vProviderLocation.Country = this.Country;
+                vProviderLocation.Country = Country;
             }
 
-            if (this.State != null)
+            if (State != null)
             {
                 if (vProviderLocation == null)
                 {
                     vProviderLocation = new PSAzureReachabilityReportLocation();
                 }
-                vProviderLocation.State = this.State;
+                vProviderLocation.State = State;
             }
 
-            if (this.City != null)
+            if (City != null)
             {
                 if (vProviderLocation == null)
                 {
                     vProviderLocation = new PSAzureReachabilityReportLocation();
                 }
-                vProviderLocation.City = this.City;
+                vProviderLocation.City = City;
             }
 
             var vAzureReachabilityReportParameters = new AzureReachabilityReportParameters
             {
-                Providers = this.Provider,
-                AzureLocations = this.Location,
-                StartTime = this.StartTime,
-                EndTime = this.EndTime,
-                ProviderLocation = NetworkResourceManagerProfile.Mapper.Map < MNM.AzureReachabilityReportLocation >(vProviderLocation),
+                Providers = Provider,
+                AzureLocations = Location,
+                StartTime = StartTime,
+                EndTime = EndTime,
+                ProviderLocation = NetworkResourceManagerProfile.Mapper.Map < AzureReachabilityReportLocation >(vProviderLocation),
             };
 
-            if (string.Equals(this.ParameterSetName, "SetByResource", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(ParameterSetName, "SetByResource", StringComparison.OrdinalIgnoreCase))
             {
-                ResourceGroupName = this.NetworkWatcher.ResourceGroupName;
-                NetworkWatcherName = this.NetworkWatcher.Name;
+                ResourceGroupName = NetworkWatcher.ResourceGroupName;
+                NetworkWatcherName = NetworkWatcher.Name;
             }
 
-            if (string.Equals(this.ParameterSetName, "SetByResourceId", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(ParameterSetName, "SetByResourceId", StringComparison.OrdinalIgnoreCase))
             {
-                var resourceInfo = new ResourceIdentifier(this.ResourceId);
+                var resourceInfo = new ResourceIdentifier(ResourceId);
                 ResourceGroupName = resourceInfo.ResourceGroupName;
                 NetworkWatcherName = resourceInfo.ResourceName;
             }
 
-            var vNetworkWatcherResult = this.NetworkClient.NetworkManagementClient.NetworkWatchers.GetAzureReachabilityReport(ResourceGroupName, NetworkWatcherName, vAzureReachabilityReportParameters);
+            var vNetworkWatcherResult = NetworkClient.NetworkManagementClient.NetworkWatchers.GetAzureReachabilityReport(ResourceGroupName, NetworkWatcherName, vAzureReachabilityReportParameters);
             var vNetworkWatcherModel = NetworkResourceManagerProfile.Mapper.Map<PSAzureReachabilityReport>(vNetworkWatcherResult);
             WriteObject(vNetworkWatcherModel);
         }

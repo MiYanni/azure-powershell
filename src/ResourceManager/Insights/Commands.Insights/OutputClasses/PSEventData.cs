@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// </summary>
         public PSEventData(EventData eventData)
         {
-            this.Authorization = eventData.Authorization != null
+            Authorization = eventData.Authorization != null
                 ? new PSEventDataAuthorization
                 {
                     Action = eventData.Authorization.Action,
@@ -55,16 +55,16 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
                     Scope = eventData.Authorization.Scope
                 }
                 : null;
-            this.Caller = eventData.Caller;
-            this.Claims = new PSDictionaryElement(eventData.Claims);
-            this.CorrelationId = eventData.CorrelationId;
-            this.Description = eventData.Description;
+            Caller = eventData.Caller;
+            Claims = new PSDictionaryElement(eventData.Claims);
+            CorrelationId = eventData.CorrelationId;
+            Description = eventData.Description;
 
-            this.EventDataId = eventData.EventDataId;
-            this.EventName = eventData.EventName;
-            this.Category = eventData.Category;
-            this.EventTimestamp = eventData.EventTimestamp;
-            this.HttpRequest = eventData.HttpRequest != null
+            EventDataId = eventData.EventDataId;
+            EventName = eventData.EventName;
+            Category = eventData.Category;
+            EventTimestamp = eventData.EventTimestamp;
+            HttpRequest = eventData.HttpRequest != null
                 ? new PSEventDataHttpRequest
                 {
                     ClientId = eventData.HttpRequest.ClientRequestId,
@@ -73,18 +73,18 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
                     Url = eventData.HttpRequest.Uri
                 }
                 : null;
-            this.Id = eventData.Id;
-            this.Level = eventData.Level;
-            this.OperationId = eventData.OperationId;
-            this.OperationName = eventData.OperationName;
-            this.Properties = new PSDictionaryElement(eventData.Properties);
-            this.ResourceGroupName = eventData.ResourceGroupName;
-            this.ResourceProviderName = eventData.ResourceProviderName;
-            this.ResourceId = eventData.ResourceId;
-            this.Status = eventData.Status;
-            this.SubmissionTimestamp = eventData.SubmissionTimestamp;
-            this.SubscriptionId = eventData.SubscriptionId;
-            this.SubStatus = eventData.SubStatus;
+            Id = eventData.Id;
+            Level = eventData.Level;
+            OperationId = eventData.OperationId;
+            OperationName = eventData.OperationName;
+            Properties = new PSDictionaryElement(eventData.Properties);
+            ResourceGroupName = eventData.ResourceGroupName;
+            ResourceProviderName = eventData.ResourceProviderName;
+            ResourceId = eventData.ResourceId;
+            Status = eventData.Status;
+            SubmissionTimestamp = eventData.SubmissionTimestamp;
+            SubscriptionId = eventData.SubscriptionId;
+            SubStatus = eventData.SubStatus;
         }
     }
 }

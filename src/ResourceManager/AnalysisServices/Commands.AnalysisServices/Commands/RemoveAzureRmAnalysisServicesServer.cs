@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices
 
         [Parameter(ValueFromPipelineByPropertyName = true, Position = 1, Mandatory = false,
             HelpMessage = "Name of resource group under which the server exists.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -52,10 +52,10 @@ namespace Microsoft.Azure.Commands.AnalysisServices
 
             if (ShouldProcess(Name, Resources.RemovingAnalysisServicesServer))
             {
-                AnalysisServicesServer server = null;
+                AnalysisServicesServer server;
                 if (!AnalysisServicesClient.TestServer(ResourceGroupName, Name, out server))
                 {
-                    throw new InvalidOperationException(string.Format(Properties.Resources.ServerDoesNotExist, Name));
+                    throw new InvalidOperationException(string.Format(Resources.ServerDoesNotExist, Name));
                 }
 
                 AnalysisServicesClient.DeleteServer(ResourceGroupName, Name);

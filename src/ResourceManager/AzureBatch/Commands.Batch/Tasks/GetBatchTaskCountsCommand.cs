@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            GetTaskCountsOptions options = new GetTaskCountsOptions(this.BatchContext, this.JobId, this.Job, this.AdditionalBehaviors);
+            GetTaskCountsOptions options = new GetTaskCountsOptions(BatchContext, JobId, Job, AdditionalBehaviors);
 
             PSTaskCounts taskCounts = BatchClient.GetTaskCounts(options);
 

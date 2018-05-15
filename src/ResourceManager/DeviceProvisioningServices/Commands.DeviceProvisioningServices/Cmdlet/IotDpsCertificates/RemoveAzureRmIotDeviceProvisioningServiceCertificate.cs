@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices;
-    using DPSResources = Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Properties.Resources;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices;
+    using DPSResources = Properties.Resources;
 
     [Cmdlet(VerbsCommon.Remove, "AzureRmIoTDeviceProvisioningServiceCertificate", DefaultParameterSetName = ResourceParameterSet, SupportsShouldProcess = true)]
     [Alias("Remove-AzureRmIoTDpsCertificate")]
@@ -95,24 +95,24 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
             {
                 if (ParameterSetName.Equals(InputObjectParameterSet))
                 {
-                    this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                    this.Name = this.InputObject.Name;
-                    this.CertificateName = this.InputObject.CertificateName;
-                    this.Etag = this.InputObject.Etag;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    Name = InputObject.Name;
+                    CertificateName = InputObject.CertificateName;
+                    Etag = InputObject.Etag;
                 }
 
                 if (ParameterSetName.Equals(ResourceIdParameterSet))
                 {
-                    this.ResourceGroupName = IotDpsUtils.GetResourceGroupName(this.ResourceId);
-                    this.Name = IotDpsUtils.GetIotDpsName(this.ResourceId);
-                    this.CertificateName = IotDpsUtils.GetIotDpsCertificateName(this.ResourceId);
+                    ResourceGroupName = IotDpsUtils.GetResourceGroupName(ResourceId);
+                    Name = IotDpsUtils.GetIotDpsName(ResourceId);
+                    CertificateName = IotDpsUtils.GetIotDpsCertificateName(ResourceId);
                 }
 
-                this.IotDpsClient.DpsCertificate.Delete(this.ResourceGroupName, this.Etag, this.Name, this.CertificateName);
+                IotDpsClient.DpsCertificate.Delete(ResourceGroupName, Etag, Name, CertificateName);
 
                 if (PassThru)
                 {
-                    this.WriteObject(true);
+                    WriteObject(true);
                 }
             }
         }

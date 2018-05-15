@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Sql.TransparentDataEncryption.Cmdlet
         /// <returns>A single Transparent Data Encryption</returns>
         protected override IEnumerable<AzureSqlDatabaseTransparentDataEncryptionActivityModel> GetEntity()
         {
-            return ModelAdapter.ListTransparentDataEncryptionActivity(this.ResourceGroupName, this.ServerName, this.DatabaseName);
+            return ModelAdapter.ListTransparentDataEncryptionActivity(ResourceGroupName, ServerName, DatabaseName);
         }
 
         /// <summary>

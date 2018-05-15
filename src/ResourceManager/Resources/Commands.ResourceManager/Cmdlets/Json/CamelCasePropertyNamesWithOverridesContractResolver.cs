@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Json
         {
             var result = base.CreateProperty(member, memberSerialization);
 
-            var attributes = member.GetCustomAttributes(attributeType: typeof(JsonPropertyAttribute), inherit: true);
+            var attributes = member.GetCustomAttributes(typeof(JsonPropertyAttribute), true);
             if (attributes.Any())
             {
                 var propertyName = attributes.Cast<JsonPropertyAttribute>().Single().PropertyName;
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Json
         {
             var contract = base.CreateDictionaryContract(objectType);
 
-            var attributes = objectType.GetCustomAttributes(attributeType: typeof(JsonPreserveCaseDictionaryAttribute), inherit: true);
+            var attributes = objectType.GetCustomAttributes(typeof(JsonPreserveCaseDictionaryAttribute), true);
             if (attributes.Any())
             {
 #if !NETSTANDARD

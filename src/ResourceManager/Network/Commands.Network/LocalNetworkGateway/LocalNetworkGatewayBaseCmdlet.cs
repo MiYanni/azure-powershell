@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetLocalNetworkGateway(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSLocalNetworkGateway GetLocalNetworkGateway(string resourceGroupName, string name)
         {
-            var localNetworkGateway = this.LocalNetworkGatewayClient.Get(resourceGroupName, name);
+            var localNetworkGateway = LocalNetworkGatewayClient.Get(resourceGroupName, name);
 
             var psLocalNetworkGateway = ToPsLocalNetworkGateway(localNetworkGateway);
             psLocalNetworkGateway.ResourceGroupName = resourceGroupName;

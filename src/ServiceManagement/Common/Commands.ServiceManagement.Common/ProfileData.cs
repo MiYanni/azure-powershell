@@ -49,18 +49,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             return new AzureEnvironment
             {
-                Name = this.Name,
-                ActiveDirectoryServiceEndpointResourceId = this.ActiveDirectoryServiceEndpointResourceId,
-                AdTenant = this.AdTenantUrl,
-                GalleryUrl = this.GalleryEndpoint,
-                ManagementPortalUrl = this.ManagementPortalUrl,
-                PublishSettingsFileUrl = this.PublishSettingsFileUrl,
-                ResourceManagerUrl = this.ResourceManagerEndpoint,
-                ServiceManagementUrl = this.ServiceEndpoint, 
-                SqlDatabaseDnsSuffix = this.SqlDatabaseDnsSuffix,
-                StorageEndpointSuffix = this.StorageEndpointSuffix,
-                AzureDataLakeAnalyticsCatalogAndJobEndpointSuffix = this.AzureDataLakeAnalyticsCatalogAndJobEndpointSuffix,
-                AzureDataLakeStoreFileSystemEndpointSuffix = this.AzureDataLakeStoreFileSystemEndpointSuffix
+                Name = Name,
+                ActiveDirectoryServiceEndpointResourceId = ActiveDirectoryServiceEndpointResourceId,
+                AdTenant = AdTenantUrl,
+                GalleryUrl = GalleryEndpoint,
+                ManagementPortalUrl = ManagementPortalUrl,
+                PublishSettingsFileUrl = PublishSettingsFileUrl,
+                ResourceManagerUrl = ResourceManagerEndpoint,
+                ServiceManagementUrl = ServiceEndpoint, 
+                SqlDatabaseDnsSuffix = SqlDatabaseDnsSuffix,
+                StorageEndpointSuffix = StorageEndpointSuffix,
+                AzureDataLakeAnalyticsCatalogAndJobEndpointSuffix = AzureDataLakeAnalyticsCatalogAndJobEndpointSuffix,
+                AzureDataLakeStoreFileSystemEndpointSuffix = AzureDataLakeStoreFileSystemEndpointSuffix
             };
         }
 
@@ -126,7 +126,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             AzureSubscription subscription = new AzureSubscription();
             try
             {
-                subscription.Id = new Guid(this.SubscriptionId).ToString();
+                subscription.Id = new Guid(SubscriptionId).ToString();
             }
             catch (Exception ex)
             {
@@ -141,7 +141,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
 
             List<IAzureEnvironment> allEnvs = envs.Union(AzureEnvironment.PublicEnvironments.Values).ToList();
-            IAzureEnvironment env = allEnvs.FirstOrDefault(e => e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ServiceManagement, this.ManagementEndpoint));
+            IAzureEnvironment env = allEnvs.FirstOrDefault(e => e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ServiceManagement, ManagementEndpoint));
 
             if (env != null)
             {
@@ -152,32 +152,32 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 subscription.SetEnvironment(EnvironmentName.AzureCloud);
             }
 
-            if (!string.IsNullOrEmpty(this.ManagementCertificate))
+            if (!string.IsNullOrEmpty(ManagementCertificate))
             {
-                subscription.SetAccount(this.ManagementCertificate);
+                subscription.SetAccount(ManagementCertificate);
             }
 
-            if (!string.IsNullOrEmpty(this.ActiveDirectoryUserId))
+            if (!string.IsNullOrEmpty(ActiveDirectoryUserId))
             {
-                subscription.SetAccount(this.ActiveDirectoryUserId);
+                subscription.SetAccount(ActiveDirectoryUserId);
             }
 
-            if (!string.IsNullOrEmpty(this.ActiveDirectoryTenantId))
+            if (!string.IsNullOrEmpty(ActiveDirectoryTenantId))
             {
                 subscription.SetProperty(AzureSubscription.Property.Tenants, ActiveDirectoryTenantId);
             }
 
-            if (this.IsDefault)
+            if (IsDefault)
             {
                 subscription.SetProperty(AzureSubscription.Property.Default, "True");
             }
 
-            if (!string.IsNullOrEmpty(this.CloudStorageAccount))
+            if (!string.IsNullOrEmpty(CloudStorageAccount))
             {
-                subscription.SetStorageAccount(this.CloudStorageAccount);
+                subscription.SetStorageAccount(CloudStorageAccount);
             }
 
-            if (this.RegisteredResourceProviders.Count() > 0)
+            if (RegisteredResourceProviders.Count() > 0)
             {
                 StringBuilder providers = new StringBuilder();
                 subscription.SetProperty(AzureSubscription.Property.RegisteredResourceProviders,
@@ -197,7 +197,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     Type = AzureAccount.AccountType.User
                 };
 
-                userAccount.SetProperty(AzureAccount.Property.Subscriptions, new Guid(this.SubscriptionId).ToString());
+                userAccount.SetProperty(AzureAccount.Property.Subscriptions, new Guid(SubscriptionId).ToString());
 
                 if (!string.IsNullOrEmpty(ActiveDirectoryTenantId))
                 {
@@ -215,7 +215,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     Type = AzureAccount.AccountType.Certificate
                 };
 
-                certificateAccount.SetProperty(AzureAccount.Property.Subscriptions, new Guid(this.SubscriptionId).ToString());
+                certificateAccount.SetProperty(AzureAccount.Property.Subscriptions, new Guid(SubscriptionId).ToString());
 
                 yield return certificateAccount;
             }

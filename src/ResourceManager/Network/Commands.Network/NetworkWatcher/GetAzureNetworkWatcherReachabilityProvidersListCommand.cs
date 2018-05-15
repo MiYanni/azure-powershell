@@ -93,26 +93,26 @@ namespace Microsoft.Azure.Commands.Network.Automation
 
             var vAvailableProvidersListParameters = new AvailableProvidersListParameters
             {
-                AzureLocations = this.Location,
-                Country = this.Country,
-                State = this.State,
-                City = this.City,
+                AzureLocations = Location,
+                Country = Country,
+                State = State,
+                City = City,
             };
 
-            if (string.Equals(this.ParameterSetName, "SetByResource", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(ParameterSetName, "SetByResource", StringComparison.OrdinalIgnoreCase))
             {
-                ResourceGroupName = this.NetworkWatcher.ResourceGroupName;
-                NetworkWatcherName = this.NetworkWatcher.Name;
+                ResourceGroupName = NetworkWatcher.ResourceGroupName;
+                NetworkWatcherName = NetworkWatcher.Name;
             }
 
-            if (string.Equals(this.ParameterSetName, "SetByResourceId", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(ParameterSetName, "SetByResourceId", StringComparison.OrdinalIgnoreCase))
             {
-                var resourceInfo = new ResourceIdentifier(this.ResourceId);
+                var resourceInfo = new ResourceIdentifier(ResourceId);
                 ResourceGroupName = resourceInfo.ResourceGroupName;
                 NetworkWatcherName = resourceInfo.ResourceName;
             }
 
-            var vNetworkWatcherResult = this.NetworkClient.NetworkManagementClient.NetworkWatchers.ListAvailableProviders(ResourceGroupName, NetworkWatcherName, vAvailableProvidersListParameters);
+            var vNetworkWatcherResult = NetworkClient.NetworkManagementClient.NetworkWatchers.ListAvailableProviders(ResourceGroupName, NetworkWatcherName, vAvailableProvidersListParameters);
             var vNetworkWatcherModel = NetworkResourceManagerProfile.Mapper.Map<PSAvailableProvidersList>(vNetworkWatcherResult);
             WriteObject(vNetworkWatcherModel);
         }

@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, ParameterSetName = AutomationCmdletParameterSets.ByLatest, HelpMessage = "Get Latest Dsc report.")]
         public SwitchParameter Latest
         {
-            get { return this.latestReport; }
-            set { this.latestReport = value; }
+            get { return latestReport; }
+            set { latestReport = value; }
         }
 
         /// <summary> 
@@ -72,23 +72,23 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             IEnumerable<DscNodeReport> ret = null;
 
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByLatest)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByLatest)
             {
                 ret = new List<DscNodeReport>
                 {
-                   this.AutomationClient.GetLatestDscNodeReport(this.ResourceGroupName, this.AutomationAccountName, this.NodeId)
+                   AutomationClient.GetLatestDscNodeReport(ResourceGroupName, AutomationAccountName, NodeId)
                 };
 
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ById)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ById)
             {
                 ret = new List<DscNodeReport>
                 {
-                    this.AutomationClient.GetDscNodeReportByReportId(this.ResourceGroupName, this.AutomationAccountName, this.NodeId, this.Id)
+                    AutomationClient.GetDscNodeReportByReportId(ResourceGroupName, AutomationAccountName, NodeId, Id)
                 };
 
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
             else
             {
@@ -96,10 +96,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
                 do
                 {
-                    ret = this.AutomationClient.ListDscNodeReports(this.ResourceGroupName, this.AutomationAccountName, this.NodeId, this.StartTime, this.EndTime, ref nextLink);
+                    ret = AutomationClient.ListDscNodeReports(ResourceGroupName, AutomationAccountName, NodeId, StartTime, EndTime, ref nextLink);
                     if (ret != null)
                     {
-                        this.GenerateCmdletOutput(ret);
+                        GenerateCmdletOutput(ret);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));

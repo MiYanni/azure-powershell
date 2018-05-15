@@ -153,7 +153,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         Vnet2Vnet = 2,
 
         [EnumMember]
-        VPNClient = 3,
+        VPNClient = 3
     }
 
     #endregion
@@ -183,11 +183,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                if (this.propertyStore == null)
+                if (propertyStore == null)
                 {
-                    this.propertyStore = new Dictionary<string, object>();
+                    propertyStore = new Dictionary<string, object>();
                 }
-                return this.propertyStore;
+                return propertyStore;
             }
         }
         #endregion
@@ -196,7 +196,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             object value;
 
-            if (this.PropertyStore.TryGetValue(fieldName, out value))
+            if (PropertyStore.TryGetValue(fieldName, out value))
             {
                 return (TValue)value;
             }
@@ -204,27 +204,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         }
         protected void SetValue<TValue>(string fieldName, TValue value)
         {
-            this.PropertyStore[fieldName] = value;
+            PropertyStore[fieldName] = value;
         }
 
         protected Nullable<TValue> GetField<TValue>(string fieldName) where TValue : struct
         {
             object value;
-            if (this.PropertyStore.TryGetValue(fieldName, out value))
+            if (PropertyStore.TryGetValue(fieldName, out value))
             {
                 return new Nullable<TValue>((TValue)value);
             }
-            else
-            {
-                return new Nullable<TValue>();
-            }
+            return new Nullable<TValue>();
         }
 
         protected void SetField<TValue>(string fieldName, Nullable<TValue> value) where TValue : struct
         {
             if (value.HasValue)
             {
-                this.PropertyStore[fieldName] = value.Value;
+                PropertyStore[fieldName] = value.Value;
             }
         }
 
@@ -239,7 +236,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         protected TValue Convert<TValue>()
         {
-            DataContractSerializer sourceSerializer = new DataContractSerializer(this.GetType());
+            DataContractSerializer sourceSerializer = new DataContractSerializer(GetType());
             DataContractSerializer destinationSerializer = new DataContractSerializer(typeof(TValue));
 
             using (MemoryStream stream = new MemoryStream())
@@ -269,7 +266,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             {
                 object currentValue;
 
-                if (this.PropertyStore.TryGetValue(kvPair.Key, out currentValue))
+                if (PropertyStore.TryGetValue(kvPair.Key, out currentValue))
                 {
                     IMergable mergableValue = currentValue as IMergable;
 
@@ -279,7 +276,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                         continue;
                     }
                 }
-                this.PropertyStore[kvPair.Key] = kvPair.Value;
+                PropertyStore[kvPair.Key] = kvPair.Value;
             }
         }
         #endregion
@@ -343,7 +340,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         public static bool operator ==(VirtualIP left, VirtualIP right)
         {
-            if (Object.ReferenceEquals(left, right))
+            if (ReferenceEquals(left, right))
             {
                 return true;
             }
@@ -369,7 +366,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         public override int GetHashCode()
         {
-            return this.Address.GetHashCode();
+            return Address.GetHashCode();
         }
         #endregion
     }
@@ -452,26 +449,26 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         public override object ResolveType()
         {
-            if (this.GetType() != typeof(ConfigurationSet))
+            if (GetType() != typeof(ConfigurationSet))
             {
                 return this;
             }
 
-            if (!string.IsNullOrEmpty(this.ConfigurationSetType))
+            if (!string.IsNullOrEmpty(ConfigurationSetType))
             {
-                if (string.Equals(this.ConfigurationSetType, "WindowsProvisioningConfiguration"))
+                if (string.Equals(ConfigurationSetType, "WindowsProvisioningConfiguration"))
                 {
-                    return base.Convert<WindowsProvisioningConfigurationSet>();
+                    return Convert<WindowsProvisioningConfigurationSet>();
                 }
 
-                if (string.Equals(this.ConfigurationSetType, "LinuxProvisioningConfiguration"))
+                if (string.Equals(ConfigurationSetType, "LinuxProvisioningConfiguration"))
                 {
-                    return base.Convert<LinuxProvisioningConfigurationSet>();
+                    return Convert<LinuxProvisioningConfigurationSet>();
                 }
 
-                if (string.Equals(this.ConfigurationSetType, "NetworkConfiguration"))
+                if (string.Equals(ConfigurationSetType, "NetworkConfiguration"))
                 {
-                    return base.Convert<NetworkConfigurationSet>();
+                    return Convert<NetworkConfigurationSet>();
                 }
             }
             return this;
@@ -492,11 +489,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("ComputerName");
+                return GetValue<string>("ComputerName");
             }
             set
             {
-                this.SetValue("ComputerName", value);
+                SetValue("ComputerName", value);
             }
         }
 
@@ -505,11 +502,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<System.Security.SecureString>("AdminPassword");
+                return GetValue<System.Security.SecureString>("AdminPassword");
             }
             set
             {
-                this.SetValue("AdminPassword", value);
+                SetValue("AdminPassword", value);
             }
         }
 
@@ -519,22 +516,22 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetField<bool>("ResetPasswordOnFirstLogon");
+                return GetField<bool>("ResetPasswordOnFirstLogon");
             }
             set
             {
-                this.SetField("ResetPasswordOnFirstLogon", value);
+                SetField("ResetPasswordOnFirstLogon", value);
             }
         }
         public bool ResetPasswordOnFirstLogon
         {
             get
             {
-                return base.GetValue<bool>("ResetPasswordOnFirstLogon");
+                return GetValue<bool>("ResetPasswordOnFirstLogon");
             }
             set
             {
-                base.SetValue("ResetPasswordOnFirstLogon", value);
+                SetValue("ResetPasswordOnFirstLogon", value);
             }
         }
 
@@ -543,11 +540,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<bool?>("EnableAutomaticUpdates");
+                return GetValue<bool?>("EnableAutomaticUpdates");
             }
             set
             {
-                base.SetValue("EnableAutomaticUpdates", value);
+                SetValue("EnableAutomaticUpdates", value);
             }
         }
 
@@ -556,11 +553,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("TimeZone");
+                return GetValue<string>("TimeZone");
             }
             set
             {
-                base.SetValue("TimeZone", value);
+                SetValue("TimeZone", value);
             }
         }
 
@@ -569,11 +566,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<DomainJoinSettings>("DomainJoin");
+                return GetValue<DomainJoinSettings>("DomainJoin");
             }
             set
             {
-                base.SetValue("DomainJoin", value);
+                SetValue("DomainJoin", value);
             }
         }
 
@@ -582,11 +579,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<CertificateSettingList>("StoredCertificateSettings");
+                return GetValue<CertificateSettingList>("StoredCertificateSettings");
             }
             set
             {
-                base.SetValue("StoredCertificateSettings", value);
+                SetValue("StoredCertificateSettings", value);
             }
         }
 
@@ -595,11 +592,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<WinRmConfiguration>("WinRM");
+                return GetValue<WinRmConfiguration>("WinRM");
             }
             set
             {
-                base.SetValue("WinRM", value);
+                SetValue("WinRM", value);
             }
         }
 
@@ -608,11 +605,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("AdminUsername");
+                return GetValue<string>("AdminUsername");
             }
             set
             {
-                this.SetValue("AdminUsername", value);
+                SetValue("AdminUsername", value);
             }
         }
 
@@ -700,11 +697,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("HostName");
+                return GetValue<string>("HostName");
             }
             set
             {
-                this.SetValue("HostName", value);
+                SetValue("HostName", value);
             }
         }
 
@@ -713,11 +710,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("UserName");
+                return GetValue<string>("UserName");
             }
             set
             {
-                this.SetValue("UserName", value);
+                SetValue("UserName", value);
             }
         }
 
@@ -726,11 +723,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<System.Security.SecureString>("UserPassword");
+                return GetValue<System.Security.SecureString>("UserPassword");
             }
             set
             {
-                this.SetValue("UserPassword", value);
+                SetValue("UserPassword", value);
             }
         }
 
@@ -739,11 +736,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<bool?>("DisableSshPasswordAuthentication");
+                return GetValue<bool?>("DisableSshPasswordAuthentication");
             }
             set
             {
-                base.SetValue("DisableSshPasswordAuthentication", value);
+                SetValue("DisableSshPasswordAuthentication", value);
             }
         }
 
@@ -752,11 +749,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<SSHSettings>("SSH");
+                return GetValue<SSHSettings>("SSH");
             }
             set
             {
-                base.SetValue("SSH", value);
+                SetValue("SSH", value);
             }
         }
 
@@ -834,11 +831,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<Collection<InputEndpoint>>("InputEndpoints");
+                return GetValue<Collection<InputEndpoint>>("InputEndpoints");
             }
             set
             {
-                base.SetValue("InputEndpoints", value);
+                SetValue("InputEndpoints", value);
             }
         }
 
@@ -847,11 +844,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<SubnetNamesCollection>("SubnetNames");
+                return GetValue<SubnetNamesCollection>("SubnetNames");
             }
             set
             {
-                this.SetValue("SubnetNames", value);
+                SetValue("SubnetNames", value);
             }
         }
 
@@ -860,11 +857,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<VirtualIPGroups>("VirtualIPGroups");
+                return GetValue<VirtualIPGroups>("VirtualIPGroups");
             }
             set
             {
-                this.SetValue("VirtualIPGroups", value);
+                SetValue("VirtualIPGroups", value);
             }
         }
 
@@ -873,11 +870,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("StaticVirtualNetworkIPAddress");
+                return GetValue<string>("StaticVirtualNetworkIPAddress");
             }
             set
             {
-                this.SetValue("StaticVirtualNetworkIPAddress", value);
+                SetValue("StaticVirtualNetworkIPAddress", value);
             }
         }
 
@@ -886,11 +883,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<AssignPublicIPCollection>("PublicIPs");
+                return GetValue<AssignPublicIPCollection>("PublicIPs");
             }
             set
             {
-                this.SetValue("PublicIPs", value);
+                SetValue("PublicIPs", value);
             }
         }
 
@@ -899,11 +896,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<AssignNetworkInterfaceCollection>("NetworkInterfaces");
+                return GetValue<AssignNetworkInterfaceCollection>("NetworkInterfaces");
             }
             set
             {
-                this.SetValue("NetworkInterfaces", value);
+                SetValue("NetworkInterfaces", value);
             }
         }
 
@@ -912,11 +909,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("NetworkSecurityGroup");
+                return GetValue<string>("NetworkSecurityGroup");
             }
             set
             {
-                this.SetValue("NetworkSecurityGroup", value);
+                SetValue("NetworkSecurityGroup", value);
             }
         }
 
@@ -925,11 +922,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("IPForwarding");
+                return GetValue<string>("IPForwarding");
             }
             set
             {
-                this.SetValue("IPForwarding", value);
+                SetValue("IPForwarding", value);
             }
         }
     }
@@ -984,11 +981,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<AssignIPConfigurationCollection>("IPConfigurations");
+                return GetValue<AssignIPConfigurationCollection>("IPConfigurations");
             }
             set
             {
-                this.SetValue("IPConfigurations", value);
+                SetValue("IPConfigurations", value);
             }
         }
 
@@ -1042,11 +1039,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("LoadBalancedEndpointSetName");
+                return GetValue<string>("LoadBalancedEndpointSetName");
             }
             set
             {
-                base.SetValue("LoadBalancedEndpointSetName", value);
+                SetValue("LoadBalancedEndpointSetName", value);
             }
         }
 
@@ -1055,11 +1052,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetField<int>("LocalPort");
+                return GetField<int>("LocalPort");
             }
             set
             {
-                base.SetField("LocalPort", value);
+                SetField("LocalPort", value);
             }
         }
 
@@ -1067,11 +1064,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<int>("LocalPort");
+                return GetValue<int>("LocalPort");
             }
             set
             {
-                base.SetValue("LocalPort", value);
+                SetValue("LocalPort", value);
             }
         }
 
@@ -1080,11 +1077,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Name");
+                return GetValue<string>("Name");
             }
             set
             {
-                base.SetValue("Name", value);
+                SetValue("Name", value);
             }
         }
 
@@ -1093,11 +1090,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<int?>("Port");
+                return GetValue<int?>("Port");
             }
             set
             {
-                base.SetValue("Port", value);
+                SetValue("Port", value);
             }
         }
 
@@ -1106,11 +1103,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<LoadBalancerProbe>("LoadBalancerProbe");
+                return GetValue<LoadBalancerProbe>("LoadBalancerProbe");
             }
             set
             {
-                base.SetValue("LoadBalancerProbe", value);
+                SetValue("LoadBalancerProbe", value);
             }
         }
 
@@ -1119,11 +1116,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Protocol");
+                return GetValue<string>("Protocol");
             }
             set
             {
-                base.SetValue("Protocol", value);
+                SetValue("Protocol", value);
             }
         }
 
@@ -1132,11 +1129,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Vip");
+                return GetValue<string>("Vip");
             }
             set
             {
-                base.SetValue("Vip", value);
+                SetValue("Vip", value);
             }
         }
 
@@ -1145,11 +1142,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<bool?>(EnableDirectServerReturnFieldName);
+                return GetValue<bool?>(EnableDirectServerReturnFieldName);
             }
             set
             {
-                base.SetValue(EnableDirectServerReturnFieldName, value);
+                SetValue(EnableDirectServerReturnFieldName, value);
             }
         }
 
@@ -1158,12 +1155,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<EndpointAccessControlList>(EndPointAccessControlListMemberName);
+                return GetValue<EndpointAccessControlList>(EndPointAccessControlListMemberName);
             }
 
             set
             {
-                base.SetValue(EndPointAccessControlListMemberName, value);
+                SetValue(EndPointAccessControlListMemberName, value);
             }
         }
 
@@ -1171,11 +1168,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("LoadBalancerName");
+                return GetValue<string>("LoadBalancerName");
             }
             set
             {
-                base.SetValue("LoadBalancerName", value);
+                SetValue("LoadBalancerName", value);
             }
         }
 
@@ -1184,11 +1181,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<int?>("IdleTimeoutInMinutes");
+                return GetValue<int?>("IdleTimeoutInMinutes");
             }
             set
             {
-                base.SetValue("IdleTimeoutInMinutes", value);
+                SetValue("IdleTimeoutInMinutes", value);
             }
         }
 
@@ -1197,11 +1194,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("LoadBalancerDistribution");
+                return GetValue<string>("LoadBalancerDistribution");
             }
             set
             {
-                base.SetValue("LoadBalancerDistribution", value);
+                SetValue("LoadBalancerDistribution", value);
             }
         }
 
@@ -1210,11 +1207,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("VirtualIPName");
+                return GetValue<string>("VirtualIPName");
             }
             set
             {
-                base.SetValue("VirtualIPName", value);
+                SetValue("VirtualIPName", value);
             }
         }
     }
@@ -1232,12 +1229,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<Collection<AccessControlListRule>>(AccessControlListRulesMemberName);
+                return GetValue<Collection<AccessControlListRule>>(AccessControlListRulesMemberName);
             }
 
             set
             {
-                base.SetValue(AccessControlListRulesMemberName, value);
+                SetValue(AccessControlListRulesMemberName, value);
             }
         }
     }
@@ -1257,12 +1254,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<int?>(OrderMemberName);
+                return GetValue<int?>(OrderMemberName);
             }
 
             set
             {
-                base.SetValue(OrderMemberName, value);
+                SetValue(OrderMemberName, value);
             }
         }
 
@@ -1271,12 +1268,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>(ActionMemberName);
+                return GetValue<string>(ActionMemberName);
             }
 
             set
             {
-                base.SetValue(ActionMemberName, value);
+                SetValue(ActionMemberName, value);
             }
         }
 
@@ -1285,12 +1282,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>(RemoteSubnetMemberName);
+                return GetValue<string>(RemoteSubnetMemberName);
             }
 
             set
             {
-                base.SetValue(RemoteSubnetMemberName, value);
+                SetValue(RemoteSubnetMemberName, value);
             }
         }
 
@@ -1299,12 +1296,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>(DescriptionMemberName);
+                return GetValue<string>(DescriptionMemberName);
             }
 
             set
             {
-                base.SetValue(DescriptionMemberName, value);
+                SetValue(DescriptionMemberName, value);
             }
         }
     }
@@ -1326,11 +1323,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Path");
+                return GetValue<string>("Path");
             }
             set
             {
-                base.SetValue("Path", value);
+                SetValue("Path", value);
             }
         }
 
@@ -1339,22 +1336,22 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetField<int>("Port");
+                return GetField<int>("Port");
             }
             set
             {
-                base.SetField("Port", value);
+                SetField("Port", value);
             }
         }
         public int Port
         {
             get
             {
-                return base.GetValue<int>("Port");
+                return GetValue<int>("Port");
             }
             set
             {
-                base.SetValue("Port", value);
+                SetValue("Port", value);
             }
         }
 
@@ -1363,11 +1360,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Protocol");
+                return GetValue<string>("Protocol");
             }
             set
             {
-                base.SetValue("Protocol", value);
+                SetValue("Protocol", value);
             }
         }
 
@@ -1380,11 +1377,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<int?>(IntervalFieldName);
+                return GetValue<int?>(IntervalFieldName);
             }
             set
             {
-                base.SetValue(IntervalFieldName, value);
+                SetValue(IntervalFieldName, value);
             }
         }
 
@@ -1397,11 +1394,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<int?>(TimeoutFieldName);
+                return GetValue<int?>(TimeoutFieldName);
             }
             set
             {
-                base.SetValue(TimeoutFieldName, value);
+                SetValue(TimeoutFieldName, value);
             }
         }
     }
@@ -1414,11 +1411,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("StoreLocation");
+                return GetValue<string>("StoreLocation");
             }
             set
             {
-                base.SetValue<string>("StoreLocation", value);
+                SetValue<string>("StoreLocation", value);
             }
         }
 
@@ -1427,11 +1424,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("StoreName");
+                return GetValue<string>("StoreName");
             }
             set
             {
-                base.SetValue<string>("StoreName", value);
+                SetValue<string>("StoreName", value);
             }
         }
 
@@ -1440,11 +1437,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Thumbprint");
+                return GetValue<string>("Thumbprint");
             }
             set
             {
-                base.SetValue<string>("Thumbprint", value);
+                SetValue<string>("Thumbprint", value);
             }
         }
     }
@@ -1472,11 +1469,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("HostCaching");
+                return GetValue<string>("HostCaching");
             }
             set
             {
-                this.SetValue("HostCaching", value);
+                SetValue("HostCaching", value);
             }
         }
 
@@ -1485,11 +1482,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("DiskLabel");
+                return GetValue<string>("DiskLabel");
             }
             set
             {
-                this.SetValue("DiskLabel", value);
+                SetValue("DiskLabel", value);
             }
         }
 
@@ -1498,11 +1495,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("DiskName");
+                return GetValue<string>("DiskName");
             }
             set
             {
-                base.SetValue("DiskName", value);
+                SetValue("DiskName", value);
             }
         }
 
@@ -1511,11 +1508,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<int>("Lun");
+                return GetValue<int>("Lun");
             }
             set
             {
-                this.SetValue("Lun", value);
+                SetValue("Lun", value);
             }
         }
 
@@ -1524,22 +1521,22 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetField<int>("LogicalDiskSizeInGB");
+                return GetField<int>("LogicalDiskSizeInGB");
             }
             set
             {
-                this.SetField("LogicalDiskSizeInGB", value);
+                SetField("LogicalDiskSizeInGB", value);
             }
         }
         public int LogicalDiskSizeInGB
         {
             get
             {
-                return this.GetValue<int>("LogicalDiskSizeInGB");
+                return GetValue<int>("LogicalDiskSizeInGB");
             }
             set
             {
-                this.SetValue("LogicalDiskSizeInGB", value);
+                SetValue("LogicalDiskSizeInGB", value);
             }
         }
 
@@ -1548,11 +1545,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<Uri>("MediaLink");
+                return GetValue<Uri>("MediaLink");
             }
             set
             {
-                this.SetValue("MediaLink", value);
+                SetValue("MediaLink", value);
             }
         }
 
@@ -1561,11 +1558,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<Uri>("SourceMediaLink");
+                return GetValue<Uri>("SourceMediaLink");
             }
             set
             {
-                this.SetValue("SourceMediaLink", value);
+                SetValue("SourceMediaLink", value);
             }
         }
 
@@ -1575,11 +1572,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("IOType");
+                return GetValue<string>("IOType");
             }
             set
             {
-                this.SetValue("IOType", value);
+                SetValue("IOType", value);
             }
         }
     }
@@ -1594,11 +1591,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("HostCaching");
+                return GetValue<string>("HostCaching");
             }
             set
             {
-                this.SetValue("HostCaching", value);
+                SetValue("HostCaching", value);
             }
         }
 
@@ -1607,11 +1604,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("DiskLabel");
+                return GetValue<string>("DiskLabel");
             }
             set
             {
-                this.SetValue("DiskLabel", value);
+                SetValue("DiskLabel", value);
             }
         }
 
@@ -1620,11 +1617,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("DiskName");
+                return GetValue<string>("DiskName");
             }
             set
             {
-                this.SetValue("DiskName", value);
+                SetValue("DiskName", value);
             }
         }
 
@@ -1633,11 +1630,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<Uri>("MediaLink");
+                return GetValue<Uri>("MediaLink");
             }
             set
             {
-                this.SetValue("MediaLink", value);
+                SetValue("MediaLink", value);
             }
         }
 
@@ -1646,11 +1643,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("SourceImageName");
+                return GetValue<string>("SourceImageName");
             }
             set
             {
-                this.SetValue("SourceImageName", value);
+                SetValue("SourceImageName", value);
             }
         }
 
@@ -1659,11 +1656,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("OS");
+                return GetValue<string>("OS");
             }
             set
             {
-                this.SetValue("OS", value);
+                SetValue("OS", value);
             }
         }
 
@@ -1672,11 +1669,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>("IOType");
+                return GetValue<string>("IOType");
             }
             set
             {
-                this.SetValue("IOType", value);
+                SetValue("IOType", value);
             }
         }
 
@@ -1685,11 +1682,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<int?>("ResizedSizeInGB");
+                return GetValue<int?>("ResizedSizeInGB");
             }
             set
             {
-                this.SetValue("ResizedSizeInGB", value);
+                SetValue("ResizedSizeInGB", value);
             }
         }
     }
@@ -1704,11 +1701,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<OSDiskConfiguration>("OSDiskConfiguration");
+                return GetValue<OSDiskConfiguration>("OSDiskConfiguration");
             }
             set
             {
-                this.SetValue("OSDiskConfiguration", value);
+                SetValue("OSDiskConfiguration", value);
             }
         }
 
@@ -1717,11 +1714,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<DataDiskConfigurationList>("DataDiskConfigurations");
+                return GetValue<DataDiskConfigurationList>("DataDiskConfigurations");
             }
             set
             {
-                this.SetValue("DataDiskConfigurations", value);
+                SetValue("DataDiskConfigurations", value);
             }
         }
     }
@@ -1736,11 +1733,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<bool>("BootDiagnosticsEnabled");
+                return GetValue<bool>("BootDiagnosticsEnabled");
             }
             set
             {
-                this.SetValue("BootDiagnosticsEnabled", value);
+                SetValue("BootDiagnosticsEnabled", value);
             }
         }
 
@@ -1749,11 +1746,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<Uri>("ConsoleScreenshotBlobUri");
+                return GetValue<Uri>("ConsoleScreenshotBlobUri");
             }
             set
             {
-                this.SetValue("ConsoleScreenshotBlobUri", value);
+                SetValue("ConsoleScreenshotBlobUri", value);
             }
         }
 
@@ -1762,11 +1759,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<Uri>("SerialOutputBlobUri");
+                return GetValue<Uri>("SerialOutputBlobUri");
             }
             set
             {
-                this.SetValue("SerialOutputBlobUri", value);
+                SetValue("SerialOutputBlobUri", value);
             }
         }
     }
@@ -1916,7 +1913,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         [EnumMember]
         Stopping,
         [EnumMember]
-        Stopped,
+        Stopped
     }
     #endregion // RoleOperation
 
@@ -1992,11 +1989,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Key");
+                return GetValue<string>("Key");
             }
             set
             {
-                base.SetValue("Key", value);
+                SetValue("Key", value);
             }
         }
 
@@ -2005,11 +2002,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Value");
+                return GetValue<string>("Value");
             }
             set
             {
-                base.SetValue("Value", value);
+                SetValue("Value", value);
             }
         }
 
@@ -2020,11 +2017,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Type");
+                return GetValue<string>("Type");
             }
             set
             {
-                base.SetValue("Type", value);
+                SetValue("Type", value);
             }
         }
     }
@@ -2051,11 +2048,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("ReferenceName");
+                return GetValue<string>("ReferenceName");
             }
             set
             {
-                base.SetValue("ReferenceName", value);
+                SetValue("ReferenceName", value);
             }
         }
 
@@ -2064,11 +2061,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Publisher");
+                return GetValue<string>("Publisher");
             }
             set
             {
-                base.SetValue("Publisher", value);
+                SetValue("Publisher", value);
             }
         }
 
@@ -2077,11 +2074,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Name");
+                return GetValue<string>("Name");
             }
             set
             {
-                base.SetValue("Name", value);
+                SetValue("Name", value);
             }
         }
 
@@ -2090,11 +2087,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("Version");
+                return GetValue<string>("Version");
             }
             set
             {
-                base.SetValue("Version", value);
+                SetValue("Version", value);
             }
         }
 
@@ -2106,11 +2103,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>("State");
+                return GetValue<string>("State");
             }
             set
             {
-                base.SetValue("State", value);
+                SetValue("State", value);
             }
         }
 
@@ -2119,11 +2116,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<bool?>("ForceUpdate");
+                return GetValue<bool?>("ForceUpdate");
             }
             set
             {
-                base.SetValue("ForceUpdate", value);
+                SetValue("ForceUpdate", value);
             }
         }
     }
@@ -2166,7 +2163,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
     {
         public VirtualNetworkSite(string name)
         {
-            this.Name = name;
+            Name = name;
         }
 
         [DataMember(EmitDefaultValue = false, Order = 1)]
@@ -2356,7 +2353,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
     {
         public ReservedIP(string name)
         {
-            this.Name = name;
+            Name = name;
         }
 
         [DataMember(EmitDefaultValue = false, Order = 1)]
@@ -2418,7 +2415,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         Deleting = 3,
 
         [EnumMember]
-        Unavailable = 4,
+        Unavailable = 4
     }
 
     [DataContract(Namespace = Constants.ServiceManagementNS)]
@@ -2453,11 +2450,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<Collection<ConfigurationSet>>("ConfigurationSets");
+                return GetValue<Collection<ConfigurationSet>>("ConfigurationSets");
             }
             set
             {
-                base.SetValue("ConfigurationSets", value);
+                SetValue("ConfigurationSets", value);
             }
         }
 
@@ -2466,11 +2463,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<ResourceExtensionReferenceList>("ResourceExtensionReferences");
+                return GetValue<ResourceExtensionReferenceList>("ResourceExtensionReferences");
             }
             set
             {
-                base.SetValue("ResourceExtensionReferences", value);
+                SetValue("ResourceExtensionReferences", value);
             }
         }
 
@@ -2505,14 +2502,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         public override object ResolveType()
         {
-            if (this.GetType() != typeof(Role))
+            if (GetType() != typeof(Role))
             {
                 return this;
             }
 
-            if (this.RoleType == typeof(PersistentVMRole).Name)
+            if (RoleType == typeof(PersistentVMRole).Name)
             {
-                return base.Convert<PersistentVMRole>();
+                return Convert<PersistentVMRole>();
             }
             return this;
         }
@@ -2539,11 +2536,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>(PersistentVMRoleConstants.RoleName);
+                return GetValue<string>(PersistentVMRoleConstants.RoleName);
             }
             set
             {
-                this.SetValue(PersistentVMRoleConstants.RoleName, value);
+                SetValue(PersistentVMRoleConstants.RoleName, value);
             }
         }
 
@@ -2552,11 +2549,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>(PersistentVMRoleConstants.AvailabilitySetName);
+                return GetValue<string>(PersistentVMRoleConstants.AvailabilitySetName);
             }
             set
             {
-                this.SetValue(PersistentVMRoleConstants.AvailabilitySetName, value);
+                SetValue(PersistentVMRoleConstants.AvailabilitySetName, value);
             }
         }
 
@@ -2565,11 +2562,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<Collection<DataVirtualHardDisk>>(PersistentVMRoleConstants.DataVirtualHardDisks);
+                return GetValue<Collection<DataVirtualHardDisk>>(PersistentVMRoleConstants.DataVirtualHardDisks);
             }
             set
             {
-                base.SetValue(PersistentVMRoleConstants.DataVirtualHardDisks, value);
+                SetValue(PersistentVMRoleConstants.DataVirtualHardDisks, value);
             }
         }
 
@@ -2578,11 +2575,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>(PersistentVMRoleConstants.Label);
+                return GetValue<string>(PersistentVMRoleConstants.Label);
             }
             set
             {
-                base.SetValue(PersistentVMRoleConstants.Label, value);
+                SetValue(PersistentVMRoleConstants.Label, value);
             }
         }
 
@@ -2591,11 +2588,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<OSVirtualHardDisk>(PersistentVMRoleConstants.OSVirtualHardDisk);
+                return GetValue<OSVirtualHardDisk>(PersistentVMRoleConstants.OSVirtualHardDisk);
             }
             set
             {
-                base.SetValue(PersistentVMRoleConstants.OSVirtualHardDisk, value);
+                SetValue(PersistentVMRoleConstants.OSVirtualHardDisk, value);
             }
         }
 
@@ -2604,11 +2601,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return this.GetValue<string>(PersistentVMRoleConstants.RoleSize);
+                return GetValue<string>(PersistentVMRoleConstants.RoleSize);
             }
             set
             {
-                this.SetValue(PersistentVMRoleConstants.RoleSize, value);
+                SetValue(PersistentVMRoleConstants.RoleSize, value);
             }
         }
 
@@ -2629,11 +2626,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<string>(PersistentVMRoleConstants.DefaultWinRmCertificateThumbprint);
+                return GetValue<string>(PersistentVMRoleConstants.DefaultWinRmCertificateThumbprint);
             }
             set
             {
-                base.SetValue(PersistentVMRoleConstants.DefaultWinRmCertificateThumbprint, value);
+                SetValue(PersistentVMRoleConstants.DefaultWinRmCertificateThumbprint, value);
             }
         }
 
@@ -2642,11 +2639,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return base.GetValue<bool?>(PersistentVMRoleConstants.ProvisionGuestAgent);
+                return GetValue<bool?>(PersistentVMRoleConstants.ProvisionGuestAgent);
             }
             set
             {
-                base.SetValue(PersistentVMRoleConstants.ProvisionGuestAgent, value);
+                SetValue(PersistentVMRoleConstants.ProvisionGuestAgent, value);
             }
         }
     }
@@ -2952,17 +2949,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoTimestampString) ? DateTime.MinValue : DateTime.Parse(this._isoTimestampString));
+                return string.IsNullOrEmpty(_isoTimestampString) ? DateTime.MinValue : DateTime.Parse(_isoTimestampString);
             }
             set
             {
                 if (value.Equals(DateTime.MinValue))
                 {
-                    this._isoTimestampString = null;
+                    _isoTimestampString = null;
                 }
                 else
                 {
-                    this._isoTimestampString = !value.HasValue ? string.Empty : value.Value.ToUniversalTime().ToString(Constants.StandardTimeFormat);
+                    _isoTimestampString = !value.HasValue ? string.Empty : value.Value.ToUniversalTime().ToString(Constants.StandardTimeFormat);
                 }
             }
         }
@@ -3106,17 +3103,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoTimestampString) ? DateTime.MinValue : DateTime.Parse(this._isoTimestampString));
+                return string.IsNullOrEmpty(_isoTimestampString) ? DateTime.MinValue : DateTime.Parse(_isoTimestampString);
             }
             set
             {
                 if (value.Equals(DateTime.MinValue))
                 {
-                    this._isoTimestampString = null;
+                    _isoTimestampString = null;
                 }
                 else
                 {
-                    this._isoTimestampString = !value.HasValue ? string.Empty : value.Value.ToUniversalTime().ToString(Constants.StandardTimeFormat);
+                    _isoTimestampString = !value.HasValue ? string.Empty : value.Value.ToUniversalTime().ToString(Constants.StandardTimeFormat);
                 }
             }
         }
@@ -3128,17 +3125,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoConfigurationAppliedTimeString) ? DateTime.MinValue : DateTime.Parse(this._isoConfigurationAppliedTimeString));
+                return string.IsNullOrEmpty(_isoConfigurationAppliedTimeString) ? DateTime.MinValue : DateTime.Parse(_isoConfigurationAppliedTimeString);
             }
             set
             {
                 if (value.Equals(DateTime.MinValue))
                 {
-                    this._isoConfigurationAppliedTimeString = null;
+                    _isoConfigurationAppliedTimeString = null;
                 }
                 else
                 {
-                    this._isoConfigurationAppliedTimeString = !value.HasValue ? string.Empty : value.Value.ToUniversalTime().ToString(Constants.StandardTimeFormat);
+                    _isoConfigurationAppliedTimeString = !value.HasValue ? string.Empty : value.Value.ToUniversalTime().ToString(Constants.StandardTimeFormat);
                 }
             }
         }
@@ -3300,7 +3297,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         Unknown = 0,
 
         [EnumMember]
-        Private = 1,
+        Private = 1
     }
 
 
@@ -3375,7 +3372,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -3383,7 +3380,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -3422,7 +3419,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -3430,7 +3427,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -3503,7 +3500,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -3511,7 +3508,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -3545,11 +3542,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this.isoLastGeoFailoverTime) ? new DateTime() : DateTime.Parse(this.isoLastGeoFailoverTime));
+                return string.IsNullOrEmpty(isoLastGeoFailoverTime) ? new DateTime() : DateTime.Parse(isoLastGeoFailoverTime);
             }
             set
             {
-                this.isoLastGeoFailoverTime = value.ToString(Constants.StandardTimeFormat);
+                isoLastGeoFailoverTime = value.ToString(Constants.StandardTimeFormat);
             }
         }
 
@@ -3563,17 +3560,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoCreationTimeString) ? DateTime.MinValue : DateTime.Parse(this._isoCreationTimeString));
+                return string.IsNullOrEmpty(_isoCreationTimeString) ? DateTime.MinValue : DateTime.Parse(_isoCreationTimeString);
             }
             set
             {
                 if (value.Equals(DateTime.MinValue))
                 {
-                    this._isoCreationTimeString = null;
+                    _isoCreationTimeString = null;
                 }
                 else
                 {
-                    this._isoCreationTimeString = value.ToString(Constants.StandardTimeFormat);
+                    _isoCreationTimeString = value.ToString(Constants.StandardTimeFormat);
                 }
             }
         }
@@ -3606,7 +3603,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         Standard_RAGRS,
 
         [EnumMember]
-        Standard_ZRS,
+        Standard_ZRS
     }
 
     [DataContract(Namespace = Constants.ServiceManagementNS)]
@@ -3703,7 +3700,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -3711,7 +3708,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -3739,17 +3736,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoCreatedTimeString) ? DateTime.MinValue : DateTime.Parse(this._isoCreatedTimeString));
+                return string.IsNullOrEmpty(_isoCreatedTimeString) ? DateTime.MinValue : DateTime.Parse(_isoCreatedTimeString);
             }
             set
             {
                 if (value.Equals(DateTime.MinValue))
                 {
-                    this._isoCreatedTimeString = null;
+                    _isoCreatedTimeString = null;
                 }
                 else
                 {
-                    this._isoCreatedTimeString = value.ToString(Constants.StandardTimeFormat);
+                    _isoCreatedTimeString = value.ToString(Constants.StandardTimeFormat);
                 }
             }
         }
@@ -3773,7 +3770,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -3781,7 +3778,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -3805,7 +3802,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -3813,7 +3810,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -3899,7 +3896,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -3907,7 +3904,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -3923,11 +3920,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoDateCreatedString) ? new DateTime() : DateTime.Parse(this._isoDateCreatedString));
+                return string.IsNullOrEmpty(_isoDateCreatedString) ? new DateTime() : DateTime.Parse(_isoDateCreatedString);
             }
             set
             {
-                this._isoDateCreatedString = value.ToString(Constants.StandardTimeFormat);
+                _isoDateCreatedString = value.ToString(Constants.StandardTimeFormat);
             }
         }
 
@@ -3940,11 +3937,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoDateLastModifiedString) ? new DateTime() : DateTime.Parse(this._isoDateLastModifiedString));
+                return string.IsNullOrEmpty(_isoDateLastModifiedString) ? new DateTime() : DateTime.Parse(_isoDateLastModifiedString);
             }
             set
             {
-                this._isoDateLastModifiedString = value.ToString(Constants.StandardTimeFormat);
+                _isoDateLastModifiedString = value.ToString(Constants.StandardTimeFormat);
             }
         }
 
@@ -4044,7 +4041,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4052,7 +4049,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -4085,7 +4082,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4093,7 +4090,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -4163,7 +4160,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4171,7 +4168,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = value;
+                _base64EncodedLabel = value;
             }
         }
 
@@ -4187,7 +4184,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedConfiguration, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedConfiguration, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4195,7 +4192,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedConfiguration = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedConfiguration = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -4235,17 +4232,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoCreatedTimeString) ? new DateTime() : DateTime.Parse(this._isoCreatedTimeString));
+                return string.IsNullOrEmpty(_isoCreatedTimeString) ? new DateTime() : DateTime.Parse(_isoCreatedTimeString);
             }
             set
             {
                 if (value.Equals(DateTime.MinValue))
                 {
-                    this._isoCreatedTimeString = null;
+                    _isoCreatedTimeString = null;
                 }
                 else
                 {
-                    this._isoCreatedTimeString = value.ToString(Constants.StandardTimeFormat);
+                    _isoCreatedTimeString = value.ToString(Constants.StandardTimeFormat);
                 }
             }
         }
@@ -4259,11 +4256,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoLastModifiedTimeString) ? new DateTime() : DateTime.Parse(this._isoLastModifiedTimeString));
+                return string.IsNullOrEmpty(_isoLastModifiedTimeString) ? new DateTime() : DateTime.Parse(_isoLastModifiedTimeString);
             }
             set
             {
-                this._isoLastModifiedTimeString = value.ToString(Constants.StandardTimeFormat);
+                _isoLastModifiedTimeString = value.ToString(Constants.StandardTimeFormat);
             }
         }
 
@@ -4330,7 +4327,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         public static bool operator ==(OutboundNatVirtualIP left, OutboundNatVirtualIP right)
         {
-            if (Object.ReferenceEquals(left, right))
+            if (ReferenceEquals(left, right))
             {
                 return true;
             }
@@ -4356,7 +4353,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         public override int GetHashCode()
         {
-            return this.Address.GetHashCode();
+            return Address.GetHashCode();
         }
         #endregion
     }
@@ -4558,7 +4555,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4566,7 +4563,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -4578,7 +4575,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedConfiguration, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedConfiguration, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4586,7 +4583,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedConfiguration = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedConfiguration = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -4616,7 +4613,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedConfiguration, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedConfiguration, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4624,7 +4621,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedConfiguration = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedConfiguration = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -4669,7 +4666,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedConfiguration, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedConfiguration, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4677,7 +4674,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedConfiguration = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedConfiguration = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -4689,7 +4686,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -4697,7 +4694,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -4985,17 +4982,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             get
             {
-                return (string.IsNullOrEmpty(this._isoCreatedTimeString) ? DateTime.MinValue : DateTime.Parse(this._isoCreatedTimeString));
+                return string.IsNullOrEmpty(_isoCreatedTimeString) ? DateTime.MinValue : DateTime.Parse(_isoCreatedTimeString);
             }
             set
             {
                 if (value.Equals(DateTime.MinValue))
                 {
-                    this._isoCreatedTimeString = null;
+                    _isoCreatedTimeString = null;
                 }
                 else
                 {
-                    this._isoCreatedTimeString = value.ToString(Constants.StandardTimeFormat);
+                    _isoCreatedTimeString = value.ToString(Constants.StandardTimeFormat);
                 }
             }
         }
@@ -5211,15 +5208,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
             if (other != null)
             {
-                return string.Equals(other.HostedServiceName, this.HostedServiceName, StringComparison.OrdinalIgnoreCase) && string.Equals(other.DeploymentName, this.DeploymentName, StringComparison.OrdinalIgnoreCase) &&
-                    string.Equals(other.RoleName, this.RoleName, StringComparison.OrdinalIgnoreCase);
+                return string.Equals(other.HostedServiceName, HostedServiceName, StringComparison.OrdinalIgnoreCase) && string.Equals(other.DeploymentName, DeploymentName, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(other.RoleName, RoleName, StringComparison.OrdinalIgnoreCase);
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            string hashString = string.Format("{0}-{1}-{2}", this.HostedServiceName, this.DeploymentName, this.RoleName);
+            string hashString = string.Format("{0}-{1}-{2}", HostedServiceName, DeploymentName, RoleName);
             return StringComparer.OrdinalIgnoreCase.GetHashCode(hashString);
         }
 
@@ -5315,7 +5312,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedPublicConfigurationSchema, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedPublicConfigurationSchema, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5323,7 +5320,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedPublicConfigurationSchema = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedPublicConfigurationSchema = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5335,7 +5332,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedPrivateConfigurationSchema, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedPrivateConfigurationSchema, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5343,7 +5340,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedPrivateConfigurationSchema = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedPrivateConfigurationSchema = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5421,7 +5418,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedPublicConfigurationSchema, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedPublicConfigurationSchema, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5429,7 +5426,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedPublicConfigurationSchema = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedPublicConfigurationSchema = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5441,7 +5438,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedPrivateConfigurationSchema, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedPrivateConfigurationSchema, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5449,7 +5446,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedPrivateConfigurationSchema = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedPrivateConfigurationSchema = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5508,10 +5505,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
     {
         public ExtensionCertificate(string storeLocation, string storeName, bool thumbprintRequired, string thumbprintAlgorithm)
         {
-            this.StoreLocation = storeLocation;
-            this.StoreName = storeName;
-            this.ThumbprintRequired = thumbprintRequired;
-            this.ThumbprintAlgorithm = thumbprintAlgorithm;
+            StoreLocation = storeLocation;
+            StoreName = storeName;
+            ThumbprintRequired = thumbprintRequired;
+            ThumbprintAlgorithm = thumbprintAlgorithm;
         }
 
         [DataMember(EmitDefaultValue = false, Order = 1)]
@@ -5716,7 +5713,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this.base64EncodedPublicConfigurationSchema, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(base64EncodedPublicConfigurationSchema, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5724,7 +5721,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this.base64EncodedPublicConfigurationSchema = StringEncoder.EncodeToBase64String(value);
+                base64EncodedPublicConfigurationSchema = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5736,7 +5733,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this.base64EncodedPrivateConfigurationSchema, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(base64EncodedPrivateConfigurationSchema, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5744,7 +5741,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this.base64EncodedPrivateConfigurationSchema = StringEncoder.EncodeToBase64String(value);
+                base64EncodedPrivateConfigurationSchema = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5756,7 +5753,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedSampleConfig;
-                if (!StringEncoder.TryDecodeFromBase64String(this.base64EncodedSampleConfig, out decodedSampleConfig))
+                if (!StringEncoder.TryDecodeFromBase64String(base64EncodedSampleConfig, out decodedSampleConfig))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5764,7 +5761,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this.base64EncodedSampleConfig = StringEncoder.EncodeToBase64String(value);
+                base64EncodedSampleConfig = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5833,7 +5830,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedPublicConfiguration, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedPublicConfiguration, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5841,7 +5838,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedPublicConfiguration = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedPublicConfiguration = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5883,7 +5880,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedPublicConfiguration, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedPublicConfiguration, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5891,7 +5888,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedPublicConfiguration = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedPublicConfiguration = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5903,7 +5900,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedConfiguration;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedPrivateConfiguration, out decodedConfiguration))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedPrivateConfiguration, out decodedConfiguration))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5911,7 +5908,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedPrivateConfiguration = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedPrivateConfiguration = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -5960,7 +5957,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -5968,7 +5965,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -6005,7 +6002,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedLabel, out decodedLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedLabel, out decodedLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -6013,7 +6010,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -6034,7 +6031,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             get
             {
                 string decodedFamilyLabel;
-                if (!StringEncoder.TryDecodeFromBase64String(this._base64EncodedFamilyLabel, out decodedFamilyLabel))
+                if (!StringEncoder.TryDecodeFromBase64String(_base64EncodedFamilyLabel, out decodedFamilyLabel))
                 {
                     throw new InvalidOperationException(Resources.UnableToDecodeBase64String);
                 }
@@ -6042,7 +6039,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
             set
             {
-                this._base64EncodedFamilyLabel = StringEncoder.EncodeToBase64String(value);
+                _base64EncodedFamilyLabel = StringEncoder.EncodeToBase64String(value);
             }
         }
 
@@ -6182,19 +6179,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                                              typeof(ExtendedProperty),
                                              typeof(ExtensionConfiguration),
                                              typeof(HostedServiceExtensionInput),
-                                             typeof(ReservedIP),
+                                             typeof(ReservedIP)
                                            });
 
         public string GetSerializedValue()
         {
-            return this.Value;
+            return Value;
         }
 
         public object GetValue()
         {
             DataContractSerializer serializer;
 
-            if (string.IsNullOrEmpty(this.Value))
+            if (string.IsNullOrEmpty(Value))
             {
                 return null;
             }
@@ -6210,17 +6207,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                 MaxCharactersFromEntities = 0 // No size limit
             };
 
-            serializer = new DataContractSerializer(typeof(Object), OperationParameter.KnownTypes);
+            serializer = new DataContractSerializer(typeof(Object), KnownTypes);
             try
             {
-                using (StringReader reader = new StringReader(this.Value))
+                using (StringReader reader = new StringReader(Value))
                 {
                     return serializer.ReadObject(XmlReader.Create(reader, xmlReaderSettings));
                 }
             }
             catch
             {
-                return this.Value;
+                return Value;
             }
         }
 
@@ -6232,17 +6229,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
                 if (valueType.Equals(typeof(string)))
                 {
-                    this.Value = (string)value;
+                    Value = (string)value;
                     return;
                 }
 
-                DataContractSerializer serializer = new DataContractSerializer(typeof(Object), OperationParameter.KnownTypes);
+                DataContractSerializer serializer = new DataContractSerializer(typeof(Object), KnownTypes);
                 StringBuilder target = new StringBuilder();
                 using (XmlWriter writer = XmlWriter.Create(target))
                 {
                     serializer.WriteObject(writer, value);
                     writer.Flush();
-                    this.Value = target.ToString();
+                    Value = target.ToString();
                 }
             }
         }
@@ -6451,7 +6448,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             {
                 try
                 {
-                    decodedString = StringEncoder.DecodeFromBase64String(encodedString);
+                    decodedString = DecodeFromBase64String(encodedString);
                 }
                 catch (Exception)
                 {
@@ -6529,14 +6526,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             : base(string.Format(CultureInfo.CurrentCulture,
                 Resources.ServiceManagementClientExceptionStringFormat,
                 (int)httpStatus,
-                (errorDetails != null) && !string.IsNullOrEmpty(errorDetails.Code) ? errorDetails.Code : Resources.None,
-                (errorDetails != null) && !string.IsNullOrEmpty(errorDetails.Message) ? errorDetails.Message : Resources.None,
+                errorDetails != null && !string.IsNullOrEmpty(errorDetails.Code) ? errorDetails.Code : Resources.None,
+                errorDetails != null && !string.IsNullOrEmpty(errorDetails.Message) ? errorDetails.Message : Resources.None,
                 string.IsNullOrEmpty(operationTrackingId) ? Resources.None : operationTrackingId))
         {
-            this.HttpStatus = httpStatus;
-            this.ErrorDetails = errorDetails;
-            this.OperationTrackingId = operationTrackingId;
-            this.ResponseHeaders = responseHeaders;
+            HttpStatus = httpStatus;
+            ErrorDetails = errorDetails;
+            OperationTrackingId = operationTrackingId;
+            ResponseHeaders = responseHeaders;
         }
 
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
@@ -6587,7 +6584,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
     {
         public override string ToString()
         {
-            StringBuilder warnings = new StringBuilder(string.Format("ConfigurationWarnings({0}):\n", this.Count));
+            StringBuilder warnings = new StringBuilder(string.Format("ConfigurationWarnings({0}):\n", Count));
 
             foreach (ConfigurationWarning warning in this)
             {

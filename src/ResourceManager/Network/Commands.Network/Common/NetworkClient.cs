@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.Network
         public async Task<string> GeneratevpnclientpackageAsync(string resourceGroupName, string virtualNetworkGatewayName, VpnClientParameters parameters,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            AzureOperationResponse<string> result = await this.GeneratevpnclientpackageWithHttpMessagesAsync(resourceGroupName, virtualNetworkGatewayName,
+            AzureOperationResponse<string> result = await GeneratevpnclientpackageWithHttpMessagesAsync(resourceGroupName, virtualNetworkGatewayName,
                 parameters, null, cancellationToken).ConfigureAwait(false);
             return result.Body;
         }
@@ -81,14 +81,14 @@ namespace Microsoft.Azure.Commands.Network
         public async Task<string> GenerateVpnProfileAsync(string resourceGroupName, string virtualNetworkGatewayName, VpnClientParameters parameters,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            AzureOperationResponse<string> result = await this.GenerateVpnProfileWithHttpMessagesAsync(resourceGroupName, virtualNetworkGatewayName,
+            AzureOperationResponse<string> result = await GenerateVpnProfileWithHttpMessagesAsync(resourceGroupName, virtualNetworkGatewayName,
                 parameters, null, cancellationToken).ConfigureAwait(false);
             return result.Body;
         }
 
         public async Task<string> GetVpnProfilePackageUrlAsync(string resourceGroupName, string virtualNetworkGatewayName, CancellationToken cancellationToken = default(CancellationToken))
         {
-            AzureOperationResponse<string> result = await this.GetVpnProfilePackageUrlWithHttpMessagesAsync(resourceGroupName, 
+            AzureOperationResponse<string> result = await GetVpnProfilePackageUrlWithHttpMessagesAsync(resourceGroupName, 
                 virtualNetworkGatewayName,
                 null, 
                 cancellationToken).ConfigureAwait(false);
@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Commands.Network
             // Send Request
             cancellationToken.ThrowIfCancellationRequested();
 
-            var client = this.NetworkManagementClient as NetworkManagementClient;
+            var client = NetworkManagementClient as NetworkManagementClient;
             HttpClient httpClient = client.HttpClient;
             HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
@@ -234,11 +234,8 @@ namespace Microsoft.Azure.Commands.Network
                         throw new Exception(string.Format("Get-AzureRmVpnClientPackage Operation returned an invalid status code '{0}' with Exception:{1} while retrieving " +
                             "the Vpnclient PackageUrl!", newHttpResponse.StatusCode, string.IsNullOrEmpty(newResponseContent) ? "NotAvailable" : newResponseContent));
                     }
-                    else
-                    {
-                        // Wait for 15 seconds before retrying
-                        Microsoft.WindowsAzure.Commands.Utilities.Common.TestMockSupport.Delay(15000);
-                    }
+                    // Wait for 15 seconds before retrying
+                    WindowsAzure.Commands.Utilities.Common.TestMockSupport.Delay(15000);
                 }
                 else
                 {
@@ -322,7 +319,7 @@ namespace Microsoft.Azure.Commands.Network
             // Send Request
             cancellationToken.ThrowIfCancellationRequested();
 
-            var client = this.NetworkManagementClient as NetworkManagementClient;
+            var client = NetworkManagementClient as NetworkManagementClient;
             HttpClient httpClient = client.HttpClient;
             HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
@@ -386,11 +383,8 @@ namespace Microsoft.Azure.Commands.Network
                         throw new Exception(string.Format("Get-AzureRmVpnClientPackage Operation returned an invalid status code '{0}' with Exception:{1} while retrieving " +
                                                           "the Vpnclient PackageUrl!", newHttpResponse.StatusCode, string.IsNullOrEmpty(newResponseContent) ? "NotAvailable" : newResponseContent));
                     }
-                    else
-                    {
-                        // Wait for 30 seconds before retrying
-                        Microsoft.WindowsAzure.Commands.Utilities.Common.TestMockSupport.Delay(30000);
-                    }
+                    // Wait for 30 seconds before retrying
+                    WindowsAzure.Commands.Utilities.Common.TestMockSupport.Delay(30000);
                 }
                 else
                 {
@@ -461,7 +455,7 @@ namespace Microsoft.Azure.Commands.Network
             // Send Request
             cancellationToken.ThrowIfCancellationRequested();
 
-            var client = this.NetworkManagementClient as NetworkManagementClient;
+            var client = NetworkManagementClient as NetworkManagementClient;
             HttpClient httpClient = client.HttpClient;
             HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
@@ -525,11 +519,8 @@ namespace Microsoft.Azure.Commands.Network
                         throw new Exception(string.Format("Get-AzureRmVpnClientPackage Operation returned an invalid status code '{0}' with Exception:{1} while retrieving " +
                                                           "the Vpnclient PackageUrl!", newHttpResponse.StatusCode, string.IsNullOrEmpty(newResponseContent) ? "NotAvailable" : newResponseContent));
                     }
-                    else
-                    {
-                        // Wait for 30 seconds before retrying
-                        Microsoft.WindowsAzure.Commands.Utilities.Common.TestMockSupport.Delay(30000);
-                    }
+                    // Wait for 30 seconds before retrying
+                    WindowsAzure.Commands.Utilities.Common.TestMockSupport.Delay(30000);
                 }
                 else
                 {

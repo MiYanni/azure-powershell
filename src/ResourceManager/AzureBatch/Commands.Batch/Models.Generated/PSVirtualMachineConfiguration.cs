@@ -26,13 +26,13 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSVirtualMachineConfiguration
     {
         
-        internal Microsoft.Azure.Batch.VirtualMachineConfiguration omObject;
+        internal VirtualMachineConfiguration omObject;
         
         private PSContainerConfiguration containerConfiguration;
         
@@ -46,14 +46,14 @@ namespace Microsoft.Azure.Commands.Batch.Models
         
         public PSVirtualMachineConfiguration(PSImageReference imageReference, string nodeAgentSkuId)
         {
-            this.omObject = new Microsoft.Azure.Batch.VirtualMachineConfiguration(imageReference.omObject, nodeAgentSkuId);
+            omObject = new VirtualMachineConfiguration(imageReference.omObject, nodeAgentSkuId);
         }
         
-        internal PSVirtualMachineConfiguration(Microsoft.Azure.Batch.VirtualMachineConfiguration omObject)
+        internal PSVirtualMachineConfiguration(VirtualMachineConfiguration omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -62,24 +62,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.containerConfiguration == null) 
-                            && (this.omObject.ContainerConfiguration != null)))
+                if (containerConfiguration == null 
+                    && omObject.ContainerConfiguration != null)
                 {
-                    this.containerConfiguration = new PSContainerConfiguration(this.omObject.ContainerConfiguration);
+                    containerConfiguration = new PSContainerConfiguration(omObject.ContainerConfiguration);
                 }
-                return this.containerConfiguration;
+                return containerConfiguration;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.ContainerConfiguration = null;
+                    omObject.ContainerConfiguration = null;
                 }
                 else
                 {
-                    this.omObject.ContainerConfiguration = value.omObject;
+                    omObject.ContainerConfiguration = value.omObject;
                 }
-                this.containerConfiguration = value;
+                containerConfiguration = value;
             }
         }
         
@@ -87,34 +87,34 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.dataDisks == null) 
-                            && (this.omObject.DataDisks != null)))
+                if (dataDisks == null 
+                    && omObject.DataDisks != null)
                 {
                     List<PSDataDisk> list;
                     list = new List<PSDataDisk>();
-                    IEnumerator<Microsoft.Azure.Batch.DataDisk> enumerator;
-                    enumerator = this.omObject.DataDisks.GetEnumerator();
+                    IEnumerator<DataDisk> enumerator;
+                    enumerator = omObject.DataDisks.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSDataDisk(enumerator.Current));
                     }
-                    this.dataDisks = list;
+                    dataDisks = list;
                 }
-                return this.dataDisks;
+                return dataDisks;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.DataDisks = null;
+                    omObject.DataDisks = null;
                 }
                 else
                 {
-                    this.omObject.DataDisks = new List<Microsoft.Azure.Batch.DataDisk>();
+                    omObject.DataDisks = new List<DataDisk>();
                 }
-                this.dataDisks = value;
+                dataDisks = value;
             }
         }
         
@@ -122,24 +122,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.imageReference == null) 
-                            && (this.omObject.ImageReference != null)))
+                if (imageReference == null 
+                    && omObject.ImageReference != null)
                 {
-                    this.imageReference = new PSImageReference(this.omObject.ImageReference);
+                    imageReference = new PSImageReference(omObject.ImageReference);
                 }
-                return this.imageReference;
+                return imageReference;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.ImageReference = null;
+                    omObject.ImageReference = null;
                 }
                 else
                 {
-                    this.omObject.ImageReference = value.omObject;
+                    omObject.ImageReference = value.omObject;
                 }
-                this.imageReference = value;
+                imageReference = value;
             }
         }
         
@@ -147,11 +147,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.LicenseType;
+                return omObject.LicenseType;
             }
             set
             {
-                this.omObject.LicenseType = value;
+                omObject.LicenseType = value;
             }
         }
         
@@ -159,11 +159,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.NodeAgentSkuId;
+                return omObject.NodeAgentSkuId;
             }
             set
             {
-                this.omObject.NodeAgentSkuId = value;
+                omObject.NodeAgentSkuId = value;
             }
         }
         
@@ -171,24 +171,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.oSDisk == null) 
-                            && (this.omObject.OSDisk != null)))
+                if (oSDisk == null 
+                    && omObject.OSDisk != null)
                 {
-                    this.oSDisk = new PSOSDisk(this.omObject.OSDisk);
+                    oSDisk = new PSOSDisk(omObject.OSDisk);
                 }
-                return this.oSDisk;
+                return oSDisk;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.OSDisk = null;
+                    omObject.OSDisk = null;
                 }
                 else
                 {
-                    this.omObject.OSDisk = value.omObject;
+                    omObject.OSDisk = value.omObject;
                 }
-                this.oSDisk = value;
+                oSDisk = value;
             }
         }
         
@@ -196,24 +196,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.windowsConfiguration == null) 
-                            && (this.omObject.WindowsConfiguration != null)))
+                if (windowsConfiguration == null 
+                    && omObject.WindowsConfiguration != null)
                 {
-                    this.windowsConfiguration = new PSWindowsConfiguration(this.omObject.WindowsConfiguration);
+                    windowsConfiguration = new PSWindowsConfiguration(omObject.WindowsConfiguration);
                 }
-                return this.windowsConfiguration;
+                return windowsConfiguration;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.WindowsConfiguration = null;
+                    omObject.WindowsConfiguration = null;
                 }
                 else
                 {
-                    this.omObject.WindowsConfiguration = value.omObject;
+                    omObject.WindowsConfiguration = value.omObject;
                 }
-                this.windowsConfiguration = value;
+                windowsConfiguration = value;
             }
         }
     }

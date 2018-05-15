@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
 
         protected override void ProcessRecord()
         {
-            WriteObject(CmdletHelpers.GetCertificates(this.ResourcesClient, this.WebsitesClient, ResourceGroupName, Thumbprint));
+            WriteObject(CmdletHelpers.GetCertificates(ResourcesClient, WebsitesClient, ResourceGroupName, Thumbprint));
         }
     }
 }

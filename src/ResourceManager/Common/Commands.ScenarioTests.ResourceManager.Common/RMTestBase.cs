@@ -34,7 +34,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 
         public RMTestBase()
         {
-            System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             BaseSetup();
         }
 
@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             var account = new AzureAccount
             {
                 Id = "test",
-                Type = AzureAccount.AccountType.User,
+                Type = AzureAccount.AccountType.User
             };
             account.SetSubscriptions(newGuid.ToString());
             var subscription = new AzureSubscription { Id = newGuid.ToString(), Name = "test"};

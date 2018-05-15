@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PartnerDatabase
         {
-            get { return this._partnerDatabase; }
-            set { this._partnerDatabase = value; }
+            get { return _partnerDatabase; }
+            set { _partnerDatabase = value; }
         }
         
         private string _partnerLocation;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PartnerLocation
         {
-            get { return this._partnerLocation; }
-            set { this._partnerLocation = value; }
+            get { return _partnerLocation; }
+            set { _partnerLocation = value; }
         }
         
         private string _partnerRole;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PartnerRole
         {
-            get { return this._partnerRole; }
-            set { this._partnerRole = value; }
+            get { return _partnerRole; }
+            set { _partnerRole = value; }
         }
         
         private string _partnerServer;
@@ -71,8 +71,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PartnerServer
         {
-            get { return this._partnerServer; }
-            set { this._partnerServer = value; }
+            get { return _partnerServer; }
+            set { _partnerServer = value; }
         }
         
         private string _percentComplete;
@@ -83,8 +83,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PercentComplete
         {
-            get { return this._percentComplete; }
-            set { this._percentComplete = value; }
+            get { return _percentComplete; }
+            set { _percentComplete = value; }
         }
         
         private string _replicationState;
@@ -94,8 +94,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ReplicationState
         {
-            get { return this._replicationState; }
-            set { this._replicationState = value; }
+            get { return _replicationState; }
+            set { _replicationState = value; }
         }
         
         private string _role;
@@ -106,8 +106,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Role
         {
-            get { return this._role; }
-            set { this._role = value; }
+            get { return _role; }
+            set { _role = value; }
         }
         
         private DateTime _startTime;
@@ -117,8 +117,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime StartTime
         {
-            get { return this._startTime; }
-            set { this._startTime = value; }
+            get { return _startTime; }
+            set { _startTime = value; }
         }
         
         /// <summary>

@@ -37,18 +37,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!this.IsVirtualNetworkPeeringPresent(this.VirtualNetworkPeering.ResourceGroupName, this.VirtualNetworkPeering.VirtualNetworkName, this.VirtualNetworkPeering.Name))
+            if (!IsVirtualNetworkPeeringPresent(VirtualNetworkPeering.ResourceGroupName, VirtualNetworkPeering.VirtualNetworkName, VirtualNetworkPeering.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Map to the sdk object
-            var vnetPeeringModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkPeering>(this.VirtualNetworkPeering);
+            var vnetPeeringModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkPeering>(VirtualNetworkPeering);
 
             // Execute the Create VirtualNetwork call
-            this.VirtualNetworkPeeringClient.CreateOrUpdate(this.VirtualNetworkPeering.ResourceGroupName, this.VirtualNetworkPeering.VirtualNetworkName, this.VirtualNetworkPeering.Name, vnetPeeringModel);
+            VirtualNetworkPeeringClient.CreateOrUpdate(VirtualNetworkPeering.ResourceGroupName, VirtualNetworkPeering.VirtualNetworkName, VirtualNetworkPeering.Name, vnetPeeringModel);
 
-            var getVirtualNetworkPeering = this.GetVirtualNetworkPeering(this.VirtualNetworkPeering.ResourceGroupName, this.VirtualNetworkPeering.VirtualNetworkName, this.VirtualNetworkPeering.Name);
+            var getVirtualNetworkPeering = GetVirtualNetworkPeering(VirtualNetworkPeering.ResourceGroupName, VirtualNetworkPeering.VirtualNetworkName, VirtualNetworkPeering.Name);
 
             WriteObject(getVirtualNetworkPeering);
         }

@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
                 sb.AppendLine(XmlConvert.ToString(objAsTimeSpan));
                 return;
             }
-            else if (obj is System.String || obj is System.ValueType)
+            if (obj is String || obj is ValueType)
             {
                 sb.Append(currentIndent);
                 sb.Append(name);

@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Services
         {
             var resp = Communicator.List(resourceGroupName, serverName);
 
-            return resp.Select((db) =>
+            return resp.Select(db =>
             {
                 return CreateFailoverGroupModelFromResponse(db);
             }).ToList();
@@ -115,10 +115,10 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Services
                 readWriteEndpoint.FailoverWithDataLossGracePeriodMinutes = checked(model.FailoverWithDataLossGracePeriodHours * 60);
             }
 
-            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.FailoverGroupName, new FailoverGroupCreateOrUpdateParameters()
+            var resp = Communicator.CreateOrUpdate(model.ResourceGroupName, model.ServerName, model.FailoverGroupName, new FailoverGroupCreateOrUpdateParameters
             {
                 Location = model.Location,
-                Properties = new FailoverGroupCreateOrUpdateProperties()
+                Properties = new FailoverGroupCreateOrUpdateProperties
                 {
                     PartnerServers = partnerServers,
                     ReadOnlyEndpoint = readOnlyEndpoint,
@@ -149,10 +149,10 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Services
                 readWriteEndpoint.FailoverWithDataLossGracePeriodMinutes = checked(model.FailoverWithDataLossGracePeriodHours * 60);
             }
 
-            var resp = Communicator.PatchUpdate(model.ResourceGroupName, model.ServerName, model.FailoverGroupName, new FailoverGroupPatchUpdateParameters()
+            var resp = Communicator.PatchUpdate(model.ResourceGroupName, model.ServerName, model.FailoverGroupName, new FailoverGroupPatchUpdateParameters
             {
                 Location = model.Location,
-                Properties = new FailoverGroupPatchUpdateProperties()
+                Properties = new FailoverGroupPatchUpdateProperties
                 {
                     ReadOnlyEndpoint = readOnlyEndpoint,
                     ReadWriteEndpoint = readWriteEndpoint,
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Services
         {
             var resp = Communicator.ListDatabasesOnServer(resourceGroupName, serverName);
 
-            return resp.Select((db) =>
+            return resp.Select(db =>
             {
                 return AzureSqlDatabaseAdapter.CreateDatabaseModelFromResponse(resourceGroupName, serverName, db);
             }).ToList();
@@ -198,10 +198,10 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Services
         /// <returns>The updated Azure Sql Database FailoverGroup</returns>
         internal AzureSqlFailoverGroupModel AddOrRemoveDatabaseToFailoverGroup(string resourceGroupName, string serverName, string failoverGroupName, AzureSqlFailoverGroupModel model)
         {
-            var resp = Communicator.PatchUpdate(resourceGroupName, serverName, failoverGroupName, new FailoverGroupPatchUpdateParameters()
+            var resp = Communicator.PatchUpdate(resourceGroupName, serverName, failoverGroupName, new FailoverGroupPatchUpdateParameters
             {
                 Location = model.Location,
-                Properties = new FailoverGroupPatchUpdateProperties()
+                Properties = new FailoverGroupPatchUpdateProperties
                 {
                     Databases = model.Databases,
                 }

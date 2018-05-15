@@ -40,9 +40,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 WriteVerbose(string.Format(Resources.GetJobScheduleById, options.JobScheduleId));
                 JobScheduleOperations jobScheduleOperations = options.Context.BatchOMClient.JobScheduleOperations;
                 ODATADetailLevel getDetailLevel = new ODATADetailLevel(selectClause: options.Select, expandClause: options.Expand);
-                CloudJobSchedule jobSchedule = jobScheduleOperations.GetJobSchedule(options.JobScheduleId, detailLevel: getDetailLevel, additionalBehaviors: options.AdditionalBehaviors);
+                CloudJobSchedule jobSchedule = jobScheduleOperations.GetJobSchedule(options.JobScheduleId, getDetailLevel, options.AdditionalBehaviors);
                 PSCloudJobSchedule psJobSchedule = new PSCloudJobSchedule(jobSchedule);
-                return new PSCloudJobSchedule[] { psJobSchedule };
+                return new[] { psJobSchedule };
             }
             // List job schedules using the specified filter
             else

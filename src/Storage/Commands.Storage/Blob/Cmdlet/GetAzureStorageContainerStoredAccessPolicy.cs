@@ -15,7 +15,7 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
     using Common;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.Blob;
     using Model.Contract;
     using System;
     using System.Globalization;
@@ -98,7 +98,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (String.IsNullOrEmpty(Container)) return;
-            Func<long, Task> taskGenerator = (taskId) => GetAzureContainerStoredAccessPolicyAsync(taskId, Channel, Container, Policy);
+            Func<long, Task> taskGenerator = taskId => GetAzureContainerStoredAccessPolicyAsync(taskId, Channel, Container, Policy);
             RunTask(taskGenerator);
         }
     }

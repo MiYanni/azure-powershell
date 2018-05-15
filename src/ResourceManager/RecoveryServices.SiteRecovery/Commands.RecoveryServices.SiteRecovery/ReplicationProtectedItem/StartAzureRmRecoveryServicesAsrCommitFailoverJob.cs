@@ -59,23 +59,23 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Protected item or Recovery plan",
                 "Commit failover"))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByRPIObject:
-                        this.protectionContainerName = Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                        protectionContainerName = Utilities.GetValueFromArmId(
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationProtectionContainers);
-                        this.fabricName = Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                        fabricName = Utilities.GetValueFromArmId(
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationFabrics);
-                        this.SetRPICommit();
+                        SetRPICommit();
                         break;
                     case ASRParameterSets.ByRPObject:
-                        this.StartRpCommit();
+                        StartRpCommit();
                         break;
                 }
             }
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             // Check if the Replication Provider is InMageAzureV2.
             if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMageAzureV2,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
@@ -96,18 +96,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 // Validate if the Replication Protection Item is part of any Replication Group.
                 Guid guidResult;
                 var parseFlag = Guid.TryParse(
-                    ((ASRInMageAzureV2SpecificRPIDetails)this
-                        .ReplicationProtectedItem
+                    ((ASRInMageAzureV2SpecificRPIDetails)ReplicationProtectedItem
                         .ProviderSpecificDetails).MultiVmGroupName,
                     out guidResult);
                 if (parseFlag == false ||
                     guidResult == Guid.Empty ||
                     string.Compare(
-                        ((ASRInMageAzureV2SpecificRPIDetails)this
-                            .ReplicationProtectedItem
+                        ((ASRInMageAzureV2SpecificRPIDetails)ReplicationProtectedItem
                             .ProviderSpecificDetails).MultiVmGroupName,
-                        ((ASRInMageAzureV2SpecificRPIDetails)this
-                            .ReplicationProtectedItem
+                        ((ASRInMageAzureV2SpecificRPIDetails)ReplicationProtectedItem
                             .ProviderSpecificDetails).MultiVmGroupId) !=
                     0)
                 {
@@ -116,12 +113,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         string.Format(
                             Resources
                                 .UnsupportedReplicationProtectionActionForCommit,
-                            this.ReplicationProtectedItem
+                            ReplicationProtectedItem
                                 .ReplicationProvider));
                 }
             }
             else if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMage,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
@@ -129,17 +126,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 // Validate if the Replication Protection Item is part of any Replication Group.
                 Guid guidResult;
                 var parseFlag = Guid.TryParse(
-                    ((ASRInMageSpecificRPIDetails)this
-                        .ReplicationProtectedItem
+                    ((ASRInMageSpecificRPIDetails)ReplicationProtectedItem
                         .ProviderSpecificDetails).MultiVmGroupName,
                     out guidResult);
                 if (parseFlag == false ||
                     guidResult == Guid.Empty ||
                     string.Compare(
-                        ((ASRInMageSpecificRPIDetails)this.ReplicationProtectedItem
+                        ((ASRInMageSpecificRPIDetails)ReplicationProtectedItem
                             .ProviderSpecificDetails)
                         .MultiVmGroupName,
-                        ((ASRInMageSpecificRPIDetails)this.ReplicationProtectedItem
+                        ((ASRInMageSpecificRPIDetails)ReplicationProtectedItem
                             .ProviderSpecificDetails)
                         .MultiVmGroupId) !=
                     0)
@@ -149,20 +145,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         string.Format(
                             Resources
                                 .UnsupportedReplicationProtectionActionForCommit,
-                            this.ReplicationProtectedItem
+                            ReplicationProtectedItem
                                 .ReplicationProvider));
                 }
             }
 
-            var response = this.RecoveryServicesClient.StartAzureSiteRecoveryCommitFailover(
-                this.fabricName,
-                this.protectionContainerName,
-                this.ReplicationProtectedItem.Name);
+            var response = RecoveryServicesClient.StartAzureSiteRecoveryCommitFailover(
+                fabricName,
+                protectionContainerName,
+                ReplicationProtectedItem.Name);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -171,13 +167,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void StartRpCommit()
         {
             var response =
-                this.RecoveryServicesClient.StartAzureSiteRecoveryCommitFailover(
-                    this.RecoveryPlan.Name);
+                RecoveryServicesClient.StartAzureSiteRecoveryCommitFailover(
+                    RecoveryPlan.Name);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         #region local Variable

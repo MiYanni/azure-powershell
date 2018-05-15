@@ -67,8 +67,8 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     throw new KeyNotFoundException(string.Format(ProjectResources.GroupDoesntExist, GroupObjectId));
                 }
 
-                ulong first = MyInvocation.BoundParameters.ContainsKey("First") ? this.PagingParameters.First : ulong.MaxValue;
-                ulong skip = MyInvocation.BoundParameters.ContainsKey("Skip") ? this.PagingParameters.Skip : 0;
+                ulong first = MyInvocation.BoundParameters.ContainsKey("First") ? PagingParameters.First : ulong.MaxValue;
+                ulong skip = MyInvocation.BoundParameters.ContainsKey("Skip") ? PagingParameters.Skip : 0;
                 WriteObject(ActiveDirectoryClient.GetGroupMembers(options, first, skip), true);
             });
         }

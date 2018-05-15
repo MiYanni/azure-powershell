@@ -26,8 +26,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (coreSummary != null)
             {
-                this.Status = coreSummary.Status;
-                this.NumberOfDocuments = coreSummary.NumberOfDocuments;
+                Status = coreSummary.Status;
+                NumberOfDocuments = coreSummary.NumberOfDocuments;
             }
         }
         public string Status { get; set; }

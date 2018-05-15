@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Models
             Name = rule.Name;
             Id = rule.Id;
             Type = rule.Type;
-            Action = new ServiceBus.Models.PSActionAttributes(rule.Action);
+            Action = new PSActionAttributes(rule.Action);
             FilterType = rule.FilterType;
             SqlFilter = new PSSQLFilterAttributes(rule.SqlFilter);
             CorrelationFilter = new PSCorrelationFilterAttributes(rule.CorrelationFilter);

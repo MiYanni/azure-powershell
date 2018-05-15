@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
                             }
                             provider = ResourceManagementClient.Providers.Register(providerName);
                             TestMockSupport.Delay(1000);
-                        } while (provider.RegistrationState != RegistrationState.Registered.ToString());
+                        } while (provider.RegistrationState != RegistrationState.Registered);
                         writeDebug(string.Format(Resources.ResourceProviderRegisterSuccessful, providerName));
                     }
                     catch (Exception e)
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
         /// <returns>provider name, or null on unexpected format</returns>
         private string GetProviderName(Uri requestUri)
         {
-            return (requestUri.Segments.Length > 7 && requestUri.Segments[5].ToLower() == "providers/") ?
+            return requestUri.Segments.Length > 7 && requestUri.Segments[5].ToLower() == "providers/" ?
                 requestUri.Segments[6].ToLower().Trim('/') : null;
         }
 

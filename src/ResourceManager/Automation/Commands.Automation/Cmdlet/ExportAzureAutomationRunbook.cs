@@ -61,14 +61,14 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            bool? isDraft = this.IsDraft();
+            bool? isDraft = IsDraft();
 
             if (ShouldProcess(Name, VerbsData.Export))
             {
-                var outputFolder = this.AutomationClient.ExportRunbook(this.ResourceGroupName,
-                    this.AutomationAccountName, this.Name, isDraft, this.OutputFolder, this.Force.IsPresent);
+                var outputFolder = AutomationClient.ExportRunbook(ResourceGroupName,
+                    AutomationAccountName, Name, isDraft, OutputFolder, Force.IsPresent);
 
-                this.WriteObject(outputFolder, true);
+                WriteObject(outputFolder, true);
             }
         }
 
@@ -82,10 +82,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             bool? isDraft = null;
 
-            if (this.Slot != null)
+            if (Slot != null)
             {
-                isDraft = (0 == String.Compare(this.Slot, Constants.Draft, CultureInfo.InvariantCulture,
-                              CompareOptions.OrdinalIgnoreCase));
+                isDraft = 0 == String.Compare(Slot, Constants.Draft, CultureInfo.InvariantCulture,
+                              CompareOptions.OrdinalIgnoreCase);
             }
 
             return isDraft;

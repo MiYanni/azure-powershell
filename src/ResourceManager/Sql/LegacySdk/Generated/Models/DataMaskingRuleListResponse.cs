@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<DataMaskingRule> DataMaskingRules
         {
-            get { return this._dataMaskingRules; }
-            set { this._dataMaskingRules = value; }
+            get { return _dataMaskingRules; }
+            set { _dataMaskingRules = value; }
         }
         
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DataMaskingRuleListResponse()
         {
-            this.DataMaskingRules = new LazyList<DataMaskingRule>();
+            DataMaskingRules = new LazyList<DataMaskingRule>();
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<DataMaskingRule> GetEnumerator()
         {
-            return this.DataMaskingRules.GetEnumerator();
+            return DataMaskingRules.GetEnumerator();
         }
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

@@ -26,19 +26,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSResourceStatistics
     {
         
-        internal Microsoft.Azure.Batch.ResourceStatistics omObject;
+        internal ResourceStatistics omObject;
         
-        internal PSResourceStatistics(Microsoft.Azure.Batch.ResourceStatistics omObject)
+        internal PSResourceStatistics(ResourceStatistics omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.AverageCpuPercentage;
+                return omObject.AverageCpuPercentage;
             }
         }
         
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.AverageDiskGiB;
+                return omObject.AverageDiskGiB;
             }
         }
         
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.AverageMemoryGiB;
+                return omObject.AverageMemoryGiB;
             }
         }
         
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.DiskReadGiB;
+                return omObject.DiskReadGiB;
             }
         }
         
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.DiskReadIOps;
+                return omObject.DiskReadIOps;
             }
         }
         
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.DiskWriteGiB;
+                return omObject.DiskWriteGiB;
             }
         }
         
@@ -95,15 +95,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.DiskWriteIOps;
+                return omObject.DiskWriteIOps;
             }
         }
         
-        public System.DateTime LastUpdateTime
+        public DateTime LastUpdateTime
         {
             get
             {
-                return this.omObject.LastUpdateTime;
+                return omObject.LastUpdateTime;
             }
         }
         
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.NetworkReadGiB;
+                return omObject.NetworkReadGiB;
             }
         }
         
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.NetworkWriteGiB;
+                return omObject.NetworkWriteGiB;
             }
         }
         
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PeakDiskGiB;
+                return omObject.PeakDiskGiB;
             }
         }
         
@@ -135,15 +135,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PeakMemoryGiB;
+                return omObject.PeakMemoryGiB;
             }
         }
         
-        public System.DateTime StartTime
+        public DateTime StartTime
         {
             get
             {
-                return this.omObject.StartTime;
+                return omObject.StartTime;
             }
         }
     }

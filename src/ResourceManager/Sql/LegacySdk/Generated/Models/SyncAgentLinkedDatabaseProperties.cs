@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseId
         {
-            get { return this._databaseId; }
-            set { this._databaseId = value; }
+            get { return _databaseId; }
+            set { _databaseId = value; }
         }
         
         private string _databaseName;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseName
         {
-            get { return this._databaseName; }
-            set { this._databaseName = value; }
+            get { return _databaseName; }
+            set { _databaseName = value; }
         }
         
         private string _databaseType;
@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseType
         {
-            get { return this._databaseType; }
-            set { this._databaseType = value; }
+            get { return _databaseType; }
+            set { _databaseType = value; }
         }
         
         private string _description;
@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Description
         {
-            get { return this._description; }
-            set { this._description = value; }
+            get { return _description; }
+            set { _description = value; }
         }
         
         private string _severName;
@@ -80,8 +80,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string SeverName
         {
-            get { return this._severName; }
-            set { this._severName = value; }
+            get { return _severName; }
+            set { _severName = value; }
         }
         
         private string _userName;
@@ -91,8 +91,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string UserName
         {
-            get { return this._userName; }
-            set { this._userName = value; }
+            get { return _userName; }
+            set { _userName = value; }
         }
         
         /// <summary>

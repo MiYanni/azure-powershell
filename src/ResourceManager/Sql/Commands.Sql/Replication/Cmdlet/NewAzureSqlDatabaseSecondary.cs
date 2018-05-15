@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
             // We try to get the database.  Since this is a create secondary database operation, we don't want the secondary database to already exist
             try
             {
-                ModelAdapter.GetDatabase(this.PartnerResourceGroupName, this.PartnerServerName, this.DatabaseName);
+                ModelAdapter.GetDatabase(PartnerResourceGroupName, PartnerServerName, DatabaseName);
             }
             catch (CloudException ex)
             {
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
 
             // The database already exists
             throw new PSArgumentException(
-                string.Format(Resources.DatabaseNameExists, this.DatabaseName, this.PartnerServerName),
+                string.Format(Resources.DatabaseNameExists, DatabaseName, PartnerServerName),
                 "DatabaseName");
         }
 
@@ -138,20 +138,20 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
         /// <returns>The model that was passed in</returns>
         protected override IEnumerable<AzureReplicationLinkModel> ApplyUserInputToModel(IEnumerable<AzureReplicationLinkModel> model)
         {
-            string location = ModelAdapter.GetServerLocation(this.PartnerResourceGroupName, this.PartnerServerName);
-            List<Model.AzureReplicationLinkModel> newEntity = new List<AzureReplicationLinkModel>();
-            newEntity.Add(new AzureReplicationLinkModel()
+            string location = ModelAdapter.GetServerLocation(PartnerResourceGroupName, PartnerServerName);
+            List<AzureReplicationLinkModel> newEntity = new List<AzureReplicationLinkModel>();
+            newEntity.Add(new AzureReplicationLinkModel
             {
                 PartnerLocation = location,
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                DatabaseName = this.DatabaseName,
-                PartnerResourceGroupName = this.PartnerResourceGroupName,
-                PartnerServerName = this.PartnerServerName,
-                SecondaryServiceObjectiveName = this.SecondaryServiceObjectiveName,
-                SecondaryElasticPoolName = this.SecondaryElasticPoolName,
-                AllowConnections = this.AllowConnections,
-                Tags = TagsConversionHelper.CreateTagDictionary(Tags, validate: true),
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                DatabaseName = DatabaseName,
+                PartnerResourceGroupName = PartnerResourceGroupName,
+                PartnerServerName = PartnerServerName,
+                SecondaryServiceObjectiveName = SecondaryServiceObjectiveName,
+                SecondaryElasticPoolName = SecondaryElasticPoolName,
+                AllowConnections = AllowConnections,
+                Tags = TagsConversionHelper.CreateTagDictionary(Tags, true),
             });
             return newEntity;
         }
@@ -163,7 +163,8 @@ namespace Microsoft.Azure.Commands.Sql.Replication.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureReplicationLinkModel> PersistChanges(IEnumerable<AzureReplicationLinkModel> entity)
         {
-            return new List<AzureReplicationLinkModel>() {
+            return new List<AzureReplicationLinkModel>
+            {
                 ModelAdapter.CreateLink(entity.First().PartnerResourceGroupName, entity.First().PartnerServerName, entity.First())
             };
         }

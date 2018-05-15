@@ -16,7 +16,7 @@ using System;
 
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Properties;
+    using Properties;
     using System.Management.Automation;
 
     abstract public class AzureApiManagementRemoveCmdletBase : AzureApiManagementCmdletBase

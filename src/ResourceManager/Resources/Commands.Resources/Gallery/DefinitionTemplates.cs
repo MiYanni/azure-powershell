@@ -20,16 +20,16 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string DefaultDeploymentTemplateId
         {
-            get { return this._defaultDeploymentTemplateId; }
-            set { this._defaultDeploymentTemplateId = value; }
+            get { return _defaultDeploymentTemplateId; }
+            set { _defaultDeploymentTemplateId = value; }
         }
 
         private IDictionary<string, string> _deploymentTemplateFileUrls;
 
         public IDictionary<string, string> DeploymentTemplateFileUrls
         {
-            get { return this._deploymentTemplateFileUrls; }
-            set { this._deploymentTemplateFileUrls = value; }
+            get { return _deploymentTemplateFileUrls; }
+            set { _deploymentTemplateFileUrls = value; }
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public DefinitionTemplates()
         {
-            this.DeploymentTemplateFileUrls = new LazyDictionary<string, string>();
+            DeploymentTemplateFileUrls = new LazyDictionary<string, string>();
         }
     }
 }

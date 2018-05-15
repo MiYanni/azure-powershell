@@ -72,8 +72,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> GetEntity()
         {
-            return new List<AzureSqlFailoverGroupModel>() {
-                ModelAdapter.GetFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName)
+            return new List<AzureSqlFailoverGroupModel>
+            {
+                ModelAdapter.GetFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName)
             };
         }
 
@@ -89,7 +90,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
             List<string> dbs = new List<string>();
             dbs.AddRange(ConvertDatabaseModelToDatabaseHelper(Database));
 
-            newEntity.Add(new AzureSqlFailoverGroupModel()
+            newEntity.Add(new AzureSqlFailoverGroupModel
             {
                 Databases = GetUpdatedDatabaseList(dbs)
             });
@@ -104,8 +105,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> PersistChanges(IEnumerable<AzureSqlFailoverGroupModel> entity)
         {
-            return new List<AzureSqlFailoverGroupModel>() {
-                ModelAdapter.AddOrRemoveDatabaseToFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName, entity.First())
+            return new List<AzureSqlFailoverGroupModel>
+            {
+                ModelAdapter.AddOrRemoveDatabaseToFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName, entity.First())
             };
         }
 
@@ -150,7 +152,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
                 }
                 else
                 {
-                    throw new PSArgumentException(string.Format(Properties.Resources.FailoverGroupAddDatabaseAlreadyExists, db, this.FailoverGroupName, this.ServerName), "Database");
+                    throw new PSArgumentException(string.Format(Properties.Resources.FailoverGroupAddDatabaseAlreadyExists, db, FailoverGroupName, ServerName), "Database");
                 }
             }
 

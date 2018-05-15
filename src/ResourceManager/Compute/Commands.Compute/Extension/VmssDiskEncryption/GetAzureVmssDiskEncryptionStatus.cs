@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "Resource group name of the virtual machine scale set.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -67,21 +67,21 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             ExecuteClientAction(() =>
             {
-                if (!string.IsNullOrWhiteSpace(this.ResourceGroupName) && !string.IsNullOrWhiteSpace(this.VMScaleSetName))
+                if (!string.IsNullOrWhiteSpace(ResourceGroupName) && !string.IsNullOrWhiteSpace(VMScaleSetName))
                 {
-                    var psResult = GetVmssDiskStatus(this.ResourceGroupName, this.VMScaleSetName);
+                    var psResult = GetVmssDiskStatus(ResourceGroupName, VMScaleSetName);
                     WriteObject(psResult);
                 }
                 else
                 {
                     IPage<VirtualMachineScaleSet> result;
-                    if (string.IsNullOrWhiteSpace(this.ResourceGroupName))
+                    if (string.IsNullOrWhiteSpace(ResourceGroupName))
                     {
-                        result = this.VirtualMachineScaleSetClient.ListAll();
+                        result = VirtualMachineScaleSetClient.ListAll();
                     }
                     else
                     {
-                        result = this.VirtualMachineScaleSetClient.List(this.ResourceGroupName);
+                        result = VirtualMachineScaleSetClient.List(ResourceGroupName);
                     }
 
                     List<VirtualMachineScaleSet> resultList = result.ToList();
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                 EncryptionExtensionInstalled = false
             };
 
-            var vmssResult = this.VirtualMachineScaleSetClient.Get(rgName, vmssName);
+            var vmssResult = VirtualMachineScaleSetClient.Get(rgName, vmssName);
             if (vmssResult.VirtualMachineProfile == null
                 || vmssResult.VirtualMachineProfile.ExtensionProfile == null
                 || vmssResult.VirtualMachineProfile.ExtensionProfile.Extensions == null
@@ -136,20 +136,20 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             SetOSType(vmssResult.VirtualMachineProfile);
             try
             {
-                if (string.IsNullOrWhiteSpace(this.ExtensionName))
+                if (string.IsNullOrWhiteSpace(ExtensionName))
                 {
-                    if (this.CurrentOSType == OperatingSystemTypes.Windows)
+                    if (CurrentOSType == OperatingSystemTypes.Windows)
                     {
-                        this.ExtensionName = AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultName;
+                        ExtensionName = AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultName;
                     }
                     else
                     {
-                        this.ExtensionName = AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
+                        ExtensionName = AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
                     }
                 }
 
                 ext = vmssResult.VirtualMachineProfile.ExtensionProfile.Extensions.First(
-                         e => e.Type.Equals(this.ExtensionName));
+                         e => e.Type.Equals(ExtensionName));
             }
             catch (InvalidOperationException)
             {
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                 ext.Settings.ToString());
 
             // retrieve any status summary for the extension 
-            var vmssInstanceView = this.VirtualMachineScaleSetClient.GetInstanceView(rgName, vmssName);
+            var vmssInstanceView = VirtualMachineScaleSetClient.GetInstanceView(rgName, vmssName);
             if (vmssInstanceView.Extensions == null
                 || vmssInstanceView.Extensions.Count == 0)
             {
@@ -170,7 +170,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             }
             try
             {
-                extSummary = vmssInstanceView.Extensions.First(e => e.Name.Equals(this.ExtensionName));
+                extSummary = vmssInstanceView.Extensions.First(e => e.Name.Equals(ExtensionName));
             }
             catch (InvalidOperationException)
             {
@@ -180,13 +180,13 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             // check if encryption is enabled on any disk in the scale set 
             // stop evaluation at the first occurrence of an encrypted disk 
-            var page = this.VirtualMachineScaleSetVMsClient.List(rgName, vmssName);
+            var page = VirtualMachineScaleSetVMsClient.List(rgName, vmssName);
             while (!psResult.EncryptionEnabled && page!=null)
             { 
                 foreach (var pageItem in page)
                 {
                     if (psResult.EncryptionEnabled) break;
-                    VirtualMachineScaleSetVMInstanceView vmiv = this.VirtualMachineScaleSetVMsClient.GetInstanceView(rgName, vmssName, pageItem.InstanceId);
+                    VirtualMachineScaleSetVMInstanceView vmiv = VirtualMachineScaleSetVMsClient.GetInstanceView(rgName, vmssName, pageItem.InstanceId);
                     if (vmiv != null && vmiv.Disks != null)
                     {
                         foreach (DiskInstanceView div in vmiv.Disks)
@@ -212,7 +212,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                     }
                 }
                 // advance to the next page as needed
-                page = (page.NextPageLink != null) ? VirtualMachineScaleSetVMsClient.ListNext(page.NextPageLink) : null;
+                page = page.NextPageLink != null ? VirtualMachineScaleSetVMsClient.ListNext(page.NextPageLink) : null;
             }
 
             return psResult;

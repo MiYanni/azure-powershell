@@ -155,15 +155,15 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             CloudFileShare fileShare = null;
             CloudFile file = null;
 
-            if (null != this.File)
+            if (null != File)
             {
-                file = this.File;
-                fileShare = this.File.Share;
+                file = File;
+                fileShare = File.Share;
             }
             else
             {
-                string[] path = NamingUtil.ValidatePath(this.Path, true);
-                fileShare = Channel.GetShareReference(this.ShareName);
+                string[] path = NamingUtil.ValidatePath(Path, true);
+                fileShare = Channel.GetShareReference(ShareName);
                 file = fileShare.GetRootDirectoryReference().GetFileReferenceByPath(path);
             }
 
@@ -173,9 +173,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                 Channel,
                 fileShare.Name,
                 accessPolicyIdentifier,
-                !string.IsNullOrEmpty(this.Permission),
-                this.StartTime.HasValue,
-                this.ExpiryTime.HasValue);
+                !string.IsNullOrEmpty(Permission),
+                StartTime.HasValue,
+                ExpiryTime.HasValue);
 
             SetupAccessPolicy(accessPolicy, shouldSetExpiryTime);
 
@@ -195,12 +195,12 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
         protected override IStorageFileManagement CreateChannel()
         {
-            if (this.Channel == null || !this.ShareChannel)
+            if (Channel == null || !ShareChannel)
             {
-                this.Channel = new StorageFileManagement(this.GetCmdletStorageContext());
+                Channel = new StorageFileManagement(GetCmdletStorageContext());
             }
 
-            return this.Channel;
+            return Channel;
         }
 
         /// <summary>

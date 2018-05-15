@@ -96,10 +96,10 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override void ExecuteCmdlet()
         {
-            var result = this.RecordSet;
-            if (!string.Equals(this.ParameterSetName, this.RecordSet.RecordType.ToString(), StringComparison.OrdinalIgnoreCase))
+            var result = RecordSet;
+            if (!string.Equals(ParameterSetName, RecordSet.RecordType.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException(string.Format(ProjectResources.Error_RemoveRecordTypeMismatch, this.ParameterSetName, this.RecordSet.RecordType));
+                throw new ArgumentException(string.Format(ProjectResources.Error_RemoveRecordTypeMismatch, ParameterSetName, RecordSet.RecordType));
             }
 
             int removedCount = 0;
@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.Dns
                         {
                             removedCount = result.Records.RemoveAll(record =>
                                 record is ARecord
-                                && ((ARecord)record).Ipv4Address == this.Ipv4Address);
+                                && ((ARecord)record).Ipv4Address == Ipv4Address);
                             break;
                         }
 
@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Commands.Dns
                         {
                             removedCount = result.Records.RemoveAll(record =>
                                 record is AaaaRecord
-                                && ((AaaaRecord)record).Ipv6Address == this.Ipv6Address);
+                                && ((AaaaRecord)record).Ipv6Address == Ipv6Address);
                             break;
                         }
 
@@ -128,8 +128,8 @@ namespace Microsoft.Azure.Commands.Dns
                         {
                             removedCount = result.Records.RemoveAll(record =>
                                 record is MxRecord
-                                && string.Equals(((MxRecord)record).Exchange, this.Exchange, System.StringComparison.OrdinalIgnoreCase)
-                                && ((MxRecord)record).Preference == this.Preference);
+                                && string.Equals(((MxRecord)record).Exchange, Exchange, StringComparison.OrdinalIgnoreCase)
+                                && ((MxRecord)record).Preference == Preference);
                             break;
                         }
 
@@ -137,38 +137,38 @@ namespace Microsoft.Azure.Commands.Dns
                         {
                             removedCount = result.Records.RemoveAll(record =>
                                 record is NsRecord
-                                && string.Equals(((NsRecord)record).Nsdname, this.Nsdname, System.StringComparison.OrdinalIgnoreCase));
+                                && string.Equals(((NsRecord)record).Nsdname, Nsdname, StringComparison.OrdinalIgnoreCase));
                             break;
                         }
                     case RecordType.SRV:
                         {
                             removedCount = result.Records.RemoveAll(record =>
                                 record is SrvRecord
-                                && ((SrvRecord)record).Priority == this.Priority
-                                && ((SrvRecord)record).Port == this.Port
-                                && string.Equals(((SrvRecord)record).Target, this.Target, System.StringComparison.OrdinalIgnoreCase)
-                                && ((SrvRecord)record).Weight == this.Weight);
+                                && ((SrvRecord)record).Priority == Priority
+                                && ((SrvRecord)record).Port == Port
+                                && string.Equals(((SrvRecord)record).Target, Target, StringComparison.OrdinalIgnoreCase)
+                                && ((SrvRecord)record).Weight == Weight);
                             break;
                         }
                     case RecordType.TXT:
                         {
                             removedCount = result.Records.RemoveAll(record =>
                                 record is TxtRecord
-                                && ((TxtRecord)record).Value == this.Value);
+                                && ((TxtRecord)record).Value == Value);
                             break;
                         }
                     case RecordType.PTR:
                         {
                             removedCount = result.Records.RemoveAll(record =>
                                 record is PtrRecord
-                                && ((PtrRecord)record).Ptrdname == this.Ptrdname);
+                                && ((PtrRecord)record).Ptrdname == Ptrdname);
                             break;
                         }
                     case RecordType.CNAME:
                         {
                             removedCount = result.Records.RemoveAll(record =>
                                 record is CnameRecord
-                                && string.Equals(((CnameRecord)record).Cname, this.Cname, System.StringComparison.OrdinalIgnoreCase));
+                                && string.Equals(((CnameRecord)record).Cname, Cname, StringComparison.OrdinalIgnoreCase));
                             break;
                         }
                     case RecordType.CAA:
@@ -176,9 +176,9 @@ namespace Microsoft.Azure.Commands.Dns
                             // CAAValue is considered binary. So, not doing a case-insensitive search
                             removedCount = result.Records.RemoveAll(record =>
                                 record is CaaRecord
-                                && string.Equals(((CaaRecord)record).Tag, this.CaaTag, System.StringComparison.OrdinalIgnoreCase)
-                                && string.Equals(((CaaRecord)record).Value, this.CaaValue)
-                                && ((CaaRecord)record).Flags == this.CaaFlags);
+                                && string.Equals(((CaaRecord)record).Tag, CaaTag, StringComparison.OrdinalIgnoreCase)
+                                && string.Equals(((CaaRecord)record).Value, CaaValue)
+                                && ((CaaRecord)record).Flags == CaaFlags);
                             break;
                         }
                 }

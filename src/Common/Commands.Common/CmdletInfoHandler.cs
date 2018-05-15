@@ -47,9 +47,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
         /// <param name="clientRequestId">the unique clientRequestId</param>
         public CmdletInfoHandler(string cmdlet, string parameterSet, string clientRequestId)
         {
-            this.Cmdlet = cmdlet;
-            this.ParameterSet = parameterSet;
-            this.ClientRequestId = clientRequestId;
+            Cmdlet = cmdlet;
+            ParameterSet = parameterSet;
+            ClientRequestId = clientRequestId;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -75,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public object Clone()
         {
-            return new CmdletInfoHandler(this.Cmdlet, this.ParameterSet, this.ClientRequestId);
+            return new CmdletInfoHandler(Cmdlet, ParameterSet, ClientRequestId);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string PacketCaptureErrorText
         {
-            get { return JsonConvert.SerializeObject(this.PacketCaptureError, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(PacketCaptureError, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

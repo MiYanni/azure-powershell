@@ -16,8 +16,8 @@ using System.Reflection;
 
 namespace Microsoft.WindowsAzure.Commands.Storage.File
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage.DataMovement;
+    using Common;
+    using WindowsAzure.Storage.DataMovement;
     using System.Globalization;
     using System.Management.Automation;
 
@@ -55,14 +55,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
         /// <returns>Returns a value indicating whether to overwrite.</returns>
         protected bool ConfirmOverwrite(object source, object destination)
         {
-            return this.Force || this.OutputStream.ConfirmAsync(string.Format(CultureInfo.CurrentCulture, Resources.OverwriteConfirmation, Util.ConvertToString(destination))).Result;
+            return Force || OutputStream.ConfirmAsync(string.Format(CultureInfo.CurrentCulture, Resources.OverwriteConfirmation, Util.ConvertToString(destination))).Result;
         }
 
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
 
-            this.TransferManager = TransferManagerFactory.CreateTransferManager(this.GetCmdletConcurrency());
+            TransferManager = TransferManagerFactory.CreateTransferManager(GetCmdletConcurrency());
             OutputStream.ConfirmWriter = (target, query, caption) => ShouldContinue(query, caption);
         }
 
@@ -71,11 +71,11 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
             try
             {
                 base.EndProcessing();
-                this.WriteTaskSummary();
+                WriteTaskSummary();
             }
             finally
             {
-                this.TransferManager = null;
+                TransferManager = null;
             }
         }
 
@@ -85,14 +85,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File
             transferContext.ClientRequestId = CmdletOperationContext.ClientRequestId;
             transferContext.ShouldOverwriteCallback = ConfirmOverwrite;
 
-            transferContext.ProgressHandler = new TransferProgressHandler((transferProgress) =>
+            transferContext.ProgressHandler = new TransferProgressHandler(transferProgress =>
             {
                 if (record != null)
                 {
                     // Size of the source file might be 0, when it is, directly treat the progress as 100 percent.
-                    record.PercentComplete = (totalTransferLength == 0) ? 100 : (int)(transferProgress.BytesTransferred * 100 / totalTransferLength);
+                    record.PercentComplete = totalTransferLength == 0 ? 100 : (int)(transferProgress.BytesTransferred * 100 / totalTransferLength);
                     record.StatusDescription = string.Format(CultureInfo.CurrentCulture, Resources.FileTransmitStatus, record.PercentComplete);
-                    this.OutputStream.WriteProgress(record);
+                    OutputStream.WriteProgress(record);
                 }
             });
 

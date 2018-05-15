@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            var existingLoadBalancingRule = this.LoadBalancer.LoadBalancingRules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var existingLoadBalancingRule = LoadBalancer.LoadBalancingRules.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (existingLoadBalancingRule != null)
             {
@@ -46,52 +46,52 @@ namespace Microsoft.Azure.Commands.Network
             }
 
             var loadBalancingRule = new PSLoadBalancingRule();
-            loadBalancingRule.Name = this.Name;
-            loadBalancingRule.Protocol = this.Protocol;
-            loadBalancingRule.FrontendPort = this.FrontendPort;
-            loadBalancingRule.BackendPort = this.BackendPort;
+            loadBalancingRule.Name = Name;
+            loadBalancingRule.Protocol = Protocol;
+            loadBalancingRule.FrontendPort = FrontendPort;
+            loadBalancingRule.BackendPort = BackendPort;
 
-            if (this.IdleTimeoutInMinutes > 0)
+            if (IdleTimeoutInMinutes > 0)
             {
-                loadBalancingRule.IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
+                loadBalancingRule.IdleTimeoutInMinutes = IdleTimeoutInMinutes;
             }
 
-            if (!string.IsNullOrEmpty(this.LoadDistribution))
+            if (!string.IsNullOrEmpty(LoadDistribution))
             {
-                loadBalancingRule.LoadDistribution = this.LoadDistribution;
+                loadBalancingRule.LoadDistribution = LoadDistribution;
             }
 
-            loadBalancingRule.EnableFloatingIP = this.EnableFloatingIP.IsPresent;
-            loadBalancingRule.DisableOutboundSNAT = this.DisableOutboundSNAT.IsPresent;
+            loadBalancingRule.EnableFloatingIP = EnableFloatingIP.IsPresent;
+            loadBalancingRule.DisableOutboundSNAT = DisableOutboundSNAT.IsPresent;
 
-            if (!string.IsNullOrEmpty(this.BackendAddressPoolId))
+            if (!string.IsNullOrEmpty(BackendAddressPoolId))
             {
                 loadBalancingRule.BackendAddressPool = new PSResourceId();
-                loadBalancingRule.BackendAddressPool.Id = this.BackendAddressPoolId;
+                loadBalancingRule.BackendAddressPool.Id = BackendAddressPoolId;
             }
 
-            if (!string.IsNullOrEmpty(this.ProbeId))
+            if (!string.IsNullOrEmpty(ProbeId))
             {
                 loadBalancingRule.Probe = new PSResourceId();
-                loadBalancingRule.Probe.Id = this.ProbeId;
+                loadBalancingRule.Probe.Id = ProbeId;
             }
 
-            if (!string.IsNullOrEmpty(this.FrontendIpConfigurationId))
+            if (!string.IsNullOrEmpty(FrontendIpConfigurationId))
             {
-                loadBalancingRule.FrontendIPConfiguration = new PSResourceId() { Id = this.FrontendIpConfigurationId };
+                loadBalancingRule.FrontendIPConfiguration = new PSResourceId { Id = FrontendIpConfigurationId };
             }
 
             loadBalancingRule.Id =
                 ChildResourceHelper.GetResourceId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    this.LoadBalancer.ResourceGroupName,
-                    this.LoadBalancer.Name,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerRuleName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    LoadBalancer.ResourceGroupName,
+                    LoadBalancer.Name,
+                    Properties.Resources.LoadBalancerRuleName,
+                    Name);
 
-            this.LoadBalancer.LoadBalancingRules.Add(loadBalancingRule);
+            LoadBalancer.LoadBalancingRules.Add(loadBalancingRule);
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
     {
         public PSDataFactory GetDataFactory(string resourceGroupName, string dataFactoryName)
         {
-            Factory response = this.DataFactoryManagementClient.Factories.Get(resourceGroupName, dataFactoryName);
+            Factory response = DataFactoryManagementClient.Factories.Get(resourceGroupName, dataFactoryName);
 
             return response != null ? new PSDataFactory(response, resourceGroupName) : null;
         }
@@ -48,11 +48,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
             if (filterOptions.NextLink.IsNextPageLink())
             {
-                response = this.DataFactoryManagementClient.Factories.ListNext(filterOptions.NextLink);
+                response = DataFactoryManagementClient.Factories.ListNext(filterOptions.NextLink);
             }
             else
             {
-                response = this.DataFactoryManagementClient.Factories.ListByResourceGroup(filterOptions.ResourceGroupName);
+                response = DataFactoryManagementClient.Factories.ListByResourceGroup(filterOptions.ResourceGroupName);
             }
             filterOptions.NextLink = response != null ? response.NextPageLink : null;
 
@@ -76,11 +76,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
             if (filterOptions.NextLink.IsNextPageLink())
             {
-                response = this.DataFactoryManagementClient.Factories.ListNext(filterOptions.NextLink);
+                response = DataFactoryManagementClient.Factories.ListNext(filterOptions.NextLink);
             }
             else
             {
-                response = this.DataFactoryManagementClient.Factories.List();
+                response = DataFactoryManagementClient.Factories.List();
             }
             filterOptions.NextLink = response != null ? response.NextPageLink : null;
 
@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             {
                 dataFactory =
                     new PSDataFactory(
-                        this.DataFactoryManagementClient.Factories.CreateOrUpdate(
+                        DataFactoryManagementClient.Factories.CreateOrUpdate(
                             parameters.ResourceGroupName,
                             parameters.DataFactoryName,
                             new Factory
@@ -171,7 +171,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         {
             var updateParams = new FactoryUpdateParameters(parameters.Tags?.ToDictionary());
             return new PSDataFactory(
-                this.DataFactoryManagementClient.Factories.Update(
+                DataFactoryManagementClient.Factories.Update(
                     parameters.ResourceGroupName,
                     parameters.DataFactoryName,
                     updateParams),
@@ -193,17 +193,14 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                     dataFactory = null;
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
 
         public HttpStatusCode DeleteDataFactory(string resourceGroupName, string dataFactoryName)
         {
             Rest.Azure.AzureOperationResponse response =
-                this.DataFactoryManagementClient.Factories.DeleteWithHttpMessagesAsync(resourceGroupName, dataFactoryName).Result;
+                DataFactoryManagementClient.Factories.DeleteWithHttpMessagesAsync(resourceGroupName, dataFactoryName).Result;
             return response.Response.StatusCode;
         }
     }

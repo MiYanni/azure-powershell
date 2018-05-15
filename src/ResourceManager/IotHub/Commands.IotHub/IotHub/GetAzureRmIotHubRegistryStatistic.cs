@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 {
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIotHubRegistryStatistic"), OutputType(typeof(IList<PSIotHubRegistryStatistics>))]
@@ -44,8 +44,8 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 
         public override void ExecuteCmdlet()
         {
-            RegistryStatistics registryStats = this.IotHubClient.IotHubResource.GetStats(this.ResourceGroupName, this.Name);
-            this.WriteObject(IotHubUtils.ToPSIotHubRegistryStatistics(registryStats), false);
+            RegistryStatistics registryStats = IotHubClient.IotHubResource.GetStats(ResourceGroupName, Name);
+            WriteObject(IotHubUtils.ToPSIotHubRegistryStatistics(registryStats), false);
         }
     }
 }

@@ -37,19 +37,19 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!this.IsExpressRouteCircuitPresent(this.ExpressRouteCircuit.ResourceGroupName, this.ExpressRouteCircuit.Name))
+            if (!IsExpressRouteCircuitPresent(ExpressRouteCircuit.ResourceGroupName, ExpressRouteCircuit.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Map to the sdk object
-            var circuitModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ExpressRouteCircuit>(this.ExpressRouteCircuit);
-            circuitModel.Tags = TagsConversionHelper.CreateTagDictionary(this.ExpressRouteCircuit.Tag, validate: true);
+            var circuitModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ExpressRouteCircuit>(ExpressRouteCircuit);
+            circuitModel.Tags = TagsConversionHelper.CreateTagDictionary(ExpressRouteCircuit.Tag, validate: true);
 
             // Execute the Create ExpressRouteCircuit call
-            this.ExpressRouteCircuitClient.CreateOrUpdate(this.ExpressRouteCircuit.ResourceGroupName, this.ExpressRouteCircuit.Name, circuitModel);
+            ExpressRouteCircuitClient.CreateOrUpdate(ExpressRouteCircuit.ResourceGroupName, ExpressRouteCircuit.Name, circuitModel);
 
-            var getExpressRouteCircuit = this.GetExpressRouteCircuit(this.ExpressRouteCircuit.ResourceGroupName, this.ExpressRouteCircuit.Name);
+            var getExpressRouteCircuit = GetExpressRouteCircuit(ExpressRouteCircuit.ResourceGroupName, ExpressRouteCircuit.Name);
             WriteObject(getExpressRouteCircuit);
         }
     }

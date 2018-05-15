@@ -28,24 +28,24 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
         internal PSKeyVaultSecretAttributes(bool? enabled, DateTime? expires, DateTime? notBefore, string contentType, Hashtable tags)
         {
-            this.Enabled = enabled;
-            this.Expires = expires;
-            this.NotBefore = notBefore;
-            this.ContentType = contentType;
-            this.Tags = tags;
+            Enabled = enabled;
+            Expires = expires;
+            NotBefore = notBefore;
+            ContentType = contentType;
+            Tags = tags;
         }
 
         internal PSKeyVaultSecretAttributes(bool? enabled, DateTime? expires, DateTime? notBefore, 
             DateTime? created, DateTime? updated, string contentType, string deletionRecoveryLevel, IDictionary<string, string> tags)
         {
-            this.Enabled = enabled;
-            this.Expires = expires;
-            this.NotBefore = notBefore;
-            this.Created = created;
-            this.Updated = updated;
-            this.ContentType = contentType;
-            this.RecoveryLevel = deletionRecoveryLevel;
-            this.Tags = (tags == null) ? null : tags.ConvertToHashtable();
+            Enabled = enabled;
+            Expires = expires;
+            NotBefore = notBefore;
+            Created = created;
+            Updated = updated;
+            ContentType = contentType;
+            RecoveryLevel = deletionRecoveryLevel;
+            Tags = tags == null ? null : tags.ConvertToHashtable();
         }
 
         public bool? Enabled { get; set; }
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return (Tags == null) ? null : Tags.ConvertToTagsTable();
+                return Tags == null ? null : Tags.ConvertToTagsTable();
             }
         }
 
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return (Tags == null) ? null : Tags.ConvertToDictionary();
+                return Tags == null ? null : Tags.ConvertToDictionary();
             }
         }
 

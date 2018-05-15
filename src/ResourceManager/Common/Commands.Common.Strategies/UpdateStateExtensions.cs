@@ -110,14 +110,11 @@ namespace Microsoft.Azure.Commands.Common.Strategies
                 {
                     return _Duration;
                 }
-                else
-                {
-                    var seconds = (int)(DateTime.UtcNow - _StartTime).TotalSeconds;
-                    seconds *= 2;
-                    return seconds <= 0
-                        ? 0
-                        : _Duration * seconds / (_Duration + seconds);
-                }
+                var seconds = (int)(DateTime.UtcNow - _StartTime).TotalSeconds;
+                seconds *= 2;
+                return seconds <= 0
+                    ? 0
+                    : _Duration * seconds / (_Duration + seconds);
             }
 
             /// <summary>
@@ -195,10 +192,7 @@ namespace Microsoft.Azure.Commands.Common.Strategies
                                 taskProgress.IsDone = true;
                                 return result;
                             }
-                            else
-                            {
-                                return null;
-                            }
+                            return null;
                         });
                 }
             }

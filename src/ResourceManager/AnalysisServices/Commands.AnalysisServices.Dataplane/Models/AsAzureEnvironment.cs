@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
         public AsAzureEnvironment(string Name)
         {
             this.Name = Name;
-            this.Endpoints = new Hashtable();
+            Endpoints = new Hashtable();
         }
 
         public string Name { get; set; }

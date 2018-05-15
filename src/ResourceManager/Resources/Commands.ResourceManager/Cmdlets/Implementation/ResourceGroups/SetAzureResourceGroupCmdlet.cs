@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             PSUpdateResourceGroupParameters parameters = new PSUpdateResourceGroupParameters
             {
-                ResourceGroupName = Name ?? ResourceIdentifier.FromResourceGroupIdentifier(this.Id).ResourceGroupName,
+                ResourceGroupName = Name ?? ResourceIdentifier.FromResourceGroupIdentifier(Id).ResourceGroupName,
                 Tag = Tag,
             };
 

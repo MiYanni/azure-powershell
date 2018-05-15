@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsExpressRouteCircuitPresent(this.ResourceGroupName, this.Name);
+            var present = IsExpressRouteCircuitPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
@@ -140,40 +140,40 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             var circuit = new PSExpressRouteCircuit();
-            circuit.Name = this.Name;
-            circuit.ResourceGroupName = this.ResourceGroupName;
-            circuit.Location = this.Location;
+            circuit.Name = Name;
+            circuit.ResourceGroupName = ResourceGroupName;
+            circuit.Location = Location;
 
             // Construct sku
-            if (!string.IsNullOrEmpty(this.SkuTier))
+            if (!string.IsNullOrEmpty(SkuTier))
             {
                 circuit.Sku = new PSExpressRouteCircuitSku();
-                circuit.Sku.Tier = this.SkuTier;
-                circuit.Sku.Family = this.SkuFamily;
-                circuit.Sku.Name = this.SkuTier + "_" + this.SkuFamily;
+                circuit.Sku.Tier = SkuTier;
+                circuit.Sku.Family = SkuFamily;
+                circuit.Sku.Name = SkuTier + "_" + SkuFamily;
             }
 
             // construct the service provider properties
-            if (!string.IsNullOrEmpty(this.ServiceProviderName))
+            if (!string.IsNullOrEmpty(ServiceProviderName))
             {
                 circuit.ServiceProviderProperties = new PSServiceProviderProperties();
-                circuit.ServiceProviderProperties.ServiceProviderName = this.ServiceProviderName;
-                circuit.ServiceProviderProperties.PeeringLocation = this.PeeringLocation;
-                circuit.ServiceProviderProperties.BandwidthInMbps = this.BandwidthInMbps;
+                circuit.ServiceProviderProperties.ServiceProviderName = ServiceProviderName;
+                circuit.ServiceProviderProperties.PeeringLocation = PeeringLocation;
+                circuit.ServiceProviderProperties.BandwidthInMbps = BandwidthInMbps;
             }
 
-            circuit.Peerings = this.Peering;
-            circuit.Authorizations = this.Authorization;
-            circuit.AllowClassicOperations = this.AllowClassicOperations;
+            circuit.Peerings = Peering;
+            circuit.Authorizations = Authorization;
+            circuit.AllowClassicOperations = AllowClassicOperations;
 
             // Map to the sdk object
             var circuitModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ExpressRouteCircuit>(circuit);
-            circuitModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            circuitModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
             // Execute the Create ExpressRouteCircuit call
-            this.ExpressRouteCircuitClient.CreateOrUpdate(this.ResourceGroupName, this.Name, circuitModel);
+            ExpressRouteCircuitClient.CreateOrUpdate(ResourceGroupName, Name, circuitModel);
 
-            var getExpressRouteCircuit = this.GetExpressRouteCircuit(this.ResourceGroupName, this.Name);
+            var getExpressRouteCircuit = GetExpressRouteCircuit(ResourceGroupName, Name);
             return getExpressRouteCircuit;
         }
     }

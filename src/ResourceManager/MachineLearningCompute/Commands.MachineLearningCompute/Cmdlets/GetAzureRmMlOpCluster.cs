@@ -52,19 +52,19 @@ namespace Microsoft.Azure.Commands.MachineLearningCompute.Cmdlets
         {
             try
             {
-                if (string.Equals(this.ParameterSetName, GetByNameParameterSet, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(ParameterSetName, GetByNameParameterSet, StringComparison.OrdinalIgnoreCase))
                 {
-                    WriteObject(new PSOperationalizationCluster(this.MachineLearningComputeManagementClient.OperationalizationClusters.Get(this.ResourceGroupName, this.Name)));
+                    WriteObject(new PSOperationalizationCluster(MachineLearningComputeManagementClient.OperationalizationClusters.Get(ResourceGroupName, Name)));
                 }
-                else if (string.Equals(this.ParameterSetName, GetByResourceGroupOrSubscriptionParametersParameterSet, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(ParameterSetName, GetByResourceGroupOrSubscriptionParametersParameterSet, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!string.IsNullOrWhiteSpace(this.ResourceGroupName))
+                    if (!string.IsNullOrWhiteSpace(ResourceGroupName))
                     {
-                        WriteClusterList(MachineLearningComputeManagementClient.OperationalizationClusters.ListByResourceGroup(this.ResourceGroupName));
+                        WriteClusterList(MachineLearningComputeManagementClient.OperationalizationClusters.ListByResourceGroup(ResourceGroupName));
                     }
                     else
                     {
-                        WriteClusterList(this.MachineLearningComputeManagementClient.OperationalizationClusters.ListBySubscriptionId());
+                        WriteClusterList(MachineLearningComputeManagementClient.OperationalizationClusters.ListBySubscriptionId());
                     }
                 }
             }

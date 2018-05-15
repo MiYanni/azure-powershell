@@ -36,16 +36,16 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Cmdlet
                 {
                     results = new List<AzureSqlDeletedDatabaseBackupModel>();
                     // The server expects a deleted database entity ID that consists of the database name and deletion time as a windows file time separated by a comma.
-                    results.Add(ModelAdapter.GetDeletedDatabaseBackup(this.ResourceGroupName, this.ServerName, this.DatabaseName + "," + this.DeletionDate.Value.ToFileTimeUtc().ToString()));
+                    results.Add(ModelAdapter.GetDeletedDatabaseBackup(ResourceGroupName, ServerName, DatabaseName + "," + DeletionDate.Value.ToFileTimeUtc().ToString()));
                 }
                 else
                 {
-                    results = ModelAdapter.ListDeletedDatabaseBackups(this.ResourceGroupName, this.ServerName).Where(backup => backup.DatabaseName == DatabaseName).ToList();
+                    results = ModelAdapter.ListDeletedDatabaseBackups(ResourceGroupName, ServerName).Where(backup => backup.DatabaseName == DatabaseName).ToList();
                 }
             }
             else
             {
-                results = ModelAdapter.ListDeletedDatabaseBackups(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListDeletedDatabaseBackups(ResourceGroupName, ServerName);
             }
 
             return results;

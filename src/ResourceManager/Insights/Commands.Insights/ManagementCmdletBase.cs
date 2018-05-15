@@ -36,14 +36,14 @@ namespace Microsoft.Azure.Commands.Insights
             //   been called before this command in order to have a correct CurrentContext
             get
             {
-                if (this.monitorManagementClient == null)
+                if (monitorManagementClient == null)
                 {
-                    this.monitorManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<MonitorManagementClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
+                    monitorManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<MonitorManagementClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
                 }
 
-                return this.monitorManagementClient;
+                return monitorManagementClient;
             }
-            set { this.monitorManagementClient = value; }
+            set { monitorManagementClient = value; }
         }
         #endregion
     }

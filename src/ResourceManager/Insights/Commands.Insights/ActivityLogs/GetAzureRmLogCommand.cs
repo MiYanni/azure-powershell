@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.Insights.Events
         /// <summary>
         /// Gets or sets the resource group name parameter of this cmdlet
         /// </summary>
-        [Parameter(Position = 0, ParameterSetName = LogsCmdletBase.ResourceGroupParameterSetName, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name")]
+        [Parameter(Position = 0, ParameterSetName = ResourceGroupParameterSetName, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         [Alias("ResourceGroup")]
@@ -106,15 +106,15 @@ namespace Microsoft.Azure.Commands.Insights.Events
         /// <returns>The query filter with the conditions for particular parameters added</returns>
         protected override string ProcessParticularParameters(string currentQueryFilter)
         {
-            this.SetMaxEventsIfPresent(currentQueryFilter, this.MaxRecord);
+            SetMaxEventsIfPresent(currentQueryFilter, MaxRecord);
 
-            string extendedQuery = this.AddConditionIfPResent(currentQueryFilter, "correlationId", this.CorrelationId);
-            extendedQuery = this.AddConditionIfPResent(extendedQuery, "resourceGroupName", this.ResourceGroupName);
+            string extendedQuery = AddConditionIfPResent(currentQueryFilter, "correlationId", CorrelationId);
+            extendedQuery = AddConditionIfPResent(extendedQuery, "resourceGroupName", ResourceGroupName);
 
             // Notice the different name in the condition (resourceUri) and the parameter (resourceId)
             // The difference is intentional as the new directive is to use ResourceId everywhere, but the SDK still uses resourceUri
-            extendedQuery = this.AddConditionIfPResent(extendedQuery, "resourceUri", this.ResourceId);
-            return this.AddConditionIfPResent(extendedQuery, "resourceProvider", this.ResourceProvider);
+            extendedQuery = AddConditionIfPResent(extendedQuery, "resourceUri", ResourceId);
+            return AddConditionIfPResent(extendedQuery, "resourceProvider", ResourceProvider);
         }
     }
 }

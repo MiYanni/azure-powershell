@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string DisplayName
         {
-            get { return this._displayName; }
-            set { this._displayName = value; }
+            get { return _displayName; }
+            set { _displayName = value; }
         }
 
         private string _legalTermsUri;
@@ -29,8 +29,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string LegalTermsUri
         {
-            get { return this._legalTermsUri; }
-            set { this._legalTermsUri = value; }
+            get { return _legalTermsUri; }
+            set { _legalTermsUri = value; }
         }
 
         private OfferDetails _offerDetails;
@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public OfferDetails OfferDetails
         {
-            get { return this._offerDetails; }
-            set { this._offerDetails = value; }
+            get { return _offerDetails; }
+            set { _offerDetails = value; }
         }
 
         private string _pricingDetailsUri;
@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string PricingDetailsUri
         {
-            get { return this._pricingDetailsUri; }
-            set { this._pricingDetailsUri = value; }
+            get { return _pricingDetailsUri; }
+            set { _pricingDetailsUri = value; }
         }
 
         private string _privacyPolicyUri;
@@ -62,8 +62,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string PrivacyPolicyUri
         {
-            get { return this._privacyPolicyUri; }
-            set { this._privacyPolicyUri = value; }
+            get { return _privacyPolicyUri; }
+            set { _privacyPolicyUri = value; }
         }
 
         private string _publisherDisplayName;
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string PublisherDisplayName
         {
-            get { return this._publisherDisplayName; }
-            set { this._publisherDisplayName = value; }
+            get { return _publisherDisplayName; }
+            set { _publisherDisplayName = value; }
         }
 
         /// <summary>

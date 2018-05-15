@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name to which the VM belongs to")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -146,14 +146,14 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             VirtualMachineExtension vmExtensionParameters = null;
             if (OperatingSystemTypes.Windows.Equals(currentOSType))
             {
-                this.Name = this.Name ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultName;
+                Name = Name ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultName;
 
                 vmExtensionParameters = new VirtualMachineExtension
                 {
                     Location = vmParameters.Location,
-                    Publisher = this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher,
-                    VirtualMachineExtensionType = this.ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType,
-                    TypeHandlerVersion = this.TypeHandlerVersion ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultVersion,
+                    Publisher = ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultPublisher,
+                    VirtualMachineExtensionType = ExtensionType ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultType,
+                    TypeHandlerVersion = TypeHandlerVersion ?? AzureDiskEncryptionExtensionContext.ExtensionDefaultVersion,
                     Settings = SettingString,
                     ProtectedSettings = ProtectedSettingString,
                     AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent
@@ -161,14 +161,14 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
             }
             if (OperatingSystemTypes.Linux.Equals(currentOSType))
             {
-                this.Name = this.Name ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
+                Name = Name ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
 
                 vmExtensionParameters = new VirtualMachineExtension
                 {
                     Location = vmParameters.Location,
-                    Publisher = this.ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher,
-                    VirtualMachineExtensionType = this.ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType,
-                    TypeHandlerVersion = this.TypeHandlerVersion ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultVersion,
+                    Publisher = ExtensionPublisherName ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultPublisher,
+                    VirtualMachineExtensionType = ExtensionType ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultType,
+                    TypeHandlerVersion = TypeHandlerVersion ?? AzureDiskEncryptionExtensionContext.LinuxExtensionDefaultVersion,
                     Settings = SettingString,
                     ProtectedSettings = ProtectedSettingString,
                     AutoUpgradeMinorVersion = !DisableAutoUpgradeMinorVersion.IsPresent
@@ -183,11 +183,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
         /// </summary>
         private AzureOperationResponse<VirtualMachine> UpdateVmEncryptionSettings()
         {
-            var vmParameters = (this.ComputeClient.ComputeManagementClient.VirtualMachines.Get(
-                this.ResourceGroupName, this.VMName));
-            if ((vmParameters == null) ||
-                (vmParameters.StorageProfile == null) ||
-                (vmParameters.StorageProfile.OsDisk == null))
+            var vmParameters = ComputeClient.ComputeManagementClient.VirtualMachines.Get(
+                ResourceGroupName, VMName);
+            if (vmParameters == null ||
+                vmParameters.StorageProfile == null ||
+                vmParameters.StorageProfile.OsDisk == null)
             {
                 // VM should have been created and have valid storageProfile and OSDisk by now
                 ThrowTerminatingError(
@@ -217,8 +217,8 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                 Tags = vmParameters.Tags
             };
 
-            return this.ComputeClient.ComputeManagementClient.VirtualMachines.CreateOrUpdateWithHttpMessagesAsync(
-                this.ResourceGroupName,
+            return ComputeClient.ComputeManagementClient.VirtualMachines.CreateOrUpdateWithHttpMessagesAsync(
+                ResourceGroupName,
                 vmParameters.Name,
                 parameters).GetAwaiter().GetResult();
         }
@@ -229,11 +229,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             ExecuteClientAction(() =>
             {
-                VirtualMachine virtualMachineResponse = (this.ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName));
+                VirtualMachine virtualMachineResponse = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
 
-                if ((virtualMachineResponse == null) ||
-                    (virtualMachineResponse.StorageProfile == null) ||
-                    (virtualMachineResponse.StorageProfile.OsDisk == null))
+                if (virtualMachineResponse == null ||
+                    virtualMachineResponse.StorageProfile == null ||
+                    virtualMachineResponse.StorageProfile.OsDisk == null)
                 {
                     // VM should have been created and have valid storageProfile and OSDisk by now
                     ThrowTerminatingError(
@@ -263,16 +263,16 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                             null));
                 }
 
-                if (this.ShouldProcess(VMName, Properties.Resources.DisableDiskEncryptionAction)
-                    && (this.Force.IsPresent ||
-                    this.ShouldContinue(Properties.Resources.DisableAzureDiskEncryptionConfirmation, Properties.Resources.DisableAzureDiskEncryptionCaption)))
+                if (ShouldProcess(VMName, Properties.Resources.DisableDiskEncryptionAction)
+                    && (Force.IsPresent ||
+                    ShouldContinue(Properties.Resources.DisableAzureDiskEncryptionConfirmation, Properties.Resources.DisableAzureDiskEncryptionCaption)))
                 {
                     VirtualMachineExtension parameters = GetVmExtensionParameters(virtualMachineResponse);
 
-                    var opExt = this.VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
-                                                            this.ResourceGroupName,
-                                                            this.VMName,
-                                                            this.Name,
+                    var opExt = VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
+                                                            ResourceGroupName,
+                                                            VMName,
+                                                            Name,
                                                             parameters).GetAwaiter().GetResult();
 
                     // +---------+---------------+----------------------------+

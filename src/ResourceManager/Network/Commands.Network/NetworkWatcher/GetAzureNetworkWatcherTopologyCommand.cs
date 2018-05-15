@@ -63,24 +63,24 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             MNM.TopologyParameters parameters = new MNM.TopologyParameters();
-            parameters.TargetResourceGroupName = this.TargetResourceGroupName;
+            parameters.TargetResourceGroupName = TargetResourceGroupName;
 
             PSTopology topology = new PSTopology();
 
             if (ParameterSetName.Contains("SetByResource"))
             {
-                topology = GetTopology(this.NetworkWatcher.ResourceGroupName, this.NetworkWatcher.Name, parameters);
+                topology = GetTopology(NetworkWatcher.ResourceGroupName, NetworkWatcher.Name, parameters);
             }
             else
             {
-                topology = GetTopology(this.ResourceGroupName, this.NetworkWatcherName, parameters);
+                topology = GetTopology(ResourceGroupName, NetworkWatcherName, parameters);
             }
             WriteObject(topology);
         }
 
         public PSTopology GetTopology(string resourceGroupName, string name, MNM.TopologyParameters parameters)
         {
-            MNM.Topology topology = this.NetworkWatcherClient.GetTopology(resourceGroupName, name, parameters);
+            MNM.Topology topology = NetworkWatcherClient.GetTopology(resourceGroupName, name, parameters);
             PSTopology psTopology = NetworkResourceManagerProfile.Mapper.Map<PSTopology>(topology);
 
             return psTopology;

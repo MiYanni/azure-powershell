@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("New", "AzureRmContainerServiceConfig", SupportsShouldProcess = true)]
     [OutputType(typeof(PSContainerService))]
-    public partial class NewAzureRmContainerServiceConfigCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class NewAzureRmContainerServiceConfigCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = false,
@@ -126,125 +126,125 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // OrchestratorProfile
-            Microsoft.Azure.Management.Compute.Models.ContainerServiceOrchestratorProfile vOrchestratorProfile = null;
+            ContainerServiceOrchestratorProfile vOrchestratorProfile = null;
 
             // CustomProfile
-            Microsoft.Azure.Management.Compute.Models.ContainerServiceCustomProfile vCustomProfile = null;
+            ContainerServiceCustomProfile vCustomProfile = null;
 
             // ServicePrincipalProfile
-            Microsoft.Azure.Management.Compute.Models.ContainerServiceServicePrincipalProfile vServicePrincipalProfile = null;
+            ContainerServiceServicePrincipalProfile vServicePrincipalProfile = null;
 
             // MasterProfile
-            Microsoft.Azure.Management.Compute.Models.ContainerServiceMasterProfile vMasterProfile = null;
+            ContainerServiceMasterProfile vMasterProfile = null;
 
             // WindowsProfile
-            Microsoft.Azure.Management.Compute.Models.ContainerServiceWindowsProfile vWindowsProfile = null;
+            ContainerServiceWindowsProfile vWindowsProfile = null;
 
             // LinuxProfile
-            Microsoft.Azure.Management.Compute.Models.ContainerServiceLinuxProfile vLinuxProfile = null;
+            ContainerServiceLinuxProfile vLinuxProfile = null;
 
             // DiagnosticsProfile
-            Microsoft.Azure.Management.Compute.Models.ContainerServiceDiagnosticsProfile vDiagnosticsProfile = null;
+            ContainerServiceDiagnosticsProfile vDiagnosticsProfile = null;
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("OrchestratorType"))
+            if (MyInvocation.BoundParameters.ContainsKey("OrchestratorType"))
             {
                 if (vOrchestratorProfile == null)
                 {
-                    vOrchestratorProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceOrchestratorProfile();
+                    vOrchestratorProfile = new ContainerServiceOrchestratorProfile();
                 }
-                vOrchestratorProfile.OrchestratorType = this.OrchestratorType.Value;
+                vOrchestratorProfile.OrchestratorType = OrchestratorType.Value;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("CustomProfileOrchestrator"))
+            if (MyInvocation.BoundParameters.ContainsKey("CustomProfileOrchestrator"))
             {
                 if (vCustomProfile == null)
                 {
-                    vCustomProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceCustomProfile();
+                    vCustomProfile = new ContainerServiceCustomProfile();
                 }
-                vCustomProfile.Orchestrator = this.CustomProfileOrchestrator;
+                vCustomProfile.Orchestrator = CustomProfileOrchestrator;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("ServicePrincipalProfileClientId"))
+            if (MyInvocation.BoundParameters.ContainsKey("ServicePrincipalProfileClientId"))
             {
                 if (vServicePrincipalProfile == null)
                 {
-                    vServicePrincipalProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceServicePrincipalProfile();
+                    vServicePrincipalProfile = new ContainerServiceServicePrincipalProfile();
                 }
-                vServicePrincipalProfile.ClientId = this.ServicePrincipalProfileClientId;
+                vServicePrincipalProfile.ClientId = ServicePrincipalProfileClientId;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("ServicePrincipalProfileSecret"))
+            if (MyInvocation.BoundParameters.ContainsKey("ServicePrincipalProfileSecret"))
             {
                 if (vServicePrincipalProfile == null)
                 {
-                    vServicePrincipalProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceServicePrincipalProfile();
+                    vServicePrincipalProfile = new ContainerServiceServicePrincipalProfile();
                 }
-                vServicePrincipalProfile.Secret = this.ServicePrincipalProfileSecret;
+                vServicePrincipalProfile.Secret = ServicePrincipalProfileSecret;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("MasterCount"))
+            if (MyInvocation.BoundParameters.ContainsKey("MasterCount"))
             {
                 if (vMasterProfile == null)
                 {
-                    vMasterProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceMasterProfile();
+                    vMasterProfile = new ContainerServiceMasterProfile();
                 }
-                vMasterProfile.Count = this.MasterCount;
+                vMasterProfile.Count = MasterCount;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("MasterDnsPrefix"))
+            if (MyInvocation.BoundParameters.ContainsKey("MasterDnsPrefix"))
             {
                 if (vMasterProfile == null)
                 {
-                    vMasterProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceMasterProfile();
+                    vMasterProfile = new ContainerServiceMasterProfile();
                 }
-                vMasterProfile.DnsPrefix = this.MasterDnsPrefix;
+                vMasterProfile.DnsPrefix = MasterDnsPrefix;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("WindowsProfileAdminUsername"))
+            if (MyInvocation.BoundParameters.ContainsKey("WindowsProfileAdminUsername"))
             {
                 if (vWindowsProfile == null)
                 {
-                    vWindowsProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceWindowsProfile();
+                    vWindowsProfile = new ContainerServiceWindowsProfile();
                 }
-                vWindowsProfile.AdminUsername = this.WindowsProfileAdminUsername;
+                vWindowsProfile.AdminUsername = WindowsProfileAdminUsername;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("WindowsProfileAdminPassword"))
+            if (MyInvocation.BoundParameters.ContainsKey("WindowsProfileAdminPassword"))
             {
                 if (vWindowsProfile == null)
                 {
-                    vWindowsProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceWindowsProfile();
+                    vWindowsProfile = new ContainerServiceWindowsProfile();
                 }
-                vWindowsProfile.AdminPassword = this.WindowsProfileAdminPassword;
+                vWindowsProfile.AdminPassword = WindowsProfileAdminPassword;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("AdminUsername"))
+            if (MyInvocation.BoundParameters.ContainsKey("AdminUsername"))
             {
                 if (vLinuxProfile == null)
                 {
-                    vLinuxProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceLinuxProfile();
+                    vLinuxProfile = new ContainerServiceLinuxProfile();
                 }
-                vLinuxProfile.AdminUsername = this.AdminUsername;
+                vLinuxProfile.AdminUsername = AdminUsername;
             }
 
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("SshPublicKey"))
+            if (MyInvocation.BoundParameters.ContainsKey("SshPublicKey"))
             {
                 if (vLinuxProfile == null)
                 {
-                    vLinuxProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceLinuxProfile();
+                    vLinuxProfile = new ContainerServiceLinuxProfile();
                 }
                 if (vLinuxProfile.Ssh == null)
                 {
-                    vLinuxProfile.Ssh = new Microsoft.Azure.Management.Compute.Models.ContainerServiceSshConfiguration();
+                    vLinuxProfile.Ssh = new ContainerServiceSshConfiguration();
                 }
                 if (vLinuxProfile.Ssh.PublicKeys == null)
                 {
-                    vLinuxProfile.Ssh.PublicKeys = new List<Microsoft.Azure.Management.Compute.Models.ContainerServiceSshPublicKey>();
+                    vLinuxProfile.Ssh.PublicKeys = new List<ContainerServiceSshPublicKey>();
                 }
-                foreach (var element in this.SshPublicKey)
+                foreach (var element in SshPublicKey)
                 {
-                    var vPublicKeys = new Microsoft.Azure.Management.Compute.Models.ContainerServiceSshPublicKey();
+                    var vPublicKeys = new ContainerServiceSshPublicKey();
                     vPublicKeys.KeyData = element;
                     vLinuxProfile.Ssh.PublicKeys.Add(vPublicKeys);
                 }
@@ -252,20 +252,20 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
             if (vDiagnosticsProfile == null)
             {
-                vDiagnosticsProfile = new Microsoft.Azure.Management.Compute.Models.ContainerServiceDiagnosticsProfile();
+                vDiagnosticsProfile = new ContainerServiceDiagnosticsProfile();
             }
             if (vDiagnosticsProfile.VmDiagnostics == null)
             {
-                vDiagnosticsProfile.VmDiagnostics = new Microsoft.Azure.Management.Compute.Models.ContainerServiceVMDiagnostics();
+                vDiagnosticsProfile.VmDiagnostics = new ContainerServiceVMDiagnostics();
             }
 
-            vDiagnosticsProfile.VmDiagnostics.Enabled = this.VmDiagnosticsEnabled;
+            vDiagnosticsProfile.VmDiagnostics.Enabled = VmDiagnosticsEnabled;
 
             var vContainerService = new PSContainerService
             {
-                Location = this.MyInvocation.BoundParameters.ContainsKey("Location") ? this.Location : null,
-                Tags = this.MyInvocation.BoundParameters.ContainsKey("Tag") ? this.Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
-                AgentPoolProfiles = this.MyInvocation.BoundParameters.ContainsKey("AgentPoolProfile") ? this.AgentPoolProfile : null,
+                Location = MyInvocation.BoundParameters.ContainsKey("Location") ? Location : null,
+                Tags = MyInvocation.BoundParameters.ContainsKey("Tag") ? Tag.Cast<DictionaryEntry>().ToDictionary(ht => (string)ht.Key, ht => (string)ht.Value) : null,
+                AgentPoolProfiles = MyInvocation.BoundParameters.ContainsKey("AgentPoolProfile") ? AgentPoolProfile : null,
                 OrchestratorProfile = vOrchestratorProfile,
                 CustomProfile = vCustomProfile,
                 ServicePrincipalProfile = vServicePrincipalProfile,

@@ -55,16 +55,16 @@ namespace Microsoft.Azure.Commands.Compute
                 && vmProfile.StorageProfile.OsDisk != null
                 && vmProfile.StorageProfile.OsDisk.OsType != null)
             {
-                this.CurrentOSType = vmProfile.StorageProfile.OsDisk.OsType.Value;
+                CurrentOSType = vmProfile.StorageProfile.OsDisk.OsType.Value;
             }
             else if (vmProfile.OsProfile != null
                 && vmProfile.OsProfile.LinuxConfiguration != null)
             {
-                this.CurrentOSType = OperatingSystemTypes.Linux;
+                CurrentOSType = OperatingSystemTypes.Linux;
             }
             else
             {
-                this.CurrentOSType = OperatingSystemTypes.Windows;
+                CurrentOSType = OperatingSystemTypes.Windows;
             }
         }
 
@@ -74,16 +74,16 @@ namespace Microsoft.Azure.Commands.Compute
                 && vmProfile.StorageProfile.OsDisk != null
                 && vmProfile.StorageProfile.OsDisk.OsType != null)
             {
-                this.CurrentOSType = vmProfile.StorageProfile.OsDisk.OsType.Value;
+                CurrentOSType = vmProfile.StorageProfile.OsDisk.OsType.Value;
             }
             else if (vmProfile.OsProfile != null
                 && vmProfile.OsProfile.LinuxConfiguration != null)
             {
-                this.CurrentOSType = OperatingSystemTypes.Linux;
+                CurrentOSType = OperatingSystemTypes.Linux;
             }
             else
             {
-                this.CurrentOSType = OperatingSystemTypes.Windows;
+                CurrentOSType = OperatingSystemTypes.Windows;
             }
         }
 
@@ -91,14 +91,11 @@ namespace Microsoft.Azure.Commands.Compute
         {
             if (string.IsNullOrWhiteSpace(VolumeType))
             {
-                return this.CurrentOSType == OperatingSystemTypes.Windows 
+                return CurrentOSType == OperatingSystemTypes.Windows 
                     ? AzureVmssDiskEncryptionExtensionContext.VolumeTypeAll 
                     : AzureVmssDiskEncryptionExtensionContext.VolumeTypeData;
             }
-            else
-            {
-                return VolumeType;
-            }
+            return VolumeType;
         }
 
         protected void ThrowInvalidArgumentError(string errorMessage, string arg)

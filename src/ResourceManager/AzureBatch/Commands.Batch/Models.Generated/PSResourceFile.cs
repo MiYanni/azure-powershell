@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSResourceFile
     {
         
-        internal Microsoft.Azure.Batch.ResourceFile omObject;
+        internal ResourceFile omObject;
         
         public PSResourceFile(string blobSource, string filePath, string fileMode = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.ResourceFile(blobSource, filePath, fileMode);
+            omObject = new ResourceFile(blobSource, filePath, fileMode);
         }
         
-        internal PSResourceFile(Microsoft.Azure.Batch.ResourceFile omObject)
+        internal PSResourceFile(ResourceFile omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.BlobSource;
+                return omObject.BlobSource;
             }
         }
         
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.FileMode;
+                return omObject.FileMode;
             }
         }
         
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.FilePath;
+                return omObject.FilePath;
             }
         }
     }

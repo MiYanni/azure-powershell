@@ -14,10 +14,10 @@
 
 namespace Microsoft.Azure.Commands.PolicyInsights.Common
 {
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
-    using Microsoft.Azure.Management.PolicyInsights;
+    using Commands.Common.Authentication;
+    using Commands.Common.Authentication.Abstractions;
+    using ResourceManager.Common;
+    using Management.PolicyInsights;
 
     /// <summary>
     /// Base class for Azure Policy Insights cmdlets

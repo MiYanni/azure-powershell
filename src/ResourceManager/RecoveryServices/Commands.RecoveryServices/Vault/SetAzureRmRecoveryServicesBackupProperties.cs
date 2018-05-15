@@ -51,21 +51,21 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             {
                 try
                 {
-                    if (this.BackupStorageRedundancy.HasValue)
+                    if (BackupStorageRedundancy.HasValue)
                     {
                         BackupStorageConfig vaultStorageRequest = new BackupStorageConfig();
                         vaultStorageRequest.StorageModelType = BackupStorageRedundancy.ToString();
                         RecoveryServicesClient.UpdateVaultStorageType(
-                            this.Vault.ResourceGroupName, this.Vault.Name, vaultStorageRequest);
+                            Vault.ResourceGroupName, Vault.Name, vaultStorageRequest);
                     }
                     else
                     {
-                        throw new Exception(Properties.Resources.NoBackupPropertiesProvided);
+                        throw new Exception(Resources.NoBackupPropertiesProvided);
                     }
                 }
                 catch (Exception exception)
                 {
-                    this.HandleException(exception);
+                    HandleException(exception);
                 }
             }
         }

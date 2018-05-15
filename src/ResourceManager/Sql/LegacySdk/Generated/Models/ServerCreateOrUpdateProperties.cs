@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AdministratorLogin
         {
-            get { return this._administratorLogin; }
-            set { this._administratorLogin = value; }
+            get { return _administratorLogin; }
+            set { _administratorLogin = value; }
         }
         
         private string _administratorLoginPassword;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AdministratorLoginPassword
         {
-            get { return this._administratorLoginPassword; }
-            set { this._administratorLoginPassword = value; }
+            get { return _administratorLoginPassword; }
+            set { _administratorLoginPassword = value; }
         }
         
         private string _version;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Version
         {
-            get { return this._version; }
-            set { this._version = value; }
+            get { return _version; }
+            set { _version = value; }
         }
         
         /// <summary>

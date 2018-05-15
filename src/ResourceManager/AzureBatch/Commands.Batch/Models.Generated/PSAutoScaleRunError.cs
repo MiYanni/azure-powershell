@@ -26,21 +26,21 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSAutoScaleRunError
     {
         
-        internal Microsoft.Azure.Batch.AutoScaleRunError omObject;
+        internal AutoScaleRunError omObject;
         
         private IReadOnlyList<PSNameValuePair> values;
         
-        internal PSAutoScaleRunError(Microsoft.Azure.Batch.AutoScaleRunError omObject)
+        internal PSAutoScaleRunError(AutoScaleRunError omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Code;
+                return omObject.Code;
             }
         }
         
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Message;
+                return omObject.Message;
             }
         }
         
@@ -65,22 +65,22 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.values == null) 
-                            && (this.omObject.Values != null)))
+                if (values == null 
+                    && omObject.Values != null)
                 {
                     List<PSNameValuePair> list;
                     list = new List<PSNameValuePair>();
-                    IEnumerator<Microsoft.Azure.Batch.NameValuePair> enumerator;
-                    enumerator = this.omObject.Values.GetEnumerator();
+                    IEnumerator<NameValuePair> enumerator;
+                    enumerator = omObject.Values.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSNameValuePair(enumerator.Current));
                     }
-                    this.values = list.AsReadOnly();
+                    values = list.AsReadOnly();
                 }
-                return this.values;
+                return values;
             }
         }
     }

@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Sql.ServiceObjective.Adapter
         {
             var resp = Communicator.List(resourceGroupName, serverName);
 
-            return resp.Select((s) =>
+            return resp.Select(s =>
             {
                 return CreateServiceObjectiveModelFromResponse(resourceGroupName, serverName, s);
             }).ToList();
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Sql.ServiceObjective.Adapter
         /// <returns>The converted ServiceObjective model</returns>
         private static AzureSqlServerServiceObjectiveModel CreateServiceObjectiveModelFromResponse(string resourceGroupName, string serverName, Management.Sql.Models.ServiceObjective resp)
         {
-            AzureSqlServerServiceObjectiveModel slo = new AzureSqlServerServiceObjectiveModel()
+            AzureSqlServerServiceObjectiveModel slo = new AzureSqlServerServiceObjectiveModel
             {
                 ResourceGroupName = resourceGroupName,
                 ServerName = serverName,

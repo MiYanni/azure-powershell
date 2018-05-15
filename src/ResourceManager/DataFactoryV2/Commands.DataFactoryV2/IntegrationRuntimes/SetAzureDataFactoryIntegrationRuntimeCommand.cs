@@ -141,8 +141,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            this.ByResourceId();
-            this.ByIntegrationRuntimeObject();
+            ByResourceId();
+            ByIntegrationRuntimeObject();
 
             IntegrationRuntimeResource resource = null;
             var isUpdate = false;
@@ -151,17 +151,17 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 resource = DataFactoryClient.GetIntegrationRuntimeAsync(
                     ResourceGroupName,
                     DataFactoryName,
-                    base.Name).ConfigureAwait(true).GetAwaiter().GetResult().IntegrationRuntime;
+                    Name).ConfigureAwait(true).GetAwaiter().GetResult().IntegrationRuntime;
 
                 isUpdate = true;
-                if (Type != null && (resource.Properties is ManagedIntegrationRuntime ^
-                    Type.Equals(Constants.IntegrationRuntimeTypeManaged, StringComparison.OrdinalIgnoreCase)))
+                if (Type != null && resource.Properties is ManagedIntegrationRuntime ^
+                    Type.Equals(Constants.IntegrationRuntimeTypeManaged, StringComparison.OrdinalIgnoreCase))
                 {
                     throw new PSArgumentException(
                         string.Format(
                             CultureInfo.InvariantCulture,
                             Resources.IntegrationRuntimeWrongType,
-                            base.Name),
+                            Name),
                         "Type");
                 }
             }
@@ -212,11 +212,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 HandleManagedIntegrationRuntime(managedIr);
             }
 
-            var parameters = new CreatePSIntegrationRuntimeParameters()
+            var parameters = new CreatePSIntegrationRuntimeParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = DataFactoryName,
-                Name = base.Name,
+                Name = Name,
                 IsUpdate = isUpdate,
                 IntegrationRuntimeResource = resource,
                 Force = Force.IsPresent,
@@ -272,7 +272,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             {
                 if (integrationRuntime.SsisProperties == null)
                 {
-                    integrationRuntime.SsisProperties = new IntegrationRuntimeSsisProperties()
+                    integrationRuntime.SsisProperties = new IntegrationRuntimeSsisProperties
                     {
                         CatalogInfo = new IntegrationRuntimeSsisCatalogInfo()
                     };
@@ -289,7 +289,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             {
                 if (integrationRuntime.SsisProperties == null)
                 {
-                    integrationRuntime.SsisProperties = new IntegrationRuntimeSsisProperties()
+                    integrationRuntime.SsisProperties = new IntegrationRuntimeSsisProperties
                     {
                         CatalogInfo = new IntegrationRuntimeSsisCatalogInfo()
                     };
@@ -312,7 +312,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             {
                 if (integrationRuntime.SsisProperties == null)
                 {
-                    integrationRuntime.SsisProperties = new IntegrationRuntimeSsisProperties()
+                    integrationRuntime.SsisProperties = new IntegrationRuntimeSsisProperties
                     {
                         CatalogInfo = new IntegrationRuntimeSsisCatalogInfo()
                     };
@@ -326,8 +326,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             }
 
             if (integrationRuntime.ComputeProperties?.VNetProperties == null
-                || (string.IsNullOrWhiteSpace(integrationRuntime.ComputeProperties.VNetProperties.VNetId)
-                    && string.IsNullOrWhiteSpace(integrationRuntime.ComputeProperties.VNetProperties.Subnet)))
+                || string.IsNullOrWhiteSpace(integrationRuntime.ComputeProperties.VNetProperties.VNetId)
+                && string.IsNullOrWhiteSpace(integrationRuntime.ComputeProperties.VNetProperties.Subnet))
             {
                 // When no previous VNet set, both VNetId and Subnet must be present
                 if (!string.IsNullOrWhiteSpace(VNetId) && !string.IsNullOrWhiteSpace(Subnet))
@@ -338,7 +338,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                         integrationRuntime.ComputeProperties = new IntegrationRuntimeComputeProperties();
                     }
 
-                    integrationRuntime.ComputeProperties.VNetProperties = new IntegrationRuntimeVNetProperties()
+                    integrationRuntime.ComputeProperties.VNetProperties = new IntegrationRuntimeVNetProperties
                     {
                         VNetId = VNetId,
                         Subnet = Subnet
@@ -396,7 +396,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
                 int index = SetupScriptContainerSasUri.IndexOf('?');
 
-                integrationRuntime.SsisProperties.CustomSetupScriptProperties = new IntegrationRuntimeCustomSetupScriptProperties()
+                integrationRuntime.SsisProperties.CustomSetupScriptProperties = new IntegrationRuntimeCustomSetupScriptProperties
                 {
                     BlobContainerUri = index >= 0 ? SetupScriptContainerSasUri.Substring(0, index) : SetupScriptContainerSasUri,
                     SasToken = index >= 0 ? new SecureString(SetupScriptContainerSasUri.Substring(index)) : null

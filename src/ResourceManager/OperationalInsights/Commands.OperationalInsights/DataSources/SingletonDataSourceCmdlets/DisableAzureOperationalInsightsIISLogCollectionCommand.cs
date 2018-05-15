@@ -45,8 +45,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights
         public override void ExecuteCmdlet()
         {
             PSDataSource dataSource = OperationalInsightsClient.GetSingletonDataSource(
-                this.ResourceGroupName, 
-                this.WorkspaceName, 
+                ResourceGroupName, 
+                WorkspaceName, 
                 PSDataSourceKinds.IISLogs);
             if (null == dataSource)
             {

@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetPacketCapture(resourceGroupName, name, packetCaptureName);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSPacketCaptureResult GetPacketCapture(string resourceGroupName, string name, string packetCaptureName)
         {
-            PacketCaptureResult packetCapture = this.PacketCaptures.Get(resourceGroupName, name, packetCaptureName);
+            PacketCaptureResult packetCapture = PacketCaptures.Get(resourceGroupName, name, packetCaptureName);
             PSPacketCaptureResult psPacketCapture = NetworkResourceManagerProfile.Mapper.Map<PSPacketCaptureResult>(packetCapture);
 
             return psPacketCapture;

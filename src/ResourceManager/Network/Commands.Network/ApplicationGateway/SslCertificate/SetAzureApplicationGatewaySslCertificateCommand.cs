@@ -33,21 +33,21 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var oldSslCertificate = this.ApplicationGateway.SslCertificates.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var oldSslCertificate = ApplicationGateway.SslCertificates.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (oldSslCertificate == null)
             {
                 throw new ArgumentException("Ssl certificate with the specified name does not exist");
             }
             
-            X509Certificate2 cert = new X509Certificate2(this.CertificateFile, this.Password, X509KeyStorageFlags.Exportable);
+            X509Certificate2 cert = new X509Certificate2(CertificateFile, Password, X509KeyStorageFlags.Exportable);
 
-            var newSslCertificate = base.NewObject();
+            var newSslCertificate = NewObject();
 
-            this.ApplicationGateway.SslCertificates.Remove(oldSslCertificate);
-            this.ApplicationGateway.SslCertificates.Add(newSslCertificate);
+            ApplicationGateway.SslCertificates.Remove(oldSslCertificate);
+            ApplicationGateway.SslCertificates.Add(newSslCertificate);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

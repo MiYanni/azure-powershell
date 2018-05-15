@@ -16,10 +16,10 @@
 
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement;
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models;
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using ServiceManagement;
+    using Models;
+    using Properties;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common;
     using System;
     using System.Management.Automation;

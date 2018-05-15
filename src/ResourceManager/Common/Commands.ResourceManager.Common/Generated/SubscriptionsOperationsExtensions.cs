@@ -13,8 +13,8 @@ namespace Microsoft.Azure.Internal.Subscriptions
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
+    using Rest;
+    using Rest.Azure;
     using Models;
     using Commands.ResourceManager.Common.Paging;
 

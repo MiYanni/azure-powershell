@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -87,11 +87,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
             ExecuteClientAction(() =>
             {
-                if (this.ShouldProcess(VMScaleSetName, Properties.Resources.RemoveDiskEncryptionAction)
-                    && (this.Force.IsPresent
-                    || this.ShouldContinue(Properties.Resources.VirtualMachineExtensionRemovalConfirmation, Properties.Resources.VirtualMachineExtensionRemovalCaption)))
+                if (ShouldProcess(VMScaleSetName, Properties.Resources.RemoveDiskEncryptionAction)
+                    && (Force.IsPresent
+                    || ShouldContinue(Properties.Resources.VirtualMachineExtensionRemovalConfirmation, Properties.Resources.VirtualMachineExtensionRemovalCaption)))
                 {
-                    VirtualMachineScaleSet vmss = this.VirtualMachineScaleSetClient.Get(this.ResourceGroupName, this.VMScaleSetName);
+                    VirtualMachineScaleSet vmss = VirtualMachineScaleSetClient.Get(ResourceGroupName, VMScaleSetName);
 
                     if (vmss == null || vmss.VirtualMachineProfile == null)
                     {
@@ -104,16 +104,16 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
 
                     SetOSType(vmss.VirtualMachineProfile);
 
-                    if (OperatingSystemTypes.Windows.Equals(this.CurrentOSType))
+                    if (OperatingSystemTypes.Windows.Equals(CurrentOSType))
                     {
-                        this.ExtensionName = this.ExtensionName ?? AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultName;
+                        ExtensionName = ExtensionName ?? AzureVmssDiskEncryptionExtensionContext.ExtensionDefaultName;
                     }
-                    else if (OperatingSystemTypes.Linux.Equals(this.CurrentOSType))
+                    else if (OperatingSystemTypes.Linux.Equals(CurrentOSType))
                     {
-                        this.ExtensionName = this.ExtensionName ?? AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
+                        ExtensionName = ExtensionName ?? AzureVmssDiskEncryptionExtensionContext.LinuxExtensionDefaultName;
                     }
 
-                    this.VolumeType = GetVolumeType(this.VolumeType, vmss.VirtualMachineProfile.StorageProfile);
+                    VolumeType = GetVolumeType(VolumeType, vmss.VirtualMachineProfile.StorageProfile);
 
                     if (vmss.VirtualMachineProfile.ExtensionProfile == null
                        || vmss.VirtualMachineProfile.ExtensionProfile.Extensions == null
@@ -129,18 +129,18 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                     bool extensionFound = false;
                     foreach (var ext in vmss.VirtualMachineProfile.ExtensionProfile.Extensions)
                     {
-                        if (ext.Name.Equals(this.ExtensionName))
+                        if (ext.Name.Equals(ExtensionName))
                         {
                             ext.Settings = GetDisalbeEncryptionSetting();
                             ext.ProtectedSettings = null;
-                            ext.ForceUpdateTag = this.ForceUpdate.IsPresent ? Guid.NewGuid().ToString() : null;
+                            ext.ForceUpdateTag = ForceUpdate.IsPresent ? Guid.NewGuid().ToString() : null;
 
-                            VirtualMachineScaleSetExtension result = this.VirtualMachineScaleSetExtensionsClient.CreateOrUpdate(
-                                this.ResourceGroupName,
-                                this.VMScaleSetName,
-                                this.ExtensionName,
+                            VirtualMachineScaleSetExtension result = VirtualMachineScaleSetExtensionsClient.CreateOrUpdate(
+                                ResourceGroupName,
+                                VMScaleSetName,
+                                ExtensionName,
                                 ext);
-                            var psResult = result.ToPSVirtualMachineScaleSetExtension(this.ResourceGroupName, this.VMScaleSetName);
+                            var psResult = result.ToPSVirtualMachineScaleSetExtension(ResourceGroupName, VMScaleSetName);
                             extensionFound = true;
                             WriteObject(psResult);
                             break;
@@ -150,7 +150,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
                     if (!extensionFound)
                     {
                         ThrowTerminatingError(new ErrorRecord(
-                            new ArgumentException(string.Format("Extension, {0},  is not installed in the VM Scale Set.", this.ExtensionName)),
+                            new ArgumentException(string.Format("Extension, {0},  is not installed in the VM Scale Set.", ExtensionName)),
                             "InvalidArgument",
                             ErrorCategory.InvalidArgument,
                             null));
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AzureDiskEncryption
         private Hashtable GetDisalbeEncryptionSetting()
         {
             Hashtable publicSettings = new Hashtable();
-            publicSettings.Add(AzureDiskEncryptionExtensionConstants.volumeTypeKey, this.VolumeType ?? string.Empty);
+            publicSettings.Add(AzureDiskEncryptionExtensionConstants.volumeTypeKey, VolumeType ?? string.Empty);
             publicSettings.Add(AzureDiskEncryptionExtensionConstants.encryptionOperationKey, AzureDiskEncryptionExtensionConstants.disableEncryptionOperation);
 
             return publicSettings;

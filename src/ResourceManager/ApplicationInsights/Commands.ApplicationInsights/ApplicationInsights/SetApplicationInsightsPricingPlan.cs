@@ -83,50 +83,50 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
         {
             base.ExecuteCmdlet();
 
-            if (this.ApplicationInsightsComponent != null)
+            if (ApplicationInsightsComponent != null)
             {
-                this.ResourceGroupName = this.ApplicationInsightsComponent.ResourceGroupName;
-                this.Name = this.ApplicationInsightsComponent.Name;
+                ResourceGroupName = ApplicationInsightsComponent.ResourceGroupName;
+                Name = ApplicationInsightsComponent.Name;
             }
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                ResourceIdentifier identifier = new ResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = identifier.ResourceGroupName;
-                this.Name = identifier.ResourceName;
+                ResourceIdentifier identifier = new ResourceIdentifier(ResourceId);
+                ResourceGroupName = identifier.ResourceGroupName;
+                Name = identifier.ResourceName;
             }
 
             ApplicationInsightsComponentBillingFeatures features =
-                                                this.AppInsightsManagementClient
+                                                AppInsightsManagementClient
                                                         .ComponentCurrentBillingFeatures
                                                         .GetWithHttpMessagesAsync(
-                                                            this.ResourceGroupName,
-                                                            this.Name)
+                                                            ResourceGroupName,
+                                                            Name)
                                                         .GetAwaiter()
                                                         .GetResult()
                                                         .Body;
-            if (!string.IsNullOrEmpty(this.PricingPlan))
+            if (!string.IsNullOrEmpty(PricingPlan))
             {
-                if (this.PricingPlan.ToLowerInvariant().Contains("enterprise"))
+                if (PricingPlan.ToLowerInvariant().Contains("enterprise"))
                 {
-                    features.CurrentBillingFeatures = new string[] { "Application Insights Enterprise" };
+                    features.CurrentBillingFeatures = new[] { "Application Insights Enterprise" };
                 }
-                else if (this.PricingPlan.ToLowerInvariant().Contains("limited"))
+                else if (PricingPlan.ToLowerInvariant().Contains("limited"))
                 {
-                    features.CurrentBillingFeatures = new string[] { "Limited Basic" };
+                    features.CurrentBillingFeatures = new[] { "Limited Basic" };
                 }
                 else
                 {
-                    features.CurrentBillingFeatures = new string[] { "Basic" };
+                    features.CurrentBillingFeatures = new[] { "Basic" };
                 }
             }
 
-            if (this.DailyCapGB != null)
+            if (DailyCapGB != null)
             {
-                features.DataVolumeCap.Cap = this.DailyCapGB.Value;
+                features.DataVolumeCap.Cap = DailyCapGB.Value;
             }
 
-            if (this.DisableNotificationWhenHitCap.IsPresent)
+            if (DisableNotificationWhenHitCap.IsPresent)
             {
                 features.DataVolumeCap.StopSendNotificationWhenHitCap = true;
             }
@@ -135,13 +135,13 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
                 features.DataVolumeCap.StopSendNotificationWhenHitCap = false;
             }
 
-            if (this.ShouldProcess(this.Name, "Update Pricing Plan"))
+            if (ShouldProcess(Name, "Update Pricing Plan"))
             {
-                var putResponse = this.AppInsightsManagementClient
+                var putResponse = AppInsightsManagementClient
                                         .ComponentCurrentBillingFeatures
                                         .UpdateWithHttpMessagesAsync(
-                                            this.ResourceGroupName,
-                                            this.Name,
+                                            ResourceGroupName,
+                                            Name,
                                             features)
                                         .GetAwaiter()
                                         .GetResult();

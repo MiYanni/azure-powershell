@@ -31,18 +31,18 @@ namespace Microsoft.Azure.Commands.Network
 
             base.Execute();
             var probe = new PSProbe();
-            probe.Name = this.Name;
-            probe.Port = this.Port;
-            probe.Protocol = this.Protocol;
-            probe.RequestPath = this.RequestPath;
-            probe.IntervalInSeconds = this.IntervalInSeconds;
-            probe.NumberOfProbes = this.ProbeCount;
+            probe.Name = Name;
+            probe.Port = Port;
+            probe.Protocol = Protocol;
+            probe.RequestPath = RequestPath;
+            probe.IntervalInSeconds = IntervalInSeconds;
+            probe.NumberOfProbes = ProbeCount;
 
             probe.Id =
                 ChildResourceHelper.GetResourceNotSetId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.LoadBalancerProbeName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    Properties.Resources.LoadBalancerProbeName,
+                    Name);
 
             WriteObject(probe);
         }

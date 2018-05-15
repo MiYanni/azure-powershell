@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AutoFailover
         {
-            get { return this._autoFailover; }
-            set { this._autoFailover = value; }
+            get { return _autoFailover; }
+            set { _autoFailover = value; }
         }
         
         private string _failoverPolicy;
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string FailoverPolicy
         {
-            get { return this._failoverPolicy; }
-            set { this._failoverPolicy = value; }
+            get { return _failoverPolicy; }
+            set { _failoverPolicy = value; }
         }
         
         private string _partnerLogicalServerName;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PartnerLogicalServerName
         {
-            get { return this._partnerLogicalServerName; }
-            set { this._partnerLogicalServerName = value; }
+            get { return _partnerLogicalServerName; }
+            set { _partnerLogicalServerName = value; }
         }
         
         private string _partnerServerId;
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string PartnerServerId
         {
-            get { return this._partnerServerId; }
-            set { this._partnerServerId = value; }
+            get { return _partnerServerId; }
+            set { _partnerServerId = value; }
         }
         
         private string _role;
@@ -81,8 +81,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Role
         {
-            get { return this._role; }
-            set { this._role = value; }
+            get { return _role; }
+            set { _role = value; }
         }
         
         private string _type;
@@ -92,8 +92,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Type
         {
-            get { return this._type; }
-            set { this._type = value; }
+            get { return _type; }
+            set { _type = value; }
         }
         
         /// <summary>

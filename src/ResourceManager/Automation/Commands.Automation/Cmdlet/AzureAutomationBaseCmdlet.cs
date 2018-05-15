@@ -46,12 +46,12 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             get
             {
-                return this.automationClient = this.automationClient ?? new AutomationClient(DefaultProfile.DefaultContext);
+                return automationClient = automationClient ?? new AutomationClient(DefaultProfile.DefaultContext);
             }
 
             set
             {
-                this.automationClient = value;
+                automationClient = value;
             }
         }
 
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         /// Gets or sets the automation account name.
         /// </summary>
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -79,15 +79,15 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             try
             {
-                Requires.Argument("ResourceGroupName", this.ResourceGroupName).NotNull();
-                Requires.Argument("AutomationAccountName", this.AutomationAccountName).NotNull();
-                this.AutomationProcessRecord();
+                Requires.Argument("ResourceGroupName", ResourceGroupName).NotNull();
+                Requires.Argument("AutomationAccountName", AutomationAccountName).NotNull();
+                AutomationProcessRecord();
             }
             catch (CloudException cloudException)
             {
                 if (string.IsNullOrEmpty(cloudException.Error.Code) && string.IsNullOrEmpty(cloudException.Error.Message))
                 {
-                    string message = this.ParseErrorMessage(cloudException.Response.Content);
+                    string message = ParseErrorMessage(cloudException.Response.Content);
                     if (!string.IsNullOrEmpty(message))
                     {
                         throw new CloudException(message, cloudException);

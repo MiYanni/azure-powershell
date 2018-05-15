@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SyncFullSchema> FullSchema
         {
-            get { return this._fullSchema; }
-            set { this._fullSchema = value; }
+            get { return _fullSchema; }
+            set { _fullSchema = value; }
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncFullSchemaGetResponse()
         {
-            this.FullSchema = new LazyList<SyncFullSchema>();
+            FullSchema = new LazyList<SyncFullSchema>();
         }
         
         /// <summary>
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<SyncFullSchema> GetEnumerator()
         {
-            return this.FullSchema.GetEnumerator();
+            return FullSchema.GetEnumerator();
         }
         
         /// <summary>
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

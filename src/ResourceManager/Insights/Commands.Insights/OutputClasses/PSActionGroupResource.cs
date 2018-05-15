@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
     using System.Collections.Generic;
     using System.Linq;
 
-    using Microsoft.Azure.Management.Internal.Resources.Utilities.Models;
+    using Management.Internal.Resources.Utilities.Models;
 
     /// <summary>
     /// Wraps around an Action Group.
@@ -69,13 +69,13 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="actionGroupResource">the action group resource</param>
         public PSActionGroupResource(ActionGroupResource actionGroupResource)
             : base(
-                location: actionGroupResource.Location,
-                id: actionGroupResource.Id,
-                name: actionGroupResource.Name,
-                type: actionGroupResource.Type,
-                tags: actionGroupResource.Tags)
+                actionGroupResource.Location,
+                actionGroupResource.Id,
+                actionGroupResource.Name,
+                actionGroupResource.Type,
+                actionGroupResource.Tags)
         {
-            this.ResourceGroupName = new ResourceIdentifier(actionGroupResource.Id).ResourceGroupName;
+            ResourceGroupName = new ResourceIdentifier(actionGroupResource.Id).ResourceGroupName;
             GroupShortName = actionGroupResource.GroupShortName;
             Enabled = actionGroupResource.Enabled;
             EmailReceivers = actionGroupResource.EmailReceivers?.Select(o => new PSEmailReceiver(o)).ToList();

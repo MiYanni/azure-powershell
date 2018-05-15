@@ -68,23 +68,23 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.InputObject.FriendlyName,
+            if (ShouldProcess(
+                InputObject.FriendlyName,
                 VerbsData.Update))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByNetworkObject:
-                        this.UpdateEnterpriseToEnterpriseNetworkMapping();
+                        UpdateEnterpriseToEnterpriseNetworkMapping();
                         break;
                     case ASRParameterSets.ById:
-                        if (this.InputObject.ID.Contains(ARMResourceTypeConstants.AzureNetwork))
+                        if (InputObject.ID.Contains(ARMResourceTypeConstants.AzureNetwork))
                         {
-                            this.UpdateAzureToAzureNetworkMapping();
+                            UpdateAzureToAzureNetworkMapping();
                         }
                         else
                         {
-                            this.UpdateEnterpriseToAzureNetworkMapping();
+                            UpdateEnterpriseToAzureNetworkMapping();
                         }
                         break;
                 }
@@ -104,24 +104,24 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             {
                 Properties = new UpdateNetworkMappingInputProperties
                 {
-                    RecoveryFabricName = this.InputObject.RecoveryFabricFriendlyName,
-                    RecoveryNetworkId = this.RecoveryAzureNetworkId,
+                    RecoveryFabricName = InputObject.RecoveryFabricFriendlyName,
+                    RecoveryNetworkId = RecoveryAzureNetworkId,
                     FabricSpecificDetails = new AzureToAzureUpdateNetworkMappingInput
                     {
-                        PrimaryNetworkId = this.InputObject.PrimaryNetworkId
+                        PrimaryNetworkId = InputObject.PrimaryNetworkId
                     }
                 }
             };
-            var response = this.RecoveryServicesClient.UpdateAzureSiteRecoveryNetworkMapping(
-                this.InputObject.PrimaryFabricFriendlyName,
+            var response = RecoveryServicesClient.UpdateAzureSiteRecoveryNetworkMapping(
+                InputObject.PrimaryFabricFriendlyName,
                 ARMResourceTypeConstants.AzureNetwork,
-                this.InputObject.Name,
+                InputObject.Name,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -138,24 +138,24 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 Properties = new UpdateNetworkMappingInputProperties
                 {
                     RecoveryFabricName = "Microsoft Azure",
-                    RecoveryNetworkId = this.RecoveryAzureNetworkId,
+                    RecoveryNetworkId = RecoveryAzureNetworkId,
                     FabricSpecificDetails = new VmmToAzureUpdateNetworkMappingInput()
                 }
             };
-            var response = this.RecoveryServicesClient.UpdateAzureSiteRecoveryNetworkMapping(
+            var response = RecoveryServicesClient.UpdateAzureSiteRecoveryNetworkMapping(
                 Utilities.GetValueFromArmId(
-                    this.InputObject.PrimaryNetworkId,
+                    InputObject.PrimaryNetworkId,
                     ARMResourceTypeConstants.ReplicationFabrics),
                 Utilities.GetValueFromArmId(
-                    this.InputObject.PrimaryNetworkId,
+                    InputObject.PrimaryNetworkId,
                     ARMResourceTypeConstants.ReplicationNetworks),
-                this.InputObject.Name,
+                InputObject.Name,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -168,26 +168,26 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 Properties = new UpdateNetworkMappingInputProperties
                 {
                     RecoveryFabricName = Utilities.GetValueFromArmId(
-                        this.RecoveryNetwork.ID,
+                        RecoveryNetwork.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
-                    RecoveryNetworkId = this.RecoveryNetwork.ID,
+                    RecoveryNetworkId = RecoveryNetwork.ID,
                     FabricSpecificDetails = new VmmToVmmUpdateNetworkMappingInput()
                 }
             };
-            var response = this.RecoveryServicesClient.UpdateAzureSiteRecoveryNetworkMapping(
+            var response = RecoveryServicesClient.UpdateAzureSiteRecoveryNetworkMapping(
                 Utilities.GetValueFromArmId(
-                    this.InputObject.PrimaryNetworkId,
+                    InputObject.PrimaryNetworkId,
                     ARMResourceTypeConstants.ReplicationFabrics),
                 Utilities.GetValueFromArmId(
-                    this.InputObject.PrimaryNetworkId,
+                    InputObject.PrimaryNetworkId,
                     ARMResourceTypeConstants.ReplicationNetworks),
-                this.InputObject.Name,
+                InputObject.Name,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
     }
 }

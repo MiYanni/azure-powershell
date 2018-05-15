@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -90,17 +90,17 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
 
             RunCmdLet(() =>
             {
-                CognitiveServicesAccountCreateParameters createParameters = new CognitiveServicesAccountCreateParameters()
+                CognitiveServicesAccountCreateParameters createParameters = new CognitiveServicesAccountCreateParameters
                 {
-                    Location = this.Location,
-                    Kind = this.Type, // must have value, mandatory parameter
-                    Sku = new Sku(this.SkuName),
+                    Location = Location,
+                    Kind = Type, // must have value, mandatory parameter
+                    Sku = new Sku(SkuName),
                     Tags = TagsConversionHelper.CreateTagDictionary(Tag),
                     Properties = new object(), // Must not be null according to Azure RM spec. Also there is no actual properties to pass, so not exposing it through cmdlet
                 };
 
                 if (ShouldProcess(
-                    this.Name, string.Format(CultureInfo.CurrentCulture, Resources.NewAccount_ProcessMessage, this.Name, this.Type, this.SkuName, this.Location)))
+                    Name, string.Format(CultureInfo.CurrentCulture, Resources.NewAccount_ProcessMessage, Name, Type, SkuName, Location)))
                 {
                     if (Force.IsPresent)
                     {
@@ -115,14 +115,14 @@ namespace Microsoft.Azure.Commands.Management.CognitiveServices
                         }
                     }
 
-                    var createAccountResponse = this.CognitiveServicesClient.Accounts.Create(
-                                    this.ResourceGroupName,
-                                    this.Name,
+                    var createAccountResponse = CognitiveServicesClient.Accounts.Create(
+                                    ResourceGroupName,
+                                    Name,
                                     createParameters);
 
-                    var cognitiveServicesAccount = this.CognitiveServicesClient.Accounts.GetProperties(this.ResourceGroupName, this.Name);
+                    var cognitiveServicesAccount = CognitiveServicesClient.Accounts.GetProperties(ResourceGroupName, Name);
 
-                    this.WriteCognitiveServicesAccount(cognitiveServicesAccount);
+                    WriteCognitiveServicesAccount(cognitiveServicesAccount);
                 }
             });
         }

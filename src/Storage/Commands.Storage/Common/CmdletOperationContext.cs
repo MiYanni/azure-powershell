@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Microsoft.WindowsAzure.Storage;
+    using WindowsAzure.Storage;
     using System;
     using System.Threading;
 
@@ -88,7 +88,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <returns>A unique request id</returns>
         internal static string GenClientRequestID()
         {
-            string uniqueId = System.Guid.NewGuid().ToString();
+            string uniqueId = Guid.NewGuid().ToString();
             return string.Format(Resources.ClientRequestIdFormat, uniqueId);
         }
 
@@ -101,7 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         {
             if (!inited)
             {
-                CmdletOperationContext.Init();
+                Init();
             }
 
             OperationContext context = new OperationContext();
@@ -175,11 +175,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return 0;
             }
-            else
-            {
-                TimeSpan span = DateTime.Now - StartTime;
-                return span.TotalMilliseconds;
-            }
+            TimeSpan span = DateTime.Now - StartTime;
+            return span.TotalMilliseconds;
         }
     }
 }

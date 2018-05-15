@@ -32,18 +32,18 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (pool != null)
             {
                 pool.omObject.ApplicationPackageReferences = CreateSyncedList(pool.ApplicationPackageReferences,
-                (apr) =>
+                apr =>
                 {
                     return ConvertApplicationPackageReference(apr);
                 });
                 pool.omObject.CertificateReferences = CreateSyncedList(pool.CertificateReferences,
-                (c) =>
+                c =>
                 {
                     return ConvertCertificateReference(c);
                 });
 
                 pool.omObject.Metadata = CreateSyncedList(pool.Metadata,
-                (m) =>
+                m =>
                 {
                     MetadataItem metadata = new MetadataItem(m.Name, m.Value);
                     return metadata;
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (jobSchedule != null)
             {
                 jobSchedule.omObject.Metadata = CreateSyncedList(jobSchedule.Metadata,
-                (m) =>
+                m =>
                 {
                     MetadataItem metadata = new MetadataItem(m.Name, m.Value);
                     return metadata;
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (job != null)
             {
                 job.omObject.Metadata = CreateSyncedList(job.Metadata,
-                (m) =>
+                m =>
                 {
                     MetadataItem metadata = new MetadataItem(m.Name, m.Value);
                     return metadata;
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (specification != null)
             {
                 specification.omObject.CommonEnvironmentSettings = CreateSyncedList(specification.CommonEnvironmentSettings,
-                (e) =>
+                e =>
                 {
                     EnvironmentSetting envSetting = new EnvironmentSetting(e.Name, e.Value);
                     return envSetting;
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.Batch.Utils
                 }
 
                 specification.omObject.Metadata = CreateSyncedList(specification.Metadata,
-                (m) =>
+                m =>
                 {
                     MetadataItem metadata = new MetadataItem(m.Name, m.Value);
                     return metadata;
@@ -149,14 +149,14 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (jobManager != null)
             {
                 jobManager.omObject.EnvironmentSettings = CreateSyncedList(jobManager.EnvironmentSettings,
-                    (e) =>
+                    e =>
                     {
                         EnvironmentSetting envSetting = new EnvironmentSetting(e.Name, e.Value);
                         return envSetting;
                     });
 
                 jobManager.omObject.ResourceFiles = CreateSyncedList(jobManager.ResourceFiles,
-                    (r) =>
+                    r =>
                     {
                         ResourceFile resourceFile = new ResourceFile(r.BlobSource, r.FilePath);
                         return resourceFile;
@@ -182,14 +182,14 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (jobPrepTask != null)
             {
                 jobPrepTask.omObject.EnvironmentSettings = CreateSyncedList(jobPrepTask.EnvironmentSettings,
-                    (e) =>
+                    e =>
                     {
                         EnvironmentSetting envSetting = new EnvironmentSetting(e.Name, e.Value);
                         return envSetting;
                     });
 
                 jobPrepTask.omObject.ResourceFiles = CreateSyncedList(jobPrepTask.ResourceFiles,
-                    (r) =>
+                    r =>
                     {
                         ResourceFile resourceFile = new ResourceFile(r.BlobSource, r.FilePath);
                         return resourceFile;
@@ -205,14 +205,14 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (jobReleaseTask != null)
             {
                 jobReleaseTask.omObject.EnvironmentSettings = CreateSyncedList(jobReleaseTask.EnvironmentSettings,
-                    (e) =>
+                    e =>
                     {
                         EnvironmentSetting envSetting = new EnvironmentSetting(e.Name, e.Value);
                         return envSetting;
                     });
 
                 jobReleaseTask.omObject.ResourceFiles = CreateSyncedList(jobReleaseTask.ResourceFiles,
-                    (r) =>
+                    r =>
                     {
                         ResourceFile resourceFile = new ResourceFile(r.BlobSource, r.FilePath);
                         return resourceFile;
@@ -256,22 +256,22 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (spec != null)
             {
                 spec.omObject.CertificateReferences = CreateSyncedList(spec.CertificateReferences,
-                    (c) =>
+                    c =>
                     {
                         return ConvertCertificateReference(c);
                     });
 
                 spec.omObject.Metadata = CreateSyncedList(spec.Metadata,
-                    (m) =>
+                    m =>
                     {
                         MetadataItem metadata = new MetadataItem(m.Name, m.Value);
                         return metadata;
                     });
 
                 spec.omObject.ApplicationPackageReferences = CreateSyncedList(spec.ApplicationPackageReferences,
-                    (apr) =>
+                    apr =>
                     {
-                        return new ApplicationPackageReference()
+                        return new ApplicationPackageReference
                         {
                             ApplicationId = apr.ApplicationId,
                             Version = apr.Version
@@ -279,7 +279,7 @@ namespace Microsoft.Azure.Commands.Batch.Utils
                     });
 
                 spec.omObject.UserAccounts = CreateSyncedList(spec.UserAccounts,
-                    (user) =>
+                    user =>
                     {
                         return new UserAccount(
                             user.Name,
@@ -303,14 +303,14 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (task != null)
             {
                 task.omObject.EnvironmentSettings = CreateSyncedList(task.EnvironmentSettings,
-                    (e) =>
+                    e =>
                     {
                         EnvironmentSetting envSetting = new EnvironmentSetting(e.Name, e.Value);
                         return envSetting;
                     });
 
                 task.omObject.ResourceFiles = CreateSyncedList(task.ResourceFiles,
-                    (r) =>
+                    r =>
                     {
                         ResourceFile resourceFile = new ResourceFile(r.BlobSource, r.FilePath);
                         return resourceFile;
@@ -328,14 +328,14 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (startTask != null)
             {
                 startTask.omObject.EnvironmentSettings = CreateSyncedList(startTask.EnvironmentSettings,
-                    (e) =>
+                    e =>
                     {
                         EnvironmentSetting envSetting = new EnvironmentSetting(e.Name, e.Value);
                         return envSetting;
                     });
 
                 startTask.omObject.ResourceFiles = CreateSyncedList(startTask.ResourceFiles,
-                    (r) =>
+                    r =>
                     {
                         ResourceFile resourceFile = new ResourceFile(r.BlobSource, r.FilePath);
                         return resourceFile;
@@ -351,7 +351,7 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             if (multiInstanceSettings != null)
             {
                 multiInstanceSettings.omObject.CommonResourceFiles = CreateSyncedList(multiInstanceSettings.CommonResourceFiles,
-                    (r) =>
+                    r =>
                     {
                         ResourceFile resourceFile = new ResourceFile(r.BlobSource, r.FilePath);
                         return resourceFile;
@@ -402,7 +402,7 @@ namespace Microsoft.Azure.Commands.Batch.Utils
         /// </summary>
         private static ApplicationPackageReference ConvertApplicationPackageReference(PSApplicationPackageReference psApr)
         {
-            ApplicationPackageReference applicationPackageReference = new ApplicationPackageReference()
+            ApplicationPackageReference applicationPackageReference = new ApplicationPackageReference
             {
                 ApplicationId = psApr.ApplicationId,
                 Version = psApr.Version
@@ -416,13 +416,13 @@ namespace Microsoft.Azure.Commands.Batch.Utils
             {
                 exitConditions.omObject.ExitCodeRanges = CreateSyncedList(
                     exitConditions.ExitCodeRanges,
-                    (e) =>
+                    e =>
                     {
                             ExitCodeRangeMapping exitCodeRangeMapping = new ExitCodeRangeMapping(e.Start, e.End, e.omObject.ExitOptions);
                             return exitCodeRangeMapping;
                     });
                 exitConditions.omObject.ExitCodes = CreateSyncedList(exitConditions.ExitCodes,
-                    (e) =>
+                    e =>
                     {
                         ExitCodeMapping exitCodeMapping = new ExitCodeMapping(e.Code, e.omObject.ExitOptions);
                         return exitCodeMapping;

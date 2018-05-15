@@ -15,9 +15,9 @@
 namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Commands.Scheduler.Utilities;
-    using Microsoft.Azure.Commands.Scheduler.Models;
+    using Properties;
+    using Utilities;
+    using Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -51,9 +51,9 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            this.WriteObject(
-                        this.SchedulerClient.ListJobs(this.ResourceGroupName, this.JobCollectionName, this.JobName, this.JobState),
-                        enumerateCollection: true);
+            WriteObject(
+                        SchedulerClient.ListJobs(ResourceGroupName, JobCollectionName, JobName, JobState),
+                        true);
         }
     }
 }

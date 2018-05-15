@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             HelpMessage = Constants.HelpResourceGroup)]
         [Parameter(ParameterSetName = ParameterSetNames.ByFactoryNameByParameterObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = Constants.HelpResourceGroup)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

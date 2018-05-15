@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string integrationRuntimeName,
             IntegrationRuntimeResource resource)
         {
-            return await this.DataFactoryManagementClient.IntegrationRuntimes.CreateOrUpdateAsync(
+            return await DataFactoryManagementClient.IntegrationRuntimes.CreateOrUpdateAsync(
                     resourceGroupName,
                     dataFactoryName,
                     integrationRuntimeName,
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
             Action createOrUpdateIntegrationRuntime = () =>
             {
-                var integrationRuntime = this.CreateOrUpdateIntegrationRuntimeAsync(
+                var integrationRuntime = CreateOrUpdateIntegrationRuntimeAsync(
                     parameters.ResourceGroupName,
                     parameters.DataFactoryName,
                     parameters.Name,
@@ -96,11 +96,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             IPage<IntegrationRuntimeResource> response;
             if (filterOptions.NextLink.IsNextPageLink())
             {
-                response = await this.DataFactoryManagementClient.IntegrationRuntimes.ListByFactoryNextAsync(filterOptions.NextLink);
+                response = await DataFactoryManagementClient.IntegrationRuntimes.ListByFactoryNextAsync(filterOptions.NextLink);
             }
             else
             {
-                response = await this.DataFactoryManagementClient.IntegrationRuntimes.ListByFactoryAsync(
+                response = await DataFactoryManagementClient.IntegrationRuntimes.ListByFactoryAsync(
                     filterOptions.ResourceGroupName,
                     filterOptions.DataFactoryName);
             }
@@ -149,7 +149,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string dataFactoryName,
             string integrationRuntimeName)
         {
-            var response = await this.DataFactoryManagementClient.IntegrationRuntimes.GetAsync(
+            var response = await DataFactoryManagementClient.IntegrationRuntimes.GetAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName);
@@ -163,12 +163,12 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string integrationRuntimeName)
         {
             var taskGetIntegrationRuntime = Task.Run(
-                async () => await this.DataFactoryManagementClient.IntegrationRuntimes.GetAsync(
+                async () => await DataFactoryManagementClient.IntegrationRuntimes.GetAsync(
                     resourceGroupName,
                     dataFactoryName,
                     integrationRuntimeName));
             var taskGetStatus = Task.Run(
-                async () => await this.DataFactoryManagementClient.IntegrationRuntimes.GetStatusAsync(
+                async () => await DataFactoryManagementClient.IntegrationRuntimes.GetStatusAsync(
                     resourceGroupName,
                     dataFactoryName,
                     integrationRuntimeName));
@@ -186,7 +186,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string dataFactoryName,
             string integrationRuntimeName)
         {
-            var response = await this.DataFactoryManagementClient.IntegrationRuntimes.DeleteWithHttpMessagesAsync(
+            var response = await DataFactoryManagementClient.IntegrationRuntimes.DeleteWithHttpMessagesAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName);
@@ -201,7 +201,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string keyName)
         {
             var response =
-                await this.DataFactoryManagementClient.IntegrationRuntimes.RegenerateAuthKeyAsync(
+                await DataFactoryManagementClient.IntegrationRuntimes.RegenerateAuthKeyAsync(
                     resourceGroupName,
                     dataFactoryName,
                     integrationRuntimeName,
@@ -215,7 +215,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string dataFactoryName,
             string integrationRuntimeName)
         {
-            var response = await this.DataFactoryManagementClient.IntegrationRuntimes.ListAuthKeysAsync(
+            var response = await DataFactoryManagementClient.IntegrationRuntimes.ListAuthKeysAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName);
@@ -229,14 +229,14 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string integrationRuntimeName,
             IntegrationRuntimeResource integrationRuntime)
         {
-            var response = await this.DataFactoryManagementClient.IntegrationRuntimes.BeginStartWithHttpMessagesAsync(
+            var response = await DataFactoryManagementClient.IntegrationRuntimes.BeginStartWithHttpMessagesAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName);
 
             try
             {
-                var result = await this.DataFactoryManagementClient.GetLongRunningOperationResultAsync(response, null, default(CancellationToken));
+                var result = await DataFactoryManagementClient.GetLongRunningOperationResultAsync(response, null, default(CancellationToken));
                 return (PSManagedIntegrationRuntimeStatus)GenerateIntegraionRuntimeObject(integrationRuntime,
                     result.Body,
                     resourceGroupName,
@@ -253,14 +253,14 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string dataFactoryName,
             string integrationRuntimeName)
         {
-            var response = await this.DataFactoryManagementClient.IntegrationRuntimes.BeginStopWithHttpMessagesAsync(
+            var response = await DataFactoryManagementClient.IntegrationRuntimes.BeginStopWithHttpMessagesAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName);
 
             try
             {
-                await this.DataFactoryManagementClient.GetLongRunningOperationResultAsync(response, null, default(CancellationToken));
+                await DataFactoryManagementClient.GetLongRunningOperationResultAsync(response, null, default(CancellationToken));
             }
             catch (Exception e)
             {
@@ -273,7 +273,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string dataFactoryName,
             string integrationRuntimeName)
         {
-            var data = await this.DataFactoryManagementClient.IntegrationRuntimes.GetMonitoringDataAsync(
+            var data = await DataFactoryManagementClient.IntegrationRuntimes.GetMonitoringDataAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName);
@@ -287,7 +287,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string integrationRuntimeName,
             string nodeName)
         {
-            var response = await this.DataFactoryManagementClient.IntegrationRuntimeNodes.DeleteWithHttpMessagesAsync(
+            var response = await DataFactoryManagementClient.IntegrationRuntimeNodes.DeleteWithHttpMessagesAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName,
@@ -301,7 +301,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string dataFactoryName,
             string integrationRuntimeName)
         {
-            await this.DataFactoryManagementClient.IntegrationRuntimes.SyncCredentialsAsync(
+            await DataFactoryManagementClient.IntegrationRuntimes.SyncCredentialsAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName);
@@ -314,7 +314,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string nodeName,
             UpdateIntegrationRuntimeNodeRequest request)
         {
-            return await this.DataFactoryManagementClient.IntegrationRuntimeNodes.UpdateAsync(
+            return await DataFactoryManagementClient.IntegrationRuntimeNodes.UpdateAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName,
@@ -328,7 +328,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string integrationRuntimeName,
             string nodeName)
         {
-            return await this.DataFactoryManagementClient.IntegrationRuntimeNodes.GetIpAddressAsync(
+            return await DataFactoryManagementClient.IntegrationRuntimeNodes.GetIpAddressAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName,
@@ -340,7 +340,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             string dataFactoryName,
             string integrationRuntimeName)
         {
-            await this.DataFactoryManagementClient.IntegrationRuntimes.UpgradeAsync(
+            await DataFactoryManagementClient.IntegrationRuntimes.UpgradeAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName);
@@ -353,7 +353,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             IntegrationRuntimeResource resource,
             UpdateIntegrationRuntimeRequest request)
         {
-            var response = await this.DataFactoryManagementClient.IntegrationRuntimes.UpdateAsync(
+            var response = await DataFactoryManagementClient.IntegrationRuntimes.UpdateAsync(
                 resourceGroupName,
                 dataFactoryName,
                 integrationRuntimeName,
@@ -375,7 +375,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         {
             try
             {
-                PSIntegrationRuntime integrationRuntime = await this.GetIntegrationRuntimeAsync(
+                PSIntegrationRuntime integrationRuntime = await GetIntegrationRuntimeAsync(
                     resourceGroupName,
                     dataFactoryName,
                     integrationRuntimeName);
@@ -419,33 +419,30 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                     resourceGroupName,
                     dataFactoryName);
             }
-            else
+            var selfHosted = integrationRuntime.Properties as SelfHostedIntegrationRuntime;
+            if (selfHosted != null)
             {
-                var selfHosted = integrationRuntime.Properties as SelfHostedIntegrationRuntime;
-                if (selfHosted != null)
+                if (selfHosted.LinkedInfo != null)
                 {
-                    if (selfHosted.LinkedInfo != null)
-                    {
-                        return new PSLinkedIntegrationRuntimeStatus(
-                            integrationRuntime,
-                            (SelfHostedIntegrationRuntimeStatus) status.Properties,
-                            resourceGroupName,
-                            dataFactoryName,
-                            DataFactoryManagementClient.DeserializationSettings,
-                            selfHosted.LinkedInfo is LinkedIntegrationRuntimeKey 
-                                ? Constants.LinkedIntegrationRuntimeKeyAuth
-                                : Constants.LinkedIntegrationRuntimeRbacAuth,
-                            status.Name,
-                            status.Properties.DataFactoryName);
-                    }
-
-                    return new PSSelfHostedIntegrationRuntimeStatus(
+                    return new PSLinkedIntegrationRuntimeStatus(
                         integrationRuntime,
-                        (SelfHostedIntegrationRuntimeStatus)status.Properties,
+                        (SelfHostedIntegrationRuntimeStatus) status.Properties,
                         resourceGroupName,
                         dataFactoryName,
-                        DataFactoryManagementClient.DeserializationSettings);
+                        DataFactoryManagementClient.DeserializationSettings,
+                        selfHosted.LinkedInfo is LinkedIntegrationRuntimeKey 
+                            ? Constants.LinkedIntegrationRuntimeKeyAuth
+                            : Constants.LinkedIntegrationRuntimeRbacAuth,
+                        status.Name,
+                        status.Properties.DataFactoryName);
                 }
+
+                return new PSSelfHostedIntegrationRuntimeStatus(
+                    integrationRuntime,
+                    (SelfHostedIntegrationRuntimeStatus)status.Properties,
+                    resourceGroupName,
+                    dataFactoryName,
+                    DataFactoryManagementClient.DeserializationSettings);
             }
 
             // Don't support get status for legacy integraiton runtime.
@@ -457,9 +454,9 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             var ce = e as CloudException;
             if (ce?.Body != null)
             {
-                return new CloudException()
+                return new CloudException
                 {
-                    Body = new CloudError()
+                    Body = new CloudError
                     {
                         Code = ce.Body.Code,
                         Message = Resources.LongRunningStatusError + "\n" + ce.Body.Message,

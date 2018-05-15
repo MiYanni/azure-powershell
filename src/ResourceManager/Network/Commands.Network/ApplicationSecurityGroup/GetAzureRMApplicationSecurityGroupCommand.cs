@@ -58,33 +58,33 @@ namespace Microsoft.Azure.Commands.Network.Automation
         {
             base.Execute();
 
-            if(!string.IsNullOrEmpty(this.Name))
+            if(!string.IsNullOrEmpty(Name))
             {
-                var vApplicationSecurityGroup = this.NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.Get(ResourceGroupName, Name);
-                var vApplicationSecurityGroupModel = NetworkResourceManagerProfile.Mapper.Map<CNM.PSApplicationSecurityGroup>(vApplicationSecurityGroup);
-                vApplicationSecurityGroupModel.ResourceGroupName = this.ResourceGroupName;
+                var vApplicationSecurityGroup = NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.Get(ResourceGroupName, Name);
+                var vApplicationSecurityGroupModel = NetworkResourceManagerProfile.Mapper.Map<PSApplicationSecurityGroup>(vApplicationSecurityGroup);
+                vApplicationSecurityGroupModel.ResourceGroupName = ResourceGroupName;
                 vApplicationSecurityGroupModel.Tag = TagsConversionHelper.CreateTagHashtable(vApplicationSecurityGroup.Tags);
                 WriteObject(vApplicationSecurityGroupModel, true);
             }
             else
             {
                 IPage<ApplicationSecurityGroup> vApplicationSecurityGroupPage;
-                if(!string.IsNullOrEmpty(this.ResourceGroupName))
+                if(!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    vApplicationSecurityGroupPage = this.NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.List(this.ResourceGroupName);
+                    vApplicationSecurityGroupPage = NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.List(ResourceGroupName);
                 }
                 else
                 {
-                    vApplicationSecurityGroupPage = this.NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.ListAll();
+                    vApplicationSecurityGroupPage = NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.ListAll();
                 }
 
                 var vApplicationSecurityGroupList = ListNextLink<ApplicationSecurityGroup>.GetAllResourcesByPollingNextLink(vApplicationSecurityGroupPage,
-                    this.NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.ListNext);
+                    NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.ListNext);
                 List<PSApplicationSecurityGroup> psApplicationSecurityGroupList = new List<PSApplicationSecurityGroup>();
                 foreach (var vApplicationSecurityGroup in vApplicationSecurityGroupList)
                 {
-                    var vApplicationSecurityGroupModel = NetworkResourceManagerProfile.Mapper.Map<CNM.PSApplicationSecurityGroup>(vApplicationSecurityGroup);
-                    vApplicationSecurityGroupModel.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(vApplicationSecurityGroup.Id);
+                    var vApplicationSecurityGroupModel = NetworkResourceManagerProfile.Mapper.Map<PSApplicationSecurityGroup>(vApplicationSecurityGroup);
+                    vApplicationSecurityGroupModel.ResourceGroupName = GetResourceGroup(vApplicationSecurityGroup.Id);
                     vApplicationSecurityGroupModel.Tag = TagsConversionHelper.CreateTagHashtable(vApplicationSecurityGroup.Tags);
                     psApplicationSecurityGroupList.Add(vApplicationSecurityGroupModel);
                 }

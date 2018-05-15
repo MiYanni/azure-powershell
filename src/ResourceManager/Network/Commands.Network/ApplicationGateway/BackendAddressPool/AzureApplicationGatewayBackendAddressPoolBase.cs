@@ -41,16 +41,16 @@ namespace Microsoft.Azure.Commands.Network
         {
             var backendAddressPool = new PSApplicationGatewayBackendAddressPool();
 
-            backendAddressPool.Name = this.Name;
+            backendAddressPool.Name = Name;
 
             if (BackendIPAddresses != null && BackendFqdns != null)
             {
                 throw new ArgumentException("At most one of BackendIPAddresses and BackendFqdns can be specified.");
             }
-            else if (BackendIPAddresses != null && BackendIPAddresses.Count > 0)
+            if (BackendIPAddresses != null && BackendIPAddresses.Count > 0)
             {
-                backendAddressPool.BackendAddresses = new System.Collections.Generic.List<PSApplicationGatewayBackendAddress>();
-                foreach (string ip in this.BackendIPAddresses)
+                backendAddressPool.BackendAddresses = new List<PSApplicationGatewayBackendAddress>();
+                foreach (string ip in BackendIPAddresses)
                 {
                     var backendAddress = new PSApplicationGatewayBackendAddress();
                     backendAddress.IpAddress = ip;
@@ -59,8 +59,8 @@ namespace Microsoft.Azure.Commands.Network
             }
             else if (BackendFqdns != null && BackendFqdns.Count > 0)
             {
-                backendAddressPool.BackendAddresses = new System.Collections.Generic.List<PSApplicationGatewayBackendAddress>();
-                foreach (string fqdn in this.BackendFqdns)
+                backendAddressPool.BackendAddresses = new List<PSApplicationGatewayBackendAddress>();
+                foreach (string fqdn in BackendFqdns)
                 {
                     var backendAddress = new PSApplicationGatewayBackendAddress();
                     backendAddress.Fqdn = fqdn;
@@ -69,9 +69,9 @@ namespace Microsoft.Azure.Commands.Network
             }
 
             backendAddressPool.Id = ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                                this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayBackendAddressPoolName,
-                                this.Name);
+                                NetworkClient.NetworkManagementClient.SubscriptionId,
+                                Properties.Resources.ApplicationGatewayBackendAddressPoolName,
+                                Name);
 
             return backendAddressPool;
         }

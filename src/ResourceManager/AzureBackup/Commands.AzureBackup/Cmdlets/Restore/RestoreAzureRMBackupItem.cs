@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
             ExecutionBlock(() =>
             {
                 WriteDebug(Resources.MakingClientCall);
-                AzureIaaSVMRecoveryInputsCSMObject azureIaaSVMRecoveryInputsCSMObject = new AzureIaaSVMRecoveryInputsCSMObject()
+                AzureIaaSVMRecoveryInputsCSMObject azureIaaSVMRecoveryInputsCSMObject = new AzureIaaSVMRecoveryInputsCSMObject
                 {
                     CloudServiceName = string.Empty,
                     VmName = string.Empty,
@@ -54,11 +54,11 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                     azureIaaSVMRecoveryInputsCSMObject, 
                     new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat });
 
-                CSMRestoreRequest csmRestoreRequest = new CSMRestoreRequest()
+                CSMRestoreRequest csmRestoreRequest = new CSMRestoreRequest
                 {
-                    Properties = new CSMRestoreRequestProperties()
+                    Properties = new CSMRestoreRequestProperties
                     {
-                        TypeOfRecovery = RecoveryType.RestoreDisks.ToString(),
+                        TypeOfRecovery = RecoveryType.RestoreDisks,
                         RecoveryDSTypeSpecificInputs = azureIaaSVMRecoveryInputsCSMObjectString,
                     },
                 };
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 var operationStatus = TrackOperation(RecoveryPoint.ResourceGroupName, RecoveryPoint.ResourceName, operationId);
                 WriteObject(GetCreatedJobs(RecoveryPoint.ResourceGroupName,
                     RecoveryPoint.ResourceName,
-                    new Models.AzureRMBackupVault(RecoveryPoint.ResourceGroupName, RecoveryPoint.ResourceName, RecoveryPoint.Location),
+                    new AzureRMBackupVault(RecoveryPoint.ResourceGroupName, RecoveryPoint.ResourceName, RecoveryPoint.Location),
                     operationStatus.JobList).FirstOrDefault());
 
             });

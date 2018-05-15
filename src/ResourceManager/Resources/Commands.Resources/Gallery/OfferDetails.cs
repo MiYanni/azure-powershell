@@ -20,8 +20,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string OfferIdentifier
         {
-            get { return this._offerIdentifier; }
-            set { this._offerIdentifier = value; }
+            get { return _offerIdentifier; }
+            set { _offerIdentifier = value; }
         }
 
         private IList<Plan> _plans;
@@ -31,8 +31,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IList<Plan> Plans
         {
-            get { return this._plans; }
-            set { this._plans = value; }
+            get { return _plans; }
+            set { _plans = value; }
         }
 
         private string _publisherIdentifier;
@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string PublisherIdentifier
         {
-            get { return this._publisherIdentifier; }
-            set { this._publisherIdentifier = value; }
+            get { return _publisherIdentifier; }
+            set { _publisherIdentifier = value; }
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public OfferDetails()
         {
-            this.Plans = new LazyList<Plan>();
+            Plans = new LazyList<Plan>();
         }
     }
 }

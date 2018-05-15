@@ -44,8 +44,8 @@ namespace Microsoft.Azure.Commands.Profile
 
         public EnvironmentHelper EnvHelper
         {
-            get { return this.envHelper; }
-            set { this.envHelper = value != null ? value : new EnvironmentHelper(); }
+            get { return envHelper; }
+            set { envHelper = value != null ? value : new EnvironmentHelper(); }
         }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true)]
@@ -169,13 +169,13 @@ namespace Microsoft.Azure.Commands.Profile
             ConfirmAction("adding environment", Name,
                 () =>
                 {
-                    if (AzureEnvironment.PublicEnvironments.Keys.Any((k) => string.Equals(k, Name, StringComparison.CurrentCultureIgnoreCase)))
+                    if (AzureEnvironment.PublicEnvironments.Keys.Any(k => string.Equals(k, Name, StringComparison.CurrentCultureIgnoreCase)))
                     {
                         throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
                             "Cannot add built-in environment {0}.", Name));
                     }
 
-                    if (this.ParameterSetName.Equals(MetadataParameterSet, StringComparison.Ordinal))
+                    if (ParameterSetName.Equals(MetadataParameterSet, StringComparison.Ordinal))
                     {
                         // Simply use built-in environments if the ARM endpoint matches the ARM endpoint for a built-in environment
                         var publicEnvironment = AzureEnvironment.PublicEnvironments.FirstOrDefault(
@@ -186,9 +186,9 @@ namespace Microsoft.Azure.Commands.Profile
 
                         var defProfile = GetDefaultProfile();
                         IAzureEnvironment newEnvironment;
-                        if (!defProfile.TryGetEnvironment(this.Name, out newEnvironment))
+                        if (!defProfile.TryGetEnvironment(Name, out newEnvironment))
                         {
-                            newEnvironment = new AzureEnvironment { Name = this.Name };
+                            newEnvironment = new AzureEnvironment { Name = Name };
                         }
 
                         if (publicEnvironment.Key == null)
@@ -196,7 +196,7 @@ namespace Microsoft.Azure.Commands.Profile
                             SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.ResourceManager, ARMEndpoint);
                             try
                             {
-                                EnvHelper = (EnvHelper == null ? new EnvironmentHelper() : EnvHelper);
+                                EnvHelper = EnvHelper == null ? new EnvironmentHelper() : EnvHelper;
                                 MetadataResponse metadataEndpoints = EnvHelper.RetrieveMetaDataEndpoints(newEnvironment.ResourceManagerUrl).Result;
                                 string domain = EnvHelper.RetrieveDomain(ARMEndpoint);
 
@@ -213,7 +213,7 @@ namespace Microsoft.Azure.Commands.Profile
                                 SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.AzureKeyVaultServiceEndpointResourceId,
                                         AzureKeyVaultServiceEndpointResourceId ?? string.Format("https://vault.{0}", domain).ToLowerInvariant());
                                 SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.StorageEndpointSuffix, StorageEndpoint ?? domain);
-                                newEnvironment.OnPremise = metadataEndpoints.authentication.LoginEndpoint.TrimEnd('/').EndsWith("/adfs", System.StringComparison.OrdinalIgnoreCase);
+                                newEnvironment.OnPremise = metadataEndpoints.authentication.LoginEndpoint.TrimEnd('/').EndsWith("/adfs", StringComparison.OrdinalIgnoreCase);
                             }
                             catch (AggregateException ae)
                             {

@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Sql.DataMasking.Cmdlet
         {
             if (!rules.Any(IsModelOfRule))
             {
-                return string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.SetDataMaskingRuleIdDoesNotExistError, SchemaName, TableName, ColumnName);
+                return string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetDataMaskingRuleIdDoesNotExistError, SchemaName, TableName, ColumnName);
             }
             return null;
         }

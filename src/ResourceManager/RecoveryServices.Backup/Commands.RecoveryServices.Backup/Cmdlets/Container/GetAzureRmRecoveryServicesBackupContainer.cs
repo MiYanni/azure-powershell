@@ -96,20 +96,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 Status = ContainerRegistrationStatus.Registered;
 
                 PsBackupProviderManager providerManager =
-                    new PsBackupProviderManager(new Dictionary<Enum, object>()
-                {
+                    new PsBackupProviderManager(new Dictionary<Enum, object>
+                    {
                     {ContainerParams.ContainerType, ContainerType},
                     {ContainerParams.BackupManagementType, backupManagementTypeNullable},
                     {ContainerParams.Name, Name},
                     {ContainerParams.FriendlyName, FriendlyName},
                     {ContainerParams.ResourceGroupName, ResourceGroupName},
-                    {ContainerParams.Status, Status},
+                    {ContainerParams.Status, Status}
                 }, ServiceClientAdapter);
 
                 IPsBackupProvider psBackupProvider =
                     providerManager.GetProviderInstance(ContainerType, backupManagementTypeNullable);
                 var containerModels = psBackupProvider.ListProtectionContainers();
-                WriteObject(containerModels, enumerateCollection: true);
+                WriteObject(containerModels, true);
             });
         }
     }

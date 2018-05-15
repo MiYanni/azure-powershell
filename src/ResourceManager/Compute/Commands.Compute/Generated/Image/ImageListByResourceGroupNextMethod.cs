@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string nextPageLink = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "NextPageLink" },
+                 new[] { "NextPageLink" },
                  new object[] { nextPageLink });
         }
     }

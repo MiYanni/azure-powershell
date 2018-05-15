@@ -43,11 +43,11 @@ namespace Microsoft.Azure.Commands.AzureBackup.Test.ScenarioTests
 
         protected AzureBackupTestsBase()
         {
-            AzureBackupTestsBase.ResourceName = ConfigurationManager.AppSettings["ResourceName"];
-            AzureBackupTestsBase.ResourceGroupName = ConfigurationManager.AppSettings["ResourceGroupName"];
+            ResourceName = ConfigurationManager.AppSettings["ResourceName"];
+            ResourceGroupName = ConfigurationManager.AppSettings["ResourceGroupName"];
 
-            this.helper = new EnvironmentSetupHelper();
-            this.csmTestFactory = new CSMTestEnvironmentFactory();
+            helper = new EnvironmentSetupHelper();
+            csmTestFactory = new CSMTestEnvironmentFactory();
         }
 
         protected void SetupManagementClients()
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Test.ScenarioTests
 
                 helper.SetupEnvironment(AzureModule.AzureResourceManager);
                 helper.SetupModules(AzureModule.AzureResourceManager,
-                    "ScenarioTests\\" + this.GetType().Name + ".ps1",
+                    "ScenarioTests\\" + GetType().Name + ".ps1",
                     helper.RMProfileModule,
                     helper.GetRMModulePath("AzureRM.Backup.psd1")
                     );

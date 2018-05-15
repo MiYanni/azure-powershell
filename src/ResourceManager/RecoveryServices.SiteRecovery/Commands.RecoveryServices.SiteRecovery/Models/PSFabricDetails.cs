@@ -95,29 +95,29 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public ASRProcessServer(ProcessServer processServer)
         {
-            this.FriendlyName = processServer.FriendlyName;
-            this.Id = processServer.Id;
-            this.AgentVersion = processServer.AgentVersion;
-            this.IpAddress = processServer.IpAddress;
-            this.LastHeartbeat = processServer.LastHeartbeat;
-            this.OsType = processServer.OsType;
-            this.VersionStatus = processServer.VersionStatus;
-            this.AvailableMemoryInBytes = processServer.AvailableMemoryInBytes;
-            this.AvailableSpaceInBytes = processServer.AvailableSpaceInBytes;
-            this.CpuLoad = processServer.CpuLoad;
-            this.CpuLoadStatus = processServer.CpuLoadStatus;
-            this.HostId = processServer.HostId;
-            this.MemoryUsageStatus = processServer.MemoryUsageStatus;
-            this.PsServiceStatus = processServer.PsServiceStatus;
-            this.ReplicationPairCount = processServer.ReplicationPairCount;
-            this.ServerCount = processServer.MachineCount;
-            this.SpaceUsageStatus = processServer.SpaceUsageStatus;
-            this.SystemLoad = processServer.SystemLoad;
-            this.SystemLoadStatus = processServer.SystemLoadStatus;
-            this.TotalMemoryInBytes = processServer.TotalMemoryInBytes;
-            this.TotalSpaceInBytes = processServer.TotalSpaceInBytes;
-            this.Updates =
-                this.TranslateMobilityServiceUpdate(processServer.MobilityServiceUpdates);
+            FriendlyName = processServer.FriendlyName;
+            Id = processServer.Id;
+            AgentVersion = processServer.AgentVersion;
+            IpAddress = processServer.IpAddress;
+            LastHeartbeat = processServer.LastHeartbeat;
+            OsType = processServer.OsType;
+            VersionStatus = processServer.VersionStatus;
+            AvailableMemoryInBytes = processServer.AvailableMemoryInBytes;
+            AvailableSpaceInBytes = processServer.AvailableSpaceInBytes;
+            CpuLoad = processServer.CpuLoad;
+            CpuLoadStatus = processServer.CpuLoadStatus;
+            HostId = processServer.HostId;
+            MemoryUsageStatus = processServer.MemoryUsageStatus;
+            PsServiceStatus = processServer.PsServiceStatus;
+            ReplicationPairCount = processServer.ReplicationPairCount;
+            ServerCount = processServer.MachineCount;
+            SpaceUsageStatus = processServer.SpaceUsageStatus;
+            SystemLoad = processServer.SystemLoad;
+            SystemLoadStatus = processServer.SystemLoadStatus;
+            TotalMemoryInBytes = processServer.TotalMemoryInBytes;
+            TotalSpaceInBytes = processServer.TotalSpaceInBytes;
+            Updates =
+                TranslateMobilityServiceUpdate(processServer.MobilityServiceUpdates);
         }
 
         /// <summary>
@@ -260,9 +260,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <param name="mobilityServiceUpdateDetails">Mobility service update object.</param>
         public ASRMobilityServiceUpdate(MobilityServiceUpdate mobilityServiceUpdateDetails)
         {
-            this.RebootStatus = mobilityServiceUpdateDetails.RebootStatus;
-            this.OsType = mobilityServiceUpdateDetails.OsType;
-            this.Version = mobilityServiceUpdateDetails.Version;
+            RebootStatus = mobilityServiceUpdateDetails.RebootStatus;
+            OsType = mobilityServiceUpdateDetails.OsType;
+            Version = mobilityServiceUpdateDetails.Version;
         }
 
         /// <summary>
@@ -292,10 +292,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <param name="retention">Retention object.</param>
         public ASRRetentionVolume(RetentionVolume retention)
         {
-            this.CapacityInBytes = retention.CapacityInBytes;
-            this.FreeSpaceInBytes = retention.FreeSpaceInBytes;
-            this.ThresholdPercentage = retention.ThresholdPercentage;
-            this.VolumeName = retention.VolumeName;
+            CapacityInBytes = retention.CapacityInBytes;
+            FreeSpaceInBytes = retention.FreeSpaceInBytes;
+            ThresholdPercentage = retention.ThresholdPercentage;
+            VolumeName = retention.VolumeName;
         }
 
         /// <summary>
@@ -330,10 +330,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <param name="datastore">Datastore object.</param>
         public ASRDataStore(DataStore datastore)
         {
-            this.SymbolicName = datastore.SymbolicName;
-            this.Uuid = datastore.Uuid;
-            this.Capacity = datastore.Capacity;
-            this.FreeSpace = datastore.FreeSpace;
+            SymbolicName = datastore.SymbolicName;
+            Uuid = datastore.Uuid;
+            Capacity = datastore.Capacity;
+            FreeSpace = datastore.FreeSpace;
         }
 
         /// <summary>
@@ -367,16 +367,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public ASRMasterTargetServer(MasterTargetServer masterTargetDetails)
         {
-            this.AgentVersion = masterTargetDetails.AgentVersion;
-            this.Id = masterTargetDetails.Id;
-            this.IpAddress = masterTargetDetails.IpAddress;
-            this.LastHeartbeat = masterTargetDetails.LastHeartbeat;
-            this.Name = masterTargetDetails.Name;
-            this.OsType = masterTargetDetails.OsType;
-            this.VersionStatus = masterTargetDetails.VersionStatus;
-            this.RetentionVolumes =
-                this.TranslateRetentionVolume(masterTargetDetails.RetentionVolumes);
-            this.DataStores = this.TranslateDatastores(masterTargetDetails.DataStores);
+            AgentVersion = masterTargetDetails.AgentVersion;
+            Id = masterTargetDetails.Id;
+            IpAddress = masterTargetDetails.IpAddress;
+            LastHeartbeat = masterTargetDetails.LastHeartbeat;
+            Name = masterTargetDetails.Name;
+            OsType = masterTargetDetails.OsType;
+            VersionStatus = masterTargetDetails.VersionStatus;
+            RetentionVolumes =
+                TranslateRetentionVolume(masterTargetDetails.RetentionVolumes);
+            DataStores = TranslateDatastores(masterTargetDetails.DataStores);
         }
 
         /// <summary>

@@ -95,18 +95,18 @@ namespace Microsoft.Azure.Commands.KeyVault
                 VaultName = resourceIdentifier.ResourceName;
             }
 
-            if (ShouldProcess(VaultName, Properties.Resources.RestoreSecret))
+            if (ShouldProcess(VaultName, Resources.RestoreSecret))
             {
-                var resolvedFilePath = this.GetUnresolvedProviderPathFromPSPath(InputFile);
+                var resolvedFilePath = GetUnresolvedProviderPathFromPSPath(InputFile);
 
                 if (!AzureSession.Instance.DataStore.FileExists(resolvedFilePath))
                 {
                     throw new FileNotFoundException(string.Format(Resources.BackupSecretFileNotFound, resolvedFilePath));
                 }
 
-                var restoredSecret = this.DataServiceClient.RestoreSecret(VaultName, resolvedFilePath);
+                var restoredSecret = DataServiceClient.RestoreSecret(VaultName, resolvedFilePath);
 
-                this.WriteObject(restoredSecret);
+                WriteObject(restoredSecret);
             }
         }
     }

@@ -56,9 +56,9 @@ namespace Microsoft.Azure.Commands.Insights.Metrics
         protected string ProcessParameters()
         {
             var buffer = new StringBuilder();
-            if (this.MetricName != null)
+            if (MetricName != null)
             {
-                var metrics = this.MetricName
+                var metrics = MetricName
                     .Select(n => string.Concat("name.value eq '", n, "'"))
                     .Aggregate((a, b) => string.Concat(a, " or ", b));
                 buffer.Append(metrics);
@@ -73,18 +73,18 @@ namespace Microsoft.Azure.Commands.Insights.Metrics
         protected override void ProcessRecordInternal()
         {
             string cmdletName = "Get-AzureRmMetricDefinition";
-            this.WriteIdentifiedWarning(
-                cmdletName: cmdletName,
-                topic: "Parameter deprecation",
-                message: "The DetailedOutput parameter will be deprecated in a future breaking change release.");
-            string queryFilter = this.ProcessParameters();
-            bool fullDetails = this.DetailedOutput.IsPresent;
+            WriteIdentifiedWarning(
+                cmdletName,
+                "Parameter deprecation",
+                "The DetailedOutput parameter will be deprecated in a future breaking change release.");
+            string queryFilter = ProcessParameters();
+            bool fullDetails = DetailedOutput.IsPresent;
 
             // If fullDetails is present full details of the records are displayed, otherwise only a summary of the records is displayed
-            var records = this.MonitorClient.MetricDefinitions.List(resourceUri: this.ResourceId, odataQuery: new ODataQuery<MetricDefinition>(queryFilter))
+            var records = MonitorClient.MetricDefinitions.List(ResourceId, new ODataQuery<MetricDefinition>(queryFilter))
                 .Select(e => fullDetails ? new PSMetricDefinition(e) : new PSMetricDefinitionNoDetails(e)).ToArray();
 
-            WriteObject(sendToPipeline: records, enumerateCollection: true);
+            WriteObject(records, true);
         }
     }
 }

@@ -73,10 +73,10 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Model
                     syncGroupSchemaColumns.Add(column.ToSyncGroupSchemaColumn());
                 }
             }
-            return new SyncGroupSchemaTable()
+            return new SyncGroupSchemaTable
             {
                 Columns = syncGroupSchemaColumns,
-                QuotedName = this.QuotedName
+                QuotedName = QuotedName
             };
         }
     }

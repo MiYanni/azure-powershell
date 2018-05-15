@@ -121,14 +121,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             SystemNet.HttpWebRequest webRequest = (SystemNet.HttpWebRequest)SystemNet.WebRequest.Create(url);
             SystemNet.HttpWebResponse webResponse = (SystemNet.HttpWebResponse)webRequest.GetResponse();
 
-            if ((SystemNet.HttpStatusCode.OK != webResponse.StatusCode) && (retryCount > 0))
+            if (SystemNet.HttpStatusCode.OK != webResponse.StatusCode && retryCount > 0)
             {
                 return RetryHttpWebRequest(url, retryCount - 1);
             }
-            else
-            {
-                return webResponse;
-            }
+            return webResponse;
         }
     }
 }

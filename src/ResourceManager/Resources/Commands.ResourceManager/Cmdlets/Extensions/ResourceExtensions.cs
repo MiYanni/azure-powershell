@@ -14,9 +14,9 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Resources;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Components;
+    using Entities.Resources;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using System.Collections.Generic;
     using System.Linq;
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
                 { "SubscriptionId", string.IsNullOrEmpty(resource.Id) ? null : ResourceIdUtility.GetSubscriptionId(resource.Id) },
                 { "Tags", TagsHelper.GetTagsHashtable(resource.Tags) },
                 { "Plan", resource.Plan.ToJToken().ToPsObject() },
-                { "Properties", ResourceExtensions.GetProperties(resource) },
+                { "Properties", GetProperties(resource) },
                 { "CreatedTime", resource.CreatedTime },
                 { "ChangedTime", resource.ChangedTime },
                 { "ETag", resource.ETag },
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
                 return null;
             }
 
-            return (object)resource.Properties.ToPsObject();
+            return resource.Properties.ToPsObject();
         }
 
         /// <summary>

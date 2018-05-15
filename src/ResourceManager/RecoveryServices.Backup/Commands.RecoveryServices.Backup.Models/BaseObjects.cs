@@ -104,8 +104,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
 
         public ContainerBase(ServiceClientModel.ProtectionContainerResource protectionContainer)
             : base(ConversionUtils.GetPsContainerType(
-                        protectionContainer.Properties.ContainerType.ToString()),
-                   protectionContainer.Properties.BackupManagementType.ToString())
+                        protectionContainer.Properties.ContainerType),
+                   protectionContainer.Properties.BackupManagementType)
         {
             Name = IdUtils.GetNameFromUri(protectionContainer.Name);
         }
@@ -122,8 +122,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
         public string Name { get; set; }
 
         public BackupEngineBase(ServiceClientModel.BackupEngineBaseResource backupEngine)
-            : base((backupEngine.Properties.GetType().Name),
-                   backupEngine.Properties.BackupManagementType.ToString())
+            : base(backupEngine.Properties.GetType().Name,
+                   backupEngine.Properties.BackupManagementType)
         {
             Name = backupEngine.Name;
         }
@@ -155,7 +155,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
             : base(containerType, protectedItem.BackupManagementType)
         {
             WorkloadType = ConversionUtils.GetPsWorkloadType(
-                protectedItem.WorkloadType.ToString());
+                protectedItem.WorkloadType);
             ContainerName = containerName;
         }
     }

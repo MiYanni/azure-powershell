@@ -115,23 +115,23 @@ namespace Microsoft.Azure.Commands.Network
 
             MNM.VerificationIPFlowParameters flowParameters = new MNM.VerificationIPFlowParameters();
 
-            flowParameters.Direction = this.Direction;
-            flowParameters.LocalIPAddress = this.LocalIPAddress;
-            flowParameters.LocalPort = this.LocalPort;
-            flowParameters.Protocol = this.Protocol;
-            flowParameters.RemoteIPAddress = this.RemoteIPAddress;
-            flowParameters.RemotePort = this.RemotePort;
-            flowParameters.TargetNicResourceId = this.TargetNetworkInterfaceId;
-            flowParameters.TargetResourceId = this.TargetVirtualMachineId;
+            flowParameters.Direction = Direction;
+            flowParameters.LocalIPAddress = LocalIPAddress;
+            flowParameters.LocalPort = LocalPort;
+            flowParameters.Protocol = Protocol;
+            flowParameters.RemoteIPAddress = RemoteIPAddress;
+            flowParameters.RemotePort = RemotePort;
+            flowParameters.TargetNicResourceId = TargetNetworkInterfaceId;
+            flowParameters.TargetResourceId = TargetVirtualMachineId;
 
             MNM.VerificationIPFlowResult ipFlowVerify = new MNM.VerificationIPFlowResult();
             if (ParameterSetName.Contains("SetByResource"))
             {
-                ipFlowVerify = this.NetworkWatcherClient.VerifyIPFlow(this.NetworkWatcher.ResourceGroupName, this.NetworkWatcher.Name, flowParameters);
+                ipFlowVerify = NetworkWatcherClient.VerifyIPFlow(NetworkWatcher.ResourceGroupName, NetworkWatcher.Name, flowParameters);
             }
             else
             {
-                ipFlowVerify = this.NetworkWatcherClient.VerifyIPFlow(this.ResourceGroupName, this.NetworkWatcherName, flowParameters);
+                ipFlowVerify = NetworkWatcherClient.VerifyIPFlow(ResourceGroupName, NetworkWatcherName, flowParameters);
             }
 
             PSIPFlowVerifyResult psIPFlowVerify = NetworkResourceManagerProfile.Mapper.Map<PSIPFlowVerifyResult>(ipFlowVerify);

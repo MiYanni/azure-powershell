@@ -28,12 +28,12 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel
         {
             if (properties != null)
             {
-                this.Logging = properties.Logging;
-                this.HourMetrics = properties.HourMetrics;
-                this.MinuteMetrics = properties.MinuteMetrics;
-                this.DefaultServiceVersion = properties.DefaultServiceVersion;
-                this.Cors = PSCorsRule.ParseCorsRules(properties.Cors);
-                this.DeleteRetentionPolicy = PSDeleteRetentionPolicy.ParsePSDeleteRetentionPolicy(properties.DeleteRetentionPolicy);
+                Logging = properties.Logging;
+                HourMetrics = properties.HourMetrics;
+                MinuteMetrics = properties.MinuteMetrics;
+                DefaultServiceVersion = properties.DefaultServiceVersion;
+                Cors = PSCorsRule.ParseCorsRules(properties.Cors);
+                DeleteRetentionPolicy = PSDeleteRetentionPolicy.ParsePSDeleteRetentionPolicy(properties.DeleteRetentionPolicy);
             }
         }
 

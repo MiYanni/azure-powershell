@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
             var alertSetting =
-               this.RecoveryServicesClient.GetAzureSiteRecoveryAlertSetting();
-            this.WriteObject(alertSetting.Select(p => new ASRAlertSetting(p)), true);
+               RecoveryServicesClient.GetAzureSiteRecoveryAlertSetting();
+            WriteObject(alertSetting.Select(p => new ASRAlertSetting(p)), true);
         }
     }
 }

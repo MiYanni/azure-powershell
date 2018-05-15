@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string MasterSyncMemberName
         {
-            get { return this._masterSyncMemberName; }
-            set { this._masterSyncMemberName = value; }
+            get { return _masterSyncMemberName; }
+            set { _masterSyncMemberName = value; }
         }
         
         private IList<SyncGroupSchemaTable> _tables;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SyncGroupSchemaTable> Tables
         {
-            get { return this._tables; }
-            set { this._tables = value; }
+            get { return _tables; }
+            set { _tables = value; }
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncGroupSchema()
         {
-            this.Tables = new LazyList<SyncGroupSchemaTable>();
+            Tables = new LazyList<SyncGroupSchemaTable>();
         }
     }
 }

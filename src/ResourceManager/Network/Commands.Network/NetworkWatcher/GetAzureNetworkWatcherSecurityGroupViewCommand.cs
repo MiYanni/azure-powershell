@@ -66,24 +66,24 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             MNM.SecurityGroupViewParameters properties = new MNM.SecurityGroupViewParameters();
-            properties.TargetResourceId = this.TargetVirtualMachineId;
+            properties.TargetResourceId = TargetVirtualMachineId;
 
             PSSecurityGroupViewResult securityGroupView = new PSSecurityGroupViewResult();
 
             if (ParameterSetName.Contains("SetByResource"))
             {
-                securityGroupView = GetSecurityGroupView(this.NetworkWatcher.ResourceGroupName, this.NetworkWatcher.Name, properties);
+                securityGroupView = GetSecurityGroupView(NetworkWatcher.ResourceGroupName, NetworkWatcher.Name, properties);
             }
             else
             {
-                securityGroupView = GetSecurityGroupView(this.ResourceGroupName, this.NetworkWatcherName, properties);
+                securityGroupView = GetSecurityGroupView(ResourceGroupName, NetworkWatcherName, properties);
             }
             WriteObject(securityGroupView);
         }
 
         public PSSecurityGroupViewResult GetSecurityGroupView(string resourceGroupName, string name, MNM.SecurityGroupViewParameters properties, string expandResource = null)
         {
-            MNM.SecurityGroupViewResult securityGroupView = this.NetworkWatcherClient.GetVMSecurityRules(resourceGroupName, name, properties);
+            MNM.SecurityGroupViewResult securityGroupView = NetworkWatcherClient.GetVMSecurityRules(resourceGroupName, name, properties);
             var networkInterfaces = new PSSecurityGroupViewResult();
             networkInterfaces.NetworkInterfaces = new List<PSSecurityGroupView>();
 

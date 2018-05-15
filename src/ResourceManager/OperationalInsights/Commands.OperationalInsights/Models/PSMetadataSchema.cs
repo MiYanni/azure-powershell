@@ -26,8 +26,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (schema != null)
             {
-                this.Name = schema.Name;
-                this.Version = schema.Version.Value;
+                Name = schema.Name;
+                Version = schema.Version.Value;
             }
         }
 

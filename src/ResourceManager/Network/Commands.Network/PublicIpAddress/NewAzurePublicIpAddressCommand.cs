@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsPublicIpAddressPresent(this.ResourceGroupName, this.Name);
+            var present = IsPublicIpAddressPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
@@ -152,42 +152,42 @@ namespace Microsoft.Azure.Commands.Network
         private PSPublicIpAddress CreatePublicIpAddress()
         {
             var publicIp = new PSPublicIpAddress();
-            publicIp.Name = this.Name;
-            publicIp.Location = this.Location;
-            publicIp.PublicIpAllocationMethod = this.AllocationMethod;
-            publicIp.PublicIpAddressVersion = this.IpAddressVersion;
-            publicIp.Zones = this.Zone;
+            publicIp.Name = Name;
+            publicIp.Location = Location;
+            publicIp.PublicIpAllocationMethod = AllocationMethod;
+            publicIp.PublicIpAddressVersion = IpAddressVersion;
+            publicIp.Zones = Zone;
 
-            if (!string.IsNullOrEmpty(this.Sku))
+            if (!string.IsNullOrEmpty(Sku))
             {
                 publicIp.Sku = new PSPublicIpAddressSku();
-                publicIp.Sku.Name = this.Sku;
+                publicIp.Sku.Name = Sku;
             }
 
-            if (this.IdleTimeoutInMinutes > 0)
+            if (IdleTimeoutInMinutes > 0)
             {
-                publicIp.IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
+                publicIp.IdleTimeoutInMinutes = IdleTimeoutInMinutes;
             }
 
-            if (!string.IsNullOrEmpty(this.DomainNameLabel))
+            if (!string.IsNullOrEmpty(DomainNameLabel))
             {
                 publicIp.DnsSettings = new PSPublicIpAddressDnsSettings();
-                publicIp.DnsSettings.DomainNameLabel = this.DomainNameLabel;
-                publicIp.DnsSettings.ReverseFqdn = this.ReverseFqdn;
+                publicIp.DnsSettings.DomainNameLabel = DomainNameLabel;
+                publicIp.DnsSettings.ReverseFqdn = ReverseFqdn;
             }
 
-            if (this.IpTag != null && this.IpTag.Count > 0)
+            if (IpTag != null && IpTag.Count > 0)
             {
-                publicIp.IpTags = this.IpTag;
+                publicIp.IpTags = IpTag;
             }
 
             var publicIpModel = NetworkResourceManagerProfile.Mapper.Map<MNM.PublicIPAddress>(publicIp);
 
-            publicIpModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            publicIpModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
-            this.PublicIpAddressClient.CreateOrUpdate(this.ResourceGroupName, this.Name, publicIpModel);
+            PublicIpAddressClient.CreateOrUpdate(ResourceGroupName, Name, publicIpModel);
 
-            var getPublicIp = this.GetPublicIpAddress(this.ResourceGroupName, this.Name);
+            var getPublicIp = GetPublicIpAddress(ResourceGroupName, Name);
 
             return getPublicIp;
         }

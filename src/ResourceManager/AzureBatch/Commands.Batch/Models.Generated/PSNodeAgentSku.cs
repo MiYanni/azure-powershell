@@ -26,21 +26,21 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSNodeAgentSku
     {
         
-        internal Microsoft.Azure.Batch.NodeAgentSku omObject;
+        internal NodeAgentSku omObject;
         
         private IReadOnlyList<PSImageReference> verifiedImageReferences;
         
-        internal PSNodeAgentSku(Microsoft.Azure.Batch.NodeAgentSku omObject)
+        internal PSNodeAgentSku(NodeAgentSku omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -49,15 +49,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Id;
+                return omObject.Id;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.OSType? OSType
+        public Azure.Batch.Common.OSType? OSType
         {
             get
             {
-                return this.omObject.OSType;
+                return omObject.OSType;
             }
         }
         
@@ -65,22 +65,22 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.verifiedImageReferences == null) 
-                            && (this.omObject.VerifiedImageReferences != null)))
+                if (verifiedImageReferences == null 
+                    && omObject.VerifiedImageReferences != null)
                 {
                     List<PSImageReference> list;
                     list = new List<PSImageReference>();
-                    IEnumerator<Microsoft.Azure.Batch.ImageReference> enumerator;
-                    enumerator = this.omObject.VerifiedImageReferences.GetEnumerator();
+                    IEnumerator<ImageReference> enumerator;
+                    enumerator = omObject.VerifiedImageReferences.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSImageReference(enumerator.Current));
                     }
-                    this.verifiedImageReferences = list.AsReadOnly();
+                    verifiedImageReferences = list.AsReadOnly();
                 }
-                return this.verifiedImageReferences;
+                return verifiedImageReferences;
             }
         }
     }

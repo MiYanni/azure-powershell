@@ -30,8 +30,8 @@ namespace Microsoft.Azure.Commands.Billing.Models
         {
             if (enrollmentAccount != null)
             {
-                this.ObjectId = enrollmentAccount.Name;
-                this.PrincipalName = enrollmentAccount.PrincipalName;
+                ObjectId = enrollmentAccount.Name;
+                PrincipalName = enrollmentAccount.PrincipalName;
             }
         }
     }

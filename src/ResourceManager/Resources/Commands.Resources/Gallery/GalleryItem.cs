@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IList<Artifact> Artifacts
         {
-            get { return this._artifacts; }
-            set { this._artifacts = value; }
+            get { return _artifacts; }
+            set { _artifacts = value; }
         }
 
         private IList<string> _categories;
@@ -28,8 +28,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IList<string> Categories
         {
-            get { return this._categories; }
-            set { this._categories = value; }
+            get { return _categories; }
+            set { _categories = value; }
         }
 
         private DefinitionTemplates _definitionTemplates;
@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public DefinitionTemplates DefinitionTemplates
         {
-            get { return this._definitionTemplates; }
-            set { this._definitionTemplates = value; }
+            get { return _definitionTemplates; }
+            set { _definitionTemplates = value; }
         }
 
         private string _description;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Description
         {
-            get { return this._description; }
-            set { this._description = value; }
+            get { return _description; }
+            set { _description = value; }
         }
 
         private string _displayName;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string DisplayName
         {
-            get { return this._displayName; }
-            set { this._displayName = value; }
+            get { return _displayName; }
+            set { _displayName = value; }
         }
 
         private IList<Filter> _filters;
@@ -72,8 +72,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IList<Filter> Filters
         {
-            get { return this._filters; }
-            set { this._filters = value; }
+            get { return _filters; }
+            set { _filters = value; }
         }
 
         private IDictionary<string, string> _iconFileUris;
@@ -83,8 +83,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IDictionary<string, string> IconFileUris
         {
-            get { return this._iconFileUris; }
-            set { this._iconFileUris = value; }
+            get { return _iconFileUris; }
+            set { _iconFileUris = value; }
         }
 
         private string _identity;
@@ -94,8 +94,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Identity
         {
-            get { return this._identity; }
-            set { this._identity = value; }
+            get { return _identity; }
+            set { _identity = value; }
         }
 
         private IList<Link> _links;
@@ -105,8 +105,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IList<Link> Links
         {
-            get { return this._links; }
-            set { this._links = value; }
+            get { return _links; }
+            set { _links = value; }
         }
 
         private string _longSummary;
@@ -116,8 +116,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string LongSummary
         {
-            get { return this._longSummary; }
-            set { this._longSummary = value; }
+            get { return _longSummary; }
+            set { _longSummary = value; }
         }
 
         private MarketingMaterial _marketingMaterial;
@@ -127,8 +127,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public MarketingMaterial MarketingMaterial
         {
-            get { return this._marketingMaterial; }
-            set { this._marketingMaterial = value; }
+            get { return _marketingMaterial; }
+            set { _marketingMaterial = value; }
         }
 
         private IDictionary<string, string> _metadata;
@@ -138,8 +138,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IDictionary<string, string> Metadata
         {
-            get { return this._metadata; }
-            set { this._metadata = value; }
+            get { return _metadata; }
+            set { _metadata = value; }
         }
 
         private string _name;
@@ -149,8 +149,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Name
         {
-            get { return this._name; }
-            set { this._name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
 
         private IList<Product> _products;
@@ -160,8 +160,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IList<Product> Products
         {
-            get { return this._products; }
-            set { this._products = value; }
+            get { return _products; }
+            set { _products = value; }
         }
 
         private IDictionary<string, string> _properties;
@@ -171,8 +171,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IDictionary<string, string> Properties
         {
-            get { return this._properties; }
-            set { this._properties = value; }
+            get { return _properties; }
+            set { _properties = value; }
         }
 
         private string _publisher;
@@ -182,8 +182,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Publisher
         {
-            get { return this._publisher; }
-            set { this._publisher = value; }
+            get { return _publisher; }
+            set { _publisher = value; }
         }
 
         private string _publisherDisplayName;
@@ -193,8 +193,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string PublisherDisplayName
         {
-            get { return this._publisherDisplayName; }
-            set { this._publisherDisplayName = value; }
+            get { return _publisherDisplayName; }
+            set { _publisherDisplayName = value; }
         }
 
         private IList<string> _screenshotUris;
@@ -204,8 +204,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public IList<string> ScreenshotUris
         {
-            get { return this._screenshotUris; }
-            set { this._screenshotUris = value; }
+            get { return _screenshotUris; }
+            set { _screenshotUris = value; }
         }
 
         private string _summary;
@@ -215,8 +215,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Summary
         {
-            get { return this._summary; }
-            set { this._summary = value; }
+            get { return _summary; }
+            set { _summary = value; }
         }
 
         private string _uiDefinitionUri;
@@ -227,8 +227,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string UiDefinitionUri
         {
-            get { return this._uiDefinitionUri; }
-            set { this._uiDefinitionUri = value; }
+            get { return _uiDefinitionUri; }
+            set { _uiDefinitionUri = value; }
         }
 
         private string _version;
@@ -238,8 +238,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Version
         {
-            get { return this._version; }
-            set { this._version = value; }
+            get { return _version; }
+            set { _version = value; }
         }
 
         /// <summary>
@@ -247,15 +247,15 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public GalleryItem()
         {
-            this.Artifacts = new LazyList<Artifact>();
-            this.Categories = new LazyList<string>();
-            this.Filters = new LazyList<Filter>();
-            this.IconFileUris = new LazyDictionary<string, string>();
-            this.Links = new LazyList<Link>();
-            this.Metadata = new LazyDictionary<string, string>();
-            this.Products = new LazyList<Product>();
-            this.Properties = new LazyDictionary<string, string>();
-            this.ScreenshotUris = new LazyList<string>();
+            Artifacts = new LazyList<Artifact>();
+            Categories = new LazyList<string>();
+            Filters = new LazyList<Filter>();
+            IconFileUris = new LazyDictionary<string, string>();
+            Links = new LazyList<Link>();
+            Metadata = new LazyDictionary<string, string>();
+            Products = new LazyList<Product>();
+            Properties = new LazyDictionary<string, string>();
+            ScreenshotUris = new LazyList<string>();
         }
     }
 }

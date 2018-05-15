@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             DeletedDate = deletedCertificateBundle.DeletedDate;
         }
 
-        internal static PSDeletedKeyVaultCertificate FromDeletedCertificateBundle( Azure.KeyVault.Models.DeletedCertificateBundle deletedCertificateBundle ) 
+        internal static PSDeletedKeyVaultCertificate FromDeletedCertificateBundle( DeletedCertificateBundle deletedCertificateBundle ) 
         {
             if ( deletedCertificateBundle == null )
             {

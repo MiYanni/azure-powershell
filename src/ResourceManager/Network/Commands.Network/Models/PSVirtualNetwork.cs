@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Commands.Network.Models
 {
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Management.Internal.Network.Common;
+    using Management.Internal.Network.Common;
     using Newtonsoft.Json;
     
     public class PSVirtualNetwork : PSTopLevelResource, IResourceReference
@@ -40,43 +40,43 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string AddressSpaceText
         {
-            get { return JsonConvert.SerializeObject(AddressSpace, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(AddressSpace, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string DhcpOptionsText
         {
-            get { return JsonConvert.SerializeObject(DhcpOptions, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DhcpOptions, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string SubnetsText
         {
-            get { return JsonConvert.SerializeObject(Subnets, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Subnets, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string VirtualNetworkPeeringsText
         {
-            get { return JsonConvert.SerializeObject(VirtualNetworkPeerings, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(VirtualNetworkPeerings, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string EnableDdosProtectionText
         {
-            get { return JsonConvert.SerializeObject(EnableDdosProtection, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(EnableDdosProtection, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string DdosProtectionPlanText
         {
-            get { return JsonConvert.SerializeObject(DdosProtectionPlan, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DdosProtectionPlan, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string EnableVmProtectionText
         {
-            get { return JsonConvert.SerializeObject(EnableVmProtection, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(EnableVmProtection, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

@@ -16,7 +16,7 @@ using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Properties;
 
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models;
+    using Models;
     using System;
     using System.Management.Automation;
 

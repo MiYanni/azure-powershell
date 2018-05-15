@@ -34,23 +34,23 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
                 metrics: serviceDiagnosticSettings.Metrics, 
                 logs: serviceDiagnosticSettings.Logs)
         {
-            this.StorageAccountId = serviceDiagnosticSettings.StorageAccountId;
-            this.ServiceBusRuleId = serviceDiagnosticSettings.ServiceBusRuleId;
-            this.EventHubAuthorizationRuleId = serviceDiagnosticSettings.EventHubAuthorizationRuleId;
-            this.Metrics = new List<MetricSettings>();
+            StorageAccountId = serviceDiagnosticSettings.StorageAccountId;
+            ServiceBusRuleId = serviceDiagnosticSettings.ServiceBusRuleId;
+            EventHubAuthorizationRuleId = serviceDiagnosticSettings.EventHubAuthorizationRuleId;
+            Metrics = new List<MetricSettings>();
             foreach (MetricSettings metricSettings in serviceDiagnosticSettings.Metrics)
             {
-                this.Metrics.Add(new PSMetricSettings(metricSettings));
+                Metrics.Add(new PSMetricSettings(metricSettings));
             }
 
-            this.Logs = new List<LogSettings>();
+            Logs = new List<LogSettings>();
             foreach (LogSettings logSettings in serviceDiagnosticSettings.Logs)
             {
-                this.Logs.Add(new PSLogSettings(logSettings));
+                Logs.Add(new PSLogSettings(logSettings));
             }
 
-            this.WorkspaceId = serviceDiagnosticSettings.WorkspaceId;
-            this.Tags = serviceDiagnosticSettings.Tags;
+            WorkspaceId = serviceDiagnosticSettings.WorkspaceId;
+            Tags = serviceDiagnosticSettings.Tags;
         }
     }
 }

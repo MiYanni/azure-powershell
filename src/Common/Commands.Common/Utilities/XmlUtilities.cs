@@ -42,10 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     {
                         throw new InvalidOperationException(exceptionMessage);
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
             }
 
@@ -110,7 +107,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(unformattedXml);
                 StringBuilder stringBuilder = new StringBuilder();
-                XmlWriterSettings settings = new XmlWriterSettings()
+                XmlWriterSettings settings = new XmlWriterSettings
                 {
                     Indent = true,
                     IndentChars = "\t",

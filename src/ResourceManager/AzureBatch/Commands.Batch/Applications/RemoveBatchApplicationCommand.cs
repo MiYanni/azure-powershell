@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch
         public override void ExecuteCmdlet()
         {
             WriteVerboseWithTimestamp(Resources.BeginMAMLCall, mamlCall);
-            BatchClient.DeleteApplication(this.ResourceGroupName, this.AccountName, this.ApplicationId);
+            BatchClient.DeleteApplication(ResourceGroupName, AccountName, ApplicationId);
             WriteVerboseWithTimestamp(Resources.EndMAMLCall, mamlCall);
         }
     }

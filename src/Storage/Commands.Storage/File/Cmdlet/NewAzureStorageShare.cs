@@ -30,13 +30,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
         public override void ExecuteCmdlet()
         {
-            NamingUtil.ValidateShareName(this.Name, false);
+            NamingUtil.ValidateShareName(Name, false);
 
-            var share = this.Channel.GetShareReference(this.Name);
-            this.RunTask(async taskId =>
+            var share = Channel.GetShareReference(Name);
+            RunTask(async taskId =>
             {
-                await this.Channel.CreateShareAsync(share, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
-                this.OutputStream.WriteObject(taskId, share);
+                await Channel.CreateShareAsync(share, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
+                OutputStream.WriteObject(taskId, share);
             });
         }
     }

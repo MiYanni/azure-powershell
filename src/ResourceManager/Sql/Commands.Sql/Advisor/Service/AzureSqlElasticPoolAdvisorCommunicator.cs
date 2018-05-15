@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Service
             return GetCurrentSqlClient().ElasticPoolAdvisors.Update(resourceGroupName, serverName, elasticPoolName, advisorName,
                     new AdvisorUpdateParameters
                     {
-                        Properties = new AdvisorUpdateProperties()
+                        Properties = new AdvisorUpdateProperties
                         {
                             AutoExecuteStatus = autoExecuteStatus
                         }

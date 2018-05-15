@@ -26,13 +26,13 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSCloudJob
     {
         
-        internal Microsoft.Azure.Batch.CloudJob omObject;
+        internal CloudJob omObject;
         
         private IList<PSEnvironmentSetting> commonEnvironmentSettings;
         
@@ -52,11 +52,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         
         private PSJobStatistics statistics;
         
-        internal PSCloudJob(Microsoft.Azure.Batch.CloudJob omObject)
+        internal PSCloudJob(CloudJob omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -65,34 +65,34 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.commonEnvironmentSettings == null) 
-                            && (this.omObject.CommonEnvironmentSettings != null)))
+                if (commonEnvironmentSettings == null 
+                    && omObject.CommonEnvironmentSettings != null)
                 {
                     List<PSEnvironmentSetting> list;
                     list = new List<PSEnvironmentSetting>();
-                    IEnumerator<Microsoft.Azure.Batch.EnvironmentSetting> enumerator;
-                    enumerator = this.omObject.CommonEnvironmentSettings.GetEnumerator();
+                    IEnumerator<EnvironmentSetting> enumerator;
+                    enumerator = omObject.CommonEnvironmentSettings.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSEnvironmentSetting(enumerator.Current));
                     }
-                    this.commonEnvironmentSettings = list;
+                    commonEnvironmentSettings = list;
                 }
-                return this.commonEnvironmentSettings;
+                return commonEnvironmentSettings;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.CommonEnvironmentSettings = null;
+                    omObject.CommonEnvironmentSettings = null;
                 }
                 else
                 {
-                    this.omObject.CommonEnvironmentSettings = new List<Microsoft.Azure.Batch.EnvironmentSetting>();
+                    omObject.CommonEnvironmentSettings = new List<EnvironmentSetting>();
                 }
-                this.commonEnvironmentSettings = value;
+                commonEnvironmentSettings = value;
             }
         }
         
@@ -100,32 +100,32 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.constraints == null) 
-                            && (this.omObject.Constraints != null)))
+                if (constraints == null 
+                    && omObject.Constraints != null)
                 {
-                    this.constraints = new PSJobConstraints(this.omObject.Constraints);
+                    constraints = new PSJobConstraints(omObject.Constraints);
                 }
-                return this.constraints;
+                return constraints;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.Constraints = null;
+                    omObject.Constraints = null;
                 }
                 else
                 {
-                    this.omObject.Constraints = value.omObject;
+                    omObject.Constraints = value.omObject;
                 }
-                this.constraints = value;
+                constraints = value;
             }
         }
         
-        public System.DateTime? CreationTime
+        public DateTime? CreationTime
         {
             get
             {
-                return this.omObject.CreationTime;
+                return omObject.CreationTime;
             }
         }
         
@@ -133,11 +133,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.DisplayName;
+                return omObject.DisplayName;
             }
             set
             {
-                this.omObject.DisplayName = value;
+                omObject.DisplayName = value;
             }
         }
         
@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ETag;
+                return omObject.ETag;
             }
         }
         
@@ -153,12 +153,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.executionInformation == null) 
-                            && (this.omObject.ExecutionInformation != null)))
+                if (executionInformation == null 
+                    && omObject.ExecutionInformation != null)
                 {
-                    this.executionInformation = new PSJobExecutionInformation(this.omObject.ExecutionInformation);
+                    executionInformation = new PSJobExecutionInformation(omObject.ExecutionInformation);
                 }
-                return this.executionInformation;
+                return executionInformation;
             }
         }
         
@@ -166,11 +166,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Id;
+                return omObject.Id;
             }
             set
             {
-                this.omObject.Id = value;
+                omObject.Id = value;
             }
         }
         
@@ -178,24 +178,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.jobManagerTask == null) 
-                            && (this.omObject.JobManagerTask != null)))
+                if (jobManagerTask == null 
+                    && omObject.JobManagerTask != null)
                 {
-                    this.jobManagerTask = new PSJobManagerTask(this.omObject.JobManagerTask);
+                    jobManagerTask = new PSJobManagerTask(omObject.JobManagerTask);
                 }
-                return this.jobManagerTask;
+                return jobManagerTask;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.JobManagerTask = null;
+                    omObject.JobManagerTask = null;
                 }
                 else
                 {
-                    this.omObject.JobManagerTask = value.omObject;
+                    omObject.JobManagerTask = value.omObject;
                 }
-                this.jobManagerTask = value;
+                jobManagerTask = value;
             }
         }
         
@@ -203,24 +203,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.jobPreparationTask == null) 
-                            && (this.omObject.JobPreparationTask != null)))
+                if (jobPreparationTask == null 
+                    && omObject.JobPreparationTask != null)
                 {
-                    this.jobPreparationTask = new PSJobPreparationTask(this.omObject.JobPreparationTask);
+                    jobPreparationTask = new PSJobPreparationTask(omObject.JobPreparationTask);
                 }
-                return this.jobPreparationTask;
+                return jobPreparationTask;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.JobPreparationTask = null;
+                    omObject.JobPreparationTask = null;
                 }
                 else
                 {
-                    this.omObject.JobPreparationTask = value.omObject;
+                    omObject.JobPreparationTask = value.omObject;
                 }
-                this.jobPreparationTask = value;
+                jobPreparationTask = value;
             }
         }
         
@@ -228,32 +228,32 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.jobReleaseTask == null) 
-                            && (this.omObject.JobReleaseTask != null)))
+                if (jobReleaseTask == null 
+                    && omObject.JobReleaseTask != null)
                 {
-                    this.jobReleaseTask = new PSJobReleaseTask(this.omObject.JobReleaseTask);
+                    jobReleaseTask = new PSJobReleaseTask(omObject.JobReleaseTask);
                 }
-                return this.jobReleaseTask;
+                return jobReleaseTask;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.JobReleaseTask = null;
+                    omObject.JobReleaseTask = null;
                 }
                 else
                 {
-                    this.omObject.JobReleaseTask = value.omObject;
+                    omObject.JobReleaseTask = value.omObject;
                 }
-                this.jobReleaseTask = value;
+                jobReleaseTask = value;
             }
         }
         
-        public System.DateTime? LastModified
+        public DateTime? LastModified
         {
             get
             {
-                return this.omObject.LastModified;
+                return omObject.LastModified;
             }
         }
         
@@ -261,58 +261,58 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.metadata == null) 
-                            && (this.omObject.Metadata != null)))
+                if (metadata == null 
+                    && omObject.Metadata != null)
                 {
                     List<PSMetadataItem> list;
                     list = new List<PSMetadataItem>();
-                    IEnumerator<Microsoft.Azure.Batch.MetadataItem> enumerator;
-                    enumerator = this.omObject.Metadata.GetEnumerator();
+                    IEnumerator<MetadataItem> enumerator;
+                    enumerator = omObject.Metadata.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSMetadataItem(enumerator.Current));
                     }
-                    this.metadata = list;
+                    metadata = list;
                 }
-                return this.metadata;
+                return metadata;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.Metadata = null;
+                    omObject.Metadata = null;
                 }
                 else
                 {
-                    this.omObject.Metadata = new List<Microsoft.Azure.Batch.MetadataItem>();
+                    omObject.Metadata = new List<MetadataItem>();
                 }
-                this.metadata = value;
+                metadata = value;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.OnAllTasksComplete? OnAllTasksComplete
+        public Azure.Batch.Common.OnAllTasksComplete? OnAllTasksComplete
         {
             get
             {
-                return this.omObject.OnAllTasksComplete;
+                return omObject.OnAllTasksComplete;
             }
             set
             {
-                this.omObject.OnAllTasksComplete = value;
+                omObject.OnAllTasksComplete = value;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.OnTaskFailure? OnTaskFailure
+        public Azure.Batch.Common.OnTaskFailure? OnTaskFailure
         {
             get
             {
-                return this.omObject.OnTaskFailure;
+                return omObject.OnTaskFailure;
             }
             set
             {
-                this.omObject.OnTaskFailure = value;
+                omObject.OnTaskFailure = value;
             }
         }
         
@@ -320,68 +320,68 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.poolInformation == null) 
-                            && (this.omObject.PoolInformation != null)))
+                if (poolInformation == null 
+                    && omObject.PoolInformation != null)
                 {
-                    this.poolInformation = new PSPoolInformation(this.omObject.PoolInformation);
+                    poolInformation = new PSPoolInformation(omObject.PoolInformation);
                 }
-                return this.poolInformation;
+                return poolInformation;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.PoolInformation = null;
+                    omObject.PoolInformation = null;
                 }
                 else
                 {
-                    this.omObject.PoolInformation = value.omObject;
+                    omObject.PoolInformation = value.omObject;
                 }
-                this.poolInformation = value;
+                poolInformation = value;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.JobState? PreviousState
+        public Azure.Batch.Common.JobState? PreviousState
         {
             get
             {
-                return this.omObject.PreviousState;
+                return omObject.PreviousState;
             }
         }
         
-        public System.DateTime? PreviousStateTransitionTime
+        public DateTime? PreviousStateTransitionTime
         {
             get
             {
-                return this.omObject.PreviousStateTransitionTime;
+                return omObject.PreviousStateTransitionTime;
             }
         }
         
-        public System.Int32? Priority
+        public Int32? Priority
         {
             get
             {
-                return this.omObject.Priority;
+                return omObject.Priority;
             }
             set
             {
-                this.omObject.Priority = value;
+                omObject.Priority = value;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.JobState? State
+        public Azure.Batch.Common.JobState? State
         {
             get
             {
-                return this.omObject.State;
+                return omObject.State;
             }
         }
         
-        public System.DateTime? StateTransitionTime
+        public DateTime? StateTransitionTime
         {
             get
             {
-                return this.omObject.StateTransitionTime;
+                return omObject.StateTransitionTime;
             }
         }
         
@@ -389,12 +389,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.statistics == null) 
-                            && (this.omObject.Statistics != null)))
+                if (statistics == null 
+                    && omObject.Statistics != null)
                 {
-                    this.statistics = new PSJobStatistics(this.omObject.Statistics);
+                    statistics = new PSJobStatistics(omObject.Statistics);
                 }
-                return this.statistics;
+                return statistics;
             }
         }
         
@@ -402,19 +402,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Url;
+                return omObject.Url;
             }
         }
         
-        public System.Boolean? UsesTaskDependencies
+        public Boolean? UsesTaskDependencies
         {
             get
             {
-                return this.omObject.UsesTaskDependencies;
+                return omObject.UsesTaskDependencies;
             }
             set
             {
-                this.omObject.UsesTaskDependencies = value;
+                omObject.UsesTaskDependencies = value;
             }
         }
     }

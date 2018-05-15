@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         [Parameter(Mandatory = true, ValueFromPipeline = true,
                    HelpMessage = "The node type name")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public virtual string NodeType { get; set; }
 
         public ServiceFabricNodeTypeCmdletBase()
@@ -65,8 +65,8 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             var vmss = SafeGetResource(
                 () =>
                 ComputeClient.VirtualMachineScaleSets.Get( 
-                    this.ResourceGroupName,     
-                    this.NodeType),
+                    ResourceGroupName,     
+                    NodeType),
                 false);
 
             return vmss != null;

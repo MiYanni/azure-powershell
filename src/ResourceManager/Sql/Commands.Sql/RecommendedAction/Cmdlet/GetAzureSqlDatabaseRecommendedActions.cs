@@ -45,11 +45,11 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedAction.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("RecommendedActionName"))
             {
                 results = new List<AzureSqlDatabaseRecommendedActionModel>();
-                results.Add(ModelAdapter.GetDatabaseRecommendedAction(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.AdvisorName, this.RecommendedActionName));
+                results.Add(ModelAdapter.GetDatabaseRecommendedAction(ResourceGroupName, ServerName, DatabaseName, AdvisorName, RecommendedActionName));
             }
             else
             {
-                results = ModelAdapter.ListDatabaseRecommendedActions(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.AdvisorName);
+                results = ModelAdapter.ListDatabaseRecommendedActions(ResourceGroupName, ServerName, DatabaseName, AdvisorName);
             }
 
             return results;

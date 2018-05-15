@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
         const string ParameterSet3Name = "S3";
         const string ParameterSet4Name = "S4";
 
-        string resourceGroupName;
+        string _resourceGroupName;
         string webAppName;
         string slot;
 
@@ -99,17 +99,17 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
             if (ParameterSetName == ParameterSet3Name
                 || ParameterSetName == ParameterSet4Name)
             {
-                CmdletHelpers.ExtractWebAppPropertiesFromWebApp(WebApp, out resourceGroupName, out webAppName, out slot);
+                CmdletHelpers.ExtractWebAppPropertiesFromWebApp(WebApp, out _resourceGroupName, out webAppName, out slot);
             }
             else
             {
-                resourceGroupName = ResourceGroupName;
+                _resourceGroupName = ResourceGroupName;
                 webAppName = WebAppName;
                 slot = Slot;
             }
 
             string thumbPrint = null;
-            var webapp = WebsitesClient.GetWebApp(resourceGroupName, webAppName, slot);
+            var webapp = WebsitesClient.GetWebApp(_resourceGroupName, webAppName, slot);
 
             switch (ParameterSetName)
             {
@@ -118,12 +118,12 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
                     var certificateBytes = File.ReadAllBytes(CertificateFilePath);
                     var certificateDetails = new X509Certificate2(certificateBytes, CertificatePassword);
 
-                    var certificateName = GenerateCertName(certificateDetails.Thumbprint, webapp.HostingEnvironmentProfile != null ? webapp.HostingEnvironmentProfile.Name : null, webapp.Location, resourceGroupName);
+                    var certificateName = GenerateCertName(certificateDetails.Thumbprint, webapp.HostingEnvironmentProfile != null ? webapp.HostingEnvironmentProfile.Name : null, webapp.Location, _resourceGroupName);
                     var certificate = new Certificate(
                         webapp.Location,
                         pfxBlob: certificateBytes,
                         password: CertificatePassword,
-                        hostingEnvironmentProfile: (webapp.HostingEnvironmentProfile != null) ?
+                        hostingEnvironmentProfile: webapp.HostingEnvironmentProfile != null ?
                                                         webapp.HostingEnvironmentProfile :
                                                         null);
 
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
 
             WriteObject(CmdletHelpers.GetHostNameSslStatesFromSiteResponse(
                 WebsitesClient.UpdateHostNameSslState(
-                    resourceGroupName,
+                    _resourceGroupName,
                     webAppName,
                     slot,
                     webapp.Location,

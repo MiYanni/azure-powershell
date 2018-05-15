@@ -37,15 +37,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var frontendPort = this.ApplicationGateway.FrontendPorts.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var frontendPort = ApplicationGateway.FrontendPorts.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (frontendPort != null)
             {
-                this.ApplicationGateway.FrontendPorts.Remove(frontendPort);
+                ApplicationGateway.FrontendPorts.Remove(frontendPort);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<Column> Columns
         {
-            get { return this._columns; }
-            set { this._columns = value; }
+            get { return _columns; }
+            set { _columns = value; }
         }
         
         private IList<RecommendedIndex> _recommendedIndexes;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedIndex> RecommendedIndexes
         {
-            get { return this._recommendedIndexes; }
-            set { this._recommendedIndexes = value; }
+            get { return _recommendedIndexes; }
+            set { _recommendedIndexes = value; }
         }
         
         private string _tableType;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string TableType
         {
-            get { return this._tableType; }
-            set { this._tableType = value; }
+            get { return _tableType; }
+            set { _tableType = value; }
         }
         
         /// <summary>
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public TableProperties()
         {
-            this.Columns = new LazyList<Column>();
-            this.RecommendedIndexes = new LazyList<RecommendedIndex>();
+            Columns = new LazyList<Column>();
+            RecommendedIndexes = new LazyList<RecommendedIndex>();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
     /**
      * This class acts as the base
      **/ 
-    public class GenericBreakingChangeAttribute : System.Attribute
+    public class GenericBreakingChangeAttribute : Attribute
     {
         private string _message;
         //A dexcription of what the change is about, non mandatory
@@ -58,23 +58,23 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
         public GenericBreakingChangeAttribute(string message, string deprecateByVersion)
         {
             _message = message;
-            this.DeprecateByVersion = deprecateByVersion;
-            this.DeprecateByVersionSet = true;
+            DeprecateByVersion = deprecateByVersion;
+            DeprecateByVersionSet = true;
         }
 
         public GenericBreakingChangeAttribute(string message, string deprecateByVersion, string changeInEfectByDate)
         {
             _message = message;
-            this.DeprecateByVersion = deprecateByVersion;
-            this.DeprecateByVersionSet = true;
+            DeprecateByVersion = deprecateByVersion;
+            DeprecateByVersionSet = true;
 
-            this.ChangeInEfectByDate = DateTime.Parse(changeInEfectByDate);
-            this.ChangeInEfectByDateSet = true;
+            ChangeInEfectByDate = DateTime.Parse(changeInEfectByDate);
+            ChangeInEfectByDateSet = true;
         }
 
         public DateTime getInEffectByDate()
         {
-            return this.ChangeInEfectByDate.Date;
+            return ChangeInEfectByDate.Date;
         }
 
         /**
@@ -98,17 +98,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
 
             if (!string.IsNullOrWhiteSpace(ChangeDescription))
             {
-                breakingChangeMessage.Append(string.Format(Resources.BreakingChangesAttributesChangeDescriptionMessage, this.ChangeDescription));
+                breakingChangeMessage.Append(string.Format(Resources.BreakingChangesAttributesChangeDescriptionMessage, ChangeDescription));
             }
 
             if (ChangeInEfectByDateSet)
             {
-                breakingChangeMessage.Append(string.Format(Resources.BreakingChangesAttributesInEffectByDateMessage, this.ChangeInEfectByDate));
+                breakingChangeMessage.Append(string.Format(Resources.BreakingChangesAttributesInEffectByDateMessage, ChangeInEfectByDate));
             }
 
             if (DeprecateByVersionSet)
             {
-                breakingChangeMessage.Append(string.Format(Resources.BreakingChangesAttributesInEffectByVersion, this.DeprecateByVersion));
+                breakingChangeMessage.Append(string.Format(Resources.BreakingChangesAttributesInEffectByVersion, DeprecateByVersion));
             }
 
             if (!string.IsNullOrWhiteSpace(OldWay) && !string.IsNullOrWhiteSpace(NewWay))
@@ -137,17 +137,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
 
             if (!string.IsNullOrWhiteSpace(ChangeDescription))
             {
-                writeOutput(string.Format(Resources.BreakingChangesAttributesChangeDescriptionMessage, this.ChangeDescription));
+                writeOutput(string.Format(Resources.BreakingChangesAttributesChangeDescriptionMessage, ChangeDescription));
             }
 
             if (ChangeInEfectByDateSet)
             {
-                writeOutput(string.Format(Resources.BreakingChangesAttributesInEffectByDateMessage, this.ChangeInEfectByDate));
+                writeOutput(string.Format(Resources.BreakingChangesAttributesInEffectByDateMessage, ChangeInEfectByDate));
             }
 
             if (DeprecateByVersionSet)
             {
-                writeOutput(string.Format(Resources.BreakingChangesAttributesInEffectByVersion, this.DeprecateByVersion));
+                writeOutput(string.Format(Resources.BreakingChangesAttributesInEffectByVersion, DeprecateByVersion));
             }
 
             if (OldWay != null && NewWay != null)

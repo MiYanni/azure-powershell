@@ -54,12 +54,12 @@ namespace Microsoft.Azure.Commands.Network
 
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Microsoft.Azure.Commands.Network.Properties.Resources.RemovingResource, Name),
-                Microsoft.Azure.Commands.Network.Properties.Resources.RemoveResourceMessage,
+                string.Format(Properties.Resources.RemovingResource, Name),
+                Properties.Resources.RemoveResourceMessage,
                 Name,
                 () =>
                 {
-                    this.ApplicationGatewayClient.Delete(this.ResourceGroupName, this.Name);
+                    ApplicationGatewayClient.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

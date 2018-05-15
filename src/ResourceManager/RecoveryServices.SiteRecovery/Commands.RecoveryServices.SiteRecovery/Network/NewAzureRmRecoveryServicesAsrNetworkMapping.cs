@@ -100,20 +100,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.Name,
+            if (ShouldProcess(
+                Name,
                 VerbsCommon.New))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.EnterpriseToEnterprise:
-                        this.EnterpriseToEnterpriseNetworkMapping();
+                        EnterpriseToEnterpriseNetworkMapping();
                         break;
                     case ASRParameterSets.EnterpriseToAzure:
-                        this.EnterpriseToAzureNetworkMapping();
+                        EnterpriseToAzureNetworkMapping();
                         break;
                     case ASRParameterSets.AzureToAzure:
-                        this.AzureToAzureNetworkMapping();
+                        AzureToAzureNetworkMapping();
                         break;
                 }
             }
@@ -128,32 +128,32 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             // Verify whether the subscription is associated with the account or not.
             // Check if the Azure VM Network is associated with the Subscription or not.
 
-            var mappingName = this.Name;
+            var mappingName = Name;
 
             var input = new CreateNetworkMappingInput
             {
                 Properties = new CreateNetworkMappingInputProperties
                 {
                     RecoveryFabricName = "Microsoft Azure",
-                    RecoveryNetworkId = this.RecoveryAzureNetworkId,
+                    RecoveryNetworkId = RecoveryAzureNetworkId,
                     FabricSpecificDetails = new VmmToAzureCreateNetworkMappingInput()
                 }
             };
 
-            var response = this.RecoveryServicesClient.NewAzureSiteRecoveryNetworkMapping(
+            var response = RecoveryServicesClient.NewAzureSiteRecoveryNetworkMapping(
                 Utilities.GetValueFromArmId(
-                    this.PrimaryNetwork.ID,
+                    PrimaryNetwork.ID,
                     ARMResourceTypeConstants.ReplicationFabrics),
                 Utilities.GetValueFromArmId(
-                    this.PrimaryNetwork.ID,
+                    PrimaryNetwork.ID,
                     ARMResourceTypeConstants.ReplicationNetworks),
                 mappingName,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -161,34 +161,34 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void EnterpriseToEnterpriseNetworkMapping()
         {
-            var mappingName = this.Name;
+            var mappingName = Name;
 
             var input = new CreateNetworkMappingInput
             {
                 Properties = new CreateNetworkMappingInputProperties
                 {
                     RecoveryFabricName = Utilities.GetValueFromArmId(
-                        this.RecoveryNetwork.ID,
+                        RecoveryNetwork.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
-                    RecoveryNetworkId = this.RecoveryNetwork.ID,
+                    RecoveryNetworkId = RecoveryNetwork.ID,
                     FabricSpecificDetails = new VmmToVmmCreateNetworkMappingInput()
                 }
             };
 
-            var response = this.RecoveryServicesClient.NewAzureSiteRecoveryNetworkMapping(
+            var response = RecoveryServicesClient.NewAzureSiteRecoveryNetworkMapping(
                 Utilities.GetValueFromArmId(
-                    this.PrimaryNetwork.ID,
+                    PrimaryNetwork.ID,
                     ARMResourceTypeConstants.ReplicationFabrics),
                 Utilities.GetValueFromArmId(
-                    this.PrimaryNetwork.ID,
+                    PrimaryNetwork.ID,
                     ARMResourceTypeConstants.ReplicationNetworks),
                 mappingName,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -200,11 +200,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             {
                 Properties = new CreateNetworkMappingInputProperties
                 {
-                    RecoveryFabricName = this.RecoveryFabric.Name,
-                    RecoveryNetworkId = this.RecoveryAzureNetworkId,
+                    RecoveryFabricName = RecoveryFabric.Name,
+                    RecoveryNetworkId = RecoveryAzureNetworkId,
                     FabricSpecificDetails = new AzureToAzureCreateNetworkMappingInput()
                     {
-                        PrimaryNetworkId = this.PrimaryAzureNetworkId
+                        PrimaryNetworkId = PrimaryAzureNetworkId
                     }
                 }
             };
@@ -212,9 +212,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var response =
                 RecoveryServicesClient
                 .NewAzureSiteRecoveryNetworkMapping(
-                    this.PrimaryFabric.Name,
+                    PrimaryFabric.Name,
                     ARMResourceTypeConstants.AzureNetwork,
-                    this.Name,
+                    Name,
                     input);
 
             var jobResponse =

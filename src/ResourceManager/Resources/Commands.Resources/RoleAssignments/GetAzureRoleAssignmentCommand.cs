@@ -216,7 +216,7 @@ namespace Microsoft.Azure.Commands.Resources
 
         public override void ExecuteCmdlet()
         {
-            FilterRoleAssignmentsOptions options = new FilterRoleAssignmentsOptions()
+            FilterRoleAssignmentsOptions options = new FilterRoleAssignmentsOptions
             {
                 Scope = Scope,
                 RoleDefinitionName = RoleDefinitionName,
@@ -227,7 +227,7 @@ namespace Microsoft.Azure.Commands.Resources
                     SPN = ServicePrincipalName,
                     Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 },
-                ResourceIdentifier = new ResourceIdentifier()
+                ResourceIdentifier = new ResourceIdentifier
                 {
                     ParentResource = ParentResource,
                     ResourceGroupName = ResourceGroupName,
@@ -244,7 +244,7 @@ namespace Microsoft.Azure.Commands.Resources
 
             List<PSRoleAssignment> ra = PoliciesClient.FilterRoleAssignments(options, DefaultProfile.DefaultContext.Subscription.Id.ToString());
 
-            WriteObject(ra, enumerateCollection: true);
+            WriteObject(ra, true);
         }
     }
 }

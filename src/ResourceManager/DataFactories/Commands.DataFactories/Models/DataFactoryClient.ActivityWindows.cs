@@ -36,32 +36,32 @@ namespace Microsoft.Azure.Commands.DataFactories
                 string.IsNullOrWhiteSpace(filterOptions.ActivityName))
             {
                 ActivityWindowsByDatasetListParameters byDatasetListParameters =
-                    this.GenerateListParameters<ActivityWindowsByDatasetListParameters>(filterOptions);
-                response = this.ListByDatasetActivityWindows(filterOptions.NextLink, byDatasetListParameters);
+                    GenerateListParameters<ActivityWindowsByDatasetListParameters>(filterOptions);
+                response = ListByDatasetActivityWindows(filterOptions.NextLink, byDatasetListParameters);
             }
             else if (string.IsNullOrWhiteSpace(filterOptions.DatasetName) &&
                 !string.IsNullOrWhiteSpace(filterOptions.PipelineName) &&
                 string.IsNullOrWhiteSpace(filterOptions.ActivityName))
             {
                 ActivityWindowsByPipelineListParameters byPipelineListParameters =
-                    this.GenerateListParameters<ActivityWindowsByPipelineListParameters>(filterOptions);
-                response = this.ListByPipelineActivityWindows(filterOptions.NextLink, byPipelineListParameters);
+                    GenerateListParameters<ActivityWindowsByPipelineListParameters>(filterOptions);
+                response = ListByPipelineActivityWindows(filterOptions.NextLink, byPipelineListParameters);
             }
             else if (string.IsNullOrWhiteSpace(filterOptions.DatasetName) &&
                 !string.IsNullOrWhiteSpace(filterOptions.PipelineName) &&
                 !string.IsNullOrWhiteSpace(filterOptions.ActivityName))
             {
                 ActivityWindowsByActivityListParameters byActivityListParameters =
-                    this.GenerateListParameters<ActivityWindowsByActivityListParameters>(filterOptions);
-                response = this.ListByActivityActivityWindows(filterOptions.NextLink, byActivityListParameters);
+                    GenerateListParameters<ActivityWindowsByActivityListParameters>(filterOptions);
+                response = ListByActivityActivityWindows(filterOptions.NextLink, byActivityListParameters);
             }
             else if (string.IsNullOrWhiteSpace(filterOptions.DatasetName) &&
                 string.IsNullOrWhiteSpace(filterOptions.PipelineName) &&
                 string.IsNullOrWhiteSpace(filterOptions.ActivityName))
             {
                 ActivityWindowsByDataFactoryListParameters byDataFactoryListParameters =
-                    this.GenerateListParameters<ActivityWindowsByDataFactoryListParameters>(filterOptions);
-                response = this.ListByDataFactoryActivityWindows(filterOptions.NextLink, byDataFactoryListParameters);
+                    GenerateListParameters<ActivityWindowsByDataFactoryListParameters>(filterOptions);
+                response = ListByDataFactoryActivityWindows(filterOptions.NextLink, byDataFactoryListParameters);
             }
             else
             {

@@ -38,48 +38,48 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            var loadBalancingRule = this.LoadBalancer.LoadBalancingRules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var loadBalancingRule = LoadBalancer.LoadBalancingRules.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (loadBalancingRule == null)
             {
                 throw new ArgumentException("LoadBalancingRule with the specified name does not exist");
             }
 
-            loadBalancingRule.Name = this.Name;
-            loadBalancingRule.Protocol = this.Protocol;
-            loadBalancingRule.FrontendPort = this.FrontendPort;
-            loadBalancingRule.BackendPort = this.BackendPort;
-            if (this.IdleTimeoutInMinutes > 0)
+            loadBalancingRule.Name = Name;
+            loadBalancingRule.Protocol = Protocol;
+            loadBalancingRule.FrontendPort = FrontendPort;
+            loadBalancingRule.BackendPort = BackendPort;
+            if (IdleTimeoutInMinutes > 0)
             {
-                loadBalancingRule.IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
+                loadBalancingRule.IdleTimeoutInMinutes = IdleTimeoutInMinutes;
             }
 
-            loadBalancingRule.LoadDistribution = string.IsNullOrEmpty(this.LoadDistribution) ? "Default" : this.LoadDistribution;
+            loadBalancingRule.LoadDistribution = string.IsNullOrEmpty(LoadDistribution) ? "Default" : LoadDistribution;
 
-            loadBalancingRule.EnableFloatingIP = this.EnableFloatingIP.IsPresent;
-            loadBalancingRule.DisableOutboundSNAT = this.DisableOutboundSNAT.IsPresent;
+            loadBalancingRule.EnableFloatingIP = EnableFloatingIP.IsPresent;
+            loadBalancingRule.DisableOutboundSNAT = DisableOutboundSNAT.IsPresent;
 
             loadBalancingRule.BackendAddressPool = null;
-            if (!string.IsNullOrEmpty(this.BackendAddressPoolId))
+            if (!string.IsNullOrEmpty(BackendAddressPoolId))
             {
                 loadBalancingRule.BackendAddressPool = new PSResourceId();
-                loadBalancingRule.BackendAddressPool.Id = this.BackendAddressPoolId;
+                loadBalancingRule.BackendAddressPool.Id = BackendAddressPoolId;
             }
 
             loadBalancingRule.Probe = null;
-            if (!string.IsNullOrEmpty(this.ProbeId))
+            if (!string.IsNullOrEmpty(ProbeId))
             {
                 loadBalancingRule.Probe = new PSResourceId();
-                loadBalancingRule.Probe.Id = this.ProbeId;
+                loadBalancingRule.Probe.Id = ProbeId;
             }
 
             loadBalancingRule.FrontendIPConfiguration = null;
-            if (!string.IsNullOrEmpty(this.FrontendIpConfigurationId))
+            if (!string.IsNullOrEmpty(FrontendIpConfigurationId))
             {
-                loadBalancingRule.FrontendIPConfiguration = new PSResourceId() { Id = this.FrontendIpConfigurationId };
+                loadBalancingRule.FrontendIPConfiguration = new PSResourceId { Id = FrontendIpConfigurationId };
             }
 
-            WriteObject(this.LoadBalancer);
+            WriteObject(LoadBalancer);
         }
     }
 }

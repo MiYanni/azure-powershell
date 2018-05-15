@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            ChangeOSVersionParameters parameters = new ChangeOSVersionParameters(this.BatchContext, this.Id, null,
-                this.TargetOSVersion, this.AdditionalBehaviors);
+            ChangeOSVersionParameters parameters = new ChangeOSVersionParameters(BatchContext, Id, null,
+                TargetOSVersion, AdditionalBehaviors);
             BatchClient.ChangeOSVersion(parameters);
         }
     }

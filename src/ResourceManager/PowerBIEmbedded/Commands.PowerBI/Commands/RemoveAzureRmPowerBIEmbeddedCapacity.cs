@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.PowerBI
                 PSPowerBIEmbeddedCapacity capacity = null;
                 if (!PowerBIClient.TestCapacity(resourceGroupName, capacityName, out capacity))
                 {
-                    throw new InvalidOperationException(string.Format(Properties.Resources.CapacityDoesNotExist, capacityName));
+                    throw new InvalidOperationException(string.Format(Resources.CapacityDoesNotExist, capacityName));
                 }
 
                 PowerBIClient.DeleteCapacity(resourceGroupName, capacityName);

@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<DatabaseMetric> Metrics
         {
-            get { return this._metrics; }
-            set { this._metrics = value; }
+            get { return _metrics; }
+            set { _metrics = value; }
         }
         
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DatabaseMetricListResponse()
         {
-            this.Metrics = new LazyList<DatabaseMetric>();
+            Metrics = new LazyList<DatabaseMetric>();
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<DatabaseMetric> GetEnumerator()
         {
-            return this.Metrics.GetEnumerator();
+            return Metrics.GetEnumerator();
         }
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

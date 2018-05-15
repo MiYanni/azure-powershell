@@ -42,9 +42,9 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="receiver">The receiver to wrap.</param>
         public PSEmailReceiver(EmailReceiver receiver)
         {
-            this.Name = receiver.Name;
-            this.EmailAddress = receiver.EmailAddress;
-            this.Status = receiver.Status;
+            Name = receiver.Name;
+            EmailAddress = receiver.EmailAddress;
+            Status = receiver.Status;
         }
     }
 }

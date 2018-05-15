@@ -12,9 +12,9 @@ namespace Microsoft.Azure.Management.Internal.Resources.Models
     using System.Linq;
     using System.Collections.Generic;
     using Newtonsoft.Json;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Serialization;
-    using Microsoft.Rest.Azure;
+    using Rest;
+    using Rest.Serialization;
+    using Rest.Azure;
 
     /// <summary>
     /// The resource link.
@@ -59,9 +59,9 @@ namespace Microsoft.Azure.Management.Internal.Resources.Models
         /// </summary>
         public virtual void Validate()
         {
-            if (this.Properties != null)
+            if (Properties != null)
             {
-                this.Properties.Validate();
+                Properties.Validate();
             }
         }
     }

@@ -53,11 +53,11 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("AdvisorName"))
             {
                 results = new List<AzureSqlServerAdvisorModel>();
-                results.Add(ModelAdapter.GetServerAdvisor(this.ResourceGroupName, this.ServerName, this.AdvisorName, this.ExpandRecommendedActions));
+                results.Add(ModelAdapter.GetServerAdvisor(ResourceGroupName, ServerName, AdvisorName, ExpandRecommendedActions));
             }
             else
             {
-                results = ModelAdapter.ListServerAdvisors(this.ResourceGroupName, this.ServerName, this.ExpandRecommendedActions);
+                results = ModelAdapter.ListServerAdvisors(ResourceGroupName, ServerName, ExpandRecommendedActions);
             }
 
             return results;

@@ -41,13 +41,13 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
             IEnumerable<Module> ret = null;
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 ret = new List<Module>
                 {
-                   this.AutomationClient.GetModule(this.ResourceGroupName, this.AutomationAccountName, this.Name)
+                   AutomationClient.GetModule(ResourceGroupName, AutomationAccountName, Name)
                 };
-                this.GenerateCmdletOutput(ret);
+                GenerateCmdletOutput(ret);
             }
             else
             {
@@ -55,8 +55,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
 
                 do
                 {
-                    ret = this.AutomationClient.ListModules(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
-                    this.GenerateCmdletOutput(ret);
+                    ret = AutomationClient.ListModules(ResourceGroupName, AutomationAccountName, ref nextLink);
+                    GenerateCmdletOutput(ret);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

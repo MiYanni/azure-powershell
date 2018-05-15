@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
 
         public void WriteAzureBackupRecoveryPoint(CSMRecoveryPointResponse sourceRecoverPoint, AzureRMBackupItem azureBackupItem)
         {
-            this.WriteObject(new AzureRMBackupRecoveryPoint(sourceRecoverPoint, azureBackupItem));
+            WriteObject(new AzureRMBackupRecoveryPoint(sourceRecoverPoint, azureBackupItem));
         }
 
         public void WriteAzureBackupRecoveryPoint(IEnumerable<CSMRecoveryPointResponse> sourceRecoverPointList, AzureRMBackupItem azureBackupItem)
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 targetList.Add(new AzureRMBackupRecoveryPoint(sourceRecoverPoint, azureBackupItem));
             }
 
-            this.WriteObject(targetList, true);
+            WriteObject(targetList, true);
         }
     }
 }

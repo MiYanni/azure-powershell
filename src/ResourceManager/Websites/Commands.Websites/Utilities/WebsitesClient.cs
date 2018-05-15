@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
 
         public WebsitesClient(IAzureContext context)
         {
-            this.WrappedWebsitesClient = AzureSession.Instance.ClientFactory.CreateArmClient<WebSiteManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            WrappedWebsitesClient = AzureSession.Instance.ClientFactory.CreateArmClient<WebSiteManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
 
         }
         public WebSiteManagementClient WrappedWebsitesClient
@@ -70,8 +70,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
             else
             {
                 createdWebSite = WrappedWebsitesClient.WebApps().CreateOrUpdate(
-                        resourceGroupName, webAppName, siteEnvelope:
-                        new Site
+                        resourceGroupName, webAppName, new Site
                         {
                             Location = location,
                             ServerFarmId = serverFarmId,
@@ -96,7 +95,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
 
         public void UpdateWebApp(string resourceGroupName, string location, string webAppName, string slotName, string appServicePlan, Site siteEnvelope =null)
         {
-            var webSiteToUpdate = new Site()
+            var webSiteToUpdate = new Site
             {
                 ServerFarmId = appServicePlan,
                 Location = location,
@@ -202,11 +201,11 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
             string qualifiedSiteName;
             if (CmdletHelpers.ShouldUseDeploymentSlot(webSiteName, slotName, out qualifiedSiteName))
             {
-                WrappedWebsitesClient.WebApps().DeleteSlot(resourceGroupName, webSiteName, slotName, deleteMetrics: deleteMetricsBydefault, deleteEmptyServerFarm: deleteEmptyServerFarmBydefault);
+                WrappedWebsitesClient.WebApps().DeleteSlot(resourceGroupName, webSiteName, slotName, deleteMetricsBydefault, deleteEmptyServerFarmBydefault);
             }
             else
             {
-                WrappedWebsitesClient.WebApps().Delete(resourceGroupName, webSiteName, deleteMetrics: deleteMetricsBydefault, deleteEmptyServerFarm: deleteEmptyServerFarmBydefault);
+                WrappedWebsitesClient.WebApps().Delete(resourceGroupName, webSiteName, deleteMetricsBydefault, deleteEmptyServerFarmBydefault);
             }
 
             return HttpStatusCode.OK;
@@ -247,9 +246,9 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                 Format = format
             };
 
-            var publishingXml = (CmdletHelpers.ShouldUseDeploymentSlot(webSiteName, slotName, out qualifiedSiteName) ? 
+            var publishingXml = CmdletHelpers.ShouldUseDeploymentSlot(webSiteName, slotName, out qualifiedSiteName) ? 
                 WrappedWebsitesClient.WebApps().ListPublishingProfileXmlWithSecretsSlot(resourceGroupName, webSiteName, options, slotName) : 
-                WrappedWebsitesClient.WebApps().ListPublishingProfileXmlWithSecrets(resourceGroupName, webSiteName, options));
+                WrappedWebsitesClient.WebApps().ListPublishingProfileXmlWithSecrets(resourceGroupName, webSiteName, options);
             var doc = XDocument.Load(publishingXml, LoadOptions.None);
             if (outputFile != null)
             {
@@ -276,9 +275,9 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                 Format = "WebDeploy"
             };
 
-            var publishingXml = (CmdletHelpers.ShouldUseDeploymentSlot(webSiteName, slotName, out qualifiedSiteName) ? 
+            var publishingXml = CmdletHelpers.ShouldUseDeploymentSlot(webSiteName, slotName, out qualifiedSiteName) ? 
                 WrappedWebsitesClient.WebApps().ListPublishingProfileXmlWithSecretsSlot(resourceGroupName, webSiteName, options, slotName) : 
-                WrappedWebsitesClient.WebApps().ListPublishingProfileXmlWithSecrets(resourceGroupName, webSiteName, options));
+                WrappedWebsitesClient.WebApps().ListPublishingProfileXmlWithSecrets(resourceGroupName, webSiteName, options);
             var doc = XDocument.Load(publishingXml, LoadOptions.None);
             var profile = doc.Root == null ? null : doc.Root.Element("publishData") == null ? null : doc.Root.Element("publishData").Elements("publishProfile")
                 .Single(p => p.Attribute("publishMethod").Value == "MSDeploy");
@@ -316,9 +315,9 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                 && !string.IsNullOrEmpty(aseResourceGroupName))
             {
                 appServicePlan.HostingEnvironmentProfile = new HostingEnvironmentProfile(
-				id: CmdletHelpers.GetApplicationServiceEnvironmentResourceId(WrappedWebsitesClient.SubscriptionId, aseResourceGroupName, aseName),
-                    name: aseName,
-                    type: CmdletHelpers.ApplicationServiceEnvironmentResourcesName);
+				CmdletHelpers.GetApplicationServiceEnvironmentResourceId(WrappedWebsitesClient.SubscriptionId, aseResourceGroupName, aseName),
+                    aseName,
+                    CmdletHelpers.ApplicationServiceEnvironmentResourcesName);
             }
 
             return WrappedWebsitesClient.AppServicePlans().CreateOrUpdate(resourceGroupName, appServicePlanName, appServicePlan);
@@ -437,7 +436,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
 
                 site.SiteConfig.ConnectionStrings = connectionStrings
                     .Properties
-                    .Select(s => new ConnStringInfo()
+                    .Select(s => new ConnStringInfo
                     {
                         Name = s.Key,
                         ConnectionString = s.Value.Value,
@@ -458,11 +457,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
             {
                 return WrappedWebsitesClient.WebApps.ListConfigurationSnapshotInfoSlot(resourceGroupName, webSiteName, slotName);
             }
-            else
-            {
-
-                return WrappedWebsitesClient.WebApps.ListConfigurationSnapshotInfo(resourceGroupName, webSiteName);
-            }
+            return WrappedWebsitesClient.WebApps.ListConfigurationSnapshotInfo(resourceGroupName, webSiteName);
         }
 
         public BackupRequest GetWebAppBackupConfiguration(string resourceGroupName, string webSiteName, string slotName)
@@ -474,11 +469,8 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                 return WrappedWebsitesClient.WebApps()
                     .GetBackupConfigurationSlot(resourceGroupName, webSiteName, slotName);
             }
-            else
-            {
-                return WrappedWebsitesClient.WebApps()
-                    .GetBackupConfiguration(resourceGroupName, webSiteName);
-            }
+            return WrappedWebsitesClient.WebApps()
+                .GetBackupConfiguration(resourceGroupName, webSiteName);
         }
 
         public BackupRequest UpdateWebAppBackupConfiguration(string resourceGroupName, string webSiteName,
@@ -494,13 +486,10 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                     newSchedule,
                     slotName);
             }
-            else
-            {
-                return WrappedWebsitesClient.WebApps().UpdateBackupConfiguration(
-                    resourceGroupName, 
-                    webSiteName, 
-                    newSchedule);
-            }
+            return WrappedWebsitesClient.WebApps().UpdateBackupConfiguration(
+                resourceGroupName, 
+                webSiteName, 
+                newSchedule);
         }
 
         public BackupItem BackupSite(string resourceGroupName, string webSiteName, string slotName,
@@ -528,10 +517,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
             {
                 return WrappedWebsitesClient.WebApps().ListBackupsSlot(resourceGroupName, webSiteName, slotName).ToList();
             }
-            else
-            {
-                return WrappedWebsitesClient.WebApps().ListBackups(resourceGroupName, webSiteName).ToList();
-            }
+            return WrappedWebsitesClient.WebApps().ListBackups(resourceGroupName, webSiteName).ToList();
         }
 
         public BackupItem GetSiteBackupStatus(string resourceGroupName, string webSiteName, string slotName, string backupId)
@@ -546,13 +532,10 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                     backupId, 
                     slotName);
             }
-            else
-            {
-                return WrappedWebsitesClient.WebApps().GetBackupStatus(
-                    resourceGroupName, 
-                    webSiteName, 
-                    backupId);
-            }
+            return WrappedWebsitesClient.WebApps().GetBackupStatus(
+                resourceGroupName, 
+                webSiteName, 
+                backupId);
         }
 
         public BackupItem GetSiteBackupStatusSecrets(string resourceGroupName, string webSiteName, string slotName,
@@ -565,10 +548,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                 return WrappedWebsitesClient.WebApps().GetBackupStatusSlot(resourceGroupName, webSiteName,
                     backupId, slotName);
             }
-            else
-            {
-                return WrappedWebsitesClient.WebApps().GetBackupStatus(resourceGroupName, webSiteName, backupId);
-            }
+            return WrappedWebsitesClient.WebApps().GetBackupStatus(resourceGroupName, webSiteName, backupId);
         }
 
         public BackupItem DeleteBackup(string resourceGroupName, string webSiteName, string slotName,
@@ -611,10 +591,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                     request, 
                     slotName);
             }
-            else
-            {
-                return WrappedWebsitesClient.WebApps().Restore(resourceGroupName, webSiteName, backupId, request);
-            }
+            return WrappedWebsitesClient.WebApps().Restore(resourceGroupName, webSiteName, backupId, request);
         }
 
         public IList<Snapshot> GetSiteSnapshots(string resourceGroupName, string webSiteName, string slotName)
@@ -625,10 +602,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
             {
                 return WrappedWebsitesClient.WebApps.ListSnapshotsSlot(resourceGroupName, webSiteName, slotName).ToList();
             }
-            else
-            {
-                return WrappedWebsitesClient.WebApps.ListSnapshots(resourceGroupName, webSiteName).ToList();
-            }
+            return WrappedWebsitesClient.WebApps.ListSnapshots(resourceGroupName, webSiteName).ToList();
         }
 
         public void RecoverSite(string resourceGroupName, string webSiteName, string slotName,
@@ -691,8 +665,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
             else
             {
                 updateWebSite = WrappedWebsitesClient.WebApps().CreateOrUpdate(
-                        resourceGroupName, webAppName, siteEnvelope:
-                        webappWithNewSslBinding);
+                        resourceGroupName, webAppName, webappWithNewSslBinding);
             }
             return updateWebSite;
         }

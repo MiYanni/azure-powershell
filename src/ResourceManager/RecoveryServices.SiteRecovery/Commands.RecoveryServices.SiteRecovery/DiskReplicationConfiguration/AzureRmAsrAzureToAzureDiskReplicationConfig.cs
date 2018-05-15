@@ -67,17 +67,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             base.ExecuteSiteRecoveryCmdlet();
 
             // Creating ASRAzureToAzureDiskReplicationConfig for Disk uri
-            if (this.ShouldProcess(
-                this.VhdUri,
+            if (ShouldProcess(
+                VhdUri,
                 VerbsCommon.New))
             {
                 var diskRelicationConfig = new ASRAzuretoAzureDiskReplicationConfig()
                 {
-                    VhdUri = this.VhdUri,
-                    LogStorageAccountId = this.LogStorageAccountId,
-                    RecoveryAzureStorageAccountId = this.RecoveryAzureStorageAccountId
+                    VhdUri = VhdUri,
+                    LogStorageAccountId = LogStorageAccountId,
+                    RecoveryAzureStorageAccountId = RecoveryAzureStorageAccountId
                 };
-                this.WriteObject(diskRelicationConfig);
+                WriteObject(diskRelicationConfig);
             }
 
         }

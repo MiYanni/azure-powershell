@@ -26,73 +26,73 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSSchedule
     {
         
-        internal Microsoft.Azure.Batch.Schedule omObject;
+        internal Schedule omObject;
         
         public PSSchedule()
         {
-            this.omObject = new Microsoft.Azure.Batch.Schedule();
+            omObject = new Schedule();
         }
         
-        internal PSSchedule(Microsoft.Azure.Batch.Schedule omObject)
+        internal PSSchedule(Schedule omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.DateTime? DoNotRunAfter
+        public DateTime? DoNotRunAfter
         {
             get
             {
-                return this.omObject.DoNotRunAfter;
+                return omObject.DoNotRunAfter;
             }
             set
             {
-                this.omObject.DoNotRunAfter = value;
+                omObject.DoNotRunAfter = value;
             }
         }
         
-        public System.DateTime? DoNotRunUntil
+        public DateTime? DoNotRunUntil
         {
             get
             {
-                return this.omObject.DoNotRunUntil;
+                return omObject.DoNotRunUntil;
             }
             set
             {
-                this.omObject.DoNotRunUntil = value;
+                omObject.DoNotRunUntil = value;
             }
         }
         
-        public System.TimeSpan? RecurrenceInterval
+        public TimeSpan? RecurrenceInterval
         {
             get
             {
-                return this.omObject.RecurrenceInterval;
+                return omObject.RecurrenceInterval;
             }
             set
             {
-                this.omObject.RecurrenceInterval = value;
+                omObject.RecurrenceInterval = value;
             }
         }
         
-        public System.TimeSpan? StartWindow
+        public TimeSpan? StartWindow
         {
             get
             {
-                return this.omObject.StartWindow;
+                return omObject.StartWindow;
             }
             set
             {
-                this.omObject.StartWindow = value;
+                omObject.StartWindow = value;
             }
         }
     }

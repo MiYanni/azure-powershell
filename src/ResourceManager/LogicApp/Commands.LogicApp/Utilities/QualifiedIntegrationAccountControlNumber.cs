@@ -24,9 +24,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// </summary>
         public QualifiedIntegrationAccountControlNumber(IntegrationAccountControlNumber icn, string agreementName)
         {
-            this.ControlNumber = icn.ControlNumber;
-            this.ControlNumberChangedTime = icn.ControlNumberChangedTime;
-            this.AgreementName = agreementName;
+            ControlNumber = icn.ControlNumber;
+            ControlNumberChangedTime = icn.ControlNumberChangedTime;
+            AgreementName = agreementName;
         }
 
         /// <summary>

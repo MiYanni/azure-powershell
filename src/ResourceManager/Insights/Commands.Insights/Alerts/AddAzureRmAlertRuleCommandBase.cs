@@ -81,13 +81,13 @@ namespace Microsoft.Azure.Commands.Insights.Alerts
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                    target: string.Format("Create/update an alert rule: {0} from resource group: {1}", this.Name, this.ResourceGroupName),
-                    action: "Create/update an alert rule"))
+                    string.Format("Create/update an alert rule: {0} from resource group: {1}", Name, ResourceGroupName),
+                    "Create/update an alert rule"))
             {
-                AlertRuleResource parameters = this.CreateSdkCallParameters();
+                AlertRuleResource parameters = CreateSdkCallParameters();
 
                 // Part of the result of this operation is operation (result.Body ==> a AutoscaleSettingResource) is being discarded for backwards compatibility
-                var result = this.MonitorManagementClient.AlertRules.CreateOrUpdateWithHttpMessagesAsync(resourceGroupName: this.ResourceGroupName, parameters: parameters, ruleName: parameters.AlertRuleResourceName).Result;
+                var result = MonitorManagementClient.AlertRules.CreateOrUpdateWithHttpMessagesAsync(ResourceGroupName, parameters: parameters, ruleName: parameters.AlertRuleResourceName).Result;
 
                 var response = new PSAddAlertRuleOperationResponse
                 {

@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             VaultName = vault.Name;
             Location = vault.Location;
             ResourceId = vault.Id;
-            ResourceGroupName = (new ResourceIdentifier(vault.Id)).ResourceGroupName;
+            ResourceGroupName = new ResourceIdentifier(vault.Id).ResourceGroupName;
             Tags = TagsConversionHelper.CreateTagHashtable(vault.Tags);
             Sku = vault.Properties.Sku.Name.ToString();
             TenantId = vault.Properties.TenantId;

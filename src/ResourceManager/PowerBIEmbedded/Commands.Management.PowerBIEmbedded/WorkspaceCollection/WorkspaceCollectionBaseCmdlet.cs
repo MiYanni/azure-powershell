@@ -43,12 +43,12 @@ namespace Microsoft.Azure.Commands.Management.PowerBIEmbedded.WorkspaceCollectio
         {
             get
             {
-                if (this.powerBIClient == null)
+                if (powerBIClient == null)
                 {
-                    this.powerBIClient = AzureSession.Instance.ClientFactory.CreateArmClient<PowerBIEmbeddedManagementClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
+                    powerBIClient = AzureSession.Instance.ClientFactory.CreateArmClient<PowerBIEmbeddedManagementClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
                 }
 
-                return this.powerBIClient;
+                return powerBIClient;
             }
         }
 
@@ -59,27 +59,27 @@ namespace Microsoft.Azure.Commands.Management.PowerBIEmbedded.WorkspaceCollectio
 
         protected void WriteWorkspaceCollection(Azure.Management.PowerBIEmbedded.Models.WorkspaceCollection workspaceCollection)
         {
-            this.WriteObject(PSWorkspaceCollection.Create(workspaceCollection));
+            WriteObject(PSWorkspaceCollection.Create(workspaceCollection));
         }
 
         protected void WriteWorkspaceCollectionAccessKeys(WorkspaceCollectionAccessKeys accessKeys)
         {
-            this.WriteObject(PSWorkspaceCollectionAccessKey.CreateList(accessKeys), true);
+            WriteObject(PSWorkspaceCollectionAccessKey.CreateList(accessKeys), true);
         }
 
         protected void WriteWorkspace(Workspace workspace)
         {
-            this.WriteObject(PSWorkspace.Create(workspace));
+            WriteObject(PSWorkspace.Create(workspace));
         }
 
         protected void WriteWorkspaceList(IEnumerable<Workspace> workspaces)
         {
-            this.WriteObject(workspaces.Select(PSWorkspace.Create), true);
+            WriteObject(workspaces.Select(PSWorkspace.Create), true);
         }
 
         protected void WriteWorkspaceCollectionList(IEnumerable<Azure.Management.PowerBIEmbedded.Models.WorkspaceCollection> workspaceCollections)
         {
-            this.WriteObject(workspaceCollections.Select(PSWorkspaceCollection.Create), true);
+            WriteObject(workspaceCollections.Select(PSWorkspaceCollection.Create), true);
         }
     }
 }

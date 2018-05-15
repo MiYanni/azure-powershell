@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 
         public MockAccessTokenProvider(string token, string userId)
         {
-            this.accessToken = new MockAccessToken()
+            accessToken = new MockAccessToken
             {
                 AccessToken = token,
                 UserId = userId
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             SecureString password,
             string credentialType)
         {
-            return this.accessToken;
+            return accessToken;
         }
 
 #if !NETSTANDARD
@@ -57,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 #endif
         public IAccessToken GetAccessTokenWithCertificate(AdalConfiguration config, string principalId, string certificateThumbprint, string credentialType)
         {
-            return this.accessToken;
+            return accessToken;
         }
 
     }

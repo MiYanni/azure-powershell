@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             Created = deletedSecret.Attributes.Created;
             Updated = deletedSecret.Attributes.Updated;
             ContentType = deletedSecret.ContentType;
-            Tags = (deletedSecret.Tags == null) ? null : deletedSecret.Tags.ConvertToHashtable();
+            Tags = deletedSecret.Tags == null ? null : deletedSecret.Tags.ConvertToHashtable();
 
             Attributes = new PSKeyVaultSecretAttributes(
                 deletedSecret.Attributes.Enabled,

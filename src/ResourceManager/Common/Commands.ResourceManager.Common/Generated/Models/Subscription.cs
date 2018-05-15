@@ -12,9 +12,9 @@ namespace Microsoft.Azure.Internal.Subscriptions.Models
     using System.Linq;
     using System.Collections.Generic;
     using Newtonsoft.Json;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Serialization;
-    using Microsoft.Rest.Azure;
+    using Rest;
+    using Rest.Serialization;
+    using Rest.Azure;
 
     /// <summary>
     /// Subscription information.

@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -65,11 +65,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
         {
             get
             {
-                return this.ExtensionDefaultName;
+                return ExtensionDefaultName;
             }
             set
             {
-                this.ExtensionDefaultName = value;
+                ExtensionDefaultName = value;
             }
         }
 
@@ -89,43 +89,40 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
         {
             base.ExecuteCmdlet();
 
-            if (this.Linux.IsPresent)
+            if (Linux.IsPresent)
             {
-                this.Name = LinuxExtensionName;
+                Name = LinuxExtensionName;
             }
-            else if (this.Windows.IsPresent)
+            else if (Windows.IsPresent)
             {
-                this.Name = ExtensionDefaultName;
+                Name = ExtensionDefaultName;
             }
 
-            ConfirmAction("Remove Chef Extension", this.VMName,
+            ConfirmAction("Remove Chef Extension", VMName,
                 () =>
                 {
-                    if (string.IsNullOrEmpty(this.Name))
+                    if (string.IsNullOrEmpty(Name))
                     {
                         VirtualMachine virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(
-                            this.ResourceGroupName, this.VMName);
+                            ResourceGroupName, VMName);
                         var chefExtension = virtualMachine.Resources != null
                                 ? virtualMachine.Resources.FirstOrDefault(extension =>
                                     extension.Publisher.Equals(ExtensionDefaultPublisher, StringComparison.InvariantCultureIgnoreCase) &&
-                                    extension.VirtualMachineExtensionType.Equals(this.Name, StringComparison.InvariantCultureIgnoreCase))
+                                    extension.VirtualMachineExtensionType.Equals(Name, StringComparison.InvariantCultureIgnoreCase))
                                 : null;
 
                         if (chefExtension == null)
                         {
-                            WriteWarning(string.Format(CultureInfo.InvariantCulture, Properties.Resources.ChefExtensionNotFound, this.ResourceGroupName, this.VMName));
+                            WriteWarning(string.Format(CultureInfo.InvariantCulture, Properties.Resources.ChefExtensionNotFound, ResourceGroupName, VMName));
                             return;
                         }
-                        else
-                        {
-                            this.Name = chefExtension.Name;
-                        }
+                        Name = chefExtension.Name;
                     }
 
-                    var op = this.VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name).GetAwaiter().GetResult();
+                    var op = VirtualMachineExtensionClient.DeleteWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
                     WriteObject(result);
                 });

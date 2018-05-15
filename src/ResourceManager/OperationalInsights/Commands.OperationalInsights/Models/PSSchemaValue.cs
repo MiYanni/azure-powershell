@@ -27,13 +27,13 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (value != null)
             {
-                this.Name = value.Name;
-                this.DisplayName = value.DisplayName;
-                this.Type = value.Type;
-                this.Indexed = value.Indexed;
-                this.Stored = value.Stored;
-                this.Facet = value.Facet;
-                this.OwnerType = value.OwnerType;
+                Name = value.Name;
+                DisplayName = value.DisplayName;
+                Type = value.Type;
+                Indexed = value.Indexed;
+                Stored = value.Stored;
+                Facet = value.Facet;
+                OwnerType = value.OwnerType;
             }
         }
         public string Name { get; set; }

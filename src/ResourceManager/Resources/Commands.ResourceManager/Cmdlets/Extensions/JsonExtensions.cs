@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Json;
+    using Json;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
@@ -74,12 +74,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         /// <summary>
         /// The JSON media type serializer.
         /// </summary>
-        public static readonly JsonSerializer JsonMediaTypeSerializer = JsonSerializer.Create(JsonExtensions.MediaSerializationSettings);
+        public static readonly JsonSerializer JsonMediaTypeSerializer = JsonSerializer.Create(MediaSerializationSettings);
 
         /// <summary>
         /// The JSON object type serializer.
         /// </summary>
-        public static readonly JsonSerializer JsonObjectTypeSerializer = JsonSerializer.Create(JsonExtensions.ObjectSerializationSettings);
+        public static readonly JsonSerializer JsonObjectTypeSerializer = JsonSerializer.Create(ObjectSerializationSettings);
 
         /// <summary>
         /// Serialize object to the JSON.
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         /// <param name="obj">The object.</param>
         public static string ToJson(this object obj)
         {
-            return JsonConvert.SerializeObject(obj, JsonExtensions.ObjectSerializationSettings);
+            return JsonConvert.SerializeObject(obj, ObjectSerializationSettings);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         /// <param name="json">JSON representation of object</param>
         public static T FromJson<T>(this string json)
         {
-            return JsonConvert.DeserializeObject<T>(json, JsonExtensions.ObjectSerializationSettings);
+            return JsonConvert.DeserializeObject<T>(json, ObjectSerializationSettings);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
             using (var streamReader = new StreamReader(stream))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
-                return JsonExtensions.JsonObjectTypeSerializer.Deserialize<T>(jsonReader);
+                return JsonObjectTypeSerializer.Deserialize<T>(jsonReader);
             }
         }
 
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
                 return null;
             }
 
-            return JToken.FromObject(obj, JsonExtensions.JsonObjectTypeSerializer);
+            return JToken.FromObject(obj, JsonObjectTypeSerializer);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
             try
             {
                 result = str.FromJson<TType>();
-                return !object.Equals(result, default(TType));
+                return !Equals(result, default(TType));
             }
             catch (FormatException)
             {
@@ -197,8 +197,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
 
             try
             {
-                result = jobject.ToObject<TType>(JsonExtensions.JsonMediaTypeSerializer);
-                return !object.Equals(result, default(TType));
+                result = jobject.ToObject<TType>(JsonMediaTypeSerializer);
+                return !Equals(result, default(TType));
             }
             catch (FormatException)
             {

@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                        Name,
                        () =>
                        {
-                           this.AutomationClient.DeleteCredential(this.ResourceGroupName, this.AutomationAccountName, Name);
+                           AutomationClient.DeleteCredential(ResourceGroupName, AutomationAccountName, Name);
                        });
         }
     }

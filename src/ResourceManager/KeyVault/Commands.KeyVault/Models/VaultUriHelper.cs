@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             if (string.IsNullOrEmpty(keyVaultDnsSuffix))
                 throw new ArgumentNullException("keyVaultDnsSuffix");
-            this.KeyVaultDnsSuffix = keyVaultDnsSuffix;
+            KeyVaultDnsSuffix = keyVaultDnsSuffix;
         }
 
         public string GetVaultName(string vaultAddress)
@@ -47,11 +47,11 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             Uri vaultUri;
             if (!Uri.TryCreate(vaultAddress, UriKind.Absolute, out vaultUri))
-                throw new ArgumentException(string.Format(KeyVaultProperties.Resources.InvalidVaultUri, vaultAddress, this.KeyVaultDnsSuffix));
+                throw new ArgumentException(string.Format(KeyVaultProperties.Resources.InvalidVaultUri, vaultAddress, KeyVaultDnsSuffix));
 
             if (vaultUri.HostNameType != UriHostNameType.Dns ||
-                !vaultUri.Host.EndsWith(this.KeyVaultDnsSuffix, StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(string.Format(KeyVaultProperties.Resources.InvalidVaultUri, vaultAddress, this.KeyVaultDnsSuffix));
+                !vaultUri.Host.EndsWith(KeyVaultDnsSuffix, StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException(string.Format(KeyVaultProperties.Resources.InvalidVaultUri, vaultAddress, KeyVaultDnsSuffix));
 
             return vaultUri;
         }
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (string.IsNullOrEmpty(vaultName))
                 throw new ArgumentNullException("vaultName");
 
-            UriBuilder builder = new UriBuilder("https", vaultName + "." + this.KeyVaultDnsSuffix);
+            UriBuilder builder = new UriBuilder("https", vaultName + "." + KeyVaultDnsSuffix);
 
             return builder.Uri;
         }

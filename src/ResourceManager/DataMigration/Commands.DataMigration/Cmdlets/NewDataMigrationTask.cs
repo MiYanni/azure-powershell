@@ -108,25 +108,25 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
                 switch (taskType)
                 {
                     case TaskTypeEnum.ConnectToSourceSqlServer:
-                        taskCmdlet = new ConnectToSourceSqlServerTaskCmdlet(this.MyInvocation);
+                        taskCmdlet = new ConnectToSourceSqlServerTaskCmdlet(MyInvocation);
                         break;
                     case TaskTypeEnum.MigrateSqlServerSqlDb:
-                        taskCmdlet = new MigrateSqlServerSqlDbTaskCmdlet(this.MyInvocation);
+                        taskCmdlet = new MigrateSqlServerSqlDbTaskCmdlet(MyInvocation);
                         break;
                     case TaskTypeEnum.ConnectToTargetSqlDb:
-                        taskCmdlet = new ConnectToTargetSqlDbTaskCmdlet(this.MyInvocation);
+                        taskCmdlet = new ConnectToTargetSqlDbTaskCmdlet(MyInvocation);
                         break;
                     case TaskTypeEnum.GetUserTablesSql:
-                        taskCmdlet = new GetUserTableSqlCmdlet(this.MyInvocation);
+                        taskCmdlet = new GetUserTableSqlCmdlet(MyInvocation);
                         break;
                     case TaskTypeEnum.ConnectToTargetSqlDbMi:
-                        taskCmdlet = new ConnectToTargetSqlDbMiTaskCmdlet(this.MyInvocation);
+                        taskCmdlet = new ConnectToTargetSqlDbMiTaskCmdlet(MyInvocation);
                         break;
                     case TaskTypeEnum.MigrateSqlServerSqlDbMi:
-                        taskCmdlet = new MigrateSqlServerSqlDbMiTaskCmdlet(this.MyInvocation);
+                        taskCmdlet = new MigrateSqlServerSqlDbMiTaskCmdlet(MyInvocation);
                         break;
                     case TaskTypeEnum.ValidateSqlServerSqlDbMi:
-                        taskCmdlet = new ValidateSqlServerSqlDbMiTaskCmdlet(this.MyInvocation);
+                        taskCmdlet = new ValidateSqlServerSqlDbMiTaskCmdlet(MyInvocation);
                         break;
                     default:
                         throw new PSArgumentException();
@@ -142,27 +142,27 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
         {
             if (taskCmdlet != null)
             {
-                if (ShouldProcess(this.Name, Resources.createTask))
+                if (ShouldProcess(Name, Resources.createTask))
                 {
-                    if (this.ParameterSetName.Equals(ComponentObjectParameterSet))
+                    if (ParameterSetName.Equals(ComponentObjectParameterSet))
                     {
-                        this.ResourceGroupName = InputObject.ResourceGroupName;
-                        this.ServiceName = InputObject.ServiceName;
-                        this.ProjectName = InputObject.Name;
+                        ResourceGroupName = InputObject.ResourceGroupName;
+                        ServiceName = InputObject.ServiceName;
+                        ProjectName = InputObject.Name;
                     }
 
-                    if (this.ParameterSetName.Equals(ResourceIdParameterSet))
+                    if (ParameterSetName.Equals(ResourceIdParameterSet))
                     {
-                        DmsResourceIdentifier ids = new DmsResourceIdentifier(this.ResourceId);
-                        this.ResourceGroupName = ids.ResourceGroupName;
-                        this.ServiceName = ids.ServiceName;
-                        this.ProjectName = ids.ProjectName;
+                        DmsResourceIdentifier ids = new DmsResourceIdentifier(ResourceId);
+                        ResourceGroupName = ids.ResourceGroupName;
+                        ServiceName = ids.ServiceName;
+                        ProjectName = ids.ProjectName;
                     }
 
                     ProjectTask response = null;
                     try
                     {
-                        ProjectTask taskInput = new ProjectTask()
+                        ProjectTask taskInput = new ProjectTask
                         {
                             Properties = taskCmdlet.ProcessTaskCmdlet()
                         };

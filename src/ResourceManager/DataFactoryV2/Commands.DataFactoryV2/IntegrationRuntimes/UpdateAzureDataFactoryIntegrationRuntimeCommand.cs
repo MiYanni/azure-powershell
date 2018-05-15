@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            this.ByResourceId();
-            this.ByIntegrationRuntimeObject();
+            ByResourceId();
+            ByIntegrationRuntimeObject();
 
             if (AutoUpdate == null && !AutoUpdateDelayOffset.HasValue)
             {
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             IntegrationRuntimeResource resource = DataFactoryClient.GetIntegrationRuntimeAsync(
                     ResourceGroupName,
                     DataFactoryName,
-                    base.Name).ConfigureAwait(true).GetAwaiter().GetResult().IntegrationRuntime;
+                    Name).ConfigureAwait(true).GetAwaiter().GetResult().IntegrationRuntime;
             WriteVerbose("Got integration runtime");
 
             Action updateIntegrationRuntime = () =>

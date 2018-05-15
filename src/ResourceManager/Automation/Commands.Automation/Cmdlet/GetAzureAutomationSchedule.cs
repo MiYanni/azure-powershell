@@ -43,23 +43,23 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
             IEnumerable<Schedule> schedules = null;
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByName)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByName)
             {
                 schedules = new List<Schedule>
                                 {
-                                    this.AutomationClient.GetSchedule(
-                                        this.ResourceGroupName, this.AutomationAccountName, this.Name)
+                                    AutomationClient.GetSchedule(
+                                        ResourceGroupName, AutomationAccountName, Name)
                                 };
-                this.GenerateCmdletOutput(schedules);
+                GenerateCmdletOutput(schedules);
             }
-            else if (this.ParameterSetName == AutomationCmdletParameterSets.ByAll)
+            else if (ParameterSetName == AutomationCmdletParameterSets.ByAll)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
-                    schedules = this.AutomationClient.ListSchedules(this.ResourceGroupName, this.AutomationAccountName, ref nextLink);
-                    this.GenerateCmdletOutput(schedules);
+                    schedules = AutomationClient.ListSchedules(ResourceGroupName, AutomationAccountName, ref nextLink);
+                    GenerateCmdletOutput(schedules);
 
                 } while (!string.IsNullOrEmpty(nextLink));
             }

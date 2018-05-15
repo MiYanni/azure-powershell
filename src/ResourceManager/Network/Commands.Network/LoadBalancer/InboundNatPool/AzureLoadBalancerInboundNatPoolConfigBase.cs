@@ -63,11 +63,11 @@ namespace Microsoft.Azure.Commands.Network
         {
             
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
-                if (this.FrontendIpConfiguration != null)
+                if (FrontendIpConfiguration != null)
                 {
-                    this.FrontendIpConfigurationId = this.FrontendIpConfiguration.Id;
+                    FrontendIpConfigurationId = FrontendIpConfiguration.Id;
                 }
             }
         }

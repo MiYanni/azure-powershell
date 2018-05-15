@@ -77,23 +77,23 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override void ExecuteSiteRecoveryCmdlet()
         {
             base.ExecuteSiteRecoveryCmdlet();
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Alerts",
                 VerbsCommon.Set))
             {
-                if (this.ShouldProcess(
+                if (ShouldProcess(
                     "Alerts",
                     VerbsCommon.Set))
                 {
-                    switch (this.ParameterSetName)
+                    switch (ParameterSetName)
                     {
                         case ASRParameterSets.Disable:
-                            this.DisableAlerts();
+                            DisableAlerts();
                             break;
                         case ASRParameterSets.DisableEmailToSubcriptionOwner:
                         case ASRParameterSets.EmailToSubscriptionOwner:
                         case ASRParameterSets.Set:
-                            this.ConfigureAlertSettings();
+                            ConfigureAlertSettings();
                             break;
                     }
                 }
@@ -108,7 +108,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var alertProps =
                 new ConfigureAlertRequestProperties();
 
-            var alert = this.RecoveryServicesClient.GetAzureSiteRecoveryAlertSetting();
+            var alert = RecoveryServicesClient.GetAzureSiteRecoveryAlertSetting();
             if (alert == null || alert.Count == 0 || alert[0].Properties == null)
             {
                 alertProps.CustomEmailAddresses = new List<string>();
@@ -124,33 +124,33 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             }
 
 
-            if (this.EnableEmailSubscriptionOwner.IsPresent)
+            if (EnableEmailSubscriptionOwner.IsPresent)
             {
                 alertProps.SendToOwners = SendToOwners.Send;
             }
 
-            if (this.DisableEmailToSubscriptionOwner.IsPresent)
+            if (DisableEmailToSubscriptionOwner.IsPresent)
             {
                 alertProps.SendToOwners = SendToOwners.DoNotSend;
             }
 
-            if (!string.IsNullOrEmpty(this.LocaleID))
+            if (!string.IsNullOrEmpty(LocaleID))
             {
-                alertProps.Locale = this.LocaleID;
+                alertProps.Locale = LocaleID;
             }
 
-            if (this.CustomEmailAddress != null && this.CustomEmailAddress.Length != 0)
+            if (CustomEmailAddress != null && CustomEmailAddress.Length != 0)
             {
-                Utilities.ValidateCustomEmails(this.CustomEmailAddress);
-                alertProps.CustomEmailAddresses = this.CustomEmailAddress;
+                Utilities.ValidateCustomEmails(CustomEmailAddress);
+                alertProps.CustomEmailAddresses = CustomEmailAddress;
             }
 
             var alertRequest = new ConfigureAlertRequest();
             alertRequest.Properties = alertProps;
             var response =
-                this.RecoveryServicesClient.SetAzureSiteRecoveryAlertSetting(alertRequest);
+                RecoveryServicesClient.SetAzureSiteRecoveryAlertSetting(alertRequest);
 
-            this.WriteObject(new ASRAlertSetting(response));
+            WriteObject(new ASRAlertSetting(response));
         }
 
         /// <summary>
@@ -167,9 +167,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var alertRequest = new ConfigureAlertRequest();
             alertRequest.Properties = alertProps;
             var alert =
-                this.RecoveryServicesClient.SetAzureSiteRecoveryAlertSetting(alertRequest);
+                RecoveryServicesClient.SetAzureSiteRecoveryAlertSetting(alertRequest);
 
-            this.WriteObject(new ASRAlertSetting(alert));
+            WriteObject(new ASRAlertSetting(alert));
         }
     }
 }

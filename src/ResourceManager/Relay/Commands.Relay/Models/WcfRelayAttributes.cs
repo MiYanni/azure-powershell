@@ -9,7 +9,7 @@
 namespace Microsoft.Azure.Commands.Relay.Models
 {
     using Rest.Serialization;
-    using Azure.Management.Relay.Models;
+    using Management.Relay.Models;
 
     /// <summary>
     /// Description of WcfRelays Resource.

@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.Paging
             IPage<T> tempPage = _listNext(_nextPageLink);
             _currentEnumerator = tempPage.GetEnumerator();
             _nextPageLink = tempPage.NextPageLink;
-            return this.MoveNext();
+            return MoveNext();
         }
 
         public void Reset()

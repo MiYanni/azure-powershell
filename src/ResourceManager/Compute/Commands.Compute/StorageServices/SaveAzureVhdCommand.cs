@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
             Mandatory = true,
             ParameterSetName = ResourceGroupParameterSet,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -79,8 +79,8 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
         [Alias("th")]
         public int NumberOfThreads
         {
-            get { return this.numberOfThreads; }
-            set { this.numberOfThreads = value; }
+            get { return numberOfThreads; }
+            set { numberOfThreads = value; }
         }
 
         [Parameter(
@@ -98,12 +98,12 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
         {
             var result = DownloadFromBlobUri(
                 this,
-                this.SourceUri,
-                this.LocalFilePath,
-                this.StorageKey,
-                this.ResourceGroupName,
-                this.NumberOfThreads,
-                this.OverWrite);
+                SourceUri,
+                LocalFilePath,
+                StorageKey,
+                ResourceGroupName,
+                NumberOfThreads,
+                OverWrite);
             WriteObject(result);
         }
 

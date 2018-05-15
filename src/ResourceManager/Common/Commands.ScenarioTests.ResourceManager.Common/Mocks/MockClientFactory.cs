@@ -74,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 #if !NETSTANDARD
             if (subscription == null)
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.ResourceManager.Common.Properties.Resources.InvalidDefaultSubscription);
+                throw new ArgumentException(Azure.Commands.ResourceManager.Common.Properties.Resources.InvalidDefaultSubscription);
             }
 
             if (profile == null)
@@ -82,7 +82,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 profile = new AzureSMProfile(Path.Combine(AzureSession.Instance.ProfileDirectory, AzureSession.Instance.ProfileFile));
             }
 
-            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription.Id.ToString(), "fake_token");
+            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription.Id, "fake_token");
             if (HttpMockServer.GetCurrentMode() != HttpRecorderMode.Playback)
             {
                 ProfileClient profileClient = new ProfileClient(profile as AzureSMProfile);
@@ -95,7 +95,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 creds = AzureSession.Instance.AuthenticationFactory.GetSubscriptionCloudCredentials(context);
             }
 
-            Uri endpointUri = profile.Environments.FirstOrDefault((e) => e.Name.Equals(subscription.GetEnvironment(), StringComparison.OrdinalIgnoreCase)).GetEndpointAsUri(endpoint);
+            Uri endpointUri = profile.Environments.FirstOrDefault(e => e.Name.Equals(subscription.GetEnvironment(), StringComparison.OrdinalIgnoreCase)).GetEndpointAsUri(endpoint);
             return CreateCustomClient<TClient>(creds, endpointUri);
 #else
             throw new NotSupportedException("AzureSMProfile is not supported in Azure PS on .Net Core.");
@@ -113,37 +113,31 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                         string.Format("TestManagementClientHelper class wasn't initialized with the {0} client.",
                             typeof(TClient).Name));
                 }
-                else
+                var realClientFactory = new ClientFactory();
+                var realClient = realClientFactory.CreateCustomClient<TClient>(parameters);
+                var newRealClient = realClient.WithHandler(HttpMockServer.CreateInstance());
+
+                var initialTimeoutPropInfo = typeof(TClient).GetProperty("LongRunningOperationInitialTimeout", BindingFlags.Public | BindingFlags.Instance);
+                if (initialTimeoutPropInfo != null && initialTimeoutPropInfo.CanWrite)
                 {
-                    var realClientFactory = new ClientFactory();
-                    var realClient = realClientFactory.CreateCustomClient<TClient>(parameters);
-                    var newRealClient = realClient.WithHandler(HttpMockServer.CreateInstance());
-
-                    var initialTimeoutPropInfo = typeof(TClient).GetProperty("LongRunningOperationInitialTimeout", BindingFlags.Public | BindingFlags.Instance);
-                    if (initialTimeoutPropInfo != null && initialTimeoutPropInfo.CanWrite)
-                    {
-                        initialTimeoutPropInfo.SetValue(newRealClient, 0, null);
-                    }
-
-                    var retryTimeoutPropInfo = typeof(TClient).GetProperty("LongRunningOperationRetryTimeout", BindingFlags.Public | BindingFlags.Instance);
-                    if (retryTimeoutPropInfo != null && retryTimeoutPropInfo.CanWrite)
-                    {
-                        retryTimeoutPropInfo.SetValue(newRealClient, 0, null);
-                    }
-
-                    realClient.Dispose();
-                    return newRealClient;
+                    initialTimeoutPropInfo.SetValue(newRealClient, 0, null);
                 }
+
+                var retryTimeoutPropInfo = typeof(TClient).GetProperty("LongRunningOperationRetryTimeout", BindingFlags.Public | BindingFlags.Instance);
+                if (retryTimeoutPropInfo != null && retryTimeoutPropInfo.CanWrite)
+                {
+                    retryTimeoutPropInfo.SetValue(newRealClient, 0, null);
+                }
+
+                realClient.Dispose();
+                return newRealClient;
             }
-            else
+            if (!MoqClients && !client.GetType().Namespace.Contains("Castle."))
             {
-                if (!MoqClients && !client.GetType().Namespace.Contains("Castle."))
-                {
-                    // Use the WithHandler method to create an extra reference to the http client
-                    // this will prevent the httpClient from being disposed in a long-running test using 
-                    // the same client for multiple cmdlets
-                    client = client.WithHandler(new PassThroughDelegatingHandler());
-                }
+                // Use the WithHandler method to create an extra reference to the http client
+                // this will prevent the httpClient from being disposed in a long-running test using 
+                // the same client for multiple cmdlets
+                client = client.WithHandler(new PassThroughDelegatingHandler());
             }
 
             return client;
@@ -206,12 +200,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public void AddUserAgent(string productName, string productVersion)
         {
-            this.UniqueUserAgents.Add(new ProductInfoHeaderValue(productName, productVersion));
+            UniqueUserAgents.Add(new ProductInfoHeaderValue(productName, productVersion));
         }
 
         public void AddUserAgent(string productName)
         {
-            this.AddUserAgent(productName, string.Empty);
+            AddUserAgent(productName, string.Empty);
         }
 
         public HashSet<ProductInfoHeaderValue> UniqueUserAgents { get; set; }
@@ -257,15 +251,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                         string.Format("TestManagementClientHelper class wasn't initialized with the {0} client.",
                             typeof(TClient).Name));
                 }
-                else
-                {
-                    var realClientFactory = new ClientFactory();
-                    var newParameters = new object[parameters.Length + 1];
-                    Array.Copy(parameters, 0, newParameters, 1, parameters.Length);
-                    newParameters[0] = HttpMockServer.CreateInstance();
-                    var realClient = realClientFactory.CreateCustomArmClient<TClient>(newParameters);
-                    return realClient;
-                }
+                var realClientFactory = new ClientFactory();
+                var newParameters = new object[parameters.Length + 1];
+                Array.Copy(parameters, 0, newParameters, 1, parameters.Length);
+                newParameters[0] = HttpMockServer.CreateInstance();
+                var realClient = realClientFactory.CreateCustomArmClient<TClient>(newParameters);
+                return realClient;
             }
 
             if (TestMockSupport.RunningMocked && HttpMockServer.GetCurrentMode() != HttpRecorderMode.Record)
@@ -282,7 +273,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public void RemoveUserAgent(string name)
         {
-            UniqueUserAgents.RemoveWhere((p) => string.Equals(p.Product.Name, name, StringComparison.OrdinalIgnoreCase));
+            UniqueUserAgents.RemoveWhere(p => string.Equals(p.Product.Name, name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

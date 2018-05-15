@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
     {
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public virtual string Name { get; set; }
 
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 {
                     try
                     {
-                        cluster = this.SFRPClient.Clusters.Create(this.ResourceGroupName, this.Name, clusterResource);
+                        cluster = SFRPClient.Clusters.Create(ResourceGroupName, Name, clusterResource);
                     }
                     finally
                     {
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                     {
                         if (!RunningTest)
                         {
-                            var c = SafeGetResource(this.GetCurrentCluster, true);
+                            var c = SafeGetResource(GetCurrentCluster, true);
                             if (c != null)
                             {
                                 WriteVerboseWithTimestamp(
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 {
                     try
                     {
-                        cluster = this.SFRPClient.Clusters.Update(this.ResourceGroupName, this.Name, request);
+                        cluster = SFRPClient.Clusters.Update(ResourceGroupName, Name, request);
                     }
                     finally
                     {
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                     {
                         if (!RunningTest)
                         {
-                            var c = SafeGetResource(() => this.GetCurrentCluster(), true);
+                            var c = SafeGetResource(() => GetCurrentCluster(), true);
                             if (c != null)
                             {
                                 WriteVerboseWithTimestamp(
@@ -182,14 +182,14 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
 
         protected Task<Cluster> PatchAsync(ClusterUpdateParameters request)
         {
-            return this.SFRPClient.Clusters.UpdateAsync(this.ResourceGroupName, this.Name, request);
+            return SFRPClient.Clusters.UpdateAsync(ResourceGroupName, Name, request);
         }
 
         protected Cluster GetCurrentCluster()
         {
             try
             {
-                return this.SFRPClient.Clusters.Get(this.ResourceGroupName, this.Name);
+                return SFRPClient.Clusters.Get(ResourceGroupName, Name);
             }
             catch (Exception e)
             {
@@ -254,13 +254,10 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             {
                 return reliabilitylevel;
             }
-            else
-            {
-                throw new PSInvalidOperationException(
-                    string.Format(
-                        ServiceFabricProperties.Resources.CannotParseReliabilityLevel,
-                        level));
-            }
+            throw new PSInvalidOperationException(
+                string.Format(
+                    ServiceFabricProperties.Resources.CannotParseReliabilityLevel,
+                    level));
         }
 
         internal ClusterType GetClusterType(Cluster clusterResource)
@@ -270,19 +267,16 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
             {
                 return ClusterType.Unsecure;
             }
-            else
-            {
-                return ClusterType.Secure;
-            }
+            return ClusterType.Secure;
         }
 
         #endregion
 
         protected IDictionary<string, string> GetServiceFabricTags()
         {
-            return new Dictionary<string, string>()
+            return new Dictionary<string, string>
             {
-                { "clusterName",this.Name },
+                { "clusterName",Name },
                 { "resourceType" ,Constants.ServieFabricTag }
             };
         }
@@ -319,7 +313,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                         }
                     }
 
-                    var vmsss = this.ComputeClient.VirtualMachineScaleSets.List(this.ResourceGroupName);
+                    var vmsss = ComputeClient.VirtualMachineScaleSets.List(ResourceGroupName);
 
                     do
                     {
@@ -339,7 +333,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                             }
                         }
                     } while (!string.IsNullOrEmpty(vmsss.NextPageLink) &&
-                             (vmsss = this.ComputeClient.VirtualMachineScaleSets.ListNext(vmsss.NextPageLink)) !=
+                             (vmsss = ComputeClient.VirtualMachineScaleSets.ListNext(vmsss.NextPageLink)) !=
                              null);
                 }
 

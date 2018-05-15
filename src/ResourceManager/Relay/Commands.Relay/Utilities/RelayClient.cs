@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Relay
 
         public RelayClient(IAzureContext context)
         {
-            this.Client = AzureSession.Instance.ClientFactory.CreateArmClient<RelayManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            Client = AzureSession.Instance.ClientFactory.CreateArmClient<RelayManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
 
         }
         public RelayManagementClient Client
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Commands.Relay
 
         public AuthorizationRuleAttributes CreateOrUpdateNamespaceAuthorizationRules(string resourceGroupName, string namespaceName, string authorizationRuleName, AuthorizationRuleAttributes parameter)
         {
-            var parameter1 = new AuthorizationRule()
+            var parameter1 = new AuthorizationRule
             {
                 Rights = parameter.Rights.Select(x => Enum.Parse(typeof(AccessRights), x))
                              .Cast<AccessRights?>()
@@ -235,7 +235,7 @@ namespace Microsoft.Azure.Commands.Relay
 
         public AuthorizationRuleAttributes CreateOrUpdateWcfRelayAuthorizationRules(string resourceGroupName, string namespaceName, string wcfRelayName, string authorizationRuleName, AuthorizationRuleAttributes parameters)
         {
-            var parameter1 = new AuthorizationRule()
+            var parameter1 = new AuthorizationRule
             {                
                 Rights = parameters.Rights.Select(x => Enum.Parse(typeof(AccessRights), x))
                              .Cast<AccessRights?>()
@@ -332,7 +332,7 @@ namespace Microsoft.Azure.Commands.Relay
 
         public AuthorizationRuleAttributes CreateOrUpdateHybridConnectionsAuthorizationRules(string resourceGroupName, string namespaceName, string hybridConnectionsName, string authorizationRuleName, AuthorizationRuleAttributes parameters)
         {
-            var parameter1 = new AuthorizationRule()
+            var parameter1 = new AuthorizationRule
             {                
                 Rights = parameters.Rights.Select(x => Enum.Parse(typeof(AccessRights), x))
                              .Cast<AccessRights?>()

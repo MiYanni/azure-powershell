@@ -157,15 +157,15 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
         {
             get
             {
-                if (this._policiesClient == null)
+                if (_policiesClient == null)
                 {
-                    this._policiesClient = new AuthorizationClient(DefaultContext);
+                    _policiesClient = new AuthorizationClient(DefaultContext);
                 }
 
-                return this._policiesClient;
+                return _policiesClient;
             }
 
-            set { this._policiesClient = value; }
+            set { _policiesClient = value; }
         }
 
         public NewAzureADServicePrincipalCommand()
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
         {
             ExecutionBlock(() =>
             {
-                if (this.ParameterSetName == SimpleParameterSet)
+                if (ParameterSetName == SimpleParameterSet)
                 {
                     CreateSimpleServicePrincipal();
                     return;
@@ -203,7 +203,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                         HomePage = uri
                     };
 
-                    if (ShouldProcess(target: appParameters.DisplayName, action: string.Format("Adding a new application for with display name '{0}'", appParameters.DisplayName)))
+                    if (ShouldProcess(appParameters.DisplayName, string.Format("Adding a new application for with display name '{0}'", appParameters.DisplayName)))
                     {
                         var application = ActiveDirectoryClient.CreateApplication(appParameters);
                         ApplicationId = application.ApplicationId;
@@ -219,7 +219,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                 if (this.IsParameterBound(c => c.Password))
                 {
                     string decodedPassword = SecureStringExtensions.ConvertToString(Password);
-                    createParameters.PasswordCredentials = new PSADPasswordCredential[]
+                    createParameters.PasswordCredentials = new[]
                         {
                             new PSADPasswordCredential
                             {
@@ -236,7 +236,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                 }
                 else if (this.IsParameterBound(c => c.CertValue))
                 {
-                    createParameters.KeyCredentials = new PSADKeyCredential[]
+                    createParameters.KeyCredentials = new[]
                         {
                             new PSADKeyCredential
                             {
@@ -252,7 +252,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     createParameters.KeyCredentials = KeyCredential;
                 }
 
-                if (ShouldProcess(target: createParameters.ApplicationId.ToString(), action: string.Format("Adding a new service principal to be associated with an application having AppId '{0}'", createParameters.ApplicationId)))
+                if (ShouldProcess(createParameters.ApplicationId.ToString(), string.Format("Adding a new service principal to be associated with an application having AppId '{0}'", createParameters.ApplicationId)))
                 {
                     var servicePrincipal = ActiveDirectoryClient.CreateServicePrincipal(createParameters);
                     WriteObject(servicePrincipal);
@@ -306,7 +306,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
             }
 
             // Create an application and get the applicationId
-            var passwordCredential = new PSADPasswordCredential()
+            var passwordCredential = new PSADPasswordCredential
             {
                 StartDate = StartDate,
                 EndDate = EndDate,
@@ -321,13 +321,13 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     DisplayName = DisplayName,
                     IdentifierUris = new[] { identifierUri },
                     HomePage = identifierUri,
-                    PasswordCredentials = new PSADPasswordCredential[]
+                    PasswordCredentials = new[]
                     {
                         passwordCredential
                     }
                 };
 
-                if (ShouldProcess(target: appParameters.DisplayName, action: string.Format("Adding a new application for with display name '{0}'", appParameters.DisplayName)))
+                if (ShouldProcess(appParameters.DisplayName, string.Format("Adding a new application for with display name '{0}'", appParameters.DisplayName)))
                 {
                     var application = ActiveDirectoryClient.CreateApplication(appParameters);
                     ApplicationId = application.ApplicationId;
@@ -339,13 +339,13 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
             {
                 ApplicationId = ApplicationId,
                 AccountEnabled = true,
-                PasswordCredentials = new PSADPasswordCredential[]
+                PasswordCredentials = new[]
                 {
                     passwordCredential
                 }
             };
 
-            if (ShouldProcess(target: createParameters.ApplicationId.ToString(), action: string.Format("Adding a new service principal to be associated with an application having AppId '{0}'", createParameters.ApplicationId)))
+            if (ShouldProcess(createParameters.ApplicationId.ToString(), string.Format("Adding a new service principal to be associated with an application having AppId '{0}'", createParameters.ApplicationId)))
             {
                 var servicePrincipal = ActiveDirectoryClient.CreateServicePrincipal(createParameters);
                 WriteObject(servicePrincipal);
@@ -355,16 +355,16 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     return;
                 }
 
-                FilterRoleAssignmentsOptions parameters = new FilterRoleAssignmentsOptions()
+                FilterRoleAssignmentsOptions parameters = new FilterRoleAssignmentsOptions
                 {
-                    Scope = this.Scope,
-                    RoleDefinitionName = this.Role,
+                    Scope = Scope,
+                    RoleDefinitionName = Role,
                     ADObjectFilter = new ADObjectFilterOptions
                     {
                         SPN = servicePrincipal.ApplicationId.ToString(),
                         Id = servicePrincipal.Id.ToString()
                     },
-                    ResourceIdentifier = new ResourceIdentifier()
+                    ResourceIdentifier = new ResourceIdentifier
                     {
                         Subscription = subscriptionId
                     },
@@ -380,7 +380,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                         var ra = PoliciesClient.FilterRoleAssignments(parameters, subscriptionId);
                         if (ra != null)
                         {
-                            WriteVerbose(string.Format("Role assignment with role '{0}' and scope '{1}' successfully created for the created service principal.", this.Role, this.Scope));
+                            WriteVerbose(string.Format("Role assignment with role '{0}' and scope '{1}' successfully created for the created service principal.", Role, Scope));
                             break;
                         }
                     }

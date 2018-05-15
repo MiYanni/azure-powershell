@@ -136,7 +136,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 return patchJsonString;
             }
-            else if (string.IsNullOrWhiteSpace(patchJsonString))
+            if (string.IsNullOrWhiteSpace(patchJsonString))
             {
                 return originalJsonString;
             }

@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServerKey> ServerKeys
         {
-            get { return this._serverKeys; }
-            set { this._serverKeys = value; }
+            get { return _serverKeys; }
+            set { _serverKeys = value; }
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerKeyListResponse()
         {
-            this.ServerKeys = new LazyList<ServerKey>();
+            ServerKeys = new LazyList<ServerKey>();
         }
         
         /// <summary>
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<ServerKey> GetEnumerator()
         {
-            return this.ServerKeys.GetEnumerator();
+            return ServerKeys.GetEnumerator();
         }
         
         /// <summary>
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

@@ -59,12 +59,12 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!this.IsVirtualNetworkGatewayPresent(ResourceGroupName, VirtualNetworkGatewayName))
+            if (!IsVirtualNetworkGatewayPresent(ResourceGroupName, VirtualNetworkGatewayName))
             {
-                throw new ArgumentException(string.Format(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound, VirtualNetworkGatewayName));
+                throw new ArgumentException(string.Format(Properties.Resources.ResourceNotFound, VirtualNetworkGatewayName));
             }
 
-            var vnetGateway = this.GetVirtualNetworkGateway(this.ResourceGroupName, this.VirtualNetworkGatewayName);
+            var vnetGateway = GetVirtualNetworkGateway(ResourceGroupName, VirtualNetworkGatewayName);
 
             if (vnetGateway.VpnClientConfiguration == null || vnetGateway.VpnClientConfiguration.VpnClientRevokedCertificates == null)
             {
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Network
             var virtualnetGatewayModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkGateway>(vnetGateway);
             virtualnetGatewayModel.Tags = TagsConversionHelper.CreateTagDictionary(vnetGateway.Tag, validate: true);
 
-            this.VirtualNetworkGatewayClient.CreateOrUpdate(ResourceGroupName, VirtualNetworkGatewayName, virtualnetGatewayModel);
+            VirtualNetworkGatewayClient.CreateOrUpdate(ResourceGroupName, VirtualNetworkGatewayName, virtualnetGatewayModel);
 
             WriteObject(true);
         }

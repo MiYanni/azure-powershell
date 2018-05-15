@@ -60,9 +60,9 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                 baseJob.LogFilePatterns,
                 baseJob.Related)
         {
-            this.Properties = null;
-            this.ErrorMessage = null;
-            this.StateAuditRecords = null;
+            Properties = null;
+            ErrorMessage = null;
+            StateAuditRecords = null;
         }
     }
 }

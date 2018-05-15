@@ -84,8 +84,8 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                 }
                 else
                 {
-                    ulong first = MyInvocation.BoundParameters.ContainsKey("First") ? this.PagingParameters.First : ulong.MaxValue;
-                    ulong skip = MyInvocation.BoundParameters.ContainsKey("Skip") ? this.PagingParameters.Skip : 0;
+                    ulong first = MyInvocation.BoundParameters.ContainsKey("First") ? PagingParameters.First : ulong.MaxValue;
+                    ulong skip = MyInvocation.BoundParameters.ContainsKey("Skip") ? PagingParameters.Skip : 0;
                     if (ApplicationId != Guid.Empty)
                     {
                         var appId = ApplicationId.ToString();
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     }
                     else
                     {
-                        ADObjectFilterOptions options = new ADObjectFilterOptions()
+                        ADObjectFilterOptions options = new ADObjectFilterOptions
                         {
                             SearchString = this.IsParameterBound(c => c.DisplayNameBeginsWith) ? DisplayNameBeginsWith + "*" : DisplayName
                         };

@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
             var vpnClientRevokedCertificate = new PSVpnClientRevokedCertificate();
 
-            vpnClientRevokedCertificate.Name = this.Name;
-            vpnClientRevokedCertificate.Thumbprint = this.Thumbprint;
+            vpnClientRevokedCertificate.Name = Name;
+            vpnClientRevokedCertificate.Thumbprint = Thumbprint;
 
             WriteObject(vpnClientRevokedCertificate);
         }

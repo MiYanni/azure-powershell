@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Commands.Compute
         public static string GetTruncatedStr(string inputStr, int maxLength)
         {
             if (inputStr == null) return string.Empty;
-            return (inputStr.Length > maxLength)
+            return inputStr.Length > maxLength
                 ? inputStr.Substring(0, maxLength)
                 : inputStr;
         }

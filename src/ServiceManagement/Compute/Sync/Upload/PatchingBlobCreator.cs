@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
             base(localVhd, destination, blobObjectFactory, overWrite)
         {
             this.baseVhdBlob = baseVhdBlob.Uri;
-            this.baseVhdBlobUri = baseVhdBlob;
+            baseVhdBlobUri = baseVhdBlob;
         }
 
 
@@ -46,7 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 
         private void CreateRemoteBlob()
         {
-            var baseBlob = this.blobObjectFactory.Create(baseVhdBlobUri);
+            var baseBlob = blobObjectFactory.Create(baseVhdBlobUri);
 
             if (!baseBlob.Exists())
             {
@@ -101,7 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 
         private void CopyBaseImageToDestination()
         {
-            var source = this.blobObjectFactory.Create(baseVhdBlobUri);
+            var source = blobObjectFactory.Create(baseVhdBlobUri);
             source.FetchAttributesAsync()
                 .ConfigureAwait(false).GetAwaiter().GetResult();
 
@@ -173,7 +173,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
         {
             this.blob = blob;
             this.blob.FetchAttributesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            this.Current = blob;
+            Current = blob;
         }
 
         public CloudPageBlob Current { get; private set; }
@@ -188,21 +188,21 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
         {
             if (disposing)
             {
-                if (!this.disposed)
+                if (!disposed)
                 {
                     if (completed)
                     {
-                        this.blob.SetMetadataAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                        this.blob.SetPropertiesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                        blob.SetMetadataAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                        blob.SetPropertiesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                     }
-                    this.disposed = true;
+                    disposed = true;
                 }
             }
         }
 
         public void Complete()
         {
-            this.completed = true;
+            completed = true;
         }
     }
 }

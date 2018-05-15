@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         public static bool IsDecimal(this string source, NumberStyles allowedNumberStyle)
         {
             decimal parsedDecimal;
-            return decimal.TryParse(s: source, style: allowedNumberStyle, provider: null, result: out parsedDecimal);
+            return decimal.TryParse(source, allowedNumberStyle, null, out parsedDecimal);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
         public static bool IsDateTime(this string source, string format, DateTimeStyles styles)
         {
             DateTime parsedDateTime;
-            return DateTime.TryParseExact(s: source, format: format, provider: null, style: styles, result: out parsedDateTime);
+            return DateTime.TryParseExact(source, format, null, styles, out parsedDateTime);
         }
 
         /// <summary>

@@ -56,14 +56,14 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            var options = new ListJobPreparationAndReleaseStatusOptions(this.BatchContext, this.AdditionalBehaviors)
+            var options = new ListJobPreparationAndReleaseStatusOptions(BatchContext, AdditionalBehaviors)
             {
-                JobId = this.Id,
-                Job = this.InputObject,
-                Filter = this.Filter,
-                Select = this.Select,
-                Expand = this.Expand,
-                MaxCount = this.MaxCount
+                JobId = Id,
+                Job = InputObject,
+                Filter = Filter,
+                Select = Select,
+                Expand = Expand,
+                MaxCount = MaxCount
             };
 
             // The enumerator will internally query the service in chunks. Using WriteObject with the enumerate flag will enumerate

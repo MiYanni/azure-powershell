@@ -40,9 +40,9 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 CertificateOperations certOperations = options.Context.BatchOMClient.CertificateOperations;
                 ODATADetailLevel getDetailLevel = new ODATADetailLevel(selectClause: options.Select);
                 Certificate certificate = certOperations.GetCertificate(options.ThumbprintAlgorithm, options.Thumbprint,
-                    detailLevel: getDetailLevel, additionalBehaviors: options.AdditionalBehaviors);
+                    getDetailLevel, options.AdditionalBehaviors);
                 PSCertificate psCertificate = new PSCertificate(certificate);
-                return new PSCertificate[] { psCertificate };
+                return new[] { psCertificate };
             }
             // List certificates using the specified filter
             else

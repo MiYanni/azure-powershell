@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string EndIpAddress
         {
-            get { return this._endIpAddress; }
-            set { this._endIpAddress = value; }
+            get { return _endIpAddress; }
+            set { _endIpAddress = value; }
         }
         
         private string _startIpAddress;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StartIpAddress
         {
-            get { return this._startIpAddress; }
-            set { this._startIpAddress = value; }
+            get { return _startIpAddress; }
+            set { _startIpAddress = value; }
         }
         
         /// <summary>

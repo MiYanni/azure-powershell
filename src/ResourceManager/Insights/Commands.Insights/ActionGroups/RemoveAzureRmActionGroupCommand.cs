@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Commands.Insights.ActionGroups
 {
     using System;
 
-    using Microsoft.Azure.Management.Internal.Resources.Utilities.Models;
+    using Management.Internal.Resources.Utilities.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -72,25 +72,25 @@ namespace Microsoft.Azure.Commands.Insights.ActionGroups
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                target: string.Format("Delete action group: {0} from resource group: {1}", this.Name, this.ResourceGroupName),
-                action: "Delete action group"))
+                string.Format("Delete action group: {0} from resource group: {1}", Name, ResourceGroupName),
+                "Delete action group"))
             {
                 if (ParameterSetName == ByInputObject)
                 {
-                    this.ResourceGroupName = InputObject.ResourceGroupName;
-                    this.Name = InputObject.Name;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    Name = InputObject.Name;
                 }
                 else if (ParameterSetName == ByResourceId)
                 {
-                    ResourceIdentifier resourceId = new ResourceIdentifier(this.ResourceId);
-                    this.ResourceGroupName = resourceId.ResourceGroupName;
-                    this.Name = resourceId.ResourceName;
+                    ResourceIdentifier resourceId = new ResourceIdentifier(ResourceId);
+                    ResourceGroupName = resourceId.ResourceGroupName;
+                    Name = resourceId.ResourceName;
                 }
 
                 var result =
-                    this.MonitorManagementClient.ActionGroups.DeleteWithHttpMessagesAsync(
-                        resourceGroupName: this.ResourceGroupName,
-                        actionGroupName: this.Name).Result;
+                    MonitorManagementClient.ActionGroups.DeleteWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        Name).Result;
 
                 var response = new AzureOperationResponse
                                {

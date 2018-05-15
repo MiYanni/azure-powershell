@@ -14,9 +14,9 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
 {
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Collections;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
+    using Commands.Common.Authentication.Abstractions;
+    using Collections;
+    using Components;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections;
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
         /// <param name="propertyObject">The <see cref="ResourcePropertyObject"/></param>
         internal static JToken ToResourcePropertiesBody(this PSObject propertyObject)
         {
-            return PsObjectExtensions.ToJToken(propertyObject);
+            return ToJToken(propertyObject);
         }
 
         /// <summary>
@@ -77,23 +77,23 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
                         : valueAsIDictionary.OfType<DictionaryEntry>().Select(dictionaryEntry => Tuple.Create(dictionaryEntry.Key.ToString(), dictionaryEntry.Value));
 
                     dictionaryEntries = dictionaryEntries.Any(dictionaryEntry => dictionaryEntry.Item1.EqualsInsensitively(Constants.MicrosoftAzureResource))
-                        ? dictionaryEntries.Where(dictionaryEntry => !PsObjectExtensions.PropertiesToRemove.ContainsKey(dictionaryEntry.Item1))
+                        ? dictionaryEntries.Where(dictionaryEntry => !PropertiesToRemove.ContainsKey(dictionaryEntry.Item1))
                         : dictionaryEntries;
 
                     foreach (var dictionaryEntry in dictionaryEntries)
                     {
-                        obj.Add(dictionaryEntry.Item1, PsObjectExtensions.ToJToken(dictionaryEntry.Item2));
+                        obj.Add(dictionaryEntry.Item1, ToJToken(dictionaryEntry.Item2));
                     }
                 }
                 else
                 {
-                    var properties = (valueAsPsObject.TypeNames.Any(typeName => typeName.EqualsInsensitively(Constants.MicrosoftAzureResource)))
-                        ? valueAsPsObject.Properties.Where(property => !PsObjectExtensions.PropertiesToRemove.ContainsKey(property.Name))
+                    var properties = valueAsPsObject.TypeNames.Any(typeName => typeName.EqualsInsensitively(Constants.MicrosoftAzureResource))
+                        ? valueAsPsObject.Properties.Where(property => !PropertiesToRemove.ContainsKey(property.Name))
                         : valueAsPsObject.Properties.AsEnumerable();
 
                     foreach (var member in properties)
                     {
-                        obj.Add(member.Name, PsObjectExtensions.ToJToken(member.Value));
+                        obj.Add(member.Name, ToJToken(member.Value));
                     }
                 }
 
@@ -109,12 +109,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
                     : valueAsDictionary.OfType<DictionaryEntry>().Select(dictionaryEntry => Tuple.Create(dictionaryEntry.Key.ToString(), dictionaryEntry.Value));
 
                 dictionaryEntries = dictionaryEntries.Any(dictionaryEntry => dictionaryEntry.Item1.EqualsInsensitively(Constants.MicrosoftAzureResource))
-                    ? dictionaryEntries.Where(dictionaryEntry => !PsObjectExtensions.PropertiesToRemove.ContainsKey(dictionaryEntry.Item1))
+                    ? dictionaryEntries.Where(dictionaryEntry => !PropertiesToRemove.ContainsKey(dictionaryEntry.Item1))
                     : dictionaryEntries;
 
                 foreach (var dictionaryEntry in dictionaryEntries)
                 {
-                    obj.Add(dictionaryEntry.Item1, PsObjectExtensions.ToJToken(dictionaryEntry.Item2));
+                    obj.Add(dictionaryEntry.Item1, ToJToken(dictionaryEntry.Item2));
                 }
 
                 return obj;
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions
                 var tmpList = new List<JToken>();
                 foreach (var v in valueAsIList)
                 {
-                    tmpList.Add(PsObjectExtensions.ToJToken(v));
+                    tmpList.Add(ToJToken(v));
                 }
 
                 return JArray.FromObject(tmpList.ToArray());

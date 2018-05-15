@@ -44,9 +44,9 @@ namespace Microsoft.Azure.Commands.Cdn.Origin
                 CdnOrigin.EndpointName,
                 CdnOrigin.Name,
                 new OriginUpdateParameters(
-                    hostName: CdnOrigin.HostName,
-                    httpPort: CdnOrigin.HttpPort,
-                    httpsPort: CdnOrigin.HttpsPort));
+                    CdnOrigin.HostName,
+                    CdnOrigin.HttpPort,
+                    CdnOrigin.HttpsPort));
 
             WriteVerbose(Resources.Success);
             WriteObject(origin.ToPsOrigin());

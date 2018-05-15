@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetApplicationGateway(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSApplicationGateway GetApplicationGateway(string resourceGroupName, string name)
         {
-            var appGateway = this.ApplicationGatewayClient.Get(resourceGroupName, name);
+            var appGateway = ApplicationGatewayClient.Get(resourceGroupName, name);
 
             var psApplicationGateway = NetworkResourceManagerProfile.Mapper.Map<PSApplicationGateway>(appGateway);
             psApplicationGateway.ResourceGroupName = resourceGroupName;

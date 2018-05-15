@@ -21,20 +21,20 @@ namespace Microsoft.Azure.Commands.EventGrid.Models
     {
         public PSTopicTypeInfo(TopicTypeInfo topicTypeInfo)
         {
-            this.TopicTypeName = topicTypeInfo.Name;
-            this.Id = topicTypeInfo.Id;
-            this.ProvisioningState = topicTypeInfo.ProvisioningState;
-            this.Provider = topicTypeInfo.Provider;
-            this.DisplayName = topicTypeInfo.DisplayName;
-            this.Description = topicTypeInfo.Description;
-            this.ResourceRegionType = topicTypeInfo.ResourceRegionType;
-            this.SupportedLocations = topicTypeInfo.SupportedLocations;
+            TopicTypeName = topicTypeInfo.Name;
+            Id = topicTypeInfo.Id;
+            ProvisioningState = topicTypeInfo.ProvisioningState;
+            Provider = topicTypeInfo.Provider;
+            DisplayName = topicTypeInfo.DisplayName;
+            Description = topicTypeInfo.Description;
+            ResourceRegionType = topicTypeInfo.ResourceRegionType;
+            SupportedLocations = topicTypeInfo.SupportedLocations;
         }
 
         public PSTopicTypeInfo(TopicTypeInfo topicTypeInfo, IEnumerable<EventType> eventTypes)
             : this(topicTypeInfo)
         {
-            this.EventTypes = eventTypes;
+            EventTypes = eventTypes;
         }
 
         public string TopicTypeName { get; set; }

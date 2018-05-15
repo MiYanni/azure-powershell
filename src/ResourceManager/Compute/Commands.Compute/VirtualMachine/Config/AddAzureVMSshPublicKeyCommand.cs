@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Compute
         ProfileNouns.SshPublicKey),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class NewAzureSshPublicKeyCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class NewAzureSshPublicKeyCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Alias("VMProfile")]
         [Parameter(
@@ -57,38 +57,38 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.VM.OSProfile == null)
+            if (VM.OSProfile == null)
             {
-                this.VM.OSProfile = new OSProfile();
+                VM.OSProfile = new OSProfile();
             }
 
-            if (this.VM.OSProfile.WindowsConfiguration == null && this.VM.OSProfile.LinuxConfiguration == null)
+            if (VM.OSProfile.WindowsConfiguration == null && VM.OSProfile.LinuxConfiguration == null)
             {
-                this.VM.OSProfile.LinuxConfiguration = new LinuxConfiguration();
+                VM.OSProfile.LinuxConfiguration = new LinuxConfiguration();
             }
-            else if (this.VM.OSProfile.WindowsConfiguration != null && this.VM.OSProfile.LinuxConfiguration == null)
+            else if (VM.OSProfile.WindowsConfiguration != null && VM.OSProfile.LinuxConfiguration == null)
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Compute.Properties.Resources.BothWindowsAndLinuxConfigurationsSpecified);
-            }
-
-            if (this.VM.OSProfile.LinuxConfiguration.Ssh == null)
-            {
-                this.VM.OSProfile.LinuxConfiguration.Ssh = new SshConfiguration();
+                throw new ArgumentException(Properties.Resources.BothWindowsAndLinuxConfigurationsSpecified);
             }
 
-            if (this.VM.OSProfile.LinuxConfiguration.Ssh.PublicKeys == null)
+            if (VM.OSProfile.LinuxConfiguration.Ssh == null)
             {
-                this.VM.OSProfile.LinuxConfiguration.Ssh.PublicKeys = new List<SshPublicKey>();
+                VM.OSProfile.LinuxConfiguration.Ssh = new SshConfiguration();
             }
 
-            this.VM.OSProfile.LinuxConfiguration.Ssh.PublicKeys.Add(
+            if (VM.OSProfile.LinuxConfiguration.Ssh.PublicKeys == null)
+            {
+                VM.OSProfile.LinuxConfiguration.Ssh.PublicKeys = new List<SshPublicKey>();
+            }
+
+            VM.OSProfile.LinuxConfiguration.Ssh.PublicKeys.Add(
                 new SshPublicKey
                 {
-                    KeyData = this.KeyData,
-                    Path = this.Path,
+                    KeyData = KeyData,
+                    Path = Path,
                 });
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

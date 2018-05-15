@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
         /// Represents the Azure Backup Server agent.
         /// </summary>
         AzureBackupServer,
-        AzureSQL,
+        AzureSQL
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
         /// Represents the Azure Virtual Machine (both Classic and Compute versions).
         /// </summary>
         AzureVM = 1,
-        AzureSQLDatabase,
+        AzureSQLDatabase
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
         /// <summary>
         /// Represents the registered state of the container with the recovery services vault.
         /// </summary>
-        Registered = 1,
+        Registered = 1
     }
 
     /// <summary>
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
         /// Represents the state after the registration process has started but the registration 
         /// is not yet complete.
         /// </summary>
-        Registering,
+        Registering
     }
 
     /// <summary>
@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
         /// <summary>
         /// Represents a state of the protection which is unhealthy.
         /// </summary>
-        Unhealthy,
+        Unhealthy
     }
 
     /// <summary>
@@ -217,7 +217,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
     public enum ScheduleRunType
     {
         Daily = 1,
-        Weekly = 2,
+        Weekly = 2
     }
 
     /// <summary>
@@ -294,6 +294,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models
     {
         Connect,
         Extend,
-        Terminate,
+        Terminate
     }
 }

@@ -25,10 +25,10 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            PSApplicationGatewayConnectionDraining connectionDraining = new PSApplicationGatewayConnectionDraining()
+            PSApplicationGatewayConnectionDraining connectionDraining = new PSApplicationGatewayConnectionDraining
             {
-                Enabled = this.Enabled,
-                DrainTimeoutInSec = this.DrainTimeoutInSec,
+                Enabled = Enabled,
+                DrainTimeoutInSec = DrainTimeoutInSec,
             };
 
             WriteObject(connectionDraining);

@@ -38,22 +38,22 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!this.IsApplicationGatewayPresent(this.ApplicationGateway.ResourceGroupName, this.ApplicationGateway.Name))
+            if (!IsApplicationGatewayPresent(ApplicationGateway.ResourceGroupName, ApplicationGateway.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Normalize the IDs
-            ApplicationGatewayChildResourceHelper.NormalizeChildResourcesId(this.ApplicationGateway);
+            ApplicationGatewayChildResourceHelper.NormalizeChildResourcesId(ApplicationGateway);
 
             // Map to the sdk object
-            var appGwModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ApplicationGateway>(this.ApplicationGateway);
-            appGwModel.Tags = TagsConversionHelper.CreateTagDictionary(this.ApplicationGateway.Tag, validate: true);
+            var appGwModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ApplicationGateway>(ApplicationGateway);
+            appGwModel.Tags = TagsConversionHelper.CreateTagDictionary(ApplicationGateway.Tag, validate: true);
 
             // Execute the Create VirtualNetwork call
-            this.ApplicationGatewayClient.CreateOrUpdate(this.ApplicationGateway.ResourceGroupName, this.ApplicationGateway.Name, appGwModel);
+            ApplicationGatewayClient.CreateOrUpdate(ApplicationGateway.ResourceGroupName, ApplicationGateway.Name, appGwModel);
 
-            var getApplicationGateway = this.GetApplicationGateway(this.ApplicationGateway.ResourceGroupName, this.ApplicationGateway.Name);
+            var getApplicationGateway = GetApplicationGateway(ApplicationGateway.ResourceGroupName, ApplicationGateway.Name);
             WriteObject(getApplicationGateway);
         }
     }

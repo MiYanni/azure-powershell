@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Compute
         DefaultParameterSetName = DefaultParamSet),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class SetAzureVMOSDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class SetAzureVMOSDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         protected const string DefaultParamSet = "DefaultParamSet";
         protected const string WindowsParamSet = "WindowsParamSet";
@@ -172,97 +172,97 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.VM.StorageProfile == null)
+            if (VM.StorageProfile == null)
             {
-                this.VM.StorageProfile = new StorageProfile();
+                VM.StorageProfile = new StorageProfile();
             }
 
-            if ((string.IsNullOrEmpty(this.KeyEncryptionKeyVaultId) && !string.IsNullOrEmpty(this.KeyEncryptionKeyUrl))
-                || (!string.IsNullOrEmpty(this.KeyEncryptionKeyVaultId) && string.IsNullOrEmpty(this.KeyEncryptionKeyUrl)))
+            if (string.IsNullOrEmpty(KeyEncryptionKeyVaultId) && !string.IsNullOrEmpty(KeyEncryptionKeyUrl)
+                || !string.IsNullOrEmpty(KeyEncryptionKeyVaultId) && string.IsNullOrEmpty(KeyEncryptionKeyUrl))
             {
                 WriteError(new ErrorRecord(
                         new Exception(Properties.Resources.VMOSDiskDiskEncryptionBothKekVaultIdAndKekUrlRequired),
                         string.Empty, ErrorCategory.InvalidArgument, null));
             }
 
-            if (this.VM.StorageProfile.OsDisk == null)
+            if (VM.StorageProfile.OsDisk == null)
             {
-                this.VM.StorageProfile.OsDisk = new OSDisk();
+                VM.StorageProfile.OsDisk = new OSDisk();
             }
 
-            this.VM.StorageProfile.OsDisk.Name = this.Name ?? this.VM.StorageProfile.OsDisk.Name;
-            this.VM.StorageProfile.OsDisk.Caching = this.Caching ?? this.VM.StorageProfile.OsDisk.Caching;
-            this.VM.StorageProfile.OsDisk.DiskSizeGB = this.DiskSizeInGB ?? this.VM.StorageProfile.OsDisk.DiskSizeGB;
+            VM.StorageProfile.OsDisk.Name = Name ?? VM.StorageProfile.OsDisk.Name;
+            VM.StorageProfile.OsDisk.Caching = Caching ?? VM.StorageProfile.OsDisk.Caching;
+            VM.StorageProfile.OsDisk.DiskSizeGB = DiskSizeInGB ?? VM.StorageProfile.OsDisk.DiskSizeGB;
 
-            if (this.Windows.IsPresent)
+            if (Windows.IsPresent)
             {
-                this.VM.StorageProfile.OsDisk.OsType = OperatingSystemTypes.Windows;
+                VM.StorageProfile.OsDisk.OsType = OperatingSystemTypes.Windows;
             }
-            else if (this.Linux.IsPresent)
+            else if (Linux.IsPresent)
             {
-                this.VM.StorageProfile.OsDisk.OsType = OperatingSystemTypes.Linux;
+                VM.StorageProfile.OsDisk.OsType = OperatingSystemTypes.Linux;
             }
 
-            if (!string.IsNullOrEmpty(this.VhdUri))
+            if (!string.IsNullOrEmpty(VhdUri))
             {
-                this.VM.StorageProfile.OsDisk.Vhd = new VirtualHardDisk
+                VM.StorageProfile.OsDisk.Vhd = new VirtualHardDisk
                 {
-                    Uri = this.VhdUri
+                    Uri = VhdUri
                 };
             }
 
-            if (!string.IsNullOrEmpty(this.SourceImageUri))
+            if (!string.IsNullOrEmpty(SourceImageUri))
             {
-                this.VM.StorageProfile.OsDisk.Image = new VirtualHardDisk
+                VM.StorageProfile.OsDisk.Image = new VirtualHardDisk
                 {
-                    Uri = this.SourceImageUri
+                    Uri = SourceImageUri
                 };
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("CreateOption"))
+            if (MyInvocation.BoundParameters.ContainsKey("CreateOption"))
             {
-                this.VM.StorageProfile.OsDisk.CreateOption = this.CreateOption;
+                VM.StorageProfile.OsDisk.CreateOption = CreateOption;
             }
 
-            if (this.ParameterSetName.Equals(WindowsAndDiskEncryptionParameterSet) || this.ParameterSetName.Equals(LinuxAndDiskEncryptionParameterSet))
+            if (ParameterSetName.Equals(WindowsAndDiskEncryptionParameterSet) || ParameterSetName.Equals(LinuxAndDiskEncryptionParameterSet))
             {
-                this.VM.StorageProfile.OsDisk.EncryptionSettings = new DiskEncryptionSettings
+                VM.StorageProfile.OsDisk.EncryptionSettings = new DiskEncryptionSettings
                 {
                     DiskEncryptionKey = new KeyVaultSecretReference
                     {
                         SourceVault = new SubResource
                         {
-                            Id = this.DiskEncryptionKeyVaultId
+                            Id = DiskEncryptionKeyVaultId
                         },
-                        SecretUrl = this.DiskEncryptionKeyUrl
+                        SecretUrl = DiskEncryptionKeyUrl
                     },
-                    KeyEncryptionKey = (this.KeyEncryptionKeyVaultId == null || this.KeyEncryptionKeyUrl == null)
+                    KeyEncryptionKey = KeyEncryptionKeyVaultId == null || KeyEncryptionKeyUrl == null
                     ? null
                     : new KeyVaultKeyReference
                     {
-                        KeyUrl = this.KeyEncryptionKeyUrl,
+                        KeyUrl = KeyEncryptionKeyUrl,
                         SourceVault = new SubResource
                         {
-                            Id = this.KeyEncryptionKeyVaultId
+                            Id = KeyEncryptionKeyVaultId
                         },
                     }
                 };
             }
 
-            if (!string.IsNullOrEmpty(this.ManagedDiskId) || this.StorageAccountType != null)
+            if (!string.IsNullOrEmpty(ManagedDiskId) || StorageAccountType != null)
             {
-                if (this.VM.StorageProfile.OsDisk.ManagedDisk == null)
+                if (VM.StorageProfile.OsDisk.ManagedDisk == null)
                 {
-                    this.VM.StorageProfile.OsDisk.ManagedDisk = new ManagedDiskParameters();
+                    VM.StorageProfile.OsDisk.ManagedDisk = new ManagedDiskParameters();
                 }
 
-                this.VM.StorageProfile.OsDisk.ManagedDisk.Id = this.ManagedDiskId ?? this.VM.StorageProfile.OsDisk.ManagedDisk.Id;
-                this.VM.StorageProfile.OsDisk.ManagedDisk.StorageAccountType = this.StorageAccountType ?? this.VM.StorageProfile.OsDisk.ManagedDisk.StorageAccountType;
+                VM.StorageProfile.OsDisk.ManagedDisk.Id = ManagedDiskId ?? VM.StorageProfile.OsDisk.ManagedDisk.Id;
+                VM.StorageProfile.OsDisk.ManagedDisk.StorageAccountType = StorageAccountType ?? VM.StorageProfile.OsDisk.ManagedDisk.StorageAccountType;
             }
 
-            this.VM.StorageProfile.OsDisk.WriteAcceleratorEnabled = this.WriteAccelerator.IsPresent;
+            VM.StorageProfile.OsDisk.WriteAcceleratorEnabled = WriteAccelerator.IsPresent;
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

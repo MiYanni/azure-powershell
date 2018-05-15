@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSMetadataItem
     {
         
-        internal Microsoft.Azure.Batch.MetadataItem omObject;
+        internal MetadataItem omObject;
         
         public PSMetadataItem(string name, string value)
         {
-            this.omObject = new Microsoft.Azure.Batch.MetadataItem(name, value);
+            omObject = new MetadataItem(name, value);
         }
         
-        internal PSMetadataItem(Microsoft.Azure.Batch.MetadataItem omObject)
+        internal PSMetadataItem(MetadataItem omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Name;
+                return omObject.Name;
             }
         }
         
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Value;
+                return omObject.Value;
             }
         }
     }

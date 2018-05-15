@@ -33,8 +33,8 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            CertificateOperationParameters parameters = new CertificateOperationParameters(this.BatchContext,
-                this.ThumbprintAlgorithm, this.Thumbprint, this.AdditionalBehaviors);
+            CertificateOperationParameters parameters = new CertificateOperationParameters(BatchContext,
+                ThumbprintAlgorithm, Thumbprint, AdditionalBehaviors);
 
             BatchClient.CancelDeleteCertificate(parameters);
         }

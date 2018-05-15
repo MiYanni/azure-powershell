@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Network
             string resourceName)
         {
             return string.Format(
-                Microsoft.Azure.Commands.Network.Properties.Resources.VirtualNetworkGatewayChildResourceId,
+                Properties.Resources.VirtualNetworkGatewayChildResourceId,
                 subscriptionId,
                 resourceGroupName,
                 virtualNetworkGatewayName,
@@ -44,10 +44,10 @@ namespace Microsoft.Azure.Commands.Network
         public static string GetResourceNotSetId(string subscriptionId, string resource, string resourceName)
         {
             return string.Format(
-                Microsoft.Azure.Commands.Network.Properties.Resources.VirtualNetworkGatewayChildResourceId,
+                Properties.Resources.VirtualNetworkGatewayChildResourceId,
                 subscriptionId,
-                Microsoft.Azure.Commands.Network.Properties.Resources.ResourceGroupNotSet,
-                Microsoft.Azure.Commands.Network.Properties.Resources.VirtualNetworkGatewayNameNotSet,
+                Properties.Resources.ResourceGroupNotSet,
+                Properties.Resources.VirtualNetworkGatewayNameNotSet,
                 resource,
                 resourceName);
         }

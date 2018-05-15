@@ -278,7 +278,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Extensions.DSC.Publish
                 return false;
             }
             // TODO: Add case when configuration name is not a StringConstant, but a variable.
-            var commandParameter = (commandNode.CommandElements[0] as StringConstantExpressionAst);
+            var commandParameter = commandNode.CommandElements[0] as StringConstantExpressionAst;
             if (commandParameter == null)
             {
                 return false;
@@ -307,7 +307,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Extensions.DSC.Publish
             {
                 requiredModules = GetRequiredModulesFromAst(ast, tokens);
             }
-            return new ConfigurationParseResult()
+            return new ConfigurationParseResult
             {
                 Path = fullPath,
                 Errors = errors,

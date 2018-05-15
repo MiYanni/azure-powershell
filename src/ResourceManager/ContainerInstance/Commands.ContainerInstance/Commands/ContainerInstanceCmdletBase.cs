@@ -64,17 +64,17 @@ namespace Microsoft.Azure.Commands.ContainerInstance
         {
             get
             {
-                if (this._containerClient == null)
+                if (_containerClient == null)
                 {
-                    this._containerClient = AzureSession.Instance.ClientFactory.CreateArmClient<ContainerInstanceManagementClient>(
-                        context: this.DefaultContext,
-                        endpoint: AzureEnvironment.Endpoint.ResourceManager);
+                    _containerClient = AzureSession.Instance.ClientFactory.CreateArmClient<ContainerInstanceManagementClient>(
+                        DefaultContext,
+                        AzureEnvironment.Endpoint.ResourceManager);
                 }
-                return this._containerClient;
+                return _containerClient;
             }
             set
             {
-                this._containerClient = value;
+                _containerClient = value;
             }
         }
 
@@ -85,17 +85,17 @@ namespace Microsoft.Azure.Commands.ContainerInstance
         {
             get
             {
-                if (this._resourceClient == null)
+                if (_resourceClient == null)
                 {
-                    this._resourceClient = AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(
-                        context: this.DefaultContext,
-                        endpoint: AzureEnvironment.Endpoint.ResourceManager);
+                    _resourceClient = AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(
+                        DefaultContext,
+                        AzureEnvironment.Endpoint.ResourceManager);
                 }
-                return this._resourceClient;
+                return _resourceClient;
             }
             set
             {
-                this._resourceClient = value;
+                _resourceClient = value;
             }
         }
 
@@ -104,16 +104,16 @@ namespace Microsoft.Azure.Commands.ContainerInstance
         /// </summary>
         public ContainerGroup CreateContainerGroup(ContainerGroupCreationParameters parameters)
         {
-            var resources = new ResourceRequirements()
+            var resources = new ResourceRequirements
             {
-                Requests = new ResourceRequests()
+                Requests = new ResourceRequests
                 {
                     Cpu = parameters.Cpu,
                     MemoryInGB = parameters.MemoryInGb,
                 }
             };
 
-            var container = new Container()
+            var container = new Container
             {
                 Name = parameters.Name,
                 Image = parameters.ContainerImage,
@@ -128,17 +128,17 @@ namespace Microsoft.Azure.Commands.ContainerInstance
                 {
                     new VolumeMount
                     {
-                        Name = ContainerInstanceCmdletBase.AzureFileVolumeName,
+                        Name = AzureFileVolumeName,
                         MountPath = parameters.AzureFileVolumeMountPath
                     }
                 };
             }
 
-            var containerGroup = new ContainerGroup()
+            var containerGroup = new ContainerGroup
             {
                 Location = parameters.Location,
                 Tags = parameters.Tags,
-                Containers = new List<Container>() { container },
+                Containers = new List<Container> { container },
                 OsType = parameters.OsType,
                 RestartPolicy = parameters.RestartPolicy
             };
@@ -148,15 +148,15 @@ namespace Microsoft.Azure.Commands.ContainerInstance
             {
                 container.Ports = parameters.Ports.Select(p => new ContainerPort(p)).ToList();
                 containerGroup.IpAddress = new IpAddress(
-                    ports: parameters.Ports.Select(p => new Port(p)).ToList(),
+                    parameters.Ports.Select(p => new Port(p)).ToList(),
                     dnsNameLabel: parameters.DnsNameLabel);
             }
 
             if (!string.IsNullOrEmpty(parameters.RegistryServer))
             {
-                containerGroup.ImageRegistryCredentials = new List<ImageRegistryCredential>()
+                containerGroup.ImageRegistryCredentials = new List<ImageRegistryCredential>
                 {
-                    new ImageRegistryCredential()
+                    new ImageRegistryCredential
                     {
                         Server = parameters.RegistryServer,
                         Username = parameters.RegistryUsername,
@@ -178,16 +178,16 @@ namespace Microsoft.Azure.Commands.ContainerInstance
                 {
                     new Volume
                     {
-                        Name = ContainerInstanceCmdletBase.AzureFileVolumeName,
+                        Name = AzureFileVolumeName,
                         AzureFile = azureFileVolume
                     }
                 };
             }
 
-            return this.ContainerClient.ContainerGroups.CreateOrUpdate(
-                resourceGroupName: parameters.ResourceGroupName,
-                containerGroupName: parameters.Name,
-                containerGroup: containerGroup);
+            return ContainerClient.ContainerGroups.CreateOrUpdate(
+                parameters.ResourceGroupName,
+                parameters.Name,
+                containerGroup);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance
         /// </summary>
         public string GetResourceGroupLocation(string resourceGroupName)
         {
-            var resourceGroup = this.ResourceClient.ResourceGroups.Get(resourceGroupName);
+            var resourceGroup = ResourceClient.ResourceGroups.Get(resourceGroupName);
             return resourceGroup?.Location;
         }
 

@@ -18,9 +18,9 @@ namespace Microsoft.Azure.Management.IotHub.Models
     using System.Linq;
     using System.Collections.Generic;
     using Newtonsoft.Json;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Serialization;
-    using Microsoft.Rest.Azure;
+    using Rest;
+    using Rest.Serialization;
+    using Rest.Azure;
 
     /// <summary>
     /// The properties related to service bus topic endpoint types.
@@ -82,9 +82,9 @@ namespace Microsoft.Azure.Management.IotHub.Models
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Name");
             }
-            if (this.Name != null)
+            if (Name != null)
             {
-                if (!System.Text.RegularExpressions.Regex.IsMatch(this.Name, "^[A-Za-z0-9-._]{1,64}$"))
+                if (!System.Text.RegularExpressions.Regex.IsMatch(Name, "^[A-Za-z0-9-._]{1,64}$"))
                 {
                     throw new ValidationException(ValidationRules.Pattern, "Name", "^[A-Za-z0-9-._]{1,64}$");
                 }

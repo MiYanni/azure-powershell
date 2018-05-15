@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.Compute
         ProfileNouns.VirtualMachinePlan),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class SetAzureVMPlanCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class SetAzureVMPlanCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Alias("VMProfile")]
         [Parameter(
@@ -70,15 +70,15 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            this.VM.Plan = new Plan
+            VM.Plan = new Plan
             {
-                Name = this.Name,
-                Product = this.Product,
-                PromotionCode = this.PromotionCode,
-                Publisher = this.Publisher
+                Name = Name,
+                Product = Product,
+                PromotionCode = PromotionCode,
+                Publisher = Publisher
             };
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

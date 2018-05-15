@@ -76,16 +76,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByObject:
-                    this.GetAll();
+                    GetAll();
                     break;
                 case ASRParameterSets.ByObjectWithName:
-                    this.GetByName();
+                    GetByName();
                     break;
                 case ASRParameterSets.ByObjectWithFriendlyName:
-                    this.GetByFriendlyName();
+                    GetByFriendlyName();
                     break;
             }
         }
@@ -95,14 +95,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetAll()
         {
-            var protectableItemListResponse = this.RecoveryServicesClient
+            var protectableItemListResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryProtectableItem(
                     Utilities.GetValueFromArmId(
-                        this.ProtectionContainer.ID,
+                        ProtectionContainer.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
-                    this.ProtectionContainer.Name);
+                    ProtectionContainer.Name);
 
-            this.WriteProtectableItems(protectableItemListResponse);
+            WriteProtectableItems(protectableItemListResponse);
         }
 
         /// <summary>
@@ -112,30 +112,30 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var found = false;
 
-            var protectableItemListResponse = this.RecoveryServicesClient
+            var protectableItemListResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryProtectableItem(
                     Utilities.GetValueFromArmId(
-                        this.ProtectionContainer.ID,
+                        ProtectionContainer.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
-                    this.ProtectionContainer.Name);
+                    ProtectionContainer.Name);
 
             var friendlyNameListResponse = protectableItemListResponse.FindAll(
                 t => string.Compare(
                     t.Properties.FriendlyName,
-                    this.FriendlyName,
+                    FriendlyName,
                     StringComparison.OrdinalIgnoreCase) ==
                     0);
 
             foreach (var protectableItem in friendlyNameListResponse)
             {
-                var protectableItemResponse = this.RecoveryServicesClient
+                var protectableItemResponse = RecoveryServicesClient
                     .GetAzureSiteRecoveryProtectableItem(
                         Utilities.GetValueFromArmId(
-                            this.ProtectionContainer.ID,
+                            ProtectionContainer.ID,
                             ARMResourceTypeConstants.ReplicationFabrics),
-                        this.ProtectionContainer.Name,
+                        ProtectionContainer.Name,
                         protectableItem.Name);
-                this.WriteProtectableItem(protectableItemResponse);
+                WriteProtectableItem(protectableItemResponse);
 
                 found = true;
             }
@@ -145,8 +145,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.ProtectionEntityNotFound,
-                        this.FriendlyName,
-                        this.ProtectionContainer.FriendlyName));
+                        FriendlyName,
+                        ProtectionContainer.FriendlyName));
             }
         }
 
@@ -157,17 +157,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             try
             {
-                var protectableItemResponse = this.RecoveryServicesClient
+                var protectableItemResponse = RecoveryServicesClient
                     .GetAzureSiteRecoveryProtectableItem(
                         Utilities.GetValueFromArmId(
-                            this.ProtectionContainer.ID,
+                            ProtectionContainer.ID,
                             ARMResourceTypeConstants.ReplicationFabrics),
-                        this.ProtectionContainer.Name,
-                        this.Name);
+                        ProtectionContainer.Name,
+                        Name);
 
                 if (protectableItemResponse != null)
                 {
-                    this.WriteProtectableItem(protectableItemResponse);
+                    WriteProtectableItem(protectableItemResponse);
                 }
             }
             catch (CloudException ex)
@@ -181,8 +181,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.ProtectableItemNotFound,
-                            this.Name,
-                            this.ProtectionContainer.FriendlyName));
+                            Name,
+                            ProtectionContainer.FriendlyName));
                 }
 
                 throw;
@@ -196,7 +196,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteProtectableItem(
             ProtectableItem protectableItem)
         {
-            this.WriteObject(new ASRProtectableItem(protectableItem));
+            WriteObject(new ASRProtectableItem(protectableItem));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteProtectableItems(
             IList<ProtectableItem> protectableItems)
         {
-            this.WriteObject(
+            WriteObject(
                 protectableItems.Select(pi => new ASRProtectableItem(pi)),
                 true);
         }

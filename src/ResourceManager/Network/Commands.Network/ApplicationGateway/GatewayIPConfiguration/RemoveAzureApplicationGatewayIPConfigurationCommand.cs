@@ -37,15 +37,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var gatewayIPConfiguration = this.ApplicationGateway.GatewayIPConfigurations.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var gatewayIPConfiguration = ApplicationGateway.GatewayIPConfigurations.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (gatewayIPConfiguration != null)
             {
-                this.ApplicationGateway.GatewayIPConfigurations.Remove(gatewayIPConfiguration);
+                ApplicationGateway.GatewayIPConfigurations.Remove(gatewayIPConfiguration);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

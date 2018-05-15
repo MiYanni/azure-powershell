@@ -55,19 +55,19 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string RemoteVirtualNetworkText
         {
-            get { return JsonConvert.SerializeObject(RemoteVirtualNetwork, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(RemoteVirtualNetwork, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string RemoteGatewaysText
         {
-            get { return JsonConvert.SerializeObject(RemoteGateways, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(RemoteGateways, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string RemoteVirtualNetworkAddressSpaceText
         {
-            get { return JsonConvert.SerializeObject(RemoteVirtualNetworkAddressSpace, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(RemoteVirtualNetworkAddressSpace, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }        
     }
 }

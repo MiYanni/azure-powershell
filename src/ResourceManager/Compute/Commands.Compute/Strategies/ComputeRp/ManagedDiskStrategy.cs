@@ -23,22 +23,22 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.ComputeRp
     {
         public static ResourceStrategy<Disk> Strategy { get; }
             = ComputeStrategy.Create(
-                provider: "disks",
-                getOperations: client => client.Disks,
-                getAsync: (o, p) => o.GetAsync(
+                "disks",
+                client => client.Disks,
+                (o, p) => o.GetAsync(
                     p.ResourceGroupName, p.Name, p.CancellationToken),
-                createOrUpdateAsync: (o, p) => o.CreateOrUpdateAsync(
+                (o, p) => o.CreateOrUpdateAsync(
                     p.ResourceGroupName, p.Name, p.Model, p.CancellationToken),
-                createTime: d => 120);
+                d => 120);
 
         public static ResourceConfig<Disk> CreateManagedDiskConfig(
             this ResourceConfig<ResourceGroup> resourceGroup,
             string name,
             string sourceUri)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: subscription => new Disk
+                resourceGroup,
+                name,
+                subscription => new Disk
                 {
                     Sku = new DiskSku
                     {

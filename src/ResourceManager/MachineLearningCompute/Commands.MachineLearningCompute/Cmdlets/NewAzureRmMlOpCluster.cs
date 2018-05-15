@@ -149,11 +149,11 @@ namespace Microsoft.Azure.Commands.MachineLearningCompute.Cmdlets
             {
                 var cluster = new OperationalizationCluster();
 
-                if (string.Equals(this.ParameterSetName, CreateFromObjectParameterSet, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(ParameterSetName, CreateFromObjectParameterSet, StringComparison.OrdinalIgnoreCase))
                 {
                     cluster = InputObject.ConvertToOperationalizationCluster();
                 }
-                else if (string.Equals(this.ParameterSetName, CreateFromCmdletParametersParameterSet, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(ParameterSetName, CreateFromCmdletParametersParameterSet, StringComparison.OrdinalIgnoreCase))
                 {
                     cluster.Location = Location;
                     cluster.ClusterType = ClusterType;
@@ -222,7 +222,7 @@ namespace Microsoft.Azure.Commands.MachineLearningCompute.Cmdlets
                                 case Management.MachineLearningCompute.Models.OrchestratorType.Kubernetes:
                                     if (ClientId != null || Secret != null)
                                     {
-                                        cluster.ContainerService.OrchestratorProperties = new KubernetesClusterProperties()
+                                        cluster.ContainerService.OrchestratorProperties = new KubernetesClusterProperties
                                         {
                                             ServicePrincipal = new ServicePrincipalProperties
                                             {

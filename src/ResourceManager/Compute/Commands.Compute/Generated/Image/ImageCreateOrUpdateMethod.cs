@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Image parameters = new Image();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "ImageName", "Parameters" },
+                 new[] { "ResourceGroupName", "ImageName", "Parameters" },
                  new object[] { resourceGroupName, imageName, parameters });
         }
     }
@@ -119,12 +119,12 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.ImageName, VerbsCommon.New))
+                if (ShouldProcess(ImageName, VerbsCommon.New))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string imageName = this.ImageName;
+                    string resourceGroupName = ResourceGroupName;
+                    string imageName = ImageName;
                     Image parameters = new Image();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSImage, Image>(this.Image, parameters);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSImage, Image>(Image, parameters);
 
                     var result = ImagesClient.CreateOrUpdate(resourceGroupName, imageName, parameters);
                     var psObject = new PSImage();
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(
@@ -169,12 +169,12 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.ImageName, VerbsData.Update))
+                if (ShouldProcess(ImageName, VerbsData.Update))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string imageName = this.ImageName;
+                    string resourceGroupName = ResourceGroupName;
+                    string imageName = ImageName;
                     Image parameters = new Image();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSImage, Image>(this.Image, parameters);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSImage, Image>(Image, parameters);
 
                     var result = ImagesClient.CreateOrUpdate(resourceGroupName, imageName, parameters);
                     var psObject = new PSImage();
@@ -189,7 +189,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

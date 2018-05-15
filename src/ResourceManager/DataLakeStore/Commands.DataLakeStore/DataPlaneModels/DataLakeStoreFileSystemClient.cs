@@ -590,7 +590,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
                 PercentComplete = 0
             };
             // On update from the Data Lake store uploader, capture the progress.
-            var progressTracker = new System.Progress<TransferStatus>();
+            var progressTracker = new Progress<TransferStatus>();
             progressTracker.ProgressChanged += (s, e) =>
             {
                 lock (ConsoleOutputLock)

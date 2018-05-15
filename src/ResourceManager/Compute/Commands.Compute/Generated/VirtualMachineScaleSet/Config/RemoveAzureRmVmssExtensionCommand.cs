@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Remove", "AzureRmVmssExtension", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class RemoveAzureRmVmssExtensionCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class RemoveAzureRmVmssExtensionCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -57,41 +57,41 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         protected override void ProcessRecord()
         {
             // VirtualMachineProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
 
             // ExtensionProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
 
             // Extensions
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
-            var vExtensions = this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions.First
+            var vExtensions = VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions.First
                 (e =>
-                    (this.Name != null && e.Name == this.Name)
-                    || (this.Id != null && e.Id == this.Id)
+                    Name != null && e.Name == Name
+                    || Id != null && e.Id == Id
                 );
 
             if (vExtensions != null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions.Remove(vExtensions);
+                VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions.Remove(vExtensions);
             }
 
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions.Count == 0)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions.Count == 0)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions = null;
+                VirtualMachineScaleSet.VirtualMachineProfile.ExtensionProfile.Extensions = null;
             }
-            WriteObject(this.VirtualMachineScaleSet);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

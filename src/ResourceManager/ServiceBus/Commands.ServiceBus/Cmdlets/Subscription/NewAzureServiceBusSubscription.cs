@@ -124,7 +124,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Subscription
             if (ForwardDeadLetteredMessagesTo != null)
             { subAttributes.ForwardDeadLetteredMessagesTo = ForwardDeadLetteredMessagesTo; }
 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.CreateSubscription, Name, Topic,Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.CreateSubscription, Name, Topic,Namespace)))
             {
                 WriteObject(Client.CreateUpdateSubscription(ResourceGroupName, Namespace, Topic, Name, subAttributes));
             }

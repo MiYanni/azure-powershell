@@ -16,8 +16,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Commands.Common.Authentication.Abstractions;
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
+    using Components;
+    using Extensions;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Linq;
@@ -66,33 +66,33 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the scope.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ScopeLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The scope. e.g. to specify a database '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaserName}', to specify a resoruce group: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'")]
+        [Parameter(ParameterSetName = ScopeLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The scope. e.g. to specify a database '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaserName}', to specify a resoruce group: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'")]
         [ValidateNotNullOrEmpty]
         public string Scope { get; set; }
 
         /// <summary>
         /// Gets or sets the resource name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.SubscriptionResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.TenantResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
+        [Parameter(ParameterSetName = ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
+        [Parameter(ParameterSetName = SubscriptionResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
+        [Parameter(ParameterSetName = TenantResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
         [ValidateNotNullOrEmpty]
         public string ResourceName { get; set; }
 
         /// <summary>
         /// Gets or sets the resource type parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.SubscriptionResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.TenantResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
+        [Parameter(ParameterSetName = ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
+        [Parameter(ParameterSetName = SubscriptionResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
+        [Parameter(ParameterSetName = TenantResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
         [ValidateNotNullOrEmpty]
         public string ResourceType { get; set; }
 
         /// <summary>
         /// Gets or sets the resource group name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
+        [Parameter(ParameterSetName = ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
+        [Parameter(ParameterSetName = ResourceGroupLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
@@ -100,14 +100,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the tenant level parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.TenantResourceLevelLock, Mandatory = true, HelpMessage = "Indicates that this is a tenant level operation.")]
+        [Parameter(ParameterSetName = TenantResourceLevelLock, Mandatory = true, HelpMessage = "Indicates that this is a tenant level operation.")]
         public SwitchParameter TenantLevel { get; set; }
 
         /// <summary>
         /// The Id of the lock.
         /// </summary>
         [Alias("Id", "ResourceId")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.LockIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Id of the lock.")]
+        [Parameter(ParameterSetName = LockIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Id of the lock.")]
         [ValidateNotNullOrEmpty]
         public string LockId { get; set; }
 
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 
         public ResourceLockManagementCmdletBase()
         {
-            this.LockApiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.LockApiVersion : this.ApiVersion;
+            LockApiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.LockApiVersion : ApiVersion;
         }
 
         /// <summary> 
@@ -127,33 +127,33 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <param name="lockName">The name of the lock.</param>
         protected string GetResourceId(string lockName)
         {
-            if (!string.IsNullOrWhiteSpace(this.LockId))
+            if (!string.IsNullOrWhiteSpace(LockId))
             {
-                var resourceType = ResourceIdUtility.GetResourceType(this.LockId);
-                var extensionResourceType = ResourceIdUtility.GetExtensionResourceType(this.LockId);
+                var resourceType = ResourceIdUtility.GetResourceType(LockId);
+                var extensionResourceType = ResourceIdUtility.GetExtensionResourceType(LockId);
 
-                if ((resourceType.EqualsInsensitively(Constants.MicrosoftAuthorizationLocksType) &&
-                    string.IsNullOrWhiteSpace(extensionResourceType)) ||
+                if (resourceType.EqualsInsensitively(Constants.MicrosoftAuthorizationLocksType) &&
+                    string.IsNullOrWhiteSpace(extensionResourceType) ||
                     extensionResourceType.EqualsInsensitively(Constants.MicrosoftAuthorizationLocksType))
                 {
-                    return this.LockId;
+                    return LockId;
                 }
 
-                throw new InvalidOperationException(string.Format("The Id '{0}' does not belong to a lock.", this.LockId));
+                throw new InvalidOperationException(string.Format("The Id '{0}' does not belong to a lock.", LockId));
             }
 
-            return !string.IsNullOrWhiteSpace(this.Scope)
+            return !string.IsNullOrWhiteSpace(Scope)
                 ? ResourceIdUtility.GetResourceId(
-                    resourceId: this.Scope,
-                    extensionResourceType: Constants.MicrosoftAuthorizationLocksType,
-                    extensionResourceName: lockName)
+                    Scope,
+                    Constants.MicrosoftAuthorizationLocksType,
+                    lockName)
                 : ResourceIdUtility.GetResourceId(
-                    subscriptionId: this.DefaultContext.Subscription.GetId(),
-                    resourceGroupName: this.ResourceGroupName,
-                    resourceType: this.ResourceType,
-                    resourceName: this.ResourceName,
-                    extensionResourceType: Constants.MicrosoftAuthorizationLocksType,
-                    extensionResourceName: lockName);
+                    DefaultContext.Subscription.GetId(),
+                    ResourceGroupName,
+                    ResourceType,
+                    ResourceName,
+                    Constants.MicrosoftAuthorizationLocksType,
+                    lockName);
         }
 
         /// <summary>

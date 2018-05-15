@@ -63,16 +63,16 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            if (this.ParameterSetName == AutomationCmdletParameterSets.ByInputObject)
+            if (ParameterSetName == AutomationCmdletParameterSets.ByInputObject)
             {
-                if (this.ShouldProcess(JobId.ToString(), VerbsLifecycle.Stop))
+                if (ShouldProcess(JobId.ToString(), VerbsLifecycle.Stop))
                 {
                     if (Force ||
                         ShouldContinue(Resources.StopAzureAutomationNodeConfigurationWarning, Resources.StopAzureAutomationNodeConfigurationDescription))
                     {
-                        this.AutomationClient.StopNodeConfigurationDeployment(this.InputObject.ResourceGroupName, 
-                            this.InputObject.AutomationAccountName, 
-                            this.InputObject.JobId);
+                        AutomationClient.StopNodeConfigurationDeployment(InputObject.ResourceGroupName, 
+                            InputObject.AutomationAccountName, 
+                            InputObject.JobId);
 
                         if (PassThru.IsPresent)
                         {
@@ -83,12 +83,12 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
             }
             else
             {
-                if (this.ShouldProcess(JobId.ToString(), VerbsLifecycle.Stop))
+                if (ShouldProcess(JobId.ToString(), VerbsLifecycle.Stop))
                 {
                     if (Force ||
                         ShouldContinue(Resources.StopAzureAutomationNodeConfigurationWarning, Resources.StopAzureAutomationNodeConfigurationDescription))
                     {
-                        this.AutomationClient.StopNodeConfigurationDeployment(this.ResourceGroupName, this.AutomationAccountName, this.JobId);
+                        AutomationClient.StopNodeConfigurationDeployment(ResourceGroupName, AutomationAccountName, JobId);
 
                         if (PassThru.IsPresent)
                         {

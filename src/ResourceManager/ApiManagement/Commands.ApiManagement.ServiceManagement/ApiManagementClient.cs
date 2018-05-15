@@ -21,9 +21,9 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement
 {
     using AutoMapper;
     using Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models;
-    using Microsoft.Azure.Management.ApiManagement;
-    using Microsoft.Azure.Management.ApiManagement.SmapiModels;
+    using Models;
+    using Management.ApiManagement;
+    using Management.ApiManagement.SmapiModels;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using System;

@@ -32,18 +32,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var redirectConfiguration = this.ApplicationGateway.RedirectConfigurations.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var redirectConfiguration = ApplicationGateway.RedirectConfigurations.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (redirectConfiguration != null)
             {
                 throw new ArgumentException("RedirectConfiguration with the specified name already exists");
             }
 
-            redirectConfiguration = base.NewObject();
-            this.ApplicationGateway.RedirectConfigurations.Add(redirectConfiguration);
+            redirectConfiguration = NewObject();
+            ApplicationGateway.RedirectConfigurations.Add(redirectConfiguration);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

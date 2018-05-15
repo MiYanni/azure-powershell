@@ -33,11 +33,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string policyName,
             CreatePolicyInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationPolicies.BeginCreateWithHttpMessagesAsync(
                     policyName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);
@@ -52,10 +52,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public PSSiteRecoveryLongRunningOperation DeletePolicy(
             string policyName)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationPolicies.BeginDeleteWithHttpMessagesAsync(
                     policyName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);
@@ -68,16 +68,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>Policy list response</returns>
         public List<Policy> GetAzureSiteRecoveryPolicy()
         {
-            var firstPage = this.GetSiteRecoveryClient()
-                .ReplicationPolicies.ListWithHttpMessagesAsync(this.GetRequestHeaders(true))
+            var firstPage = GetSiteRecoveryClient()
+                .ReplicationPolicies.ListWithHttpMessagesAsync(GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .ReplicationPolicies.ListNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);
@@ -93,10 +93,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public Policy GetAzureSiteRecoveryPolicy(
             string PolicyName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .ReplicationPolicies.GetWithHttpMessagesAsync(
                     PolicyName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
@@ -112,11 +112,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string policyName,
             UpdatePolicyInput input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationPolicies.BeginUpdateWithHttpMessagesAsync(
                     policyName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult();
             var result = SiteRecoveryAutoMapperProfile.Mapper.Map<PSSiteRecoveryLongRunningOperation>(op);

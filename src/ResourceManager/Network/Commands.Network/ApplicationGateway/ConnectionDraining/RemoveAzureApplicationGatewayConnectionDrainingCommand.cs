@@ -31,9 +31,9 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            this.BackendHttpSettings.ConnectionDraining = null;
+            BackendHttpSettings.ConnectionDraining = null;
 
-            WriteObject(this.BackendHttpSettings);
+            WriteObject(BackendHttpSettings);
         }
     }
 }

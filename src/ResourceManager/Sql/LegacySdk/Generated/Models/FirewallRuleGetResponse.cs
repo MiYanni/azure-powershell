@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public FirewallRule FirewallRule
         {
-            get { return this._firewallRule; }
-            set { this._firewallRule = value; }
+            get { return _firewallRule; }
+            set { _firewallRule = value; }
         }
         
         /// <summary>

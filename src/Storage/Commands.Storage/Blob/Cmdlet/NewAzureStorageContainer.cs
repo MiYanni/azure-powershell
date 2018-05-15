@@ -15,9 +15,9 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage.Blob;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -100,7 +100,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
         {
             IStorageBlobManagement localChannel = Channel;
             string localName = Name;
-            Func<long, Task> taskGenerator = (taskId) => CreateAzureContainer(taskId, localChannel, localName, accessLevel);
+            Func<long, Task> taskGenerator = taskId => CreateAzureContainer(taskId, localChannel, localName, accessLevel);
             RunTask(taskGenerator);
         }
     }

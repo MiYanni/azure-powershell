@@ -49,22 +49,22 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 PSNetworkWatcher psNetworkWatcher;
-                psNetworkWatcher = this.GetNetworkWatcher(this.ResourceGroupName, this.Name);
+                psNetworkWatcher = GetNetworkWatcher(ResourceGroupName, Name);
 
                 WriteObject(psNetworkWatcher);
             }
-            else if (!string.IsNullOrEmpty(this.ResourceGroupName))
+            else if (!string.IsNullOrEmpty(ResourceGroupName))
             {
-                var networkWatchersList = this.NetworkWatcherClient.List(this.ResourceGroupName);
+                var networkWatchersList = NetworkWatcherClient.List(ResourceGroupName);
 
                 var psNetworkWatchers = new List<PSNetworkWatcher>();
                 foreach (var networkWatcher in networkWatchersList)
                 {
-                    var psNetworkWatcher = this.ToPsNetworkWatcher(networkWatcher);
-                    psNetworkWatcher.ResourceGroupName = this.ResourceGroupName;
+                    var psNetworkWatcher = ToPsNetworkWatcher(networkWatcher);
+                    psNetworkWatcher.ResourceGroupName = ResourceGroupName;
                     psNetworkWatchers.Add(psNetworkWatcher);
                 }
 
@@ -72,13 +72,13 @@ namespace Microsoft.Azure.Commands.Network
             }
             else
             {
-                var networkWatchersList = this.NetworkWatcherClient.ListAll();
+                var networkWatchersList = NetworkWatcherClient.ListAll();
 
                 var psNetworkWatchers = new List<PSNetworkWatcher>();
                 foreach (var networkWatcher in networkWatchersList)
                 {
-                    var psNetworkWatcher = this.ToPsNetworkWatcher(networkWatcher);
-                    psNetworkWatcher.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(networkWatcher.Id);
+                    var psNetworkWatcher = ToPsNetworkWatcher(networkWatcher);
+                    psNetworkWatcher.ResourceGroupName = GetResourceGroup(networkWatcher.Id);
                     psNetworkWatchers.Add(psNetworkWatcher);
                 }
 

@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.GeoDR
                 ResourceIdentifier getParamGeoDR = GetResourceDetailsFromId(InputObject.Id);
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ParentResource != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: getParamGeoDR.ResourceName, action: string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                    if (ShouldProcess(getParamGeoDR.ResourceName, string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                     {
                         Client.SetServiceBusDRConfigurationBreakPairing(getParamGeoDR.ResourceGroupName, getParamGeoDR.ParentResource, getParamGeoDR.ResourceName);
                         if (PassThru)
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.GeoDR
                 ResourceIdentifier getParamGeoDR = GetResourceDetailsFromId(ResourceId);
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ParentResource != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: getParamGeoDR.ResourceName, action: string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
+                    if (ShouldProcess(getParamGeoDR.ResourceName, string.Format(Resources.DRBreakPairing, getParamGeoDR.ResourceName, getParamGeoDR.ParentResource)))
                     {
                         Client.SetServiceBusDRConfigurationBreakPairing(getParamGeoDR.ResourceGroupName, getParamGeoDR.ParentResource, getParamGeoDR.ResourceName);
                         if (PassThru)
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.GeoDR
 
             if (ParameterSetName == GeoDRParameterSet)
             {
-                if (ShouldProcess(target: Name, action: string.Format(Resources.DRBreakPairing, Name, Namespace)))
+                if (ShouldProcess(Name, string.Format(Resources.DRBreakPairing, Name, Namespace)))
                 {
                     Client.SetServiceBusDRConfigurationBreakPairing(ResourceGroupName, Namespace, Name);
                     if (PassThru)

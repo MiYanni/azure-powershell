@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Common
                     e = page.GetEnumerator();
                     nextPageLink = page.NextPageLink;
 
-                    return this.MoveNext();
+                    return MoveNext();
                 }
 
                 public void Reset()

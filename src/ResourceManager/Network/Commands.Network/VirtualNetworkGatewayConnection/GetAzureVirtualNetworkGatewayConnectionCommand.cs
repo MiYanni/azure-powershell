@@ -43,24 +43,24 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var vnetGatewayConnection = this.GetVirtualNetworkGatewayConnection(this.ResourceGroupName, this.Name);
+                var vnetGatewayConnection = GetVirtualNetworkGatewayConnection(ResourceGroupName, Name);
 
                 WriteObject(vnetGatewayConnection);
             }
-            else if (!string.IsNullOrEmpty(this.ResourceGroupName))
+            else if (!string.IsNullOrEmpty(ResourceGroupName))
             {
-                var connectionPage = this.VirtualNetworkGatewayConnectionClient.List(this.ResourceGroupName);
+                var connectionPage = VirtualNetworkGatewayConnectionClient.List(ResourceGroupName);
 
                 // Get all resources by polling on next page link
-                var connectionList = ListNextLink<VirtualNetworkGatewayConnection>.GetAllResourcesByPollingNextLink(connectionPage, this.VirtualNetworkGatewayConnectionClient.ListNext);
+                var connectionList = ListNextLink<VirtualNetworkGatewayConnection>.GetAllResourcesByPollingNextLink(connectionPage, VirtualNetworkGatewayConnectionClient.ListNext);
 
                 var psVnetGatewayConnections = new List<PSVirtualNetworkGatewayConnection>();
                 foreach (var virtualNetworkGatewayConnection in connectionList)
                 {
-                    var psVnetGatewayConnection = this.ToPsVirtualNetworkGatewayConnection(virtualNetworkGatewayConnection);
-                    psVnetGatewayConnection.ResourceGroupName = this.ResourceGroupName;
+                    var psVnetGatewayConnection = ToPsVirtualNetworkGatewayConnection(virtualNetworkGatewayConnection);
+                    psVnetGatewayConnection.ResourceGroupName = ResourceGroupName;
                     psVnetGatewayConnections.Add(psVnetGatewayConnection);
                 }
 

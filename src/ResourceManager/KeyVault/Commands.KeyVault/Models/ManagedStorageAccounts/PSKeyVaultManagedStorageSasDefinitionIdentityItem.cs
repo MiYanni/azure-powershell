@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return ( Tags == null ) ? null : Tags.ConvertToTagsTable();
+                return Tags == null ? null : Tags.ConvertToTagsTable();
             }
         }
 
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                return ( Tags == null ) ? null : Tags.ConvertToDictionary();
+                return Tags == null ? null : Tags.ConvertToDictionary();
             }
         }
     }

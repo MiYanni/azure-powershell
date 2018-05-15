@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -63,8 +63,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [ValidateNotNullOrEmpty]
         public string PartnerType
         {
-            get { return this.partnerType; }
-            set { value = this.partnerType; }
+            get { return partnerType; }
+            set { value = partnerType; }
         }
 
         [Parameter(Mandatory = true, HelpMessage = "The integration account partner business identities.",
@@ -86,19 +86,19 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                this.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
-            this.WriteObject(
-                IntegrationAccountClient.CreateIntegrationAccountPartner(this.ResourceGroupName, integrationAccount.Name,
-                    this.PartnerName,
+            WriteObject(
+                IntegrationAccountClient.CreateIntegrationAccountPartner(ResourceGroupName, integrationAccount.Name,
+                    PartnerName,
                     new IntegrationAccountPartner
                     {
-                        PartnerType = (PartnerType) Enum.Parse(typeof(PartnerType), this.PartnerType),
+                        PartnerType = (PartnerType) Enum.Parse(typeof(PartnerType), PartnerType),
                         Content = new PartnerContent
                         {
                             B2b = new B2BPartnerContent
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
                                 BusinessIdentities = CmdletHelper.ConvertToBusinessIdentityList(BusinessIdentities)
                             }
                         },
-                        Metadata = this.Metadata
+                        Metadata = Metadata
                     }), true);
         }
     }

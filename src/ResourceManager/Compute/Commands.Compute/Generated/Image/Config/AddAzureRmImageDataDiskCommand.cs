@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Add", "AzureRmImageDataDisk", SupportsShouldProcess = true)]
     [OutputType(typeof(PSImage))]
-    public partial class AddAzureRmImageDataDiskCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class AddAzureRmImageDataDiskCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -93,38 +93,38 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // StorageProfile
-            if (this.Image.StorageProfile == null)
+            if (Image.StorageProfile == null)
             {
-                this.Image.StorageProfile = new Microsoft.Azure.Management.Compute.Models.ImageStorageProfile();
+                Image.StorageProfile = new ImageStorageProfile();
             }
 
             // DataDisks
-            if (this.Image.StorageProfile.DataDisks == null)
+            if (Image.StorageProfile.DataDisks == null)
             {
-                this.Image.StorageProfile.DataDisks = new List<Microsoft.Azure.Management.Compute.Models.ImageDataDisk>();
+                Image.StorageProfile.DataDisks = new List<ImageDataDisk>();
             }
 
-            var vDataDisks = new Microsoft.Azure.Management.Compute.Models.ImageDataDisk();
+            var vDataDisks = new ImageDataDisk();
 
-            vDataDisks.Lun = this.Lun;
-            vDataDisks.BlobUri = this.MyInvocation.BoundParameters.ContainsKey("BlobUri") ? this.BlobUri : null;
-            vDataDisks.Caching = this.MyInvocation.BoundParameters.ContainsKey("Caching") ? this.Caching : (CachingTypes?) null;
-            vDataDisks.DiskSizeGB = this.MyInvocation.BoundParameters.ContainsKey("DiskSizeGB") ? this.DiskSizeGB : (int?) null;
-            vDataDisks.StorageAccountType = this.MyInvocation.BoundParameters.ContainsKey("StorageAccountType") ? this.StorageAccountType : null;
-            if (this.MyInvocation.BoundParameters.ContainsKey("SnapshotId"))
+            vDataDisks.Lun = Lun;
+            vDataDisks.BlobUri = MyInvocation.BoundParameters.ContainsKey("BlobUri") ? BlobUri : null;
+            vDataDisks.Caching = MyInvocation.BoundParameters.ContainsKey("Caching") ? Caching : null;
+            vDataDisks.DiskSizeGB = MyInvocation.BoundParameters.ContainsKey("DiskSizeGB") ? DiskSizeGB : (int?) null;
+            vDataDisks.StorageAccountType = MyInvocation.BoundParameters.ContainsKey("StorageAccountType") ? StorageAccountType : null;
+            if (MyInvocation.BoundParameters.ContainsKey("SnapshotId"))
             {
                 // Snapshot
-                vDataDisks.Snapshot = new Microsoft.Azure.Management.Compute.Models.SubResource();
-                vDataDisks.Snapshot.Id = this.SnapshotId;
+                vDataDisks.Snapshot = new SubResource();
+                vDataDisks.Snapshot.Id = SnapshotId;
             }
-            if (this.MyInvocation.BoundParameters.ContainsKey("ManagedDiskId"))
+            if (MyInvocation.BoundParameters.ContainsKey("ManagedDiskId"))
             {
                 // ManagedDisk
-                vDataDisks.ManagedDisk = new Microsoft.Azure.Management.Compute.Models.SubResource();
-                vDataDisks.ManagedDisk.Id = this.ManagedDiskId;
+                vDataDisks.ManagedDisk = new SubResource();
+                vDataDisks.ManagedDisk.Id = ManagedDiskId;
             }
-            this.Image.StorageProfile.DataDisks.Add(vDataDisks);
-            WriteObject(this.Image);
+            Image.StorageProfile.DataDisks.Add(vDataDisks);
+            WriteObject(Image);
         }
     }
 }

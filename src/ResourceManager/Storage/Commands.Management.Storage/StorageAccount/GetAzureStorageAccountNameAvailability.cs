@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Management.Storage.StorageAccount
         {
             base.ExecuteCmdlet();
 
-            WriteObject(this.StorageClient.StorageAccounts.CheckNameAvailability(Name));
+            WriteObject(StorageClient.StorageAccounts.CheckNameAvailability(Name));
         }
     }
 }

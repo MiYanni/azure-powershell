@@ -161,7 +161,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
                     if (eMailAction != null)
                     {
                         output.AddSpacesInFront(indentationTabs).AppendLine("SendToServiceOwners : " + eMailAction.SendToServiceOwners);
-                        output.AddSpacesInFront(indentationTabs).Append("E-mails             : " + eMailAction.CustomEmails.ToString(indentationTabs: indentationTabs + 1));
+                        output.AddSpacesInFront(indentationTabs).Append("E-mails             : " + eMailAction.CustomEmails.ToString(indentationTabs + 1));
                     }
                     else
                     {
@@ -169,7 +169,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
                         if (webhookAction != null)
                         {
                             output.AddSpacesInFront(indentationTabs).AppendLine("ServiceUri : " + webhookAction.ServiceUri);
-                            output.AddSpacesInFront(indentationTabs).Append("Properties : " + webhookAction.Properties.ToString(indentationTabs: indentationTabs + 1));
+                            output.AddSpacesInFront(indentationTabs).Append("Properties : " + webhookAction.Properties.ToString(indentationTabs + 1));
                         }
                         else
                         {

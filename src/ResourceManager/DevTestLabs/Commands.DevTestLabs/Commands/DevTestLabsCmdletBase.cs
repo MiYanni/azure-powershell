@@ -46,8 +46,8 @@ namespace Microsoft.Azure.Commands.DevTestLabs
             Position = 1,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Specifies the name of an existing resource group that contains the lab.")]
-        [ResourceGroupCompleter()]
-        [ValidateNotNullOrEmpty()]
+        [ResourceGroupCompleter]
+        [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         #endregion Input Parameter Definitions

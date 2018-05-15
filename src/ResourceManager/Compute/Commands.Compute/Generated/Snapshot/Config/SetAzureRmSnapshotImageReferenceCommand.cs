@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Set", "AzureRmSnapshotImageReference", SupportsShouldProcess = true)]
     [OutputType(typeof(PSSnapshot))]
-    public partial class SetAzureRmSnapshotImageReferenceCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class SetAzureRmSnapshotImageReferenceCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -62,37 +62,37 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
         private void Run()
         {
-            if (this.MyInvocation.BoundParameters.ContainsKey("Id"))
+            if (MyInvocation.BoundParameters.ContainsKey("Id"))
             {
                 // CreationData
-                if (this.Snapshot.CreationData == null)
+                if (Snapshot.CreationData == null)
                 {
-                    this.Snapshot.CreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    Snapshot.CreationData = new CreationData();
                 }
                 // ImageReference
-                if (this.Snapshot.CreationData.ImageReference == null)
+                if (Snapshot.CreationData.ImageReference == null)
                 {
-                    this.Snapshot.CreationData.ImageReference = new Microsoft.Azure.Management.Compute.Models.ImageDiskReference();
+                    Snapshot.CreationData.ImageReference = new ImageDiskReference();
                 }
-                this.Snapshot.CreationData.ImageReference.Id = this.Id;
+                Snapshot.CreationData.ImageReference.Id = Id;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("Lun"))
+            if (MyInvocation.BoundParameters.ContainsKey("Lun"))
             {
                 // CreationData
-                if (this.Snapshot.CreationData == null)
+                if (Snapshot.CreationData == null)
                 {
-                    this.Snapshot.CreationData = new Microsoft.Azure.Management.Compute.Models.CreationData();
+                    Snapshot.CreationData = new CreationData();
                 }
                 // ImageReference
-                if (this.Snapshot.CreationData.ImageReference == null)
+                if (Snapshot.CreationData.ImageReference == null)
                 {
-                    this.Snapshot.CreationData.ImageReference = new Microsoft.Azure.Management.Compute.Models.ImageDiskReference();
+                    Snapshot.CreationData.ImageReference = new ImageDiskReference();
                 }
-                this.Snapshot.CreationData.ImageReference.Lun = this.Lun;
+                Snapshot.CreationData.ImageReference.Lun = Lun;
             }
 
-            WriteObject(this.Snapshot);
+            WriteObject(Snapshot);
         }
     }
 }

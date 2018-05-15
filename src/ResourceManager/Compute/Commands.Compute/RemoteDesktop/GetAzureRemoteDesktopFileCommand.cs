@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -89,21 +89,21 @@ namespace Microsoft.Azure.Commands.Compute
                 int port = defaultPort;
 
                 // Get Azure VM
-                var vmResponse = this.VirtualMachineClient.Get(this.ResourceGroupName, this.Name);
+                var vmResponse = VirtualMachineClient.Get(ResourceGroupName, Name);
 
                 var nicId = vmResponse.NetworkProfile.NetworkInterfaces.First().Id;
 
                 // Get the NIC
-                var nicResourceGroupName = this.GetResourceGroupName(nicId);
+                var nicResourceGroupName = GetResourceGroupName(nicId);
 
-                var nicName = this.GetResourceName(nicId, NetworkInterfaceResouce);
+                var nicName = GetResourceName(nicId, NetworkInterfaceResouce);
 
-                var nic = this.NetworkClient.NetworkManagementClient.NetworkInterfaces.Get(nicResourceGroupName, nicName);
+                var nic = NetworkClient.NetworkManagementClient.NetworkInterfaces.Get(nicResourceGroupName, nicName);
 
                 if (nic.IpConfigurations.First().PublicIPAddress != null && !string.IsNullOrEmpty(nic.IpConfigurations.First().PublicIPAddress.Id))
                 {
                     // Get PublicIPAddress resource if present
-                    address = this.GetAddressFromPublicIPResource(nic.IpConfigurations.First().PublicIPAddress.Id);
+                    address = GetAddressFromPublicIPResource(nic.IpConfigurations.First().PublicIPAddress.Id);
                 }
                 else if (nic.IpConfigurations.First().LoadBalancerInboundNatRules.Any())
                 {
@@ -112,11 +112,11 @@ namespace Microsoft.Azure.Commands.Compute
                     // Get ipaddress and port from loadbalancer
                     foreach (var nicRuleRef in nic.IpConfigurations.First().LoadBalancerInboundNatRules)
                     {
-                        var lbName = this.GetResourceName(nicRuleRef.Id, LoadBalancerResouce);
-                        var lbResourceGroupName = this.GetResourceGroupName(nicRuleRef.Id);
+                        var lbName = GetResourceName(nicRuleRef.Id, LoadBalancerResouce);
+                        var lbResourceGroupName = GetResourceGroupName(nicRuleRef.Id);
 
                         var loadbalancer =
-                            this.NetworkClient.NetworkManagementClient.LoadBalancers.Get(lbResourceGroupName, lbName);
+                            NetworkClient.NetworkManagementClient.LoadBalancers.Get(lbResourceGroupName, lbName);
 
                         // Iterate over the InboundNatRules where Backendport = 3389
                         var inboundRule =
@@ -143,7 +143,7 @@ namespace Microsoft.Azure.Commands.Compute
 
                             if (frontendIPConfig.PublicIPAddress != null)
                             {
-                                address = this.GetAddressFromPublicIPResource(frontendIPConfig.PublicIPAddress.Id);
+                                address = GetAddressFromPublicIPResource(frontendIPConfig.PublicIPAddress.Id);
                                 break;
                             }
                         }
@@ -151,16 +151,16 @@ namespace Microsoft.Azure.Commands.Compute
 
                     if (string.IsNullOrEmpty(address))
                     {
-                        throw new ArgumentException(Microsoft.Azure.Commands.Compute.Properties.Resources.VirtualMachineNotAssociatedWithPublicLoadBalancer);
+                        throw new ArgumentException(Properties.Resources.VirtualMachineNotAssociatedWithPublicLoadBalancer);
                     }
                 }
                 else
                 {
-                    throw new ArgumentException(Microsoft.Azure.Commands.Compute.Properties.Resources.VirtualMachineNotAssociatedWithPublicIPOrPublicLoadBalancer);
+                    throw new ArgumentException(Properties.Resources.VirtualMachineNotAssociatedWithPublicIPOrPublicLoadBalancer);
                 }
 
                 // Write to file
-                string rdpFilePath = this.LocalPath ?? Path.GetTempFileName();
+                string rdpFilePath = LocalPath ?? Path.GetTempFileName();
 
                 using (var file = new StreamWriter(rdpFilePath))
                 {
@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Commands.Compute
                         WindowStyle = ProcessWindowStyle.Hidden
                     };
 
-                    if (this.LocalPath == null)
+                    if (LocalPath == null)
                     {
                         string scriptGuid = Guid.NewGuid().ToString();
 
@@ -206,11 +206,11 @@ namespace Microsoft.Azure.Commands.Compute
             string address = string.Empty;
 
             // Get IpAddress from public IPAddress resource
-            var publicIPResourceGroupName = this.GetResourceGroupName(resourceId);
-            var publicIPName = this.GetResourceName(resourceId, PublicIPAddressResource);
+            var publicIPResourceGroupName = GetResourceGroupName(resourceId);
+            var publicIPName = GetResourceName(resourceId, PublicIPAddressResource);
 
             var publicIp =
-                this.NetworkClient.NetworkManagementClient.PublicIPAddresses.Get(
+                NetworkClient.NetworkManagementClient.PublicIPAddresses.Get(
                     publicIPResourceGroupName,
                     publicIPName);
 

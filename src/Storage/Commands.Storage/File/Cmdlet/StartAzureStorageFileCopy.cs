@@ -149,30 +149,27 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         /// <returns>IStorageFileManagement object</returns>
         protected override IStorageFileManagement CreateChannel()
         {
-            if (this.Channel == null || !this.ShareChannel)
+            if (Channel == null || !ShareChannel)
             {
-                this.Channel = new StorageFileManagement(this.GetSourceContext());
+                Channel = new StorageFileManagement(GetSourceContext());
             }
 
-            return this.Channel;
+            return Channel;
         }
 
         private IStorageBlobManagement GetBlobChannel()
         {
-            return new StorageBlobManagement(this.GetSourceContext());
+            return new StorageBlobManagement(GetSourceContext());
         }
 
         private AzureStorageContext GetSourceContext()
         {
-            if (this.ParameterSetName == ContainerNameParameterSet ||
-                this.ParameterSetName == ShareNameParameterSet)
+            if (ParameterSetName == ContainerNameParameterSet ||
+                ParameterSetName == ShareNameParameterSet)
             {
-                return this.GetCmdletStorageContext();
+                return GetCmdletStorageContext();
             }
-            else
-            {
-                return AzureStorageContext.EmptyContextInstance;
-            }
+            return AzureStorageContext.EmptyContextInstance;
         }
 
         /// <summary>
@@ -190,15 +187,15 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             {
                 AzureStorageContext context = null;
 
-                if (ContainerNameParameterSet == this.ParameterSetName ||
-                    ContainerParameterSet == this.ParameterSetName ||
-                    BlobFilePathParameterSet == this.ParameterSetName ||
-                    ShareNameParameterSet == this.ParameterSetName ||
-                    ShareParameterSet == this.ParameterSetName ||
-                    FileFilePathParameterSet == this.ParameterSetName ||
-                    UriFilePathParameterSet == this.ParameterSetName)
+                if (ContainerNameParameterSet == ParameterSetName ||
+                    ContainerParameterSet == ParameterSetName ||
+                    BlobFilePathParameterSet == ParameterSetName ||
+                    ShareNameParameterSet == ParameterSetName ||
+                    ShareParameterSet == ParameterSetName ||
+                    FileFilePathParameterSet == ParameterSetName ||
+                    UriFilePathParameterSet == ParameterSetName)
                 {
-                    context = this.GetCmdletStorageContext(DestContext);
+                    context = GetCmdletStorageContext(DestContext);
                 }
                 else
                 {
@@ -217,7 +214,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            blobChannel = this.GetBlobChannel();
+            blobChannel = GetBlobChannel();
             destChannel = GetDestinationChannel();
             IStorageFileManagement srcChannel = Channel;
             Action copyAction = null;
@@ -228,17 +225,17 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                 case ContainerParameterSet:
                 case BlobFilePathParameterSet:
                 case BlobFileParameterSet:
-                    copyAction = () => this.StartCopyFromBlob();
+                    copyAction = () => StartCopyFromBlob();
                     break;
                 case ShareNameParameterSet:
                 case ShareParameterSet:
                 case FileFilePathParameterSet:
                 case FileFileParameterSet:
-                    copyAction = () => this.StartCopyFromFile();
+                    copyAction = () => StartCopyFromFile();
                     break;
                 case UriFilePathParameterSet:
                 case UriFileParameterSet:
-                    copyAction = () => this.StartCopyFromUri();
+                    copyAction = () => StartCopyFromUri();
                     break;
             }
 
@@ -253,38 +250,38 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             CloudBlob blob = null;
             string sourceBlobRelativeName = null;
 
-            if (null != this.SrcBlob)
+            if (null != SrcBlob)
             {
-                blob = this.SrcBlob;
+                blob = SrcBlob;
                 sourceBlobRelativeName = blob.Name;
             }
             else
             {
                 CloudBlobContainer srcContainer = null;
 
-                if (null != this.SrcContainer)
+                if (null != SrcContainer)
                 {
-                    srcContainer = this.SrcContainer;
+                    srcContainer = SrcContainer;
                 }
                 else
                 {
-                    NameUtil.ValidateContainerName(this.SrcContainerName);
-                    srcContainer = this.blobChannel.GetContainerReference(this.SrcContainerName);
+                    NameUtil.ValidateContainerName(SrcContainerName);
+                    srcContainer = blobChannel.GetContainerReference(SrcContainerName);
                 }
-                NameUtil.ValidateBlobName(this.SrcBlobName);
-                blob = srcContainer.GetBlobReference(this.SrcBlobName);
-                sourceBlobRelativeName = this.SrcBlobName;
+                NameUtil.ValidateBlobName(SrcBlobName);
+                blob = srcContainer.GetBlobReference(SrcBlobName);
+                sourceBlobRelativeName = SrcBlobName;
             }
 
             CloudFile destFile = GetDestFile();
 
-            Func<long, Task> taskGenerator = (taskId) => StartAsyncCopy(
+            Func<long, Task> taskGenerator = taskId => StartAsyncCopy(
                 taskId,
                 destFile,
-                () => this.ConfirmOverwrite(blob.SnapshotQualifiedUri.ToString(), destFile.SnapshotQualifiedUri.ToString()),
-                () => destFile.StartCopyAsync(blob.GenerateCopySourceBlob(), null, null, this.RequestOptions, this.OperationContext));
+                () => ConfirmOverwrite(blob.SnapshotQualifiedUri.ToString(), destFile.SnapshotQualifiedUri.ToString()),
+                () => destFile.StartCopyAsync(blob.GenerateCopySourceBlob(), null, null, RequestOptions, OperationContext));
 
-            this.RunTask(taskGenerator);
+            RunTask(taskGenerator);
         }
 
         private void StartCopyFromFile()
@@ -292,72 +289,69 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             CloudFile sourceFile = null;
             string filePath = null;
 
-            if (null != this.SrcFile)
+            if (null != SrcFile)
             {
-                sourceFile = this.SrcFile;
-                filePath = this.SrcFile.GetFullPath();
+                sourceFile = SrcFile;
+                filePath = SrcFile.GetFullPath();
             }
             else
             {
                 CloudFileDirectory dir = null;
 
-                if (null != this.SrcShare)
+                if (null != SrcShare)
                 {
-                    dir = this.SrcShare.GetRootDirectoryReference();
+                    dir = SrcShare.GetRootDirectoryReference();
                 }
                 else
                 {
-                    NamingUtil.ValidateShareName(this.SrcShareName, false);
-                    dir = this.BuildFileShareObjectFromName(this.SrcShareName).GetRootDirectoryReference();
+                    NamingUtil.ValidateShareName(SrcShareName, false);
+                    dir = BuildFileShareObjectFromName(SrcShareName).GetRootDirectoryReference();
                 }
 
-                string[] path = NamingUtil.ValidatePath(this.SrcFilePath, true);
+                string[] path = NamingUtil.ValidatePath(SrcFilePath, true);
                 sourceFile = dir.GetFileReferenceByPath(path);
-                filePath = this.SrcFilePath;
+                filePath = SrcFilePath;
             }
 
-            CloudFile destFile = this.GetDestFile();
+            CloudFile destFile = GetDestFile();
 
-            Func<long, Task> taskGenerator = (taskId) => StartAsyncCopy(
+            Func<long, Task> taskGenerator = taskId => StartAsyncCopy(
                 taskId,
                 destFile,
-                () => this.ConfirmOverwrite(sourceFile.SnapshotQualifiedUri.ToString(), destFile.SnapshotQualifiedUri.ToString()),
+                () => ConfirmOverwrite(sourceFile.SnapshotQualifiedUri.ToString(), destFile.SnapshotQualifiedUri.ToString()),
                 () => destFile.StartCopyAsync(sourceFile.GenerateCopySourceFile()));
 
-            this.RunTask(taskGenerator);
+            RunTask(taskGenerator);
         }
 
         private void StartCopyFromUri()
         {
-            CloudFile destFile = this.GetDestFile();
+            CloudFile destFile = GetDestFile();
 
-            Func<long, Task> taskGenerator = (taskId) => StartAsyncCopy(
+            Func<long, Task> taskGenerator = taskId => StartAsyncCopy(
                 taskId,
                 destFile,
-                () => this.ConfirmOverwrite(this.AbsoluteUri, destFile.SnapshotQualifiedUri.ToString()),
-                () => destFile.StartCopyAsync(new Uri(this.AbsoluteUri), null, null, this.RequestOptions, this.OperationContext));
+                () => ConfirmOverwrite(AbsoluteUri, destFile.SnapshotQualifiedUri.ToString()),
+                () => destFile.StartCopyAsync(new Uri(AbsoluteUri), null, null, RequestOptions, OperationContext));
 
-            this.RunTask(taskGenerator);
+            RunTask(taskGenerator);
         }
 
         private CloudFile GetDestFile()
         {
-            var destChannal = this.GetDestinationChannel();
+            var destChannal = GetDestinationChannel();
 
-            if (null != this.DestFile)
+            if (null != DestFile)
             {
-                return this.DestFile;
+                return DestFile;
             }
-            else
-            {
-                string destPath = this.DestFilePath;
+            string destPath = DestFilePath;
 
-                NamingUtil.ValidateShareName(this.DestShareName, false);
-                CloudFileShare share = destChannal.GetShareReference(this.DestShareName);
+            NamingUtil.ValidateShareName(DestShareName, false);
+            CloudFileShare share = destChannal.GetShareReference(DestShareName);
 
-                string[] path = NamingUtil.ValidatePath(destPath, true);
-                return share.GetRootDirectoryReference().GetFileReferenceByPath(path);
-            }
+            string[] path = NamingUtil.ValidatePath(destPath, true);
+            return share.GetRootDirectoryReference().GetFileReferenceByPath(path);
         }
 
         private async Task StartAsyncCopy(long taskId, CloudFile destFile, Func<bool> checkOverwrite, Func<Task<string>> startCopy)
@@ -365,7 +359,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             bool destExist = true;
             try
             {
-                await destFile.FetchAttributesAsync(null, this.RequestOptions, this.OperationContext, this.CmdletCancellationToken).ConfigureAwait(false);
+                await destFile.FetchAttributesAsync(null, RequestOptions, OperationContext, CmdletCancellationToken).ConfigureAwait(false);
             }
             catch (StorageException ex)
             {
@@ -381,8 +375,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             {
                 string copyId = await startCopy().ConfigureAwait(false);
 
-                this.OutputStream.WriteVerbose(taskId, String.Format(Resources.CopyDestinationBlobPending, destFile.GetFullPath(), destFile.Share.Name, copyId));
-                this.OutputStream.WriteObject(taskId, destFile);
+                OutputStream.WriteVerbose(taskId, String.Format(Resources.CopyDestinationBlobPending, destFile.GetFullPath(), destFile.Share.Name, copyId));
+                OutputStream.WriteObject(taskId, destFile);
             }
         }
     }

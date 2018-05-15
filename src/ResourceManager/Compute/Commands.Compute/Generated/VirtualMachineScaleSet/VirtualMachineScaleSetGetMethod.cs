@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string vmScaleSetName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName" },
+                 new[] { "ResourceGroupName", "VMScaleSetName" },
                  new object[] { resourceGroupName, vmScaleSetName });
         }
     }
@@ -141,12 +141,12 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                string resourceGroupName = this.ResourceGroupName;
-                string vmScaleSetName = this.VMScaleSetName;
+                string resourceGroupName = ResourceGroupName;
+                string vmScaleSetName = VMScaleSetName;
 
                 if (!string.IsNullOrEmpty(resourceGroupName) && !string.IsNullOrEmpty(vmScaleSetName))
                 {
-                    if (this.ParameterSetName.Equals("FriendMethod"))
+                    if (ParameterSetName.Equals("FriendMethod"))
                     {
                         var result = VirtualMachineScaleSetsClient.GetInstanceView(resourceGroupName, vmScaleSetName);
                         var psObject = new PSVirtualMachineScaleSetInstanceView();
@@ -214,7 +214,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             ParameterSetName = "FriendMethod",
             Position = 1,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

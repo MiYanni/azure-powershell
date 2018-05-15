@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DatabaseSecureConnectionPolicy SecureConnectionPolicy
         {
-            get { return this._secureConnectionPolicy; }
-            set { this._secureConnectionPolicy = value; }
+            get { return _secureConnectionPolicy; }
+            set { _secureConnectionPolicy = value; }
         }
         
         /// <summary>

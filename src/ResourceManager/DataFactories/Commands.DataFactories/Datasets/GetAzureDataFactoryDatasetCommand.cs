@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName = DataFactory.ResourceGroupName;
             }
 
-            DatasetFilterOptions filterOptions = new DatasetFilterOptions()
+            DatasetFilterOptions filterOptions = new DatasetFilterOptions
             {
                 Name = Name,
                 ResourceGroupName = ResourceGroupName,

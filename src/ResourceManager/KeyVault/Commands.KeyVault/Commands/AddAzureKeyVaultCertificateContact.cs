@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
                 try
                 {
-                    existingContacts = this.DataServiceClient.GetCertificateContacts(VaultName)?.ToList();
+                    existingContacts = DataServiceClient.GetCertificateContacts(VaultName)?.ToList();
                 }
                 catch (KeyVaultErrorException exception)
                 {
@@ -132,17 +132,17 @@ namespace Microsoft.Azure.Commands.KeyVault
                 foreach (var email in EmailAddress)
                 {
                     if (newContactList.FindIndex(
-                        contact => (string.Compare(contact.Email, email, StringComparison.OrdinalIgnoreCase) == 0)) == -1)
+                        contact => string.Compare(contact.Email, email, StringComparison.OrdinalIgnoreCase) == 0) == -1)
                     {
                         newContactList.Add(new PSKeyVaultCertificateContact { Email = email });
                     }
                 }
 
-                var resultantContacts = this.DataServiceClient.SetCertificateContacts(VaultName, newContactList);
+                var resultantContacts = DataServiceClient.SetCertificateContacts(VaultName, newContactList);
 
                 if (PassThru.IsPresent)
                 {
-                    this.WriteObject(resultantContacts, true);
+                    WriteObject(resultantContacts, true);
                 }
             }
         }

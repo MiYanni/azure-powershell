@@ -26,8 +26,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (error != null)
             {
-                this.Type = error.Type;
-                this.Message = error.Message;
+                Type = error.Type;
+                Message = error.Message;
             }
         }
         public string Type { get; set; }

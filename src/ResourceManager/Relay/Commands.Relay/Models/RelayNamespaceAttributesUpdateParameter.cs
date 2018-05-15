@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Commands.Relay.Models
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using Azure.Management.Relay.Models;
+    using Management.Relay.Models;
 
     /// <summary>
     /// Parameters supplied to the Patch Namespace operation.

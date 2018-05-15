@@ -29,17 +29,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns>Server list response</returns>
         public List<Alert> GetAzureSiteRecoveryAlertSetting()
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .ReplicationAlertSettings
-                .ListWithHttpMessagesAsync(this.GetRequestHeaders(true))
+                .ListWithHttpMessagesAsync(GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
 
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient().ReplicationAlertSettings.ListNextWithHttpMessagesAsync,
+                GetSiteRecoveryClient().ReplicationAlertSettings.ListNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
 
             pages.Insert(0, firstPage);
             return Utilities.IpageToList(pages);
@@ -52,12 +52,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <returns></returns>
         public Alert SetAzureSiteRecoveryAlertSetting(ConfigureAlertRequest input)
         {
-            var op = this.GetSiteRecoveryClient()
+            var op = GetSiteRecoveryClient()
                 .ReplicationAlertSettings
                 .CreateWithHttpMessagesAsync(
                     Constants.DefaultAlertSettingName,
                     input,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;

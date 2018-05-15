@@ -96,32 +96,32 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            if (this.ByteRangeEnd != null && this.ByteRangeStart == null)
+            if (ByteRangeEnd != null && ByteRangeStart == null)
             {
-                this.ByteRangeStart = 0;
+                ByteRangeStart = 0;
             }
 
-            if (this.ByteRangeEnd == null && this.ByteRangeStart != null)
+            if (ByteRangeEnd == null && ByteRangeStart != null)
             {
-                this.ByteRangeEnd = long.MaxValue;
+                ByteRangeEnd = long.MaxValue;
             }
 
-            var byteRange = this.ByteRangeStart != null && this.ByteRangeEnd != null
-                ? new DownloadNodeFileOptions.ByteRange(this.ByteRangeStart.Value, this.ByteRangeEnd.Value)
+            var byteRange = ByteRangeStart != null && ByteRangeEnd != null
+                ? new DownloadNodeFileOptions.ByteRange(ByteRangeStart.Value, ByteRangeEnd.Value)
                 : null;
 
             DownloadNodeFileOptions options = new DownloadNodeFileOptions(
-                this.BatchContext,
-                this.JobId,
-                this.TaskId,
-                this.PoolId,
-                this.ComputeNodeId,
-                this.Path,
-                this.InputObject,
-                this.DestinationPath,
-                this.DestinationStream,
+                BatchContext,
+                JobId,
+                TaskId,
+                PoolId,
+                ComputeNodeId,
+                Path,
+                InputObject,
+                DestinationPath,
+                DestinationStream,
                 byteRange,
-                this.AdditionalBehaviors);
+                AdditionalBehaviors);
 
             BatchClient.DownloadNodeFile(options);
         }

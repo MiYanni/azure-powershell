@@ -4,7 +4,7 @@
 
 namespace Microsoft.Azure.Management.Internal.Network.Version2017_03_01
 {
-    using Microsoft.Rest.Azure;
+    using Rest.Azure;
     using Models;
     using System.Collections.Generic;
     using System.Threading;

@@ -29,84 +29,84 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public long Size
         {
-            get { return this.writer.BaseStream.Length; }
+            get { return writer.BaseStream.Length; }
         }
 
         public void WriteBoolean(long offset, bool value)
         {
-            this.SetPosition(offset);
-            this.writer.Write(value);
+            SetPosition(offset);
+            writer.Write(value);
         }
 
         public void WriteInt(long offset, int value)
         {
-            this.SetPosition(offset);
-            this.writer.Write((uint)IPAddress.HostToNetworkOrder(value));
+            SetPosition(offset);
+            writer.Write((uint)IPAddress.HostToNetworkOrder(value));
         }
 
         public void WriteInt16(long offset, Int16 value)
         {
-            this.SetPosition(offset);
-            this.writer.Write(IPAddress.HostToNetworkOrder((short)value));
+            SetPosition(offset);
+            writer.Write(IPAddress.HostToNetworkOrder(value));
         }
 
         public void WriteInt16(Int16 value)
         {
-            this.writer.Write(IPAddress.HostToNetworkOrder((short)value));
+            writer.Write(IPAddress.HostToNetworkOrder(value));
         }
 
         public void WriteUInt(long offset, uint value)
         {
-            this.SetPosition(offset);
-            this.writer.Write((uint)IPAddress.HostToNetworkOrder((int)value));
+            SetPosition(offset);
+            writer.Write((uint)IPAddress.HostToNetworkOrder((int)value));
         }
 
         public void WriteUInt(uint value)
         {
-            this.writer.Write((uint)IPAddress.HostToNetworkOrder((int)value));
+            writer.Write((uint)IPAddress.HostToNetworkOrder((int)value));
         }
 
         public void WriteLong(long offset, long value)
         {
-            this.SetPosition(offset);
+            SetPosition(offset);
             var result = (ulong)IPAddress.HostToNetworkOrder(value);
-            this.writer.Write(result);
+            writer.Write(result);
         }
 
         public void WriteBytes(long offset, byte[] value)
         {
-            this.SetPosition(offset);
-            this.writer.Write(value);
+            SetPosition(offset);
+            writer.Write(value);
         }
 
         public void WriteByte(long offset, byte value)
         {
-            this.SetPosition(offset);
-            this.writer.Write(value);
+            SetPosition(offset);
+            writer.Write(value);
         }
 
         public void WriteByte(byte value)
         {
-            this.writer.Write(value);
+            writer.Write(value);
         }
 
         public void WriteGuid(long offset, Guid value)
         {
-            this.SetPosition(offset);
-            this.writer.Write(value.ToByteArray());
+            SetPosition(offset);
+            writer.Write(value.ToByteArray());
         }
 
         public void WriteTimeStamp(long offset, DateTime value)
         {
-            this.SetPosition(offset);
+            SetPosition(offset);
             var timeStamp = new VhdTimeStamp(value);
             uint result = (uint)IPAddress.HostToNetworkOrder((int)timeStamp.TotalSeconds);
-            this.writer.Write(result);
+            writer.Write(result);
         }
 
         public void SetPosition(long batOffset)
         {
-            this.writer.BaseStream.Seek(batOffset, SeekOrigin.Begin);
+            writer.BaseStream.Seek(batOffset, SeekOrigin.Begin);
         }
     }
 }

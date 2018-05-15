@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Rule
                 rulesAttributes = InputObject;
             }            
 
-            if (ShouldProcess(target: Name, action: string.Format(Resources.UpdateRule, Name, Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.UpdateRule, Name, Namespace)))
             {
                 WriteObject(Client.CreateUpdateRules(ResourceGroupName, Namespace, Topic, Subscription, Name, rulesAttributes));
             }

@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             // Resolve any mismatch between -Name and the name written in JSON
             Name = ResolveResourceName(rawJsonContent, Name, "Hub");
 
-            CreatePSHubParameters parameters = new CreatePSHubParameters()
+            CreatePSHubParameters parameters = new CreatePSHubParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = DataFactoryName,

@@ -72,10 +72,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     throw new Exception(string.Format(Resources.JobCouldNotCancelJob,
                         cancelResponse.Response.StatusCode.ToString()));
                 }
-                else
-                {
-                    WriteObject(JobConversions.GetPSJob(ServiceClientAdapter.GetJob(JobId)));
-                }
+                WriteObject(JobConversions.GetPSJob(ServiceClientAdapter.GetJob(JobId)));
             }, ShouldProcess(JobId, "Stop"));
         }
     }

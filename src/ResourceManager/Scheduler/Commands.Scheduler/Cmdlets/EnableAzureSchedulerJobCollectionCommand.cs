@@ -15,8 +15,8 @@
 namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Commands.Scheduler.Utilities;
+    using Properties;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -45,16 +45,16 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            this.ConfirmAction(
-                processMessage: string.Format(Resources.EnableJobCollectionResourceDescription, this.JobCollectionName),
-                target: this.JobCollectionName,
-                action: () => 
+            ConfirmAction(
+                string.Format(Resources.EnableJobCollectionResourceDescription, JobCollectionName),
+                JobCollectionName,
+                () => 
                 {
-                    this.SchedulerClient.EnableJobCollection(this.ResourceGroupName, this.JobCollectionName);
+                    SchedulerClient.EnableJobCollection(ResourceGroupName, JobCollectionName);
 
                     if(PassThru.IsPresent)
                     {
-                        this.WriteObject(Resources.CompletedSuccessfully);
+                        WriteObject(Resources.CompletedSuccessfully);
                     }
                 }
             );

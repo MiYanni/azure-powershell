@@ -34,8 +34,8 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("locationQuotasResponse");
             }
 
-            this.Location = location;
-            this.AccountQuota = locationQuotasResponse.AccountQuota.GetValueOrDefault();
+            Location = location;
+            AccountQuota = locationQuotasResponse.AccountQuota.GetValueOrDefault();
         }
 
         /// <summary>

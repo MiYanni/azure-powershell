@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var urlPathMap =
-                    this.ApplicationGateway.UrlPathMaps.First(
+                    ApplicationGateway.UrlPathMaps.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(urlPathMap);
             }
             else
             {
-                var urlPathMaps = this.ApplicationGateway.UrlPathMaps;
+                var urlPathMaps = ApplicationGateway.UrlPathMaps;
                 WriteObject(urlPathMaps, true);
             }
         }

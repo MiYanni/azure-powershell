@@ -38,10 +38,10 @@ namespace Microsoft.Azure.Commands.Network
 
         protected PSApplicationGatewayProbeHealthResponseMatch NewObject()
         {
-            return new PSApplicationGatewayProbeHealthResponseMatch()
+            return new PSApplicationGatewayProbeHealthResponseMatch
             {
-                Body = this.Body,
-                StatusCodes = this.StatusCode
+                Body = Body,
+                StatusCodes = StatusCode
             };
         }
     }

@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Set", "AzureRmVmssBootDiagnostic", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class SetAzureRmVmssBootDiagnosticCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class SetAzureRmVmssBootDiagnosticCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -62,47 +62,47 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
         private void Run()
         {
-            if (this.MyInvocation.BoundParameters.ContainsKey("Enabled"))
+            if (MyInvocation.BoundParameters.ContainsKey("Enabled"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // DiagnosticsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile = new Microsoft.Azure.Management.Compute.Models.DiagnosticsProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile = new DiagnosticsProfile();
                 }
                 // BootDiagnostics
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics = new Microsoft.Azure.Management.Compute.Models.BootDiagnostics();
+                    VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics = new BootDiagnostics();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics.Enabled = this.Enabled;
+                VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics.Enabled = Enabled;
             }
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("StorageUri"))
+            if (MyInvocation.BoundParameters.ContainsKey("StorageUri"))
             {
                 // VirtualMachineProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile = new Microsoft.Azure.Management.Compute.Models.VirtualMachineScaleSetVMProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile = new VirtualMachineScaleSetVMProfile();
                 }
                 // DiagnosticsProfile
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile = new Microsoft.Azure.Management.Compute.Models.DiagnosticsProfile();
+                    VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile = new DiagnosticsProfile();
                 }
                 // BootDiagnostics
-                if (this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics == null)
+                if (VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics == null)
                 {
-                    this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics = new Microsoft.Azure.Management.Compute.Models.BootDiagnostics();
+                    VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics = new BootDiagnostics();
                 }
-                this.VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics.StorageUri = this.StorageUri;
+                VirtualMachineScaleSet.VirtualMachineProfile.DiagnosticsProfile.BootDiagnostics.StorageUri = StorageUri;
             }
 
-            WriteObject(this.VirtualMachineScaleSet);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

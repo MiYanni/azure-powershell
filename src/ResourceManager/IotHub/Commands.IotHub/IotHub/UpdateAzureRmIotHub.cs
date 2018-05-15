@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Collections;
     using System.Linq;
@@ -64,21 +64,21 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (ShouldProcess(Name, Properties.Resources.UpdateIotHub))
             {
-                IotHubDescription iotHubDescription = this.IotHubClient.IotHubResource.Get(this.ResourceGroupName, this.Name);
+                IotHubDescription iotHubDescription = IotHubClient.IotHubResource.Get(ResourceGroupName, Name);
 
-                if (!this.Reset.IsPresent)
+                if (!Reset.IsPresent)
                 {
                     foreach (var tag in iotHubDescription.Tags)
                     {
-                        if (!this.Tag.ContainsKey(tag.Key))
+                        if (!Tag.ContainsKey(tag.Key))
                         {
-                            this.Tag.Add(tag.Key, tag.Value);
+                            Tag.Add(tag.Key, tag.Value);
                         }
                     }
                 }
 
-                iotHubDescription = this.IotHubClient.IotHubResource.Update(this.ResourceGroupName, this.Name, IotHubUtils.ToTagsResource(this.Tag.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)));
-                this.WriteObject(IotHubUtils.ToPSIotHub(iotHubDescription), false);
+                iotHubDescription = IotHubClient.IotHubResource.Update(ResourceGroupName, Name, IotHubUtils.ToTagsResource(Tag.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)));
+                WriteObject(IotHubUtils.ToPSIotHub(iotHubDescription), false);
             }
         }
     }

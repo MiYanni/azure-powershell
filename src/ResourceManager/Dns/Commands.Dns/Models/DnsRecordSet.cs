@@ -74,21 +74,21 @@ namespace Microsoft.Azure.Commands.Dns
         {
             var clone = new DnsRecordSet();
 
-            clone.Name = this.Name;
-            clone.ZoneName = this.ZoneName;
-            clone.ResourceGroupName = this.ResourceGroupName;
-            clone.Ttl = this.Ttl;
-            clone.Etag = this.Etag;
-            clone.RecordType = this.RecordType;
+            clone.Name = Name;
+            clone.ZoneName = ZoneName;
+            clone.ResourceGroupName = ResourceGroupName;
+            clone.Ttl = Ttl;
+            clone.Etag = Etag;
+            clone.RecordType = RecordType;
 
-            if (this.Records != null)
+            if (Records != null)
             {
-                clone.Records = this.Records.Select(record => record.Clone()).Cast<DnsRecordBase>().ToList();
+                clone.Records = Records.Select(record => record.Clone()).Cast<DnsRecordBase>().ToList();
             }
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                clone.Metadata = (Hashtable)this.Metadata.Clone();
+                clone.Metadata = (Hashtable)Metadata.Clone();
             }
 
             return clone;
@@ -124,7 +124,7 @@ namespace Microsoft.Azure.Commands.Dns
                     Ipv4Address = mamlRecord.Ipv4Address
                 };
             }
-            else if (record is Management.Dns.Models.AaaaRecord)
+            if (record is Management.Dns.Models.AaaaRecord)
             {
                 var mamlRecord = (Management.Dns.Models.AaaaRecord)record;
                 return new AaaaRecord
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Commands.Dns
                     Ipv6Address = mamlRecord.Ipv6Address
                 };
             }
-            else if (record is Management.Dns.Models.CnameRecord)
+            if (record is Management.Dns.Models.CnameRecord)
             {
                 var mamlRecord = (Management.Dns.Models.CnameRecord)record;
                 return new CnameRecord
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Commands.Dns
                     Cname = mamlRecord.Cname
                 };
             }
-            else if (record is Management.Dns.Models.NsRecord)
+            if (record is Management.Dns.Models.NsRecord)
             {
                 var mamlRecord = (Management.Dns.Models.NsRecord)record;
                 return new NsRecord
@@ -148,7 +148,7 @@ namespace Microsoft.Azure.Commands.Dns
                     Nsdname = mamlRecord.Nsdname
                 };
             }
-            else if (record is Management.Dns.Models.MxRecord)
+            if (record is Management.Dns.Models.MxRecord)
             {
                 var mamlRecord = (Management.Dns.Models.MxRecord)record;
                 return new MxRecord
@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.Dns
                     Preference = (ushort) mamlRecord.Preference,
                 };
             }
-            else if (record is Management.Dns.Models.SrvRecord)
+            if (record is Management.Dns.Models.SrvRecord)
             {
                 var mamlRecord = (Management.Dns.Models.SrvRecord)record;
                 return new SrvRecord
@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Commands.Dns
                     Weight = (ushort) mamlRecord.Weight,
                 };
             }
-            else if (record is Management.Dns.Models.SoaRecord)
+            if (record is Management.Dns.Models.SoaRecord)
             {
                 var mamlRecord = (Management.Dns.Models.SoaRecord)record;
                 return new SoaRecord
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Commands.Dns
                     SerialNumber = (uint) mamlRecord.SerialNumber.GetValueOrDefault(),
                 };
             }
-            else if (record is Management.Dns.Models.TxtRecord)
+            if (record is Management.Dns.Models.TxtRecord)
             {
                 var mamlRecord = (Management.Dns.Models.TxtRecord)record;
                 return new TxtRecord
@@ -190,7 +190,7 @@ namespace Microsoft.Azure.Commands.Dns
                     Value = ToPowerShellTxtValue(mamlRecord.Value),
                 };
             }
-            else if (record is Management.Dns.Models.PtrRecord)
+            if (record is Management.Dns.Models.PtrRecord)
             {
                 var mamlRecord = (Management.Dns.Models.PtrRecord)record;
                 return new PtrRecord
@@ -198,7 +198,7 @@ namespace Microsoft.Azure.Commands.Dns
                     Ptrdname = mamlRecord.Ptrdname,
                 };
             }
-            else if (record is Management.Dns.Models.CaaRecord)
+            if (record is Management.Dns.Models.CaaRecord)
             {
                 var mamlRecord = (Management.Dns.Models.CaaRecord)record;
                 return new CaaRecord
@@ -241,14 +241,14 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override string ToString()
         {
-            return this.Ipv4Address;
+            return Ipv4Address;
         }
 
         internal override object ToMamlRecord()
         {
             return new Management.Dns.Models.ARecord
             {
-                Ipv4Address = this.Ipv4Address,
+                Ipv4Address = Ipv4Address,
             };
         }
 
@@ -258,7 +258,7 @@ namespace Microsoft.Azure.Commands.Dns
         /// <returns>A clone of this object</returns>
         public override object Clone()
         {
-            return new ARecord { Ipv4Address = this.Ipv4Address };
+            return new ARecord { Ipv4Address = Ipv4Address };
         }
     }
 
@@ -274,14 +274,14 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override string ToString()
         {
-            return this.Ipv6Address;
+            return Ipv6Address;
         }
 
         internal override object ToMamlRecord()
         {
             return new Management.Dns.Models.AaaaRecord
             {
-                Ipv6Address = this.Ipv6Address,
+                Ipv6Address = Ipv6Address,
             };
         }
 
@@ -291,7 +291,7 @@ namespace Microsoft.Azure.Commands.Dns
         /// <returns>A clone of this object</returns>
         public override object Clone()
         {
-            return new AaaaRecord { Ipv6Address = this.Ipv6Address };
+            return new AaaaRecord { Ipv6Address = Ipv6Address };
         }
     }
 
@@ -307,14 +307,14 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override string ToString()
         {
-            return this.Cname;
+            return Cname;
         }
 
         internal override object ToMamlRecord()
         {
             return new Management.Dns.Models.CnameRecord
             {
-                Cname = this.Cname,
+                Cname = Cname,
             };
         }
 
@@ -324,7 +324,7 @@ namespace Microsoft.Azure.Commands.Dns
         /// <returns>A clone of this object</returns>
         public override object Clone()
         {
-            return new CnameRecord { Cname = this.Cname };
+            return new CnameRecord { Cname = Cname };
         }
     }
 
@@ -340,14 +340,14 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override string ToString()
         {
-            return this.Nsdname;
+            return Nsdname;
         }
 
         internal override object ToMamlRecord()
         {
             return new Management.Dns.Models.NsRecord
             {
-                Nsdname = this.Nsdname,
+                Nsdname = Nsdname,
             };
         }
 
@@ -357,7 +357,7 @@ namespace Microsoft.Azure.Commands.Dns
         /// <returns>A clone of this object</returns>
         public override object Clone()
         {
-            return new NsRecord { Nsdname = this.Nsdname };
+            return new NsRecord { Nsdname = Nsdname };
         }
     }
 
@@ -373,12 +373,12 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override string ToString()
         {
-            return this.Value;
+            return Value;
         }
 
         internal override object ToMamlRecord()
         {
-            char[] letters = this.Value.ToCharArray();
+            char[] letters = Value.ToCharArray();
             var splitValues = new List<string>();
 
             int remaining = letters.Length;
@@ -410,7 +410,7 @@ namespace Microsoft.Azure.Commands.Dns
         /// <returns>A clone of this object</returns>
         public override object Clone()
         {
-            return new TxtRecord { Value = this.Value };
+            return new TxtRecord { Value = Value };
         }
     }
 
@@ -438,8 +438,8 @@ namespace Microsoft.Azure.Commands.Dns
         {
             return new Management.Dns.Models.MxRecord
             {
-                Exchange = this.Exchange,
-                Preference = this.Preference,
+                Exchange = Exchange,
+                Preference = Preference,
             };
         }
 
@@ -449,7 +449,7 @@ namespace Microsoft.Azure.Commands.Dns
         /// <returns>A clone of this object</returns>
         public override object Clone()
         {
-            return new MxRecord { Exchange = this.Exchange, Preference = this.Preference };
+            return new MxRecord { Exchange = Exchange, Preference = Preference };
         }
     }
 
@@ -487,10 +487,10 @@ namespace Microsoft.Azure.Commands.Dns
         {
             return new Management.Dns.Models.SrvRecord
             {
-                Priority = this.Priority,
-                Target = this.Target,
-                Weight = this.Weight,
-                Port = this.Port,
+                Priority = Priority,
+                Target = Target,
+                Weight = Weight,
+                Port = Port,
             };
         }
 
@@ -502,10 +502,10 @@ namespace Microsoft.Azure.Commands.Dns
         {
             return new SrvRecord
             {
-                Priority = this.Priority,
-                Target = this.Target,
-                Weight = this.Weight,
-                Port = this.Port
+                Priority = Priority,
+                Target = Target,
+                Weight = Weight,
+                Port = Port
             };
         }
     }
@@ -559,13 +559,13 @@ namespace Microsoft.Azure.Commands.Dns
         {
             return new Management.Dns.Models.SoaRecord
             {
-                Host = this.Host,
-                Email = this.Email,
-                SerialNumber = this.SerialNumber,
-                RefreshTime = this.RefreshTime,
-                RetryTime = this.RetryTime,
-                ExpireTime = this.ExpireTime,
-                MinimumTtl = this.MinimumTtl,
+                Host = Host,
+                Email = Email,
+                SerialNumber = SerialNumber,
+                RefreshTime = RefreshTime,
+                RetryTime = RetryTime,
+                ExpireTime = ExpireTime,
+                MinimumTtl = MinimumTtl,
             };
         }
 
@@ -577,13 +577,13 @@ namespace Microsoft.Azure.Commands.Dns
         {
             return new SoaRecord
             {
-                Host = this.Host,
-                Email = this.Email,
-                SerialNumber = this.SerialNumber,
-                RefreshTime = this.RefreshTime,
-                RetryTime = this.RetryTime,
-                ExpireTime = this.ExpireTime,
-                MinimumTtl = this.MinimumTtl,
+                Host = Host,
+                Email = Email,
+                SerialNumber = SerialNumber,
+                RefreshTime = RefreshTime,
+                RetryTime = RetryTime,
+                ExpireTime = ExpireTime,
+                MinimumTtl = MinimumTtl,
             };
         }
     }
@@ -600,14 +600,14 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override string ToString()
         {
-            return this.Ptrdname;
+            return Ptrdname;
         }
 
         public override object Clone()
         {
-            return new PtrRecord()
+            return new PtrRecord
             {
-                Ptrdname = this.Ptrdname,
+                Ptrdname = Ptrdname,
             };
         }
 
@@ -615,7 +615,7 @@ namespace Microsoft.Azure.Commands.Dns
         {
             return new Management.Dns.Models.PtrRecord
             {
-                Ptrdname = this.Ptrdname,
+                Ptrdname = Ptrdname,
             };
         }
     }
@@ -647,20 +647,20 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override object Clone()
         {
-            return new CaaRecord()
+            return new CaaRecord
             {
-                Flags = this.Flags,
-                Tag = this.Tag,
-                Value = this.Value
+                Flags = Flags,
+                Tag = Tag,
+                Value = Value
             };
         }
 
         internal override object ToMamlRecord()
         {
             return new Management.Dns.Models.CaaRecord(
-                this.Flags,
-                this.Tag,
-                this.Value);
+                Flags,
+                Tag,
+                Value);
         }
     }
 

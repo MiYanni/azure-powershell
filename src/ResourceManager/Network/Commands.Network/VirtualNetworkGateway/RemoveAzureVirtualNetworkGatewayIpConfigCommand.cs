@@ -41,24 +41,21 @@ namespace Microsoft.Azure.Commands.Network
 
             if (ShouldProcess(Name, Properties.Resources.RemoveResourceMessage + Properties.Resources.VirtualNetworkGatewayIpConfigName))
             {
-                if (this.VirtualNetworkGateway.IpConfigurations != null)
+                if (VirtualNetworkGateway.IpConfigurations != null)
                 {
-                    PSVirtualNetworkGatewayIpConfiguration configToRemove = this.VirtualNetworkGateway.IpConfigurations.Find(config => config.Name.Equals(Name));
+                    PSVirtualNetworkGatewayIpConfiguration configToRemove = VirtualNetworkGateway.IpConfigurations.Find(config => config.Name.Equals(Name));
                     if (configToRemove == null)
                     {
                         throw new ArgumentException("Virtual Network Gateway object does not have any Gateway IpConfiguration with Name=" + Name + " specified.");
                     }
-                    else
-                    {
-                        this.VirtualNetworkGateway.IpConfigurations.Remove(configToRemove);
-                    }
+                    VirtualNetworkGateway.IpConfigurations.Remove(configToRemove);
                 }
                 else
                 {
                     throw new ArgumentException("Virtual Network Gateway object does not have any Gateway IpConfigurations specified.");
                 }
 
-                WriteObject(this.VirtualNetworkGateway);
+                WriteObject(VirtualNetworkGateway);
             }
         }
     }

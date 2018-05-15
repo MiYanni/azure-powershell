@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIotHubConnectionString")]
@@ -53,18 +53,18 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         public override void ExecuteCmdlet()
         {
             // Fetch the hostname
-            IotHubDescription iotHubDescription = this.IotHubClient.IotHubResource.Get(this.ResourceGroupName, this.Name);
+            IotHubDescription iotHubDescription = IotHubClient.IotHubResource.Get(ResourceGroupName, Name);
             var hostName = iotHubDescription.Properties.HostName;
 
             if (KeyName != null)
             {
-                SharedAccessSignatureAuthorizationRule authPolicy = this.IotHubClient.IotHubResource.GetKeysForKeyName(this.ResourceGroupName, this.Name, this.KeyName);
-                this.WriteObject(authPolicy.ToPSIotHubConnectionString(hostName), false);
+                SharedAccessSignatureAuthorizationRule authPolicy = IotHubClient.IotHubResource.GetKeysForKeyName(ResourceGroupName, Name, KeyName);
+                WriteObject(authPolicy.ToPSIotHubConnectionString(hostName), false);
             }
             else
             { 
-                IEnumerable<SharedAccessSignatureAuthorizationRule> authPolicies = this.IotHubClient.IotHubResource.ListKeys(this.ResourceGroupName, this.Name);
-                this.WriteObject(IotHubUtils.ToPSIotHubConnectionStrings(authPolicies, hostName), true);
+                IEnumerable<SharedAccessSignatureAuthorizationRule> authPolicies = IotHubClient.IotHubResource.ListKeys(ResourceGroupName, Name);
+                WriteObject(IotHubUtils.ToPSIotHubConnectionStrings(authPolicies, hostName), true);
             }
         }
     }

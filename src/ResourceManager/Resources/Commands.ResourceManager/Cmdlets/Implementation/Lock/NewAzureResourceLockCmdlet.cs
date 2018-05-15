@@ -14,27 +14,27 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Locks;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
+    using Entities.Locks;
+    using Extensions;
     using Newtonsoft.Json.Linq;
     using System.Management.Automation;
 
     /// <summary>
     /// The new azure resource lock cmdlet.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureRmResourceLock", SupportsShouldProcess = true, DefaultParameterSetName = ResourceLockManagementCmdletBase.ScopeLevelLock), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsCommon.New, "AzureRmResourceLock", SupportsShouldProcess = true, DefaultParameterSetName = ScopeLevelLock), OutputType(typeof(PSObject))]
     public class NewAzureResourceLockCmdlet : ResourceLockManagementCmdletBase
     {
         /// <summary>
         /// Gets or sets the extension resource name parameter.
         /// </summary>
         [Alias("ExtensionResourceName", "Name")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ScopeLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.SubscriptionLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.SubscriptionResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.TenantResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ResourceGroupLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ScopeLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = SubscriptionLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = SubscriptionResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = TenantResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
         [ValidateNotNullOrEmpty]
         public string LockName { get; set; }
 
@@ -66,34 +66,34 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected override void OnProcessRecord()
         {
             base.OnProcessRecord();
-            var resourceId = this.GetResourceId(this.LockName);
-            this.ConfirmAction(
-                this.Force,
-                this.GetActionMessage(resourceId),
-                this.GetProccessMessage(),
+            var resourceId = GetResourceId(LockName);
+            ConfirmAction(
+                Force,
+                GetActionMessage(resourceId),
+                GetProccessMessage(),
                 resourceId,
                 () =>
                 {
-                    var resourceBody = this.GetResourceBody();
+                    var resourceBody = GetResourceBody();
 
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .PutResource(
-                            resourceId: resourceId,
-                            apiVersion: this.LockApiVersion,
-                            resource: resourceBody,
-                            cancellationToken: this.CancellationToken.Value)
+                            resourceId,
+                            LockApiVersion,
+                            resourceBody,
+                            CancellationToken.Value)
                         .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                       .GetResourceManagementRequestUri(
-                          resourceId: resourceId,
-                          apiVersion: this.LockApiVersion);
+                          resourceId,
+                          LockApiVersion);
 
                     var activity = string.Format("PUT {0}", managementUri.PathAndQuery);
-                    var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: true)
-                        .WaitOnOperation(operationResult: operationResult);
+                    var result = GetLongRunningOperationTracker(activity, true)
+                        .WaitOnOperation(operationResult);
 
-                    this.WriteObject(this.GetOutputObjects(JObject.Parse(result)), enumerateCollection: true);
+                    WriteObject(GetOutputObjects(JObject.Parse(result)), true);
                 });
         }
 
@@ -123,8 +123,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             {
                 Properties = new LockProperties
                 {
-                    Level = this.LockLevel,
-                    Notes = this.LockNotes,
+                    Level = LockLevel,
+                    Notes = LockNotes,
                 }
             };
 

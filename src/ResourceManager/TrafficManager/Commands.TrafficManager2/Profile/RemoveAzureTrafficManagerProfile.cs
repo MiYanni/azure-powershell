@@ -45,34 +45,34 @@ namespace Microsoft.Azure.Commands.TrafficManager
             var deleted = false;
             TrafficManagerProfile profileToDelete = null;
 
-            if (this.ParameterSetName == "Fields")
+            if (ParameterSetName == "Fields")
             {
                 profileToDelete = new TrafficManagerProfile
                 {
-                    Name = this.Name,
-                    ResourceGroupName = this.ResourceGroupName
+                    Name = Name,
+                    ResourceGroupName = ResourceGroupName
                 };
             }
-            else if (this.ParameterSetName == "Object")
+            else if (ParameterSetName == "Object")
             {
-                profileToDelete = this.TrafficManagerProfile;
+                profileToDelete = TrafficManagerProfile;
             }
 
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(ProjectResources.Confirm_RemoveProfile, profileToDelete.Name),
                 ProjectResources.Progress_RemovingProfile,
-                this.Name,
+                Name,
                 () =>
                 {
-                    deleted = this.TrafficManagerClient.DeleteTrafficManagerProfile(profileToDelete);
+                    deleted = TrafficManagerClient.DeleteTrafficManagerProfile(profileToDelete);
                     if (deleted)
                     {
-                        this.WriteVerbose(ProjectResources.Success);
-                        this.WriteVerbose(string.Format(ProjectResources.Success_RemoveProfile, profileToDelete.Name, profileToDelete.ResourceGroupName));
+                        WriteVerbose(ProjectResources.Success);
+                        WriteVerbose(string.Format(ProjectResources.Success_RemoveProfile, profileToDelete.Name, profileToDelete.ResourceGroupName));
                     }
 
-                    this.WriteObject(deleted);
+                    WriteObject(deleted);
                 });
         }
     }

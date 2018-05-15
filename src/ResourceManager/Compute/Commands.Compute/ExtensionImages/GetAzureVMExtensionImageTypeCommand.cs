@@ -36,9 +36,9 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                var result = this.VirtualMachineExtensionImageClient.ListTypesWithHttpMessagesAsync(
-                    this.Location.Canonicalize(),
-                    this.PublisherName).GetAwaiter().GetResult();
+                var result = VirtualMachineExtensionImageClient.ListTypesWithHttpMessagesAsync(
+                    Location.Canonicalize(),
+                    PublisherName).GetAwaiter().GetResult();
 
                 var images = from r in result.Body
                              select new PSVirtualMachineExtensionImageType
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Compute
                                  Id = r.Id,
                                  Location = r.Location,
                                  Type = r.Name,
-                                 PublisherName = this.PublisherName
+                                 PublisherName = PublisherName
                              };
 
                 WriteObject(images, true);

@@ -23,10 +23,10 @@ namespace Microsoft.Azure.Commands.Network
     {
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(Name, Microsoft.Azure.Commands.Network.Properties.Resources.CreatingResourceMessage))
+            if (ShouldProcess(Name, Properties.Resources.CreatingResourceMessage))
             {
                 base.ExecuteCmdlet();
-                WriteObject(base.NewObject());
+                WriteObject(NewObject());
             }
         }
     }

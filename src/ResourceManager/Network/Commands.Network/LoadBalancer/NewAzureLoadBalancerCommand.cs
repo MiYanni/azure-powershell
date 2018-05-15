@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsLoadBalancerPresent(this.ResourceGroupName, this.Name);
+            var present = IsLoadBalancerPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    var loadBalancer = this.CreateLoadBalancer();
+                    var loadBalancer = CreateLoadBalancer();
                     WriteObject(loadBalancer);
                 },
                 () => present);
@@ -135,60 +135,60 @@ namespace Microsoft.Azure.Commands.Network
         private PSLoadBalancer CreateLoadBalancer()
         {
             var loadBalancer = new PSLoadBalancer();
-            loadBalancer.Name = this.Name;
-            loadBalancer.ResourceGroupName = this.ResourceGroupName;
-            loadBalancer.Location = this.Location;
+            loadBalancer.Name = Name;
+            loadBalancer.ResourceGroupName = ResourceGroupName;
+            loadBalancer.Location = Location;
 
-            if (!string.IsNullOrEmpty(this.Sku))
+            if (!string.IsNullOrEmpty(Sku))
             {
                 loadBalancer.Sku = new PSLoadBalancerSku();
-                loadBalancer.Sku.Name = this.Sku;
+                loadBalancer.Sku.Name = Sku;
             }
 
-            if (this.FrontendIpConfiguration != null)
+            if (FrontendIpConfiguration != null)
             {
-                loadBalancer.FrontendIpConfigurations = this.FrontendIpConfiguration;
+                loadBalancer.FrontendIpConfigurations = FrontendIpConfiguration;
             }
 
-            if (this.BackendAddressPool != null)
+            if (BackendAddressPool != null)
             {
-                loadBalancer.BackendAddressPools = this.BackendAddressPool;
+                loadBalancer.BackendAddressPools = BackendAddressPool;
             }
 
-            if (this.Probe != null)
+            if (Probe != null)
             {
-                loadBalancer.Probes = this.Probe;
+                loadBalancer.Probes = Probe;
             }
 
-            if (this.InboundNatRule != null)
+            if (InboundNatRule != null)
             {
-                loadBalancer.InboundNatRules = this.InboundNatRule;
+                loadBalancer.InboundNatRules = InboundNatRule;
             }
 
-            if (this.LoadBalancingRule != null)
+            if (LoadBalancingRule != null)
             {
-                loadBalancer.LoadBalancingRules = this.LoadBalancingRule;
+                loadBalancer.LoadBalancingRules = LoadBalancingRule;
             }
 
-            if (this.InboundNatPool != null)
+            if (InboundNatPool != null)
             {
-                loadBalancer.InboundNatPools = this.InboundNatPool;
+                loadBalancer.InboundNatPools = InboundNatPool;
             }
 
-            loadBalancer.ResourceGroupName = this.ResourceGroupName;
-            loadBalancer.Name = this.Name;
+            loadBalancer.ResourceGroupName = ResourceGroupName;
+            loadBalancer.Name = Name;
 
             // Normalize the IDs
-            ChildResourceHelper.NormalizeChildResourcesId(loadBalancer, this.NetworkClient.NetworkManagementClient.SubscriptionId);
+            ChildResourceHelper.NormalizeChildResourcesId(loadBalancer, NetworkClient.NetworkManagementClient.SubscriptionId);
 
             // Map to the sdk object
             var lbModel = NetworkResourceManagerProfile.Mapper.Map<MNM.LoadBalancer>(loadBalancer);
-            lbModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            lbModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
             // Execute the Create VirtualNetwork call
-            this.LoadBalancerClient.CreateOrUpdate(this.ResourceGroupName, this.Name, lbModel);
+            LoadBalancerClient.CreateOrUpdate(ResourceGroupName, Name, lbModel);
 
-            var getLoadBalancer = this.GetLoadBalancer(this.ResourceGroupName, this.Name);
+            var getLoadBalancer = GetLoadBalancer(ResourceGroupName, Name);
 
             return getLoadBalancer;
         }

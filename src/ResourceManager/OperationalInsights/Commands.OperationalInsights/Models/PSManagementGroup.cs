@@ -32,14 +32,14 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
 
             if (managementGroup != null)
             {
-                this.CreatedDate = managementGroup.Created;
-                this.LastDataReceived = managementGroup.DataReceived;
-                this.Id = new Guid(managementGroup.Id);
-                this.IsGateway = managementGroup.IsGateway.Value;
-                this.Name = managementGroup.Name;
-                this.ServerCount = managementGroup.ServerCount.Value;
-                this.Sku = managementGroup.Sku;
-                this.Version = managementGroup.Version;
+                CreatedDate = managementGroup.Created;
+                LastDataReceived = managementGroup.DataReceived;
+                Id = new Guid(managementGroup.Id);
+                IsGateway = managementGroup.IsGateway.Value;
+                Name = managementGroup.Name;
+                ServerCount = managementGroup.ServerCount.Value;
+                Sku = managementGroup.Sku;
+                Version = managementGroup.Version;
             }
         }
 

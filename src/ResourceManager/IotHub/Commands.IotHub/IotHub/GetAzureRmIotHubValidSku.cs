@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 {
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIotHubValidSku"), OutputType(typeof(IList<PSIotHubSkuDescription>))]
@@ -44,8 +44,8 @@ namespace Microsoft.Azure.Commands.Management.IotHub
 
         public override void ExecuteCmdlet()
         {
-            IEnumerable<IotHubSkuDescription> iotHubValidSkus = this.IotHubClient.IotHubResource.GetValidSkus(this.ResourceGroupName, this.Name);
-            this.WriteObject(IotHubUtils.ToPSIotHubSkuDescriptions(iotHubValidSkus), true);
+            IEnumerable<IotHubSkuDescription> iotHubValidSkus = IotHubClient.IotHubResource.GetValidSkus(ResourceGroupName, Name);
+            WriteObject(IotHubUtils.ToPSIotHubSkuDescriptions(iotHubValidSkus), true);
         }
     }
 }

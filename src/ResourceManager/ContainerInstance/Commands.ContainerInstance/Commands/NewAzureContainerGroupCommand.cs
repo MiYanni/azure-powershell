@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance
             Position = 0,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -175,36 +175,36 @@ namespace Microsoft.Azure.Commands.ContainerInstance
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(this.Name, "Create Container Group"))
+            if (ShouldProcess(Name, "Create Container Group"))
             {
-                var creationParameter = new ContainerGroupCreationParameters()
+                var creationParameter = new ContainerGroupCreationParameters
                 {
-                    Name = this.Name,
-                    ResourceGroupName = this.ResourceGroupName,
-                    Location = this.Location ?? this.GetResourceGroupLocation(this.ResourceGroupName),
-                    Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true),
-                    OsType = this.OsType ?? ContainerGroupCreationParameters.DefaultOsType,
-                    RestartPolicy = this.RestartPolicy ?? ContainerGroupRestartPolicy.Always,
-                    IpAddressType = this.IpAddressType,
-                    DnsNameLabel = this.DnsNameLabel,
-                    Ports = this.Port ?? ContainerGroupCreationParameters.DefaultPorts,
-                    ContainerImage = this.Image,
-                    EnvironmentVariables = this.ConvertHashtableToDictionary(this.EnvironmentVariable),
-                    Cpu = this.Cpu ?? ContainerGroupCreationParameters.DefaultCpu,
-                    MemoryInGb = this.MemoryInGB ?? ContainerGroupCreationParameters.DefaultMemory,
-                    RegistryServer = this.RegistryServerDomain,
-                    RegistryUsername = this.RegistryCredential?.UserName,
-                    RegistryPassword = ContainerGroupCreationParameters.ConvertToString(this.RegistryCredential?.Password),
-                    AzureFileVolumeShareName = this.AzureFileVolumeShareName,
-                    AzureFileVolumeAccountName = this.AzureFileVolumeAccountCredential?.UserName,
-                    AzureFileVolumeAccountKey = ContainerGroupCreationParameters.ConvertToString(this.AzureFileVolumeAccountCredential?.Password),
-                    AzureFileVolumeMountPath = this.AzureFileVolumeMountPath
+                    Name = Name,
+                    ResourceGroupName = ResourceGroupName,
+                    Location = Location ?? GetResourceGroupLocation(ResourceGroupName),
+                    Tags = TagsConversionHelper.CreateTagDictionary(Tag, true),
+                    OsType = OsType ?? ContainerGroupCreationParameters.DefaultOsType,
+                    RestartPolicy = RestartPolicy ?? ContainerGroupRestartPolicy.Always,
+                    IpAddressType = IpAddressType,
+                    DnsNameLabel = DnsNameLabel,
+                    Ports = Port ?? ContainerGroupCreationParameters.DefaultPorts,
+                    ContainerImage = Image,
+                    EnvironmentVariables = ConvertHashtableToDictionary(EnvironmentVariable),
+                    Cpu = Cpu ?? ContainerGroupCreationParameters.DefaultCpu,
+                    MemoryInGb = MemoryInGB ?? ContainerGroupCreationParameters.DefaultMemory,
+                    RegistryServer = RegistryServerDomain,
+                    RegistryUsername = RegistryCredential?.UserName,
+                    RegistryPassword = ContainerGroupCreationParameters.ConvertToString(RegistryCredential?.Password),
+                    AzureFileVolumeShareName = AzureFileVolumeShareName,
+                    AzureFileVolumeAccountName = AzureFileVolumeAccountCredential?.UserName,
+                    AzureFileVolumeAccountKey = ContainerGroupCreationParameters.ConvertToString(AzureFileVolumeAccountCredential?.Password),
+                    AzureFileVolumeMountPath = AzureFileVolumeMountPath
                 };
 
-                if (!string.IsNullOrWhiteSpace(this.Command))
+                if (!string.IsNullOrWhiteSpace(Command))
                 {
                     Collection<PSParseError> errors;
-                    var commandTokens = PSParser.Tokenize(this.Command, out errors);
+                    var commandTokens = PSParser.Tokenize(Command, out errors);
                     if (errors.Any())
                     {
                         throw new ArgumentException($"Invalid 'Command' parameter: {string.Join("; ", errors.Select(err => err.Message))}");
@@ -215,9 +215,9 @@ namespace Microsoft.Azure.Commands.ContainerInstance
                 creationParameter.Validate();
 
                 var psContainerGroup = PSContainerGroup.FromContainerGroup(
-                    this.CreateContainerGroup(creationParameter));
+                    CreateContainerGroup(creationParameter));
 
-                this.WriteObject(psContainerGroup);
+                WriteObject(psContainerGroup);
             }
         }
     }

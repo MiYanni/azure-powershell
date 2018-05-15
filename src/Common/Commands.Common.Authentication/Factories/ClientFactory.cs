@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
             _handlersLock = new ReaderWriterLockSlim();
         }
 
-        public virtual TClient CreateArmClient<TClient>(IAzureContext context, string endpoint) where TClient : Microsoft.Rest.ServiceClient<TClient>
+        public virtual TClient CreateArmClient<TClient>(IAzureContext context, string endpoint) where TClient : Rest.ServiceClient<TClient>
         {
             if (context == null)
             {
@@ -57,20 +57,20 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
 
             var creds = AzureSession.Instance.AuthenticationFactory.GetServiceClientCredentials(context, endpoint);
             var newHandlers = GetCustomHandlers();
-            TClient client = (newHandlers == null || newHandlers.Length == 0)
+            TClient client = newHandlers == null || newHandlers.Length == 0
                 ? CreateCustomArmClient<TClient>(context.Environment.GetEndpointAsUri(endpoint), creds)
                 : CreateCustomArmClient<TClient>(context.Environment.GetEndpointAsUri(endpoint), creds, GetCustomHandlers());
 
             var subscriptionId = typeof(TClient).GetProperty("SubscriptionId");
             if (subscriptionId != null && context.Subscription != null)
             {
-                subscriptionId.SetValue(client, context.Subscription.Id.ToString());
+                subscriptionId.SetValue(client, context.Subscription.Id);
             }
 
             return client;
         }
 
-        public virtual TClient CreateCustomArmClient<TClient>(params object[] parameters) where TClient : Microsoft.Rest.ServiceClient<TClient>
+        public virtual TClient CreateCustomArmClient<TClient>(params object[] parameters) where TClient : Rest.ServiceClient<TClient>
         {
             List<Type> types = new List<Type>();
             var containsDelegatingHandler = false;
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
             var copiedParameters = parameters;
             if (!containsDelegatingHandler)
             {
-                types.Add((new DelegatingHandler[0]).GetType());
+                types.Add(new DelegatingHandler[0].GetType());
                 var parameterList = copiedParameters.ToList();
                 parameterList.Add(new DelegatingHandler[0]);
                 copiedParameters = parameterList.ToArray();
@@ -161,14 +161,14 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
                 throw new ApplicationException(Resources.InvalidDefaultSubscription);
             }
 
-            var account = profile.Accounts.FirstOrDefault((a) => string.Equals(a.Id, (subscription.GetAccount()), StringComparison.OrdinalIgnoreCase));
+            var account = profile.Accounts.FirstOrDefault(a => string.Equals(a.Id, subscription.GetAccount(), StringComparison.OrdinalIgnoreCase));
 
             if (null == account)
             {
                 throw new ArgumentException(string.Format("Account with name '{0}' does not exist.", subscription.GetAccount()), "accountName");
             }
 
-            var environment = profile.Environments.FirstOrDefault((e) => string.Equals(e.Name, subscription.GetEnvironment(), StringComparison.OrdinalIgnoreCase));
+            var environment = profile.Environments.FirstOrDefault(e => string.Equals(e.Name, subscription.GetEnvironment(), StringComparison.OrdinalIgnoreCase));
 
             if (null == environment)
             {
@@ -300,7 +300,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
 
         private IClientAction[] GetActions()
         {
-            IClientAction[] result = null;
+            IClientAction[] result;
             _actionsLock.EnterReadLock();
             try
             {
@@ -413,7 +413,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
         {
             if (_userAgents != null && _userAgents.Keys != null)
             {
-                var agents = _userAgents.Keys.Where((k) => k.Product != null && string.Equals(k.Product.Name, name, StringComparison.OrdinalIgnoreCase));
+                var agents = _userAgents.Keys.Where(k => k.Product != null && string.Equals(k.Product.Name, name, StringComparison.OrdinalIgnoreCase));
                 foreach (var agent in agents)
                 {
                     string value;

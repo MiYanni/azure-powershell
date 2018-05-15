@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<GeoBackup> GeoBackups
         {
-            get { return this._geoBackups; }
-            set { this._geoBackups = value; }
+            get { return _geoBackups; }
+            set { _geoBackups = value; }
         }
         
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public GeoBackupListResponse()
         {
-            this.GeoBackups = new LazyList<GeoBackup>();
+            GeoBackups = new LazyList<GeoBackup>();
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<GeoBackup> GetEnumerator()
         {
-            return this.GeoBackups.GetEnumerator();
+            return GeoBackups.GetEnumerator();
         }
         
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Commands.Network
         private void RemoveSslPolicy()
         {
             base.ExecuteCmdlet();
-            this.ApplicationGateway.SslPolicy = null;
-            WriteObject(this.ApplicationGateway);
+            ApplicationGateway.SslPolicy = null;
+            WriteObject(ApplicationGateway);
         }
     }
 }

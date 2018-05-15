@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IDictionary<string, object> Details
         {
-            get { return this._details; }
-            set { this._details = value; }
+            get { return _details; }
+            set { _details = value; }
         }
         
         private RecommendedActionErrorInfo _errorDetails;
@@ -52,8 +52,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedActionErrorInfo ErrorDetails
         {
-            get { return this._errorDetails; }
-            set { this._errorDetails = value; }
+            get { return _errorDetails; }
+            set { _errorDetails = value; }
         }
         
         private IList<RecommendedActionImpactInfo> _estimatedImpact;
@@ -64,8 +64,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedActionImpactInfo> EstimatedImpact
         {
-            get { return this._estimatedImpact; }
-            set { this._estimatedImpact = value; }
+            get { return _estimatedImpact; }
+            set { _estimatedImpact = value; }
         }
         
         private string _executeActionDuration;
@@ -76,8 +76,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ExecuteActionDuration
         {
-            get { return this._executeActionDuration; }
-            set { this._executeActionDuration = value; }
+            get { return _executeActionDuration; }
+            set { _executeActionDuration = value; }
         }
         
         private string _executeActionInitiatedBy;
@@ -88,33 +88,33 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ExecuteActionInitiatedBy
         {
-            get { return this._executeActionInitiatedBy; }
-            set { this._executeActionInitiatedBy = value; }
+            get { return _executeActionInitiatedBy; }
+            set { _executeActionInitiatedBy = value; }
         }
         
-        private System.DateTime? _executeActionInitiatedTime;
+        private DateTime? _executeActionInitiatedTime;
         
         /// <summary>
         /// Optional. Gets the time when this recommended action is approved
         /// for execution
         /// </summary>
-        public System.DateTime? ExecuteActionInitiatedTime
+        public DateTime? ExecuteActionInitiatedTime
         {
-            get { return this._executeActionInitiatedTime; }
-            set { this._executeActionInitiatedTime = value; }
+            get { return _executeActionInitiatedTime; }
+            set { _executeActionInitiatedTime = value; }
         }
         
-        private System.DateTime? _executeActionStartTime;
+        private DateTime? _executeActionStartTime;
         
         /// <summary>
         /// Optional. Gets the time when system started applying this
         /// recommended action on the user resource. E.g., Index creation
         /// start time
         /// </summary>
-        public System.DateTime? ExecuteActionStartTime
+        public DateTime? ExecuteActionStartTime
         {
-            get { return this._executeActionStartTime; }
-            set { this._executeActionStartTime = value; }
+            get { return _executeActionStartTime; }
+            set { _executeActionStartTime = value; }
         }
         
         private RecommendedActionImplementationInfo _implementationDetails;
@@ -125,8 +125,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedActionImplementationInfo ImplementationDetails
         {
-            get { return this._implementationDetails; }
-            set { this._implementationDetails = value; }
+            get { return _implementationDetails; }
+            set { _implementationDetails = value; }
         }
         
         private bool? _isArchivedAction;
@@ -138,8 +138,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool? IsArchivedAction
         {
-            get { return this._isArchivedAction; }
-            set { this._isArchivedAction = value; }
+            get { return _isArchivedAction; }
+            set { _isArchivedAction = value; }
         }
         
         private bool? _isExecutableAction;
@@ -149,8 +149,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool? IsExecutableAction
         {
-            get { return this._isExecutableAction; }
-            set { this._isExecutableAction = value; }
+            get { return _isExecutableAction; }
+            set { _isExecutableAction = value; }
         }
         
         private bool? _isRevertableAction;
@@ -161,8 +161,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool? IsRevertableAction
         {
-            get { return this._isRevertableAction; }
-            set { this._isRevertableAction = value; }
+            get { return _isRevertableAction; }
+            set { _isRevertableAction = value; }
         }
         
         private DateTime _lastRefresh;
@@ -172,8 +172,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime LastRefresh
         {
-            get { return this._lastRefresh; }
-            set { this._lastRefresh = value; }
+            get { return _lastRefresh; }
+            set { _lastRefresh = value; }
         }
         
         private IList<string> _linkedObjects;
@@ -184,8 +184,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<string> LinkedObjects
         {
-            get { return this._linkedObjects; }
-            set { this._linkedObjects = value; }
+            get { return _linkedObjects; }
+            set { _linkedObjects = value; }
         }
         
         private IList<RecommendedActionImpactInfo> _observedImpact;
@@ -196,8 +196,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedActionImpactInfo> ObservedImpact
         {
-            get { return this._observedImpact; }
-            set { this._observedImpact = value; }
+            get { return _observedImpact; }
+            set { _observedImpact = value; }
         }
         
         private string _recommendationReason;
@@ -208,8 +208,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RecommendationReason
         {
-            get { return this._recommendationReason; }
-            set { this._recommendationReason = value; }
+            get { return _recommendationReason; }
+            set { _recommendationReason = value; }
         }
         
         private string _revertActionDuration;
@@ -221,8 +221,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RevertActionDuration
         {
-            get { return this._revertActionDuration; }
-            set { this._revertActionDuration = value; }
+            get { return _revertActionDuration; }
+            set { _revertActionDuration = value; }
         }
         
         private string _revertActionInitiatedBy;
@@ -233,33 +233,33 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RevertActionInitiatedBy
         {
-            get { return this._revertActionInitiatedBy; }
-            set { this._revertActionInitiatedBy = value; }
+            get { return _revertActionInitiatedBy; }
+            set { _revertActionInitiatedBy = value; }
         }
         
-        private System.DateTime? _revertActionInitiatedTime;
+        private DateTime? _revertActionInitiatedTime;
         
         /// <summary>
         /// Optional. Gets the time when this recommended action is approved
         /// for revert
         /// </summary>
-        public System.DateTime? RevertActionInitiatedTime
+        public DateTime? RevertActionInitiatedTime
         {
-            get { return this._revertActionInitiatedTime; }
-            set { this._revertActionInitiatedTime = value; }
+            get { return _revertActionInitiatedTime; }
+            set { _revertActionInitiatedTime = value; }
         }
         
-        private System.DateTime? _revertActionStartTime;
+        private DateTime? _revertActionStartTime;
         
         /// <summary>
         /// Optional. Gets the time when system started reverting changes of
         /// this recommended action on user resource. E.g., Time when Index
         /// drop is executed.
         /// </summary>
-        public System.DateTime? RevertActionStartTime
+        public DateTime? RevertActionStartTime
         {
-            get { return this._revertActionStartTime; }
-            set { this._revertActionStartTime = value; }
+            get { return _revertActionStartTime; }
+            set { _revertActionStartTime = value; }
         }
         
         private int _score;
@@ -270,8 +270,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int Score
         {
-            get { return this._score; }
-            set { this._score = value; }
+            get { return _score; }
+            set { _score = value; }
         }
         
         private RecommendedActionStateInfo _state;
@@ -281,8 +281,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedActionStateInfo State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         private IList<RecommendedActionMetricInfo> _timeSeries;
@@ -293,8 +293,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedActionMetricInfo> TimeSeries
         {
-            get { return this._timeSeries; }
-            set { this._timeSeries = value; }
+            get { return _timeSeries; }
+            set { _timeSeries = value; }
         }
         
         private DateTime _validSince;
@@ -304,8 +304,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime ValidSince
         {
-            get { return this._validSince; }
-            set { this._validSince = value; }
+            get { return _validSince; }
+            set { _validSince = value; }
         }
         
         /// <summary>
@@ -313,11 +313,11 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedActionProperties()
         {
-            this.Details = new LazyDictionary<string, object>();
-            this.EstimatedImpact = new LazyList<RecommendedActionImpactInfo>();
-            this.LinkedObjects = new LazyList<string>();
-            this.ObservedImpact = new LazyList<RecommendedActionImpactInfo>();
-            this.TimeSeries = new LazyList<RecommendedActionMetricInfo>();
+            Details = new LazyDictionary<string, object>();
+            EstimatedImpact = new LazyList<RecommendedActionImpactInfo>();
+            LinkedObjects = new LazyList<string>();
+            ObservedImpact = new LazyList<RecommendedActionImpactInfo>();
+            TimeSeries = new LazyList<RecommendedActionMetricInfo>();
         }
     }
 }

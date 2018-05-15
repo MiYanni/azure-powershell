@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -233,12 +233,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
             {
                 throw new ResourceNotFoundException(String.Format(Resources.BlobNotFound, blobName, container.Name));
             }
-            else
-            {
-                //Construct the blob as CloudBlockBlob no matter what's the real blob type
-                //We can't get the blob type if Credentials only have the delete permission and don't have read permission.
-                blob = container.GetBlockBlobReference(blobName);
-            }
+            //Construct the blob as CloudBlockBlob no matter what's the real blob type
+            //We can't get the blob type if Credentials only have the delete permission and don't have read permission.
+            blob = container.GetBlockBlobReference(blobName);
 
             await RemoveAzureBlob(taskId, localChannel, blob, true).ConfigureAwait(false);
         }
@@ -295,20 +292,20 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
                 {
                     case BlobPipelineParameterSet:
                         CloudBlob localBlob = CloudBlob;
-                        taskGenerator = (taskId) => RemoveAzureBlob(taskId, localChannel, localBlob, false);
+                        taskGenerator = taskId => RemoveAzureBlob(taskId, localChannel, localBlob, false);
                         break;
 
                     case ContainerPipelineParameterSet:
                         CloudBlobContainer localContainer = CloudBlobContainer;
                         string localName = BlobName;
-                        taskGenerator = (taskId) => RemoveAzureBlob(taskId, localChannel, localContainer, localName);
+                        taskGenerator = taskId => RemoveAzureBlob(taskId, localChannel, localContainer, localName);
                         break;
 
                     case NameParameterSet:
                     default:
                         string localContainerName = ContainerName;
                         string localBlobName = BlobName;
-                        taskGenerator = (taskId) => RemoveAzureBlob(taskId, localChannel, localContainerName, localBlobName);
+                        taskGenerator = taskId => RemoveAzureBlob(taskId, localChannel, localContainerName, localBlobName);
                         break;
                 }
                 RunTask(taskGenerator);

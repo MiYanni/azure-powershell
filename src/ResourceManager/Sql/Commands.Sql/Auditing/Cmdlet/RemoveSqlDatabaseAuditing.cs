@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Sql.Auditing.Cmdlet
             base.ApplyUserInputToModel(model);
             model.AuditState = AuditStateType.Disabled;
 
-            DatabaseAuditingPolicyModel tableAuditingPolicyModel = (model as DatabaseAuditingPolicyModel);
+            DatabaseAuditingPolicyModel tableAuditingPolicyModel = model as DatabaseAuditingPolicyModel;
             if (tableAuditingPolicyModel != null)
             {
                 tableAuditingPolicyModel.UseServerDefault = UseServerDefaultOptions.Disabled;

@@ -44,10 +44,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             {
                 return (T)(obj as PSObject).BaseObject;
             }
-            else
-            {
-                return (T)obj;
-            }
+            return (T)obj;
         }
 
         /// <summary>

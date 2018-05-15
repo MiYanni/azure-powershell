@@ -18,9 +18,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.Azure.Commands.EventHub.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Management;
-    using Microsoft.Azure.Management.EventHub;
+    using Azure;
+    using Management;
+    using Management.EventHub;
     using System.Runtime;
     using System.Runtime.Serialization;
 

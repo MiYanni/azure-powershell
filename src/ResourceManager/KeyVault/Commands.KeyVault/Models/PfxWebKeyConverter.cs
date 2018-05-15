@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             if (rsa == null)
                 throw new ArgumentNullException("rsa");
             RSAParameters rsaParameters = rsa.ExportParameters(true);
-            var webKey = new JsonWebKey()
+            var webKey = new JsonWebKey
             {
                 Kty = JsonWebKeyType.Rsa,
                 E = rsaParameters.Exponent,

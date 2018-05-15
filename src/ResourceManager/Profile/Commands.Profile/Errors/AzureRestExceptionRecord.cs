@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.Profile.Errors
             }
         }
 
-        public AzureRestExceptionRecord(Microsoft.Rest.Azure.CloudException exception, ErrorRecord record, bool inner = false) : base(exception, record, inner)
+        public AzureRestExceptionRecord(Rest.Azure.CloudException exception, ErrorRecord record, bool inner = false) : base(exception, record, inner)
         {
             if (exception != null)
             {

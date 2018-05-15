@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore
 
         [Parameter(ValueFromPipelineByPropertyName = true, Position = 3, Mandatory = false,
             HelpMessage = "Name of resource group under which you want to update the account.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -81,7 +81,6 @@ namespace Microsoft.Azure.Commands.DataLakeStore
         public override void ExecuteCmdlet()
         {
             var currentAccount = DataLakeStoreClient.GetAccount(ResourceGroupName, Name);
-            var location = currentAccount.Location;
 
             if (string.IsNullOrEmpty(DefaultGroup))
             {
@@ -140,8 +139,8 @@ namespace Microsoft.Azure.Commands.DataLakeStore
                         FirewallState.GetValueOrDefault(),
                         AllowAzureIpState.GetValueOrDefault(),
                         Tag,
-                        tier: Tier,
-                        userConfig: updateConfig)));
+                        Tier,
+                        updateConfig)));
         }
     }
 }

@@ -14,12 +14,12 @@
 
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using Microsoft.Azure.Commands.Automation.Common;
+    using Common;
     using System;
     using System.Collections;
     using System.Globalization;
     using System.Linq;
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The Dsc Compilation Job
@@ -45,26 +45,26 @@ namespace Microsoft.Azure.Commands.Automation.Model
             Requires.Argument("job", job).NotNull();
             Requires.Argument("accountName", accountName).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = accountName;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = accountName;
 
             if (job.Properties == null) return;
 
-            this.Id = job.Properties.JobId;
-            this.CreationTime = job.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = job.Properties.LastModifiedTime.ToLocalTime();
-            this.StartTime = job.Properties.StartTime.HasValue ? job.Properties.StartTime.Value.ToLocalTime() : (DateTimeOffset?)null;
-            this.Status = job.Properties.Status;
-            this.StatusDetails = job.Properties.StatusDetails;
-            this.ConfigurationName = job.Properties.Configuration.Name;
-            this.Exception = job.Properties.Exception;
-            this.EndTime = job.Properties.EndTime.HasValue ? job.Properties.EndTime.Value.ToLocalTime() : (DateTimeOffset?)null;
-            this.LastStatusModifiedTime = job.Properties.LastStatusModifiedTime;
-            this.JobParameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+            Id = job.Properties.JobId;
+            CreationTime = job.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = job.Properties.LastModifiedTime.ToLocalTime();
+            StartTime = job.Properties.StartTime.HasValue ? job.Properties.StartTime.Value.ToLocalTime() : (DateTimeOffset?)null;
+            Status = job.Properties.Status;
+            StatusDetails = job.Properties.StatusDetails;
+            ConfigurationName = job.Properties.Configuration.Name;
+            Exception = job.Properties.Exception;
+            EndTime = job.Properties.EndTime.HasValue ? job.Properties.EndTime.Value.ToLocalTime() : (DateTimeOffset?)null;
+            LastStatusModifiedTime = job.Properties.LastStatusModifiedTime;
+            JobParameters = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in job.Properties.Parameters.Where(kvp => 0 != String.Compare(kvp.Key, Constants.JobStartedByParameterName, CultureInfo.InvariantCulture,
                 CompareOptions.IgnoreCase)))
             {
-                this.JobParameters.Add(kvp.Key, (object)(kvp.Value));
+                JobParameters.Add(kvp.Key, kvp.Value);
             }
         }
 

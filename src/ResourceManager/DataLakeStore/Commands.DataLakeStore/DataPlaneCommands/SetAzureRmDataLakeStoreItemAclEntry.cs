@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Commands.DataLakeStore
             WriteWarning(Resources.IncorrectOutputTypeWarning);
             var aclSpec = ParameterSetName.Equals(BaseParameterSetName)
                 ? Acl.Select(entry => entry.ParseDataLakeStoreItemAce()).ToList()
-                : new List<AclEntry>() { new AclEntry((AclType)AceType, Id.ToString(), Default ? AclScope.Default : AclScope.Access, (AclAction)Permissions) };
+                : new List<AclEntry> { new AclEntry((AclType)AceType, Id.ToString(), Default ? AclScope.Default : AclScope.Access, (AclAction)Permissions) };
 
             ConfirmAction(
                 string.Format(Resources.SetDataLakeStoreItemAcl, Path.OriginalPath),

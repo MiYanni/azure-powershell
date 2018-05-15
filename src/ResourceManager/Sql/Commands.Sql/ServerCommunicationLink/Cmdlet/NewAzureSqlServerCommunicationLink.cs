@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Cmdlet
             // We try to get the server communication link.  Since this is a create, we don't want it to exist
             try
             {
-                ModelAdapter.GetServerCommunicationLink(this.ResourceGroupName, this.ServerName, this.LinkName);
+                ModelAdapter.GetServerCommunicationLink(ResourceGroupName, ServerName, LinkName);
             }
             catch (CloudException ex)
             {
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Cmdlet
 
             // The entity already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.ServerCommunicationLinkNameExists, this.LinkName, this.ServerName),
+                string.Format(Properties.Resources.ServerCommunicationLinkNameExists, LinkName, ServerName),
                 "LinkName");
         }
 
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Cmdlet
             }
 
             List<AzureSqlServerCommunicationLinkModel> newEntity = new List<AzureSqlServerCommunicationLinkModel>();
-            newEntity.Add(new AzureSqlServerCommunicationLinkModel()
+            newEntity.Add(new AzureSqlServerCommunicationLinkModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
@@ -111,7 +111,8 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlServerCommunicationLinkModel> PersistChanges(IEnumerable<AzureSqlServerCommunicationLinkModel> entity)
         {
-            return new List<AzureSqlServerCommunicationLinkModel>() {
+            return new List<AzureSqlServerCommunicationLinkModel>
+            {
                 ModelAdapter.UpsertServerCommunicationLink(entity.First())
             };
         }

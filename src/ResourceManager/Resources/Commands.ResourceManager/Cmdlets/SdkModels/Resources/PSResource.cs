@@ -54,23 +54,23 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels
 
         public PSResource(GenericResource resource)
         {
-            this.ResourceId = resource.Id;
-            this.Id = resource.Id;
-            this.Identity = resource.Identity;
-            this.Kind = resource.Kind;
-            this.Location = resource.Location;
-            this.ManagedBy = resource.ManagedBy;
-            this.Name = resource.Name;
-            this.Plan = resource.Plan;
-            this.Properties = resource.Properties;
-            this.ResourceType = resource.Type;
-            this.Sku = resource.Sku;
-            this.Tags = resource.Tags;
-            this.Type = resource.Type;
+            ResourceId = resource.Id;
+            Id = resource.Id;
+            Identity = resource.Identity;
+            Kind = resource.Kind;
+            Location = resource.Location;
+            ManagedBy = resource.ManagedBy;
+            Name = resource.Name;
+            Plan = resource.Plan;
+            Properties = resource.Properties;
+            ResourceType = resource.Type;
+            Sku = resource.Sku;
+            Tags = resource.Tags;
+            Type = resource.Type;
 
-            var resourceIdentifier = new ResourceIdentifier(this.Id);
-            this.ParentResource = resourceIdentifier.ParentResource;
-            this.ResourceGroupName = resourceIdentifier.ResourceGroupName;
+            var resourceIdentifier = new ResourceIdentifier(Id);
+            ParentResource = resourceIdentifier.ParentResource;
+            ResourceGroupName = resourceIdentifier.ResourceGroupName;
         }
     }
 }

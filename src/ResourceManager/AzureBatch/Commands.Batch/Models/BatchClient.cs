@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
             : this(AzureSession.Instance.ClientFactory.CreateArmClient<BatchManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager),
             AzureSession.Instance.ClientFactory.CreateArmClient<ResourceManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager))
         {
-            this.azureContext = context;
+            azureContext = context;
         }
 
         private void WriteVerbose(string message)

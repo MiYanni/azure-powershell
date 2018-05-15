@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var authCertificate =
-                    this.ApplicationGateway.AuthenticationCertificates.First(
+                    ApplicationGateway.AuthenticationCertificates.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(authCertificate);
             }
             else
             {
-                var authCertificates = this.ApplicationGateway.AuthenticationCertificates;
+                var authCertificates = ApplicationGateway.AuthenticationCertificates;
                 WriteObject(authCertificates, true);
             }
 

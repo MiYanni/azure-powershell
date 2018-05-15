@@ -34,20 +34,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string protectionContainerName,
             string replicationProtectedItemName)
         {
-            var firstPage = this.GetSiteRecoveryClient()
+            var firstPage = GetSiteRecoveryClient()
                 .RecoveryPoints.ListByReplicationProtectedItemsWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;
             var pages = Utilities.GetAllFurtherPages(
-                this.GetSiteRecoveryClient()
+                GetSiteRecoveryClient()
                     .RecoveryPoints.ListByReplicationProtectedItemsNextWithHttpMessagesAsync,
                 firstPage.NextPageLink,
-                this.GetRequestHeaders(true));
+                GetRequestHeaders(true));
             pages.Insert(
                 0,
                 firstPage);
@@ -69,13 +69,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             string replicationProtectedItemName,
             string recoveryPointName)
         {
-            return this.GetSiteRecoveryClient()
+            return GetSiteRecoveryClient()
                 .RecoveryPoints.GetWithHttpMessagesAsync(
                     fabricName,
                     protectionContainerName,
                     replicationProtectedItemName,
                     recoveryPointName,
-                    this.GetRequestHeaders(true))
+                    GetRequestHeaders(true))
                 .GetAwaiter()
                 .GetResult()
                 .Body;

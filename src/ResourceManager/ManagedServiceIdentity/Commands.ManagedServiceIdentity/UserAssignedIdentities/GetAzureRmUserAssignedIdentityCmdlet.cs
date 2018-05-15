@@ -35,14 +35,14 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
             if (ParameterSetName.Equals(Constants.SubscriptionParameterSet))
             {
                 var result =
-                    this.MsiClient.UserAssignedIdentities
+                    MsiClient.UserAssignedIdentities
                         .ListBySubscriptionWithHttpMessagesAsync().GetAwaiter().GetResult();
                 var resultList = result.Body.ToList();
                 var nextPageLink = result.Body.NextPageLink;
                 while (!string.IsNullOrEmpty(nextPageLink))
                 {
                     var pageResult =
-                        this.MsiClient.UserAssignedIdentities
+                        MsiClient.UserAssignedIdentities
                             .ListBySubscriptionNextWithHttpMessagesAsync(nextPageLink).GetAwaiter().GetResult();
                     resultList.AddRange(pageResult.Body.ToList());
                     nextPageLink = pageResult.Body.NextPageLink;
@@ -55,13 +55,13 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
                 if (string.IsNullOrEmpty(Name))
                 {
                     var result =
-                        this.MsiClient.UserAssignedIdentities
-                            .ListByResourceGroupWithHttpMessagesAsync(this.ResourceGroupName).GetAwaiter().GetResult();
+                        MsiClient.UserAssignedIdentities
+                            .ListByResourceGroupWithHttpMessagesAsync(ResourceGroupName).GetAwaiter().GetResult();
                     var resultList = result.Body.ToList();
                     var nextPageLink = result.Body.NextPageLink;
                     while (!string.IsNullOrEmpty(nextPageLink))
                     {
-                        var pageResult = this.MsiClient.UserAssignedIdentities
+                        var pageResult = MsiClient.UserAssignedIdentities
                             .ListByResourceGroupNextWithHttpMessagesAsync(nextPageLink).GetAwaiter().GetResult();
                         resultList.AddRange(pageResult.Body.ToList());
                         nextPageLink = pageResult.Body.NextPageLink;
@@ -72,9 +72,9 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
                 else
                 {
                     var result =
-                        this.MsiClient.UserAssignedIdentities.GetWithHttpMessagesAsync(
-                            this.ResourceGroupName,
-                            this.Name).GetAwaiter().GetResult();
+                        MsiClient.UserAssignedIdentities.GetWithHttpMessagesAsync(
+                            ResourceGroupName,
+                            Name).GetAwaiter().GetResult();
                     WriteIdentity(result.Body);
                 }
             }

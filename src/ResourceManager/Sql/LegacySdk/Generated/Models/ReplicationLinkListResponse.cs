@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ReplicationLink> ReplicationLinks
         {
-            get { return this._replicationLinks; }
-            set { this._replicationLinks = value; }
+            get { return _replicationLinks; }
+            set { _replicationLinks = value; }
         }
         
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ReplicationLinkListResponse()
         {
-            this.ReplicationLinks = new LazyList<ReplicationLink>();
+            ReplicationLinks = new LazyList<ReplicationLink>();
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<ReplicationLink> GetEnumerator()
         {
-            return this.ReplicationLinks.GetEnumerator();
+            return ReplicationLinks.GetEnumerator();
         }
         
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

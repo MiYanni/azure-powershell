@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.VirtualNetworkPeeringClient.Delete(this.ResourceGroupName, this.VirtualNetworkName, this.Name);
+                    VirtualNetworkPeeringClient.Delete(ResourceGroupName, VirtualNetworkName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

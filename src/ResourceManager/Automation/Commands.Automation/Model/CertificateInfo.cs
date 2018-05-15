@@ -33,21 +33,21 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// </param>
         /// <exception cref="System.ArgumentException">
         /// </exception>
-        public CertificateInfo(string resourceGroupName, string accountAcccountName, Azure.Management.Automation.Models.Certificate certificate)
+        public CertificateInfo(string resourceGroupName, string accountAcccountName, Management.Automation.Models.Certificate certificate)
         {
             Requires.Argument("certificate", certificate).NotNull();
-            this.AutomationAccountName = accountAcccountName;
-            this.ResourceGroupName = resourceGroupName;
-            this.Name = certificate.Name;
+            AutomationAccountName = accountAcccountName;
+            ResourceGroupName = resourceGroupName;
+            Name = certificate.Name;
 
             if (certificate.Properties == null) return;
 
-            this.Description = certificate.Properties.Description;
-            this.CreationTime = certificate.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = certificate.Properties.LastModifiedTime.ToLocalTime();
-            this.ExpiryTime = certificate.Properties.ExpiryTime.ToLocalTime();
-            this.Thumbprint = certificate.Properties.Thumbprint;
-            this.Exportable = certificate.Properties.IsExportable;
+            Description = certificate.Properties.Description;
+            CreationTime = certificate.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = certificate.Properties.LastModifiedTime.ToLocalTime();
+            ExpiryTime = certificate.Properties.ExpiryTime.ToLocalTime();
+            Thumbprint = certificate.Properties.Thumbprint;
+            Exportable = certificate.Properties.IsExportable;
         }
 
         /// <summary>

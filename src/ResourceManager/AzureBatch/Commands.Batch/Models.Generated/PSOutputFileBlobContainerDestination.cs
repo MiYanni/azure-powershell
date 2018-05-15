@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSOutputFileBlobContainerDestination
     {
         
-        internal Microsoft.Azure.Batch.OutputFileBlobContainerDestination omObject;
+        internal OutputFileBlobContainerDestination omObject;
         
         public PSOutputFileBlobContainerDestination(string containerUrl, string path = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.OutputFileBlobContainerDestination(containerUrl, path);
+            omObject = new OutputFileBlobContainerDestination(containerUrl, path);
         }
         
-        internal PSOutputFileBlobContainerDestination(Microsoft.Azure.Batch.OutputFileBlobContainerDestination omObject)
+        internal PSOutputFileBlobContainerDestination(OutputFileBlobContainerDestination omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ContainerUrl;
+                return omObject.ContainerUrl;
             }
         }
         
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Path;
+                return omObject.Path;
             }
         }
     }

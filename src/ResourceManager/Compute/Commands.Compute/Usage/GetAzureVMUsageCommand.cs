@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                AzureOperationResponse<IPage<Usage>> result = this.UsageClient.ListWithHttpMessagesAsync(this.Location.Canonicalize()).GetAwaiter().GetResult();
+                AzureOperationResponse<IPage<Usage>> result = UsageClient.ListWithHttpMessagesAsync(Location.Canonicalize()).GetAwaiter().GetResult();
 
                 var psResultList = new List<PSUsage>();
                 foreach (var item in result.Body)

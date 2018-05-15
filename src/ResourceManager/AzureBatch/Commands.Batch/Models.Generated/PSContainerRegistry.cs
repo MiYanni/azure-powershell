@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSContainerRegistry
     {
         
-        internal Microsoft.Azure.Batch.ContainerRegistry omObject;
+        internal ContainerRegistry omObject;
         
         public PSContainerRegistry(string userName, string registryServer = null, string password = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.ContainerRegistry(userName, registryServer, password);
+            omObject = new ContainerRegistry(userName, registryServer, password);
         }
         
-        internal PSContainerRegistry(Microsoft.Azure.Batch.ContainerRegistry omObject)
+        internal PSContainerRegistry(ContainerRegistry omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Password;
+                return omObject.Password;
             }
         }
         
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.RegistryServer;
+                return omObject.RegistryServer;
             }
         }
         
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.UserName;
+                return omObject.UserName;
             }
         }
     }

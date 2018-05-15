@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
             // We try to get the Server Disaster Recovery Configuration. Since this is a create, we don't want the Server Disaster Recovery Configuration to exist
             try
             {
-                ModelAdapter.ListServerDisasterRecoveryConfigurations(this.ResourceGroupName, this.ServerName);
+                ModelAdapter.ListServerDisasterRecoveryConfigurations(ResourceGroupName, ServerName);
             }
             catch (CloudException ex)
             {
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
 
             // The Server Disaster Recovery Configuration already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.ServerDisasterRecoveryConfigurationNameExists, this.VirtualEndpointName, this.ServerName), "ServerDisasterRecoveryConfigurationName");
+                string.Format(Properties.Resources.ServerDisasterRecoveryConfigurationNameExists, VirtualEndpointName, ServerName), "ServerDisasterRecoveryConfigurationName");
         }
 
         /// <summary>
@@ -100,9 +100,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
         /// <returns>The model that was passed in</returns>
         protected override IEnumerable<AzureSqlServerDisasterRecoveryConfigurationModel> ApplyUserInputToModel(IEnumerable<AzureSqlServerDisasterRecoveryConfigurationModel> model)
         {
-            List<Model.AzureSqlServerDisasterRecoveryConfigurationModel> newEntity = new List<AzureSqlServerDisasterRecoveryConfigurationModel>();
+            List<AzureSqlServerDisasterRecoveryConfigurationModel> newEntity = new List<AzureSqlServerDisasterRecoveryConfigurationModel>();
 
-            newEntity.Add(new AzureSqlServerDisasterRecoveryConfigurationModel()
+            newEntity.Add(new AzureSqlServerDisasterRecoveryConfigurationModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
@@ -126,8 +126,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
             string partnerServerId = string.Format("/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Sql/servers/{2}",
                     DefaultContext.Subscription.Id, PartnerResourceGroupName, PartnerServerName);
 
-            return new List<AzureSqlServerDisasterRecoveryConfigurationModel>() {
-                ModelAdapter.CreateServerDisasterRecoveryConfiguration(this.ResourceGroupName, this.ServerName, partnerServerId, entity.First())
+            return new List<AzureSqlServerDisasterRecoveryConfigurationModel>
+            {
+                ModelAdapter.CreateServerDisasterRecoveryConfiguration(ResourceGroupName, ServerName, partnerServerId, entity.First())
             };
         }
     }

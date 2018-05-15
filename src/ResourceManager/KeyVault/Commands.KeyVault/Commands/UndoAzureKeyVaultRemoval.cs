@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ParameterSetName = DefaultParameterSet,
             HelpMessage = "Specifies the name of the deleted vault resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ParameterSetName = DefaultParameterSet,
             HelpMessage = "Specifies the deleted vault original Azure region.")]
         [LocationCompleter("Microsoft.KeyVault/vaults")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string Location { get; set; }
 
         [Parameter(Mandatory = false,
@@ -96,16 +96,16 @@ namespace Microsoft.Azure.Commands.KeyVault
 
             if (ShouldProcess(VaultName, Properties.Resources.RecoverVault))
             {
-                var newVault = KeyVaultManagementClient.CreateNewVault(new VaultCreationParameters()
+                var newVault = KeyVaultManagementClient.CreateNewVault(new VaultCreationParameters
                 {
-                    VaultName = this.VaultName,
-                    ResourceGroupName = this.ResourceGroupName,
-                    Location = this.Location,
-                    Tags = this.Tag,
+                    VaultName = VaultName,
+                    ResourceGroupName = ResourceGroupName,
+                    Location = Location,
+                    Tags = Tag,
                     CreateMode = CreateMode.Recover
                 });
 
-                this.WriteObject(newVault);
+                WriteObject(newVault);
             }
         }
     }

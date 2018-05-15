@@ -31,9 +31,9 @@ namespace Microsoft.Azure.Commands.DataMigration.Models
             }
 
             this.project = project;
-            this.ids = new DmsResourceIdentifier(project.Id);
-            this.ResourceGroupName = ids.ResourceGroupName;
-            this.ServiceName = ids.ServiceName;
+            ids = new DmsResourceIdentifier(project.Id);
+            ResourceGroupName = ids.ResourceGroupName;
+            ServiceName = ids.ServiceName;
         }
 
         public Project Project => project;

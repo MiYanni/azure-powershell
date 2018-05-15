@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Compute
             Mandatory = true,
             Position = 0,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [Parameter(
             ParameterSetName = SimpleParameterSet,
             Mandatory = false)]
@@ -274,67 +274,63 @@ namespace Microsoft.Azure.Commands.Compute
                 }
 
                 _cmdlet.DomainNameLabel = await PublicIPAddressStrategy.UpdateDomainNameLabelAsync(
-                    domainNameLabel: _cmdlet.DomainNameLabel,
-                    name: _cmdlet.Name,
-                    location: Location,
-                    client: _client);
+                    _cmdlet.DomainNameLabel,
+                    _cmdlet.Name,
+                    Location,
+                    _client);
 
                 var resourceGroup = ResourceGroupStrategy.CreateResourceGroupConfig(_cmdlet.ResourceGroupName);
                 var virtualNetwork = resourceGroup.CreateVirtualNetworkConfig(
-                    name: _cmdlet.VirtualNetworkName, addressPrefix: _cmdlet.AddressPrefix);
+                    _cmdlet.VirtualNetworkName, _cmdlet.AddressPrefix);
                 var subnet = virtualNetwork.CreateSubnet(_cmdlet.SubnetName, _cmdlet.SubnetAddressPrefix);
                 var publicIpAddress = resourceGroup.CreatePublicIPAddressConfig(
-                    name: _cmdlet.PublicIpAddressName,
-                    domainNameLabel: _cmdlet.DomainNameLabel,
-                    allocationMethod: _cmdlet.AllocationMethod,
-                    sku: PublicIPAddressStrategy.Sku.Basic,
-                    zones: _cmdlet.Zone);
+                    _cmdlet.PublicIpAddressName,
+                    _cmdlet.DomainNameLabel,
+                    _cmdlet.AllocationMethod,
+                    PublicIPAddressStrategy.Sku.Basic,
+                    _cmdlet.Zone);
 
                 _cmdlet.OpenPorts = ImageAndOsType.UpdatePorts(_cmdlet.OpenPorts);
 
                 var networkSecurityGroup = resourceGroup.CreateNetworkSecurityGroupConfig(
-                    name: _cmdlet.SecurityGroupName,
-                    openPorts: _cmdlet.OpenPorts);
+                    _cmdlet.SecurityGroupName,
+                    _cmdlet.OpenPorts);
 
                 var networkInterface = resourceGroup.CreateNetworkInterfaceConfig(
                     _cmdlet.Name, subnet, publicIpAddress, networkSecurityGroup);
 
                 var availabilitySet = _cmdlet.AvailabilitySetName == null
                     ? null
-                    : resourceGroup.CreateAvailabilitySetConfig(name: _cmdlet.AvailabilitySetName);
+                    : resourceGroup.CreateAvailabilitySetConfig(_cmdlet.AvailabilitySetName);
 
                 if (_cmdlet.DiskFile == null)
                 {
                     return resourceGroup.CreateVirtualMachineConfig(
-                        name: _cmdlet.Name,
-                        networkInterface: networkInterface,
-                        imageAndOsType: ImageAndOsType,
-                        adminUsername: _cmdlet.Credential.UserName,
-                        adminPassword:
-                            new NetworkCredential(string.Empty, _cmdlet.Credential.Password).Password,
-                        size: _cmdlet.Size,
-                        availabilitySet: availabilitySet,
+                        _cmdlet.Name,
+                        networkInterface,
+                        ImageAndOsType,
+                        _cmdlet.Credential.UserName,
+                        new NetworkCredential(string.Empty, _cmdlet.Credential.Password).Password,
+                        _cmdlet.Size,
+                        availabilitySet,
                         dataDisks: _cmdlet.DataDiskSizeInGb,
                         zones: _cmdlet.Zone,
                         identity: _cmdlet.GetVMIdentityFromArgs());
                 }
-                else
-                {
-                    var disk = resourceGroup.CreateManagedDiskConfig(
-                        name: _cmdlet.Name,
-                        sourceUri: DestinationUri.Uri.ToString());
+                var disk = resourceGroup.CreateManagedDiskConfig(
+                    _cmdlet.Name,
+                    DestinationUri.Uri.ToString());
 
-                    return resourceGroup.CreateVirtualMachineConfig(
-                        name: _cmdlet.Name,
-                        networkInterface: networkInterface,
-                        osType: ImageAndOsType.OsType,
-                        disk: disk,
-                        size: _cmdlet.Size,
-                        availabilitySet: availabilitySet,
-                        dataDisks: _cmdlet.DataDiskSizeInGb,
-                        zones: _cmdlet.Zone,
-                        identity: _cmdlet.GetVMIdentityFromArgs());
-                }
+                return resourceGroup.CreateVirtualMachineConfig(
+                    _cmdlet.Name,
+                    networkInterface,
+                    ImageAndOsType.OsType,
+                    disk,
+                    _cmdlet.Size,
+                    availabilitySet,
+                    dataDisks: _cmdlet.DataDiskSizeInGb,
+                    zones: _cmdlet.Zone,
+                    identity: _cmdlet.GetVMIdentityFromArgs());
             }
         }
 
@@ -380,7 +376,7 @@ namespace Microsoft.Azure.Commands.Compute
 #if !NETSTANDARD
                     AccountType = AccountType.PremiumLRS,
 #else
-                    Sku = new Microsoft.Azure.Management.Storage.Models.Sku
+                    Sku = new Azure.Management.Storage.Models.Sku
                     {
                         Name = SkuName.PremiumLRS
                     },
@@ -447,13 +443,13 @@ namespace Microsoft.Azure.Commands.Compute
         {
             base.ExecuteCmdlet();
 
-            if (this.VM.DiagnosticsProfile == null)
+            if (VM.DiagnosticsProfile == null)
             {
                 var storageUri = GetOrCreateStorageAccountForBootDiagnostics();
 
                 if (storageUri != null)
                 {
-                    this.VM.DiagnosticsProfile = new DiagnosticsProfile
+                    VM.DiagnosticsProfile = new DiagnosticsProfile
                     {
                         BootDiagnostics = new BootDiagnostics
                         {
@@ -465,33 +461,33 @@ namespace Microsoft.Azure.Commands.Compute
             }
 
 
-            if (ShouldProcess(this.VM.Name, VerbsCommon.New))
+            if (ShouldProcess(VM.Name, VerbsCommon.New))
             {
                 ExecuteClientAction(() =>
                 {
                     var parameters = new VirtualMachine
                     {
-                        DiagnosticsProfile = this.VM.DiagnosticsProfile,
-                        HardwareProfile = this.VM.HardwareProfile,
-                        StorageProfile = this.VM.StorageProfile,
-                        NetworkProfile = this.VM.NetworkProfile,
-                        OsProfile = this.VM.OSProfile,
-                        Plan = this.VM.Plan,
-                        LicenseType = this.LicenseType ?? this.VM.LicenseType,
-                        AvailabilitySet = this.VM.AvailabilitySetReference,
-                        Location = this.Location ?? this.VM.Location,
-                        Tags = this.Tag != null ? this.Tag.ToDictionary() : this.VM.Tags,
-                        Identity = this.VM.Identity,
-                        Zones = this.Zone ?? this.VM.Zones,
+                        DiagnosticsProfile = VM.DiagnosticsProfile,
+                        HardwareProfile = VM.HardwareProfile,
+                        StorageProfile = VM.StorageProfile,
+                        NetworkProfile = VM.NetworkProfile,
+                        OsProfile = VM.OSProfile,
+                        Plan = VM.Plan,
+                        LicenseType = LicenseType ?? VM.LicenseType,
+                        AvailabilitySet = VM.AvailabilitySetReference,
+                        Location = Location ?? VM.Location,
+                        Tags = Tag != null ? Tag.ToDictionary() : VM.Tags,
+                        Identity = VM.Identity,
+                        Zones = Zone ?? VM.Zones,
                     };
 
-                    var result = this.VirtualMachineClient.CreateOrUpdateWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VM.Name,
+                    var result = VirtualMachineClient.CreateOrUpdateWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VM.Name,
                         parameters).GetAwaiter().GetResult();
                     var psResult = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(result);
 
-                    if (!(this.DisableBginfoExtension.IsPresent || IsLinuxOs()))
+                    if (!(DisableBginfoExtension.IsPresent || IsLinuxOs()))
                     {
                         var currentBginfoVersion = GetBginfoExtension();
 
@@ -499,7 +495,7 @@ namespace Microsoft.Azure.Commands.Compute
                         {
                             var extensionParameters = new VirtualMachineExtension
                             {
-                                Location = this.Location,
+                                Location = Location,
                                 Publisher = VirtualMachineBGInfoExtensionContext.ExtensionDefaultPublisher,
                                 VirtualMachineExtensionType = VirtualMachineBGInfoExtensionContext.ExtensionDefaultName,
                                 TypeHandlerVersion = currentBginfoVersion,
@@ -512,8 +508,8 @@ namespace Microsoft.Azure.Commands.Compute
                                 .SetValue(extensionParameters, VirtualMachineExtensionType);
 
                             var op2 = ComputeClient.ComputeManagementClient.VirtualMachineExtensions.CreateOrUpdateWithHttpMessagesAsync(
-                                this.ResourceGroupName,
-                                this.VM.Name,
+                                ResourceGroupName,
+                                VM.Name,
                                 VirtualMachineBGInfoExtensionContext.ExtensionDefaultName,
                                 extensionParameters).GetAwaiter().GetResult();
                             psResult = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op2);
@@ -536,7 +532,7 @@ namespace Microsoft.Azure.Commands.Compute
         private VirtualMachineIdentity GetVMIdentityFromArgs()
         {
             var isUserAssignedEnabled = !string.IsNullOrWhiteSpace(UserAssignedIdentity);
-            return (SystemAssignedIdentity.IsPresent || isUserAssignedEnabled)
+            return SystemAssignedIdentity.IsPresent || isUserAssignedEnabled
                 ? new VirtualMachineIdentity
                 {
                     Type = !isUserAssignedEnabled ? 
@@ -549,7 +545,7 @@ namespace Microsoft.Azure.Commands.Compute
 
         private string GetBginfoExtension()
         {
-            var canonicalizedLocation = this.Location.Canonicalize();
+            var canonicalizedLocation = Location.Canonicalize();
 
             var publishers =
                 ComputeClient.ComputeManagementClient.VirtualMachineImages.ListPublishers(canonicalizedLocation);
@@ -587,7 +583,7 @@ namespace Microsoft.Azure.Commands.Compute
                 return bginfoVersions.Max(ver =>
                 {
                     Version result;
-                    return (Version.TryParse(ver.Name, out result))
+                    return Version.TryParse(ver.Name, out result)
                         ? string.Format("{0}.{1}", result.Major, result.Minor)
                         : VirtualMachineBGInfoExtensionContext.ExtensionDefaultVersion;
                 });
@@ -598,20 +594,20 @@ namespace Microsoft.Azure.Commands.Compute
 
         private bool IsLinuxOs()
         {
-            if (this.VM == null)
+            if (VM == null)
             {
                 return false;
             }
 
-            if ((this.VM.StorageProfile != null)
-                && (this.VM.StorageProfile.OsDisk != null)
-                && (this.VM.StorageProfile.OsDisk.OsType != null))
+            if (VM.StorageProfile != null
+                && VM.StorageProfile.OsDisk != null
+                && VM.StorageProfile.OsDisk.OsType != null)
             {
-                return (this.VM.StorageProfile.OsDisk.OsType.Equals(OperatingSystemTypes.Linux));
+                return VM.StorageProfile.OsDisk.OsType.Equals(OperatingSystemTypes.Linux);
             }
 
-            return ((this.VM.OSProfile != null)
-                    && (this.VM.OSProfile.LinuxConfiguration != null));
+            return VM.OSProfile != null
+                   && VM.OSProfile.LinuxConfiguration != null;
         }
 
         private string GetOrCreateStorageAccountForBootDiagnostics()
@@ -643,12 +639,12 @@ namespace Microsoft.Azure.Commands.Compute
                     if (e.Message.Contains("ResourceNotFound"))
                     {
                         WriteWarning(string.Format(
-                            Properties.Resources.StorageAccountNotFoundForBootDiagnostics, storageAccountName));
+                            Resources.StorageAccountNotFoundForBootDiagnostics, storageAccountName));
                     }
                     else
                     {
                         WriteWarning(string.Format(
-                            Properties.Resources.ErrorDuringGettingStorageAccountForBootDiagnostics, storageAccountName, e.Message));
+                            Resources.ErrorDuringGettingStorageAccountForBootDiagnostics, storageAccountName, e.Message));
                     }
                 }
             }
@@ -660,30 +656,30 @@ namespace Microsoft.Azure.Commands.Compute
                 return CreateStandardStorageAccount(storageClient);
             }
 
-            WriteWarning(string.Format(Properties.Resources.UsingExistingStorageAccountForBootDiagnostics, storageAccount.Name));
+            WriteWarning(string.Format(Resources.UsingExistingStorageAccountForBootDiagnostics, storageAccount.Name));
             return storageAccount.PrimaryEndpoints.Blob;
         }
 
         private string GetStorageAccountNameFromStorageProfile()
         {
-            if (this.VM == null
-                || this.VM.StorageProfile == null
-                || this.VM.StorageProfile.OsDisk == null
-                || this.VM.StorageProfile.OsDisk.Vhd == null
-                || this.VM.StorageProfile.OsDisk.Vhd.Uri == null)
+            if (VM == null
+                || VM.StorageProfile == null
+                || VM.StorageProfile.OsDisk == null
+                || VM.StorageProfile.OsDisk.Vhd == null
+                || VM.StorageProfile.OsDisk.Vhd.Uri == null)
             {
                 return null;
             }
 
-            return GetStorageAccountNameFromUriString(this.VM.StorageProfile.OsDisk.Vhd.Uri);
+            return GetStorageAccountNameFromUriString(VM.StorageProfile.OsDisk.Vhd.Uri);
         }
 
         private StorageAccount TryToChooseExistingStandardStorageAccount(StorageManagementClient client)
         {
-            var storageAccountList = client.StorageAccounts.ListByResourceGroup(this.ResourceGroupName);
+            var storageAccountList = client.StorageAccounts.ListByResourceGroup(ResourceGroupName);
             if (storageAccountList == null || storageAccountList.Count() == 0)
             {
-                storageAccountList = client.StorageAccounts.List().Where(e => e.Location.Canonicalize().Equals(this.Location.Canonicalize()));
+                storageAccountList = client.StorageAccounts.List().Where(e => e.Location.Canonicalize().Equals(Location.Canonicalize()));
                 if (storageAccountList == null || storageAccountList.Count() == 0)
                 {
                     return null;
@@ -693,14 +689,14 @@ namespace Microsoft.Azure.Commands.Compute
             try
             {
                 return storageAccountList.First(
-                    e => e.Location.Canonicalize().Equals(this.Location.Canonicalize())
+                    e => e.Location.Canonicalize().Equals(Location.Canonicalize())
                       && e.Sku() != null
                       && !e.SkuName().ToLowerInvariant().Contains("premium"));
             }
             catch (InvalidOperationException e)
             {
                 WriteWarning(string.Format(
-                            Properties.Resources.ErrorDuringChoosingStandardStorageAccount, e.Message));
+                            Resources.ErrorDuringChoosingStandardStorageAccount, e.Message));
                 return null;
             }
         }
@@ -719,22 +715,22 @@ namespace Microsoft.Azure.Commands.Compute
 
             var storaeAccountParameter = new StorageAccountCreateParameters
             {
-                Location = this.Location ?? this.VM.Location,
+                Location = Location ?? VM.Location,
             };
             storaeAccountParameter.SetAsStandardGRS();
 
             try
             {
-                client.StorageAccounts.Create(this.ResourceGroupName, storageAccountName, storaeAccountParameter);
-                var getresponse = client.StorageAccounts.GetProperties(this.ResourceGroupName, storageAccountName);
-                WriteWarning(string.Format(Properties.Resources.CreatingStorageAccountForBootDiagnostics, storageAccountName));
+                client.StorageAccounts.Create(ResourceGroupName, storageAccountName, storaeAccountParameter);
+                var getresponse = client.StorageAccounts.GetProperties(ResourceGroupName, storageAccountName);
+                WriteWarning(string.Format(Resources.CreatingStorageAccountForBootDiagnostics, storageAccountName));
 
                 return getresponse.PrimaryEndpoints.Blob;
             }
             catch (Exception e)
             {
                 // Failed to create a storage account for boot diagnostics.
-                WriteWarning(string.Format(Properties.Resources.ErrorDuringCreatingStorageAccountForBootDiagnostics, e));
+                WriteWarning(string.Format(Resources.ErrorDuringCreatingStorageAccountForBootDiagnostics, e));
                 return null;
             }
         }
@@ -745,9 +741,9 @@ namespace Microsoft.Azure.Commands.Compute
             const int maxResLength = 6;
             const int maxVMLength = 4;
 
-            var subscriptionName = VirtualMachineCmdletHelper.GetTruncatedStr(this.DefaultContext.Subscription.Name, maxSubLength);
-            var resourcename = VirtualMachineCmdletHelper.GetTruncatedStr(this.ResourceGroupName, maxResLength);
-            var vmname = VirtualMachineCmdletHelper.GetTruncatedStr(this.VM.Name, maxVMLength);
+            var subscriptionName = VirtualMachineCmdletHelper.GetTruncatedStr(DefaultContext.Subscription.Name, maxSubLength);
+            var resourcename = VirtualMachineCmdletHelper.GetTruncatedStr(ResourceGroupName, maxResLength);
+            var vmname = VirtualMachineCmdletHelper.GetTruncatedStr(VM.Name, maxVMLength);
             var datetimestr = DateTime.Now.ToString("MMddHHmm");
 
             var output = subscriptionName + resourcename + vmname + datetimestr + interation;

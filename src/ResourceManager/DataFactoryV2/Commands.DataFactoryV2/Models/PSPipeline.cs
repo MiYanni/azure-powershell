@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
 
         public PSPipeline()
         {
-            this._pipeline = new PipelineResource();
+            _pipeline = new PipelineResource();
         }
 
         public PSPipeline(PipelineResource pipeline, string resourceGroupName, string factoryName)
@@ -34,16 +34,16 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
                 throw new ArgumentNullException("pipeline");
             }
 
-            this._pipeline = pipeline;
-            this.ResourceGroupName = resourceGroupName;
-            this.DataFactoryName = factoryName;
+            _pipeline = pipeline;
+            ResourceGroupName = resourceGroupName;
+            DataFactoryName = factoryName;
         }
 
         public override string Name
         {
             get
             {
-                return this._pipeline.Name;
+                return _pipeline.Name;
             }
         }
 
@@ -51,11 +51,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this._pipeline.Activities;
+                return _pipeline.Activities;
             }
             set
             {
-                this._pipeline.Activities = value;
+                _pipeline.Activities = value;
             }
         }
 
@@ -63,11 +63,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this._pipeline.Parameters;
+                return _pipeline.Parameters;
             }
             set
             {
-                this._pipeline.Parameters = value;
+                _pipeline.Parameters = value;
             }
         }
 
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this._pipeline.Id;
+                return _pipeline.Id;
             }
         }
 
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
         {
             get
             {
-                return this._pipeline.Etag;
+                return _pipeline.Etag;
             }
         }
     }

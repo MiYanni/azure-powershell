@@ -22,7 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
     {
         public VhdEntityDescriptor()
         {
-            this.PropertyDescriptors = GetPropertyDescriptors();
+            PropertyDescriptors = GetPropertyDescriptors();
         }
 
         public IList<VhdPropertyDescriptor> PropertyDescriptors { get; private set; }
@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
                     where exists
                     select new VhdPropertyDescriptor
                     {
-                        Attribute = (VhdPropertyAttribute)(vhdPropertyAttributes[0]),
+                        Attribute = (VhdPropertyAttribute)vhdPropertyAttributes[0],
                         Getter = getter,
                         Setter = setter
                     }).ToList();

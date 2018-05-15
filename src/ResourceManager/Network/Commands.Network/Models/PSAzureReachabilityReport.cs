@@ -38,13 +38,13 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string ProviderLocationText
         {
-            get { return JsonConvert.SerializeObject(ProviderLocation, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(ProviderLocation, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string ReachabilityReportText
         {
-            get { return JsonConvert.SerializeObject(ReachabilityReport, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(ReachabilityReport, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

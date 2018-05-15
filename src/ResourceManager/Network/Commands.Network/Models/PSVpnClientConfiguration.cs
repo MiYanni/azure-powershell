@@ -33,19 +33,19 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string VpnClientAddressPoolText
         {
-            get { return JsonConvert.SerializeObject(VpnClientAddressPool, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(VpnClientAddressPool, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string VpnClientRevokedCertificatesText
         {
-            get { return JsonConvert.SerializeObject(VpnClientRevokedCertificates, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(VpnClientRevokedCertificates, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string VpnClientRootCertificatesText
         {
-            get { return JsonConvert.SerializeObject(VpnClientRootCertificates, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(VpnClientRootCertificates, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

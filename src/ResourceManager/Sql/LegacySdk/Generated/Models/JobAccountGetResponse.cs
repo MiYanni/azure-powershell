@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public JobAccount JobAccount
         {
-            get { return this._jobAccount; }
-            set { this._jobAccount = value; }
+            get { return _jobAccount; }
+            set { _jobAccount = value; }
         }
         
         /// <summary>

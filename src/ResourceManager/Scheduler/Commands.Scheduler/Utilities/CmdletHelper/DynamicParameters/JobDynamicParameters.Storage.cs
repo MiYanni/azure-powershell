@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionStorageAccount == null ? null : (string)this._errorActionStorageAccount.Value;
+                return _errorActionStorageAccount == null ? null : (string)_errorActionStorageAccount.Value;
             }
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionStorageQueue == null ? null : (string)this._errorActionStorageQueue.Value;
+                return _errorActionStorageQueue == null ? null : (string)_errorActionStorageQueue.Value;
             }
         }
 
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionStorageSASToken == null ? null : (string)this._errorActionStorageSASToken.Value;
+                return _errorActionStorageSASToken == null ? null : (string)_errorActionStorageSASToken.Value;
             }
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionStorageQueueMessageBody == null ? null : (string)this._errorActionStorageQueueMessageBody.Value;
+                return _errorActionStorageQueueMessageBody == null ? null : (string)_errorActionStorageQueueMessageBody.Value;
             }
         }
 
@@ -131,16 +131,16 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._errorActionStorageAccount = new RuntimeDefinedParameter("ErrorActionStorageAccount", typeof(string), errorActionStorageAccountAttributes);
-            this._errorActionStorageQueue = new RuntimeDefinedParameter("ErrorActionStorageQueue", typeof(string), errorActionStorageQueueAttributes);
-            this._errorActionStorageSASToken = new RuntimeDefinedParameter("ErrorActionStorageSASToken", typeof(string), errorActionStorageSASTokenAttributes);
-            this._errorActionStorageQueueMessageBody = new RuntimeDefinedParameter("ErrorActionStorageQueueMessageBody", typeof(string), errorActionStorageQueueMessageBodyAttributes);
+            _errorActionStorageAccount = new RuntimeDefinedParameter("ErrorActionStorageAccount", typeof(string), errorActionStorageAccountAttributes);
+            _errorActionStorageQueue = new RuntimeDefinedParameter("ErrorActionStorageQueue", typeof(string), errorActionStorageQueueAttributes);
+            _errorActionStorageSASToken = new RuntimeDefinedParameter("ErrorActionStorageSASToken", typeof(string), errorActionStorageSASTokenAttributes);
+            _errorActionStorageQueueMessageBody = new RuntimeDefinedParameter("ErrorActionStorageQueueMessageBody", typeof(string), errorActionStorageQueueMessageBodyAttributes);
 
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runtimeDefinedParameterDictionary.Add("ErrorActionStorageAccount", this._errorActionStorageAccount);
-            runtimeDefinedParameterDictionary.Add("ErrorActionStorageQueue", this._errorActionStorageQueue);
-            runtimeDefinedParameterDictionary.Add("ErrorActionStorageSASToken", this._errorActionStorageSASToken);
-            runtimeDefinedParameterDictionary.Add("ErrorActionStorageQueueMessageBody", this._errorActionStorageQueueMessageBody);
+            runtimeDefinedParameterDictionary.Add("ErrorActionStorageAccount", _errorActionStorageAccount);
+            runtimeDefinedParameterDictionary.Add("ErrorActionStorageQueue", _errorActionStorageQueue);
+            runtimeDefinedParameterDictionary.Add("ErrorActionStorageSASToken", _errorActionStorageSASToken);
+            runtimeDefinedParameterDictionary.Add("ErrorActionStorageQueueMessageBody", _errorActionStorageQueueMessageBody);
 
             return runtimeDefinedParameterDictionary;
         }

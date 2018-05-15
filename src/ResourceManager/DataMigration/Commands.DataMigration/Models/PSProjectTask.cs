@@ -31,10 +31,10 @@ namespace Microsoft.Azure.Commands.DataMigration.Models
             }
 
             this.task = task;
-            this.ids = new DmsResourceIdentifier(task.Id);
-            this.ResourceGroupName = ids.ResourceGroupName;
-            this.ServiceName = ids.ServiceName;
-            this.ProjectName = ids.ProjectName;
+            ids = new DmsResourceIdentifier(task.Id);
+            ResourceGroupName = ids.ResourceGroupName;
+            ServiceName = ids.ServiceName;
+            ProjectName = ids.ProjectName;
         }
 
         public ProjectTask ProjectTask => task;

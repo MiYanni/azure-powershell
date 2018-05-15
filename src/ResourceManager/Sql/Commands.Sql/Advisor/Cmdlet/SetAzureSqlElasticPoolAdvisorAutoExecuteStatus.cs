@@ -51,8 +51,9 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
         /// <returns>A list of entities</returns>
         protected override IEnumerable<AzureSqlElasticPoolAdvisorModel> GetEntity()
         {
-            return new List<AzureSqlElasticPoolAdvisorModel>() {
-                ModelAdapter.GetElasticPoolAdvisor(this.ResourceGroupName, this.ServerName, this.ElasticPoolName, this.AdvisorName, expandRecommendedActions: false)
+            return new List<AzureSqlElasticPoolAdvisorModel>
+            {
+                ModelAdapter.GetElasticPoolAdvisor(ResourceGroupName, ServerName, ElasticPoolName, AdvisorName, false)
             };
         }
 
@@ -64,7 +65,7 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
         protected override IEnumerable<AzureSqlElasticPoolAdvisorModel> ApplyUserInputToModel(IEnumerable<AzureSqlElasticPoolAdvisorModel> model)
         {
             List<AzureSqlElasticPoolAdvisorModel> newEntity = new List<AzureSqlElasticPoolAdvisorModel>();
-            newEntity.Add(new AzureSqlElasticPoolAdvisorModel()
+            newEntity.Add(new AzureSqlElasticPoolAdvisorModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,
@@ -83,7 +84,8 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlElasticPoolAdvisorModel> PersistChanges(IEnumerable<AzureSqlElasticPoolAdvisorModel> entity)
         {
-            return new List<AzureSqlElasticPoolAdvisorModel>() {
+            return new List<AzureSqlElasticPoolAdvisorModel>
+            {
                 ModelAdapter.UpdateAutoExecuteStatus(entity.Single())
             };
         }
@@ -94,8 +96,8 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!ShouldProcess(
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAdvisorAutoExecuteStatusDescription, this.AdvisorName, this.AutoExecuteStatus),
-                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAdvisorAutoExecuteStatusWarning, this.AdvisorName, this.AutoExecuteStatus),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAdvisorAutoExecuteStatusDescription, AdvisorName, AutoExecuteStatus),
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.SetAdvisorAutoExecuteStatusWarning, AdvisorName, AutoExecuteStatus),
                     Properties.Resources.ShouldProcessCaption))
             {
                 return;

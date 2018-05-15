@@ -60,8 +60,9 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlSyncAgentModel> GetEntity()
         {
-            return new List<AzureSqlSyncAgentModel>() { 
-                ModelAdapter.GetSyncAgent(this.ResourceGroupName, this.ServerName, this.Name) 
+            return new List<AzureSqlSyncAgentModel>
+            { 
+                ModelAdapter.GetSyncAgent(ResourceGroupName, ServerName, Name) 
             };
         }
 
@@ -72,7 +73,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlSyncAgentModel> PersistChanges(IEnumerable<AzureSqlSyncAgentModel> entity)
         {
-            ModelAdapter.RemoveSyncAgent(this.ResourceGroupName, this.ServerName, this.Name);
+            ModelAdapter.RemoveSyncAgent(ResourceGroupName, ServerName, Name);
             return entity;
         }
 
@@ -81,10 +82,10 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(this.Name))
+            if (ShouldProcess(Name))
             {
                 if (Force || ShouldContinue(
-                    string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlSyncAgentWarning, this.Name, this.ResourceGroupName), ""))
+                    string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlSyncAgentWarning, Name, ResourceGroupName), ""))
                 {
                     base.ExecuteCmdlet();
                 }

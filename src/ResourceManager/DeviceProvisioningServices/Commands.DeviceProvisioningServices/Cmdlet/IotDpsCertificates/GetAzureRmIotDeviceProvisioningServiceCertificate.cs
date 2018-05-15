@@ -17,9 +17,9 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices.Models;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIoTDeviceProvisioningServiceCertificate", DefaultParameterSetName = ResourceParameterSet)]
     [Alias("Get-AzureRmIoTDpsCertificate")]
@@ -76,19 +76,19 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
             switch (ParameterSetName)
             {
                 case InputObjectParameterSet:
-                    this.ResourceGroupName = this.DpsObject.ResourceGroupName;
-                    this.Name = this.DpsObject.Name;
-                    this.GetIotDpsCertificates();
+                    ResourceGroupName = DpsObject.ResourceGroupName;
+                    Name = DpsObject.Name;
+                    GetIotDpsCertificates();
                     break;
 
                 case ResourceIdParameterSet:
-                    this.ResourceGroupName = IotDpsUtils.GetResourceGroupName(this.ResourceId);
-                    this.Name = IotDpsUtils.GetIotDpsName(this.ResourceId);
-                    this.GetIotDpsCertificates();
+                    ResourceGroupName = IotDpsUtils.GetResourceGroupName(ResourceId);
+                    Name = IotDpsUtils.GetIotDpsName(ResourceId);
+                    GetIotDpsCertificates();
                     break;
 
                 case ResourceParameterSet:
-                    this.GetIotDpsCertificates();
+                    GetIotDpsCertificates();
                     break;
 
                 default:
@@ -98,30 +98,30 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 
         private void WritePSObject(CertificateResponse iotDpsCertificate)
         {
-            this.WriteObject(IotDpsUtils.ToPSCertificateResponse(iotDpsCertificate), false);
+            WriteObject(IotDpsUtils.ToPSCertificateResponse(iotDpsCertificate), false);
         }
 
         private void WritePSObjects(IList<CertificateResponse> iotDpsCertificates)
         {
-            this.WriteObject(IotDpsUtils.ToPSCertificates(iotDpsCertificates), true);
+            WriteObject(IotDpsUtils.ToPSCertificates(iotDpsCertificates), true);
         }
 
         private void GetIotDpsCertificates()
         {
-            if (!string.IsNullOrEmpty(this.CertificateName))
+            if (!string.IsNullOrEmpty(CertificateName))
             {
-                this.WritePSObject(GetIotDpsCertificates(this.ResourceGroupName, this.Name, this.CertificateName));
+                WritePSObject(GetIotDpsCertificates(ResourceGroupName, Name, CertificateName));
             }
             else
             {
-                IList<CertificateResponse> iotDpsCertificates = GetIotDpsCertificates(this.ResourceGroupName, this.Name);
+                IList<CertificateResponse> iotDpsCertificates = GetIotDpsCertificates(ResourceGroupName, Name);
                 if (iotDpsCertificates.Count == 1)
                 {
-                    this.WritePSObject(iotDpsCertificates[0]);
+                    WritePSObject(iotDpsCertificates[0]);
                 }
                 else
                 {
-                    this.WritePSObjects(iotDpsCertificates);
+                    WritePSObjects(iotDpsCertificates);
                 }
             }
         }

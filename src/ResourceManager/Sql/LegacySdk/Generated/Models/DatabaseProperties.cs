@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Collation
         {
-            get { return this._collation; }
-            set { this._collation = value; }
+            get { return _collation; }
+            set { _collation = value; }
         }
         
         private string _createMode;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string CreateMode
         {
-            get { return this._createMode; }
-            set { this._createMode = value; }
+            get { return _createMode; }
+            set { _createMode = value; }
         }
         
         private DateTime _creationDate;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime CreationDate
         {
-            get { return this._creationDate; }
-            set { this._creationDate = value; }
+            get { return _creationDate; }
+            set { _creationDate = value; }
         }
         
         private string _currentServiceObjectiveId;
@@ -74,8 +74,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string CurrentServiceObjectiveId
         {
-            get { return this._currentServiceObjectiveId; }
-            set { this._currentServiceObjectiveId = value; }
+            get { return _currentServiceObjectiveId; }
+            set { _currentServiceObjectiveId = value; }
         }
         
         private string _databaseId;
@@ -85,8 +85,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseId
         {
-            get { return this._databaseId; }
-            set { this._databaseId = value; }
+            get { return _databaseId; }
+            set { _databaseId = value; }
         }
         
         private string _defaultSecondaryLocation;
@@ -96,8 +96,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DefaultSecondaryLocation
         {
-            get { return this._defaultSecondaryLocation; }
-            set { this._defaultSecondaryLocation = value; }
+            get { return _defaultSecondaryLocation; }
+            set { _defaultSecondaryLocation = value; }
         }
         
         private DateTime _earliestRestoreDate;
@@ -109,8 +109,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime EarliestRestoreDate
         {
-            get { return this._earliestRestoreDate; }
-            set { this._earliestRestoreDate = value; }
+            get { return _earliestRestoreDate; }
+            set { _earliestRestoreDate = value; }
         }
         
         private string _edition;
@@ -121,8 +121,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Edition
         {
-            get { return this._edition; }
-            set { this._edition = value; }
+            get { return _edition; }
+            set { _edition = value; }
         }
         
         private string _elasticPoolName;
@@ -133,8 +133,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ElasticPoolName
         {
-            get { return this._elasticPoolName; }
-            set { this._elasticPoolName = value; }
+            get { return _elasticPoolName; }
+            set { _elasticPoolName = value; }
         }
         
         private long _maxSizeBytes;
@@ -145,8 +145,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public long MaxSizeBytes
         {
-            get { return this._maxSizeBytes; }
-            set { this._maxSizeBytes = value; }
+            get { return _maxSizeBytes; }
+            set { _maxSizeBytes = value; }
         }
         
         private string _readScale;
@@ -156,8 +156,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ReadScale
         {
-            get { return this._readScale; }
-            set { this._readScale = value; }
+            get { return _readScale; }
+            set { _readScale = value; }
         }
         
         private string _requestedServiceObjectiveId;
@@ -169,8 +169,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RequestedServiceObjectiveId
         {
-            get { return this._requestedServiceObjectiveId; }
-            set { this._requestedServiceObjectiveId = value; }
+            get { return _requestedServiceObjectiveId; }
+            set { _requestedServiceObjectiveId = value; }
         }
         
         private string _requestedServiceObjectiveName;
@@ -182,8 +182,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string RequestedServiceObjectiveName
         {
-            get { return this._requestedServiceObjectiveName; }
-            set { this._requestedServiceObjectiveName = value; }
+            get { return _requestedServiceObjectiveName; }
+            set { _requestedServiceObjectiveName = value; }
         }
         
         private IList<Schema> _schemas;
@@ -193,8 +193,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<Schema> Schemas
         {
-            get { return this._schemas; }
-            set { this._schemas = value; }
+            get { return _schemas; }
+            set { _schemas = value; }
         }
         
         private string _serviceObjective;
@@ -205,8 +205,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServiceObjective
         {
-            get { return this._serviceObjective; }
-            set { this._serviceObjective = value; }
+            get { return _serviceObjective; }
+            set { _serviceObjective = value; }
         }
         
         private IList<ServiceTierAdvisor> _serviceTierAdvisors;
@@ -217,8 +217,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<ServiceTierAdvisor> ServiceTierAdvisors
         {
-            get { return this._serviceTierAdvisors; }
-            set { this._serviceTierAdvisors = value; }
+            get { return _serviceTierAdvisors; }
+            set { _serviceTierAdvisors = value; }
         }
         
         private string _status;
@@ -228,8 +228,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         private UpgradeHint _upgradeHint;
@@ -239,8 +239,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public UpgradeHint UpgradeHint
         {
-            get { return this._upgradeHint; }
-            set { this._upgradeHint = value; }
+            get { return _upgradeHint; }
+            set { _upgradeHint = value; }
         }
         
         /// <summary>
@@ -248,8 +248,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DatabaseProperties()
         {
-            this.Schemas = new LazyList<Schema>();
-            this.ServiceTierAdvisors = new LazyList<ServiceTierAdvisor>();
+            Schemas = new LazyList<Schema>();
+            ServiceTierAdvisors = new LazyList<ServiceTierAdvisor>();
         }
     }
 }

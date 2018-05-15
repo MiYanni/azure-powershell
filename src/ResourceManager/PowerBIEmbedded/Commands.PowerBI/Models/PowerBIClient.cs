@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.PowerBI.Models
                 resourceGroupName = GetResourceGroupByCapacity(capacityName);
             }
 
-            var tags = (customTags != null)
+            var tags = customTags != null
                 ? TagsConversionHelper.CreateTagDictionary(customTags, true)
                 : null;
 
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Commands.PowerBI.Models
             DedicatedCapacity newOrUpdatedCapacity = null;
             if (existingCapacity != null)
             {
-                var updateParameters = new DedicatedCapacityUpdateParameters()
+                var updateParameters = new DedicatedCapacityUpdateParameters
                 {
                     Sku = skuName == null ? null : GetResourceSkuFromName(skuName),
                     Tags = tags,
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.PowerBI.Models
                 newOrUpdatedCapacity = _client.Capacities.Create(
                     resourceGroupName, 
                     capacityName, 
-                    new DedicatedCapacity()
+                    new DedicatedCapacity
                     {
                         Administration = new DedicatedCapacityAdministrators(adminList),
                         Location = location,
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.PowerBI.Models
             }
             catch (CloudException ex)
             {
-                if ((ex.Response != null && ex.Response.StatusCode == HttpStatusCode.NotFound) || ex.Message.Contains(string.Format(Properties.Resources.FailedToDiscoverResourceGroup, capacityName,
+                if (ex.Response != null && ex.Response.StatusCode == HttpStatusCode.NotFound || ex.Message.Contains(string.Format(Resources.FailedToDiscoverResourceGroup, capacityName,
                     _subscriptionId)))
                 {
                     capacity = null;
@@ -191,8 +191,8 @@ namespace Microsoft.Azure.Commands.PowerBI.Models
                         .Find(x => x.Name.Equals(capacityName, StringComparison.InvariantCultureIgnoreCase))
                         .Id;
                 var rgStart = acctId.IndexOf("resourceGroups/", StringComparison.InvariantCultureIgnoreCase) +
-                              ("resourceGroups/".Length);
-                var rgLength = (acctId.IndexOf("/providers/", StringComparison.InvariantCultureIgnoreCase)) - rgStart;
+                              "resourceGroups/".Length;
+                var rgLength = acctId.IndexOf("/providers/", StringComparison.InvariantCultureIgnoreCase) - rgStart;
                 return acctId.Substring(rgStart, rgLength);
             }
             catch

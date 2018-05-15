@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.VirtualNetworkGatewayClient.Delete(this.ResourceGroupName, this.Name);
+                    VirtualNetworkGatewayClient.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

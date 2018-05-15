@@ -29,9 +29,9 @@ namespace Microsoft.Azure.Commands.Compute
                     networkClient = new NetworkClient(DefaultProfile.DefaultContext);
                 }
 
-                this.networkClient.VerboseLogger = WriteVerboseWithTimestamp;
-                this.networkClient.ErrorLogger = WriteErrorWithTimestamp;
-                this.networkClient.WarningLogger = WriteWarningWithTimestamp;
+                networkClient.VerboseLogger = WriteVerboseWithTimestamp;
+                networkClient.ErrorLogger = WriteErrorWithTimestamp;
+                networkClient.WarningLogger = WriteWarningWithTimestamp;
                 return networkClient;
             }
 

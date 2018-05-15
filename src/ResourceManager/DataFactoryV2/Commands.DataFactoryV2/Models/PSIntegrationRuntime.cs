@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
                 {
                     return  Constants.IntegrationRuntimeTypeManaged;
                 }
-                else if (IntegrationRuntime.Properties is SelfHostedIntegrationRuntime)
+                if (IntegrationRuntime.Properties is SelfHostedIntegrationRuntime)
                 {
                     return Constants.IntegrationRuntimeSelfhosted;
                 }

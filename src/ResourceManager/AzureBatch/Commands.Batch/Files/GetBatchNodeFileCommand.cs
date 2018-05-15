@@ -86,8 +86,8 @@ namespace Microsoft.Azure.Commands.Batch
         [Parameter(ParameterSetName = ParentComputeNodeObjectParameterSet)]
         public int MaxCount
         {
-            get { return this.maxCount; }
-            set { this.maxCount = value; }
+            get { return maxCount; }
+            set { maxCount = value; }
         }
 
         [Parameter(ParameterSetName = TaskAndODataParameterSet)]
@@ -98,13 +98,13 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            ListNodeFileOptions options = new ListNodeFileOptions(this.BatchContext, this.JobId, this.TaskId, this.Task, this.PoolId,
-                this.ComputeNodeId, this.ComputeNode, this.AdditionalBehaviors)
+            ListNodeFileOptions options = new ListNodeFileOptions(BatchContext, JobId, TaskId, Task, PoolId,
+                ComputeNodeId, ComputeNode, AdditionalBehaviors)
             {
-                Path = this.Path,
-                Filter = this.Filter,
-                MaxCount = this.MaxCount,
-                Recursive = this.Recursive.IsPresent
+                Path = Path,
+                Filter = Filter,
+                MaxCount = MaxCount,
+                Recursive = Recursive.IsPresent
             };
 
             // The enumerator will internally query the service in chunks. Using WriteObject with the enumerate flag will enumerate

@@ -15,8 +15,8 @@
 namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Commands.Scheduler.Utilities;
+    using Properties;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -49,16 +49,16 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            this.ConfirmAction(
-                processMessage: string.Format(Resources.RemoveJobDescription, this.JobName),
-                target: this.JobCollectionName,
-                action: () =>
+            ConfirmAction(
+                string.Format(Resources.RemoveJobDescription, JobName),
+                JobCollectionName,
+                () =>
                 {
-                    this.SchedulerClient.DeleteJob(this.ResourceGroupName, this.JobCollectionName, this.JobName);
+                    SchedulerClient.DeleteJob(ResourceGroupName, JobCollectionName, JobName);
 
                     if (PassThru.IsPresent)
                     {
-                        this.WriteObject(Resources.CompletedSuccessfully);
+                        WriteObject(Resources.CompletedSuccessfully);
                     }
                 }
             );

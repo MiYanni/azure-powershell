@@ -32,18 +32,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var requestRoutingRule = this.ApplicationGateway.RequestRoutingRules.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var requestRoutingRule = ApplicationGateway.RequestRoutingRules.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (requestRoutingRule != null)
             {
                 throw new ArgumentException("RequestRoutingRule with the specified name already exists");
             }
 
-            requestRoutingRule = base.NewObject();
-            this.ApplicationGateway.RequestRoutingRules.Add(requestRoutingRule);
+            requestRoutingRule = NewObject();
+            ApplicationGateway.RequestRoutingRules.Add(requestRoutingRule);
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

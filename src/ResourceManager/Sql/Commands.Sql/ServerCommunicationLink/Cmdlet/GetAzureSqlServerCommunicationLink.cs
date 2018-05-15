@@ -44,11 +44,11 @@ namespace Microsoft.Azure.Commands.Sql.ServerCommunicationLink.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("LinkName"))
             {
                 results = new List<AzureSqlServerCommunicationLinkModel>();
-                results.Add(ModelAdapter.GetServerCommunicationLink(this.ResourceGroupName, this.ServerName, this.LinkName));
+                results.Add(ModelAdapter.GetServerCommunicationLink(ResourceGroupName, ServerName, LinkName));
             }
             else
             {
-                results = ModelAdapter.ListServerCommunicationLinks(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListServerCommunicationLinks(ResourceGroupName, ServerName);
             }
 
             return results;

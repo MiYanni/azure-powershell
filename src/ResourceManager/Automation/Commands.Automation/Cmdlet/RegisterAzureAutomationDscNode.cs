@@ -83,8 +83,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the node configuration that the VM should be configured to pull from Azure Automation DSC.")]
         public string NodeConfigurationName
         {
-            get { return this.nodeConfigurationName; }
-            set { this.nodeConfigurationName = value; }
+            get { return nodeConfigurationName; }
+            set { nodeConfigurationName = value; }
         }
 
         /// <summary> 
@@ -94,8 +94,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [ValidateSet("ApplyAndMonitor", "ApplyAndAutocorrect", "ApplyOnly", IgnoreCase = true)]
         public string ConfigurationMode
         {
-            get { return this.configurationMode; }
-            set { this.configurationMode = value; }
+            get { return configurationMode; }
+            set { configurationMode = value; }
         }
 
         /// <summary> 
@@ -105,8 +105,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [ValidateRange(15, 44640)]
         public int ConfigurationModeFrequencyMins
         {
-            get { return this.configurationModeFrequencyMins; }
-            set { this.configurationModeFrequencyMins = value; }
+            get { return configurationModeFrequencyMins; }
+            set { configurationModeFrequencyMins = value; }
         }
 
         /// <summary> 
@@ -116,8 +116,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [ValidateRange(30, 44640)]
         public int RefreshFrequencyMins
         {
-            get { return this.refreshFrequencyMins; }
-            set { this.refreshFrequencyMins = value; }
+            get { return refreshFrequencyMins; }
+            set { refreshFrequencyMins = value; }
         }
 
         /// <summary> 
@@ -126,8 +126,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "True to Reboot the node if needed.")]
         public bool RebootNodeIfNeeded
         {
-            get { return this.rebootIfNeeded; }
-            set { this.rebootIfNeeded = value; }
+            get { return rebootIfNeeded; }
+            set { rebootIfNeeded = value; }
         }
 
         /// <summary> 
@@ -137,8 +137,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [ValidateSet("ContinueConfiguration", "StopConfiguration", IgnoreCase = true)]
         public string ActionAfterReboot
         {
-            get { return this.actionAfterReboot; }
-            set { this.actionAfterReboot = value; }
+            get { return actionAfterReboot; }
+            set { actionAfterReboot = value; }
         }
 
         /// <summary> 
@@ -148,8 +148,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
             HelpMessage = "Controls whether new configurations downloaded from the Azure Automation DSC pull server are allowed to overwrite the old modules already on the target node.")]
         public bool AllowModuleOverwrite
         {
-            get { return this.overwriteModulesFlag; }
-            set { this.overwriteModulesFlag = value; }
+            get { return overwriteModulesFlag; }
+            set { overwriteModulesFlag = value; }
         }
 
         /// <summary>
@@ -158,8 +158,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The Azure VM resource group name.")]
         public string AzureVMResourceGroup
         {
-            get { return this.azureVmResourceGroup; }
-            set { this.azureVmResourceGroup = value; }
+            get { return azureVmResourceGroup; }
+            set { azureVmResourceGroup = value; }
         }
 
         /// <summary>
@@ -168,8 +168,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The Azure VM location.")]
         public string AzureVMLocation
         {
-            get { return this.azureVmLocation; }
-            set { this.azureVmLocation = value; }
+            get { return azureVmLocation; }
+            set { azureVmLocation = value; }
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            this.AutomationClient.RegisterDscNode(this.ResourceGroupName, this.AutomationAccountName, this.AzureVMName, this.NodeConfigurationName, this.ConfigurationMode, this.ConfigurationModeFrequencyMins, this.RefreshFrequencyMins, this.RebootNodeIfNeeded, this.ActionAfterReboot, this.AllowModuleOverwrite, this.AzureVMResourceGroup, this.AzureVMLocation);
+            AutomationClient.RegisterDscNode(ResourceGroupName, AutomationAccountName, AzureVMName, NodeConfigurationName, ConfigurationMode, ConfigurationModeFrequencyMins, RefreshFrequencyMins, RebootNodeIfNeeded, ActionAfterReboot, AllowModuleOverwrite, AzureVMResourceGroup, AzureVMLocation);
         }
     }
 }

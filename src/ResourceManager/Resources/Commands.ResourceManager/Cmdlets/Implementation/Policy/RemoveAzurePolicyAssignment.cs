@@ -16,14 +16,14 @@ using System;
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
+    using Components;
     using System.Management.Automation;
 
     /// <summary>
     /// Removes the policy assignment.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureRmPolicyAssignment", SupportsShouldProcess = true, 
-        DefaultParameterSetName = RemoveAzurePolicyAssignmentCmdlet.PolicyAssignmentNameParameterSet), 
+        DefaultParameterSetName = PolicyAssignmentNameParameterSet), 
         OutputType(typeof(bool))]
     public class RemoveAzurePolicyAssignmentCmdlet : PolicyCmdletBase
     {
@@ -40,14 +40,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the policy assignment name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = RemoveAzurePolicyAssignmentCmdlet.PolicyAssignmentNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment name.")]
+        [Parameter(ParameterSetName = PolicyAssignmentNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the policy assignment scope parameter.
         /// </summary>
-        [Parameter(ParameterSetName = RemoveAzurePolicyAssignmentCmdlet.PolicyAssignmentNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment name.")]
+        [Parameter(ParameterSetName = PolicyAssignmentNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy assignment name.")]
         [ValidateNotNullOrEmpty]
         public string Scope { get; set; }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the policy assignment id parameter
         /// </summary>
         [Alias("ResourceId")]
-        [Parameter(ParameterSetName = RemoveAzurePolicyAssignmentCmdlet.PolicyAssignmentIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified policy assignment Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
+        [Parameter(ParameterSetName = PolicyAssignmentIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified policy assignment Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
         [ValidateNotNullOrEmpty]
         public string Id { get; set; }
 
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            this.RunCmdlet();
+            RunCmdlet();
         }
 
         /// <summary>
@@ -75,34 +75,34 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private void RunCmdlet()
         {
             base.OnProcessRecord();
-            string resourceId = this.Id ?? this.GetResourceId();
-            var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.PolicyAssignmentApiVersion : this.ApiVersion;
+            string resourceId = Id ?? GetResourceId();
+            var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.PolicyAssignmentApiVersion : ApiVersion;
 
-            this.ConfirmAction(
+            ConfirmAction(
                 "Deleting the policy assignment...",
                 resourceId,
                 () =>
                 {
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .DeleteResource(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            cancellationToken: this.CancellationToken.Value,
-                            odataQuery: null)
+                            resourceId,
+                            apiVersion,
+                            CancellationToken.Value,
+                            null)
                         .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                         .GetResourceManagementRequestUri(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
+                            resourceId,
+                            apiVersion,
                             odataQuery: null);
 
                     var activity = string.Format("DELETE {0}", managementUri.PathAndQuery);
 
-                    this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: false)
-                        .WaitOnOperation(operationResult: operationResult);
+                    GetLongRunningOperationTracker(activity, false)
+                        .WaitOnOperation(operationResult);
 
-                    this.WriteObject(true);
+                    WriteObject(true);
                 });
         }
 
@@ -112,9 +112,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected string GetResourceId()
         {
             return ResourceIdUtility.GetResourceId(
-                resourceId: this.Scope,
-                extensionResourceType: Constants.MicrosoftAuthorizationPolicyAssignmentType,
-                extensionResourceName: this.Name);
+                Scope,
+                Constants.MicrosoftAuthorizationPolicyAssignmentType,
+                Name);
         }
     }
 }

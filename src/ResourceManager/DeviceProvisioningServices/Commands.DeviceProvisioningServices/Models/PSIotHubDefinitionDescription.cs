@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models
 {
-    using Microsoft.Rest;
+    using Rest;
     using Newtonsoft.Json;
 
     /// <summary>

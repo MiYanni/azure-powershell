@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
                         if (!DeleteCertificate.HasValue || DeleteCertificate.Value)
                         {
                             var certificateResourceGroup = CmdletHelpers.GetResourceGroupFromResourceId(webapp.ServerFarmId);
-                            var certificates = CmdletHelpers.GetCertificates(this.ResourcesClient, this.WebsitesClient, certificateResourceGroup, thumbprint);
+                            var certificates = CmdletHelpers.GetCertificates(ResourcesClient, WebsitesClient, certificateResourceGroup, thumbprint);
                             if (certificates.Length > 0)
                             {
                                 try

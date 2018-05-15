@@ -87,14 +87,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         {
             CloudFile file = null;
 
-            if (null != this.File)
+            if (null != File)
             {
-                file = this.File;
+                file = File;
             }
             else
             {
-                string[] path = NamingUtil.ValidatePath(this.FilePath, true);
-                file = this.BuildFileShareObjectFromName(this.ShareName).GetRootDirectoryReference().GetFileReferenceByPath(path);
+                string[] path = NamingUtil.ValidatePath(FilePath, true);
+                file = BuildFileShareObjectFromName(ShareName).GetRootDirectoryReference().GetFileReferenceByPath(path);
             }
 
             long taskId = InternalTotalTaskCount;
@@ -112,7 +112,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             long localFinished = Interlocked.Read(ref InternalFinishedCount);
 
             string summary = String.Format(Resources.TransmitActiveSummary, localTotal,
-                localFailed, localFinished, (localTotal - localFailed - localFinished));
+                localFailed, localFinished, localTotal - localFailed - localFinished);
             summaryRecord.StatusDescription = summary;
             WriteProgress(summaryRecord);
         }
@@ -172,7 +172,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 
             for (int i = 0; i < currency; i++)
             {
-                Func<long, Task> taskGenerator = (taskId) => MonitorFileCopyStatusAsync(taskId);
+                Func<long, Task> taskGenerator = taskId => MonitorFileCopyStatusAsync(taskId);
                 RunTask(taskGenerator);
             }
 
@@ -214,7 +214,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                         WriteCopyProgress(file, records);
                         UpdateTaskCount(file.CopyState.Status);
 
-                        if (file.CopyState.Status == CopyStatus.Pending && this.WaitForComplete)
+                        if (file.CopyState.Status == CopyStatus.Pending && WaitForComplete)
                         {
                             jobList.Enqueue(monitorRequest);
                         }

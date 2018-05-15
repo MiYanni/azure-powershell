@@ -34,14 +34,14 @@ namespace Microsoft.Azure.Commands.Network
         public PSApplicationGatewayFrontendPort NewObject()
         {
             var frontendPort = new PSApplicationGatewayFrontendPort();
-            frontendPort.Name = this.Name;
-            frontendPort.Port = this.Port;
+            frontendPort.Name = Name;
+            frontendPort.Port = Port;
 
             frontendPort.Id =
                 ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayFrontendPortName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    Properties.Resources.ApplicationGatewayFrontendPortName,
+                    Name);
 
             return frontendPort;
         }

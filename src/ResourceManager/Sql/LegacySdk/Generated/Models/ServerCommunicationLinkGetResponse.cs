@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public ServerCommunicationLink ServerCommunicationLink
         {
-            get { return this._serverCommunicationLink; }
-            set { this._serverCommunicationLink = value; }
+            get { return _serverCommunicationLink; }
+            set { _serverCommunicationLink = value; }
         }
         
         /// <summary>

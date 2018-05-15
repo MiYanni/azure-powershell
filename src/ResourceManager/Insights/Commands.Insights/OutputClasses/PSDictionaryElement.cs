@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="inputDictionary">The input IDictionary</param>
         public PSDictionaryElement(IDictionary<string, string> inputDictionary)
         {
-            this.Content = inputDictionary;
+            Content = inputDictionary;
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         public override string ToString()
         {
             var output = new StringBuilder();
-            if (this.Content != null && this.Content.Count > 0)
+            if (Content != null && Content.Count > 0)
             {
-                foreach (var keyValuePair in this.Content)
+                foreach (var keyValuePair in Content)
                 {
                     output.AppendLine();
                     output.Append(string.Format("{0, -15}: {1}", keyValuePair.Key, keyValuePair.Value));
@@ -63,9 +63,9 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         public string ToString(int indentationTabs)
         {
             var output = new StringBuilder();
-            if (this.Content != null && this.Content.Count > 0)
+            if (Content != null && Content.Count > 0)
             {
-                foreach (var keyValuePair in this.Content)
+                foreach (var keyValuePair in Content)
                 {
                     output.AppendLine();
                     output.AddSpacesInFront(indentationTabs).Append(string.Format(CultureInfo.InvariantCulture, "{0, -15}: {1}", keyValuePair.Key, keyValuePair.Value));

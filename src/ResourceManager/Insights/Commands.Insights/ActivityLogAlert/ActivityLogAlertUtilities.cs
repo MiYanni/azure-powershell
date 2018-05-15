@@ -23,12 +23,12 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
         {
             if (string.IsNullOrWhiteSpace(inputObject.Id))
             {
-                throw new PSArgumentException(message: "Activity log alert Id cannot be null", paramName: "ActivityLogAlert");
+                throw new PSArgumentException("Activity log alert Id cannot be null", "ActivityLogAlert");
             }
 
             if (string.IsNullOrWhiteSpace(inputObject.Name))
             {
-                throw new PSArgumentException(message: "Activity log alert Name cannot be null", paramName: "ActivityLogAlert");
+                throw new PSArgumentException("Activity log alert Name cannot be null", "ActivityLogAlert");
             }
 
             activityLogAlertName = inputObject.Name;
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
             }
             catch (System.ArgumentException ex)
             {
-                throw new PSArgumentException(message: "Invalid activity log alert resource Id: " + ex.Message, paramName: "ActivityLogAlert");
+                throw new PSArgumentException("Invalid activity log alert resource Id: " + ex.Message, "ActivityLogAlert");
             }
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
         {
             if (string.IsNullOrWhiteSpace(resourceId))
             {
-                throw new PSArgumentException(message: "Activity log alert Id cannot be null", paramName: "ActivityLogAlert");
+                throw new PSArgumentException("Activity log alert Id cannot be null", "ActivityLogAlert");
             }
 
             try
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
             }
             catch (System.ArgumentException ex)
             {
-                throw new PSArgumentException(message: "Invalid activity log alert resource Id: " + ex.Message, paramName: "ActivityLogAlert");
+                throw new PSArgumentException("Invalid activity log alert resource Id: " + ex.Message, "ActivityLogAlert");
             }
         }
     }

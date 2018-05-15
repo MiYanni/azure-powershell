@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
     using System;
     using System.Collections;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using Microsoft.Azure.Commands.Scheduler.Properties;
-    using Microsoft.Azure.Commands.Scheduler.Utilities;
-    using Microsoft.Azure.Management.Scheduler.Models;
+    using Models;
+    using Properties;
+    using Utilities;
+    using Management.Scheduler.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -101,59 +101,59 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var httpJobAction = new PSHttpJobActionParams()
+            var httpJobAction = new PSHttpJobActionParams
             {
-                RequestMethod = this.Method,
-                Uri = this.Uri,
-                RequestBody = this.RequestBody,
-                RequestHeaders = this.Headers,
+                RequestMethod = Method,
+                Uri = Uri,
+                RequestBody = RequestBody,
+                RequestHeaders = Headers,
                 RequestAuthentication = GetAuthenticationParams(),
             };
 
             JobActionType jobActionType;
 
-            if (this.Uri.Scheme.Equals(Constants.HttpScheme, StringComparison.InvariantCultureIgnoreCase) ||
-                this.Uri.Scheme.Equals(Constants.HttpsScheme, StringComparison.InvariantCultureIgnoreCase))
+            if (Uri.Scheme.Equals(Constants.HttpScheme, StringComparison.InvariantCultureIgnoreCase) ||
+                Uri.Scheme.Equals(Constants.HttpsScheme, StringComparison.InvariantCultureIgnoreCase))
             {
-                jobActionType = (JobActionType)Enum.Parse(typeof(JobActionType), this.Uri.Scheme, ignoreCase: true);
+                jobActionType = (JobActionType)Enum.Parse(typeof(JobActionType), Uri.Scheme, true);
             }
             else
             {
-                throw new PSArgumentException(string.Format(Resources.SchedulerInvalidUriScheme, this.Uri.Scheme));
+                throw new PSArgumentException(string.Format(Resources.SchedulerInvalidUriScheme, Uri.Scheme));
             }
 
-            var jobAction = new PSJobActionParams()
+            var jobAction = new PSJobActionParams
             {
                 JobActionType = jobActionType,
                 HttpJobAction = httpJobAction
             };
 
-            var jobRecurrence = new PSJobRecurrenceParams()
+            var jobRecurrence = new PSJobRecurrenceParams
             {
-                Interval = this.Interval,
-                Frequency = this.Frequency,
-                EndTime = this.EndTime,
-                ExecutionCount = this.ExecutionCount
+                Interval = Interval,
+                Frequency = Frequency,
+                EndTime = EndTime,
+                ExecutionCount = ExecutionCount
             };
 
-            var jobParams = new PSJobParams()
+            var jobParams = new PSJobParams
             {
-                ResourceGroupName = this.ResourceGroupName,
-                JobCollectionName = this.JobCollectionName,
-                JobName = this.JobName,
-                JobState = this.JobState,
-                StartTime = this.StartTime,
+                ResourceGroupName = ResourceGroupName,
+                JobCollectionName = JobCollectionName,
+                JobName = JobName,
+                JobState = JobState,
+                StartTime = StartTime,
                 JobAction = jobAction,
                 JobRecurrence = jobRecurrence,
-                JobErrorAction = this.GetErrorActionParamsValue(this.ErrorActionType)
+                JobErrorAction = GetErrorActionParamsValue(ErrorActionType)
             };
 
-            this.ConfirmAction(
-                processMessage: string.Format(Resources.NewHttpJobResourceDescription, this.JobName),
-                target: this.JobCollectionName,
-                action: () =>
+            ConfirmAction(
+                string.Format(Resources.NewHttpJobResourceDescription, JobName),
+                JobCollectionName,
+                () =>
                     {
-                        this.WriteObject(this.SchedulerClient.CreateJob(jobParams));
+                        WriteObject(SchedulerClient.CreateJob(jobParams));
                     }
             );
         }
@@ -166,25 +166,25 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         {
             var runtimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
 
-            if (!string.IsNullOrWhiteSpace(this.HttpAuthenticationType))
+            if (!string.IsNullOrWhiteSpace(HttpAuthenticationType))
             {
-                if (this.HttpAuthenticationType.Equals(Constants.HttpAuthenticationClientCertificate, StringComparison.InvariantCultureIgnoreCase))
+                if (HttpAuthenticationType.Equals(Constants.HttpAuthenticationClientCertificate, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    runtimeDefinedParameterDictionary.AddRange(this.JobDynamicParameters.AddHttpClientCertificateAuthenticationTypeParameters());
+                    runtimeDefinedParameterDictionary.AddRange(JobDynamicParameters.AddHttpClientCertificateAuthenticationTypeParameters());
                 }
-                else if (this.HttpAuthenticationType.Equals(Constants.HttpAuthenticationBasic, StringComparison.InvariantCultureIgnoreCase))
+                else if (HttpAuthenticationType.Equals(Constants.HttpAuthenticationBasic, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    runtimeDefinedParameterDictionary.AddRange(this.JobDynamicParameters.AddHttpBasicAuthenticationTypeParameters());
+                    runtimeDefinedParameterDictionary.AddRange(JobDynamicParameters.AddHttpBasicAuthenticationTypeParameters());
                 }
-                else if (this.HttpAuthenticationType.Equals(Constants.HttpAuthenticationActiveDirectoryOAuth, StringComparison.InvariantCultureIgnoreCase))
+                else if (HttpAuthenticationType.Equals(Constants.HttpAuthenticationActiveDirectoryOAuth, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    runtimeDefinedParameterDictionary.AddRange(this.JobDynamicParameters.AddHttpActiveDirectoryOAuthAuthenticationTypeParameters());
+                    runtimeDefinedParameterDictionary.AddRange(JobDynamicParameters.AddHttpActiveDirectoryOAuthAuthenticationTypeParameters());
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(this.ErrorActionType))
+            if (!string.IsNullOrWhiteSpace(ErrorActionType))
             {
-                runtimeDefinedParameterDictionary.AddRange(this.AddErrorActionParameters(this.ErrorActionType, create: true));
+                runtimeDefinedParameterDictionary.AddRange(AddErrorActionParameters(ErrorActionType, true));
             }
 
             return runtimeDefinedParameterDictionary;
@@ -196,19 +196,19 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
         /// <returns>PSHttpJobAuthenticationParams instance.</returns>
         private PSHttpJobAuthenticationParams GetAuthenticationParams()
         {
-            if (!string.IsNullOrWhiteSpace(this.HttpAuthenticationType))
+            if (!string.IsNullOrWhiteSpace(HttpAuthenticationType))
             {
-                var jobAuthentication = new PSHttpJobAuthenticationParams()
+                var jobAuthentication = new PSHttpJobAuthenticationParams
                 {
-                    HttpAuthType = this.HttpAuthenticationType,
+                    HttpAuthType = HttpAuthenticationType,
                     ClientCertPfx = string.IsNullOrWhiteSpace(JobDynamicParameters.ClientCertificatePfx) ? null : SchedulerUtility.GetCertData(this.ResolvePath(JobDynamicParameters.ClientCertificatePfx), JobDynamicParameters.ClientCertificatePassword),
-                    ClientCertPassword = this.JobDynamicParameters.ClientCertificatePassword,
-                    Username = this.JobDynamicParameters.BasicUsername,
-                    Password = this.JobDynamicParameters.BasicPassword,
-                    Secret = this.JobDynamicParameters.OAuthSecret,
-                    Tenant = this.JobDynamicParameters.OAuthTenant,
-                    Audience = this.JobDynamicParameters.OAuthAudience,
-                    ClientId = this.JobDynamicParameters.OAuthClientId
+                    ClientCertPassword = JobDynamicParameters.ClientCertificatePassword,
+                    Username = JobDynamicParameters.BasicUsername,
+                    Password = JobDynamicParameters.BasicPassword,
+                    Secret = JobDynamicParameters.OAuthSecret,
+                    Tenant = JobDynamicParameters.OAuthTenant,
+                    Audience = JobDynamicParameters.OAuthAudience,
+                    ClientId = JobDynamicParameters.OAuthClientId
                 };
 
                 return jobAuthentication;

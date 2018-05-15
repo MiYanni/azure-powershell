@@ -16,11 +16,11 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Application;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Resources;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Components;
+    using Entities.Application;
+    using Entities.Resources;
+    using Extensions;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections;
@@ -103,31 +103,31 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected override void OnProcessRecord()
         {
             base.OnProcessRecord();
-            if (this.ShouldProcess(this.Name, "Create Managed Application"))
+            if (ShouldProcess(Name, "Create Managed Application"))
             {
                 string resourceId = GetResourceId();
 
-                var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.ApplicationApiVersion : this.ApiVersion;
+                var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.ApplicationApiVersion : ApiVersion;
 
-                var operationResult = this.GetResourcesClient()
+                var operationResult = GetResourcesClient()
                     .PutResource(
-                        resourceId: resourceId,
-                        apiVersion: apiVersion,
-                        resource: this.GetResource(),
-                        cancellationToken: this.CancellationToken.Value,
-                        odataQuery: null)
+                        resourceId,
+                        apiVersion,
+                        GetResource(),
+                        CancellationToken.Value,
+                        null)
                     .Result;
 
-                var managementUri = this.GetResourcesClient()
+                var managementUri = GetResourcesClient()
                   .GetResourceManagementRequestUri(
-                      resourceId: resourceId,
-                      apiVersion: apiVersion,
+                      resourceId,
+                      apiVersion,
                       odataQuery: null);
 
                 var activity = string.Format("PUT {0}", managementUri.PathAndQuery);
-                var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: true)
-                    .WaitOnOperation(operationResult: operationResult);
-                this.WriteObject(this.GetOutputObjects("ManagedApplicationId", JObject.Parse(result)), enumerateCollection: true);
+                var result = GetLongRunningOperationTracker(activity, true)
+                    .WaitOnOperation(operationResult);
+                WriteObject(GetOutputObjects("ManagedApplicationId", JObject.Parse(result)), true);
             }
         }
 
@@ -139,9 +139,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             var subscriptionId = DefaultContext.Subscription.Id;
             return string.Format("/subscriptions/{0}/resourcegroups/{1}/providers/{2}/{3}",
                 subscriptionId.ToString(),
-                this.ResourceGroupName,
+                ResourceGroupName,
                 Constants.MicrosoftApplicationType,
-                this.Name);
+                Name);
         }
 
         /// <summary>
@@ -151,17 +151,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             var applicationObject = new Application
             {
-                Name = this.Name,
-                Location = this.Location,
-                Plan = this.Plan.ToDictionary(addValueLayer: false).ToJson().FromJson<ResourcePlan>(),
-                Kind = this.Kind,
+                Name = Name,
+                Location = Location,
+                Plan = Plan.ToDictionary(false).ToJson().FromJson<ResourcePlan>(),
+                Kind = Kind,
                 Properties = new ApplicationProperties
                 {
-                    ManagedResourceGroupId = string.Format("/subscriptions/{0}/resourcegroups/{1}", Guid.Parse(DefaultContext.Subscription.Id), this.ManagedResourceGroupName),
-                    ApplicationDefinitionId =this.ManagedApplicationDefinitionId ?? null,
-                    Parameters = this.Parameter == null ? null : JObject.Parse(this.GetObjectFromParameter(this.Parameter).ToString())
+                    ManagedResourceGroupId = string.Format("/subscriptions/{0}/resourcegroups/{1}", Guid.Parse(DefaultContext.Subscription.Id), ManagedResourceGroupName),
+                    ApplicationDefinitionId =ManagedApplicationDefinitionId ?? null,
+                    Parameters = Parameter == null ? null : JObject.Parse(GetObjectFromParameter(Parameter).ToString())
                 },
-                Tags = TagsHelper.GetTagsDictionary(this.Tag)
+                Tags = TagsHelper.GetTagsDictionary(Tag)
             };
 
             return applicationObject.ToJToken();

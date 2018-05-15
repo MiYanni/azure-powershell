@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
 
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = ShowReplicationByNameResourceGroupParameterSet, HelpMessage = "Resource Group Name.")]
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = ListReplicationByNameResourceGroupParameterSet, HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 

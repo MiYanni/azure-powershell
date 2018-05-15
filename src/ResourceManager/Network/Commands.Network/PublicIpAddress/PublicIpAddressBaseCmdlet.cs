@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetPublicIpAddress(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSPublicIpAddress GetPublicIpAddress(string resourceGroupName, string name, string expandResource = null)
         {
-            var publicIP = this.PublicIpAddressClient.Get(resourceGroupName, name, expandResource);
+            var publicIP = PublicIpAddressClient.Get(resourceGroupName, name, expandResource);
 
             var psPublicIpAddress = ToPsPublicIpAddress(publicIP);
             psPublicIpAddress.ResourceGroupName = resourceGroupName;

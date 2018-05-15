@@ -45,9 +45,9 @@ namespace Microsoft.Azure.Commands.PolicyInsights.Models
                 return;
             }
 
-            this.PolicyDefinitionId = policyDefinitionSummary.PolicyDefinitionId;
-            this.Effect = policyDefinitionSummary.Effect;
-            this.Results = new SummaryResults(policyDefinitionSummary.Results);
+            PolicyDefinitionId = policyDefinitionSummary.PolicyDefinitionId;
+            Effect = policyDefinitionSummary.Effect;
+            Results = new SummaryResults(policyDefinitionSummary.Results);
         }
     }
 }

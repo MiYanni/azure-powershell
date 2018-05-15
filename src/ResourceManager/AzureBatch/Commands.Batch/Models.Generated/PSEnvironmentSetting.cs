@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSEnvironmentSetting
     {
         
-        internal Microsoft.Azure.Batch.EnvironmentSetting omObject;
+        internal EnvironmentSetting omObject;
         
         public PSEnvironmentSetting(string name, string value)
         {
-            this.omObject = new Microsoft.Azure.Batch.EnvironmentSetting(name, value);
+            omObject = new EnvironmentSetting(name, value);
         }
         
-        internal PSEnvironmentSetting(Microsoft.Azure.Batch.EnvironmentSetting omObject)
+        internal PSEnvironmentSetting(EnvironmentSetting omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Name;
+                return omObject.Name;
             }
         }
         
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Value;
+                return omObject.Value;
             }
         }
     }

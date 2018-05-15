@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             string resourceGroupName = (string)ParseParameter(invokeMethodInputParameters[0]);
             string vmScaleSetName = (string)ParseParameter(invokeMethodInputParameters[1]);
-            System.Collections.Generic.IList<string> instanceIds = null;
+            IList<string> instanceIds = null;
             if (invokeMethodInputParameters[2] != null)
             {
                 var inputArray2 = Array.ConvertAll((object[]) ParseParameter(invokeMethodInputParameters[2]), e => e.ToString());
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             var instanceIds = new string[0];
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName", "InstanceIds" },
+                 new[] { "ResourceGroupName", "VMScaleSetName", "InstanceIds" },
                  new object[] { resourceGroupName, vmScaleSetName, instanceIds });
         }
     }

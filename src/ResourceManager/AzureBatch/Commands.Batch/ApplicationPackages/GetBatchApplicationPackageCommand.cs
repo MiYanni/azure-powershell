@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            PSApplicationPackage context = BatchClient.GetApplicationPackage(this.ResourceGroupName, this.AccountName, this.ApplicationId, this.ApplicationVersion);
+            PSApplicationPackage context = BatchClient.GetApplicationPackage(ResourceGroupName, AccountName, ApplicationId, ApplicationVersion);
             WriteObject(context);
         }
     }

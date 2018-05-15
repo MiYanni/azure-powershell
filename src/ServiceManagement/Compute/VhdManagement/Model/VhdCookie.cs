@@ -39,15 +39,15 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
         public VhdCookie(VhdCookieType cookieType, byte[] data)
         {
             this.cookieType = cookieType;
-            this.Data = data;
-            this.expectedData = GetExpectedCookie();
+            Data = data;
+            expectedData = GetExpectedCookie();
         }
 
         public byte[] Data { get; private set; }
 
         public string StringData
         {
-            get { return Encoding.ASCII.GetString(this.Data); }
+            get { return Encoding.ASCII.GetString(Data); }
         }
 
         public bool IsValid()
@@ -68,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
         {
             var copy = new byte[Data.Length];
             Array.Copy(Data, copy, Data.Length);
-            return new VhdCookie(this.cookieType, copy);
+            return new VhdCookie(cookieType, copy);
         }
 
         public override string ToString()

@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
             // We try to get the sync agent.  Since this is a create, we don't want the sync agent to exist
             try
             {
-                ModelAdapter.GetSyncAgent(this.ResourceGroupName, this.ServerName, this.Name);
+                ModelAdapter.GetSyncAgent(ResourceGroupName, ServerName, Name);
             }
             catch (CloudException ex)
             {
@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
 
             // The sync agent already exists
             throw new PSArgumentException(
-                string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.SyncAgentNameExists, this.Name, this.ResourceGroupName),
+                string.Format(Properties.Resources.SyncAgentNameExists, Name, ResourceGroupName),
                 "SyncAgentName");
         }
 
@@ -125,32 +125,32 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The model that was passed in</returns>
         protected override IEnumerable<AzureSqlSyncAgentModel> ApplyUserInputToModel(IEnumerable<AzureSqlSyncAgentModel> model)
         {
-            List<Model.AzureSqlSyncAgentModel> newEntity = new List<AzureSqlSyncAgentModel>();
+            List<AzureSqlSyncAgentModel> newEntity = new List<AzureSqlSyncAgentModel>();
 
-            AzureSqlSyncAgentModel newModel = new AzureSqlSyncAgentModel()
+            AzureSqlSyncAgentModel newModel = new AzureSqlSyncAgentModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                SyncAgentName = this.Name
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                SyncAgentName = Name
             };
 
             if (ParameterSetName == SyncDatabaseResourceIDSet)
             {
-                newModel.SyncDatabaseId = this.SyncDatabaseResourceID;
+                newModel.SyncDatabaseId = SyncDatabaseResourceID;
             }
             else
             {
                 if (!MyInvocation.BoundParameters.ContainsKey("SyncDatabaseResourceGroupName"))
                 {
-                    this.SyncDatabaseResourceGroupName = this.ResourceGroupName;
+                    SyncDatabaseResourceGroupName = ResourceGroupName;
                 }
                 if (!MyInvocation.BoundParameters.ContainsKey("SyncDatabaseServerName"))
                 {
-                    this.SyncDatabaseServerName = this.ServerName;
+                    SyncDatabaseServerName = ServerName;
                 }
                 // "/subscriptions/{id}/" will be added in AzureSqlDataSyncCommunicator
-                this.syncDatabaseId = string.Format("resourceGroups/{0}/providers/Microsoft.Sql/servers/{1}/databases/{2}",
-                    this.SyncDatabaseResourceGroupName, this.SyncDatabaseServerName, this.SyncDatabaseName);
+                syncDatabaseId = string.Format("resourceGroups/{0}/providers/Microsoft.Sql/servers/{1}/databases/{2}",
+                    SyncDatabaseResourceGroupName, SyncDatabaseServerName, SyncDatabaseName);
             }
 
             newEntity.Add(newModel);
@@ -164,8 +164,9 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlSyncAgentModel> PersistChanges(IEnumerable<AzureSqlSyncAgentModel> entity)
         {
-            return new List<AzureSqlSyncAgentModel>() {
-                ModelAdapter.CreateSyncAgent(entity.First(), this.syncDatabaseId)
+            return new List<AzureSqlSyncAgentModel>
+            {
+                ModelAdapter.CreateSyncAgent(entity.First(), syncDatabaseId)
             };
         }
     }

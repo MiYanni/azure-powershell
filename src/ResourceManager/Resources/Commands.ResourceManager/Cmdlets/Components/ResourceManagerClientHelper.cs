@@ -18,7 +18,7 @@ using Microsoft.Azure.Commands.Common.Authentication.Models;
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 {
     using Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients;
+    using RestClients;
     using System;
     using System.Collections.Generic;
 
@@ -44,15 +44,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
             var endpointUri = new Uri(endpoint, UriKind.Absolute);
 
             return new ResourceManagerRestRestClient(
-                endpointUri: endpointUri,
-                httpClientHelper: HttpClientHelperFactory.Instance
+                endpointUri,
+                HttpClientHelperFactory.Instance
                 .CreateHttpClientHelper(
-                    credentials: AzureSession.Instance.AuthenticationFactory
+                    AzureSession.Instance.AuthenticationFactory
                                              .GetSubscriptionCloudCredentials(
                                                     context, 
                                                     AzureEnvironment.Endpoint.ResourceManager),
-                    headerValues: AzureSession.Instance.ClientFactory.UserAgents,
-                    cmdletHeaderValues: cmdletHeaderValues));
+                    AzureSession.Instance.ClientFactory.UserAgents,
+                    cmdletHeaderValues));
         }
     }
 }

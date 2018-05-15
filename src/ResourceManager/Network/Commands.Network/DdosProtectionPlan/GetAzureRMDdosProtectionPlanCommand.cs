@@ -61,33 +61,33 @@ namespace Microsoft.Azure.Commands.Network.Automation
         {
             base.Execute();
 
-            if(!string.IsNullOrEmpty(this.Name))
+            if(!string.IsNullOrEmpty(Name))
             {
-                var vDdosProtectionPlan = this.NetworkClient.NetworkManagementClient.DdosProtectionPlans.Get(ResourceGroupName, Name);
-                var vDdosProtectionPlanModel = NetworkResourceManagerProfile.Mapper.Map<CNM.PSDdosProtectionPlan>(vDdosProtectionPlan);
-                vDdosProtectionPlanModel.ResourceGroupName = this.ResourceGroupName;
+                var vDdosProtectionPlan = NetworkClient.NetworkManagementClient.DdosProtectionPlans.Get(ResourceGroupName, Name);
+                var vDdosProtectionPlanModel = NetworkResourceManagerProfile.Mapper.Map<PSDdosProtectionPlan>(vDdosProtectionPlan);
+                vDdosProtectionPlanModel.ResourceGroupName = ResourceGroupName;
                 vDdosProtectionPlanModel.Tag = TagsConversionHelper.CreateTagHashtable(vDdosProtectionPlan.Tags);
                 WriteObject(vDdosProtectionPlanModel, true);
             }
             else
             {
                 IPage<DdosProtectionPlan> vDdosProtectionPlanPage;
-                if(!string.IsNullOrEmpty(this.ResourceGroupName))
+                if(!string.IsNullOrEmpty(ResourceGroupName))
                 {
-                    vDdosProtectionPlanPage = this.NetworkClient.NetworkManagementClient.DdosProtectionPlans.ListByResourceGroup(this.ResourceGroupName);
+                    vDdosProtectionPlanPage = NetworkClient.NetworkManagementClient.DdosProtectionPlans.ListByResourceGroup(ResourceGroupName);
                 }
                 else
                 {
-                    vDdosProtectionPlanPage = this.NetworkClient.NetworkManagementClient.DdosProtectionPlans.List();
+                    vDdosProtectionPlanPage = NetworkClient.NetworkManagementClient.DdosProtectionPlans.List();
                 }
 
                 var vDdosProtectionPlanList = ListNextLink<DdosProtectionPlan>.GetAllResourcesByPollingNextLink(vDdosProtectionPlanPage,
-                    this.NetworkClient.NetworkManagementClient.DdosProtectionPlans.ListNext);
+                    NetworkClient.NetworkManagementClient.DdosProtectionPlans.ListNext);
                 List<PSDdosProtectionPlan> psDdosProtectionPlanList = new List<PSDdosProtectionPlan>();
                 foreach (var vDdosProtectionPlan in vDdosProtectionPlanList)
                 {
-                    var vDdosProtectionPlanModel = NetworkResourceManagerProfile.Mapper.Map<CNM.PSDdosProtectionPlan>(vDdosProtectionPlan);
-                    vDdosProtectionPlanModel.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(vDdosProtectionPlan.Id);
+                    var vDdosProtectionPlanModel = NetworkResourceManagerProfile.Mapper.Map<PSDdosProtectionPlan>(vDdosProtectionPlan);
+                    vDdosProtectionPlanModel.ResourceGroupName = GetResourceGroup(vDdosProtectionPlan.Id);
                     vDdosProtectionPlanModel.Tag = TagsConversionHelper.CreateTagHashtable(vDdosProtectionPlan.Tags);
                     psDdosProtectionPlanList.Add(vDdosProtectionPlanModel);
                 }

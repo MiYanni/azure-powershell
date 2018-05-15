@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
             }
             set
             {
-                this.kind = value;
+                kind = value;
             }
         }
         private string kind = ApplicationType.WEB;
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
             ApplicationInsightsComponent existingComponent = null;
             try
             {
-                existingComponent = this.AppInsightsManagementClient
+                existingComponent = AppInsightsManagementClient
                                                .Components
                                                .GetWithHttpMessagesAsync(ResourceGroupName, Name)
                                                .GetAwaiter()
@@ -103,18 +103,18 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
                 throw new System.ArgumentException($"component {Name} already existing in Resource Group {ResourceGroupName}");
             }
 
-            ApplicationInsightsComponent newComponentProperties = new ApplicationInsightsComponent()
+            ApplicationInsightsComponent newComponentProperties = new ApplicationInsightsComponent
             {
-                Location = this.Location,
-                Kind = this.Kind,
+                Location = Location,
+                Kind = Kind,
                 ApplicationType = Kind,
-                Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true),
+                Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true),
                 RequestSource = "AzurePowerShell",
             };
 
-            if (this.ShouldProcess(this.ResourceGroupName, $"Create Application Insights Component {this.Name}"))
+            if (ShouldProcess(ResourceGroupName, $"Create Application Insights Component {Name}"))
             {
-                var newComponentResponse = this.AppInsightsManagementClient
+                var newComponentResponse = AppInsightsManagementClient
                                                     .Components
                                                     .CreateOrUpdateWithHttpMessagesAsync(
                                                         ResourceGroupName,
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.ApplicationInsights
                                                         newComponentProperties)
                                                     .Result;
 
-                this.WriteComponent(newComponentResponse.Body);
+                WriteComponent(newComponentResponse.Body);
             }
         }
     }

@@ -143,7 +143,7 @@ namespace Microsoft.Azure.Commands.Profile.Common
             {
                 runtimeParameter =  new RuntimeDefinedParameter(
                     name, typeof(string),
-                    new Collection<Attribute>()
+                    new Collection<Attribute>
                     {
                     new ParameterAttribute { Position =0, Mandatory=true, HelpMessage="The name of the context" },
                     new ValidateSetAttribute(profile.Contexts.Keys.ToArray())
@@ -170,7 +170,7 @@ namespace Microsoft.Azure.Commands.Profile.Common
             {
                 runtimeParameter = new RuntimeDefinedParameter(
                     name, typeof(string),
-                    new Collection<Attribute>()
+                    new Collection<Attribute>
                     {
                     new ParameterAttribute { Position =0, Mandatory=true, HelpMessage="The name of the context", ParameterSetName = parameterSetName },
                     new ValidateSetAttribute(profile.Contexts.Keys.ToArray())

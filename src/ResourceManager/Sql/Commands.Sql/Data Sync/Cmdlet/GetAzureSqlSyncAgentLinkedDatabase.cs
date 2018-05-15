@@ -66,8 +66,8 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         protected override IEnumerable<AzureSqlSyncAgentLinkedDatabaseModel> GetEntity()
         {
             // Try to get the sync agent first. If the sync agent doesn't exist, it will fail at this step.
-            ModelAdapter.GetSyncAgent(this.ResourceGroupName, this.ServerName, this.SyncAgentName);
-            return ModelAdapter.ListSyncAgentLinkedDatabases(this.ResourceGroupName, this.ServerName, this.SyncAgentName);
+            ModelAdapter.GetSyncAgent(ResourceGroupName, ServerName, SyncAgentName);
+            return ModelAdapter.ListSyncAgentLinkedDatabases(ResourceGroupName, ServerName, SyncAgentName);
         }
 
         /// <summary>

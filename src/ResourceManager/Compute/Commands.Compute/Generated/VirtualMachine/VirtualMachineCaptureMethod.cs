@@ -136,7 +136,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             VirtualMachineCaptureParameters parameters = new VirtualMachineCaptureParameters();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMName", "Parameters" },
+                 new[] { "ResourceGroupName", "VMName", "Parameters" },
                  new object[] { resourceGroupName, vmName, parameters });
         }
     }

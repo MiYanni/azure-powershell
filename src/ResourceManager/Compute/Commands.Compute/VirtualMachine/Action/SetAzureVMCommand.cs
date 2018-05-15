@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Compute
            ParameterSetName = RedeployResourceGroupNameParameterSet,
            ValueFromPipelineByPropertyName = true,
           HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -96,29 +96,29 @@ namespace Microsoft.Azure.Commands.Compute
         {
             base.ExecuteCmdlet();
 
-            if (this.ParameterSetName.Equals(GeneralizeIdParameterSet) || this.ParameterSetName.Equals(RedeployIdParameterSet))
+            if (ParameterSetName.Equals(GeneralizeIdParameterSet) || ParameterSetName.Equals(RedeployIdParameterSet))
             {
-                this.ResourceGroupName = GetResourceGroupNameFromId(this.Id);
+                ResourceGroupName = GetResourceGroupNameFromId(Id);
             }
 
-            if (this.Generalized.IsPresent)
+            if (Generalized.IsPresent)
             {
                 ExecuteClientAction(() =>
                 {
-                    var op = this.VirtualMachineClient.GeneralizeWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.Name).GetAwaiter().GetResult();
+                    var op = VirtualMachineClient.GeneralizeWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        Name).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSComputeLongRunningOperation>(op);
                     WriteObject(result);
                 });
             }
-            else if (this.Redeploy.IsPresent)
+            else if (Redeploy.IsPresent)
             {
                 ExecuteClientAction(() =>
                 {
-                    var op = this.VirtualMachineClient.RedeployWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.Name).GetAwaiter().GetResult();
+                    var op = VirtualMachineClient.RedeployWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        Name).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSComputeLongRunningOperation>(op);
                     WriteObject(result);
                 });

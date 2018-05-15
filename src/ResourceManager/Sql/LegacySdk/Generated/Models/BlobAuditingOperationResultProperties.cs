@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string OperationId
         {
-            get { return this._operationId; }
-            set { this._operationId = value; }
+            get { return _operationId; }
+            set { _operationId = value; }
         }
         
         private string _startTime;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StartTime
         {
-            get { return this._startTime; }
-            set { this._startTime = value; }
+            get { return _startTime; }
+            set { _startTime = value; }
         }
         
         private OperationStatus _state;
@@ -60,8 +60,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public OperationStatus State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         /// <summary>

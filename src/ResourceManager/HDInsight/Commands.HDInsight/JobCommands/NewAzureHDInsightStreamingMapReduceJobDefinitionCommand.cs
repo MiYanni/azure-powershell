@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.HDInsight
         typeof(AzureHDInsightStreamingMapReduceJobDefinition))]
     public class NewAzureHDInsightStreamingMapReduceJobDefinitionCommand : HDInsightCmdletBase
     {
-        private AzureHDInsightStreamingMapReduceJobDefinition job;
+        private readonly AzureHDInsightStreamingMapReduceJobDefinition _job;
 
         #region Input Parameter Definitions
 
@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Commands.HDInsight
         [Parameter(HelpMessage = "Local file to be made available to tasks")]
         public string File
         {
-            get { return job.File; }
-            set { job.File = value; }
+            get { return _job.File; }
+            set { _job.File = value; }
         }
 
         [Parameter(HelpMessage = "List of files to be copied to the cluster.")]
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Commands.HDInsight
         [Parameter(HelpMessage = "The output location to use for the job.")]
         public string StatusFolder
         {
-            get { return job.StatusFolder; }
-            set { job.StatusFolder = value; }
+            get { return _job.StatusFolder; }
+            set { _job.StatusFolder = value; }
         }
 
         [Parameter(HelpMessage = "The command line environment for the mappers or the reducers.")]
@@ -61,29 +61,29 @@ namespace Microsoft.Azure.Commands.HDInsight
             HelpMessage = "The input path to use for the jobDetails.")]
         public string InputPath
         {
-            get { return job.Input; }
-            set { job.Input = value; }
+            get { return _job.Input; }
+            set { _job.Input = value; }
         }
 
         [Parameter(HelpMessage = "The Mapper to use for the jobDetails.")]
         public string Mapper
         {
-            get { return job.Mapper; }
-            set { job.Mapper = value; }
+            get { return _job.Mapper; }
+            set { _job.Mapper = value; }
         }
 
         [Parameter(HelpMessage = "The output path to use for the jobDetails.")]
         public string OutputPath
         {
-            get { return job.Output; }
-            set { job.Output = value; }
+            get { return _job.Output; }
+            set { _job.Output = value; }
         }
 
         [Parameter(HelpMessage = "The Reducer to use for the jobDetails.")]
         public string Reducer
         {
-            get { return job.Reducer; }
-            set { job.Reducer = value; }
+            get { return _job.Reducer; }
+            set { _job.Reducer = value; }
         }
 
         #endregion
@@ -94,34 +94,34 @@ namespace Microsoft.Azure.Commands.HDInsight
             Files = new string[] { };
             CommandEnvironment = new Hashtable();
             Defines = new Hashtable();
-            job = new AzureHDInsightStreamingMapReduceJobDefinition();
+            _job = new AzureHDInsightStreamingMapReduceJobDefinition();
         }
 
         public override void ExecuteCmdlet()
         {
             foreach (var arg in Arguments)
             {
-                job.Arguments.Add(arg);
+                _job.Arguments.Add(arg);
             }
 
             var cmdEnvDic = CommandEnvironment.ToDictionary(false);
             foreach (var cmdEnv in cmdEnvDic)
             {
-                job.CommandEnvironment.Add(cmdEnv.Key, cmdEnv.Value.ToString());
+                _job.CommandEnvironment.Add(cmdEnv.Key, cmdEnv.Value.ToString());
             }
 
             var defineDic = Defines.ToDictionary(false);
             foreach (var define in defineDic)
             {
-                job.Defines.Add(define.Key, define.Value.ToString());
+                _job.Defines.Add(define.Key, define.Value.ToString());
             }
 
             foreach (var file in Files)
             {
-                job.Files.Add(file);
+                _job.Files.Add(file);
             }
 
-            WriteObject(job);
+            WriteObject(_job);
         }
     }
 }

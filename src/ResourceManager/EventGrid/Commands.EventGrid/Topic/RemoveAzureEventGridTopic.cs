@@ -67,30 +67,30 @@ namespace Microsoft.Azure.Commands.EventGrid
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(this.Name, $"Remove topic {this.Name} in resource group {this.ResourceGroupName}"))
+            if (ShouldProcess(Name, $"Remove topic {Name} in resource group {ResourceGroupName}"))
             {
                 string resourceGroupName = string.Empty;
                 string topicName = string.Empty;
 
-                if (!string.IsNullOrEmpty(this.Name))
+                if (!string.IsNullOrEmpty(Name))
                 {
-                    resourceGroupName = this.ResourceGroupName;
-                    topicName = this.Name;
+                    resourceGroupName = ResourceGroupName;
+                    topicName = Name;
                 }
-                else if (!string.IsNullOrEmpty(this.ResourceId))
+                else if (!string.IsNullOrEmpty(ResourceId))
                 {
-                    EventGridUtils.GetResourceGroupNameAndTopicName(this.ResourceId, out resourceGroupName, out topicName);
+                    EventGridUtils.GetResourceGroupNameAndTopicName(ResourceId, out resourceGroupName, out topicName);
                 }
-                else if (this.InputObject != null)
+                else if (InputObject != null)
                 {
-                    resourceGroupName = this.InputObject.ResourceGroupName;
-                    topicName = this.InputObject.TopicName;
+                    resourceGroupName = InputObject.ResourceGroupName;
+                    topicName = InputObject.TopicName;
                 }
 
-                this.Client.DeleteTopic(resourceGroupName, topicName);
-                if (this.PassThru)
+                Client.DeleteTopic(resourceGroupName, topicName);
+                if (PassThru)
                 {
-                    this.WriteObject(true);
+                    WriteObject(true);
                 }
             }
         }

@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
 
         public TestController()
         {
-            this.helper = new EnvironmentSetupHelper();
+            helper = new EnvironmentSetupHelper();
             ResourceNamespace = "Microsoft.RecoveryServices";
         }
 
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
         private ResourceManagementNS.ResourceManagementClient GetRmClient()
         {
             return LegacyTest.TestBase.GetServiceClient<ResourceManagementNS.ResourceManagementClient>(
-                this.csmTestFactory);
+                csmTestFactory);
         }
 
         private ResourceManagementRestNS.ResourceManagementClient GetRmRestClient(MockContext context)

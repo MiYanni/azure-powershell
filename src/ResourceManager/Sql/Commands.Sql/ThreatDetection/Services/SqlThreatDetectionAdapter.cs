@@ -166,7 +166,7 @@ namespace Microsoft.Azure.Commands.Sql.ThreatDetection.Services
         /// </summary>
         private static void ModelizeDisabledAlerts(BaseThreatDetectionPolicyModel model, string disabledAlerts)
         {
-            Func<string, DetectionType> toDetectionType = (s) =>
+            Func<string, DetectionType> toDetectionType = s =>
             {
                 DetectionType value;
                 Enum.TryParse(s.Trim(), true, out value);

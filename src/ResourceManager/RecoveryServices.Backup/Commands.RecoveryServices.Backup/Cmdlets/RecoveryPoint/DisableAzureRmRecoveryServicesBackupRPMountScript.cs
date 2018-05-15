@@ -50,14 +50,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 base.ExecuteCmdlet();
 
                 PsBackupProviderManager providerManager = new PsBackupProviderManager(
-                    new Dictionary<Enum, object>()
-                {
+                    new Dictionary<Enum, object>
+                    {
                     {RestoreBackupItemParams.RecoveryPoint, RecoveryPoint}
                 }, ServiceClientAdapter);
 
                 IPsBackupProvider psBackupProvider = providerManager.GetProviderInstance(
                     RecoveryPoint.WorkloadType, RecoveryPoint.BackupManagementType);
-                string content = string.Empty;
                 psBackupProvider.RevokeItemLevelRecoveryAccess();
 
                 if (PassThru.IsPresent)
@@ -65,7 +64,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     WriteObject(RecoveryPoint);
                 }
 
-                WriteDebug(string.Format("Disabled the mount script of recovery point"));
+                WriteDebug("Disabled the mount script of recovery point");
             }, ShouldProcess(RecoveryPoint.ItemName, VerbsLifecycle.Disable));
         }
     }

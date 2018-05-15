@@ -60,10 +60,10 @@ namespace Microsoft.Azure.Commands.Network
         {
             var vRoutes = new PSRoute();
 
-            vRoutes.AddressPrefix = this.AddressPrefix;
-            vRoutes.NextHopType = this.NextHopType;
-            vRoutes.NextHopIpAddress = this.NextHopIpAddress;
-            vRoutes.Name = this.Name;
+            vRoutes.AddressPrefix = AddressPrefix;
+            vRoutes.NextHopType = NextHopType;
+            vRoutes.NextHopIpAddress = NextHopIpAddress;
+            vRoutes.Name = Name;
             WriteObject(vRoutes, true);
         }
     }

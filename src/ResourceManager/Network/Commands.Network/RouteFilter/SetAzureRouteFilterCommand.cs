@@ -19,10 +19,10 @@ namespace Microsoft.Azure.Commands.Network
 
     using AutoMapper;
 
-    using Microsoft.Azure.Commands.Network.Models;
-    using MNM = Microsoft.Azure.Management.Network.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.Tags;
-    using Microsoft.Azure.Management.Network;
+    using Models;
+    using MNM = Management.Network.Models;
+    using ResourceManager.Common.Tags;
+    using Management.Network;
 
     [Cmdlet(VerbsCommon.Set, "AzureRmRouteFilter", SupportsShouldProcess = true), OutputType(typeof(PSRouteFilter))]
     public class SetAzureRouteFilterCommand : RouteFilterBaseCmdlet
@@ -48,19 +48,19 @@ namespace Microsoft.Azure.Commands.Network
 
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Properties.Resources.OverwritingResource, this.RouteFilter.Name),
+                string.Format(Properties.Resources.OverwritingResource, RouteFilter.Name),
                 Properties.Resources.CreatingResourceMessage,
-                this.RouteFilter.Name,
+                RouteFilter.Name,
                 () =>
                 {
                     // Map to the sdk object
-                    var routeFilterModel = NetworkResourceManagerProfile.Mapper.Map<MNM.RouteFilter>(this.RouteFilter);
-                    routeFilterModel.Tags = TagsConversionHelper.CreateTagDictionary(this.RouteFilter.Tag, validate: true);
+                    var routeFilterModel = NetworkResourceManagerProfile.Mapper.Map<MNM.RouteFilter>(RouteFilter);
+                    routeFilterModel.Tags = TagsConversionHelper.CreateTagDictionary(RouteFilter.Tag, validate: true);
 
                     // Execute the PUT RouteTable call
-                    this.RouteFilterClient.CreateOrUpdate(this.RouteFilter.ResourceGroupName, this.RouteFilter.Name, routeFilterModel);
+                    RouteFilterClient.CreateOrUpdate(RouteFilter.ResourceGroupName, RouteFilter.Name, routeFilterModel);
 
-                    var getRouteTable = this.GetRouteFilter(this.RouteFilter.ResourceGroupName, this.RouteFilter.Name);
+                    var getRouteTable = GetRouteFilter(RouteFilter.ResourceGroupName, RouteFilter.Name);
                     WriteObject(getRouteTable);
                 });
         }

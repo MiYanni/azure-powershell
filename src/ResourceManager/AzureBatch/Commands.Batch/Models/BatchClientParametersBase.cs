@@ -27,8 +27,8 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("context");
             }
 
-            this.Context = context;
-            this.AdditionalBehaviors = additionalBehaviors;
+            Context = context;
+            AdditionalBehaviors = additionalBehaviors;
         }
 
         /// <summary>

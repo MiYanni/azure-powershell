@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             }
 
             _subscriptionId = Guid.Parse(context.Subscription.Id);
-            this.DataFactoryManagementClient = DataFactoryClient.CreateAdfClient(context);
+            DataFactoryManagementClient = CreateAdfClient(context);
         }
 
         /// <summary>

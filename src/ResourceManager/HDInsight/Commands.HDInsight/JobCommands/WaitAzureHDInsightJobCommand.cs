@@ -108,7 +108,7 @@ namespace Microsoft.Azure.Commands.HDInsight
                 waitInterval = TimeSpan.FromSeconds(WaitIntervalInSeconds);
             }
 
-            JobDetailRootJsonObject jobDetail = null;
+            JobDetailRootJsonObject jobDetail;
 
             try
             {

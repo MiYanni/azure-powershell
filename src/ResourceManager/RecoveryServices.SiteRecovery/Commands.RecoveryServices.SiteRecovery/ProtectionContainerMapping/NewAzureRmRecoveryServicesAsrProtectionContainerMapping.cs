@@ -87,17 +87,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.Name,
+            if (ShouldProcess(
+                Name,
                 VerbsCommon.New))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.EnterpriseToAzure:
-                        this.EnterpriseToAzureAndVMwareToAzureAssociation();
+                        EnterpriseToAzureAndVMwareToAzureAssociation();
                         break;
                     case ASRParameterSets.EnterpriseToEnterprise:
-                        this.A2AE2EAndVMwareToVMwareAssociation();
+                        A2AE2EAndVMwareToVMwareAssociation();
                         break;
                 }
             }
@@ -111,25 +111,25 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var inputProperties = new CreateProtectionContainerMappingInputProperties
             {
-                PolicyId = this.Policy.ID,
+                PolicyId = Policy.ID,
                 ProviderSpecificInput = new ReplicationProviderSpecificContainerMappingInput(),
                 TargetProtectionContainerId = targetProtectionContainerId
             };
 
             var input = new CreateProtectionContainerMappingInput { Properties = inputProperties };
 
-            var response = this.RecoveryServicesClient.ConfigureProtection(
+            var response = RecoveryServicesClient.ConfigureProtection(
                 Utilities.GetValueFromArmId(
-                    this.PrimaryProtectionContainer.ID,
+                    PrimaryProtectionContainer.ID,
                     ARMResourceTypeConstants.ReplicationFabrics),
-                this.PrimaryProtectionContainer.Name,
-                this.Name,
+                PrimaryProtectionContainer.Name,
+                Name,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -138,12 +138,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void EnterpriseToAzureAndVMwareToAzureAssociation()
         {
             if (string.Compare(
-                    this.Policy.ReplicationProvider,
+                    Policy.ReplicationProvider,
                     Constants.HyperVReplicaAzure,
                     StringComparison.OrdinalIgnoreCase) !=
                 0 &&
                 string.Compare(
-                    this.Policy.ReplicationProvider,
+                    Policy.ReplicationProvider,
                     Constants.InMageAzureV2,
                     StringComparison.OrdinalIgnoreCase) !=
                 0)
@@ -151,10 +151,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.IncorrectReplicationProvider,
-                        this.Policy.ReplicationProvider));
+                        Policy.ReplicationProvider));
             }
 
-            this.Associate(Constants.AzureContainer);
+            Associate(Constants.AzureContainer);
         }
 
         /// <summary>
@@ -162,34 +162,34 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void A2AE2EAndVMwareToVMwareAssociation()
         {
-            if ((string.Compare(
-                     this.Policy.ReplicationProvider,
-                     Constants.HyperVReplica2012,
+            if (string.Compare(
+                    Policy.ReplicationProvider,
+                    Constants.HyperVReplica2012,
+                    StringComparison.OrdinalIgnoreCase) !=
+                0 &&
+                string.Compare(
+                    Policy.ReplicationProvider,
+                    Constants.HyperVReplica2012R2,
+                    StringComparison.OrdinalIgnoreCase) !=
+                0 &&
+                 string.Compare(
+                     Policy.ReplicationProvider,
+                     Constants.InMage,
                      StringComparison.OrdinalIgnoreCase) !=
-                 0) &&
-                (string.Compare(
-                     this.Policy.ReplicationProvider,
-                     Constants.HyperVReplica2012R2,
+                 0 &&
+                 string.Compare(
+                     Policy.ReplicationProvider,
+                     Constants.A2A,
                      StringComparison.OrdinalIgnoreCase) !=
-                 0) &&
-                 (string.Compare(
-                      this.Policy.ReplicationProvider,
-                      Constants.InMage,
-                      StringComparison.OrdinalIgnoreCase) !=
-                 0) &&
-                 (string.Compare(
-                      this.Policy.ReplicationProvider,
-                      Constants.A2A,
-                      StringComparison.OrdinalIgnoreCase) !=
-                 0))
+                 0)
             {
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.IncorrectReplicationProvider,
-                        this.Policy.ReplicationProvider));
+                        Policy.ReplicationProvider));
             }
 
-            this.Associate(this.RecoveryProtectionContainer.ID);
+            Associate(RecoveryProtectionContainer.ID);
         }
     }
 }

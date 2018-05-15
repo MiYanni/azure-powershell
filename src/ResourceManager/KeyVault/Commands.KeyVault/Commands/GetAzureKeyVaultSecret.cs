@@ -248,7 +248,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                     VaultName = vaultName,
                     NextLink = null
                 },
-                (options) => DataServiceClient.GetDeletedSecrets(options));
+                options => DataServiceClient.GetDeletedSecrets(options));
 
         private void GetAndWriteSecrets(string vaultName) =>
             GetAndWriteObjects(new KeyVaultObjectFilterOptions
@@ -256,7 +256,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                     VaultName = vaultName,
                     NextLink = null
                 }, 
-                (options) => DataServiceClient.GetSecrets(options));
+                options => DataServiceClient.GetSecrets(options));
 
         private void GetAndWriteSecretVersions(string vaultName, string name, string currentSecretVersion) =>
             GetAndWriteObjects(new KeyVaultObjectFilterOptions
@@ -265,6 +265,6 @@ namespace Microsoft.Azure.Commands.KeyVault
                     Name = name,
                     NextLink = null
                 }, 
-                (options) => DataServiceClient.GetSecretVersions(options).Where(s => s.Version != currentSecretVersion));
+                options => DataServiceClient.GetSecretVersions(options).Where(s => s.Version != currentSecretVersion));
     }
 }

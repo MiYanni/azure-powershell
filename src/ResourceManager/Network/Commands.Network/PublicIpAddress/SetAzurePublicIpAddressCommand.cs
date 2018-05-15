@@ -38,18 +38,18 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!this.IsPublicIpAddressPresent(this.PublicIpAddress.ResourceGroupName, this.PublicIpAddress.Name))
+            if (!IsPublicIpAddressPresent(PublicIpAddress.ResourceGroupName, PublicIpAddress.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Map to the sdk object
-            var publicIpModel = NetworkResourceManagerProfile.Mapper.Map<MNM.PublicIPAddress>(this.PublicIpAddress);
-            publicIpModel.Tags = TagsConversionHelper.CreateTagDictionary(this.PublicIpAddress.Tag, validate: true);
+            var publicIpModel = NetworkResourceManagerProfile.Mapper.Map<MNM.PublicIPAddress>(PublicIpAddress);
+            publicIpModel.Tags = TagsConversionHelper.CreateTagDictionary(PublicIpAddress.Tag, validate: true);
 
-            this.PublicIpAddressClient.CreateOrUpdate(this.PublicIpAddress.ResourceGroupName, this.PublicIpAddress.Name, publicIpModel);
+            PublicIpAddressClient.CreateOrUpdate(PublicIpAddress.ResourceGroupName, PublicIpAddress.Name, publicIpModel);
 
-            var getPublicIp = this.GetPublicIpAddress(this.PublicIpAddress.ResourceGroupName, this.PublicIpAddress.Name);
+            var getPublicIp = GetPublicIpAddress(PublicIpAddress.ResourceGroupName, PublicIpAddress.Name);
 
             WriteObject(getPublicIp);
         }

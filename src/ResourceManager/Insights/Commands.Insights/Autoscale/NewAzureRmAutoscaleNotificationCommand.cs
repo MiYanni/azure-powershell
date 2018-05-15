@@ -62,23 +62,22 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (!(this.SendEmailToSubscriptionAdministrator || this.SendEmailToSubscriptionCoAdministrator) &&
-                ((this.Webhook == null || this.Webhook.Length < 1) && (this.CustomEmail == null || this.CustomEmail.Length < 1)))
+            if (!(SendEmailToSubscriptionAdministrator || SendEmailToSubscriptionCoAdministrator) && (Webhook == null || Webhook.Length < 1) && (CustomEmail == null || CustomEmail.Length < 1))
             {
                 throw new ArgumentException("At least one Webhook or one CustomeEmail must be present, or the notification must be sent to the admin or co-admin");
             }
 
             var emailNotification = new EmailNotification
             {
-                CustomEmails = this.CustomEmail,
-                SendToSubscriptionAdministrator = this.SendEmailToSubscriptionAdministrator,
-                SendToSubscriptionCoAdministrators = this.SendEmailToSubscriptionCoAdministrator,
+                CustomEmails = CustomEmail,
+                SendToSubscriptionAdministrator = SendEmailToSubscriptionAdministrator,
+                SendToSubscriptionCoAdministrators = SendEmailToSubscriptionCoAdministrator,
             };
 
             var notification = new AutoscaleNotification
             {
                 Email = emailNotification,
-                Webhooks = this.Webhook
+                Webhooks = Webhook
             };
 
             WriteObject(notification);

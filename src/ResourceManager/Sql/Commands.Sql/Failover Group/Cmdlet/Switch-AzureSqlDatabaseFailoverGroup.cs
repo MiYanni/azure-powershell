@@ -65,8 +65,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> GetEntity()
         {
-            return new List<AzureSqlFailoverGroupModel>() {
-                ModelAdapter.GetFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName)
+            return new List<AzureSqlFailoverGroupModel>
+            {
+                ModelAdapter.GetFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName)
             };
         }
 
@@ -87,12 +88,13 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> PersistChanges(IEnumerable<AzureSqlFailoverGroupModel> entity)
         {
-            return new List<AzureSqlFailoverGroupModel>() {
+            return new List<AzureSqlFailoverGroupModel>
+            {
                 ModelAdapter.Failover(
-                    this.ResourceGroupName,
-                    this.ServerName,
-                    this.FailoverGroupName,
-                    this.AllowDataLoss.IsPresent)
+                    ResourceGroupName,
+                    ServerName,
+                    FailoverGroupName,
+                    AllowDataLoss.IsPresent)
            };
         }
     }

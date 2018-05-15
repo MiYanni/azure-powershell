@@ -28,28 +28,28 @@ namespace Microsoft.Azure.Commands.AzureBackup.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void AzureBackupMarsContainerScenarioTests()
         {
-            this.RunPowerShellTest("Test-AzureBackupMarsContainerScenario");
+            RunPowerShellTest("Test-AzureBackupMarsContainerScenario");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void AzureBackupRegisterContainerScenarioTests()
         {
-            this.RunPowerShellTest("Test-RegisterAzureBackupContainer");
+            RunPowerShellTest("Test-RegisterAzureBackupContainer");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void AzureBackupUnregisterContainerScenarioTests()
         {
-            this.RunPowerShellTest("Test-UnregisterAzureBackupContainer");
+            RunPowerShellTest("Test-UnregisterAzureBackupContainer");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void AzureBackupContainerScenarioTests()
         {
-            this.RunPowerShellTest("Test-AzureBackupContainerScenario");
+            RunPowerShellTest("Test-AzureBackupContainerScenario");
         }
     }
 }

@@ -48,10 +48,10 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
             ConfirmAction(
                 Properties.Resources.RemoveResourceMessage,
-                this.Name,
+                Name,
                 () =>
                 {
-                    this.NetworkWatcherClient.Delete(this.ResourceGroupName, this.Name);
+                    NetworkWatcherClient.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

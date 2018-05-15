@@ -68,9 +68,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         internal IEnumerable<AzureSqlDatabaseRestorePointModel> ListRestorePoints(string resourceGroup, string serverName, string databaseName)
         {
             var resp = Communicator.ListRestorePoints(resourceGroup, serverName, databaseName);
-            return resp.Select((restorePoint) =>
+            return resp.Select(restorePoint =>
             {
-                return new AzureSqlDatabaseRestorePointModel()
+                return new AzureSqlDatabaseRestorePointModel
                 {
                     ResourceGroupName = resourceGroup,
                     ServerName = serverName,
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
             var resp = Communicator.NewRestorePoint(entity.ResourceGroupName, entity.ServerName, entity.DatabaseName, definition);
             return new List<AzureSqlDatabaseRestorePointModel>
             {
-                new AzureSqlDatabaseRestorePointModel()
+                new AzureSqlDatabaseRestorePointModel
                 {
                     ResourceGroupName = entity.ResourceGroupName,
                     ServerName = entity.ServerName,
@@ -136,9 +136,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         internal ICollection<AzureSqlDatabaseGeoBackupModel> ListGeoBackups(string resourceGroup, string serverName)
         {
             var resp = Communicator.ListGeoBackups(resourceGroup, serverName);
-            return resp.Select((geoBackup) =>
+            return resp.Select(geoBackup =>
             {
-                return new AzureSqlDatabaseGeoBackupModel()
+                return new AzureSqlDatabaseGeoBackupModel
                 {
                     ResourceGroupName = resourceGroup,
                     DatabaseName = geoBackup.Name,
@@ -159,9 +159,9 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         internal ICollection<AzureSqlDeletedDatabaseBackupModel> ListDeletedDatabaseBackups(string resourceGroup, string serverName)
         {
             var resp = Communicator.ListDeletedDatabaseBackups(resourceGroup, serverName);
-            return resp.Select((deletedDatabaseBackup) =>
+            return resp.Select(deletedDatabaseBackup =>
             {
-                return new AzureSqlDeletedDatabaseBackupModel()
+                return new AzureSqlDeletedDatabaseBackupModel
                 {
                     ResourceGroupName = resourceGroup,
                     ServerName = serverName,
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         internal AzureSqlDatabaseGeoBackupModel GetGeoBackup(string resourceGroup, string serverName, string databaseName)
         {
             var geoBackup = Communicator.GetGeoBackup(resourceGroup, serverName, databaseName);
-            return new AzureSqlDatabaseGeoBackupModel()
+            return new AzureSqlDatabaseGeoBackupModel
             {
                 ResourceGroupName = resourceGroup,
                 DatabaseName = geoBackup.Name,
@@ -209,7 +209,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         internal AzureSqlDeletedDatabaseBackupModel GetDeletedDatabaseBackup(string resourceGroup, string serverName, string databaseName)
         {
             var deletedDatabaseBackup = Communicator.GetDeletedDatabaseBackup(resourceGroup, serverName, databaseName);
-            return new AzureSqlDeletedDatabaseBackupModel()
+            return new AzureSqlDeletedDatabaseBackupModel
             {
                 ResourceGroupName = resourceGroup,
                 ServerName = serverName,
@@ -239,7 +239,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                 resourceGroup,
                 serverName,
                 "RegisteredVault");
-            return new AzureSqlServerBackupLongTermRetentionVaultModel()
+            return new AzureSqlServerBackupLongTermRetentionVaultModel
             {
                 Location = baVault.Location,
                 ResourceGroupName = resourceGroup,
@@ -269,7 +269,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                     serverName,
                     databaseName,
                     "Default");
-                return new AzureSqlDatabaseBackupLongTermRetentionPolicyModel()
+                return new AzureSqlDatabaseBackupLongTermRetentionPolicyModel
                 {
                     Location = baPolicy.Location,
                     ResourceGroupName = resourceGroup,
@@ -279,23 +279,20 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                     RecoveryServicesBackupPolicyResourceId = baPolicy.Properties.RecoveryServicesBackupPolicyResourceId,
                 };
             }
-            else
+            Management.Sql.Models.BackupLongTermRetentionPolicy response = Communicator.GetDatabaseLongTermRetentionPolicy(
+                resourceGroup,
+                serverName,
+                databaseName);
+            return new AzureSqlDatabaseBackupLongTermRetentionPolicyModel
             {
-                Management.Sql.Models.BackupLongTermRetentionPolicy response = Communicator.GetDatabaseLongTermRetentionPolicy(
-                    resourceGroup,
-                    serverName,
-                    databaseName);
-                return new AzureSqlDatabaseBackupLongTermRetentionPolicyModel()
-                {
-                    ResourceGroupName = resourceGroup,
-                    ServerName = serverName,
-                    DatabaseName = databaseName,
-                    WeeklyRetention = response.WeeklyRetention,
-                    MonthlyRetention = response.MonthlyRetention,
-                    YearlyRetention = response.YearlyRetention,
-                    WeekOfYear = response.WeekOfYear
-                };
-            }
+                ResourceGroupName = resourceGroup,
+                ServerName = serverName,
+                DatabaseName = databaseName,
+                WeeklyRetention = response.WeeklyRetention,
+                MonthlyRetention = response.MonthlyRetention,
+                YearlyRetention = response.YearlyRetention,
+                WeekOfYear = response.WeekOfYear
+            };
         }
 
         /// <summary>
@@ -313,15 +310,15 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                 resourceGroup,
                 serverName,
                 "RegisteredVault",
-                new BackupLongTermRetentionVaultCreateOrUpdateParameters()
-            {
+                new BackupLongTermRetentionVaultCreateOrUpdateParameters
+                {
                 Location = model.Location,
-                Properties = new BackupLongTermRetentionVaultProperties()
+                Properties = new BackupLongTermRetentionVaultProperties
                 {
                     RecoveryServicesVaultResourceId = model.RecoveryServicesVaultResourceId
                 }
             });
-            return new AzureSqlServerBackupLongTermRetentionVaultModel()
+            return new AzureSqlServerBackupLongTermRetentionVaultModel
             {
                 Location = baVault.Location,
                 ResourceGroupName = resourceGroup,
@@ -350,16 +347,16 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                     serverName,
                     databaseName,
                     "Default",
-                    new DatabaseBackupLongTermRetentionPolicyCreateOrUpdateParameters()
+                    new DatabaseBackupLongTermRetentionPolicyCreateOrUpdateParameters
                     {
                         Location = model.Location,
-                        Properties = new DatabaseBackupLongTermRetentionPolicyProperties()
+                        Properties = new DatabaseBackupLongTermRetentionPolicyProperties
                         {
                             State = model.State,
                             RecoveryServicesBackupPolicyResourceId = model.RecoveryServicesBackupPolicyResourceId,
                         }
                     });
-                return new AzureSqlDatabaseBackupLongTermRetentionPolicyModel()
+                return new AzureSqlDatabaseBackupLongTermRetentionPolicyModel
                 {
                     Location = baPolicy.Location,
                     ResourceGroupName = resourceGroup,
@@ -369,30 +366,27 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                     RecoveryServicesBackupPolicyResourceId = baPolicy.Properties.RecoveryServicesBackupPolicyResourceId,
                 };
             }
-            else
-            {
-                Management.Sql.Models.BackupLongTermRetentionPolicy response = Communicator.SetDatabaseLongTermRetentionPolicy(
-                    resourceGroup,
-                    serverName,
-                    databaseName,
-                    new Management.Sql.Models.BackupLongTermRetentionPolicy()
-                    {
-                        WeeklyRetention = model.WeeklyRetention,
-                        MonthlyRetention = model.MonthlyRetention,
-                        YearlyRetention = model.YearlyRetention,
-                        WeekOfYear = model.WeekOfYear
-                    });
-                return new AzureSqlDatabaseBackupLongTermRetentionPolicyModel()
+            Management.Sql.Models.BackupLongTermRetentionPolicy response = Communicator.SetDatabaseLongTermRetentionPolicy(
+                resourceGroup,
+                serverName,
+                databaseName,
+                new Management.Sql.Models.BackupLongTermRetentionPolicy
                 {
-                    ResourceGroupName = resourceGroup,
-                    ServerName = serverName,
-                    DatabaseName = databaseName,
-                    WeeklyRetention = response.WeeklyRetention,
-                    MonthlyRetention = response.MonthlyRetention,
-                    YearlyRetention = response.YearlyRetention,
-                    WeekOfYear = response.WeekOfYear
-                };
-            }
+                    WeeklyRetention = model.WeeklyRetention,
+                    MonthlyRetention = model.MonthlyRetention,
+                    YearlyRetention = model.YearlyRetention,
+                    WeekOfYear = model.WeekOfYear
+                });
+            return new AzureSqlDatabaseBackupLongTermRetentionPolicyModel
+            {
+                ResourceGroupName = resourceGroup,
+                ServerName = serverName,
+                DatabaseName = databaseName,
+                WeeklyRetention = response.WeeklyRetention,
+                MonthlyRetention = response.MonthlyRetention,
+                YearlyRetention = response.YearlyRetention,
+                WeekOfYear = response.WeekOfYear
+            };
         }
 
         /// <summary>
@@ -414,21 +408,18 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
         {
             if (!string.IsNullOrWhiteSpace(backupName))
             {
-                return new List<AzureSqlDatabaseLongTermRetentionBackupModel>()
+                return new List<AzureSqlDatabaseLongTermRetentionBackupModel>
                 {
                     GetBackupModel(Communicator.GetDatabaseLongTermRetentionBackup(locationName, serverName, databaseName, backupName), locationName)
                 };
             }
-            else
-            {
-                return Communicator.GetDatabaseLongTermRetentionBackups(locationName, serverName, databaseName, onlyLatestPerDatabase, databaseState)
-                    .Select(b => GetBackupModel(b, locationName));
-            }
+            return Communicator.GetDatabaseLongTermRetentionBackups(locationName, serverName, databaseName, onlyLatestPerDatabase, databaseState)
+                .Select(b => GetBackupModel(b, locationName));
         }
 
         private AzureSqlDatabaseLongTermRetentionBackupModel GetBackupModel(Management.Sql.Models.LongTermRetentionBackup backup, string locationName)
         {
-            return new AzureSqlDatabaseLongTermRetentionBackupModel()
+            return new AzureSqlDatabaseLongTermRetentionBackupModel
             {
                 BackupExpirationTime = backup.BackupExpirationTime,
                 BackupName = backup.Name,
@@ -475,7 +466,7 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                 serverName,
                 databaseName,
                 "Default");
-            return new AzureSqlDatabaseGeoBackupPolicyModel()
+            return new AzureSqlDatabaseGeoBackupPolicyModel
             {
                 Location = geoBackupPolicy.Location,
                 ResourceGroupName = resourceGroup,
@@ -505,16 +496,16 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
                 serverName,
                 databaseName,
                 "Default",
-                new GeoBackupPolicyCreateOrUpdateParameters()
+                new GeoBackupPolicyCreateOrUpdateParameters
                 {
                     Location = model.Location,
-                    Properties = new GeoBackupPolicyProperties()
+                    Properties = new GeoBackupPolicyProperties
                     {
                         State = model.State.ToString(),
                     }
                 });
 
-            return new AzureSqlDatabaseGeoBackupPolicyModel()
+            return new AzureSqlDatabaseGeoBackupPolicyModel
             {
                 Location = geoBackupPolicy.Location,
                 ResourceGroupName = resourceGroup,
@@ -544,26 +535,23 @@ namespace Microsoft.Azure.Commands.Sql.Backup.Services
 
                 return new AzureSqlDatabaseModel(resourceGroup, model.ServerName, database);
             }
-            else
+            DatabaseCreateOrUpdateParameters parameters = new DatabaseCreateOrUpdateParameters
             {
-                DatabaseCreateOrUpdateParameters parameters = new DatabaseCreateOrUpdateParameters()
+                Location = model.Location,
+                Properties = new DatabaseCreateOrUpdateProperties
                 {
-                    Location = model.Location,
-                    Properties = new DatabaseCreateOrUpdateProperties()
-                    {
-                        Edition = model.Edition == DatabaseEdition.None ? null : model.Edition.ToString(),
-                        RequestedServiceObjectiveId = model.RequestedServiceObjectiveId,
-                        ElasticPoolName = model.ElasticPoolName,
-                        RequestedServiceObjectiveName = model.RequestedServiceObjectiveName,
-                        SourceDatabaseId = resourceId,
-                        RecoveryServicesRecoveryPointResourceId = resourceId,
-                        RestorePointInTime = restorePointInTime,
-                        CreateMode = model.CreateMode
-                    }
-                };
-                var resp = Communicator.LegacyRestoreDatabase(resourceGroup, model.ServerName, model.DatabaseName, parameters);
-                return AzureSqlDatabaseAdapter.CreateDatabaseModelFromResponse(resourceGroup, model.ServerName, resp);
-            }
+                    Edition = model.Edition == DatabaseEdition.None ? null : model.Edition.ToString(),
+                    RequestedServiceObjectiveId = model.RequestedServiceObjectiveId,
+                    ElasticPoolName = model.ElasticPoolName,
+                    RequestedServiceObjectiveName = model.RequestedServiceObjectiveName,
+                    SourceDatabaseId = resourceId,
+                    RecoveryServicesRecoveryPointResourceId = resourceId,
+                    RestorePointInTime = restorePointInTime,
+                    CreateMode = model.CreateMode
+                }
+            };
+            var resp = Communicator.LegacyRestoreDatabase(resourceGroup, model.ServerName, model.DatabaseName, parameters);
+            return AzureSqlDatabaseAdapter.CreateDatabaseModelFromResponse(resourceGroup, model.ServerName, resp);
         }
 
         /// <summary>

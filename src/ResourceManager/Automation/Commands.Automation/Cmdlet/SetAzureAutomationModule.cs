@@ -56,9 +56,9 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            var updatedModule = this.AutomationClient.UpdateModule(this.ResourceGroupName, this.AutomationAccountName, Name, ContentLinkUri, ContentLinkVersion);
+            var updatedModule = AutomationClient.UpdateModule(ResourceGroupName, AutomationAccountName, Name, ContentLinkUri, ContentLinkVersion);
 
-            this.WriteObject(updatedModule);
+            WriteObject(updatedModule);
         }
     }
 }

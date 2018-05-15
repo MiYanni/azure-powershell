@@ -79,8 +79,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, ParameterSetName = AutomationCmdletParameterSets.BySynchronousReturnJobOutput, HelpMessage = "Wait for job to complete, suspend, or fail.")]
         public SwitchParameter Wait
         {
-            get { return this.wait; }
-            set { this.wait = value; }
+            get { return wait; }
+            set { wait = value; }
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, ParameterSetName = AutomationCmdletParameterSets.BySynchronousReturnJobOutput, HelpMessage = "Maximum time in seconds to wait for job completion. Default max wait time is 10800 seconds.")]
         public int MaxWaitSeconds
         {
-            get { return this.timeout; }
-            set { this.timeout = value; }
+            get { return timeout; }
+            set { timeout = value; }
         }
 
         /// <summary>
@@ -99,12 +99,12 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            var job = this.AutomationClient.StartRunbook(this.ResourceGroupName, this.AutomationAccountName, this.Name, this.Parameters, this.RunOn);
+            var job = AutomationClient.StartRunbook(ResourceGroupName, AutomationAccountName, Name, Parameters, RunOn);
 
             // if no wait, return job object
-            if (!this.Wait.IsPresent)
+            if (!Wait.IsPresent)
             {
-                this.WriteObject(job);
+                WriteObject(job);
                 return;
             }
 
@@ -118,11 +118,11 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
             var nextLink = string.Empty;
             do
             {
-                var jobOutputList = this.AutomationClient.GetJobStream(this.ResourceGroupName, this.AutomationAccountName, job.JobId, null, StreamType.Output.ToString(), ref nextLink);
+                var jobOutputList = AutomationClient.GetJobStream(ResourceGroupName, AutomationAccountName, job.JobId, null, StreamType.Output.ToString(), ref nextLink);
                 foreach (var jobOutputRecord in jobOutputList)
                 {
-                    var response = this.AutomationClient.GetJobStreamRecordAsPsObject(this.ResourceGroupName, this.AutomationAccountName, job.JobId, jobOutputRecord.StreamRecordId);
-                    this.GenerateCmdletOutput(response);
+                    var response = AutomationClient.GetJobStreamRecordAsPsObject(ResourceGroupName, AutomationAccountName, job.JobId, jobOutputRecord.StreamRecordId);
+                    GenerateCmdletOutput(response);
                 }
             } while (!string.IsNullOrEmpty(nextLink));
         }
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                 Thread.Sleep(TimeSpan.FromSeconds(pollingIntervalInSeconds));
                 timeoutIncrement += pollingIntervalInSeconds;
 
-                var job = this.AutomationClient.GetJob(this.ResourceGroupName, this.AutomationAccountName, jobId);
+                var job = AutomationClient.GetJob(ResourceGroupName, AutomationAccountName, jobId);
                 if (!IsJobTerminalState(job))
                 {
                     if (IsVerbose()) WriteVerbose(string.Format(Resources.JobProgressState, job.JobId, job.Status, DateTime.Now));
@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                     if (IsVerbose()) WriteVerbose(string.Format(Resources.JobTerminalState, job.JobId, job.Status, DateTime.Now));
                     return true;
                 }
-            } while (this.MaxWaitSeconds < 0 || timeoutIncrement <= this.MaxWaitSeconds);
+            } while (MaxWaitSeconds < 0 || timeoutIncrement <= MaxWaitSeconds);
 
             return false;
         }

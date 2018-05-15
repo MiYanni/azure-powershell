@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.StreamAnalytics
                 Name = string.Empty;
             }
 
-            OutputFilterOptions filterOptions = new OutputFilterOptions()
+            OutputFilterOptions filterOptions = new OutputFilterOptions
             {
                 Name = Name,
                 JobName = JobName,

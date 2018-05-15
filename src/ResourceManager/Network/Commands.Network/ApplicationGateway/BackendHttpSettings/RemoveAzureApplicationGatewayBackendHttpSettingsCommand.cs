@@ -37,15 +37,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var backendHttpSettings = this.ApplicationGateway.BackendHttpSettingsCollection.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var backendHttpSettings = ApplicationGateway.BackendHttpSettingsCollection.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (backendHttpSettings != null)
             {
-                this.ApplicationGateway.BackendHttpSettingsCollection.Remove(backendHttpSettings);
+                ApplicationGateway.BackendHttpSettingsCollection.Remove(backendHttpSettings);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

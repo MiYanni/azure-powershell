@@ -37,13 +37,13 @@ namespace Microsoft.Azure.Commands.EventGrid
 
         public override void ExecuteCmdlet()
         {
-            bool includeEventTypes = this.IncludeEventTypeData.IsPresent;
+            bool includeEventTypes = IncludeEventTypeData.IsPresent;
 
-            if (string.IsNullOrEmpty(this.Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 List<PSTopicTypeInfoListInstance> psTopicTypesList = new List<PSTopicTypeInfoListInstance>();
 
-                var topicTypes = this.Client.ListTopicTypes();
+                var topicTypes = Client.ListTopicTypes();
 
                 foreach (TopicTypeInfo topicType in topicTypes)
                 {
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.EventGrid
 
                     if (includeEventTypes)
                     {
-                        IEnumerable<EventType> eventTypes = this.Client.ListEventTypes(topicType.Name);
+                        IEnumerable<EventType> eventTypes = Client.ListEventTypes(topicType.Name);
                         psTopicTypeInfo = new PSTopicTypeInfoListInstance(topicType, eventTypes);
                     }
                     else
@@ -62,16 +62,16 @@ namespace Microsoft.Azure.Commands.EventGrid
                     psTopicTypesList.Add(psTopicTypeInfo);
                 }
 
-                this.WriteObject(psTopicTypesList, true);
+                WriteObject(psTopicTypesList, true);
             }
             else
             {
-                var topicType = this.Client.GetTopicType(this.Name);
+                var topicType = Client.GetTopicType(Name);
                 PSTopicTypeInfo psTopicTypeInfo;
 
                 if (includeEventTypes)
                 {
-                    IEnumerable<EventType> eventTypes = this.Client.ListEventTypes(this.Name);
+                    IEnumerable<EventType> eventTypes = Client.ListEventTypes(Name);
                     psTopicTypeInfo = new PSTopicTypeInfo(topicType, eventTypes);
                 }
                 else
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                     psTopicTypeInfo = new PSTopicTypeInfo(topicType);
                 }
 
-                this.WriteObject(psTopicTypeInfo);
+                WriteObject(psTopicTypeInfo);
             }
         }
     }

@@ -79,67 +79,67 @@ namespace Microsoft.Azure.Commands.Dns
             DnsZone result = null;
             DnsZone zoneToUpdate = null;
 
-            if (this.ParameterSetName == FieldsIdsParameterSetName || this.ParameterSetName == FieldsObjectsParameterSetName)
+            if (ParameterSetName == FieldsIdsParameterSetName || ParameterSetName == FieldsObjectsParameterSetName)
             {
-                if (this.Name.EndsWith("."))
+                if (Name.EndsWith("."))
                 {
-                    this.Name = this.Name.TrimEnd('.');
-                    this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", this.Name));
+                    Name = Name.TrimEnd('.');
+                    WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", Name));
                 }
 
-                zoneToUpdate = this.DnsClient.GetDnsZone(this.Name, this.ResourceGroupName);
+                zoneToUpdate = DnsClient.GetDnsZone(Name, ResourceGroupName);
                 zoneToUpdate.Etag = "*";
-                zoneToUpdate.Tags = this.Tag;
+                zoneToUpdate.Tags = Tag;
 
-                if (this.ParameterSetName == FieldsIdsParameterSetName)
+                if (ParameterSetName == FieldsIdsParameterSetName)
                 {
                     // Change mutable fields if value is passed
-                    if (this.RegistrationVirtualNetworkId != null)
+                    if (RegistrationVirtualNetworkId != null)
                     {
-                        zoneToUpdate.RegistrationVirtualNetworkIds = this.RegistrationVirtualNetworkId;
+                        zoneToUpdate.RegistrationVirtualNetworkIds = RegistrationVirtualNetworkId;
                     }
 
-                    if (this.ResolutionVirtualNetworkId != null)
+                    if (ResolutionVirtualNetworkId != null)
                     {
-                        zoneToUpdate.ResolutionVirtualNetworkIds = this.ResolutionVirtualNetworkId;
+                        zoneToUpdate.ResolutionVirtualNetworkIds = ResolutionVirtualNetworkId;
                     }
                 }
                 else
                 {
                     // Change mutable fields if value is passed
-                    if (this.RegistrationVirtualNetwork != null)
+                    if (RegistrationVirtualNetwork != null)
                     {
-                        zoneToUpdate.RegistrationVirtualNetworkIds = this.RegistrationVirtualNetwork.Select(virtualNetwork => virtualNetwork.Id).ToList();
+                        zoneToUpdate.RegistrationVirtualNetworkIds = RegistrationVirtualNetwork.Select(virtualNetwork => virtualNetwork.Id).ToList();
                     }
 
-                    if (this.ResolutionVirtualNetwork != null)
+                    if (ResolutionVirtualNetwork != null)
                     {
-                        zoneToUpdate.ResolutionVirtualNetworkIds = this.ResolutionVirtualNetwork.Select(virtualNetwork => virtualNetwork.Id).ToList();
+                        zoneToUpdate.ResolutionVirtualNetworkIds = ResolutionVirtualNetwork.Select(virtualNetwork => virtualNetwork.Id).ToList();
                     }
                 }
             }
-            else if (this.ParameterSetName == ObjectParameterSetName)
+            else if (ParameterSetName == ObjectParameterSetName)
             {
-                if ((string.IsNullOrWhiteSpace(this.Zone.Etag) || this.Zone.Etag == "*") && !this.Overwrite.IsPresent)
+                if ((string.IsNullOrWhiteSpace(Zone.Etag) || Zone.Etag == "*") && !Overwrite.IsPresent)
                 {
                     throw new PSArgumentException(string.Format(ProjectResources.Error_EtagNotSpecified, typeof(DnsZone).Name));
                 }
 
-                zoneToUpdate = this.Zone;
+                zoneToUpdate = Zone;
             }
 
             if (zoneToUpdate.Name != null && zoneToUpdate.Name.EndsWith("."))
             {
                 zoneToUpdate.Name = zoneToUpdate.Name.TrimEnd('.');
-                this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", zoneToUpdate.Name));
+                WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", zoneToUpdate.Name));
             }
             ConfirmAction(
                 ProjectResources.Progress_Modifying,
                 zoneToUpdate.Name,
                 () =>
                 {
-                    bool overwrite = this.Overwrite.IsPresent || this.ParameterSetName != ObjectParameterSetName;
-                    result = this.DnsClient.UpdateDnsZone(zoneToUpdate, overwrite);
+                    bool overwrite = Overwrite.IsPresent || ParameterSetName != ObjectParameterSetName;
+                    result = DnsClient.UpdateDnsZone(zoneToUpdate, overwrite);
 
                     WriteVerbose(ProjectResources.Success);
                     WriteObject(result);

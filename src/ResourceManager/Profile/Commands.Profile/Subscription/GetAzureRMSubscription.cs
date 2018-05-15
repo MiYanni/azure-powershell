@@ -57,20 +57,20 @@ namespace Microsoft.Azure.Commands.Profile
             }
 
             _client = new RMProfileClient(profile);
-            _client.WarningLog = (s) => WriteWarning(s);
+            _client.WarningLog = s => WriteWarning(s);
         }
 
         public override void ExecuteCmdlet()
         {
             var tenant = TenantId;
-            if (!string.IsNullOrWhiteSpace(this.SubscriptionName))
+            if (!string.IsNullOrWhiteSpace(SubscriptionName))
             {
                 IAzureSubscription result;
                 try
                 {
-                    if (!this._client.TryGetSubscriptionByName(tenant, this.SubscriptionName, out result))
+                    if (!_client.TryGetSubscriptionByName(tenant, SubscriptionName, out result))
                     {
-                        ThrowSubscriptionNotFoundError(this.TenantId, this.SubscriptionName);
+                        ThrowSubscriptionNotFoundError(TenantId, SubscriptionName);
                     }
 
                     WriteObject(new PSAzureSubscription(result));
@@ -82,14 +82,14 @@ namespace Microsoft.Azure.Commands.Profile
                 }
 
             }
-            else if (!string.IsNullOrWhiteSpace(this.SubscriptionId))
+            else if (!string.IsNullOrWhiteSpace(SubscriptionId))
             {
                 IAzureSubscription result;
                 try
                 {
-                    if (!this._client.TryGetSubscriptionById(tenant, this.SubscriptionId, out result))
+                    if (!_client.TryGetSubscriptionById(tenant, SubscriptionId, out result))
                     {
-                        ThrowSubscriptionNotFoundError(this.TenantId, this.SubscriptionId);
+                        ThrowSubscriptionNotFoundError(TenantId, SubscriptionId);
                     }
 
                     WriteObject( new PSAzureSubscription(result));
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Profile
                 try
                 {
                     var subscriptions = _client.ListSubscriptions(tenant);
-                    WriteObject(subscriptions.Select((s) => new PSAzureSubscription(s)), enumerateCollection: true);
+                    WriteObject(subscriptions.Select(s => new PSAzureSubscription(s)), true);
                 }
                 catch (AadAuthenticationException exception)
                 {

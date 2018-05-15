@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.KeyVault
             ParameterSetName = ByVaultNameParameterSet,
             HelpMessage = "Specifies the name of the resource group associated with the key vault whose network rule is being modified.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
         #endregion
 
@@ -95,28 +95,28 @@ namespace Microsoft.Azure.Commands.KeyVault
 
             if (ShouldProcess(VaultName, Properties.Resources.AddNetworkRule))
             {
-                bool isIpAddressRangeSpecified = base.IsIpAddressRangeSpecified;
-                bool isVirtualNetResIdSpecified = base.IsVirtualNetworkResourceIdSpecified;
+                bool isIpAddressRangeSpecified = IsIpAddressRangeSpecified;
+                bool isVirtualNetResIdSpecified = IsVirtualNetworkResourceIdSpecified;
                 if (!isIpAddressRangeSpecified && !isVirtualNetResIdSpecified)
                 {
                     throw new ArgumentException("At least one of IpAddressRange or VirtualNetworkResourceId must be specified.");
                 }
 
-                base.ValidateArrayInputs();
+                ValidateArrayInputs();
 
-                PSKeyVault existingVault = base.GetCurrentVault(this.VaultName, this.ResourceGroupName);
+                PSKeyVault existingVault = GetCurrentVault(VaultName, ResourceGroupName);
 
                 IList<string> ipAddressRanges = existingVault.NetworkAcls.IpAddressRanges;
                 if (isIpAddressRangeSpecified)
                 {
-                    ipAddressRanges = MergeInputToSource(base.IpAddressRange, existingVault.NetworkAcls.IpAddressRanges);
+                    ipAddressRanges = MergeInputToSource(IpAddressRange, existingVault.NetworkAcls.IpAddressRanges);
                 }
 
                 IList<string> virtualNetworkResourceId = existingVault.NetworkAcls.VirtualNetworkResourceIds;
                 if (isVirtualNetResIdSpecified)
                 {
                     virtualNetworkResourceId =
-                        MergeInputToSource(base.VirtualNetworkResourceId, existingVault.NetworkAcls.VirtualNetworkResourceIds);
+                        MergeInputToSource(VirtualNetworkResourceId, existingVault.NetworkAcls.VirtualNetworkResourceIds);
                 }
 
 

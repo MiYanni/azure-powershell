@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string vmName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMName" },
+                 new[] { "ResourceGroupName", "VMName" },
                  new object[] { resourceGroupName, vmName });
         }
     }
@@ -105,10 +105,10 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.VMName, VerbsData.ConvertTo))
+                if (ShouldProcess(VMName, VerbsData.ConvertTo))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string vmName = this.VMName;
+                    string resourceGroupName = ResourceGroupName;
+                    string vmName = VMName;
 
                     var result = VirtualMachinesClient.ConvertToManagedDisks(resourceGroupName, vmName);
                     var psObject = new PSOperationStatusResponse();
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

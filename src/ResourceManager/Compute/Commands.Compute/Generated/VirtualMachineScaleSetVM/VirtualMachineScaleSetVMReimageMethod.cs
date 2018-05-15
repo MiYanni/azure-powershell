@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string instanceId = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName", "InstanceId" },
+                 new[] { "ResourceGroupName", "VMScaleSetName", "InstanceId" },
                  new object[] { resourceGroupName, vmScaleSetName, instanceId });
         }
     }
@@ -119,27 +119,27 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.VMScaleSetName, VerbsCommon.Set))
+                if (ShouldProcess(VMScaleSetName, VerbsCommon.Set))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string vmScaleSetName = this.VMScaleSetName;
-                    string instanceId = this.InstanceId;
+                    string resourceGroupName = ResourceGroupName;
+                    string vmScaleSetName = VMScaleSetName;
+                    string instanceId = InstanceId;
 
-                    if (this.ParameterSetName.Equals("FriendMethod"))
+                    if (ParameterSetName.Equals("FriendMethod"))
                     {
                         var result = VirtualMachineScaleSetVMsClient.ReimageAll(resourceGroupName, vmScaleSetName, instanceId);
                         var psObject = new PSOperationStatusResponse();
                         ComputeAutomationAutoMapperProfile.Mapper.Map<Azure.Management.Compute.Models.OperationStatusResponse, PSOperationStatusResponse>(result, psObject);
                         WriteObject(psObject);
                     }
-                    else if (this.ParameterSetName.Equals("RedeployMethodParameter"))
+                    else if (ParameterSetName.Equals("RedeployMethodParameter"))
                     {
                         var result = VirtualMachineScaleSetVMsClient.Redeploy(resourceGroupName, vmScaleSetName, instanceId);
                         var psObject = new PSOperationStatusResponse();
                         ComputeAutomationAutoMapperProfile.Mapper.Map<Azure.Management.Compute.Models.OperationStatusResponse, PSOperationStatusResponse>(result, psObject);
                         WriteObject(psObject);
                     }
-                    else if (this.ParameterSetName.Equals("PerformMaintenanceMethodParameter"))
+                    else if (ParameterSetName.Equals("PerformMaintenanceMethodParameter"))
                     {
                         var result = VirtualMachineScaleSetVMsClient.PerformMaintenance(resourceGroupName, vmScaleSetName, instanceId);
                         var psObject = new PSOperationStatusResponse();
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

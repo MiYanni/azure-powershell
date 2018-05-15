@@ -83,13 +83,13 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
                     }
                     case NameParameterSet:
                     {
-                        rgName = this.ResourceGroupName;
-                        name = this.Name;
+                        rgName = ResourceGroupName;
+                        name = Name;
                         break;
                     }
                     case ResourceIdParameterSet:
                     {
-                        ValidateAndExtractName(this.ResourceId, out rgName, out name);
+                        ValidateAndExtractName(ResourceId, out rgName, out name);
                         break;
                     }
                 }
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
                     && !string.IsNullOrEmpty(name)
                     && ShouldProcess(name, string.Format(CultureInfo.CurrentCulture, Resources.RemoveAccount_ProcessMessage, name)))
                 {
-                    this.LocationBasedServicesClient.Accounts.Delete(
+                    LocationBasedServicesClient.Accounts.Delete(
                         rgName,
                         name);
                 }

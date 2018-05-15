@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double DatabaseDtuMax
         {
-            get { return this._databaseDtuMax; }
-            set { this._databaseDtuMax = value; }
+            get { return _databaseDtuMax; }
+            set { _databaseDtuMax = value; }
         }
         
         private double _databaseDtuMin;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double DatabaseDtuMin
         {
-            get { return this._databaseDtuMin; }
-            set { this._databaseDtuMin = value; }
+            get { return _databaseDtuMin; }
+            set { _databaseDtuMin = value; }
         }
         
         private string _databaseEdition;
@@ -63,8 +63,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string DatabaseEdition
         {
-            get { return this._databaseEdition; }
-            set { this._databaseEdition = value; }
+            get { return _databaseEdition; }
+            set { _databaseEdition = value; }
         }
         
         private IList<Database> _databases;
@@ -75,8 +75,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<Database> Databases
         {
-            get { return this._databases; }
-            set { this._databases = value; }
+            get { return _databases; }
+            set { _databases = value; }
         }
         
         private double _dtu;
@@ -86,8 +86,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double Dtu
         {
-            get { return this._dtu; }
-            set { this._dtu = value; }
+            get { return _dtu; }
+            set { _dtu = value; }
         }
         
         private double _maxObservedDtu;
@@ -97,8 +97,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double MaxObservedDtu
         {
-            get { return this._maxObservedDtu; }
-            set { this._maxObservedDtu = value; }
+            get { return _maxObservedDtu; }
+            set { _maxObservedDtu = value; }
         }
         
         private double _maxObservedStorageMB;
@@ -108,8 +108,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double MaxObservedStorageMB
         {
-            get { return this._maxObservedStorageMB; }
-            set { this._maxObservedStorageMB = value; }
+            get { return _maxObservedStorageMB; }
+            set { _maxObservedStorageMB = value; }
         }
         
         private IList<RecommendedElasticPoolMetric> _metrics;
@@ -120,8 +120,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedElasticPoolMetric> Metrics
         {
-            get { return this._metrics; }
-            set { this._metrics = value; }
+            get { return _metrics; }
+            set { _metrics = value; }
         }
         
         private DateTime _observationPeriodEnd;
@@ -131,8 +131,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime ObservationPeriodEnd
         {
-            get { return this._observationPeriodEnd; }
-            set { this._observationPeriodEnd = value; }
+            get { return _observationPeriodEnd; }
+            set { _observationPeriodEnd = value; }
         }
         
         private DateTime _observationPeriodStart;
@@ -142,8 +142,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime ObservationPeriodStart
         {
-            get { return this._observationPeriodStart; }
-            set { this._observationPeriodStart = value; }
+            get { return _observationPeriodStart; }
+            set { _observationPeriodStart = value; }
         }
         
         private double _storageMB;
@@ -153,8 +153,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public double StorageMB
         {
-            get { return this._storageMB; }
-            set { this._storageMB = value; }
+            get { return _storageMB; }
+            set { _storageMB = value; }
         }
         
         /// <summary>
@@ -163,8 +163,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedElasticPoolProperties()
         {
-            this.Databases = new LazyList<Database>();
-            this.Metrics = new LazyList<RecommendedElasticPoolMetric>();
+            Databases = new LazyList<Database>();
+            Metrics = new LazyList<RecommendedElasticPoolMetric>();
         }
     }
 }

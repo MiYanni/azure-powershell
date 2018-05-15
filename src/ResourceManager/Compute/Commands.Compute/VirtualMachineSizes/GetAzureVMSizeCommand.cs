@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Compute
            ParameterSetName = ListAvailableSizesForVirtualMachine,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -83,21 +83,21 @@ namespace Microsoft.Azure.Commands.Compute
             {
                 AzureOperationResponse<IEnumerable<VirtualMachineSize>> result = null;
 
-                if (!string.IsNullOrEmpty(this.VMName))
+                if (!string.IsNullOrEmpty(VMName))
                 {
-                    result = this.VirtualMachineClient.ListAvailableSizesWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName).GetAwaiter().GetResult();
+                    result = VirtualMachineClient.ListAvailableSizesWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName).GetAwaiter().GetResult();
                 }
-                else if (!string.IsNullOrEmpty(this.AvailabilitySetName))
+                else if (!string.IsNullOrEmpty(AvailabilitySetName))
                 {
-                    result = this.AvailabilitySetClient.ListAvailableSizesWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.AvailabilitySetName).GetAwaiter().GetResult();
+                    result = AvailabilitySetClient.ListAvailableSizesWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        AvailabilitySetName).GetAwaiter().GetResult();
                 }
                 else
                 {
-                    result = this.VirtualMachineSizeClient.ListWithHttpMessagesAsync(this.Location.Canonicalize()).GetAwaiter().GetResult();
+                    result = VirtualMachineSizeClient.ListWithHttpMessagesAsync(Location.Canonicalize()).GetAwaiter().GetResult();
                 }
 
                 List<PSVirtualMachineSize> psResultList = new List<PSVirtualMachineSize>();

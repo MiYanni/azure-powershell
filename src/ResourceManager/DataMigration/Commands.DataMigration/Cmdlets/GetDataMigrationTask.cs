@@ -136,33 +136,33 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void ExecuteCmdlet()
         {
-            if (this.ParameterSetName.Equals(ComponentObjectParameterSet))
+            if (ParameterSetName.Equals(ComponentObjectParameterSet))
             {
-                this.ResourceGroupName = InputObject.ResourceGroupName;
-                this.ServiceName = InputObject.ServiceName;
-                this.ProjectName = InputObject.Name;
+                ResourceGroupName = InputObject.ResourceGroupName;
+                ServiceName = InputObject.ServiceName;
+                ProjectName = InputObject.Name;
             }
 
-            if (this.ParameterSetName.Equals(ResourceIdParameterSet))
+            if (ParameterSetName.Equals(ResourceIdParameterSet))
             {
-                DmsResourceIdentifier ids = new DmsResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = ids.ResourceGroupName;
-                this.ServiceName = ids.ServiceName;
-                this.ProjectName = ids.ProjectName;
+                DmsResourceIdentifier ids = new DmsResourceIdentifier(ResourceId);
+                ResourceGroupName = ids.ResourceGroupName;
+                ServiceName = ids.ServiceName;
+                ProjectName = ids.ProjectName;
             }
 
             IList<PSProjectTask> results = new List<PSProjectTask>();
 
-            if ((MyInvocation.BoundParameters.ContainsKey("ServiceName") || !string.IsNullOrEmpty(this.ServiceName))
-                && (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName") || !string.IsNullOrEmpty(this.ResourceGroupName))
-                && (MyInvocation.BoundParameters.ContainsKey("ProjectName") || !string.IsNullOrEmpty(this.ProjectName))
-                && (MyInvocation.BoundParameters.ContainsKey("Name") || !string.IsNullOrEmpty(this.Name)))
+            if ((MyInvocation.BoundParameters.ContainsKey("ServiceName") || !string.IsNullOrEmpty(ServiceName))
+                && (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName") || !string.IsNullOrEmpty(ResourceGroupName))
+                && (MyInvocation.BoundParameters.ContainsKey("ProjectName") || !string.IsNullOrEmpty(ProjectName))
+                && (MyInvocation.BoundParameters.ContainsKey("Name") || !string.IsNullOrEmpty(Name)))
             {
-                results.Add(new PSProjectTask(DataMigrationClient.Tasks.Get(this.ResourceGroupName, this.ServiceName, this.ProjectName, this.Name, this.ExpandFilter())));
+                results.Add(new PSProjectTask(DataMigrationClient.Tasks.Get(ResourceGroupName, ServiceName, ProjectName, Name, ExpandFilter())));
             }
-            else if ((MyInvocation.BoundParameters.ContainsKey("ServiceName") || !string.IsNullOrEmpty(this.ServiceName))
-                && (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName") || !string.IsNullOrEmpty(this.ResourceGroupName))
-                && (MyInvocation.BoundParameters.ContainsKey("ProjectName") || !string.IsNullOrEmpty(this.ProjectName)))
+            else if ((MyInvocation.BoundParameters.ContainsKey("ServiceName") || !string.IsNullOrEmpty(ServiceName))
+                && (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName") || !string.IsNullOrEmpty(ResourceGroupName))
+                && (MyInvocation.BoundParameters.ContainsKey("ProjectName") || !string.IsNullOrEmpty(ProjectName)))
             {
                 string taskType = TaskType?.ToString();
                 DataMigrationClient.Tasks.EnumerateTaskByProjects(ResourceGroupName, ServiceName, ProjectName, taskType)

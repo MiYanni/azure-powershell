@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Attributes
         None = 0,
         Table,
         List,
-        All = Table | List,
+        All = Table | List
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]

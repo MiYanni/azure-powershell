@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServerKeyName
         {
-            get { return this._serverKeyName; }
-            set { this._serverKeyName = value; }
+            get { return _serverKeyName; }
+            set { _serverKeyName = value; }
         }
         
         private string _serverKeyType;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServerKeyType
         {
-            get { return this._serverKeyType; }
-            set { this._serverKeyType = value; }
+            get { return _serverKeyType; }
+            set { _serverKeyType = value; }
         }
         
         /// <summary>

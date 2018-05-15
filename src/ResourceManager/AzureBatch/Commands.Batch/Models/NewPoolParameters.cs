@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 throw new ArgumentNullException("poolId");
             }
 
-            this.PoolId = poolId;
+            PoolId = poolId;
         }
 
         /// <summary>

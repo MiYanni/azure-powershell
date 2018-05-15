@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Database Database
         {
-            get { return this._database; }
-            set { this._database = value; }
+            get { return _database; }
+            set { _database = value; }
         }
         
         /// <summary>

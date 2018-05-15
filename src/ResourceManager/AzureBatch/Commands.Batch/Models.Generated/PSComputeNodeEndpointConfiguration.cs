@@ -26,21 +26,21 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSComputeNodeEndpointConfiguration
     {
         
-        internal Microsoft.Azure.Batch.ComputeNodeEndpointConfiguration omObject;
+        internal ComputeNodeEndpointConfiguration omObject;
         
         private IReadOnlyList<PSInboundEndpoint> inboundEndpoints;
         
-        internal PSComputeNodeEndpointConfiguration(Microsoft.Azure.Batch.ComputeNodeEndpointConfiguration omObject)
+        internal PSComputeNodeEndpointConfiguration(ComputeNodeEndpointConfiguration omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -49,22 +49,22 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.inboundEndpoints == null) 
-                            && (this.omObject.InboundEndpoints != null)))
+                if (inboundEndpoints == null 
+                    && omObject.InboundEndpoints != null)
                 {
                     List<PSInboundEndpoint> list;
                     list = new List<PSInboundEndpoint>();
-                    IEnumerator<Microsoft.Azure.Batch.InboundEndpoint> enumerator;
-                    enumerator = this.omObject.InboundEndpoints.GetEnumerator();
+                    IEnumerator<InboundEndpoint> enumerator;
+                    enumerator = omObject.InboundEndpoints.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSInboundEndpoint(enumerator.Current));
                     }
-                    this.inboundEndpoints = list.AsReadOnly();
+                    inboundEndpoints = list.AsReadOnly();
                 }
-                return this.inboundEndpoints;
+                return inboundEndpoints;
             }
         }
     }

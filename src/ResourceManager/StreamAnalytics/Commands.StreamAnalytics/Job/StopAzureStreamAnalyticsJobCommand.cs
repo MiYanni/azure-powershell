@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.StreamAnalytics
                 throw new PSArgumentNullException("ResourceGroupName");
             }
 
-            JobParametersBase parameter = new JobParametersBase()
+            JobParametersBase parameter = new JobParametersBase
             {
                 ResourceGroupName = ResourceGroupName,
                 JobName = Name

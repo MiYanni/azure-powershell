@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var redirectConfiguration =
-                    this.ApplicationGateway.RedirectConfigurations.First(
+                    ApplicationGateway.RedirectConfigurations.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(redirectConfiguration, true);
             }
             else
             {
-                var redirectConfigurations = this.ApplicationGateway.RedirectConfigurations;
+                var redirectConfigurations = ApplicationGateway.RedirectConfigurations;
                 WriteObject(redirectConfigurations, true);
             }
 

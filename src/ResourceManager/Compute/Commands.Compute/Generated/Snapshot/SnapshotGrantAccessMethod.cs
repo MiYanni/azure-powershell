@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             GrantAccessData grantAccessData = new GrantAccessData();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "SnapshotName", "GrantAccessData" },
+                 new[] { "ResourceGroupName", "SnapshotName", "GrantAccessData" },
                  new object[] { resourceGroupName, snapshotName, grantAccessData });
         }
     }
@@ -135,13 +135,13 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.SnapshotName, VerbsSecurity.Grant))
+                if (ShouldProcess(SnapshotName, VerbsSecurity.Grant))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string snapshotName = this.SnapshotName;
+                    string resourceGroupName = ResourceGroupName;
+                    string snapshotName = SnapshotName;
                     var grantAccessData = new GrantAccessData();
-                    grantAccessData.Access = this.Access;
-                    grantAccessData.DurationInSeconds = this.DurationInSecond;
+                    grantAccessData.Access = Access;
+                    grantAccessData.DurationInSeconds = DurationInSecond;
 
                     var result = SnapshotsClient.GrantAccess(resourceGroupName, snapshotName, grantAccessData);
                     var psObject = new PSAccessUri();
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

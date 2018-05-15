@@ -90,10 +90,10 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             var response = DataPipelineManagementClient.DataFactories.CreateOrUpdate(
                 resourceGroupName,
-                new DataFactoryCreateOrUpdateParameters()
+                new DataFactoryCreateOrUpdateParameters
                 {
                     DataFactory =
-                        new DataFactory()
+                        new DataFactory
                         {
                             Name = dataFactoryName,
                             Location = location,

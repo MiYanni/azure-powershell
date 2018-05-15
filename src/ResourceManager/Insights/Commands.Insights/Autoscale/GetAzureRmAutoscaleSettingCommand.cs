@@ -62,24 +62,24 @@ namespace Microsoft.Azure.Commands.Insights.Autoscale
         /// </summary>
         protected override void ProcessRecordInternal()
         {
-            this.WriteIdentifiedWarning(
-                cmdletName: "Get-AzureRmAutoscaleSetting",
-                topic: "Parameter deprecation", 
-                message: "The DetailedOutput parameter will be deprecated in a future breaking change release.");
-            if (string.IsNullOrWhiteSpace(this.Name))
+            WriteIdentifiedWarning(
+                "Get-AzureRmAutoscaleSetting",
+                "Parameter deprecation", 
+                "The DetailedOutput parameter will be deprecated in a future breaking change release.");
+            if (string.IsNullOrWhiteSpace(Name))
             {
                 // Retrieve all the Autoscale settings for a resource group
-                IPage<AutoscaleSettingResource> result = this.MonitorManagementClient.AutoscaleSettings.ListByResourceGroupAsync(resourceGroupName: this.ResourceGroupName).Result;
+                IPage<AutoscaleSettingResource> result = MonitorManagementClient.AutoscaleSettings.ListByResourceGroupAsync(ResourceGroupName).Result;
 
-                var records = result.Select(e => this.DetailedOutput.IsPresent ? new PSAutoscaleSetting(e) : new PSAutoscaleSettingNoDetails(e));
-                WriteObject(sendToPipeline: records, enumerateCollection: true);
+                var records = result.Select(e => DetailedOutput.IsPresent ? new PSAutoscaleSetting(e) : new PSAutoscaleSettingNoDetails(e));
+                WriteObject(records, true);
             }
             else
             {
                 // Retrieve a single Autoscale setting determined by the resource group and the rule name
-                AutoscaleSettingResource result = this.MonitorManagementClient.AutoscaleSettings.GetAsync(resourceGroupName: this.ResourceGroupName, autoscaleSettingName: this.Name).Result;
+                AutoscaleSettingResource result = MonitorManagementClient.AutoscaleSettings.GetAsync(ResourceGroupName, Name).Result;
 
-                WriteObject(sendToPipeline: this.DetailedOutput.IsPresent ? new PSAutoscaleSetting(result) : new PSAutoscaleSettingNoDetails(result));
+                WriteObject(DetailedOutput.IsPresent ? new PSAutoscaleSetting(result) : new PSAutoscaleSettingNoDetails(result));
             }
         }
     }

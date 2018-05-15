@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
 {
     [Cmdlet(
         VerbsData.Export, 
-        WebServicesCmdletBase.CommandletSuffix, 
+        CommandletSuffix, 
         SupportsShouldProcess = true)]
     [OutputType(typeof(string))]
     public class ExportWebServiceDefinition : WebServicesCmdletBase
@@ -40,14 +40,14 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
         public WebService WebService { get; set; }
 
         [Parameter(
-            ParameterSetName = ExportWebServiceDefinition.ExportToFileParamSet,
+            ParameterSetName = ExportToFileParamSet,
             Mandatory = true, 
             HelpMessage = "Path to a file on disk where to export the web service definition in JSON format.")]
         [ValidateNotNullOrEmpty]
         public string OutputFile { get; set; }
 
         [Parameter(
-            ParameterSetName = ExportWebServiceDefinition.ExportToStringParamSet, 
+            ParameterSetName = ExportToStringParamSet, 
             Mandatory = true, 
             HelpMessage = "The actual web service definition as a JSON string.")]
         public SwitchParameter ToJsonString { get; set; }
@@ -63,19 +63,19 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
         protected override void RunCmdlet()
         {
             string serializedDefinition = 
-                ModelsSerializationUtil.GetAzureMLWebServiceDefinitionJsonFromObject(this.WebService);
+                ModelsSerializationUtil.GetAzureMLWebServiceDefinitionJsonFromObject(WebService);
 
-            if (!string.IsNullOrWhiteSpace(this.OutputFile))
+            if (!string.IsNullOrWhiteSpace(OutputFile))
             {
-                var currentPath = this.SessionState.Path.CurrentFileSystemLocation.Path;
+                var currentPath = SessionState.Path.CurrentFileSystemLocation.Path;
                 var definitionFileFullPath =
-                        Path.IsPathRooted(this.OutputFile) ?
-                            this.OutputFile :
-                            Path.Combine(currentPath, this.OutputFile);
+                        Path.IsPathRooted(OutputFile) ?
+                            OutputFile :
+                            Path.Combine(currentPath, OutputFile);
 
                 bool fileExisting = File.Exists(definitionFileFullPath);
-                this.ConfirmAction(
-                    this.Force || !fileExisting,
+                ConfirmAction(
+                    Force || !fileExisting,
                     "Want to overwriting the output file?",
                     "Overwriting the output file",
                     definitionFileFullPath,
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.MachineLearning.Cmdlets
             }
             else
             {
-                this.WriteObject(serializedDefinition);
+                WriteObject(serializedDefinition);
             }
         }
     }

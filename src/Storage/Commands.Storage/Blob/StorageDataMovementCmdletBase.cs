@@ -16,8 +16,8 @@ using System.Security.Cryptography;
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage.DataMovement;
+    using Common;
+    using WindowsAzure.Storage.DataMovement;
     using System;
     using System.Globalization;
     using System.Management.Automation;
@@ -69,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
             base.BeginProcessing();
             OutputStream.ConfirmWriter = (s1, s2, s3) => ShouldContinue(s2, s3);
 
-            this.TransferManager = TransferManagerFactory.CreateTransferManager(this.GetCmdletConcurrency());
+            TransferManager = TransferManagerFactory.CreateTransferManager(GetCmdletConcurrency());
         }
 
         protected SingleTransferContext GetTransferContext(DataMovementUserData userData)
@@ -78,14 +78,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
             transferContext.ClientRequestId = CmdletOperationContext.ClientRequestId;
             transferContext.ShouldOverwriteCallback = ConfirmOverwrite;
 
-            transferContext.ProgressHandler = new TransferProgressHandler((transferProgress) =>
+            transferContext.ProgressHandler = new TransferProgressHandler(transferProgress =>
                 {
                     if (userData.Record != null)
                     {
                         // Size of the source file might be 0, when it is, directly treat the progress as 100 percent.
                         userData.Record.PercentComplete = 0 == userData.TotalSize ? 100 : (int)(transferProgress.BytesTransferred * 100 / userData.TotalSize);
                         userData.Record.StatusDescription = string.Format(CultureInfo.CurrentCulture, Resources.FileTransmitStatus, userData.Record.PercentComplete);
-                        this.OutputStream.WriteProgress(userData.Record);
+                        OutputStream.WriteProgress(userData.Record);
                     }
                 });
 
@@ -101,7 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob
             }
             finally
             {
-                this.TransferManager = null;
+                TransferManager = null;
             }
         }
     }

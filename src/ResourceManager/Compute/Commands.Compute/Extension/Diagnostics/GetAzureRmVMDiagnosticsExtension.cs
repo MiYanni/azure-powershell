@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -70,9 +70,9 @@ namespace Microsoft.Azure.Commands.Compute
 
             ExecuteClientAction(() =>
             {
-                if (string.IsNullOrEmpty(this.Name))
+                if (string.IsNullOrEmpty(Name))
                 {
-                    var virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName);
+                    var virtualMachine = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
                     var diagnosticsExtension = virtualMachine.Resources != null
                             ? virtualMachine.Resources.FirstOrDefault(extension =>
                                 extension.Publisher.Equals(DiagnosticsExtensionConstants.ExtensionPublisher, StringComparison.InvariantCultureIgnoreCase) &&
@@ -84,28 +84,26 @@ namespace Microsoft.Azure.Commands.Compute
                         WriteObject(null);
                         return;
                     }
-                    else {
-                        this.Name = diagnosticsExtension.Name;
-                    }
+                    Name = diagnosticsExtension.Name;
                 }
 
                 AzureOperationResponse<VirtualMachineExtension> virtualMachineExtensionGetResponse = null;
                 if (Status.IsPresent)
                 {
                     virtualMachineExtensionGetResponse =
-                        this.VirtualMachineExtensionClient.GetWithInstanceView(this.ResourceGroupName,
-                            this.VMName, this.Name);
+                        VirtualMachineExtensionClient.GetWithInstanceView(ResourceGroupName,
+                            VMName, Name);
                 }
                 else
                 {
-                    virtualMachineExtensionGetResponse = this.VirtualMachineExtensionClient.GetWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name).GetAwaiter().GetResult();
+                    virtualMachineExtensionGetResponse = VirtualMachineExtensionClient.GetWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name).GetAwaiter().GetResult();
                 }
 
                 var returnedExtension = virtualMachineExtensionGetResponse.ToPSVirtualMachineExtension(
-                    this.ResourceGroupName, this.VMName);
+                    ResourceGroupName, VMName);
 
                 WriteObject(returnedExtension);
             });

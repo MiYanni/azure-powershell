@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Management.IotHub
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.Get, "AzureRmIotHubKey")]
@@ -55,13 +55,13 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (KeyName != null)
             {
-                SharedAccessSignatureAuthorizationRule authPolicy = this.IotHubClient.IotHubResource.GetKeysForKeyName(this.ResourceGroupName, this.Name, this.KeyName);
-                this.WriteObject(IotHubUtils.ToPSSharedAccessSignatureAuthorizationRule(authPolicy), false);
+                SharedAccessSignatureAuthorizationRule authPolicy = IotHubClient.IotHubResource.GetKeysForKeyName(ResourceGroupName, Name, KeyName);
+                WriteObject(IotHubUtils.ToPSSharedAccessSignatureAuthorizationRule(authPolicy), false);
             }
             else
             {
-                IEnumerable<SharedAccessSignatureAuthorizationRule> authPolicies = this.IotHubClient.IotHubResource.ListKeys(this.ResourceGroupName, this.Name);
-                this.WriteObject(IotHubUtils.ToPSSharedAccessSignatureAuthorizationRules(authPolicies), true);
+                IEnumerable<SharedAccessSignatureAuthorizationRule> authPolicies = IotHubClient.IotHubResource.ListKeys(ResourceGroupName, Name);
+                WriteObject(IotHubUtils.ToPSSharedAccessSignatureAuthorizationRules(authPolicies), true);
             }
         }
     }

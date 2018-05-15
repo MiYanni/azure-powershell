@@ -38,16 +38,13 @@ namespace Microsoft.Azure.Commands.Insights
         /// <returns>A string with the name of the cmdlet defined by the type t or a message indicating the name of the class t is the CmdletAttribute is not found in t</returns>
         protected string GetCmdletName()
         {
-            Type t = this.GetType();
+            Type t = GetType();
             CmdletAttribute cmdletAttribute = (CmdletAttribute)Attribute.GetCustomAttribute(t, typeof(CmdletAttribute));
             if (cmdletAttribute == null)
             {
                 return string.Format(CultureInfo.InvariantCulture, "Unknown cmdlet name. Type: {0}", t.Name);
             }
-            else
-            {
-                return string.Format(CultureInfo.InvariantCulture, "{0}-{1}", cmdletAttribute.VerbName, cmdletAttribute.NounName);
-            }
+            return string.Format(CultureInfo.InvariantCulture, "{0}-{1}", cmdletAttribute.VerbName, cmdletAttribute.NounName);
         }
 
         /// <summary>
@@ -83,7 +80,7 @@ namespace Microsoft.Azure.Commands.Insights
         {
             try
             {
-                this.ProcessRecordInternal();
+                ProcessRecordInternal();
             }
             catch (AggregateException ex)
             {
@@ -109,7 +106,7 @@ namespace Microsoft.Azure.Commands.Insights
                     else
                     {
                         // New model to report errors (from Swagger Spec)
-                        var errorResponse = exTemp as Microsoft.Azure.Management.Monitor.Models.ErrorResponseException;
+                        var errorResponse = exTemp as Management.Monitor.Models.ErrorResponseException;
                         if (errorResponse != null)
                         {
                             message = errorResponse.Body.Message;
@@ -120,7 +117,7 @@ namespace Microsoft.Azure.Commands.Insights
                         else
                         {
                             // New model to report errors (from Swagger Spec)
-                            var errorResponse2 = exTemp as Microsoft.Azure.Management.Monitor.Management.Models.ErrorResponseException;
+                            var errorResponse2 = exTemp as Management.Monitor.Management.Models.ErrorResponseException;
                             if (errorResponse2 != null)
                             {
                                 message = errorResponse2.Body.Message;

@@ -45,11 +45,11 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
             if (MyInvocation.BoundParameters.ContainsKey("Name"))
             {
                 results = new List<AzureSqlSyncAgentModel>();
-                results.Add(ModelAdapter.GetSyncAgent(this.ResourceGroupName, this.ServerName, this.Name));
+                results.Add(ModelAdapter.GetSyncAgent(ResourceGroupName, ServerName, Name));
             }
             else
             {
-                results = ModelAdapter.ListSyncAgents(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListSyncAgents(ResourceGroupName, ServerName);
             }
             return results;
         }

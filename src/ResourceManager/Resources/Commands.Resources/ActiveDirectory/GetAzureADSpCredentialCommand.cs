@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     ObjectId = ActiveDirectoryClient.GetObjectIdFromServicePrincipalDisplayName(DisplayName);
                 }
 
-                WriteObject(ActiveDirectoryClient.GetSpCredentials(ObjectId), enumerateCollection: true);
+                WriteObject(ActiveDirectoryClient.GetSpCredentials(ObjectId), true);
             });
         }
     }

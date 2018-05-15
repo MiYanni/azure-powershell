@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Microsoft.WindowsAzure.Storage;
+    using WindowsAzure.Storage;
     using System;
 
     /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <returns>True if the http status code is 2xx, otherwise false</returns>
         public static bool IsSuccessfulResponse(this StorageException e)
         {
-            return e.RequestInformation != null && (e.RequestInformation.HttpStatusCode / 100 == 2);
+            return e.RequestInformation != null && e.RequestInformation.HttpStatusCode / 100 == 2;
         }
 
         /// <summary>

@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var backendHealth = this.ApplicationGatewayClient.BackendHealth(ResourceGroupName, Name, ExpandResource);
+            var backendHealth = ApplicationGatewayClient.BackendHealth(ResourceGroupName, Name, ExpandResource);
             var psBackendHealth = NetworkResourceManagerProfile.Mapper.Map<PSApplicationGatewayBackendHealth>(backendHealth);
             WriteObject(psBackendHealth);
         }

@@ -4,11 +4,11 @@
 
 namespace Microsoft.Azure.Graph.RBAC.Version1_6
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Graph;
-    using Microsoft.Azure.Graph.RBAC;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
+    using Azure;
+    using Graph;
+    using RBAC;
+    using Rest;
+    using Rest.Azure;
     using Models;
     using System.Threading;
     using System.Threading.Tasks;

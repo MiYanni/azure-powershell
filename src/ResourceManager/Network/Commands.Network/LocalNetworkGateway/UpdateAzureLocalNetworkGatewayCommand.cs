@@ -64,47 +64,47 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!this.IsLocalNetworkGatewayPresent(this.LocalNetworkGateway.ResourceGroupName, this.LocalNetworkGateway.Name))
+            if (!IsLocalNetworkGatewayPresent(LocalNetworkGateway.ResourceGroupName, LocalNetworkGateway.Name))
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
-            if (this.AddressPrefix != null && this.AddressPrefix.Count > 0)
+            if (AddressPrefix != null && AddressPrefix.Count > 0)
             {
-                this.LocalNetworkGateway.LocalNetworkAddressSpace.AddressPrefixes = this.AddressPrefix;
+                LocalNetworkGateway.LocalNetworkAddressSpace.AddressPrefixes = AddressPrefix;
             }
 
-            if ((this.Asn > 0 || !string.IsNullOrEmpty(this.BgpPeeringAddress) || this.PeerWeight > 0) && this.LocalNetworkGateway.BgpSettings == null)
+            if ((Asn > 0 || !string.IsNullOrEmpty(BgpPeeringAddress) || PeerWeight > 0) && LocalNetworkGateway.BgpSettings == null)
             {
-                this.LocalNetworkGateway.BgpSettings = new PSBgpSettings();
+                LocalNetworkGateway.BgpSettings = new PSBgpSettings();
             }
 
-            if (this.Asn > 0)
+            if (Asn > 0)
             {
-                this.LocalNetworkGateway.BgpSettings.Asn = this.Asn;
+                LocalNetworkGateway.BgpSettings.Asn = Asn;
             }
 
-            if (!string.IsNullOrEmpty(this.BgpPeeringAddress))
+            if (!string.IsNullOrEmpty(BgpPeeringAddress))
             {
-                this.LocalNetworkGateway.BgpSettings.BgpPeeringAddress = this.BgpPeeringAddress;
+                LocalNetworkGateway.BgpSettings.BgpPeeringAddress = BgpPeeringAddress;
             }
 
-            if (this.PeerWeight > 0)
+            if (PeerWeight > 0)
             {
-                this.LocalNetworkGateway.BgpSettings.PeerWeight = this.PeerWeight;
+                LocalNetworkGateway.BgpSettings.PeerWeight = PeerWeight;
             }
-            else if (this.PeerWeight < 0)
+            else if (PeerWeight < 0)
             {
                 throw new PSArgumentException("PeerWeight cannot be negative");
             }
 
             // Map to the sdk object
-            var localnetGatewayModel = NetworkResourceManagerProfile.Mapper.Map<MNM.LocalNetworkGateway>(this.LocalNetworkGateway);
-            localnetGatewayModel.Tags = TagsConversionHelper.CreateTagDictionary(this.LocalNetworkGateway.Tag, validate: true);
+            var localnetGatewayModel = NetworkResourceManagerProfile.Mapper.Map<MNM.LocalNetworkGateway>(LocalNetworkGateway);
+            localnetGatewayModel.Tags = TagsConversionHelper.CreateTagDictionary(LocalNetworkGateway.Tag, validate: true);
 
-            this.LocalNetworkGatewayClient.CreateOrUpdate(this.LocalNetworkGateway.ResourceGroupName, this.LocalNetworkGateway.Name, localnetGatewayModel);
+            LocalNetworkGatewayClient.CreateOrUpdate(LocalNetworkGateway.ResourceGroupName, LocalNetworkGateway.Name, localnetGatewayModel);
 
-            var getlocalnetGateway = this.GetLocalNetworkGateway(this.LocalNetworkGateway.ResourceGroupName, this.LocalNetworkGateway.Name);
+            var getlocalnetGateway = GetLocalNetworkGateway(LocalNetworkGateway.ResourceGroupName, LocalNetworkGateway.Name);
 
             WriteObject(getlocalnetGateway);
         }

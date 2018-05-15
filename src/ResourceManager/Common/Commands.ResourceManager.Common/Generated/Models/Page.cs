@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Internal.Subscriptions.Models
     using System.Collections.Generic;
     using System.Linq;
     using Newtonsoft.Json;
-    using Microsoft.Rest.Azure;
+    using Rest.Azure;
 
     /// <summary>
     /// Defines a page in Azure responses.
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Internal.Subscriptions.Models
          /// <returns>A an enumerator that can be used to iterate through the collection.</returns>
          public IEnumerator<T> GetEnumerator()
          {
-              return (Items == null) ? Enumerable.Empty<T>().GetEnumerator() : Items.GetEnumerator();
+              return Items == null ? Enumerable.Empty<T>().GetEnumerator() : Items.GetEnumerator();
          }
 
          /// <summary>

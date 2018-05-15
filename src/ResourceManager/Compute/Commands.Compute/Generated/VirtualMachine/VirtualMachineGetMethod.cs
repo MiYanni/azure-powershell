@@ -139,10 +139,10 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             string resourceGroupName = string.Empty;
             string vmName = string.Empty;
-            InstanceViewTypes? expand = (InstanceViewTypes?) null;
+            InstanceViewTypes? expand = null;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMName", "Expand" },
+                 new[] { "ResourceGroupName", "VMName", "Expand" },
                  new object[] { resourceGroupName, vmName, expand });
         }
     }

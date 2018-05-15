@@ -14,8 +14,8 @@ namespace Microsoft.Azure.Internal.Subscriptions
     using System.Threading;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
+    using Rest;
+    using Rest.Azure;
     using Models;
 
     /// <summary>

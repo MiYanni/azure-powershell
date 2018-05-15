@@ -19,8 +19,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery.Models
         /// </summary>
         public GalleryItem Item
         {
-            get { return this._item; }
-            set { this._item = value; }
+            get { return _item; }
+            set { _item = value; }
         }
 
         /// <summary>

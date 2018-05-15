@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices
 
         public override void ExecuteCmdlet()
         {
-            PsAzureAnalysisServicesFirewallConfig config = new PsAzureAnalysisServicesFirewallConfig((EnablePowerBIService) ? true : false, FirewallRule);
+            PsAzureAnalysisServicesFirewallConfig config = new PsAzureAnalysisServicesFirewallConfig(EnablePowerBIService ? true : false, FirewallRule);
             WriteObject(config);
         }
     }

@@ -66,9 +66,9 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
 
-            var createdConnection = this.AutomationClient.CreateConnection(this.ResourceGroupName, this.AutomationAccountName, this.Name, this.ConnectionTypeName, this.ConnectionFieldValues, this.Description);
+            var createdConnection = AutomationClient.CreateConnection(ResourceGroupName, AutomationAccountName, Name, ConnectionTypeName, ConnectionFieldValues, Description);
 
-            this.WriteObject(createdConnection);
+            WriteObject(createdConnection);
         }
     }
 }

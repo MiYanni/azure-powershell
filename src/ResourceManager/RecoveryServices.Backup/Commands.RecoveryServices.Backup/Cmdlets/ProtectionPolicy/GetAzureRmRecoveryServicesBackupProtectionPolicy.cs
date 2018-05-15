@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                                       WorkloadType.HasValue ? WorkloadType.ToString() : "NULL",
                                       BackupManagementType.HasValue ?
                                       BackupManagementType.ToString() : "NULL",
-                                      this.ParameterSetName));
+                                      ParameterSetName));
 
                 if (ParameterSetName == PolicyNameParamSet)
                 {
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     List<PolicyBase> policyList = new List<PolicyBase>();
                     string serviceClientProviderType = null;
 
-                    switch (this.ParameterSetName)
+                    switch (ParameterSetName)
                     {
                         case WorkloadParamSet:
                             if (WorkloadType == Models.WorkloadType.AzureVM)
@@ -161,7 +161,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     WriteDebug("Successfully got response from service");
 
                     policyList = ConversionHelpers.GetPolicyModelList(respList);
-                    WriteObject(policyList, enumerateCollection: true);
+                    WriteObject(policyList, true);
                 }
             });
         }

@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public GeoBackupPolicy GeoBackupPolicy
         {
-            get { return this._geoBackupPolicy; }
-            set { this._geoBackupPolicy = value; }
+            get { return _geoBackupPolicy; }
+            set { _geoBackupPolicy = value; }
         }
         
         /// <summary>

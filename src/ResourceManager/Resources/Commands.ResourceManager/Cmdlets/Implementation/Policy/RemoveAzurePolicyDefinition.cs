@@ -14,14 +14,14 @@
 
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
+    using Components;
     using System.Management.Automation;
 
     /// <summary>
     /// Removes the policy definition.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureRmPolicyDefinition", SupportsShouldProcess = true,
-        DefaultParameterSetName = RemoveAzurePolicyDefinitionCmdlet.PolicyDefinitionNameParameterSet), 
+        DefaultParameterSetName = PolicyDefinitionNameParameterSet), 
         OutputType(typeof(bool))]
     public class RemoveAzurePolicyDefinitionCmdlet : PolicyCmdletBase
     {
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the policy definition name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = RemoveAzurePolicyDefinitionCmdlet.PolicyDefinitionNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy definition name.")]
+        [Parameter(ParameterSetName = PolicyDefinitionNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The policy definition name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the policy definition id parameter
         /// </summary>
         [Alias("ResourceId")]
-        [Parameter(ParameterSetName = RemoveAzurePolicyDefinitionCmdlet.PolicyDefinitionIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified policy definition Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
+        [Parameter(ParameterSetName = PolicyDefinitionIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified policy definition Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
         [ValidateNotNullOrEmpty]
         public string Id { get; set; }
 
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            this.RunCmdlet();
+            RunCmdlet();
         }
 
         /// <summary>
@@ -72,36 +72,36 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private void RunCmdlet()
         {
             base.OnProcessRecord();
-            string resourceId = this.Id ?? this.GetResourceId();
-            var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.PolicyDefinitionApiVersion : this.ApiVersion;
+            string resourceId = Id ?? GetResourceId();
+            var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.PolicyDefinitionApiVersion : ApiVersion;
 
-            this.ConfirmAction(
-                this.Force,
+            ConfirmAction(
+                Force,
                 string.Format("Are you sure you want to delete the following policy definition: {0}", resourceId),
                 "Deleting the policy definition...",
                 resourceId,
                 () =>
                 {
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .DeleteResource(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            cancellationToken: this.CancellationToken.Value,
-                            odataQuery: null)
+                            resourceId,
+                            apiVersion,
+                            CancellationToken.Value,
+                            null)
                         .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                         .GetResourceManagementRequestUri(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
+                            resourceId,
+                            apiVersion,
                             odataQuery: null);
 
                     var activity = string.Format("DELETE {0}", managementUri.PathAndQuery);
 
-                    this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: false)
-                        .WaitOnOperation(operationResult: operationResult);
+                    GetLongRunningOperationTracker(activity, false)
+                        .WaitOnOperation(operationResult);
 
-                    this.WriteObject(true);
+                    WriteObject(true);
                 });
         }
 
@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             return string.Format("/subscriptions/{0}/providers/{1}/{2}",
                 subscriptionId.ToString(),
                 Constants.MicrosoftAuthorizationPolicyDefinitionType,
-                this.Name);
+                Name);
         }
     }
 }

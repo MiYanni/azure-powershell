@@ -35,11 +35,11 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
         public BlobSynchronizer(UploadContext context, int maxParallelism)
         {
             this.context = context;
-            this.md5Hash = context.Md5HashOfLocalVhd;
-            this.dataWithRanges = context.UploadableDataWithRanges;
-            this.dataToUpload = context.UploadableDataSize;
-            this.alreadyUploadedData = context.AlreadyUploadedDataSize;
-            this.blob = context.DestinationBlob;
+            md5Hash = context.Md5HashOfLocalVhd;
+            dataWithRanges = context.UploadableDataWithRanges;
+            dataToUpload = context.UploadableDataSize;
+            alreadyUploadedData = context.AlreadyUploadedDataSize;
+            blob = context.DestinationBlob;
             this.maxParallelism = maxParallelism;
         }
 
@@ -47,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
         {
             var uploadStatus = new ProgressStatus(alreadyUploadedData, alreadyUploadedData + dataToUpload, new ComputeStats());
 
-            using (new ServicePointHandler(blob.Uri, this.maxParallelism))
+            using (new ServicePointHandler(blob.Uri, maxParallelism))
             using (new ProgressTracker(uploadStatus))
             {
                 var loopResult = Parallel.ForEach(dataWithRanges,
@@ -60,12 +60,12 @@ namespace Microsoft.WindowsAzure.Commands.Sync.Upload
                                                               using (var stream = new MemoryStream(dwr.Data, 0, (int)dwr.Range.Length))
                                                               {
                                                                   b.Properties.ContentMD5 = md5HashOfDataChunk;
-                                                                  b.WritePagesAsync(stream, dwr.Range.StartIndex, contentMD5: null)
+                                                                  b.WritePagesAsync(stream, dwr.Range.StartIndex, null)
                                                                             .ConfigureAwait(false).GetAwaiter().GetResult();
                                                               }
                                                           }
                                                           uploadStatus.AddToProcessedBytes((int)dwr.Range.Length);
-                                                      }, this.maxParallelism);
+                                                      }, maxParallelism);
                 if (loopResult.IsExceptional)
                 {
                     if (loopResult.Exceptions.Any())

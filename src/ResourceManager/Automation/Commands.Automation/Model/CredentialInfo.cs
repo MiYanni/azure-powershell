@@ -30,19 +30,19 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// <param name="credential">
         /// The Credential.
         /// </param>
-        public CredentialInfo(string resourceGroupName, string accountAcccountName, Azure.Management.Automation.Models.Credential credential)
+        public CredentialInfo(string resourceGroupName, string accountAcccountName, Management.Automation.Models.Credential credential)
         {
             Requires.Argument("credential", credential).NotNull();
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = accountAcccountName;
-            this.Name = credential.Name;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = accountAcccountName;
+            Name = credential.Name;
 
             if (credential.Properties == null) return;
 
-            this.Description = credential.Properties.Description;
-            this.CreationTime = credential.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = credential.Properties.LastModifiedTime.ToLocalTime();
-            this.UserName = credential.Properties.UserName;
+            Description = credential.Properties.Description;
+            CreationTime = credential.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = credential.Properties.LastModifiedTime.ToLocalTime();
+            UserName = credential.Properties.UserName;
         }
 
         /// <summary>

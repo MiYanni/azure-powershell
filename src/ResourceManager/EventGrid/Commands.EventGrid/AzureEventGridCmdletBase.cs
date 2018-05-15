@@ -48,15 +48,15 @@ namespace Microsoft.Azure.Commands.EventGrid
         {
             get
             {
-                if (this.client == null)
+                if (client == null)
                 {
-                    this.client = new EventGridClient(this.DefaultContext);
+                    client = new EventGridClient(DefaultContext);
                 }
-                return this.client;
+                return client;
             }
             set
             {
-                this.client = value;
+                client = value;
             }
         }
     }

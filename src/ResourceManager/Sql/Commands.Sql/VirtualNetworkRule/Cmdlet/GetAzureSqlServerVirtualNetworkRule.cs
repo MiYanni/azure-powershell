@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
     /// Defines the Get-AzureRmSqlServerVirtualNetworkRule cmdlet
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureRmSqlServerVirtualNetworkRule"),
-        OutputType(typeof(Model.AzureSqlServerVirtualNetworkRuleModel))]
+        OutputType(typeof(AzureSqlServerVirtualNetworkRuleModel))]
     public class GetAzureSqlServerVirtualNetworkRule : AzureSqlServerVirtualNetworkRuleCmdletBase
     {
         /// <summary>
@@ -41,14 +41,14 @@ namespace Microsoft.Azure.Commands.Sql.VirtualNetworkRule.Cmdlet
         {
             ICollection<AzureSqlServerVirtualNetworkRuleModel> results = null;
 
-            if (this.MyInvocation.BoundParameters.ContainsKey("VirtualNetworkRuleName"))
+            if (MyInvocation.BoundParameters.ContainsKey("VirtualNetworkRuleName"))
             {
                 results = new List<AzureSqlServerVirtualNetworkRuleModel>();
-                results.Add(ModelAdapter.GetVirtualNetworkRule(this.ResourceGroupName, this.ServerName, this.VirtualNetworkRuleName));
+                results.Add(ModelAdapter.GetVirtualNetworkRule(ResourceGroupName, ServerName, VirtualNetworkRuleName));
             }
             else
             {
-                results = ModelAdapter.ListVirtualNetworkRules(this.ResourceGroupName, this.ServerName);
+                results = ModelAdapter.ListVirtualNetworkRules(ResourceGroupName, ServerName);
             }
 
             return results;

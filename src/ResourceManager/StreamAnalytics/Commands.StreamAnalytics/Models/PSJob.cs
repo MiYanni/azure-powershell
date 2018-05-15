@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.StreamAnalytics.Models
                 throw new ArgumentNullException("job");
             }
 
-            this.streamingJob = job;
+            streamingJob = job;
         }
 
         public string JobName

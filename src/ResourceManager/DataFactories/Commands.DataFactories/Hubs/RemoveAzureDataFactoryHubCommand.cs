@@ -47,20 +47,20 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName = DataFactory.ResourceGroupName;
             }
 
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(
                     CultureInfo.InvariantCulture,
                     Resources.HubConfirmationMessage,
-                    this.Name,
-                    this.DataFactoryName),
+                    Name,
+                    DataFactoryName),
                 string.Format(
                     CultureInfo.InvariantCulture,
                     Resources.HubRemoving,
-                    this.Name,
-                    this.DataFactoryName),
-                this.Name,
-                this.ExecuteDelete);
+                    Name,
+                    DataFactoryName),
+                Name,
+                ExecuteDelete);
         }
 
         private void ExecuteDelete()

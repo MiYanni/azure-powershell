@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<FailoverGroup> FailoverGroups
         {
-            get { return this._failoverGroups; }
-            set { this._failoverGroups = value; }
+            get { return _failoverGroups; }
+            set { _failoverGroups = value; }
         }
         
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public FailoverGroupListResponse()
         {
-            this.FailoverGroups = new LazyList<FailoverGroup>();
+            FailoverGroups = new LazyList<FailoverGroup>();
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<FailoverGroup> GetEnumerator()
         {
-            return this.FailoverGroups.GetEnumerator();
+            return FailoverGroups.GetEnumerator();
         }
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             DatasetResource dataset;
             try
             {
-                dataset = SafeJsonConvert.DeserializeObject<DatasetResource>(rawJsonContent, this.DataFactoryManagementClient.DeserializationSettings);
+                dataset = SafeJsonConvert.DeserializeObject<DatasetResource>(rawJsonContent, DataFactoryManagementClient.DeserializationSettings);
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             }
 
             // If create or update failed, the current behavior is to throw
-            return this.DataFactoryManagementClient.Datasets.CreateOrUpdate(
+            return DataFactoryManagementClient.Datasets.CreateOrUpdate(
                 resourceGroupName,
                 dataFactoryName,
                 datasetName,
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
         public virtual PSDataset GetDataset(string resourceGroupName, string dataFactoryName, string datasetName)
         {
-            var response = this.DataFactoryManagementClient.Datasets.Get(resourceGroupName, dataFactoryName, datasetName);
+            var response = DataFactoryManagementClient.Datasets.Get(resourceGroupName, dataFactoryName, datasetName);
 
             if (response == null)
             {
@@ -72,11 +72,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             IPage<DatasetResource> response;
             if (filterOptions.NextLink.IsNextPageLink())
             {
-                response = this.DataFactoryManagementClient.Datasets.ListByFactoryNext(filterOptions.NextLink);
+                response = DataFactoryManagementClient.Datasets.ListByFactoryNext(filterOptions.NextLink);
             }
             else
             {
-                response = this.DataFactoryManagementClient.Datasets.ListByFactory(filterOptions.ResourceGroupName, filterOptions.DataFactoryName);
+                response = DataFactoryManagementClient.Datasets.ListByFactory(filterOptions.ResourceGroupName, filterOptions.DataFactoryName);
             }
             filterOptions.NextLink = response != null ? response.NextPageLink : null;
 
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
         public virtual HttpStatusCode DeleteDataset(string resourceGroupName, string dataFactoryName, string datasetName)
         {
-            var response = this.DataFactoryManagementClient.Datasets.DeleteWithHttpMessagesAsync
+            var response = DataFactoryManagementClient.Datasets.DeleteWithHttpMessagesAsync
                 (resourceGroupName, dataFactoryName, datasetName).Result;
             return response.Response.StatusCode;
         }
@@ -107,11 +107,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
             if (filterOptions.Name != null)
             {
-                datasets.Add(this.GetDataset(filterOptions.ResourceGroupName, filterOptions.DataFactoryName, filterOptions.Name));
+                datasets.Add(GetDataset(filterOptions.ResourceGroupName, filterOptions.DataFactoryName, filterOptions.Name));
             }
             else
             {
-                datasets.AddRange(this.ListDatasets(filterOptions));
+                datasets.AddRange(ListDatasets(filterOptions));
             }
 
             return datasets;
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             Action createDataset = () =>
             {
                 dataset =
-                    new PSDataset(this.CreateOrUpdateDataset(
+                    new PSDataset(CreateOrUpdateDataset(
                         parameters.ResourceGroupName,
                         parameters.DataFactoryName,
                         parameters.Name,
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                     parameters.DataFactoryName),
                 parameters.Name,
                 createDataset,
-                () => this.CheckDatasetExists(parameters.ResourceGroupName, parameters.DataFactoryName,
+                () => CheckDatasetExists(parameters.ResourceGroupName, parameters.DataFactoryName,
                 parameters.Name));
 
             return dataset;
@@ -161,7 +161,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         {
             try
             {
-                PSDataset dataset = this.GetDataset(resourceGroupName, dataFactoryName, datasetName);
+                PSDataset dataset = GetDataset(resourceGroupName, dataFactoryName, datasetName);
                 return dataset != null;
             }
             catch (ErrorResponseException e)
@@ -171,10 +171,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 {
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
     }

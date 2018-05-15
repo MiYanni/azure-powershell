@@ -15,9 +15,9 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
+    using Common;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
     using System;
     using System.Collections.Concurrent;
     using System.Management.Automation;
@@ -141,7 +141,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             long localFinished = Interlocked.Read(ref InternalFinishedCount);
 
             string summary = String.Format(Resources.TransmitActiveSummary, localTotal,
-                localFailed, localFinished, (localTotal - localFailed - localFinished));
+                localFailed, localFinished, localTotal - localFailed - localFinished);
             summaryRecord.StatusDescription = summary;
             WriteProgress(summaryRecord);
         }
@@ -246,7 +246,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 
             for (int i = 0; i < currency; i++)
             {
-                Func<long, Task> taskGenerator = (taskId) => MonitorBlobCopyStatusAsync(taskId);
+                Func<long, Task> taskGenerator = taskId => MonitorBlobCopyStatusAsync(taskId);
                 RunTask(taskGenerator);
             }
 

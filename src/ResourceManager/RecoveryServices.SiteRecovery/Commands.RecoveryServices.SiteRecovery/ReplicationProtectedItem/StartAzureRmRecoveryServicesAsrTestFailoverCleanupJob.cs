@@ -72,25 +72,25 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override void ExecuteSiteRecoveryCmdlet()
         {
             base.ExecuteSiteRecoveryCmdlet();
-            if (this.ShouldProcess(
+            if (ShouldProcess(
                 "Protected item or Recovery plan",
                 "Cleanup Test Failover"))
             {
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByRPObject:
                         // Refresh RP Object
-                        var rp = this.RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(
-                            this.RecoveryPlan.Name);
-                        this.recoveryPlanName = this.RecoveryPlan.Name;
-                        this.StartRpTestFailoverCleanup();
+                        var rp = RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(
+                            RecoveryPlan.Name);
+                        recoveryPlanName = RecoveryPlan.Name;
+                        StartRpTestFailoverCleanup();
                         break;
                     case ASRParameterSets.ByRPIObject:
-                        this.rpiId = this.ReplicationProtectedItem.ID;
-                        this.StartRPITestFailoverCleanup();
+                        rpiId = ReplicationProtectedItem.ID;
+                        StartRPITestFailoverCleanup();
                         break;
                     case ASRParameterSets.ByResourceId:
-                        this.StartTFOCleanupByResourceId();
+                        StartTFOCleanupByResourceId();
                         break;
                 }
             }
@@ -101,21 +101,21 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void StartRPITestFailoverCleanup()
         {
-            this.protectionContainerName =
+            protectionContainerName =
                             Utilities.GetValueFromArmId(
-                                this.ReplicationProtectedItem.ID,
+                                ReplicationProtectedItem.ID,
                                 ARMResourceTypeConstants.ReplicationProtectionContainers);
-            this.fabricName = Utilities.GetValueFromArmId(
-                this.ReplicationProtectedItem.ID,
+            fabricName = Utilities.GetValueFromArmId(
+                ReplicationProtectedItem.ID,
                 ARMResourceTypeConstants.ReplicationFabrics);
 
             var rpiName = Utilities.GetValueFromArmId(
-                this.ReplicationProtectedItem.ID,
+                ReplicationProtectedItem.ID,
                 ARMResourceTypeConstants.ReplicationProtectedItems);
 
             var testFailoverCleanupInputProperties = new TestFailoverCleanupInputProperties
             {
-                Comments = this.Comment == null ? "" : this.Comment
+                Comments = Comment == null ? "" : Comment
             };
 
             var input = new TestFailoverCleanupInput
@@ -123,18 +123,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 Properties = testFailoverCleanupInputProperties
             };
 
-            var response = this.RecoveryServicesClient.StartAzureSiteRecoveryTestFailoverCleanup(
-                this.fabricName,
-                this.protectionContainerName,
+            var response = RecoveryServicesClient.StartAzureSiteRecoveryTestFailoverCleanup(
+                fabricName,
+                protectionContainerName,
                 rpiName,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient
+            var jobResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient
                         .GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
            var recoveryPlanTestFailoverCleanupInputProperties =
                 new RecoveryPlanTestFailoverCleanupInputProperties
                 {
-                    Comments = this.Comment
+                    Comments = Comment
                 };
 
             var recoveryPlanTestFailoverCleanupInput = new RecoveryPlanTestFailoverCleanupInput
@@ -153,16 +153,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 Properties = recoveryPlanTestFailoverCleanupInputProperties
             };
 
-            var response = this.RecoveryServicesClient.StartAzureSiteRecoveryTestFailoverCleanup(
-                this.RecoveryPlan.Name,
+            var response = RecoveryServicesClient.StartAzureSiteRecoveryTestFailoverCleanup(
+                RecoveryPlan.Name,
                 recoveryPlanTestFailoverCleanupInput);
 
-            var jobResponse = this.RecoveryServicesClient
+            var jobResponse = RecoveryServicesClient
                 .GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient
                         .GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
 
@@ -171,18 +171,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void StartTFOCleanupByResourceId()
         {
-            if (this.ResourceId.ToLower().Contains("/" + ARMResourceTypeConstants.RecoveryPlans.ToLower() + "/"))
+            if (ResourceId.ToLower().Contains("/" + ARMResourceTypeConstants.RecoveryPlans.ToLower() + "/"))
             {
-                this.recoveryPlanName = Utilities.GetValueFromArmId(
-                    this.ResourceId,
+                recoveryPlanName = Utilities.GetValueFromArmId(
+                    ResourceId,
                     ARMResourceTypeConstants.RecoveryPlans);
 
-                this.StartRpTestFailoverCleanup();
+                StartRpTestFailoverCleanup();
             }
             else
             {
-                this.rpiId = this.ResourceId;
-                this.StartRPITestFailoverCleanup();
+                rpiId = ResourceId;
+                StartRPITestFailoverCleanup();
             }
            
         }

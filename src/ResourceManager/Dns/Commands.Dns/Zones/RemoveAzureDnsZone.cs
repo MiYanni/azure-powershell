@@ -51,18 +51,18 @@ namespace Microsoft.Azure.Commands.Dns
         public override void ExecuteCmdlet()
         {
             bool deleted = true;
-            bool overwrite = this.Overwrite.IsPresent || this.ParameterSetName != "Object";
+            bool overwrite = Overwrite.IsPresent || ParameterSetName != "Object";
 
-            if (!string.IsNullOrEmpty(this.Name) && this.Name.EndsWith("."))
+            if (!string.IsNullOrEmpty(Name) && Name.EndsWith("."))
             {
-                this.Name = this.Name.TrimEnd('.');
-                this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", this.Name));
+                Name = Name.TrimEnd('.');
+                WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", Name));
             }
 
             // There is a bug in sdk where it doesn't handle non existing zones on delete. Hence, handling the condition in powershell
-            var zoneToDelete = (this.ParameterSetName != "Object")
-                ? this.DnsClient.GetDnsZoneHandleNonExistentZone(this.Name, this.ResourceGroupName)
-                : this.Zone;
+            var zoneToDelete = ParameterSetName != "Object"
+                ? DnsClient.GetDnsZoneHandleNonExistentZone(Name, ResourceGroupName)
+                : Zone;
 
             if (zoneToDelete != null)
             {
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.Dns
                 if (zoneToDelete.Name != null && zoneToDelete.Name.EndsWith("."))
                 {
                     zoneToDelete.Name = zoneToDelete.Name.TrimEnd('.');
-                    this.WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", zoneToDelete.Name));
+                    WriteWarning(string.Format("Modifying zone name to remove terminating '.'.  Zone name used is \"{0}\".", zoneToDelete.Name));
                 }
 
                 ConfirmAction(
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.Dns
                     WriteVerbose(ProjectResources.Success);
                     WriteVerbose(string.Format(ProjectResources.Success_RemoveZone, zoneToDelete.Name, zoneToDelete.ResourceGroupName));
 
-                    if (this.PassThru)
+                    if (PassThru)
                     {
                         WriteObject(deleted);
                     }

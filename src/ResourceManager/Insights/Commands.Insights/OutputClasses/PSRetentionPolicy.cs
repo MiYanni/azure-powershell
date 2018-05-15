@@ -28,8 +28,8 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         /// <param name="retentionPolicy">The input retention policy</param>
         public PSRetentionPolicy(RetentionPolicy retentionPolicy)
         {
-            this.Enabled = retentionPolicy.Enabled;
-            this.Days = retentionPolicy.Days;
+            Enabled = retentionPolicy.Enabled;
+            Days = retentionPolicy.Days;
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Commands.Insights.OutputClasses
         {
             StringBuilder output = new StringBuilder();
             output.AppendLine();
-            output.AppendLine("Enabled : " + this.Enabled);
-            output.Append("Days    : " + this.Days);
+            output.AppendLine("Enabled : " + Enabled);
+            output.Append("Days    : " + Days);
             return output.ToString();
         }
     }

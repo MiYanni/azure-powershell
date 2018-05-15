@@ -48,12 +48,12 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            PoolResizeParameters parameters = new PoolResizeParameters(this.BatchContext, this.Id, null, this.AdditionalBehaviors)
+            PoolResizeParameters parameters = new PoolResizeParameters(BatchContext, Id, null, AdditionalBehaviors)
             {
-                TargetDedicatedComputeNodes = this.TargetDedicatedComputeNodes,
-                TargetLowPriorityComputeNodes = this.TargetLowPriorityComputeNodes,
-                ResizeTimeout = this.ResizeTimeout,
-                ComputeNodeDeallocationOption = this.ComputeNodeDeallocationOption
+                TargetDedicatedComputeNodes = TargetDedicatedComputeNodes,
+                TargetLowPriorityComputeNodes = TargetLowPriorityComputeNodes,
+                ResizeTimeout = ResizeTimeout,
+                ComputeNodeDeallocationOption = ComputeNodeDeallocationOption
             };
 
             BatchClient.ResizePool(parameters);

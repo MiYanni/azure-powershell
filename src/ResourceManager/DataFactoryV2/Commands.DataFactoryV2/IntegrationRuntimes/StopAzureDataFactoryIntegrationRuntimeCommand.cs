@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            this.ByResourceId();
-            this.ByIntegrationRuntimeObject();
+            ByResourceId();
+            ByIntegrationRuntimeObject();
 
             Action stopIntegrationRuntime = () =>
             {
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                         // the property can't be changed. Just suppress the excetion.
                     }
 
-                    this.DataFactoryClient.StopIntegrationRuntimeAsync(
+                    DataFactoryClient.StopIntegrationRuntimeAsync(
                         ResourceGroupName,
                         DataFactoryName,
                         Name).ConfigureAwait(true).GetAwaiter().GetResult();
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                     DataFactoryName),
                 Name,
                 stopIntegrationRuntime,
-                () => this.DataFactoryClient.CheckIntegrationRuntimeExistsAsync(
+                () => DataFactoryClient.CheckIntegrationRuntimeExistsAsync(
                     ResourceGroupName,
                     DataFactoryName,
                     Name).ConfigureAwait(true).GetAwaiter().GetResult());

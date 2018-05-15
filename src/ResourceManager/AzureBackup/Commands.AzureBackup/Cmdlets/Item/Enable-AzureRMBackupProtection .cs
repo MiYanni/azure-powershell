@@ -72,9 +72,9 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 WriteDebug(Resources.EnableAzureBackupProtection);
 
                 var operationStatus = TrackOperation(Item.ResourceGroupName, Item.ResourceName, operationId);
-                this.WriteObject(GetCreatedJobs(Item.ResourceGroupName,
+                WriteObject(GetCreatedJobs(Item.ResourceGroupName,
                     Item.ResourceName,
-                    new Models.AzureRMBackupVault(Item.ResourceGroupName, Item.ResourceName, Item.Location),
+                    new AzureRMBackupVault(Item.ResourceGroupName, Item.ResourceName, Item.Location),
                     operationStatus.JobList).FirstOrDefault());
             });
         }

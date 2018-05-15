@@ -34,12 +34,12 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ParameterSetName = ByName,
                    HelpMessage = "Specify the name of the resource group.")]
         [ResourceGroupCompleter]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public override string ResourceGroupName { get; set; }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true, ParameterSetName = ByName,
                    HelpMessage = "Specify the name of the cluster")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("ClusterName")]
         public override string Name { get; set; }
 
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Commands
                 case ByName:
                     {
                         var cluster = GetCurrentCluster();
-                        WriteObject(new List<PSCluster>() { new PSCluster(cluster) }, true);
+                        WriteObject(new List<PSCluster> { new PSCluster(cluster) }, true);
                         break;
                     }
                 case ByResourceGroup:

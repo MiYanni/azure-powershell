@@ -60,7 +60,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
                              let vhdPropertyAttributes = p.GetCustomAttributes(typeof(VhdPropertyAttribute), false)
                              let exists = vhdPropertyAttributes.Count() > 0
                              where p.Name == propertyName
-                             select (VhdPropertyAttribute)(vhdPropertyAttributes.ElementAt(0));
+                             select (VhdPropertyAttribute)vhdPropertyAttributes.ElementAt(0);
             return attributes.FirstOrDefault();
         }
 
@@ -87,7 +87,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
                              let vhdPropertyAttributes = p.GetCustomAttributes(typeof(VhdPropertyAttribute), false)
                              let exists = vhdPropertyAttributes.Count() > 0
                              where p.Name == propertyName
-                             select (VhdPropertyAttribute)(vhdPropertyAttributes.ElementAt(0));
+                             select (VhdPropertyAttribute)vhdPropertyAttributes.ElementAt(0);
             return attributes.FirstOrDefault();
         }
     }

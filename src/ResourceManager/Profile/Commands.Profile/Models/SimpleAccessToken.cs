@@ -48,10 +48,10 @@ namespace Microsoft.Azure.Commands.Profile.Models
             {
                 throw new ArgumentException(Resources.TypeNotAccessToken);
             }
-            this.UserId = account.Id;
-            this._tokenType = tokenType;
-            this.AccessToken = account.GetProperty(AzureAccount.Property.AccessToken);
-            this.TenantId = tenantId;
+            UserId = account.Id;
+            _tokenType = tokenType;
+            AccessToken = account.GetProperty(AzureAccount.Property.AccessToken);
+            TenantId = tenantId;
         }
 
 
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Profile.Models
         /// Authorize a request using an authorization setter function.
         /// </summary>
         /// <param name="authTokenSetter">The authorization token setter function.</param>
-        public void AuthorizeRequest(System.Action<string, string> authTokenSetter)
+        public void AuthorizeRequest(Action<string, string> authTokenSetter)
         {
             authTokenSetter(_tokenType, AccessToken);
         }

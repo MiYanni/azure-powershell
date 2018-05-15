@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.LoadBalancerClient.Delete(this.ResourceGroupName, this.Name);
+                    LoadBalancerClient.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

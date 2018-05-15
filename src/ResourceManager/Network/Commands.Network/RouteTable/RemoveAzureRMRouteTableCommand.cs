@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.NetworkClient.NetworkManagementClient.RouteTables.Delete(ResourceGroupName, Name);
+                    NetworkClient.NetworkManagementClient.RouteTables.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

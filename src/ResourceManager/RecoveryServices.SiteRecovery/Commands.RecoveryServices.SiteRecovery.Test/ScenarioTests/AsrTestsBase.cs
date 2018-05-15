@@ -50,23 +50,23 @@ namespace RecoveryServices.SiteRecovery.Test
         {
             try
             {
-                if (FileUtilities.DataStore.ReadFileAsText(this.vaultSettingsFilePath).ToLower().Contains("<asrvaultcreds"))
+                if (FileUtilities.DataStore.ReadFileAsText(vaultSettingsFilePath).ToLower().Contains("<asrvaultcreds"))
                 {
                     var serializer1 = new DataContractSerializer(typeof(ASRVaultCreds));
                     using (var s = new FileStream(
-                        this.vaultSettingsFilePath,
+                        vaultSettingsFilePath,
                         FileMode.Open,
                         FileAccess.Read,
                         FileShare.Read))
                     {
-                        this.asrVaultCreds = (ASRVaultCreds)serializer1.ReadObject(s);
+                        asrVaultCreds = (ASRVaultCreds)serializer1.ReadObject(s);
                     }
                 }
                 else
                 {
                     var serializer = new DataContractSerializer(typeof(RSVaultAsrCreds));
                     using (var s = new FileStream(
-                        this.vaultSettingsFilePath,
+                        vaultSettingsFilePath,
                         FileMode.Open,
                         FileAccess.Read,
                         FileShare.Read))
@@ -95,7 +95,7 @@ namespace RecoveryServices.SiteRecovery.Test
                     "XML is malformed or file is empty",
                     serializationException);
             }
-            this.helper = new EnvironmentSetupHelper();
+            helper = new EnvironmentSetupHelper();
         }
 
         public ResourceManagementClient RmRestClient { get; private set; }
@@ -109,7 +109,7 @@ namespace RecoveryServices.SiteRecovery.Test
             var callingClassType = TestUtilities.GetCallingClass(2);
             var mockName = TestUtilities.GetCurrentMethodName(2);
 
-            this.RunPsTestWorkflow(
+            RunPsTestWorkflow(
                 scenario,
                 () => scripts,
 
@@ -160,24 +160,24 @@ namespace RecoveryServices.SiteRecovery.Test
                 callingClassType,
                 mockName))
             {
-                this.csmTestFactory = new CSMTestEnvironmentFactory();
+                csmTestFactory = new CSMTestEnvironmentFactory();
 
                 if (initialize != null)
                 {
-                    initialize.Invoke(this.csmTestFactory);
+                    initialize.Invoke(csmTestFactory);
                 }
 
-                this.SetupManagementClients(
+                SetupManagementClients(
                     scenario,
                     context);
 
-                this.helper.SetupEnvironment(AzureModule.AzureResourceManager);
+                helper.SetupEnvironment(AzureModule.AzureResourceManager);
 
-                var rmProfileModule = this.helper.RMProfileModule;
+                var rmProfileModule = helper.RMProfileModule;
                 var rmModulePath =
-                    this.helper.GetRMModulePath("AzureRM.RecoveryServices.SiteRecovery.psd1");
+                    helper.GetRMModulePath("AzureRM.RecoveryServices.SiteRecovery.psd1");
                 var recoveryServicesModulePath =
-                    this.helper.GetRMModulePath("AzureRM.RecoveryServices.psd1");
+                    helper.GetRMModulePath("AzureRM.RecoveryServices.psd1");
 
                 var modules = new List<string>();
 
@@ -186,7 +186,7 @@ namespace RecoveryServices.SiteRecovery.Test
                 modules.Add(rmModulePath);
                 modules.Add(recoveryServicesModulePath);
 
-                this.helper.SetupModules(
+                helper.SetupModules(
                     AzureModule.AzureResourceManager,
                     modules.ToArray());
 
@@ -198,7 +198,7 @@ namespace RecoveryServices.SiteRecovery.Test
 
                         if (psScripts != null)
                         {
-                            this.helper.RunPowerShellTest(psScripts);
+                            helper.RunPowerShellTest(psScripts);
                         }
                     }
                 }
@@ -216,15 +216,15 @@ namespace RecoveryServices.SiteRecovery.Test
             string scenario,
             RestTestFramework.MockContext context)
         {
-            this.RmRestClient = this.GetRmRestClient(context);
-            this.RecoveryServicesMgmtClient = this.GetRecoveryServicesManagementClient(context);
-            this.SiteRecoveryMgmtClient = this.GetSiteRecoveryManagementClient(
+            RmRestClient = GetRmRestClient(context);
+            RecoveryServicesMgmtClient = GetRecoveryServicesManagementClient(context);
+            SiteRecoveryMgmtClient = GetSiteRecoveryManagementClient(
                 scenario,
                 context);
-            this.helper.SetupManagementClients(
-                this.RmRestClient,
-                this.RecoveryServicesMgmtClient,
-                this.SiteRecoveryMgmtClient);
+            helper.SetupManagementClients(
+                RmRestClient,
+                RecoveryServicesMgmtClient,
+                SiteRecoveryMgmtClient);
         }
 
         private RecoveryServicesClient GetRecoveryServicesManagementClient(
@@ -250,19 +250,19 @@ namespace RecoveryServices.SiteRecovery.Test
             switch (scenario)
             {
                 case Constants.NewModel:
-                    resourceName = this.asrVaultCreds.ResourceName;
-                    resourceGroupName = this.asrVaultCreds.ResourceGroupName;
+                    resourceName = asrVaultCreds.ResourceName;
+                    resourceGroupName = asrVaultCreds.ResourceGroupName;
                     break;
 
                 default:
-                    resourceName = this.asrVaultCreds.ResourceName;
-                    resourceGroupName = this.asrVaultCreds.ResourceGroupName;
+                    resourceName = asrVaultCreds.ResourceName;
+                    resourceGroupName = asrVaultCreds.ResourceGroupName;
                     break;
             }
 
             ;
 
-            var client = this.GetSiteRecoveryManagementClient(context);
+            var client = GetSiteRecoveryManagementClient(context);
             client.ResourceGroupName = resourceGroupName;
             client.ResourceName = resourceName;
 

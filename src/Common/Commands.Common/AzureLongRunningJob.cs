@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.Common
         /// <param name="cmdlet">The cmdlet to run asynchronously</param>
         /// <param name="command">The name of the command</param>
         /// <param name="name">The name of the task</param>
-        protected AzureLongRunningJob(T cmdlet, string command, string name) : this(cmdlet, command, name, (cmd) => cmd.ExecuteCmdlet())
+        protected AzureLongRunningJob(T cmdlet, string command, string name) : this(cmdlet, command, name, cmd => cmd.ExecuteCmdlet())
         {
         }
 
@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.Common
             _cmdlet.CommandRuntime = this;
             _runtime = cmdlet.CommandRuntime;
             _execute = executeCmdlet;
-            this.PSJobTypeName = this.GetType().Name;
+            PSJobTypeName = GetType().Name;
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace Microsoft.Azure.Commands.Common
                 name = Resources.LROJobName;
             }
 
-            var job = new Common.AzureLongRunningJob<U>(cmdlet, command, name);
+            var job = new AzureLongRunningJob<U>(cmdlet, command, name);
             return job;
         }
 
@@ -212,7 +212,7 @@ namespace Microsoft.Azure.Commands.Common
                 name = Resources.LROJobName;
             }
 
-            var job = new Common.AzureLongRunningJob<U>(cmdlet, command, name, executor);
+            var job = new AzureLongRunningJob<U>(cmdlet, command, name, executor);
             return job;
         }
 
@@ -235,7 +235,7 @@ namespace Microsoft.Azure.Commands.Common
             {
                 if (property.CanWrite && property.CanRead)
                 {
-                    property.SafeCopyValue(source: cmdlet, target: returnValue);
+                    property.SafeCopyValue(cmdlet, returnValue);
                 }
             }
 
@@ -246,11 +246,11 @@ namespace Microsoft.Azure.Commands.Common
 
             foreach (var field in returnType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly))
             {
-                field.SafeCopyValue(source: cmdlet, target: returnValue);
+                field.SafeCopyValue(cmdlet, returnValue);
             }
 
             cmdlet.SafeCopyParameterSet(returnValue);
-            return returnValue as U;
+            return returnValue;
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace Microsoft.Azure.Commands.Common
         /// <returns>An IcommandRuntime that reports results to this job</returns>
         public override ICommandRuntime GetJobRuntime()
         {
-            return this as ICommandRuntime;
+            return this;
         }
 
         /// <summary>
@@ -796,7 +796,7 @@ namespace Microsoft.Azure.Commands.Common
         /// <returns></returns>
         internal bool IsFailedOrCancelled(JobState state)
         {
-            return (state == JobState.Failed || state == JobState.Stopped || state == JobState.Stopping);
+            return state == JobState.Failed || state == JobState.Stopped || state == JobState.Stopping;
         }
 
         /// <summary>
@@ -836,11 +836,11 @@ namespace Microsoft.Azure.Commands.Common
                             gotResultEvent.Set();
                         }
                     };
-                this.StateChanged += stateChangedEventHandler;
+                StateChanged += stateChangedEventHandler;
                 Interlocked.MemoryBarrier();
                 try
                 {
-                    stateChangedEventHandler(null, new JobStateEventArgs(this.JobStateInfo));
+                    stateChangedEventHandler(null, new JobStateEventArgs(JobStateInfo));
                     if (!gotResultEvent.IsSet)
                     {
                         WriteDebug(string.Format(Resources.TraceBlockLROThread, methodType));
@@ -853,7 +853,7 @@ namespace Microsoft.Azure.Commands.Common
                         };
 
                         BlockedActions.Enqueue(new ShouldMethodStreamItem(methodInvoker));
-                        if (this.TryBlock())
+                        if (TryBlock())
                         {
                             gotResultEvent.Wait();
                             WriteDebug(string.Format(Resources.TraceUnblockLROThread, shouldMethod));
@@ -873,7 +873,7 @@ namespace Microsoft.Azure.Commands.Common
                 {
                     WriteDebug(string.Format(Resources.TraceRemoveLROEventHandler,
                         closureSafeExceptionThrownOnCmdletThread?.Message));
-                    this.StateChanged -= stateChangedEventHandler;
+                    StateChanged -= stateChangedEventHandler;
                 }
             }
 
@@ -891,7 +891,7 @@ namespace Microsoft.Azure.Commands.Common
         {
             ShouldMethodStreamItem stream;
             while (_actions.TryDequeue(out stream)) ;
-            this.Cancel();
+            Cancel();
         }
     }
 }

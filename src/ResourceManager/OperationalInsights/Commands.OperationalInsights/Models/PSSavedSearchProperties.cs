@@ -27,17 +27,17 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (properties != null)
             {
-                this.Category = properties.Category;
-                this.DisplayName = properties.DisplayName;
-                this.Query = properties.Query;
-                this.Version = properties.Version;
-                this.Tags = new Hashtable();
+                Category = properties.Category;
+                DisplayName = properties.DisplayName;
+                Query = properties.Query;
+                Version = properties.Version;
+                Tags = new Hashtable();
 
                 if (properties.Tags != null)
                 {
                     foreach (Tag tag in properties.Tags)
                     {
-                        this.Tags[tag.Name] = tag.Value;
+                        Tags[tag.Name] = tag.Value;
                     }
                 }
             }

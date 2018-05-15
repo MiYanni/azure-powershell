@@ -16,12 +16,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Commands.Common.Authentication.Abstractions;
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ErrorResponses;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ResourceGroups;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Components;
+    using Entities.ErrorResponses;
+    using Entities.ResourceGroups;
+    using Extensions;
+    using Utilities;
+    using WindowsAzure.Commands.Utilities.Common;
     using Newtonsoft.Json.Linq;
     using System.Management.Automation;
 
@@ -75,35 +75,35 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             if (ShouldProcess(ResourceGroupName, VerbsData.Export))
             {
 
-                var resourceId = this.GetResourceId();
+                var resourceId = GetResourceId();
 
-                var apiVersion = this.DetermineApiVersion(resourceId: resourceId).Result;
+                var apiVersion = DetermineApiVersion(resourceId).Result;
 
                 var parameters = new ExportTemplateParameters
                 {
-                    Resources = new string[] {"*"},
-                    Options = this.GetExportOptions() ?? null
+                    Resources = new[] {"*"},
+                    Options = GetExportOptions() ?? null
                 };
 
-                var operationResult = this.GetResourcesClient()
+                var operationResult = GetResourcesClient()
                     .InvokeActionOnResource<JObject>(
-                        resourceId: resourceId,
-                        action: Constants.ExportTemplate,
+                        resourceId,
+                        Constants.ExportTemplate,
                         parameters: parameters.ToJToken(),
                         apiVersion: apiVersion,
-                        cancellationToken: this.CancellationToken.Value)
+                        cancellationToken: CancellationToken.Value)
                     .Result;
 
-                var managementUri = this.GetResourcesClient()
+                var managementUri = GetResourcesClient()
                     .GetResourceManagementRequestUri(
-                        resourceId: resourceId,
-                        apiVersion: apiVersion,
-                        action: Constants.ExportTemplate);
+                        resourceId,
+                        apiVersion,
+                        Constants.ExportTemplate);
 
                 var activity = string.Format("POST {0}", managementUri.PathAndQuery);
-                var resultString = this.GetLongRunningOperationTracker(activityName: activity,
-                    isResourceCreateOrUpdate: false)
-                    .WaitOnOperation(operationResult: operationResult);
+                var resultString = GetLongRunningOperationTracker(activity,
+                    false)
+                    .WaitOnOperation(operationResult);
 
                 var template = JToken.FromObject(JObject.Parse(resultString)["template"]);
 
@@ -121,14 +121,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                 }
 
                 string path = FileUtility.SaveTemplateFile(
-                    templateName: this.ResourceGroupName,
-                    contents: template.ToString(),
-                    outputPath:
-                        string.IsNullOrEmpty(this.Path)
-                            ? System.IO.Path.Combine(CurrentPath(), this.ResourceGroupName)
-                            : this.TryResolvePath(this.Path),
-                    overwrite: Force.IsPresent,
-                    shouldContinue: ShouldContinue);
+                    ResourceGroupName,
+                    template.ToString(),
+                    string.IsNullOrEmpty(Path)
+                            ? System.IO.Path.Combine(CurrentPath(), ResourceGroupName)
+                            : this.TryResolvePath(Path),
+                    Force.IsPresent,
+                    ShouldContinue);
 
                 WriteObject(PowerShellUtilities.ConstructPSObject(null, "Path", path));
             }
@@ -140,11 +139,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private string GetExportOptions()
         {
             string options = string.Empty;
-            if (this.IncludeComments.IsPresent)
+            if (IncludeComments.IsPresent)
             {
                 options += "IncludeComments";
             }
-            if (this.IncludeParameterDefaultValue.IsPresent)
+            if (IncludeParameterDefaultValue.IsPresent)
             {
                 options = string.IsNullOrEmpty(options) ? "IncludeParameterDefaultValue" : options + ",IncludeParameterDefaultValue";
             }
@@ -157,10 +156,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected string GetResourceId()
         {
             return ResourceIdUtility.GetResourceId(
-                subscriptionId: DefaultContext.Subscription.GetId(),
-                resourceGroupName: this.ResourceGroupName,
-                resourceType: null,
-                resourceName: null);
+                DefaultContext.Subscription.GetId(),
+                ResourceGroupName,
+                null,
+                null);
         }
     }
 }

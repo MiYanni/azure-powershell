@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string snapshotName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "SnapshotName" },
+                 new[] { "ResourceGroupName", "SnapshotName" },
                  new object[] { resourceGroupName, snapshotName });
         }
     }
@@ -105,13 +105,13 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.SnapshotName, VerbsCommon.Remove)
-                    && (this.Force.IsPresent ||
-                        this.ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
+                if (ShouldProcess(SnapshotName, VerbsCommon.Remove)
+                    && (Force.IsPresent ||
+                        ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
                                             "Remove-AzureRmSnapshot operation")))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string snapshotName = this.SnapshotName;
+                    string resourceGroupName = ResourceGroupName;
+                    string snapshotName = SnapshotName;
 
                     var result = SnapshotsClient.Delete(resourceGroupName, snapshotName);
                     var psObject = new PSOperationStatusResponse();
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

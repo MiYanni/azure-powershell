@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            WriteObject(this.ApplicationGateway.Sku, true);
+            WriteObject(ApplicationGateway.Sku, true);
         }
     }
 }

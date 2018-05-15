@@ -97,10 +97,10 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
         internal static HostingEnvironmentProfile CreateHostingEnvironmentProfile(string subscriptionId, string resourceGroupName, string aseResourceGroupName, string aseName)
         {
             var rg = string.IsNullOrEmpty(aseResourceGroupName) ? resourceGroupName : aseResourceGroupName;
-            var aseResourceId = CmdletHelpers.GetApplicationServiceEnvironmentResourceId(subscriptionId, rg, aseName);
+            var aseResourceId = GetApplicationServiceEnvironmentResourceId(subscriptionId, rg, aseName);
             return new HostingEnvironmentProfile(
                 aseResourceId,
-                CmdletHelpers.ApplicationServiceEnvironmentResourcesName,
+                ApplicationServiceEnvironmentResourcesName,
                 aseName);
         }
 
@@ -306,7 +306,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
 
         internal static Certificate[] GetCertificates(ResourceClient resourceClient, WebsitesClient websitesClient, string resourceGroupName, string thumbPrint)
         {
-            var certificateResources = resourceClient.ResourceManagementClient.FilterResources(new FilterResourcesOptions()
+            var certificateResources = resourceClient.ResourceManagementClient.FilterResources(new FilterResourcesOptions
             {
                 ResourceType = "Microsoft.Web/Certificates"
             }).ToArray();
@@ -331,7 +331,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
 
         internal static SiteConfigResource ConvertToSiteConfigResource(this SiteConfig config)
         {
-            return new SiteConfigResource()
+            return new SiteConfigResource
             {
                 AlwaysOn = config.AlwaysOn,
                 ApiDefinition = config.ApiDefinition,
@@ -380,7 +380,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
 
         internal static SiteConfig ConvertToSiteConfig(this SiteConfigResource config)
         {
-            return new SiteConfig()
+            return new SiteConfig
             {
                 AlwaysOn = config.AlwaysOn,
                 ApiDefinition = config.ApiDefinition,

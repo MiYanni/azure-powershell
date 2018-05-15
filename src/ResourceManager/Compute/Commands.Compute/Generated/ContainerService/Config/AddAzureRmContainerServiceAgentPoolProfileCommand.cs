@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Add", "AzureRmContainerServiceAgentPoolProfile", SupportsShouldProcess = true)]
     [OutputType(typeof(PSContainerService))]
-    public partial class AddAzureRmContainerServiceAgentPoolProfileCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class AddAzureRmContainerServiceAgentPoolProfileCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -75,19 +75,19 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         private void Run()
         {
             // AgentPoolProfiles
-            if (this.ContainerService.AgentPoolProfiles == null)
+            if (ContainerService.AgentPoolProfiles == null)
             {
-                this.ContainerService.AgentPoolProfiles = new List<Microsoft.Azure.Management.Compute.Models.ContainerServiceAgentPoolProfile>();
+                ContainerService.AgentPoolProfiles = new List<ContainerServiceAgentPoolProfile>();
             }
 
-            var vAgentPoolProfiles = new Microsoft.Azure.Management.Compute.Models.ContainerServiceAgentPoolProfile();
+            var vAgentPoolProfiles = new ContainerServiceAgentPoolProfile();
 
-            vAgentPoolProfiles.Name = this.MyInvocation.BoundParameters.ContainsKey("Name") ? this.Name : null;
-            vAgentPoolProfiles.Count = this.Count;
-            vAgentPoolProfiles.VmSize = this.MyInvocation.BoundParameters.ContainsKey("VmSize") ? this.VmSize : null;
-            vAgentPoolProfiles.DnsPrefix = this.MyInvocation.BoundParameters.ContainsKey("DnsPrefix") ? this.DnsPrefix : null;
-            this.ContainerService.AgentPoolProfiles.Add(vAgentPoolProfiles);
-            WriteObject(this.ContainerService);
+            vAgentPoolProfiles.Name = MyInvocation.BoundParameters.ContainsKey("Name") ? Name : null;
+            vAgentPoolProfiles.Count = Count;
+            vAgentPoolProfiles.VmSize = MyInvocation.BoundParameters.ContainsKey("VmSize") ? VmSize : null;
+            vAgentPoolProfiles.DnsPrefix = MyInvocation.BoundParameters.ContainsKey("DnsPrefix") ? DnsPrefix : null;
+            ContainerService.AgentPoolProfiles.Add(vAgentPoolProfiles);
+            WriteObject(ContainerService);
         }
     }
 }

@@ -34,8 +34,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlServerActiveDirectoryAdministratorModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerActiveDirectoryAdministratorModel>() {
-                ModelAdapter.GetServerActiveDirectoryAdministrator(this.ResourceGroupName, this.ServerName)
+            return new List<AzureSqlServerActiveDirectoryAdministratorModel>
+            {
+                ModelAdapter.GetServerActiveDirectoryAdministrator(ResourceGroupName, ServerName)
             };
         }
 
@@ -56,7 +57,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlServerActiveDirectoryAdministratorModel> PersistChanges(IEnumerable<AzureSqlServerActiveDirectoryAdministratorModel> entity)
         {
-            ModelAdapter.RemoveServerActiveDirectoryAdministrator(this.ResourceGroupName, this.ServerName);
+            ModelAdapter.RemoveServerActiveDirectoryAdministrator(ResourceGroupName, ServerName);
             return entity;
         }
 
@@ -66,9 +67,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerActiveDirectoryAdministrator.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerActiveDirectoryAdministratorDescription, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerActiveDirectoryAdministratorWarning, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerActiveDirectoryAdministratorDescription, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerActiveDirectoryAdministratorWarning, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }

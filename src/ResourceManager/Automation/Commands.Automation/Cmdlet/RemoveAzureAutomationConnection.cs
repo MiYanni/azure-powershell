@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                        Name,
                        () =>
                        {
-                           this.AutomationClient.DeleteConnection(this.ResourceGroupName, this.AutomationAccountName, Name);
+                           AutomationClient.DeleteConnection(ResourceGroupName, AutomationAccountName, Name);
                        });
         }
     }

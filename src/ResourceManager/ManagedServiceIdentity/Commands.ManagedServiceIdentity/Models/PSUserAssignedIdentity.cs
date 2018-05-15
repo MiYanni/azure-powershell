@@ -17,15 +17,15 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.Models
 
         public PsUserAssignedIdentity(Identity identity)
         {
-            this.Id = identity.Id;
-            this.ResourceGroupName = GetResourceGroupNameFromId(this.Id);
-            this.Name = identity.Name;
-            this.Location = identity.Location;
-            this.TenantId = identity.TenantId.ToString();
-            this.PrincipalId = identity.PrincipalId.ToString();
-            this.ClientId = identity.ClientId.ToString();
-            this.ClientSecretUrl = identity.ClientSecretUrl;
-            this.Type = identity.Type;
+            Id = identity.Id;
+            ResourceGroupName = GetResourceGroupNameFromId(Id);
+            Name = identity.Name;
+            Location = identity.Location;
+            TenantId = identity.TenantId.ToString();
+            PrincipalId = identity.PrincipalId.ToString();
+            ClientId = identity.ClientId.ToString();
+            ClientSecretUrl = identity.ClientSecretUrl;
+            Type = identity.Type;
         }
 
         private string GetResourceGroupNameFromId(string resourceId)

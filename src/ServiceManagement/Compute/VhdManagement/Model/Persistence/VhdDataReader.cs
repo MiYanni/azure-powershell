@@ -29,30 +29,30 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         public VhdDataReader(BinaryReader reader)
         {
             this.reader = reader;
-            this.m_buffer = new byte[16];
+            m_buffer = new byte[16];
         }
 
         public long Size
         {
-            get { return this.reader.BaseStream.Length; }
+            get { return reader.BaseStream.Length; }
         }
 
         public bool ReadBoolean(long offset)
         {
-            this.SetPosition(offset);
-            return this.reader.ReadBoolean();
+            SetPosition(offset);
+            return reader.ReadBoolean();
         }
 
         public IAsyncResult BeginReadBoolean(long offset, AsyncCallback callback, object state)
         {
-            this.SetPosition(offset);
+            SetPosition(offset);
             return AsyncMachine.BeginAsyncMachine(FillBuffer, 1, callback, state);
         }
 
         public bool EndReadBoolean(IAsyncResult result)
         {
             AsyncMachine.EndAsyncMachine(result);
-            return (m_buffer[0] != 0);
+            return m_buffer[0] != 0;
         }
 
         IEnumerable<CompletionPort> FillBuffer(AsyncMachine machine, int numBytes)
@@ -69,9 +69,9 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
             // streams.
             if (numBytes == 1)
             {
-                this.reader.BaseStream.BeginRead(m_buffer, 0, numBytes, machine.CompletionCallback, null);
+                reader.BaseStream.BeginRead(m_buffer, 0, numBytes, machine.CompletionCallback, null);
                 yield return CompletionPort.SingleOperation;
-                n = this.reader.BaseStream.EndRead(machine.CompletionResult);
+                n = reader.BaseStream.EndRead(machine.CompletionResult);
                 if (n == -1)
                 {
                     throw new EndOfStreamException();
@@ -81,9 +81,9 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
             do
             {
-                this.reader.BaseStream.BeginRead(m_buffer, bytesRead, numBytes - bytesRead, machine.CompletionCallback, null);
+                reader.BaseStream.BeginRead(m_buffer, bytesRead, numBytes - bytesRead, machine.CompletionCallback, null);
                 yield return CompletionPort.SingleOperation;
-                n = this.reader.BaseStream.EndRead(machine.CompletionResult);
+                n = reader.BaseStream.EndRead(machine.CompletionResult);
 
                 if (n == 0)
                 {
@@ -95,13 +95,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public short ReadInt16(long offset)
         {
-            this.SetPosition(offset);
-            return IPAddress.NetworkToHostOrder((short)this.reader.ReadUInt16());
+            SetPosition(offset);
+            return IPAddress.NetworkToHostOrder((short)reader.ReadUInt16());
         }
 
         public IAsyncResult BeginReadInt16(long offset, AsyncCallback callback, object state)
         {
-            this.SetPosition(offset);
+            SetPosition(offset);
             return AsyncMachine.BeginAsyncMachine(FillBuffer, 2, callback, state);
         }
 
@@ -114,26 +114,26 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public uint ReadUInt32(long offset)
         {
-            this.SetPosition(offset);
-            return (uint)IPAddress.NetworkToHostOrder((int)this.reader.ReadUInt32());
+            SetPosition(offset);
+            return (uint)IPAddress.NetworkToHostOrder((int)reader.ReadUInt32());
         }
 
         public IAsyncResult BeginReadUInt32(long offset, AsyncCallback callback, object state)
         {
-            this.SetPosition(offset);
+            SetPosition(offset);
             return AsyncMachine.BeginAsyncMachine(FillBuffer, 4, callback, state);
         }
 
         public uint EndReadUInt32(IAsyncResult result)
         {
             AsyncMachine.EndAsyncMachine(result);
-            var value = (m_buffer[0] | m_buffer[1] << 8 | m_buffer[2] << 16 | m_buffer[3] << 24);
+            var value = m_buffer[0] | m_buffer[1] << 8 | m_buffer[2] << 16 | m_buffer[3] << 24;
             return (uint)IPAddress.NetworkToHostOrder(value);
         }
 
         public uint ReadUInt32()
         {
-            return (uint)IPAddress.NetworkToHostOrder((int)this.reader.ReadUInt32());
+            return (uint)IPAddress.NetworkToHostOrder((int)reader.ReadUInt32());
         }
 
         public IAsyncResult BeginReadUInt32(AsyncCallback callback, object state)
@@ -143,14 +143,14 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public ulong ReadUInt64(long offset)
         {
-            this.SetPosition(offset);
-            var value = (long)this.reader.ReadUInt64();
+            SetPosition(offset);
+            var value = (long)reader.ReadUInt64();
             return (ulong)IPAddress.NetworkToHostOrder(value);
         }
 
         public IAsyncResult BeginReadUInt64(long offset, AsyncCallback callback, object state)
         {
-            this.SetPosition(offset);
+            SetPosition(offset);
             return AsyncMachine.BeginAsyncMachine(FillBuffer, 8, callback, state);
         }
 
@@ -161,19 +161,19 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
                              m_buffer[2] << 16 | m_buffer[3] << 24);
             uint hi = (uint)(m_buffer[4] | m_buffer[5] << 8 |
                              m_buffer[6] << 16 | m_buffer[7] << 24);
-            ulong value = ((ulong)hi) << 32 | lo;
+            ulong value = (ulong)hi << 32 | lo;
             return (ulong)IPAddress.NetworkToHostOrder((long)value);
         }
 
         public byte[] ReadBytes(long offset, int count)
         {
-            this.SetPosition(offset);
-            return this.reader.ReadBytes(count);
+            SetPosition(offset);
+            return reader.ReadBytes(count);
         }
 
         public IAsyncResult BeginReadBytes(long offset, int count, AsyncCallback callback, object state)
         {
-            this.SetPosition(offset);
+            SetPosition(offset);
             return AsyncMachine<byte[]>.BeginAsyncMachine(ReadBytesAsync, offset, count, callback, state);
         }
 
@@ -184,7 +184,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IEnumerable<CompletionPort> ReadBytesAsync(AsyncMachine<byte[]> machine, long offset, int count)
         {
-            StreamHelper.BeginReadBytes(this.reader.BaseStream, offset, count, machine.CompletionCallback, null);
+            StreamHelper.BeginReadBytes(reader.BaseStream, offset, count, machine.CompletionCallback, null);
             yield return CompletionPort.SingleOperation;
             byte[] values = StreamHelper.EndReadBytes(machine.CompletionResult);
             machine.ParameterValue = values;
@@ -192,22 +192,22 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public byte[] ReadBytes(int count)
         {
-            return this.reader.ReadBytes(count);
+            return reader.ReadBytes(count);
         }
 
         public IAsyncResult BeginReadBytes(int count, AsyncCallback callback, object state)
         {
-            return AsyncMachine<byte[]>.BeginAsyncMachine(ReadBytesAsync, this.reader.BaseStream.Position, count, callback, state);
+            return AsyncMachine<byte[]>.BeginAsyncMachine(ReadBytesAsync, reader.BaseStream.Position, count, callback, state);
         }
 
         public string ReadString(int count)
         {
-            return Encoding.ASCII.GetString(this.reader.ReadBytes(count));
+            return Encoding.ASCII.GetString(reader.ReadBytes(count));
         }
 
         public IAsyncResult BeginReadString(int count, AsyncCallback callback, object state)
         {
-            return AsyncMachine<string>.BeginAsyncMachine(ReadStringAsync, this.reader.BaseStream.Position, count, callback, state);
+            return AsyncMachine<string>.BeginAsyncMachine(ReadStringAsync, reader.BaseStream.Position, count, callback, state);
         }
 
         public string EndReadString(IAsyncResult result)
@@ -225,8 +225,8 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public byte ReadByte(long offset)
         {
-            this.SetPosition(offset);
-            return this.reader.ReadByte();
+            SetPosition(offset);
+            return reader.ReadByte();
         }
 
         public IAsyncResult BeginReadByte(long offset, AsyncCallback callback, object state)
@@ -241,7 +241,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public Guid ReadGuid(long offset)
         {
-            return new Guid(this.ReadBytes(offset, 16));
+            return new Guid(ReadBytes(offset, 16));
         }
 
         public IAsyncResult BeginReadGuid(long offset, AsyncCallback callback, object state)
@@ -257,7 +257,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public DateTime ReadDateTime(long offset)
         {
-            var timeStamp = new VhdTimeStamp(this.ReadUInt32(offset));
+            var timeStamp = new VhdTimeStamp(ReadUInt32(offset));
             return timeStamp.ToDateTime();
         }
 
@@ -275,7 +275,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public DateTime ReadDateTime()
         {
-            var timeStamp = new VhdTimeStamp(this.ReadUInt32());
+            var timeStamp = new VhdTimeStamp(ReadUInt32());
             return timeStamp.ToDateTime();
         }
 
@@ -286,7 +286,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public void SetPosition(long batOffset)
         {
-            this.reader.BaseStream.Seek(batOffset, SeekOrigin.Begin);
+            reader.BaseStream.Seek(batOffset, SeekOrigin.Begin);
         }
     }
 }

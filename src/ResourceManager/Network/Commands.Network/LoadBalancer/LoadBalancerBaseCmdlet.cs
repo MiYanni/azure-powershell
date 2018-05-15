@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 GetLoadBalancer(resourceGroupName, name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSLoadBalancer GetLoadBalancer(string resourceGroupName, string name, string expandResource = null)
         {
-            var lb = this.LoadBalancerClient.Get(resourceGroupName, name, expandResource);
+            var lb = LoadBalancerClient.Get(resourceGroupName, name, expandResource);
 
             var psLoadBalancer = NetworkResourceManagerProfile.Mapper.Map<PSLoadBalancer>(lb);
             psLoadBalancer.ResourceGroupName = resourceGroupName;

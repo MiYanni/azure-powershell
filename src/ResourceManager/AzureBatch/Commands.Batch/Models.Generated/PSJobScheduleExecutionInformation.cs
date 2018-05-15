@@ -26,38 +26,38 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSJobScheduleExecutionInformation
     {
         
-        internal Microsoft.Azure.Batch.JobScheduleExecutionInformation omObject;
+        internal JobScheduleExecutionInformation omObject;
         
         private PSRecentJob recentJob;
         
-        internal PSJobScheduleExecutionInformation(Microsoft.Azure.Batch.JobScheduleExecutionInformation omObject)
+        internal PSJobScheduleExecutionInformation(JobScheduleExecutionInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public System.DateTime? EndTime
+        public DateTime? EndTime
         {
             get
             {
-                return this.omObject.EndTime;
+                return omObject.EndTime;
             }
         }
         
-        public System.DateTime? NextRunTime
+        public DateTime? NextRunTime
         {
             get
             {
-                return this.omObject.NextRunTime;
+                return omObject.NextRunTime;
             }
         }
         
@@ -65,12 +65,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.recentJob == null) 
-                            && (this.omObject.RecentJob != null)))
+                if (recentJob == null 
+                    && omObject.RecentJob != null)
                 {
-                    this.recentJob = new PSRecentJob(this.omObject.RecentJob);
+                    recentJob = new PSRecentJob(omObject.RecentJob);
                 }
-                return this.recentJob;
+                return recentJob;
             }
         }
     }

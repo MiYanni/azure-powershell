@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
             string rawJsonContent = DataFactoryClient.ReadJsonFileContent(this.TryResolvePath(DefinitionFile));
 
-            CreatePSAdfEntityParameters parameters = new CreatePSAdfEntityParameters()
+            CreatePSAdfEntityParameters parameters = new CreatePSAdfEntityParameters
             {
                 ResourceGroupName = ResourceGroupName,
                 DataFactoryName = DataFactoryName,

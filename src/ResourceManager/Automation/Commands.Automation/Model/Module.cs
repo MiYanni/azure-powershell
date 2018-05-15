@@ -31,25 +31,25 @@ namespace Microsoft.Azure.Commands.Automation.Model
         /// <param name="module">
         /// The Module.
         /// </param>
-        public Module(string resourceGroupName, string automationAccountName, Azure.Management.Automation.Models.Module module)
+        public Module(string resourceGroupName, string automationAccountName, Management.Automation.Models.Module module)
         {
             Requires.Argument("resourceGroupName", resourceGroupName).NotNull();
             Requires.Argument("automationAccountName", automationAccountName).NotNull();
             Requires.Argument("module", module).NotNull();
 
-            this.ResourceGroupName = resourceGroupName;
-            this.AutomationAccountName = automationAccountName;
-            this.Name = module.Name;
+            ResourceGroupName = resourceGroupName;
+            AutomationAccountName = automationAccountName;
+            Name = module.Name;
 
             if (module.Properties == null) return;
 
-            this.CreationTime = module.Properties.CreationTime.ToLocalTime();
-            this.LastModifiedTime = module.Properties.LastModifiedTime.ToLocalTime();
-            this.IsGlobal = module.Properties.IsGlobal;
-            this.Version = module.Properties.Version;
-            this.ProvisioningState = module.Properties.ProvisioningState.ToString();
-            this.ActivityCount = module.Properties.ActivityCount;
-            this.SizeInBytes = module.Properties.SizeInBytes;
+            CreationTime = module.Properties.CreationTime.ToLocalTime();
+            LastModifiedTime = module.Properties.LastModifiedTime.ToLocalTime();
+            IsGlobal = module.Properties.IsGlobal;
+            Version = module.Properties.Version;
+            ProvisioningState = module.Properties.ProvisioningState.ToString();
+            ActivityCount = module.Properties.ActivityCount;
+            SizeInBytes = module.Properties.SizeInBytes;
         }
 
         /// <summary>

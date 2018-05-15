@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
 
             List<PSBGPPeerStatus> peerStatuses = new List<PSBGPPeerStatus>();
-            foreach (var peerStatus in this.VirtualNetworkGatewayClient.GetBgpPeerStatus(this.ResourceGroupName, this.VirtualNetworkGatewayName, this.Peer).Value)
+            foreach (var peerStatus in VirtualNetworkGatewayClient.GetBgpPeerStatus(ResourceGroupName, VirtualNetworkGatewayName, Peer).Value)
             {
                 peerStatuses.Add(NetworkResourceManagerProfile.Mapper.Map<PSBGPPeerStatus>(peerStatus));
             }

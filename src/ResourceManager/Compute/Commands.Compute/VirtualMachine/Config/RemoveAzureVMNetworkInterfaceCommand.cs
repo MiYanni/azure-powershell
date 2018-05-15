@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Compute
         SupportsShouldProcess = true),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class RemoveAzureVMNetworkInterfaceCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class RemoveAzureVMNetworkInterfaceCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Alias("VMProfile")]
         [Parameter(
@@ -52,9 +52,9 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess("NetworkInterface", VerbsCommon.Remove))
+            if (ShouldProcess("NetworkInterface", VerbsCommon.Remove))
             {
-                var networkProfile = this.VM.NetworkProfile;
+                var networkProfile = VM.NetworkProfile;
 
                 if (NetworkInterfaceIDs == null)
                 {
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.Compute
                 }
                 else
                 {
-                    foreach (var id in this.NetworkInterfaceIDs)
+                    foreach (var id in NetworkInterfaceIDs)
                     {
                         if (networkProfile != null &&
                             networkProfile.NetworkInterfaces != null &&
@@ -75,9 +75,9 @@ namespace Microsoft.Azure.Commands.Compute
                     }
                 }
 
-                this.VM.NetworkProfile = networkProfile;
+                VM.NetworkProfile = networkProfile;
 
-                WriteObject(this.VM);
+                WriteObject(VM);
             }
         }
     }

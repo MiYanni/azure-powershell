@@ -51,17 +51,17 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.BackupRestore
             if (string.IsNullOrEmpty(AppServicePlan))
             {
                 Site app = WebsitesClient.GetWebApp(ResourceGroupName, Name, Slot);
-                this.AppServicePlan = app.ServerFarmId.Split('/').Last();
+                AppServicePlan = app.ServerFarmId.Split('/').Last();
             }
-            RestoreRequest request = new RestoreRequest()
+            RestoreRequest request = new RestoreRequest
             {
-                StorageAccountUrl = this.StorageAccountUrl,
-                BlobName = this.BlobName,
+                StorageAccountUrl = StorageAccountUrl,
+                BlobName = BlobName,
                 SiteName = CmdletHelpers.GenerateSiteWithSlotName(Name, Slot),
-                Overwrite = this.Overwrite.IsPresent,
-                AppServicePlan = this.AppServicePlan,
-                IgnoreConflictingHostNames = this.IgnoreConflictingHostNames.IsPresent,
-                Databases = this.Databases,
+                Overwrite = Overwrite.IsPresent,
+                AppServicePlan = AppServicePlan,
+                IgnoreConflictingHostNames = IgnoreConflictingHostNames.IsPresent,
+                Databases = Databases,
                 OperationType = BackupRestoreOperationType.Default
             };
             // The id here does not actually matter. It is an artifact of the CSM API requirements. It should be possible

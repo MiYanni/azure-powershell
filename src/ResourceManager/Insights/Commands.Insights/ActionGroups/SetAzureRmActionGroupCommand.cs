@@ -23,8 +23,8 @@ namespace Microsoft.Azure.Commands.Insights.ActionGroups
     using System.Collections;
     using System.Linq;
 
-    using Microsoft.Azure.Management.Internal.Resources.Utilities.Models;
-    using Microsoft.Azure.Management.Monitor.Management;
+    using Management.Internal.Resources.Utilities.Models;
+    using Management.Monitor.Management;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -109,51 +109,51 @@ namespace Microsoft.Azure.Commands.Insights.ActionGroups
         {
             if (
                 ShouldProcess(
-                    target: string.Format("Add/update action group: {0} from resource group: {1}", this.Name, this.ResourceGroupName),
-                    action: "Add/update action group"))
+                    string.Format("Add/update action group: {0} from resource group: {1}", Name, ResourceGroupName),
+                    "Add/update action group"))
             {
                 if (ParameterSetName == ByInputObject)
                 {
-                    this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                    if (this.ShortName == null)
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    if (ShortName == null)
                     {
-                        this.ShortName = this.InputObject.GroupShortName;
+                        ShortName = InputObject.GroupShortName;
                     }
-                    if (!this.DisableGroup.IsPresent)
+                    if (!DisableGroup.IsPresent)
                     {
-                        this.DisableGroup = !this.InputObject.Enabled;
+                        DisableGroup = !InputObject.Enabled;
                     }
-                    if (this.Tag == null)
+                    if (Tag == null)
                     {
-                        this.Tag = this.InputObject.Tags;
+                        Tag = InputObject.Tags;
                     }
-                    this.Receiver = new List<PSActionGroupReceiverBase>();
-                    this.Receiver.AddRange(this.InputObject.EmailReceivers);
-                    this.Receiver.AddRange(this.InputObject.SmsReceivers);
-                    this.Receiver.AddRange(this.InputObject.WebhookReceivers);
+                    Receiver = new List<PSActionGroupReceiverBase>();
+                    Receiver.AddRange(InputObject.EmailReceivers);
+                    Receiver.AddRange(InputObject.SmsReceivers);
+                    Receiver.AddRange(InputObject.WebhookReceivers);
                 }
                 else if (ParameterSetName == ByResourceId)
                 {
-                    ResourceIdentifier resourceId = new ResourceIdentifier(this.ResourceId);
-                    this.ResourceGroupName = resourceId.ResourceGroupName;
-                    this.Name = resourceId.ResourceName;
+                    ResourceIdentifier resourceId = new ResourceIdentifier(ResourceId);
+                    ResourceGroupName = resourceId.ResourceGroupName;
+                    Name = resourceId.ResourceName;
                 }
 
                 IList<EmailReceiver> emailReceivers =
-                    this.Receiver.OfType<PSEmailReceiver>().
-                        Select(o => new EmailReceiver(name: o.Name, emailAddress: o.EmailAddress, status: o.Status)).ToList();
+                    Receiver.OfType<PSEmailReceiver>().
+                        Select(o => new EmailReceiver(o.Name, o.EmailAddress, o.Status)).ToList();
                 IList<SmsReceiver> smsReceivers =
-                    this.Receiver.OfType<PSSmsReceiver>().
-                        Select(o => new SmsReceiver(name: o.Name, countryCode: o.CountryCode, phoneNumber: o.PhoneNumber, status: o.Status)).ToList();
+                    Receiver.OfType<PSSmsReceiver>().
+                        Select(o => new SmsReceiver(o.Name, o.CountryCode, o.PhoneNumber, o.Status)).ToList();
                 IList<WebhookReceiver> webhookReceivers =
-                    this.Receiver.OfType<PSWebhookReceiver>().
-                        Select(o => new WebhookReceiver(name: o.Name, serviceUri: o.ServiceUri)).ToList();
+                    Receiver.OfType<PSWebhookReceiver>().
+                        Select(o => new WebhookReceiver(o.Name, o.ServiceUri)).ToList();
                 ActionGroupResource actionGroup = new ActionGroupResource
                                                   {
                                                       Location = "Global",
-                                                      GroupShortName = this.ShortName,
-                                                      Enabled = !this.DisableGroup.IsPresent || !this.DisableGroup,
-                                                      Tags = this.Tag,
+                                                      GroupShortName = ShortName,
+                                                      Enabled = !DisableGroup.IsPresent || !DisableGroup,
+                                                      Tags = Tag,
                                                       EmailReceivers = emailReceivers,
                                                       SmsReceivers = smsReceivers,
                                                       WebhookReceivers = webhookReceivers
@@ -161,10 +161,10 @@ namespace Microsoft.Azure.Commands.Insights.ActionGroups
 
                 WriteObject(
                     new PSActionGroupResource(
-                        this.MonitorManagementClient.ActionGroups.CreateOrUpdate(
-                            resourceGroupName: this.ResourceGroupName,
-                            actionGroupName: this.Name,
-                            actionGroup: actionGroup)));
+                        MonitorManagementClient.ActionGroups.CreateOrUpdate(
+                            ResourceGroupName,
+                            Name,
+                            actionGroup)));
             }
         }
     }

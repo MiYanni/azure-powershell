@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands
             // Generate new Namespace List Keys for the specified AuthorizationRule
             if (ParameterSetName == NamespaceAuthoRuleParameterSet)
             {
-                if (ShouldProcess(target: RegenerateKey, action: string.Format(Resources.RegenerateKeyNamesapce, Name, Namespace)))
+                if (ShouldProcess(RegenerateKey, string.Format(Resources.RegenerateKeyNamesapce, Name, Namespace)))
                 {
                     WriteObject(Client.NamespaceRegenerateKeys(ResourceGroupName, Namespace, Name, RegenerateKey));
                 }
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands
             // Generate new WcfRelay List Keys for the specified AuthorizationRule
             if (ParameterSetName == WcfRelayAuthoRuleParameterSet)
             {
-                if (ShouldProcess(target: RegenerateKey, action: string.Format(Resources.RegenerateKeyWcfRelay, Name, WcfRelay)))
+                if (ShouldProcess(RegenerateKey, string.Format(Resources.RegenerateKeyWcfRelay, Name, WcfRelay)))
                 {
                     WriteObject(Client.WcfRelayRegenerateKeys(ResourceGroupName, Namespace, WcfRelay, Name, RegenerateKey));
                 }
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands
             // Generate new WcfRelayHybridConnection List Keys for the specified AuthorizationRule
             if (ParameterSetName == HybridConnectionAuthoRuleParameterSet)
             {
-                if (ShouldProcess(target: RegenerateKey, action: string.Format(Resources.RegenerateKeyHybirdconnection, Name, HybridConnection)))
+                if (ShouldProcess(RegenerateKey, string.Format(Resources.RegenerateKeyHybirdconnection, Name, HybridConnection)))
                 {
                     WriteObject(Client.HybridConnectionsRegenerateKeys(ResourceGroupName, Namespace, HybridConnection, Name, RegenerateKey));
                 }

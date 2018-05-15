@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Commands.Common.Authentication.Abstractions;
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
+    using Components;
     using System;
     using System.Management.Automation;
 
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the resource Id parameter.
         /// </summary>
         [Alias("Id")]
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.ResourceIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified resource Id, including the subscription. e.g. /subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers/myServer/databases/myDatabase")]
+        [Parameter(ParameterSetName = ResourceIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified resource Id, including the subscription. e.g. /subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers/myServer/databases/myDatabase")]
         [ValidateNotNullOrEmpty]
         public string ResourceId { get; set; }
 
@@ -52,32 +52,32 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the extension resource name parameter.
         /// </summary>
         [Alias("Name")]
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.SubscriptionLevelResoruceParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.TenantLevelResoruceParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
+        [Parameter(ParameterSetName = SubscriptionLevelResoruceParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
+        [Parameter(ParameterSetName = TenantLevelResoruceParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name. e.g. to specify a database MyServer/MyDatabase.")]
         [ValidateNotNullOrEmpty]
         public string ResourceName { get; set; }
 
         /// <summary>
         /// Gets or sets the resource type parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.SubscriptionLevelResoruceParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.TenantLevelResoruceParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
+        [Parameter(ParameterSetName = SubscriptionLevelResoruceParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
+        [Parameter(ParameterSetName = TenantLevelResoruceParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. e.g. Microsoft.Sql/Servers/Databases.")]
         [ValidateNotNullOrEmpty]
         public string ResourceType { get; set; }
 
         /// <summary>
         /// Gets or sets the extension resource name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.SubscriptionLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The extension resource name. e.g. to specify a database MyServer/MyDatabase.")]
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.TenantLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The extension resource name. e.g. to specify a database MyServer/MyDatabase.")]
+        [Parameter(ParameterSetName = SubscriptionLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The extension resource name. e.g. to specify a database MyServer/MyDatabase.")]
+        [Parameter(ParameterSetName = TenantLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The extension resource name. e.g. to specify a database MyServer/MyDatabase.")]
         [ValidateNotNullOrEmpty]
         public string ExtensionResourceName { get; set; }
 
         /// <summary>
         /// Gets or sets the extension resource type parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.SubscriptionLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The extension resource type. e.g. Microsoft.Sql/Servers/Databases.")]
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.TenantLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The extension resource type. e.g. Microsoft.Sql/Servers/Databases.")]
+        [Parameter(ParameterSetName = SubscriptionLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The extension resource type. e.g. Microsoft.Sql/Servers/Databases.")]
+        [Parameter(ParameterSetName = TenantLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The extension resource type. e.g. Microsoft.Sql/Servers/Databases.")]
         [ValidateNotNullOrEmpty]
         public string ExtensionResourceType { get; set; }
 
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the resource group name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.SubscriptionLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
+        [Parameter(ParameterSetName = SubscriptionLevelResoruceParameterSet, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the tenant level parameter.
         /// </summary>
-        [Parameter(ParameterSetName = ResourceManipulationCmdletBase.TenantLevelResoruceParameterSet, Mandatory = true, HelpMessage = "Indicates that this is a tenant level operation.")]
+        [Parameter(ParameterSetName = TenantLevelResoruceParameterSet, Mandatory = true, HelpMessage = "Indicates that this is a tenant level operation.")]
         public SwitchParameter TenantLevel { get; set; }
 
         /// <summary>
@@ -118,9 +118,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         public ResourceManipulationCmdletBase()
         {
-            if (string.IsNullOrEmpty(this.ResourceId))
+            if (string.IsNullOrEmpty(ResourceId))
             {
-                this.SubscriptionId = DefaultContext.Subscription.GetId();
+                SubscriptionId = DefaultContext.Subscription.GetId();
             }
         }
 
@@ -136,9 +136,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
 #pragma warning disable 618
 
-            return !string.IsNullOrWhiteSpace(this.ResourceId)
-                ? this.ResourceId
-                : this.GetResourceIdWithoutParentResource();
+            return !string.IsNullOrWhiteSpace(ResourceId)
+                ? ResourceId
+                : GetResourceIdWithoutParentResource();
 
 #pragma warning restore 618
         }
@@ -149,12 +149,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private string GetResourceIdWithoutParentResource()
         {
             return ResourceIdUtility.GetResourceId(
-                subscriptionId: this.SubscriptionId,
-                resourceGroupName: this.ResourceGroupName,
-                resourceType: this.ResourceType,
-                resourceName: this.ResourceName,
-                extensionResourceType: this.ExtensionResourceType,
-                extensionResourceName: this.ExtensionResourceName);
+                SubscriptionId,
+                ResourceGroupName,
+                ResourceType,
+                ResourceName,
+                ExtensionResourceType,
+                ExtensionResourceName);
         }
     }
 }

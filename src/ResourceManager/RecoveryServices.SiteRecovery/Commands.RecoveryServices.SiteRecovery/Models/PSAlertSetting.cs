@@ -37,9 +37,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <param name="alertSetting">AlertSetting Object</param>
         public ASRAlertSetting(Alert alertSettings)
         {
-            this.CustomEmailAddress = alertSettings.Properties.CustomEmailAddresses;
-            this.EmailSubscriptionOwner = alertSettings.Properties.SendToOwners;
-            this.Locale = alertSettings.Properties.Locale;
+            CustomEmailAddress = alertSettings.Properties.CustomEmailAddresses;
+            EmailSubscriptionOwner = alertSettings.Properties.SendToOwners;
+            Locale = alertSettings.Properties.Locale;
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public string EmailSubscriptionOwner
         {
-            get { return this._emailSubscriptionOwner; }
+            get { return _emailSubscriptionOwner; }
             set
             {
-                this._emailSubscriptionOwner = value.Equals(
+                _emailSubscriptionOwner = value.Equals(
                SendToOwners.Send,
                StringComparison.InvariantCultureIgnoreCase)
                ? SendToOwners.On

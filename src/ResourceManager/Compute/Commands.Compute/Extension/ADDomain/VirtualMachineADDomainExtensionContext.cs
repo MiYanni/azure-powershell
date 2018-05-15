@@ -45,11 +45,11 @@ namespace Microsoft.Azure.Commands.Compute.Models
             ProtectedSettings = psExt.ProtectedSettings;
             ProvisioningState = psExt.ProvisioningState;
             Statuses = psExt.Statuses;
-            DomainName = (publicSettings == null) ? null : publicSettings.Name;
-            OUPath = (publicSettings == null) ? null : publicSettings.OUPath;
-            User = (publicSettings == null) ? null : publicSettings.User;
-            JoinOption = (publicSettings == null) ? (uint?) null : publicSettings.Options;
-            Restart = (publicSettings == null) ? (bool?) null : publicSettings.Restart;
+            DomainName = publicSettings == null ? null : publicSettings.Name;
+            OUPath = publicSettings == null ? null : publicSettings.OUPath;
+            User = publicSettings == null ? null : publicSettings.User;
+            JoinOption = publicSettings == null ? (uint?) null : publicSettings.Options;
+            Restart = publicSettings == null ? (bool?) null : publicSettings.Restart;
         }
     }
 }

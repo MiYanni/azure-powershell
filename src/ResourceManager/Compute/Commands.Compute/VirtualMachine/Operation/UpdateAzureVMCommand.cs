@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Compute
            ParameterSetName = ExplicitIdentityParameterSet,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -104,37 +104,37 @@ namespace Microsoft.Azure.Commands.Compute
         {
             base.ExecuteCmdlet();
 
-            if (this.ParameterSetName.Equals(IdParameterSet))
+            if (ParameterSetName.Equals(IdParameterSet))
             {
-                this.ResourceGroupName = GetResourceGroupNameFromId(this.Id);
+                ResourceGroupName = GetResourceGroupNameFromId(Id);
             }
 
-            if (ShouldProcess(this.VM.Name, VerbsData.Update))
+            if (ShouldProcess(VM.Name, VerbsData.Update))
             {
                 ExecuteClientAction(() =>
                 {
                     var parameters = new VirtualMachine
                     {
-                        DiagnosticsProfile = this.VM.DiagnosticsProfile,
-                        HardwareProfile = this.VM.HardwareProfile,
-                        StorageProfile = this.VM.StorageProfile,
-                        NetworkProfile = this.VM.NetworkProfile,
-                        OsProfile = this.VM.OSProfile,
-                        Plan = this.VM.Plan,
-                        AvailabilitySet = this.VM.AvailabilitySetReference,
-                        Location = this.VM.Location,
-                        LicenseType = this.VM.LicenseType,
-                        Tags = this.Tag != null ? this.Tag.ToDictionary() : this.VM.Tags,
-                        Identity = this.AssignIdentity.IsPresent ? new VirtualMachineIdentity(null, null, ResourceIdentityType.SystemAssigned) : this.VM.Identity,
-                        Zones = (this.VM.Zones != null && this.VM.Zones.Count > 0) ? this.VM.Zones : null
+                        DiagnosticsProfile = VM.DiagnosticsProfile,
+                        HardwareProfile = VM.HardwareProfile,
+                        StorageProfile = VM.StorageProfile,
+                        NetworkProfile = VM.NetworkProfile,
+                        OsProfile = VM.OSProfile,
+                        Plan = VM.Plan,
+                        AvailabilitySet = VM.AvailabilitySetReference,
+                        Location = VM.Location,
+                        LicenseType = VM.LicenseType,
+                        Tags = Tag != null ? Tag.ToDictionary() : VM.Tags,
+                        Identity = AssignIdentity.IsPresent ? new VirtualMachineIdentity(null, null, ResourceIdentityType.SystemAssigned) : VM.Identity,
+                        Zones = VM.Zones != null && VM.Zones.Count > 0 ? VM.Zones : null
                     };
 
-                    if (this.IdentityType != null)
+                    if (IdentityType != null)
                     {
-                        parameters.Identity = new VirtualMachineIdentity(null, null, this.IdentityType);
+                        parameters.Identity = new VirtualMachineIdentity(null, null, IdentityType);
                     }
 
-                    if (this.MyInvocation.BoundParameters.ContainsKey("OsDiskWriteAccelerator"))
+                    if (MyInvocation.BoundParameters.ContainsKey("OsDiskWriteAccelerator"))
                     {
                         if (parameters.StorageProfile == null)
                         {
@@ -144,20 +144,20 @@ namespace Microsoft.Azure.Commands.Compute
                         {
                             parameters.StorageProfile.OsDisk = new OSDisk();
                         }
-                        parameters.StorageProfile.OsDisk.WriteAcceleratorEnabled = this.OsDiskWriteAccelerator;
+                        parameters.StorageProfile.OsDisk.WriteAcceleratorEnabled = OsDiskWriteAccelerator;
                     }
 
-                    if (this.IdentityId != null)
+                    if (IdentityId != null)
                     {
                         if (parameters.Identity != null)
                         {
-                            parameters.Identity.IdentityIds = this.IdentityId;
+                            parameters.Identity.IdentityIds = IdentityId;
                         }
                     }
 
-                    var op = this.VirtualMachineClient.CreateOrUpdateWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VM.Name,
+                    var op = VirtualMachineClient.CreateOrUpdateWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VM.Name,
                         parameters).GetAwaiter().GetResult();
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
                     WriteObject(result);

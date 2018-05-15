@@ -15,7 +15,7 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
+    using SdkModels;
     using System.Collections;
     using System.Collections.Generic;
     using System.Management.Automation;

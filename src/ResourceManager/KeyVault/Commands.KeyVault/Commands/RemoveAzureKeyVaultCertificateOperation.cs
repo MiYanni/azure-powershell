@@ -103,11 +103,11 @@ namespace Microsoft.Azure.Commands.KeyVault
                     "Remove certificate operation for '{0}'",
                     Name),
                 Name,
-                () => { certificateOperation = this.DataServiceClient.DeleteCertificateOperation(VaultName, Name); });
+                () => { certificateOperation = DataServiceClient.DeleteCertificateOperation(VaultName, Name); });
 
             if (PassThru.IsPresent)
             {
-                this.WriteObject(certificateOperation);
+                WriteObject(certificateOperation);
             }
         }
     }

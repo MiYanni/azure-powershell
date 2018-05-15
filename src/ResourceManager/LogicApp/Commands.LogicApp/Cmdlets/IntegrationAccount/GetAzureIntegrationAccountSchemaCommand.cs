@@ -15,9 +15,9 @@
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.Rest.Azure;
+    using Utilities;
+    using Management.Logic.Models;
+    using Rest.Azure;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -53,13 +53,13 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            if (string.IsNullOrEmpty(this.SchemaName))
+            if (string.IsNullOrEmpty(SchemaName))
             {
-                this.WriteObject(IntegrationAccountClient.ListIntegrationAccountSchemas(this.ResourceGroupName,this.Name), true);
+                WriteObject(IntegrationAccountClient.ListIntegrationAccountSchemas(ResourceGroupName,Name), true);
             }
             else
             {
-                this.WriteObject(IntegrationAccountClient.GetIntegrationAccountSchema(this.ResourceGroupName, this.Name, this.SchemaName), true);
+                WriteObject(IntegrationAccountClient.GetIntegrationAccountSchema(ResourceGroupName, Name, SchemaName), true);
             }
         }
     }

@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionServiceBusNamespace == null ? null : (string)this._errorActionServiceBusNamespace.Value;
+                return _errorActionServiceBusNamespace == null ? null : (string)_errorActionServiceBusNamespace.Value;
             }
         }
 
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionServiceBusTopicPath == null ? null : (string)this._errorActionServiceBusTopicPath.Value;
+                return _errorActionServiceBusTopicPath == null ? null : (string)_errorActionServiceBusTopicPath.Value;
             }
         }
 
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionServiceBusQueueName == null ? null : (string)this._errorActionServiceBusQueueName.Value;
+                return _errorActionServiceBusQueueName == null ? null : (string)_errorActionServiceBusQueueName.Value;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionServiceBusTransportType == null ? null : (string)this._errorActionServiceBusTransportType.Value;
+                return _errorActionServiceBusTransportType == null ? null : (string)_errorActionServiceBusTransportType.Value;
             }
         }
 
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionServiceBusMessage == null ? null : (string)this._errorActionServiceBusMessage.Value;
+                return _errorActionServiceBusMessage == null ? null : (string)_errorActionServiceBusMessage.Value;
             }
         }
 
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionServiceBusSasKeyName == null ? null : (string)this._errorActionServiceBusSasKeyName.Value;
+                return _errorActionServiceBusSasKeyName == null ? null : (string)_errorActionServiceBusSasKeyName.Value;
             }
         }
 
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             get
             {
-                return this._errorActionServiceBusSasKeyValue == null ? null : (string)this._errorActionServiceBusSasKeyValue.Value;
+                return _errorActionServiceBusSasKeyValue == null ? null : (string)_errorActionServiceBusSasKeyValue.Value;
             }
         }
 
@@ -150,11 +150,11 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._errorActionServiceBusQueueName = new RuntimeDefinedParameter("ErrorActionServiceBusQueueName", typeof(string), errorActionServiceBusQueueNameAttributes);
+            _errorActionServiceBusQueueName = new RuntimeDefinedParameter("ErrorActionServiceBusQueueName", typeof(string), errorActionServiceBusQueueNameAttributes);
 
             var runTimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusQueueName", this._errorActionServiceBusQueueName);
-            runTimeDefinedParameterDictionary.AddRange(this.AddServiceBusErrorActionParameters(create));
+            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusQueueName", _errorActionServiceBusQueueName);
+            runTimeDefinedParameterDictionary.AddRange(AddServiceBusErrorActionParameters(create));
 
             return runTimeDefinedParameterDictionary;
         }
@@ -176,11 +176,11 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._errorActionServiceBusTopicPath = new RuntimeDefinedParameter("ErrorActionServiceBusTopicPath", typeof(string), errorActionServiceBusTopicPathAttributes);
+            _errorActionServiceBusTopicPath = new RuntimeDefinedParameter("ErrorActionServiceBusTopicPath", typeof(string), errorActionServiceBusTopicPathAttributes);
 
             var runTimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusTopicPath", this._errorActionServiceBusTopicPath);
-            runTimeDefinedParameterDictionary.AddRange(this.AddServiceBusErrorActionParameters(create));
+            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusTopicPath", _errorActionServiceBusTopicPath);
+            runTimeDefinedParameterDictionary.AddRange(AddServiceBusErrorActionParameters(create));
 
             return runTimeDefinedParameterDictionary;
         }
@@ -242,18 +242,18 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 new ValidateNotNullOrEmptyAttribute()
             };
 
-            this._errorActionServiceBusNamespace = new RuntimeDefinedParameter("ErrorActionServiceBusNamespace", typeof(string), errorActionServiceBusNamespaceAttributes);
-            this._errorActionServiceBusTransportType = new RuntimeDefinedParameter("ErrorActionServiceBusTransportType", typeof(string), errorActionServiceBusTransportTypeAttributes);
-            this._errorActionServiceBusMessage = new RuntimeDefinedParameter("ErrorActionServiceBusMessage", typeof(string), errorActionServiceBusMessageAttributes);
-            this._errorActionServiceBusSasKeyName = new RuntimeDefinedParameter("ErrorActionServiceBusSasKeyName", typeof(string), errorActionServiceBusSasKeyNameAttributes);
-            this._errorActionServiceBusSasKeyValue = new RuntimeDefinedParameter("ErrorActionServiceBusSasKeyValue", typeof(string), errorActionServiceBusSasKeyValueAttributes);
+            _errorActionServiceBusNamespace = new RuntimeDefinedParameter("ErrorActionServiceBusNamespace", typeof(string), errorActionServiceBusNamespaceAttributes);
+            _errorActionServiceBusTransportType = new RuntimeDefinedParameter("ErrorActionServiceBusTransportType", typeof(string), errorActionServiceBusTransportTypeAttributes);
+            _errorActionServiceBusMessage = new RuntimeDefinedParameter("ErrorActionServiceBusMessage", typeof(string), errorActionServiceBusMessageAttributes);
+            _errorActionServiceBusSasKeyName = new RuntimeDefinedParameter("ErrorActionServiceBusSasKeyName", typeof(string), errorActionServiceBusSasKeyNameAttributes);
+            _errorActionServiceBusSasKeyValue = new RuntimeDefinedParameter("ErrorActionServiceBusSasKeyValue", typeof(string), errorActionServiceBusSasKeyValueAttributes);
 
             var runTimeDefinedParameterDictionary = new RuntimeDefinedParameterDictionary();
-            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusNamespace", this._errorActionServiceBusNamespace);
-            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusTransportType", this._errorActionServiceBusTransportType);
-            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusMessage", this._errorActionServiceBusMessage);
-            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusSasKeyName", this._errorActionServiceBusSasKeyName);
-            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusSasKeyValue", this._errorActionServiceBusSasKeyValue);
+            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusNamespace", _errorActionServiceBusNamespace);
+            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusTransportType", _errorActionServiceBusTransportType);
+            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusMessage", _errorActionServiceBusMessage);
+            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusSasKeyName", _errorActionServiceBusSasKeyName);
+            runTimeDefinedParameterDictionary.Add("ErrorActionServiceBusSasKeyValue", _errorActionServiceBusSasKeyValue);
 
             return runTimeDefinedParameterDictionary;
         }

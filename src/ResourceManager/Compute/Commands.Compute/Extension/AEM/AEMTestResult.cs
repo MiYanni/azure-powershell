@@ -28,19 +28,19 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
         {
             get
             {
-                if (this._Result.HasValue)
+                if (_Result.HasValue)
                 {
-                    if (this.PartialResults.Count > 0)
+                    if (PartialResults.Count > 0)
                     {
                         Debug.WriteLine("There should be no partial results.");
                     }
 
-                    return this._Result.Value;
+                    return _Result.Value;
                 }
-                else if (this.PartialResults.Count > 0)
+                if (PartialResults.Count > 0)
                 {
                     bool partialResult = true;
-                    foreach (var partResult in this.PartialResults)
+                    foreach (var partResult in PartialResults)
                     {
                         partialResult &= partResult.Result;
                     }
@@ -52,22 +52,22 @@ namespace Microsoft.Azure.Commands.Compute.Extension.AEM
             }
             set
             {
-                this._Result = value;
+                _Result = value;
             }
         }
 
         public AEMTestResult()
         {
-            this.PartialResults = new List<AEMTestResult>();
+            PartialResults = new List<AEMTestResult>();
         }
         public AEMTestResult(string testName, params string[] args) : this()
         {
-            this.TestName = String.Format(testName, args);
+            TestName = String.Format(testName, args);
         }
 
         public AEMTestResult(string testName, bool result, params string[] args) : this(testName, args)
         {
-            this.Result = result;
+            Result = result;
         }
     }
 }

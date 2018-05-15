@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Description
         {
-            get { return this._description; }
-            set { this._description = value; }
+            get { return _description; }
+            set { _description = value; }
         }
 
         private string _displayName;
@@ -29,8 +29,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string DisplayName
         {
-            get { return this._displayName; }
-            set { this._displayName = value; }
+            get { return _displayName; }
+            set { _displayName = value; }
         }
 
         private string _planIdentifier;
@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string PlanIdentifier
         {
-            get { return this._planIdentifier; }
-            set { this._planIdentifier = value; }
+            get { return _planIdentifier; }
+            set { _planIdentifier = value; }
         }
 
         private string _summary;
@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Gallery
         /// </summary>
         public string Summary
         {
-            get { return this._summary; }
-            set { this._summary = value; }
+            get { return _summary; }
+            set { _summary = value; }
         }
 
         /// <summary>

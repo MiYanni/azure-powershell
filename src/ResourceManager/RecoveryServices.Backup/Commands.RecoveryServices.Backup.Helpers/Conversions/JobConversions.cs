@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             response.WorkloadName = vmJob.EntityFriendlyName;
             response.ActivityId = vmJob.ActivityId;
             response.BackupManagementType = CmdletModel.EnumUtils.GetEnum<CmdletModel.BackupManagementType>(
-                GetPSBackupManagementType(vmJob.BackupManagementType.ToString()));
+                GetPSBackupManagementType(vmJob.BackupManagementType));
             response.Operation = vmJob.Operation;
 
             if (vmJob.ErrorDetails != null)
@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
                     detailedResponse.SubTasks = new List<CmdletModel.AzureVmJobSubTask>();
                     foreach (var vmJobTask in vmJob.ExtendedInfo.TasksList)
                     {
-                        detailedResponse.SubTasks.Add(new CmdletModel.AzureVmJobSubTask()
+                        detailedResponse.SubTasks.Add(new CmdletModel.AzureVmJobSubTask
                         {
                             Name = vmJobTask.TaskId,
                             Status = vmJobTask.Status
@@ -199,7 +199,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
             switch (mgmtType)
             {
                 case CmdletModel.BackupManagementType.AzureVM:
-                    return BackupManagementType.AzureIaasVM.ToString();
+                    return BackupManagementType.AzureIaasVM;
                 default:
                     throw new Exception("Invalid BackupManagementType provided: " + mgmtType);
             }
@@ -210,14 +210,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers
         /// </summary>
         public static string GetPSBackupManagementType(string jobType)
         {
-            if (jobType == BackupManagementType.AzureIaasVM.ToString())
+            if (jobType == BackupManagementType.AzureIaasVM)
             {
                 return CmdletModel.BackupManagementType.AzureVM.ToString();
             }
-            else
-            {
-                throw new Exception("Invalid JobType provided: " + jobType);
-            }
+            throw new Exception("Invalid JobType provided: " + jobType);
         }
 
         #endregion

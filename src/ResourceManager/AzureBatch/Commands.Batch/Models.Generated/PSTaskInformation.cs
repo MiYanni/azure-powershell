@@ -26,21 +26,21 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSTaskInformation
     {
         
-        internal Microsoft.Azure.Batch.TaskInformation omObject;
+        internal TaskInformation omObject;
         
         private PSTaskExecutionInformation executionInformation;
         
-        internal PSTaskInformation(Microsoft.Azure.Batch.TaskInformation omObject)
+        internal PSTaskInformation(TaskInformation omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -49,12 +49,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.executionInformation == null) 
-                            && (this.omObject.ExecutionInformation != null)))
+                if (executionInformation == null 
+                    && omObject.ExecutionInformation != null)
                 {
-                    this.executionInformation = new PSTaskExecutionInformation(this.omObject.ExecutionInformation);
+                    executionInformation = new PSTaskExecutionInformation(omObject.ExecutionInformation);
                 }
-                return this.executionInformation;
+                return executionInformation;
             }
         }
         
@@ -62,15 +62,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.JobId;
+                return omObject.JobId;
             }
         }
         
-        public System.Int32? SubtaskId
+        public Int32? SubtaskId
         {
             get
             {
-                return this.omObject.SubtaskId;
+                return omObject.SubtaskId;
             }
         }
         
@@ -78,15 +78,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.TaskId;
+                return omObject.TaskId;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.TaskState TaskState
+        public Azure.Batch.Common.TaskState TaskState
         {
             get
             {
-                return this.omObject.TaskState;
+                return omObject.TaskState;
             }
         }
         
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.TaskUrl;
+                return omObject.TaskUrl;
             }
         }
     }

@@ -26,13 +26,13 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSOutputFile
     {
         
-        internal Microsoft.Azure.Batch.OutputFile omObject;
+        internal OutputFile omObject;
         
         private PSOutputFileDestination destination;
         
@@ -40,14 +40,14 @@ namespace Microsoft.Azure.Commands.Batch.Models
         
         public PSOutputFile(string filePattern, PSOutputFileDestination destination, PSOutputFileUploadOptions uploadOptions)
         {
-            this.omObject = new Microsoft.Azure.Batch.OutputFile(filePattern, destination.omObject, uploadOptions.omObject);
+            omObject = new OutputFile(filePattern, destination.omObject, uploadOptions.omObject);
         }
         
-        internal PSOutputFile(Microsoft.Azure.Batch.OutputFile omObject)
+        internal PSOutputFile(OutputFile omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -56,12 +56,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.destination == null) 
-                            && (this.omObject.Destination != null)))
+                if (destination == null 
+                    && omObject.Destination != null)
                 {
-                    this.destination = new PSOutputFileDestination(this.omObject.Destination);
+                    destination = new PSOutputFileDestination(omObject.Destination);
                 }
-                return this.destination;
+                return destination;
             }
         }
         
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.FilePattern;
+                return omObject.FilePattern;
             }
         }
         
@@ -77,12 +77,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.uploadOptions == null) 
-                            && (this.omObject.UploadOptions != null)))
+                if (uploadOptions == null 
+                    && omObject.UploadOptions != null)
                 {
-                    this.uploadOptions = new PSOutputFileUploadOptions(this.omObject.UploadOptions);
+                    uploadOptions = new PSOutputFileUploadOptions(omObject.UploadOptions);
                 }
-                return this.uploadOptions;
+                return uploadOptions;
             }
         }
     }

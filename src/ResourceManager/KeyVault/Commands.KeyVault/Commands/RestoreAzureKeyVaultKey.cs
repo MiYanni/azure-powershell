@@ -94,19 +94,19 @@ namespace Microsoft.Azure.Commands.KeyVault
                 VaultName = resourceIdentifier.ResourceName;
             }
 
-            if (ShouldProcess(VaultName, Properties.Resources.RestoreKey))
+            if (ShouldProcess(VaultName, Resources.RestoreKey))
             {
                 var filePath = ResolvePath(InputFile);
 
-                var restoredKeyBundle = this.DataServiceClient.RestoreKey(VaultName, filePath);
+                var restoredKeyBundle = DataServiceClient.RestoreKey(VaultName, filePath);
 
-                this.WriteObject(restoredKeyBundle);
+                WriteObject(restoredKeyBundle);
             }
         }
 
         private string ResolvePath(string filePath)
         {
-            FileInfo keyFile = new FileInfo(this.GetUnresolvedProviderPathFromPSPath(filePath));
+            FileInfo keyFile = new FileInfo(GetUnresolvedProviderPathFromPSPath(filePath));
             if (!keyFile.Exists)
             {
                 throw new FileNotFoundException(string.Format(Resources.BackupKeyFileNotFound, filePath));

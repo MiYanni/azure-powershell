@@ -4,10 +4,10 @@
 
 namespace Microsoft.Azure.Graph.RBAC.Version1_6.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Graph;
-    using Microsoft.Azure.Graph.RBAC;
-    using Microsoft.Azure.Graph.RBAC.Version1_6;
+    using Azure;
+    using Graph;
+    using RBAC;
+    using Version1_6;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;

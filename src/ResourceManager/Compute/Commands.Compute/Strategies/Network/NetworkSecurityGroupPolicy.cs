@@ -28,20 +28,20 @@ namespace Microsoft.Azure.Commands.Compute.Strategies.Network
     {
         public static ResourceStrategy<NetworkSecurityGroup> Strategy { get; }
             = NetworkStrategy.Create(
-                provider: "networkSecurityGroups",
-                getOperations: client => client.NetworkSecurityGroups,
-                getAsync: (o, p) => o.GetAsync(
+                "networkSecurityGroups",
+                client => client.NetworkSecurityGroups,
+                (o, p) => o.GetAsync(
                     p.ResourceGroupName, p.Name, null, p.CancellationToken),
-                createOrUpdateAsync: (o, p) => o.CreateOrUpdateAsync(
+                (o, p) => o.CreateOrUpdateAsync(
                     p.ResourceGroupName, p.Name, p.Model, p.CancellationToken),
-                createTime: _ => 15);
+                _ => 15);
 
         public static ResourceConfig<NetworkSecurityGroup> CreateNetworkSecurityGroupConfig(
             this ResourceConfig<ResourceGroup> resourceGroup, string name, IList<int> openPorts)
             => Strategy.CreateResourceConfig(
-                resourceGroup: resourceGroup,
-                name: name,
-                createModel: _ => new NetworkSecurityGroup
+                resourceGroup,
+                name,
+                _ => new NetworkSecurityGroup
                 {
                     SecurityRules = openPorts
                         ?.Select((port, index) => new SecurityRule

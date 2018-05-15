@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.EventHub
             }
           
 
-            if (ShouldProcess(target:Name, action: string.Format(Resources.UpdateEventHub,Name,Namespace)))
+            if (ShouldProcess(Name, string.Format(Resources.UpdateEventHub,Name,Namespace)))
             {
                 WriteObject(Client.CreateOrUpdateEventHub(ResourceGroupName, Namespace, Name, eventHub));
             }

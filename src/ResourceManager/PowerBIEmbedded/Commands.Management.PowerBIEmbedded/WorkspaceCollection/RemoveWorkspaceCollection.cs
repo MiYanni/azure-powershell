@@ -42,15 +42,15 @@ namespace Microsoft.Azure.Commands.Management.PowerBIEmbedded.WorkspaceCollectio
 
         public override void ExecuteCmdlet()
         {
-            var description = string.Format(Resources.RemoveWorkspaceCollectionDescription, this.WorkspaceCollectionName);
-            var warning = string.Format(Resources.RemoveWorkspaceCollectionWarning, this.WorkspaceCollectionName);
+            var description = string.Format(Resources.RemoveWorkspaceCollectionDescription, WorkspaceCollectionName);
+            var warning = string.Format(Resources.RemoveWorkspaceCollectionWarning, WorkspaceCollectionName);
 
             if (!ShouldProcess(description, warning, Resources.ShouldProcessCaption))
             {
                 return;
             }
 
-            this.PowerBIClient.WorkspaceCollections.Delete(this.ResourceGroupName, this.WorkspaceCollectionName);
+            PowerBIClient.WorkspaceCollections.Delete(ResourceGroupName, WorkspaceCollectionName);
         }
     }
 }

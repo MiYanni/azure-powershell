@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             {
                 return RunbookTypeEnum.GraphPowerShell;
             }
-            else if (Constants.RunbookType.GraphicalPowerShellWorkflow.Equals(commandValue, StringComparison.OrdinalIgnoreCase))
+            if (Constants.RunbookType.GraphicalPowerShellWorkflow.Equals(commandValue, StringComparison.OrdinalIgnoreCase))
             {
                 return RunbookTypeEnum.GraphPowerShellWorkflow;
             }

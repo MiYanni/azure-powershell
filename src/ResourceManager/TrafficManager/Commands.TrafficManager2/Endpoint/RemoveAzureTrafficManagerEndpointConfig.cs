@@ -32,20 +32,20 @@ namespace Microsoft.Azure.Commands.TrafficManager
 
         public override void ExecuteCmdlet()
         {
-            if (this.TrafficManagerProfile.Endpoints == null)
+            if (TrafficManagerProfile.Endpoints == null)
             {
-                throw new PSArgumentException(string.Format(ProjectResources.Error_EndpointNotFound, this.EndpointName));
+                throw new PSArgumentException(string.Format(ProjectResources.Error_EndpointNotFound, EndpointName));
             }
 
-            int endpointsRemoved = this.TrafficManagerProfile.Endpoints.RemoveAll(endpoint => string.Equals(this.EndpointName, endpoint.Name));
+            int endpointsRemoved = TrafficManagerProfile.Endpoints.RemoveAll(endpoint => string.Equals(EndpointName, endpoint.Name));
 
             if (endpointsRemoved == 0)
             {
-                throw new PSArgumentException(string.Format(ProjectResources.Error_EndpointNotFound, this.EndpointName));
+                throw new PSArgumentException(string.Format(ProjectResources.Error_EndpointNotFound, EndpointName));
             }
 
-            this.WriteVerbose(ProjectResources.Success);
-            this.WriteObject(this.TrafficManagerProfile);
+            WriteVerbose(ProjectResources.Success);
+            WriteObject(TrafficManagerProfile);
         }
     }
 }

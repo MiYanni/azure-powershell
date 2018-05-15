@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.ApiManagement.Models
 {
-    using Microsoft.Azure.Management.ApiManagement.Models;
+    using Management.ApiManagement.Models;
     using System;
 
     public class PsApiManagementHostnameCertificate

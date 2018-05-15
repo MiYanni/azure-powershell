@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var present = this.IsExpressRouteCircuitPresent(this.ResourceGroupName, this.Name);
+            var present = IsExpressRouteCircuitPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.OverwritingResource, Name),
@@ -93,19 +93,19 @@ namespace Microsoft.Azure.Commands.Network
         private PSExpressRouteCircuit CreateExpressRouteCircuit()
         {
             var circuit = new PSExpressRouteCircuit();
-            circuit.Name = this.Name;
-            circuit.ServiceKey = this.ServiceKey;
-            circuit.ResourceGroupName = this.ResourceGroupName;
-            circuit.Location = this.Location;
+            circuit.Name = Name;
+            circuit.ServiceKey = ServiceKey;
+            circuit.ResourceGroupName = ResourceGroupName;
+            circuit.Location = Location;
 
             // Map to the sdk object
             var circuitModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ExpressRouteCircuit>(circuit);
-            circuitModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            circuitModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
             // Execute the Create ExpressRouteCircuit call
-            this.ExpressRouteCircuitClient.CreateOrUpdate(this.ResourceGroupName, this.Name, circuitModel);
+            ExpressRouteCircuitClient.CreateOrUpdate(ResourceGroupName, Name, circuitModel);
 
-            var getExpressRouteCircuit = this.GetExpressRouteCircuit(this.ResourceGroupName, this.Name);
+            var getExpressRouteCircuit = GetExpressRouteCircuit(ResourceGroupName, Name);
             return getExpressRouteCircuit;
         }
     }

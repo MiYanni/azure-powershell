@@ -28,21 +28,21 @@ namespace Microsoft.Azure.Commands.AzureBackup.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ListAzureBackupItemTests()
         {
-            this.RunPowerShellTest("Test-GetAzureBackupItemTests");
+            RunPowerShellTest("Test-GetAzureBackupItemTests");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void EnableAzureBackupProtectionTest()
         {
-            this.RunPowerShellTest("Test-EnableAzureBackupProtection");
+            RunPowerShellTest("Test-EnableAzureBackupProtection");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void DisableAzureBackupProtectionTest()
         {
-            this.RunPowerShellTest("Test-DisableAzureBackupProtection");
+            RunPowerShellTest("Test-DisableAzureBackupProtection");
         }
     }
 }

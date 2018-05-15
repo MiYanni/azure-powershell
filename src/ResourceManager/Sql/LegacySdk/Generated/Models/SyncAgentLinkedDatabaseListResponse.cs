@@ -41,8 +41,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<SyncAgentLinkedDatabase> LinkedDatabases
         {
-            get { return this._linkedDatabases; }
-            set { this._linkedDatabases = value; }
+            get { return _linkedDatabases; }
+            set { _linkedDatabases = value; }
         }
         
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public SyncAgentLinkedDatabaseListResponse()
         {
-            this.LinkedDatabases = new LazyList<SyncAgentLinkedDatabase>();
+            LinkedDatabases = new LazyList<SyncAgentLinkedDatabase>();
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<SyncAgentLinkedDatabase> GetEnumerator()
         {
-            return this.LinkedDatabases.GetEnumerator();
+            return LinkedDatabases.GetEnumerator();
         }
         
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

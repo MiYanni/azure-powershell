@@ -26,13 +26,13 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSComputeNode
     {
         
-        internal Microsoft.Azure.Batch.ComputeNode omObject;
+        internal ComputeNode omObject;
         
         private IReadOnlyList<PSCertificateReference> certificateReferences;
         
@@ -46,11 +46,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         
         private PSStartTaskInformation startTaskInformation;
         
-        internal PSComputeNode(Microsoft.Azure.Batch.ComputeNode omObject)
+        internal PSComputeNode(ComputeNode omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -59,15 +59,15 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.AffinityId;
+                return omObject.AffinityId;
             }
         }
         
-        public System.DateTime? AllocationTime
+        public DateTime? AllocationTime
         {
             get
             {
-                return this.omObject.AllocationTime;
+                return omObject.AllocationTime;
             }
         }
         
@@ -75,22 +75,22 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.certificateReferences == null) 
-                            && (this.omObject.CertificateReferences != null)))
+                if (certificateReferences == null 
+                    && omObject.CertificateReferences != null)
                 {
                     List<PSCertificateReference> list;
                     list = new List<PSCertificateReference>();
-                    IEnumerator<Microsoft.Azure.Batch.CertificateReference> enumerator;
-                    enumerator = this.omObject.CertificateReferences.GetEnumerator();
+                    IEnumerator<CertificateReference> enumerator;
+                    enumerator = omObject.CertificateReferences.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSCertificateReference(enumerator.Current));
                     }
-                    this.certificateReferences = list.AsReadOnly();
+                    certificateReferences = list.AsReadOnly();
                 }
-                return this.certificateReferences;
+                return certificateReferences;
             }
         }
         
@@ -98,12 +98,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.endpointConfiguration == null) 
-                            && (this.omObject.EndpointConfiguration != null)))
+                if (endpointConfiguration == null 
+                    && omObject.EndpointConfiguration != null)
                 {
-                    this.endpointConfiguration = new PSComputeNodeEndpointConfiguration(this.omObject.EndpointConfiguration);
+                    endpointConfiguration = new PSComputeNodeEndpointConfiguration(omObject.EndpointConfiguration);
                 }
-                return this.endpointConfiguration;
+                return endpointConfiguration;
             }
         }
         
@@ -111,22 +111,22 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.errors == null) 
-                            && (this.omObject.Errors != null)))
+                if (errors == null 
+                    && omObject.Errors != null)
                 {
                     List<PSComputeNodeError> list;
                     list = new List<PSComputeNodeError>();
-                    IEnumerator<Microsoft.Azure.Batch.ComputeNodeError> enumerator;
-                    enumerator = this.omObject.Errors.GetEnumerator();
+                    IEnumerator<ComputeNodeError> enumerator;
+                    enumerator = omObject.Errors.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSComputeNodeError(enumerator.Current));
                     }
-                    this.errors = list.AsReadOnly();
+                    errors = list.AsReadOnly();
                 }
-                return this.errors;
+                return errors;
             }
         }
         
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Id;
+                return omObject.Id;
             }
         }
         
@@ -142,23 +142,23 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.IPAddress;
+                return omObject.IPAddress;
             }
         }
         
-        public System.Boolean? IsDedicated
+        public Boolean? IsDedicated
         {
             get
             {
-                return this.omObject.IsDedicated;
+                return omObject.IsDedicated;
             }
         }
         
-        public System.DateTime? LastBootTime
+        public DateTime? LastBootTime
         {
             get
             {
-                return this.omObject.LastBootTime;
+                return omObject.LastBootTime;
             }
         }
         
@@ -166,38 +166,38 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.recentTasks == null) 
-                            && (this.omObject.RecentTasks != null)))
+                if (recentTasks == null 
+                    && omObject.RecentTasks != null)
                 {
                     List<PSTaskInformation> list;
                     list = new List<PSTaskInformation>();
-                    IEnumerator<Microsoft.Azure.Batch.TaskInformation> enumerator;
-                    enumerator = this.omObject.RecentTasks.GetEnumerator();
+                    IEnumerator<TaskInformation> enumerator;
+                    enumerator = omObject.RecentTasks.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSTaskInformation(enumerator.Current));
                     }
-                    this.recentTasks = list.AsReadOnly();
+                    recentTasks = list.AsReadOnly();
                 }
-                return this.recentTasks;
+                return recentTasks;
             }
         }
         
-        public System.Int32? RunningTasksCount
+        public Int32? RunningTasksCount
         {
             get
             {
-                return this.omObject.RunningTasksCount;
+                return omObject.RunningTasksCount;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.SchedulingState? SchedulingState
+        public Azure.Batch.Common.SchedulingState? SchedulingState
         {
             get
             {
-                return this.omObject.SchedulingState;
+                return omObject.SchedulingState;
             }
         }
         
@@ -205,12 +205,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.startTask == null) 
-                            && (this.omObject.StartTask != null)))
+                if (startTask == null 
+                    && omObject.StartTask != null)
                 {
-                    this.startTask = new PSStartTask(this.omObject.StartTask);
+                    startTask = new PSStartTask(omObject.StartTask);
                 }
-                return this.startTask;
+                return startTask;
             }
         }
         
@@ -218,44 +218,44 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.startTaskInformation == null) 
-                            && (this.omObject.StartTaskInformation != null)))
+                if (startTaskInformation == null 
+                    && omObject.StartTaskInformation != null)
                 {
-                    this.startTaskInformation = new PSStartTaskInformation(this.omObject.StartTaskInformation);
+                    startTaskInformation = new PSStartTaskInformation(omObject.StartTaskInformation);
                 }
-                return this.startTaskInformation;
+                return startTaskInformation;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.ComputeNodeState? State
+        public Azure.Batch.Common.ComputeNodeState? State
         {
             get
             {
-                return this.omObject.State;
+                return omObject.State;
             }
         }
         
-        public System.DateTime? StateTransitionTime
+        public DateTime? StateTransitionTime
         {
             get
             {
-                return this.omObject.StateTransitionTime;
+                return omObject.StateTransitionTime;
             }
         }
         
-        public System.Int32? TotalTasksRun
+        public Int32? TotalTasksRun
         {
             get
             {
-                return this.omObject.TotalTasksRun;
+                return omObject.TotalTasksRun;
             }
         }
         
-        public System.Int32? TotalTasksSucceeded
+        public Int32? TotalTasksSucceeded
         {
             get
             {
-                return this.omObject.TotalTasksSucceeded;
+                return omObject.TotalTasksSucceeded;
             }
         }
         
@@ -263,7 +263,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Url;
+                return omObject.Url;
             }
         }
         
@@ -271,7 +271,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.VirtualMachineSize;
+                return omObject.VirtualMachineSize;
             }
         }
     }

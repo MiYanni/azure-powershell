@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName = DataFactory.ResourceGroupName;
             }
 
-            PipelineFilterOptions filterOptions = new PipelineFilterOptions()
+            PipelineFilterOptions filterOptions = new PipelineFilterOptions
             {
                 Name = Name,
                 ResourceGroupName = ResourceGroupName,

@@ -31,16 +31,16 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
     /// </summary>
     public partial class ServerUpgradeGetResponse : AzureOperationResponse
     {
-        private System.DateTime? _scheduleUpgradeAfterTime;
+        private DateTime? _scheduleUpgradeAfterTime;
         
         /// <summary>
         /// Optional. Gets the schedule time of the Azure SQL Database Server
         /// Upgrade.
         /// </summary>
-        public System.DateTime? ScheduleUpgradeAfterTime
+        public DateTime? ScheduleUpgradeAfterTime
         {
-            get { return this._scheduleUpgradeAfterTime; }
-            set { this._scheduleUpgradeAfterTime = value; }
+            get { return _scheduleUpgradeAfterTime; }
+            set { _scheduleUpgradeAfterTime = value; }
         }
         
         private string _status;
@@ -50,8 +50,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Status
         {
-            get { return this._status; }
-            set { this._status = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         
         /// <summary>

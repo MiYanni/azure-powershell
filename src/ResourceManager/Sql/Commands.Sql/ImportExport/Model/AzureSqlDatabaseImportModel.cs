@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.Sql.ImportExport.Model
         /// </summary>
         internal override AzureSqlDatabaseImportExportBaseModel Copy()
         {
-            return new AzureSqlDatabaseImportModel()
+            return new AzureSqlDatabaseImportModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,

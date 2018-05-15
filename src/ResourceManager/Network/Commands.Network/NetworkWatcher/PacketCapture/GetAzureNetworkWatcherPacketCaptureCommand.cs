@@ -70,21 +70,21 @@ namespace Microsoft.Azure.Commands.Network
 
             if (ParameterSetName.Contains("SetByResource"))
             {
-                resourceGroupName = this.NetworkWatcher.ResourceGroupName;
-                name = this.NetworkWatcher.Name;
+                resourceGroupName = NetworkWatcher.ResourceGroupName;
+                name = NetworkWatcher.Name;
             }
             else
             {
-                resourceGroupName = this.ResourceGroupName;
-                name = this.NetworkWatcherName;
+                resourceGroupName = ResourceGroupName;
+                name = NetworkWatcherName;
             }
 
-            if (!string.IsNullOrEmpty(this.PacketCaptureName))
+            if (!string.IsNullOrEmpty(PacketCaptureName))
             {
                 PSPacketCaptureResult psPacketCapture = new PSPacketCaptureResult();
-                psPacketCapture = this.GetPacketCapture(resourceGroupName, name, this.PacketCaptureName);
+                psPacketCapture = GetPacketCapture(resourceGroupName, name, PacketCaptureName);
 
-                var packetCaptureStatus = this.PacketCaptures.GetStatus(resourceGroupName, name, this.PacketCaptureName);
+                var packetCaptureStatus = PacketCaptures.GetStatus(resourceGroupName, name, PacketCaptureName);
 
                 PSGetPacketCaptureResult pcResult = new PSGetPacketCaptureResult();
 
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 List<PSPacketCaptureResult> psPacketCaptureList = new List<PSPacketCaptureResult>();
 
-                var packetCaptureList = this.PacketCaptures.List(resourceGroupName, name);
+                var packetCaptureList = PacketCaptures.List(resourceGroupName, name);
                 var pcResultList = new List<PSGetPacketCaptureResult>();
 
                 foreach (var pc in packetCaptureList)
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.Network
                     PSPacketCaptureResult psPacketCapture = NetworkResourceManagerProfile.Mapper.Map<PSPacketCaptureResult>(pc);
                     psPacketCaptureList.Add(psPacketCapture);
 
-                    var packetCaptureStatus = this.PacketCaptures.GetStatus(resourceGroupName, name, psPacketCapture.Name);
+                    var packetCaptureStatus = PacketCaptures.GetStatus(resourceGroupName, name, psPacketCapture.Name);
                     var psPacketCaptureStatus = NetworkResourceManagerProfile.Mapper.Map<PSPacketCaptureStatus>(packetCaptureStatus);
 
                     PSGetPacketCaptureResult pcResult = new PSGetPacketCaptureResult();

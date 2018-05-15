@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Snapshot snapshot = new Snapshot();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "SnapshotName", "Snapshot" },
+                 new[] { "ResourceGroupName", "SnapshotName", "Snapshot" },
                  new object[] { resourceGroupName, snapshotName, snapshot });
         }
     }
@@ -119,12 +119,12 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.SnapshotName, VerbsCommon.New))
+                if (ShouldProcess(SnapshotName, VerbsCommon.New))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string snapshotName = this.SnapshotName;
+                    string resourceGroupName = ResourceGroupName;
+                    string snapshotName = SnapshotName;
                     Snapshot snapshot = new Snapshot();
-                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSSnapshot, Snapshot>(this.Snapshot, snapshot);
+                    ComputeAutomationAutoMapperProfile.Mapper.Map<PSSnapshot, Snapshot>(Snapshot, snapshot);
 
                     var result = SnapshotsClient.CreateOrUpdate(resourceGroupName, snapshotName, snapshot);
                     var psObject = new PSSnapshot();
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

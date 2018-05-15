@@ -34,10 +34,10 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             IList<string> ipAddressRanges,
             IList<string> virtualNetworkResourceId)
         {
-            this.DefaultAction = defaultAction;
-            this.Bypass = bypass;
-            this.IpAddressRanges = ipAddressRanges;
-            this.VirtualNetworkResourceIds = virtualNetworkResourceId;
+            DefaultAction = defaultAction;
+            Bypass = bypass;
+            IpAddressRanges = ipAddressRanges;
+            VirtualNetworkResourceIds = virtualNetworkResourceId;
         }
 
         public PSKeyVaultNetworkRuleDefaultActionEnum DefaultAction { get; private set; }
@@ -50,10 +50,9 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                if (this.IpAddressRanges != null && this.IpAddressRanges.Count > 0)
+                if (IpAddressRanges != null && IpAddressRanges.Count > 0)
                     return string.Join(", ", IpAddressRanges);
-                else
-                    return string.Empty;
+                return string.Empty;
             }
         }
 
@@ -63,10 +62,9 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
         {
             get
             {
-                if (this.VirtualNetworkResourceIds != null && this.VirtualNetworkResourceIds.Count > 0)
-                    return string.Join(", ", this.VirtualNetworkResourceIds);
-                else
-                    return string.Empty;
+                if (VirtualNetworkResourceIds != null && VirtualNetworkResourceIds.Count > 0)
+                    return string.Join(", ", VirtualNetworkResourceIds);
+                return string.Empty;
             }
         }
     }

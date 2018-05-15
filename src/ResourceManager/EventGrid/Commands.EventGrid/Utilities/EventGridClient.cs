@@ -32,44 +32,44 @@ namespace Microsoft.Azure.Commands.EventGrid
 
         public EventGridClient(IAzureContext context)
         {
-            this.Client = AzureSession.Instance.ClientFactory.CreateArmClient<EventGridManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
+            Client = AzureSession.Instance.ClientFactory.CreateArmClient<EventGridManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
 
         }
         public EventGridManagementClient Client { get; }
 
         public IEnumerable<TopicTypeInfo> ListTopicTypes()
         {
-            IEnumerable<TopicTypeInfo> topicTypesList = this.Client.TopicTypes.List();
+            IEnumerable<TopicTypeInfo> topicTypesList = Client.TopicTypes.List();
             return topicTypesList;
         }
 
         public TopicTypeInfo GetTopicType(string topicTypeName)
         {
-            TopicTypeInfo topicTypeInfo = this.Client.TopicTypes.Get(topicTypeName);
+            TopicTypeInfo topicTypeInfo = Client.TopicTypes.Get(topicTypeName);
             return topicTypeInfo;
         }
 
         public IEnumerable<EventType> ListEventTypes(string topicTypeName)
         {
-            IEnumerable<EventType> eventTypesList = this.Client.TopicTypes.ListEventTypes(topicTypeName);
+            IEnumerable<EventType> eventTypesList = Client.TopicTypes.ListEventTypes(topicTypeName);
             return eventTypesList;
         }
 
         #region Topics
         public Topic GetTopic(string resourceGroupName, string topicName)
         {
-            var topic = this.Client.Topics.Get(resourceGroupName, topicName);
+            var topic = Client.Topics.Get(resourceGroupName, topicName);
             return topic;
         }
 
         public IEnumerable<Topic> ListTopicsByResourceGroup(string resourceGroupName)
         {
-            return this.Client.Topics.ListByResourceGroup(resourceGroupName);
+            return Client.Topics.ListByResourceGroup(resourceGroupName);
         }
 
         public IEnumerable<Topic> ListTopicsBySubscription()
         {
-            return this.Client.Topics.ListBySubscription();
+            return Client.Topics.ListBySubscription();
         }
 
         public Topic CreateTopic(string resourceGroupName, string topicName, string location, Dictionary<string, string> tags)
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                 topic.Tags = new Dictionary<string, string>(tags);
             }
 
-            return this.Client.Topics.CreateOrUpdate(resourceGroupName, topicName, topic);
+            return Client.Topics.CreateOrUpdate(resourceGroupName, topicName, topic);
         }
 
         public Topic ReplaceTopic(string resourceGroupName, string topicName, string location, Dictionary<string, string> tags)
@@ -95,27 +95,27 @@ namespace Microsoft.Azure.Commands.EventGrid
                 topic.Tags = new Dictionary<string, string>(tags);
             }
 
-            return this.Client.Topics.CreateOrUpdate(resourceGroupName, topicName, topic);
+            return Client.Topics.CreateOrUpdate(resourceGroupName, topicName, topic);
         }
 
         public Topic UpdateTopic(string resourceGroupName, string topicName, Dictionary<string, string> tags)
         {
-            return this.Client.Topics.Update(resourceGroupName, topicName, tags);
+            return Client.Topics.Update(resourceGroupName, topicName, tags);
         }
 
         public void DeleteTopic(string resourceGroupName, string topicName)
         {
-            this.Client.Topics.Delete(resourceGroupName, topicName);
+            Client.Topics.Delete(resourceGroupName, topicName);
         }
 
         public TopicSharedAccessKeys GetTopicSharedAccessKeys(string resourceGroupName, string topicName)
         {
-            return this.Client.Topics.ListSharedAccessKeys(resourceGroupName, topicName);
+            return Client.Topics.ListSharedAccessKeys(resourceGroupName, topicName);
         }
 
         public TopicSharedAccessKeys RegenerateTopicKey(string resourceGroupName, string topicName, string keyName)
         {
-            return this.Client.Topics.RegenerateKey(resourceGroupName, topicName, keyName);
+            return Client.Topics.RegenerateKey(resourceGroupName, topicName, keyName);
         }
 
         #endregion
@@ -139,14 +139,14 @@ namespace Microsoft.Azure.Commands.EventGrid
             if (string.IsNullOrEmpty(endpointType) ||
                 string.Equals(endpointType, WebHookEventSubscriptionDestination, StringComparison.OrdinalIgnoreCase))
             {
-                destination = new WebHookEventSubscriptionDestination()
+                destination = new WebHookEventSubscriptionDestination
                 {
                     EndpointUrl = endpoint
                 };
             }
             else if (string.Equals(endpointType, EventHubEventSubscriptionDestination, StringComparison.OrdinalIgnoreCase))
             {
-                destination = new EventHubEventSubscriptionDestination()
+                destination = new EventHubEventSubscriptionDestination
                 {
                     ResourceId = endpoint
                 };
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                 includedEventTypes[0] = "All";
             }
 
-            var filter = new EventSubscriptionFilter()
+            var filter = new EventSubscriptionFilter
             {
                 SubjectBeginsWith = subjectBeginsWith,
                 SubjectEndsWith = subjectEndsWith,
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                 eventSubscription.Labels = new List<string>(labels);
             }
 
-            return this.Client.EventSubscriptions.CreateOrUpdate(scope, eventSubscriptionName, eventSubscription);
+            return Client.EventSubscriptions.CreateOrUpdate(scope, eventSubscriptionName, eventSubscription);
         }
 
         public EventSubscription UpdateEventSubscription(
@@ -203,14 +203,14 @@ namespace Microsoft.Azure.Commands.EventGrid
                 if (string.IsNullOrEmpty(endpointType) ||
                     string.Equals(endpointType, WebHookEventSubscriptionDestination, StringComparison.OrdinalIgnoreCase))
                 {
-                    eventSubscriptionUpdateParameters.Destination = new WebHookEventSubscriptionDestination()
+                    eventSubscriptionUpdateParameters.Destination = new WebHookEventSubscriptionDestination
                     {
                         EndpointUrl = endpoint
                     };
                 }
                 else if (string.Equals(endpointType, EventHubEventSubscriptionDestination, StringComparison.OrdinalIgnoreCase))
                 {
-                    eventSubscriptionUpdateParameters.Destination = new EventHubEventSubscriptionDestination()
+                    eventSubscriptionUpdateParameters.Destination = new EventHubEventSubscriptionDestination
                     {
                         ResourceId = endpoint
                     };
@@ -227,7 +227,7 @@ namespace Microsoft.Azure.Commands.EventGrid
                 includedEventTypes[0] = "All";
             }
 
-            eventSubscriptionUpdateParameters.Filter = new EventSubscriptionFilter()
+            eventSubscriptionUpdateParameters.Filter = new EventSubscriptionFilter
             {
                 SubjectBeginsWith = subjectBeginsWith,
                 SubjectEndsWith = subjectEndsWith,
@@ -240,67 +240,67 @@ namespace Microsoft.Azure.Commands.EventGrid
                 eventSubscriptionUpdateParameters.Labels = new List<string>(labels);
             }
 
-            return this.Client.EventSubscriptions.Update(scope, eventSubscriptionName, eventSubscriptionUpdateParameters);
+            return Client.EventSubscriptions.Update(scope, eventSubscriptionName, eventSubscriptionUpdateParameters);
         }
 
         public void DeleteEventSubscription(string scope, string eventSubscriptionName)
         {
-            this.Client.EventSubscriptions.Delete(scope, eventSubscriptionName);
+            Client.EventSubscriptions.Delete(scope, eventSubscriptionName);
         }
 
         public EventSubscription GetEventSubscription(string scope, string eventSubscriptionName)
         {
-            return this.Client.EventSubscriptions.Get(scope, eventSubscriptionName);
+            return Client.EventSubscriptions.Get(scope, eventSubscriptionName);
         }
 
         public EventSubscriptionFullUrl GetEventSubscriptionFullUrl(string scope, string eventSubscriptionName)
         {
-            return this.Client.EventSubscriptions.GetFullUrl(scope, eventSubscriptionName);
+            return Client.EventSubscriptions.GetFullUrl(scope, eventSubscriptionName);
         }
 
         public IEnumerable<EventSubscription> ListRegionalEventSubscriptionsByResourceGroup(string resourceGroupName, string location)
         {
-            return this.Client.EventSubscriptions.ListRegionalByResourceGroup(resourceGroupName, location);
+            return Client.EventSubscriptions.ListRegionalByResourceGroup(resourceGroupName, location);
         }
 
         public IEnumerable<EventSubscription> ListRegionalEventSubscriptionsBySubscription(string location)
         {
-            return this.Client.EventSubscriptions.ListRegionalBySubscription(location);
+            return Client.EventSubscriptions.ListRegionalBySubscription(location);
         }
 
         public IEnumerable<EventSubscription> ListGlobalEventSubscriptionsByResourceGroup(string resourceGroupName)
         {
-            return this.Client.EventSubscriptions.ListGlobalByResourceGroup(resourceGroupName);
+            return Client.EventSubscriptions.ListGlobalByResourceGroup(resourceGroupName);
         }
 
         public IEnumerable<EventSubscription> ListGlobalEventSubscriptionsBySubscription()
         {
-            return this.Client.EventSubscriptions.ListGlobalBySubscription();
+            return Client.EventSubscriptions.ListGlobalBySubscription();
         }
 
         public IEnumerable<EventSubscription> ListRegionalEventSubscriptionsByResourceGroupForTopicType(string resourceGroupName, string location, string topicType)
         {
-            return this.Client.EventSubscriptions.ListRegionalByResourceGroupForTopicType(resourceGroupName, location, topicType);
+            return Client.EventSubscriptions.ListRegionalByResourceGroupForTopicType(resourceGroupName, location, topicType);
         }
 
         public IEnumerable<EventSubscription> ListRegionalEventSubscriptionsBySubscriptionForTopicType(string location, string topicType)
         {
-            return this.Client.EventSubscriptions.ListRegionalBySubscriptionForTopicType(location, topicType);
+            return Client.EventSubscriptions.ListRegionalBySubscriptionForTopicType(location, topicType);
         }
 
         public IEnumerable<EventSubscription> ListGlobalEventSubscriptionsByResourceGroupForTopicType(string resourceGroupName, string topicType)
         {
-            return this.Client.EventSubscriptions.ListGlobalByResourceGroupForTopicType(resourceGroupName, topicType);
+            return Client.EventSubscriptions.ListGlobalByResourceGroupForTopicType(resourceGroupName, topicType);
         }
 
         public IEnumerable<EventSubscription> ListGlobalEventSubscriptionsBySubscriptionForTopicType(string topicType)
         {
-            return this.Client.EventSubscriptions.ListGlobalBySubscriptionForTopicType(topicType);
+            return Client.EventSubscriptions.ListGlobalBySubscriptionForTopicType(topicType);
         }
 
         public IEnumerable<EventSubscription> ListByResource(string resourceGroupName, string providerNamespace, string resourceType, string resourceName)
         {
-            return this.Client.EventSubscriptions.ListByResource(resourceGroupName, providerNamespace, resourceType, resourceName);
+            return Client.EventSubscriptions.ListByResource(resourceGroupName, providerNamespace, resourceType, resourceName);
         }
 
         public IEnumerable<EventSubscription> ListByResourceId(string currentSubscriptionId, string resourceId)
@@ -310,35 +310,32 @@ namespace Microsoft.Azure.Commands.EventGrid
             {
                 // subscription scope
                 string providedSubscriptionId = tokens[1];
-                this.ValidateSubscription(providedSubscriptionId, currentSubscriptionId);
+                ValidateSubscription(providedSubscriptionId, currentSubscriptionId);
 
-                return this.ListGlobalEventSubscriptionsBySubscription();
+                return ListGlobalEventSubscriptionsBySubscription();
             }
-            else if (tokens.Length == 4)
+            if (tokens.Length == 4)
             {
                 string providedSubscriptionId = tokens[1];
-                this.ValidateSubscription(providedSubscriptionId, currentSubscriptionId);
+                ValidateSubscription(providedSubscriptionId, currentSubscriptionId);
 
                 // Resource Group scope
                 string resourceGroupName = tokens[3];
-                return this.ListGlobalEventSubscriptionsByResourceGroup(resourceGroupName);
+                return ListGlobalEventSubscriptionsByResourceGroup(resourceGroupName);
             }
-            else if (tokens.Length == 8)
+            if (tokens.Length == 8)
             {
                 string providedSubscriptionId = tokens[1];
-                this.ValidateSubscription(providedSubscriptionId, currentSubscriptionId);
+                ValidateSubscription(providedSubscriptionId, currentSubscriptionId);
 
                 // Resource scope
                 string resourceGroupName = tokens[3];
                 string providerNamespace = tokens[5];
                 string resourceType = tokens[6];
                 string resourceName = tokens[7];
-                return this.Client.EventSubscriptions.ListByResource(resourceGroupName, providerNamespace, resourceType, resourceName);
+                return Client.EventSubscriptions.ListByResource(resourceGroupName, providerNamespace, resourceType, resourceName);
             }
-            else
-            {
-                throw new ArgumentException("Unsupported value for resourceID", nameof(resourceId));
-            }
+            throw new ArgumentException("Unsupported value for resourceID", nameof(resourceId));
         }
 
         void ValidateSubscription(string providedSubscriptionId, string subscriptionIdFromContext)

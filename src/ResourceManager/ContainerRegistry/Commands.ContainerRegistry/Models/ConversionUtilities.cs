@@ -33,15 +33,12 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
             {
                 return null;
             }
-            else
+            var dictionary = new Dictionary<string, string>();
+            foreach (var entry in ht.Cast<DictionaryEntry>())
             {
-                var dictionary = new Dictionary<string, string>();
-                foreach (var entry in ht.Cast<DictionaryEntry>())
-                {
-                    dictionary[(string)entry.Key] = entry.Value?.ToString();
-                }
-                return dictionary;
+                dictionary[(string)entry.Key] = entry.Value?.ToString();
             }
+            return dictionary;
         }
 
         public static string ParseResourceGroupFromId(string idFromServer)
@@ -89,7 +86,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
                     string.Equals(resourceIdentifier.ResourceType, RegistryWebhookResourceTypeName, StringComparison.OrdinalIgnoreCase))
                 {
                     childResourceName = resourceIdentifier.ResourceName;
-                    registryName = resourceIdentifier.ParentResource.Split(new char[] { '/' })[1];
+                    registryName = resourceIdentifier.ParentResource.Split(new[] { '/' })[1];
                     parsed = true;
                 }
             }

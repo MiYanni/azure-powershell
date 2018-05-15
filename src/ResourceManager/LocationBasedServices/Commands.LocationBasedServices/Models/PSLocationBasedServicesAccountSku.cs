@@ -22,10 +22,10 @@ namespace Microsoft.Azure.Commands.LocationBasedServices.Models
 {
     public class PSLocationBasedServicesAccountSku
     {
-        public PSLocationBasedServicesAccountSku(LocationBasedServicesModels.Sku sku)
+        public PSLocationBasedServicesAccountSku(Sku sku)
         {
-            this.Name = sku.Name;
-            this.Tier = sku.Tier;
+            Name = sku.Name;
+            Tier = sku.Tier;
         }
 
         public string Name { get; private set; }

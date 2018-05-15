@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices;
-    using DPSResources = Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Properties.Resources;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices;
+    using DPSResources = Properties.Resources;
 
     [Cmdlet(VerbsCommon.Remove, "AzureRmIoTDeviceProvisioningService", DefaultParameterSetName = ResourceParameterSet, SupportsShouldProcess = true)]
     [Alias("Remove-AzureRmIoTDps")]
@@ -74,21 +74,21 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
             {
                 if (ParameterSetName.Equals(InputObjectParameterSet))
                 {
-                    this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                    this.Name = this.InputObject.Name;
+                    ResourceGroupName = InputObject.ResourceGroupName;
+                    Name = InputObject.Name;
                 }
 
                 if (ParameterSetName.Equals(ResourceIdParameterSet))
                 {
-                    this.ResourceGroupName = IotDpsUtils.GetResourceGroupName(this.ResourceId);
-                    this.Name = IotDpsUtils.GetIotDpsName(this.ResourceId);
+                    ResourceGroupName = IotDpsUtils.GetResourceGroupName(ResourceId);
+                    Name = IotDpsUtils.GetIotDpsName(ResourceId);
                 }
 
-                this.IotDpsClient.IotDpsResource.Delete(this.Name, this.ResourceGroupName);
+                IotDpsClient.IotDpsResource.Delete(Name, ResourceGroupName);
 
                 if (PassThru)
                 {
-                    this.WriteObject(true);
+                    WriteObject(true);
                 }
             }
         }

@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices
     {
         [Parameter(ValueFromPipelineByPropertyName = true, Position = 0, Mandatory = true,
             HelpMessage = "Name of resource group under which you want to create the server.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices
                     {
                         foreach (var rule in FirewallConfig.FirewallRules)
                         {
-                            setting.FirewallRules.Add(new IPv4FirewallRule()
+                            setting.FirewallRules.Add(new IPv4FirewallRule
                             {
                                 FirewallRuleName = rule.FirewallRuleName,
                                 RangeStart = rule.RangeStart,

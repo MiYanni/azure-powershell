@@ -29,16 +29,16 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
     /// </summary>
     public partial class ElasticPoolProperties
     {
-        private System.DateTime? _creationDate;
+        private DateTime? _creationDate;
         
         /// <summary>
         /// Optional. Gets the creation date of the Azure SQL Database Elastic
         /// Pool.
         /// </summary>
-        public System.DateTime? CreationDate
+        public DateTime? CreationDate
         {
-            get { return this._creationDate; }
-            set { this._creationDate = value; }
+            get { return _creationDate; }
+            set { _creationDate = value; }
         }
         
         private int _databaseDtuMax;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int DatabaseDtuMax
         {
-            get { return this._databaseDtuMax; }
-            set { this._databaseDtuMax = value; }
+            get { return _databaseDtuMax; }
+            set { _databaseDtuMax = value; }
         }
         
         private int _databaseDtuMin;
@@ -61,8 +61,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int DatabaseDtuMin
         {
-            get { return this._databaseDtuMin; }
-            set { this._databaseDtuMin = value; }
+            get { return _databaseDtuMin; }
+            set { _databaseDtuMin = value; }
         }
         
         private int _dtu;
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int Dtu
         {
-            get { return this._dtu; }
-            set { this._dtu = value; }
+            get { return _dtu; }
+            set { _dtu = value; }
         }
         
         private string _edition;
@@ -85,8 +85,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Edition
         {
-            get { return this._edition; }
-            set { this._edition = value; }
+            get { return _edition; }
+            set { _edition = value; }
         }
         
         private string _state;
@@ -96,8 +96,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         private int _storageMB;
@@ -108,8 +108,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int StorageMB
         {
-            get { return this._storageMB; }
-            set { this._storageMB = value; }
+            get { return _storageMB; }
+            set { _storageMB = value; }
         }
         
         /// <summary>

@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(Name, Properties.Resources.SetCertificateIssuer))
+            if (ShouldProcess(Name, Resources.SetCertificateIssuer))
             {
                 PSKeyVaultCertificateIssuer issuerToUse;
 
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Commands.KeyVault
                     };
                 }
 
-                var resultantIssuer = this.DataServiceClient.SetCertificateIssuer(
+                var resultantIssuer = DataServiceClient.SetCertificateIssuer(
                                             VaultName,
                                             Name,
                                             issuerToUse.IssuerProvider,
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
                 if (PassThru.IsPresent)
                 {
-                    this.WriteObject(resultantIssuer);
+                    WriteObject(resultantIssuer);
                 }
             }
         }

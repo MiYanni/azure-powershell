@@ -22,7 +22,7 @@ using System.Net.Http;
 
 namespace Microsoft.Azure.ServiceManagemenet.Common.Models
 {
-    public class RecordingTracingInterceptor : Hyak.Common.ICloudTracingInterceptor
+    public class RecordingTracingInterceptor : ICloudTracingInterceptor
     {
         public RecordingTracingInterceptor(ConcurrentQueue<string> queue)
         {

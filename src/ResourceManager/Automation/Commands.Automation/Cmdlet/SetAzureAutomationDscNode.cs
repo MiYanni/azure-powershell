@@ -55,8 +55,8 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [Parameter(Mandatory = false, HelpMessage = "Forces the command to run without asking for user confirmation.")]
         public SwitchParameter Force
         {
-            get { return this.overwriteExistingNodeConfiguration; }
-            set { this.overwriteExistingNodeConfiguration = value; }
+            get { return overwriteExistingNodeConfiguration; }
+            set { overwriteExistingNodeConfiguration = value; }
         }
 
         /// <summary>
@@ -65,15 +65,15 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(CultureInfo.CurrentCulture, Resources.SetnodeconfigurationWarning),
                 string.Format(CultureInfo.CurrentCulture, Resources.SetnodeconfigurationDescription),
-                this.NodeConfigurationName,
+                NodeConfigurationName,
                 () =>
                 {
-                    var node = this.AutomationClient.SetDscNodeById(this.ResourceGroupName, this.AutomationAccountName, this.Id, this.NodeConfigurationName);
-                    this.WriteObject(node);
+                    var node = AutomationClient.SetDscNodeById(ResourceGroupName, AutomationAccountName, Id, NodeConfigurationName);
+                    WriteObject(node);
                 });
 
         }

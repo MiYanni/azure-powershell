@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
-    using DPSResources = Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Properties.Resources;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices.Models;
+    using DPSResources = Properties.Resources;
 
     [Cmdlet(VerbsData.Update, "AzureRmIoTDeviceProvisioningServiceLinkedHub", DefaultParameterSetName = ResourceParameterSet, SupportsShouldProcess = true)]
     [Alias("Update-AzureRmIoTDpsHub")]
@@ -97,20 +97,20 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
                 switch (ParameterSetName)
                 {
                     case InputObjectParameterSet:
-                        this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                        this.Name = this.InputObject.Name;
-                        this.LinkedHubName = this.InputObject.LinkedHubName;
-                        this.UpdateIotDpsLinkedHub();
+                        ResourceGroupName = InputObject.ResourceGroupName;
+                        Name = InputObject.Name;
+                        LinkedHubName = InputObject.LinkedHubName;
+                        UpdateIotDpsLinkedHub();
                         break;
 
                     case ResourceIdParameterSet:
-                        this.ResourceGroupName = IotDpsUtils.GetResourceGroupName(this.ResourceId);
-                        this.Name = IotDpsUtils.GetIotDpsName(this.ResourceId);
-                        this.UpdateIotDpsLinkedHub();
+                        ResourceGroupName = IotDpsUtils.GetResourceGroupName(ResourceId);
+                        Name = IotDpsUtils.GetIotDpsName(ResourceId);
+                        UpdateIotDpsLinkedHub();
                         break;
 
                     case ResourceParameterSet:
-                        this.UpdateIotDpsLinkedHub();
+                        UpdateIotDpsLinkedHub();
                         break;
 
                     default:
@@ -121,12 +121,12 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 
         private void UpdateIotDpsLinkedHub()
         {
-            ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(this.ResourceGroupName, this.Name);
-            IotHubDefinitionDescription iotHub = provisioningServiceDescription.Properties.IotHubs.FirstOrDefault(x => x.Name.Equals(this.LinkedHubName, StringComparison.OrdinalIgnoreCase));
-            iotHub.ApplyAllocationPolicy = this.ApplyAllocationPolicy.IsPresent;
-            iotHub.AllocationWeight = this.AllocationWeight ?? iotHub.AllocationWeight;
-            IotDpsCreateOrUpdate(this.ResourceGroupName, this.Name, provisioningServiceDescription);
-            this.WriteObject(IotDpsUtils.ToPSIotHubDefinitionDescription(GetIotDpsHubs(this.ResourceGroupName, this.Name, this.LinkedHubName), this.ResourceGroupName, this.Name), false);
+            ProvisioningServiceDescription provisioningServiceDescription = GetIotDpsResource(ResourceGroupName, Name);
+            IotHubDefinitionDescription iotHub = provisioningServiceDescription.Properties.IotHubs.FirstOrDefault(x => x.Name.Equals(LinkedHubName, StringComparison.OrdinalIgnoreCase));
+            iotHub.ApplyAllocationPolicy = ApplyAllocationPolicy.IsPresent;
+            iotHub.AllocationWeight = AllocationWeight ?? iotHub.AllocationWeight;
+            IotDpsCreateOrUpdate(ResourceGroupName, Name, provisioningServiceDescription);
+            WriteObject(IotDpsUtils.ToPSIotHubDefinitionDescription(GetIotDpsHubs(ResourceGroupName, Name, LinkedHubName), ResourceGroupName, Name), false);
         }
     }
 }

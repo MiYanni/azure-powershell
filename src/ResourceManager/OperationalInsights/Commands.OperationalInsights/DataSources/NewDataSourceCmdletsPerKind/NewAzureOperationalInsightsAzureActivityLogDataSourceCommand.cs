@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Commands.OperationalInsights
         {
             var auditLogProperties = new PSAzureActivityLogDataSourceProperties
             {
-                SubscriptionId = this.SubscriptionId,
-                BackfillStartTime = this.BackfillStartTime
+                SubscriptionId = SubscriptionId,
+                BackfillStartTime = BackfillStartTime
             };
 
             CreatePSDataSourceWithProperties(auditLogProperties);

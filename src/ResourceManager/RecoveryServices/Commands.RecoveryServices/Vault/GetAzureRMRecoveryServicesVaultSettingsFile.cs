@@ -128,11 +128,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             {
                 if (backup)
                 {
-                    this.GetAzureRMRecoveryServicesVaultBackupCredentials();
+                    GetAzureRMRecoveryServicesVaultBackupCredentials();
                 }
                 else
                 {
-                    this.GetSiteRecoveryCredentials();
+                    GetSiteRecoveryCredentials();
                 }
             }
             catch (AggregateException aggregateEx)
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 // if an exception is thrown from a task, it will be wrapped in AggregateException 
                 // and propagated to the main thread. Just throwing the first exception in the list.
                 Exception exception = aggregateEx.InnerExceptions.First<Exception>();
-                this.HandleException(exception);
+                HandleException(exception);
             }
         }
 
@@ -154,39 +154,39 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             // Generate certificate
             X509Certificate2 cert = CertUtils.CreateSelfSignedCertificate(
                 VaultCertificateExpiryInHoursForHRM,
-                subscription.Id.ToString(),
-                this.Vault.Name);
+                subscription.Id,
+                Vault.Name);
 
             ASRSite site = new ASRSite();
 
-            if (!string.IsNullOrEmpty(this.SiteIdentifier)
-                   && !string.IsNullOrEmpty(this.SiteFriendlyName))
+            if (!string.IsNullOrEmpty(SiteIdentifier)
+                   && !string.IsNullOrEmpty(SiteFriendlyName))
             {
-                site.ID = this.SiteIdentifier;
-                site.Name = this.SiteFriendlyName;
+                site.ID = SiteIdentifier;
+                site.Name = SiteFriendlyName;
             }
 
-            string fileName = this.GenerateFileName();
+            string fileName = GenerateFileName();
 
-            string filePath = string.IsNullOrEmpty(this.Path) ? Utilities.GetDefaultPath() : this.Path;
+            string filePath = string.IsNullOrEmpty(Path) ? Utilities.GetDefaultPath() : Path;
 
             // Generate file.
-            if (RecoveryServicesClient.getVaultAuthType(this.Vault.ResourceGroupName, this.Vault.Name) == 0)
+            if (RecoveryServicesClient.getVaultAuthType(Vault.ResourceGroupName, Vault.Name) == 0)
             {
                 ASRVaultCreds vaultCreds = RecoveryServicesClient.GenerateVaultCredential(
                     cert,
-                    this.Vault,
+                    Vault,
                     site,
                     AuthType.ACS);
 
                 // write the content to a file.
-                VaultSettingsFilePath output = new VaultSettingsFilePath()
+                VaultSettingsFilePath output = new VaultSettingsFilePath
                 {
                     FilePath = Utilities.WriteToFile<ASRVaultCreds>(vaultCreds, filePath, fileName)
                 };
 
                 // print the path to the user.
-                this.WriteObject(output, true);
+                WriteObject(output, true);
             }
             else
             {
@@ -196,11 +196,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                       CultureInfo.InvariantCulture,
                       Resources.ExecutingGetVaultCredCmdlet,
                       subscription.Id,
-                      this.Vault.ResourceGroupName,
-                      this.Vault.Name,
+                      Vault.ResourceGroupName,
+                      Vault.Name,
                       fullFilePath));
 
-                VaultCertificateResponse vaultCertificateResponse = null;
+                VaultCertificateResponse vaultCertificateResponse;
                 try
                 {
                     // Upload cert into ID Mgmt
@@ -219,9 +219,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices
 
                     AzureSession.Instance.DataStore.WriteFile(fullFilePath, Encoding.UTF8.GetBytes(vaultCredsFileContent));
 
-                    VaultSettingsFilePath output = new VaultSettingsFilePath()
+                    VaultSettingsFilePath output = new VaultSettingsFilePath
                     {
-                        FilePath = fullFilePath,
+                        FilePath = fullFilePath
                     };
 
                     // Output filename back to user
@@ -243,13 +243,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             string fileName;
             string format = "yyyy-MM-ddTHH-mm-ss";
 
-            if (string.IsNullOrEmpty(this.SiteIdentifier) || string.IsNullOrEmpty(this.SiteFriendlyName))
+            if (string.IsNullOrEmpty(SiteIdentifier) || string.IsNullOrEmpty(SiteFriendlyName))
             {
-                fileName = string.Format("{0}_{1}.VaultCredentials", this.Vault.Name, DateTime.UtcNow.ToString(format));
+                fileName = string.Format("{0}_{1}.VaultCredentials", Vault.Name, DateTime.UtcNow.ToString(format));
             }
             else
             {
-                fileName = string.Format("{0}_{1}_{2}.VaultCredentials", this.SiteFriendlyName, this.Vault.Name, DateTime.UtcNow.ToString(format));
+                fileName = string.Format("{0}_{1}_{2}.VaultCredentials", SiteFriendlyName, Vault.Name, DateTime.UtcNow.ToString(format));
             }
 
             return fileName;
@@ -261,25 +261,24 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         public void GetAzureRMRecoveryServicesVaultBackupCredentials()
         {
-            string targetLocation = string.IsNullOrEmpty(this.Path) ? Utilities.GetDefaultPath() : this.Path;
+            string targetLocation = string.IsNullOrEmpty(Path) ? Utilities.GetDefaultPath() : Path;
             if (!Directory.Exists(targetLocation))
             {
                 throw new ArgumentException(Resources.VaultCredPathException);
             }
 
-            string subscriptionId = DefaultContext.Subscription.Id.ToString();
-            string displayName = this.Vault.Name;
+            string subscriptionId = DefaultContext.Subscription.Id;
+            string displayName = Vault.Name;
 
             WriteDebug(string.Format(CultureInfo.InvariantCulture,
                                       Resources.ExecutingGetVaultCredCmdlet,
-                                      subscriptionId, this.Vault.ResourceGroupName, this.Vault.Name, targetLocation));
+                                      subscriptionId, Vault.ResourceGroupName, Vault.Name, targetLocation));
 
             // Generate certificate
             X509Certificate2 cert = CertUtils.CreateSelfSignedCertificate(
-                VaultCertificateExpiryInHoursForBackup, subscriptionId.ToString(), this.Vault.Name);
+                VaultCertificateExpiryInHoursForBackup, subscriptionId, Vault.Name);
 
-            VaultCertificateResponse vaultCertificateResponse = null;
-            string channelIntegrityKey = string.Empty;
+            VaultCertificateResponse vaultCertificateResponse;
             try
             {
                 // Upload cert into ID Mgmt
@@ -309,9 +308,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices
 
             AzureSession.Instance.DataStore.WriteFile(filePath, Encoding.UTF8.GetBytes(vaultCredsFileContent));
 
-            VaultSettingsFilePath output = new VaultSettingsFilePath()
+            VaultSettingsFilePath output = new VaultSettingsFilePath
             {
-                FilePath = filePath,
+                FilePath = filePath
             };
 
             // Output filename back to user
@@ -325,7 +324,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <returns>acs namespace of the uploaded cert</returns>
         private VaultCertificateResponse UploadCert(X509Certificate2 cert)
         {
-            return RecoveryServicesClient.UploadCertificate(cert, this.Vault);
+            return RecoveryServicesClient.UploadCertificate(cert, Vault);
         }
 
         /// <summary>
@@ -363,7 +362,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 {
                     ResourceCertificateAndAadDetails aadDetails = vaultCertificateResponse.Properties as ResourceCertificateAndAadDetails;
 
-                    RSBackupVaultAADCreds vaultCreds = new RSBackupVaultAADCreds()
+                    RSBackupVaultAADCreds vaultCreds = new RSBackupVaultAADCreds
                     {
                         SubscriptionId = subscriptionId,
                         ResourceName = Vault.Name,
@@ -410,7 +409,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                     string resourceProviderNamespace = string.Empty;
                     string resourceType = string.Empty;
 
-                    Utilities.GetResourceProviderNamespaceAndType(this.Vault.ID, out resourceProviderNamespace, out resourceType);
+                    Utilities.GetResourceProviderNamespaceAndType(Vault.ID, out resourceProviderNamespace, out resourceType);
 
                     Logger.Instance.WriteDebug(string.Format(
                         "GenerateVaultCredential resourceProviderNamespace = {0}, resourceType = {1}",
@@ -418,10 +417,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                         resourceType));
 
                     // Update vault settings with the working vault to generate file
-                    Utilities.UpdateCurrentVaultContext(new ASRVaultCreds()
+                    Utilities.UpdateCurrentVaultContext(new ASRVaultCreds
                     {
-                        ResourceGroupName = this.Vault.ResourceGroupName,
-                        ResourceName = this.Vault.Name,
+                        ResourceGroupName = Vault.ResourceGroupName,
+                        ResourceName = Vault.Name,
                         ResourceNamespace = resourceProviderNamespace,
                         ARMResourceType = resourceType
                     });
@@ -433,13 +432,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                         Vault.Name,
                         aadDetails.ResourceId);
 
-                    RSVaultAsrCreds vaultCreds = new RSVaultAsrCreds()
+                    RSVaultAsrCreds vaultCreds = new RSVaultAsrCreds
                     {
                         VaultDetails = new ASRVaultDetails
                         {
                             SubscriptionId = subscriptionId,
-                            ResourceGroup = this.Vault.ResourceGroupName,
-                            ResourceName = this.Vault.Name,
+                            ResourceGroup = Vault.ResourceGroupName,
+                            ResourceName = Vault.Name,
                             ResourceId = aadDetails.ResourceId.Value,
                             Location = Vault.Location,
                             ResourceType = RecoveryServicesVaultType,
@@ -455,7 +454,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                             AadVaultAudience = aadAudience,
                             ArmManagementEndpoint = aadDetails.AzureManagementEndpointAudience
                         },
-                        ChannelIntegrityKey = this.RecoveryServicesClient.GetCurrentVaultChannelIntegrityKey(),
+                        ChannelIntegrityKey = RecoveryServicesClient.GetCurrentVaultChannelIntegrityKey(),
                         SiteId = asrSite.ID == null ? String.Empty : asrSite.ID,
                         SiteName = asrSite.Name == null ? String.Empty : asrSite.Name
                     };

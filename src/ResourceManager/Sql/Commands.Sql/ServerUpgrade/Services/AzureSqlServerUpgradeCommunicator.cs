@@ -103,14 +103,11 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Services
                         ScheduleUpgradeAfterTime = null
                     };
                 }
-                else
+                return new ServerUpgradeGetResponse
                 {
-                    return new ServerUpgradeGetResponse
-                    {
-                        Status = ServerUpgradeStatus.NotStarted.ToString(),
-                        ScheduleUpgradeAfterTime = null
-                    };
-                }
+                    Status = ServerUpgradeStatus.NotStarted.ToString(),
+                    ScheduleUpgradeAfterTime = null
+                };
             }
             catch (CloudException cloudException)
             {

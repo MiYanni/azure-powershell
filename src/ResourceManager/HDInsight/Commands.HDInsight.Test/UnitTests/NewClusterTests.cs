@@ -183,7 +183,7 @@ namespace Microsoft.Azure.Commands.HDInsight.Test
                 }
             };
 
-            CreateNewHDInsightCluster(addSecurityProfileInresponse:true);
+            CreateNewHDInsightCluster(true);
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.Is<AzureHDInsightCluster>(
                 clusterout =>

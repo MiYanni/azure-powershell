@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Commands.Common.Authentication.Abstractions;
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Common;
+    using Components;
+    using Extensions;
+    using Common;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Management.Automation;
@@ -60,12 +60,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            if (this.SubscriptionId == null)
+            if (SubscriptionId == null)
             {
-                this.SubscriptionId = DefaultContext.Subscription.GetId();
+                SubscriptionId = DefaultContext.Subscription.GetId();
             }
 
-            this.RunCmdlet();
+            RunCmdlet();
         }
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private void RunCmdlet()
         {
             PaginatedResponseHelper.ForEach(
-                getFirstPage: () => this.GetResources(),
-                getNextPage: nextLink => this.GetNextLink<JObject>(nextLink),
-                cancellationToken: this.CancellationToken,
-                action: resources => this.WriteObject(sendToPipeline: resources.CoalesceEnumerable().SelectArray(resource => resource.ToPsObject("System.Management.Automation.PSCustomObject#DeploymentOperation")), enumerateCollection: true));
+                () => GetResources(),
+                nextLink => GetNextLink<JObject>(nextLink),
+                CancellationToken,
+                resources => WriteObject(resources.CoalesceEnumerable().SelectArray(resource => resource.ToPsObject("System.Management.Automation.PSCustomObject#DeploymentOperation")), true));
         }
 
         /// <summary>
@@ -85,17 +85,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private async Task<ResponseWithContinuation<JObject[]>> GetResources()
         {
-            var resourceId = this.GetResourceId();
+            var resourceId = GetResourceId();
 
-            var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.DeploymentOperationApiVersion : this.ApiVersion;
+            var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.DeploymentOperationApiVersion : ApiVersion;
 
-            return await this
-                .GetResourcesClient()
+            return await GetResourcesClient()
                 .ListObjectColleciton<JObject>(
-                    resourceCollectionId: resourceId,
-                    apiVersion: apiVersion,
-                    cancellationToken: this.CancellationToken.Value)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                    resourceId,
+                    apiVersion,
+                    CancellationToken.Value)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -104,9 +103,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <param name="nextLink">The next link.</param>
         private Task<ResponseWithContinuation<TType[]>> GetNextLink<TType>(string nextLink)
         {
-            return this
-                .GetResourcesClient()
-                .ListNextBatch<TType>(nextLink: nextLink, cancellationToken: this.CancellationToken.Value);
+            return GetResourcesClient()
+                .ListNextBatch<TType>(nextLink, CancellationToken.Value);
         }
 
         /// <summary>
@@ -115,10 +113,10 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected string GetResourceId()
         {
             return ResourceIdUtility.GetResourceId(
-                subscriptionId: this.SubscriptionId,
-                resourceGroupName: this.ResourceGroupName,
-                resourceType: Constants.MicrosoftResourcesDeploymentOperationsType,
-                resourceName: this.DeploymentName);
+                SubscriptionId,
+                ResourceGroupName,
+                Constants.MicrosoftResourcesDeploymentOperationsType,
+                DeploymentName);
         }
     }
 }

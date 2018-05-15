@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
     /// </summary>
     internal sealed class CertificateApplicationCredentialProvider : IApplicationAuthenticationProvider
     {
-        private string _certificateThumbprint;
+        private readonly string _certificateThumbprint;
 
         /// <summary>
         /// Create a certificate provider
@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication
         /// <param name="certificateThumbprint"></param>
         public CertificateApplicationCredentialProvider(string certificateThumbprint)
         {
-            this._certificateThumbprint = certificateThumbprint;
+            _certificateThumbprint = certificateThumbprint;
         }
 
         /// <summary>
@@ -46,14 +46,14 @@ namespace Microsoft.Azure.Commands.Common.Authentication
         {
             var task = new Task<X509Certificate2>(() =>
             {
-                return AzureSession.Instance.DataStore.GetCertificate(this._certificateThumbprint);
+                return AzureSession.Instance.DataStore.GetCertificate(_certificateThumbprint);
             });
             task.Start();
             var certificate = await task.ConfigureAwait(false);
 
             return await context.AcquireTokenAsync(
                 audience,
-                new Microsoft.IdentityModel.Clients.ActiveDirectory.ClientAssertionCertificate(clientId, certificate));
+                new IdentityModel.Clients.ActiveDirectory.ClientAssertionCertificate(clientId, certificate));
         }
     }
 }

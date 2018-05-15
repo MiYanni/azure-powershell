@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<RecommendedElasticPool> RecommendedElasticPools
         {
-            get { return this._recommendedElasticPools; }
-            set { this._recommendedElasticPools = value; }
+            get { return _recommendedElasticPools; }
+            set { _recommendedElasticPools = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public RecommendedElasticPoolListResponse()
         {
-            this.RecommendedElasticPools = new LazyList<RecommendedElasticPool>();
+            RecommendedElasticPools = new LazyList<RecommendedElasticPool>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<RecommendedElasticPool> GetEnumerator()
         {
-            return this.RecommendedElasticPools.GetEnumerator();
+            return RecommendedElasticPools.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

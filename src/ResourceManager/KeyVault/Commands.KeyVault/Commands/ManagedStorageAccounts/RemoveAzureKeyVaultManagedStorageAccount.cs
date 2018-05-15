@@ -112,9 +112,9 @@ namespace Microsoft.Azure.Commands.KeyVault
                 Force.IsPresent,
                 string.Format(
                     CultureInfo.InvariantCulture,
-                    KeyVaultProperties.Resources.RemoveManagedStorageAccountWarning,
+                    Resources.RemoveManagedStorageAccountWarning,
                     AccountName ),
-                    KeyVaultProperties.Resources.RemoveManagedStorageAccountWhatIfMessage,
+                    Resources.RemoveManagedStorageAccountWhatIfMessage,
                 AccountName,
                () => { managedManagedStorageAccount = DataServiceClient.DeleteManagedStorageAccount( VaultName, AccountName ); } );
 

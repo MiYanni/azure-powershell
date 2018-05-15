@@ -37,14 +37,11 @@ namespace Microsoft.Azure.Commands.Compute.Models
         public bool? Managed {
             get
             {
-                if (string.IsNullOrEmpty(this.Sku))
+                if (string.IsNullOrEmpty(Sku))
                 {
                     return null;
                 }
-                else
-                {
-                    return Sku.Equals("Aligned") || Sku.Equals("Managed");
-                }
+                return Sku.Equals("Aligned") || Sku.Equals("Managed");
             }
         }
 

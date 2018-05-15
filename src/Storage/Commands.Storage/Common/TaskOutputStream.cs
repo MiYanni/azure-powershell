@@ -215,10 +215,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 return true;
             }
-            else
-            {
-                return TaskStatusQueryer(taskId);
-            }
+            return TaskStatusQueryer(taskId);
         }
 
         /// <summary>

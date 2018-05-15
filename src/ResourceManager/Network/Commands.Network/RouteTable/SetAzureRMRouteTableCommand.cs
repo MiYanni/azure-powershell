@@ -53,9 +53,9 @@ namespace Microsoft.Azure.Commands.Network
             var present = true;
             try
             {
-                this.NetworkClient.NetworkManagementClient.RouteTables.Get(this.RouteTable.ResourceGroupName, this.RouteTable.Name);
+                NetworkClient.NetworkManagementClient.RouteTables.Get(RouteTable.ResourceGroupName, RouteTable.Name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -70,18 +70,18 @@ namespace Microsoft.Azure.Commands.Network
 
             if (!present)
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Network.Properties.Resources.ResourceNotFound);
+                throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }
 
             // Map to the sdk object
-            var vRouteTableModel = NetworkResourceManagerProfile.Mapper.Map<MNM.RouteTable>(this.RouteTable);
-            vRouteTableModel.Tags = TagsConversionHelper.CreateTagDictionary(this.RouteTable.Tag, validate: true);
+            var vRouteTableModel = NetworkResourceManagerProfile.Mapper.Map<RouteTable>(RouteTable);
+            vRouteTableModel.Tags = TagsConversionHelper.CreateTagDictionary(RouteTable.Tag, validate: true);
             // Execute the PUT RouteTable call
-            this.NetworkClient.NetworkManagementClient.RouteTables.CreateOrUpdate(this.RouteTable.ResourceGroupName, this.RouteTable.Name, vRouteTableModel);
+            NetworkClient.NetworkManagementClient.RouteTables.CreateOrUpdate(RouteTable.ResourceGroupName, RouteTable.Name, vRouteTableModel);
 
-            var getRouteTable = this.NetworkClient.NetworkManagementClient.RouteTables.Get(this.RouteTable.ResourceGroupName, this.RouteTable.Name);
+            var getRouteTable = NetworkClient.NetworkManagementClient.RouteTables.Get(RouteTable.ResourceGroupName, RouteTable.Name);
             var psRouteTable = NetworkResourceManagerProfile.Mapper.Map<PSRouteTable>(getRouteTable);
-            psRouteTable.ResourceGroupName = this.RouteTable.ResourceGroupName;
+            psRouteTable.ResourceGroupName = RouteTable.ResourceGroupName;
             psRouteTable.Tag = TagsConversionHelper.CreateTagHashtable(getRouteTable.Tags);
             WriteObject(psRouteTable, true);
         }

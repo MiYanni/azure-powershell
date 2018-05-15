@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string RecommendedActionsText
         {
-            get { return JsonConvert.SerializeObject(RecommendedActions, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(RecommendedActions, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

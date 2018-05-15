@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Remove", "AzureRmContainerServiceAgentPoolProfile", SupportsShouldProcess = true)]
     [OutputType(typeof(PSContainerService))]
-    public partial class RemoveAzureRmContainerServiceAgentPoolProfileCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class RemoveAzureRmContainerServiceAgentPoolProfileCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -50,26 +50,26 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         protected override void ProcessRecord()
         {
             // AgentPoolProfiles
-            if (this.ContainerService.AgentPoolProfiles == null)
+            if (ContainerService.AgentPoolProfiles == null)
             {
-                WriteObject(this.ContainerService);
+                WriteObject(ContainerService);
                 return;
             }
-            var vAgentPoolProfiles = this.ContainerService.AgentPoolProfiles.First
+            var vAgentPoolProfiles = ContainerService.AgentPoolProfiles.First
                 (e =>
-                    (this.Name != null && e.Name == this.Name)
+                    Name != null && e.Name == Name
                 );
 
             if (vAgentPoolProfiles != null)
             {
-                this.ContainerService.AgentPoolProfiles.Remove(vAgentPoolProfiles);
+                ContainerService.AgentPoolProfiles.Remove(vAgentPoolProfiles);
             }
 
-            if (this.ContainerService.AgentPoolProfiles.Count == 0)
+            if (ContainerService.AgentPoolProfiles.Count == 0)
             {
-                this.ContainerService.AgentPoolProfiles = null;
+                ContainerService.AgentPoolProfiles = null;
             }
-            WriteObject(this.ContainerService);
+            WriteObject(ContainerService);
         }
     }
 }

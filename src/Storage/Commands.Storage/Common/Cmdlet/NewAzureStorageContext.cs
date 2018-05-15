@@ -162,11 +162,11 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         [Parameter(HelpMessage = EndPointHelpMessage, ParameterSetName = SasTokenParameterSet)]
         public string Endpoint
         {
-            get { return storageEndpoint; }
-            set { storageEndpoint = value; }
+            get { return _storageEndpoint; }
+            set { _storageEndpoint = value; }
         }
 
-        private string storageEndpoint = string.Empty;
+        private string _storageEndpoint = string.Empty;
 
         private const string AzureEnvironmentHelpMessage = "Azure environment name";
         [Alias("Name", "EnvironmentName")]
@@ -355,7 +355,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
                 {
                     try
                     {
-                        azureEnvironment = profile.Environments.FirstOrDefault((s) => string.Equals(s.Name, azureEnvironmentName, StringComparison.OrdinalIgnoreCase));
+                        azureEnvironment = profile.Environments.FirstOrDefault(s => string.Equals(s.Name, azureEnvironmentName, StringComparison.OrdinalIgnoreCase));
                         if (azureEnvironment == null)
                         {
                             azureEnvironment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
@@ -405,19 +405,19 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         public override void ExecuteCmdlet()
         {
             CloudStorageAccount account = null;
-            bool useHttps = (StorageNouns.HTTPS.ToLower() == protocolType.ToLower());
+            bool useHttps = StorageNouns.HTTPS.ToLower() == protocolType.ToLower();
 
             switch (ParameterSetName)
             {
                 case AccountNameKeyParameterSet:
-                    account = GetStorageAccountByNameAndKey(StorageAccountName, StorageAccountKey, useHttps, storageEndpoint);
+                    account = GetStorageAccountByNameAndKey(StorageAccountName, StorageAccountKey, useHttps, _storageEndpoint);
                     break;
                 case AccountNameKeyEnvironmentParameterSet:
                     account = GetStorageAccountByNameAndKeyFromAzureEnvironment(StorageAccountName, StorageAccountKey,
                         useHttps, environmentName);
                     break;
                 case SasTokenParameterSet:
-                    account = GetStorageAccountBySasToken(StorageAccountName, SasToken, useHttps, storageEndpoint);
+                    account = GetStorageAccountBySasToken(StorageAccountName, SasToken, useHttps, _storageEndpoint);
                     break;
                 case SasTokenEnvironmentParameterSet:
                     account = GetStorageAccountBySasTokenFromAzureEnvironment(StorageAccountName, SasToken, useHttps, environmentName);
@@ -429,7 +429,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
                     account = GetLocalDevelopmentStorageAccount();
                     break;
                 case AnonymousParameterSet:
-                    account = GetAnonymousStorageAccount(StorageAccountName, useHttps, storageEndpoint);
+                    account = GetAnonymousStorageAccount(StorageAccountName, useHttps, _storageEndpoint);
                     break;
                 case AnonymousEnvironmentParameterSet:
                     account = GetAnonymousStorageAccountFromAzureEnvironment(StorageAccountName, useHttps, environmentName);

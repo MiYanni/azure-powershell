@@ -64,22 +64,22 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            this.ConfirmAction(
-                this.Force.IsPresent,
+            ConfirmAction(
+                Force.IsPresent,
                 string.Format(CultureInfo.CurrentCulture, Resources.RemoveAzureAutomationJobScheduleWarning),
                 string.Format(CultureInfo.CurrentCulture, Resources.RemoveAzureAutomationJobScheduleDescription),
-                this.JobScheduleId.HasValue ? this.JobScheduleId.Value.ToString() : this.RunbookName,
+                JobScheduleId.HasValue ? JobScheduleId.Value.ToString() : RunbookName,
                 () =>
                     {
-                        if (this.ParameterSetName == AutomationCmdletParameterSets.ByJobScheduleId)
+                        if (ParameterSetName == AutomationCmdletParameterSets.ByJobScheduleId)
                         {
-                            this.AutomationClient.UnregisterScheduledRunbook(
-                                this.ResourceGroupName, this.AutomationAccountName, this.JobScheduleId.Value);
+                            AutomationClient.UnregisterScheduledRunbook(
+                                ResourceGroupName, AutomationAccountName, JobScheduleId.Value);
                         }
-                        else if (this.ParameterSetName == AutomationCmdletParameterSets.ByRunbookNameAndScheduleName)
+                        else if (ParameterSetName == AutomationCmdletParameterSets.ByRunbookNameAndScheduleName)
                         {
-                            this.AutomationClient.UnregisterScheduledRunbook(
-                                this.ResourceGroupName, this.AutomationAccountName, this.RunbookName, this.ScheduleName);
+                            AutomationClient.UnregisterScheduledRunbook(
+                                ResourceGroupName, AutomationAccountName, RunbookName, ScheduleName);
                         }
                     });
         }

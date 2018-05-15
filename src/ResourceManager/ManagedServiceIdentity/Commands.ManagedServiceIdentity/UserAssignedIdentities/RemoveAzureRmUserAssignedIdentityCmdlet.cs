@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
             Position = 0,
             ParameterSetName = Constants.ResourceGroupAndNameParameterSet,
             HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -59,38 +59,38 @@ namespace Microsoft.Azure.Commands.ManagedServiceIdentity.UserAssignedIdentities
         {
             base.ExecuteCmdlet();
 
-            if (!string.IsNullOrEmpty(this.ResourceId))
+            if (!string.IsNullOrEmpty(ResourceId))
             {
-                ResourceIdentifier identifier = new ResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = identifier.ResourceGroupName;
-                this.Name = identifier.ResourceName;
+                ResourceIdentifier identifier = new ResourceIdentifier(ResourceId);
+                ResourceGroupName = identifier.ResourceGroupName;
+                Name = identifier.ResourceName;
             }
 
-            if (this.InputObject != null)
+            if (InputObject != null)
             {
-                this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                this.Name = this.InputObject.Name;
+                ResourceGroupName = InputObject.ResourceGroupName;
+                Name = InputObject.Name;
             }
 
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(CultureInfo.CurrentCulture,
                     Properties.Resources.RemoveUserAssignedIdentity_ContinueMessage,
-                    this.ResourceGroupName,
-                    this.Name),
+                    ResourceGroupName,
+                    Name),
                 string.Format(CultureInfo.CurrentCulture,
                     Properties.Resources.RemoveUserAssignedIdentity_ProcessMessage,
-                    this.ResourceGroupName,
-                    this.Name),
+                    ResourceGroupName,
+                    Name),
                 Name,
                 ExecuteDelete);
         }
 
         private void ExecuteDelete()
         {
-            this.MsiClient.UserAssignedIdentities.DeleteWithHttpMessagesAsync(
-                this.ResourceGroupName,
-                this.Name);
+            MsiClient.UserAssignedIdentities.DeleteWithHttpMessagesAsync(
+                ResourceGroupName,
+                Name);
         }
     }
 }

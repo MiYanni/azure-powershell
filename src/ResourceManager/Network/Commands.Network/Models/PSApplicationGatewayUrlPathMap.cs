@@ -28,25 +28,25 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string DefaultBackendAddressPoolText
         {
-            get { return JsonConvert.SerializeObject(DefaultBackendAddressPool, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DefaultBackendAddressPool, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string DefaultBackendHttpSettingsText
         {
-            get { return JsonConvert.SerializeObject(DefaultBackendHttpSettings, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DefaultBackendHttpSettings, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string DefaultRedirectConfigurationText
         {
-            get { return JsonConvert.SerializeObject(DefaultRedirectConfiguration, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DefaultRedirectConfiguration, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string PathRulesText
         {
-            get { return JsonConvert.SerializeObject(PathRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(PathRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

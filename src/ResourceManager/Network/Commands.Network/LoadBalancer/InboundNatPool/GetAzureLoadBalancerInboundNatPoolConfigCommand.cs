@@ -36,18 +36,18 @@ namespace Microsoft.Azure.Commands.Network
         {
 
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 var inboundNatPool =
-                    this.LoadBalancer.InboundNatPools.First(
+                    LoadBalancer.InboundNatPools.First(
                         resource =>
-                            string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                            string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
                 WriteObject(inboundNatPool);
             }
             else
             {
-                var inboundNatPools = this.LoadBalancer.InboundNatPools;
+                var inboundNatPools = LoadBalancer.InboundNatPools;
                 WriteObject(inboundNatPools, true);
             }
 

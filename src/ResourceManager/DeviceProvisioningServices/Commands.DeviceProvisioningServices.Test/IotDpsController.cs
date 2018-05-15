@@ -78,10 +78,10 @@ namespace Commands.DeviceProvisioningServices.Test
             HttpMockServer.RecordsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SessionRecords");
             using (MockContext context = MockContext.Start(callingClassType, mockName))
             {
-                this.csmTestFactory = new CSMTestEnvironmentFactory();
+                csmTestFactory = new CSMTestEnvironmentFactory();
                 if (initialize != null)
                 {
-                    initialize(this.csmTestFactory);
+                    initialize(csmTestFactory);
                 }
                 SetupManagementClients(context);
 
@@ -136,7 +136,7 @@ namespace Commands.DeviceProvisioningServices.Test
 
         private ResourceManagementClient GetResourceManagementClient()
         {
-            return TestBase.GetServiceClient<ResourceManagementClient>(this.csmTestFactory);
+            return TestBase.GetServiceClient<ResourceManagementClient>(csmTestFactory);
         }
 
         private IotHubClient GetIotHubClient(MockContext context)

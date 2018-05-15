@@ -25,9 +25,9 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public DifferencingDiskBlockFactory(VhdFile vhdFile) : base(vhdFile)
         {
-            this.bitMapFactory = new BitMapFactory(vhdFile);
-            this.sectorFactory = new SectorFactory(vhdFile, this);
-            this.parentBlockFactory = vhdFile.Parent.DiskType != DiskType.Fixed ? vhdFile.Parent.GetBlockFactory() : new FixedDiskBlockFactory(vhdFile.Parent, this.GetBlockSize());
+            bitMapFactory = new BitMapFactory(vhdFile);
+            sectorFactory = new SectorFactory(vhdFile, this);
+            parentBlockFactory = vhdFile.Parent.DiskType != DiskType.Fixed ? vhdFile.Parent.GetBlockFactory() : new FixedDiskBlockFactory(vhdFile.Parent, GetBlockSize());
         }
 
         public override Block Create(uint block)
@@ -46,7 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
                 cachedBlock = new Block(this)
                 {
                     BlockIndex = block,
-                    VhdUniqueId = this.vhdFile.Footer.UniqueId,
+                    VhdUniqueId = vhdFile.Footer.UniqueId,
                     LogicalRange = IndexRange.FromLength(block * GetBlockSize(), vhdFile.Header.BlockSize),
                     BitMap = bitMapFactory.Create(block),
                     Empty = false
@@ -59,12 +59,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         {
             if (block.Empty)
             {
-                return this.sectorFactory.CreateEmptySector(block.BlockIndex, sector);
+                return sectorFactory.CreateEmptySector(block.BlockIndex, sector);
             }
 
             if (block.BitMap != null && block.BitMap.Data[(int)sector])
             {
-                return this.sectorFactory.Create(block, sector);
+                return sectorFactory.Create(block, sector);
             }
 
             var parentBlock = parentBlockFactory.Create(block.BlockIndex);

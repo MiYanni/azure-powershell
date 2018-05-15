@@ -19,12 +19,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Commands.Common.Authentication.Abstractions;
     using Common;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.ErrorResponses;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Entities.Resources;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.RestClients;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient;
+    using Components;
+    using Entities.ErrorResponses;
+    using Entities.Resources;
+    using Extensions;
+    using RestClients;
+    using SdkClient;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             get
             {
-                return this.cancellationSource == null ? null : (CancellationToken?)this.cancellationSource.Token;
+                return cancellationSource == null ? null : (CancellationToken?)cancellationSource.Token;
             }
         }
 
@@ -85,13 +85,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             try
             {
-                if (this.cancellationSource == null)
+                if (cancellationSource == null)
                 {
-                    this.cancellationSource = new CancellationTokenSource();
+                    cancellationSource = new CancellationTokenSource();
                 }
 
                 base.BeginProcessing();
-                this.OnBeginProcessing();
+                OnBeginProcessing();
             }
             catch (Exception ex)
             {
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                 }
 
                 var capturedException = ExceptionDispatchInfo.Capture(ex);
-                this.HandleException(capturedException: capturedException);
+                HandleException(capturedException);
             }
         }
 
@@ -112,12 +112,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             try
             {
-                if (this.cancellationSource != null && !this.cancellationSource.IsCancellationRequested)
+                if (cancellationSource != null && !cancellationSource.IsCancellationRequested)
                 {
-                    this.cancellationSource.Cancel();
+                    cancellationSource.Cancel();
                 }
 
-                this.OnStopProcessing();
+                OnStopProcessing();
                 base.StopProcessing();
             }
             catch (Exception ex)
@@ -128,11 +128,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                 }
 
                 var capturedException = ExceptionDispatchInfo.Capture(ex);
-                this.HandleException(capturedException: capturedException);
+                HandleException(capturedException);
             }
             finally
             {
-                this.DisposeOfCancellationSource();
+                DisposeOfCancellationSource();
             }
         }
 
@@ -143,7 +143,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             try
             {
-                this.OnEndProcessing();
+                OnEndProcessing();
                 base.EndProcessing();
             }
             catch (Exception ex)
@@ -154,11 +154,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                 }
 
                 var capturedException = ExceptionDispatchInfo.Capture(ex);
-                this.HandleException(capturedException: capturedException);
+                HandleException(capturedException);
             }
             finally
             {
-                this.DisposeOfCancellationSource();
+                DisposeOfCancellationSource();
             }
         }
 
@@ -169,13 +169,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             try
             {
-                if (this.cancellationSource == null)
+                if (cancellationSource == null)
                 {
-                    this.cancellationSource = new CancellationTokenSource();
+                    cancellationSource = new CancellationTokenSource();
                 }
 
                 base.ExecuteCmdlet();
-                this.OnProcessRecord();
+                OnProcessRecord();
             }
             catch (Exception ex)
             {
@@ -185,7 +185,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                 }
 
                 var capturedException = ExceptionDispatchInfo.Capture(ex);
-                this.HandleException(capturedException: capturedException);
+                HandleException(capturedException);
             }
         }
 
@@ -228,14 +228,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <param name="pre">When specified, indicates if pre-release API versions should be considered.</param>
         protected Task<string> DetermineApiVersion(string resourceId, bool? pre = null)
         {
-            return string.IsNullOrWhiteSpace(this.ApiVersion)
+            return string.IsNullOrWhiteSpace(ApiVersion)
                 ? ApiVersionHelper.DetermineApiVersion(
-                    context: DefaultContext,
-                    resourceId: resourceId,
-                    cancellationToken: this.CancellationToken.Value,
-                    pre: pre ?? this.Pre,
-                    cmdletHeaderValues: this.GetCmdletHeaders())
-                : Task.FromResult(this.ApiVersion);
+                    DefaultContext,
+                    resourceId,
+                    CancellationToken.Value,
+                    pre ?? Pre,
+                    GetCmdletHeaders())
+                : Task.FromResult(ApiVersion);
         }
 
         /// <summary>
@@ -246,15 +246,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <param name="pre">When specified, indicates if pre-release API versions should be considered.</param>
         protected Task<string> DetermineApiVersion(string providerNamespace, string resourceType, bool? pre = null)
         {
-            return string.IsNullOrWhiteSpace(this.ApiVersion)
+            return string.IsNullOrWhiteSpace(ApiVersion)
                 ? ApiVersionHelper.DetermineApiVersion(
                     DefaultContext,
-                    providerNamespace: providerNamespace,
-                    resourceType: resourceType,
-                    cancellationToken: this.CancellationToken.Value,
-                    pre: pre ?? this.Pre,
-                    cmdletHeaderValues: this.GetCmdletHeaders())
-                : Task.FromResult(this.ApiVersion);
+                    providerNamespace,
+                    resourceType,
+                    CancellationToken.Value,
+                    pre ?? Pre,
+                    GetCmdletHeaders())
+                : Task.FromResult(ApiVersion);
         }
 
         /// <summary>
@@ -273,15 +273,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             var endpointUri = new Uri(endpoint, UriKind.Absolute);
 
             return new ResourceManagerRestRestClient(
-                endpointUri: endpointUri,
-                httpClientHelper: HttpClientHelperFactory.Instance
+                endpointUri,
+                HttpClientHelperFactory.Instance
                 .CreateHttpClientHelper(
-                        credentials: AzureSession.Instance.AuthenticationFactory
+                        AzureSession.Instance.AuthenticationFactory
                                                  .GetSubscriptionCloudCredentials(
                                                     DefaultContext,
                                                     AzureEnvironment.Endpoint.ResourceManager),
-                        headerValues: AzureSession.Instance.ClientFactory.UserAgents,
-                        cmdletHeaderValues: this.GetCmdletHeaders()));
+                        AzureSession.Instance.ClientFactory.UserAgents,
+                        GetCmdletHeaders()));
         }
 
         /// <summary>
@@ -291,19 +291,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             get
             {
-                if (this.resourceManagerSdkClient == null)
+                if (resourceManagerSdkClient == null)
                 {
-                    this.resourceManagerSdkClient = new ResourceManagerSdkClient(DefaultContext);
+                    resourceManagerSdkClient = new ResourceManagerSdkClient(DefaultContext);
                 }
 
-                this.resourceManagerSdkClient.VerboseLogger = WriteVerboseWithTimestamp;
-                this.resourceManagerSdkClient.ErrorLogger = WriteErrorWithTimestamp;
-                this.resourceManagerSdkClient.WarningLogger = WriteWarningWithTimestamp;
+                resourceManagerSdkClient.VerboseLogger = WriteVerboseWithTimestamp;
+                resourceManagerSdkClient.ErrorLogger = WriteErrorWithTimestamp;
+                resourceManagerSdkClient.WarningLogger = WriteWarningWithTimestamp;
 
-                return this.resourceManagerSdkClient;
+                return resourceManagerSdkClient;
             }
 
-            set { this.resourceManagerSdkClient = value; }
+            set { resourceManagerSdkClient = value; }
         }
 
         /// <summary>
@@ -313,27 +313,27 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             get
             {
-                if (this.subscriptionSdkClient == null)
+                if (subscriptionSdkClient == null)
                 {
-                    this.subscriptionSdkClient = new SubscriptionSdkClient(DefaultContext)
+                    subscriptionSdkClient = new SubscriptionSdkClient(DefaultContext)
                     {
                         VerboseLogger = WriteVerboseWithTimestamp,
                         ErrorLogger = WriteErrorWithTimestamp,
                         WarningLogger = WriteWarningWithTimestamp
                     };
                 }
-                return this.subscriptionSdkClient;
+                return subscriptionSdkClient;
             }
 
-            set { this.subscriptionSdkClient = value; }
+            set { subscriptionSdkClient = value; }
         }
 
         private Dictionary<string, string> GetCmdletHeaders()
         {
             return new Dictionary<string, string>
             {
-                {"ParameterSetName", this.ParameterSetName },
-                {"CommandName", this.CommandRuntime.ToString() }
+                {"ParameterSetName", ParameterSetName },
+                {"CommandName", CommandRuntime.ToString() }
             };
         }
 
@@ -346,11 +346,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             JToken resultJToken;
             if (resultString.TryConvertTo<JToken>(out resultJToken))
             {
-                this.WriteObject(resultJToken);
+                WriteObject(resultJToken);
             }
             else
             {
-                this.WriteObject(resultString);
+                WriteObject(resultString);
             }
         }
 
@@ -363,11 +363,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             Resource<JToken> resultResource;
             if (resultString.TryConvertTo<Resource<JToken>>(out resultResource))
             {
-                this.WriteObject(resultResource.ToPsObject());
+                WriteObject(resultResource.ToPsObject());
             }
             else
             {
-                this.WriteObject(resultString);
+                WriteObject(resultString);
             }
         }
 
@@ -377,7 +377,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <param name="result">The result of the action.</param>
         protected void WriteObject(JToken result)
         {
-            this.WriteObject(sendToPipeline: result.ToPsObject(), enumerateCollection: true);
+            WriteObject(result.ToPsObject(), true);
         }
 
         /// <summary>
@@ -388,11 +388,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         internal LongRunningOperationHelper GetLongRunningOperationTracker(string activityName, bool isResourceCreateOrUpdate)
         {
             return new LongRunningOperationHelper(
-                activityName: activityName,
-                resourcesClientFactory: () => this.GetResourcesClient(),
-                writeProgressAction: progress => this.WriteProgress(progress),
-                cancellationToken: this.CancellationToken.Value,
-                isResourceCreateOrUpdate: isResourceCreateOrUpdate);
+                activityName,
+                () => GetResourcesClient(),
+                progress => WriteProgress(progress),
+                CancellationToken.Value,
+                isResourceCreateOrUpdate);
         }
 
         /// <summary>
@@ -400,15 +400,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         private void DisposeOfCancellationSource()
         {
-            if (this.cancellationSource != null)
+            if (cancellationSource != null)
             {
-                if (!this.cancellationSource.IsCancellationRequested)
+                if (!cancellationSource.IsCancellationRequested)
                 {
-                    this.cancellationSource.Cancel();
+                    cancellationSource.Cancel();
                 }
 
-                this.cancellationSource.Dispose();
-                this.cancellationSource = null;
+                cancellationSource.Dispose();
+                cancellationSource = null;
             }
         }
 
@@ -423,7 +423,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                 var errorResponseException = capturedException.SourceException as ErrorResponseMessageException;
                 if (errorResponseException != null)
                 {
-                    this.ThrowTerminatingError(errorResponseException.ToErrorRecord());
+                    ThrowTerminatingError(errorResponseException.ToErrorRecord());
                 }
 
                 var aggregateException = capturedException.SourceException as AggregateException;
@@ -435,14 +435,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                         errorResponseException = aggregateException.InnerExceptions.Single() as ErrorResponseMessageException;
                         if (errorResponseException != null)
                         {
-                            this.ThrowTerminatingError(errorResponseException.ToErrorRecord());
+                            ThrowTerminatingError(errorResponseException.ToErrorRecord());
                         }
 
-                        this.ThrowTerminatingError(aggregateException.InnerExceptions.Single().ToErrorRecord());
+                        ThrowTerminatingError(aggregateException.InnerExceptions.Single().ToErrorRecord());
                     }
                     else
                     {
-                        this.ThrowTerminatingError(aggregateException.ToErrorRecord());
+                        ThrowTerminatingError(aggregateException.ToErrorRecord());
                     }
                 }
 
@@ -450,7 +450,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             }
             finally
             {
-                this.DisposeOfCancellationSource();
+                DisposeOfCancellationSource();
             }
         }
 
@@ -459,7 +459,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// </summary>
         public virtual string DetermineParameterSetName()
         {
-            return this.ParameterSetName;
+            return ParameterSetName;
         }
     }
 }

@@ -54,11 +54,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.Vault.Name,
+            if (ShouldProcess(
+                Vault.Name,
                 VerbsCommon.Set))
             {
-                this.SetARSVaultContext(this.Vault);
+                SetARSVaultContext(Vault);
             }
         }
 
@@ -70,22 +70,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             try
             {
-                VaultExtendedInfoResource vaultExtendedInfo = null;
+                VaultExtendedInfoResource vaultExtendedInfo;
 
                 try
                 {
-                    vaultExtendedInfo = this.RecoveryServicesClient
-                    .GetVaultExtendedInfo(this.Vault.ResourceGroupName, this.Vault.Name);
+                    vaultExtendedInfo = RecoveryServicesClient
+                    .GetVaultExtendedInfo(Vault.ResourceGroupName, Vault.Name);
                 }
-                catch (CloudException ex)
+                catch (CloudException)
                 {
                     throw new Exception(Resources.TryDownloadingVaultFile);
                 }
 
                 ASRVaultCreds asrVaultCreds = new ASRVaultCreds();
 
-                asrVaultCreds.ResourceName = this.Vault.Name;
-                asrVaultCreds.ResourceGroupName = this.Vault.ResourceGroupName;
+                asrVaultCreds.ResourceName = Vault.Name;
+                asrVaultCreds.ResourceGroupName = Vault.ResourceGroupName;
                 asrVaultCreds.ChannelIntegrityKey = vaultExtendedInfo.IntegrityKey;
 
                 asrVaultCreds.ResourceNamespace = ARMResourceTypeConstants
@@ -95,15 +95,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
                 Utilities.UpdateCurrentVaultContext(asrVaultCreds);
 
-                this.RecoveryServicesClient.ValidateVaultSettings(
+                RecoveryServicesClient.ValidateVaultSettings(
                 asrVaultCreds.ResourceName,
                 asrVaultCreds.ResourceGroupName);
 
-                this.WriteObject(new ASRVaultSettings(asrVaultCreds));
+                WriteObject(new ASRVaultSettings(asrVaultCreds));
             }
             catch (InvalidOperationException e)
             {
-                this.WriteDebug(e.Message);
+                WriteDebug(e.Message);
             }
         }
     }

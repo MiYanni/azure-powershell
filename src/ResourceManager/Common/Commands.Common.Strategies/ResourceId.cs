@@ -44,12 +44,12 @@ namespace Microsoft.Azure.Commands.Common.Strategies
                     && parts[ResourceGroupsI] == ResourceGroups
                     && parts[ProvidersI] == Providers
                 ? new Implementation(
-                    subscriptionId: parts[SubscriptionIdI],
-                    resourceGroupName: parts[ResourceGroupNameI],
-                    resourceType: new ResourceType(
-                        namespace_: parts[NamespaceI],
-                        provider: parts[ProviderI]),
-                    name: parts[NameI])
+                    parts[SubscriptionIdI],
+                    parts[ResourceGroupNameI],
+                    new ResourceType(
+                        parts[NamespaceI],
+                        parts[ProviderI]),
+                    parts[NameI])
                 : null;
         }
 

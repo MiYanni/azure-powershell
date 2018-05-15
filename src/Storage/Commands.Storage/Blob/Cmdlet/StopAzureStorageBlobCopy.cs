@@ -17,11 +17,11 @@ using System.Security.Cryptography;
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
     using Commands.Common.Storage.ResourceModel;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.RetryPolicies;
+    using Common;
+    using Model.Contract;
+    using WindowsAzure.Storage;
+    using WindowsAzure.Storage.Blob;
+    using WindowsAzure.Storage.RetryPolicies;
     using System;
     using System.Management.Automation;
     using System.Security.Permissions;
@@ -87,10 +87,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
         [ValidateNotNullOrEmpty]
         public string CopyId
         {
-            get { return copyId; }
-            set { copyId = value; }
+            get { return _copyId; }
+            set { _copyId = value; }
         }
-        private string copyId;
+        private string _copyId;
 
         protected override void BeginProcessing()
         {
@@ -113,18 +113,18 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                 case NameParameterSet:
                     string localContainerName = ContainerName;
                     string localBlobName = BlobName;
-                    taskGenerator = (taskId) => StopCopyBlob(taskId, localChannel, localContainerName, localBlobName, copyId);
+                    taskGenerator = taskId => StopCopyBlob(taskId, localChannel, localContainerName, localBlobName, _copyId);
                     target = localBlobName;
                     break;
                 case ContainerPipelineParmeterSet:
                     CloudBlobContainer localContainer = CloudBlobContainer;
                     string localName = BlobName;
-                    taskGenerator = (taskId) => StopCopyBlob(taskId, localChannel, localContainer, localName, copyId);
+                    taskGenerator = taskId => StopCopyBlob(taskId, localChannel, localContainer, localName, _copyId);
                     target = localName;
                     break;
                 case BlobPipelineParameterSet:
                     CloudBlob localBlob = CloudBlob;
-                    taskGenerator = (taskId) => StopCopyBlob(taskId, localChannel, localBlob, copyId, true);
+                    taskGenerator = taskId => StopCopyBlob(taskId, localChannel, localBlob, _copyId, true);
                     target = localBlob.Name;
                     break;
             }

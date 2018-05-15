@@ -281,11 +281,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(this.Name, VerbsCommon.New))
+            if (ShouldProcess(Name, VerbsCommon.New))
             {
-                var policy = this.RecoveryServicesClient.GetAzureSiteRecoveryPolicy(
+                var policy = RecoveryServicesClient.GetAzureSiteRecoveryPolicy(
                     Utilities.GetValueFromArmId(
-                        this.ProtectionContainerMapping.PolicyId,
+                        ProtectionContainerMapping.PolicyId,
                         ARMResourceTypeConstants.ReplicationPolicies));
                 var policyInstanceType = policy.Properties.ProviderSpecificDetails;
 
@@ -293,15 +293,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     new EnableProtectionProviderSpecificInput();
                 var inputProperties = new EnableProtectionInputProperties
                 {
-                    PolicyId = this.ProtectionContainerMapping.PolicyId,
+                    PolicyId = ProtectionContainerMapping.PolicyId,
                     // A2A there is no ProtectableItem
-                    ProtectableItemId = this.ProtectableItem == null ? null : this.ProtectableItem.ID,
+                    ProtectableItemId = ProtectableItem == null ? null : ProtectableItem.ID,
                     ProviderSpecificDetails = enableProtectionProviderSpecificInput
                 };
 
                 var input = new EnableProtectionInput { Properties = inputProperties };
 
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.EnterpriseToEnterprise:
                         if (!(policyInstanceType is HyperVReplicaPolicyDetails) &&
@@ -310,7 +310,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                             throw new PSArgumentException(
                                 string.Format(
                                     Resources.ContainerMappingParameterSetMismatch,
-                                    this.ProtectionContainerMapping.Name,
+                                    ProtectionContainerMapping.Name,
                                     policyInstanceType));
                         }
                         break;
@@ -322,7 +322,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                             throw new PSArgumentException(
                                 string.Format(
                                     Resources.ContainerMappingParameterSetMismatch,
-                                    this.ProtectionContainerMapping.Name,
+                                    ProtectionContainerMapping.Name,
                                     policyInstanceType));
                         }
                         EnterpriseAndHyperVToAzure(input);
@@ -334,7 +334,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                             throw new PSArgumentException(
                                 string.Format(
                                     Resources.ContainerMappingParameterSetMismatch,
-                                    this.ProtectionContainerMapping.Name,
+                                    ProtectionContainerMapping.Name,
                                     policyInstanceType));
                         }
 
@@ -346,8 +346,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         {
                             throw new PSArgumentException(
                                 string.Format(
-                                    Properties.Resources.ContainerMappingParameterSetMismatch,
-                                    this.ProtectionContainerMapping.Name,
+                                    Resources.ContainerMappingParameterSetMismatch,
+                                    ProtectionContainerMapping.Name,
                                     policyInstanceType));
                         }
                         AzureToAzureReplication(input);
@@ -357,30 +357,30 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         break;
                 }
 
-                this.response = this.RecoveryServicesClient.EnableProtection(
+                response = RecoveryServicesClient.EnableProtection(
                     Utilities.GetValueFromArmId(
-                        this.ProtectionContainerMapping.ID,
+                        ProtectionContainerMapping.ID,
                         ARMResourceTypeConstants.ReplicationFabrics),
                     Utilities.GetValueFromArmId(
-                        this.ProtectionContainerMapping.ID,
+                        ProtectionContainerMapping.ID,
                         ARMResourceTypeConstants.ReplicationProtectionContainers),
-                    this.Name,
+                    Name,
                     input);
 
-                this.jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
-                    PSRecoveryServicesClient.GetJobIdFromReponseLocation(this.response.Location));
+                jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                    PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-                this.WriteObject(new ASRJob(this.jobResponse));
+                WriteObject(new ASRJob(jobResponse));
 
-                if (this.WaitForCompletion.IsPresent)
+                if (WaitForCompletion.IsPresent)
                 {
-                    this.WaitForJobCompletion(this.jobResponse.Name);
+                    WaitForJobCompletion(jobResponse.Name);
 
-                    this.jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                    jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                         PSRecoveryServicesClient
-                            .GetJobIdFromReponseLocation(this.response.Location));
+                            .GetJobIdFromReponseLocation(response.Location));
 
-                    this.WriteObject(new ASRJob(this.jobResponse));
+                    WriteObject(new ASRJob(jobResponse));
                 }
             }
         }
@@ -389,51 +389,51 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var providerSettings = new InMageAzureV2EnableProtectionInput
             {
-                ProcessServerId = this.ProcessServer.Id,
+                ProcessServerId = ProcessServer.Id,
                 MasterTargetId =
-                        this.ProcessServer.Id, // Assumption: PS and MT are same.
-                RunAsAccountId = this.Account.AccountId,
-                StorageAccountId = this.RecoveryAzureStorageAccountId,
-                TargetAzureNetworkId = this.RecoveryAzureNetworkId,
-                TargetAzureSubnetId = this.RecoveryAzureSubnetName,
-                LogStorageAccountId = this.LogStorageAccountId,
-                MultiVmGroupName = this.ReplicationGroupName,
-                MultiVmGroupId = this.ReplicationGroupName,
-                TargetAzureVmName = string.IsNullOrEmpty(this.RecoveryVmName)
-                                            ? this.ProtectableItem.FriendlyName
-                                            : this.RecoveryVmName,
+                        ProcessServer.Id, // Assumption: PS and MT are same.
+                RunAsAccountId = Account.AccountId,
+                StorageAccountId = RecoveryAzureStorageAccountId,
+                TargetAzureNetworkId = RecoveryAzureNetworkId,
+                TargetAzureSubnetId = RecoveryAzureSubnetName,
+                LogStorageAccountId = LogStorageAccountId,
+                MultiVmGroupName = ReplicationGroupName,
+                MultiVmGroupId = ReplicationGroupName,
+                TargetAzureVmName = string.IsNullOrEmpty(RecoveryVmName)
+                                            ? ProtectableItem.FriendlyName
+                                            : RecoveryVmName,
                 EnableRDPOnTargetOption = Constants.NeverEnableRDPOnTargetOption,
-                DisksToInclude = this.IncludeDiskId != null
-                                            ? this.IncludeDiskId
+                DisksToInclude = IncludeDiskId != null
+                                            ? IncludeDiskId
                                             : null
             };
 
             var deploymentType = Utilities.GetValueFromArmId(
-                this.RecoveryAzureStorageAccountId,
+                RecoveryAzureStorageAccountId,
                 ARMResourceTypeConstants.Providers);
             if (deploymentType.ToLower().Contains(Constants.Classic.ToLower()))
             {
                 providerSettings.TargetAzureV1ResourceGroupId =
-                    this.RecoveryResourceGroupId;
+                    RecoveryResourceGroupId;
             }
             else
             {
                 providerSettings.TargetAzureV2ResourceGroupId =
-                    this.RecoveryResourceGroupId;
+                    RecoveryResourceGroupId;
             }
 
             // Check if the Replication Group Name is valid.
-            if (this.ReplicationGroupName != null)
+            if (ReplicationGroupName != null)
             {
                 // Get all the Protected Items in the Protection Container.
                 var fabricName = Utilities.GetValueFromArmId(
-                    this.ProtectableItem.ID,
+                    ProtectableItem.ID,
                     ARMResourceTypeConstants.ReplicationFabrics);
                 var protectionContainerName = Utilities.GetValueFromArmId(
-                    this.ProtectableItem.ID,
+                    ProtectableItem.ID,
                     ARMResourceTypeConstants.ReplicationProtectionContainers);
                 var listReplicationProtectedItems =
-                    this.RecoveryServicesClient
+                    RecoveryServicesClient
                         .GetAzureSiteRecoveryReplicationProtectedItem(
                             fabricName,
                             protectionContainerName);
@@ -452,7 +452,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
                         // Compare the Multi VM Group Name.
                         if (string.Compare(
-                                this.ReplicationGroupName,
+                                ReplicationGroupName,
                                 providerSpecificDetails.MultiVmGroupName,
                                 StringComparison.OrdinalIgnoreCase) ==
                             0)
@@ -475,7 +475,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     // Multi VM Group was not found.
                     // Create a new Multi VM Group and Set the values in the 
                     // InMageAzureV2 Provider specific input.
-                    providerSettings.MultiVmGroupName = this.ReplicationGroupName;
+                    providerSettings.MultiVmGroupName = ReplicationGroupName;
                     providerSettings.MultiVmGroupId = Guid.NewGuid().ToString();
                 }
             }
@@ -488,70 +488,70 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var providerSettings = new HyperVReplicaAzureEnableProtectionInput();
 
-            providerSettings.HvHostVmId = this.ProtectableItem.FabricObjectId;
-            providerSettings.VmName = this.ProtectableItem.FriendlyName;
-            providerSettings.TargetAzureVmName = string.IsNullOrEmpty(this.RecoveryVmName)
-                                                    ? this.ProtectableItem.FriendlyName
-                                                    : this.RecoveryVmName;
+            providerSettings.HvHostVmId = ProtectableItem.FabricObjectId;
+            providerSettings.VmName = ProtectableItem.FriendlyName;
+            providerSettings.TargetAzureVmName = string.IsNullOrEmpty(RecoveryVmName)
+                                                    ? ProtectableItem.FriendlyName
+                                                    : RecoveryVmName;
 
-            if (!string.IsNullOrEmpty(this.RecoveryAzureNetworkId))
+            if (!string.IsNullOrEmpty(RecoveryAzureNetworkId))
             {
-                providerSettings.TargetAzureNetworkId = this.RecoveryAzureNetworkId;
+                providerSettings.TargetAzureNetworkId = RecoveryAzureNetworkId;
             }
 
-            if (!string.IsNullOrEmpty(this.RecoveryAzureSubnetName))
+            if (!string.IsNullOrEmpty(RecoveryAzureSubnetName))
             {
-                providerSettings.TargetAzureSubnetId = this.RecoveryAzureSubnetName;
+                providerSettings.TargetAzureSubnetId = RecoveryAzureSubnetName;
             }
 
-            if (!string.IsNullOrEmpty(this.LogStorageAccountId))
+            if (!string.IsNullOrEmpty(LogStorageAccountId))
             {
-                providerSettings.LogStorageAccountId = this.LogStorageAccountId;
+                providerSettings.LogStorageAccountId = LogStorageAccountId;
             }
 
             // Id disk details are missing in input PE object, get the latest PE.
-            if (string.IsNullOrEmpty(this.ProtectableItem.OS))
+            if (string.IsNullOrEmpty(ProtectableItem.OS))
             {
                 // Just checked for OS to see whether the disk details got filled up or not
-                var protectableItemResponse = this.RecoveryServicesClient
+                var protectableItemResponse = RecoveryServicesClient
                     .GetAzureSiteRecoveryProtectableItem(
                         Utilities.GetValueFromArmId(
-                            this.ProtectableItem.ID,
+                            ProtectableItem.ID,
                             ARMResourceTypeConstants.ReplicationFabrics),
-                        this.ProtectableItem.ProtectionContainerId,
-                        this.ProtectableItem.Name);
+                        ProtectableItem.ProtectionContainerId,
+                        ProtectableItem.Name);
 
-                this.ProtectableItem = new ASRProtectableItem(protectableItemResponse);
+                ProtectableItem = new ASRProtectableItem(protectableItemResponse);
             }
 
-            if (string.IsNullOrWhiteSpace(this.OS))
+            if (string.IsNullOrWhiteSpace(OS))
             {
-                providerSettings.OsType = (string.Compare(
-                                               this.ProtectableItem.OS,
-                                               Constants.OSWindows,
-                                               StringComparison.OrdinalIgnoreCase) ==
-                                           0) ||
-                                          (string.Compare(
-                                               this.ProtectableItem.OS,
-                                               Constants.OSLinux) ==
-                                           0)
-                                ? this.ProtectableItem.OS
+                providerSettings.OsType = string.Compare(
+                                              ProtectableItem.OS,
+                                              Constants.OSWindows,
+                                              StringComparison.OrdinalIgnoreCase) ==
+                                          0 ||
+                                          string.Compare(
+                                              ProtectableItem.OS,
+                                              Constants.OSLinux) ==
+                                          0
+                                ? ProtectableItem.OS
                                 : Constants.OSWindows;
             }
             else
             {
-                providerSettings.OsType = this.OS;
+                providerSettings.OsType = OS;
             }
 
-            if (string.IsNullOrWhiteSpace(this.OSDiskName))
+            if (string.IsNullOrWhiteSpace(OSDiskName))
             {
-                providerSettings.VhdId = this.ProtectableItem.OSDiskId;
+                providerSettings.VhdId = ProtectableItem.OSDiskId;
             }
             else
             {
-                foreach (var disk in this.ProtectableItem.Disks)
+                foreach (var disk in ProtectableItem.Disks)
                 {
-                    if (0 == string.Compare(disk.Name, this.OSDiskName, true))
+                    if (0 == string.Compare(disk.Name, OSDiskName, true))
                     {
                         providerSettings.VhdId = disk.Id;
                         break;
@@ -559,27 +559,27 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 }
             }
 
-            if (this.RecoveryAzureStorageAccountId != null)
+            if (RecoveryAzureStorageAccountId != null)
             {
                 providerSettings.TargetStorageAccountId =
-                    this.RecoveryAzureStorageAccountId;
+                    RecoveryAzureStorageAccountId;
             }
 
             var deploymentType = Utilities.GetValueFromArmId(
-                this.RecoveryAzureStorageAccountId,
+                RecoveryAzureStorageAccountId,
                 ARMResourceTypeConstants.Providers);
             if (deploymentType.ToLower()
                 .Contains(Constants.Classic.ToLower()))
             {
                 providerSettings.TargetAzureV1ResourceGroupId =
-                    this.RecoveryResourceGroupId;
+                    RecoveryResourceGroupId;
                 providerSettings.TargetAzureV2ResourceGroupId = null;
             }
             else
             {
                 providerSettings.TargetAzureV1ResourceGroupId = null;
                 providerSettings.TargetAzureV2ResourceGroupId =
-                    this.RecoveryResourceGroupId;
+                    RecoveryResourceGroupId;
             }
 
             input.Properties.ProviderSpecificDetails = providerSettings;
@@ -589,19 +589,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var providerSettings = new A2AEnableProtectionInput()
             {
-                FabricObjectId = this.AzureVmId,
+                FabricObjectId = AzureVmId,
                 RecoveryContainerId =
-                        this.ProtectionContainerMapping.TargetProtectionContainerId,
+                        ProtectionContainerMapping.TargetProtectionContainerId,
                 VmDisks = new List<A2AVmDiskInputDetails>(),
-                RecoveryResourceGroupId = this.RecoveryResourceGroupId,
-                RecoveryCloudServiceId = this.RecoveryCloudServiceId,
-                RecoveryAvailabilitySetId = this.RecoveryAvailabilitySetId
+                RecoveryResourceGroupId = RecoveryResourceGroupId,
+                RecoveryCloudServiceId = RecoveryCloudServiceId,
+                RecoveryAvailabilitySetId = RecoveryAvailabilitySetId
             };
 
             // If azureVmDisk Details are null add disk to protect
             // TODO:: item for other parameterset when customer can pass AzureVmId targetStorageAccount and RecoveryStorageAccount.
             // will add support when compute dependency is added in common library.
-            foreach (ASRAzuretoAzureDiskReplicationConfig disk in this.AzureToAzureDiskReplicationConfiguration)
+            foreach (ASRAzuretoAzureDiskReplicationConfig disk in AzureToAzureDiskReplicationConfiguration)
             {
                 providerSettings.VmDisks.Add(new A2AVmDiskInputDetails
                 {
@@ -623,7 +623,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void WriteJob(
             Job job)
         {
-            this.WriteObject(new ASRJob(job));
+            WriteObject(new ASRJob(job));
         }
 
         private Job jobResponse;

@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
     using System;
     using System.Management.Automation;
     using System.Security.Cryptography.X509Certificates;
-    using Microsoft.Azure.Management.Scheduler.Models;
+    using Management.Scheduler.Models;
 
     public static class SchedulerUtility
     {

@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -75,16 +75,16 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         [ValidateNotNullOrEmpty]
         public string MapType
         {
-            get { return this.mapType; }
-            set { value = this.mapType; }
+            get { return mapType; }
+            set { value = mapType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account map content type.")]
         [ValidateNotNullOrEmpty]
         public string ContentType
         {
-            get { return this.contentType; }
-            set { value = this.contentType; }
+            get { return contentType; }
+            set { value = contentType; }
         }
 
         [Parameter(Mandatory = false, HelpMessage = "The integration account map metadata.",
@@ -101,25 +101,25 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                this.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
-            if (string.IsNullOrEmpty(this.MapDefinition))
+            if (string.IsNullOrEmpty(MapDefinition))
             {
-                this.MapDefinition = CmdletHelper.GetContentFromFile(this.TryResolvePath(this.MapFilePath));
+                MapDefinition = CmdletHelper.GetContentFromFile(this.TryResolvePath(MapFilePath));
             }
 
-            this.WriteObject(IntegrationAccountClient.CreateIntegrationAccountMap(this.ResourceGroupName, integrationAccount.Name, this.MapName,
+            WriteObject(IntegrationAccountClient.CreateIntegrationAccountMap(ResourceGroupName, integrationAccount.Name, MapName,
                 new IntegrationAccountMap
                 {
-                    ContentType = this.ContentType,
-                    Content = this.MapDefinition,
-                    MapType = (MapType) Enum.Parse(typeof(MapType), this.MapType),
-                    Metadata = this.Metadata
+                    ContentType = ContentType,
+                    Content = MapDefinition,
+                    MapType = (MapType) Enum.Parse(typeof(MapType), MapType),
+                    Metadata = Metadata
                 }), true);
         }
     }

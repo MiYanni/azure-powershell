@@ -75,14 +75,14 @@ namespace Microsoft.Azure.Commands.Profile.Utilities
                 }
             }
 
-            if ((null == response) || string.IsNullOrEmpty(response.GalleryEndpoint) || string.IsNullOrEmpty(response.GraphEndpoint)
+            if (null == response || string.IsNullOrEmpty(response.GalleryEndpoint) || string.IsNullOrEmpty(response.GraphEndpoint)
                 || string.IsNullOrEmpty(response.PortalEndpoint))
             {
                 throw new ArgumentException(Resources.InvalidEndpointProvided, "url");
             }
 
             if (null == response.authentication || string.IsNullOrEmpty(response.authentication.LoginEndpoint)
-                || (response.authentication.Audiences.Any(string.IsNullOrEmpty)))
+                || response.authentication.Audiences.Any(string.IsNullOrEmpty))
             {
                 throw new ArgumentException(Resources.InvalidEndpointProvided, "url");
             }

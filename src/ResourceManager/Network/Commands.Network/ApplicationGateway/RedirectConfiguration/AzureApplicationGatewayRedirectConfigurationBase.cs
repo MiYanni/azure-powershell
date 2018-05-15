@@ -63,11 +63,11 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
                 if (TargetListener != null)
                 {
-                    this.TargetListenerID = this.TargetListener.Id;
+                    TargetListenerID = TargetListener.Id;
                 }
             }
         }
@@ -75,45 +75,45 @@ namespace Microsoft.Azure.Commands.Network
         public PSApplicationGatewayRedirectConfiguration NewObject()
         {
             var redirectConfiguration = new PSApplicationGatewayRedirectConfiguration();
-            redirectConfiguration.Name = this.Name;
-            redirectConfiguration.RedirectType = this.RedirectType;
+            redirectConfiguration.Name = Name;
+            redirectConfiguration.RedirectType = RedirectType;
 
-            if (this.TargetUrl != null
-                && this.TargetListenerID != null
-                && this.TargetListener != null)
+            if (TargetUrl != null
+                && TargetListenerID != null
+                && TargetListener != null)
             {
                 throw new ArgumentException("Please either specify a target url or a target listener.");
             }
 
-            if (this.TargetUrl != null
-                && (this.TargetListenerID != null
-                || this.TargetListener != null))
+            if (TargetUrl != null
+                && (TargetListenerID != null
+                || TargetListener != null))
             {
                 throw new ArgumentException("Both target url or target listener can not be specified.");
             }
 
-            redirectConfiguration.TargetUrl = this.TargetUrl;
-            if (this.IncludePath != null)
+            redirectConfiguration.TargetUrl = TargetUrl;
+            if (IncludePath != null)
             {
-                redirectConfiguration.IncludePath = this.IncludePath;
+                redirectConfiguration.IncludePath = IncludePath;
             }
-            if (this.IncludeQueryString != null)
+            if (IncludeQueryString != null)
             {
-                redirectConfiguration.IncludeQueryString = this.IncludeQueryString;
+                redirectConfiguration.IncludeQueryString = IncludeQueryString;
             }
 
 
             
-            if (!string.IsNullOrEmpty(this.TargetListenerID))
+            if (!string.IsNullOrEmpty(TargetListenerID))
             {
                 redirectConfiguration.TargetListener = new PSResourceId();
-                redirectConfiguration.TargetListener.Id = this.TargetListener.Id;
+                redirectConfiguration.TargetListener.Id = TargetListener.Id;
             }
 
             redirectConfiguration.Id = ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                                this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayRedirectConfigurationName,
-                                this.Name);
+                                NetworkClient.NetworkManagementClient.SubscriptionId,
+                                Properties.Resources.ApplicationGatewayRedirectConfigurationName,
+                                Name);
 
             return redirectConfiguration;
         }

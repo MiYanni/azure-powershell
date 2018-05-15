@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
 
             List<PSGatewayRoute> advertisedRoutes = new List<PSGatewayRoute>();
-            foreach (var route in this.VirtualNetworkGatewayClient.GetLearnedRoutes(this.ResourceGroupName, this.VirtualNetworkGatewayName).Value)
+            foreach (var route in VirtualNetworkGatewayClient.GetLearnedRoutes(ResourceGroupName, VirtualNetworkGatewayName).Value)
             {
                 advertisedRoutes.Add(NetworkResourceManagerProfile.Mapper.Map<PSGatewayRoute>(route));
             }

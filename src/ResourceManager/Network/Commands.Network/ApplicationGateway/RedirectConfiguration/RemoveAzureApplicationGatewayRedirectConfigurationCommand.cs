@@ -37,15 +37,15 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var redirectConfiguration = this.ApplicationGateway.RedirectConfigurations.SingleOrDefault
-                (resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var redirectConfiguration = ApplicationGateway.RedirectConfigurations.SingleOrDefault
+                (resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (redirectConfiguration != null)
             {
-                this.ApplicationGateway.RedirectConfigurations.Remove(redirectConfiguration);
+                ApplicationGateway.RedirectConfigurations.Remove(redirectConfiguration);
             }
 
-            WriteObject(this.ApplicationGateway);
+            WriteObject(ApplicationGateway);
         }
     }
 }

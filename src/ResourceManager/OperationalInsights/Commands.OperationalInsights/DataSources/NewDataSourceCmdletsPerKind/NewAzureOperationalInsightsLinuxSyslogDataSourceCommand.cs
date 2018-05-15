@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Commands.OperationalInsights
 
             var dsProperties = new PSLinuxSyslogDataSourceProperties
             {
-                SyslogName = this.Facility,
+                SyslogName = Facility,
                 SyslogSeverities = severitySubscription
             };
 

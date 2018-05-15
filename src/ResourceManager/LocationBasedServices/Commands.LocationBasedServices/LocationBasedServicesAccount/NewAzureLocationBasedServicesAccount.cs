@@ -72,15 +72,15 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
 
             RunCmdLet(() =>
             {
-                LocationBasedServicesAccountCreateParameters createParameters = new LocationBasedServicesAccountCreateParameters()
+                LocationBasedServicesAccountCreateParameters createParameters = new LocationBasedServicesAccountCreateParameters
                 {
-                    Sku = new Sku(this.SkuName),
+                    Sku = new Sku(SkuName),
                     Tags = TagsConversionHelper.CreateTagDictionary(Tag),
                     Location = "global"
                 };
 
                 if (ShouldProcess(
-                    this.Name, string.Format(CultureInfo.CurrentCulture, Resources.NewAccount_ProcessMessage, this.Name, this.SkuName)))
+                    Name, string.Format(CultureInfo.CurrentCulture, Resources.NewAccount_ProcessMessage, Name, SkuName)))
                 {
                     if (Force.IsPresent)
                     {
@@ -95,14 +95,14 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
                         }
                     }
 
-                    var createAccountResponse = this.LocationBasedServicesClient.Accounts.CreateOrUpdate(
-                                    this.ResourceGroupName,
-                                    this.Name,
+                    var createAccountResponse = LocationBasedServicesClient.Accounts.CreateOrUpdate(
+                                    ResourceGroupName,
+                                    Name,
                                     createParameters);
 
-                    var locationBasedServicesAccount = this.LocationBasedServicesClient.Accounts.Get(this.ResourceGroupName, this.Name);
+                    var locationBasedServicesAccount = LocationBasedServicesClient.Accounts.Get(ResourceGroupName, Name);
 
-                    this.WriteLocationBasedServicesAccount(locationBasedServicesAccount);
+                    WriteLocationBasedServicesAccount(locationBasedServicesAccount);
                 }
             });
         }

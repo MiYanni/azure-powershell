@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
 
         public AzureRMBackupRetentionPolicy(string retentionType, int retention)
         {
-            this.RetentionType = retentionType;
-            this.Retention = retention;
+            RetentionType = retentionType;
+            Retention = retention;
         }
     }
 
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
         public AzureBackupWeeklyRetentionPolicy(string retentionType, int retention, IList<DayOfWeek> daysOfWeek)
             : base(retentionType, retention)
         {
-            this.DaysOfWeek = new List<DayOfWeek>(daysOfWeek);
+            DaysOfWeek = new List<DayOfWeek>(daysOfWeek);
         }
     }
 
@@ -105,10 +105,10 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
             List<WeekNumber> weekNumber, List<DayOfWeek> daysOfWeek)
             : base(retentionType, retention)
         {
-            this.RetentionFormat = retentionFormat;
-            this.DaysOfMonth = daysOfMonth;
-            this.WeekNumber = weekNumber;
-            this.DaysOfWeek = daysOfWeek;
+            RetentionFormat = retentionFormat;
+            DaysOfMonth = daysOfMonth;
+            WeekNumber = weekNumber;
+            DaysOfWeek = daysOfWeek;
         }
     }
 
@@ -128,11 +128,11 @@ namespace Microsoft.Azure.Commands.AzureBackup.Models
             List<WeekNumber> weekNumber, List<DayOfWeek> daysOfWeek)
             : base(retentionType, retention)
         {
-            this.MonthsOfYear = monthsOfYear;
-            this.RetentionFormat = retentionFormat;
-            this.DaysOfMonth = daysOfMonth;
-            this.WeekNumber = weekNumber;
-            this.DaysOfWeek = daysOfWeek;
+            MonthsOfYear = monthsOfYear;
+            RetentionFormat = retentionFormat;
+            DaysOfMonth = daysOfMonth;
+            WeekNumber = weekNumber;
+            DaysOfWeek = daysOfWeek;
         }
     }
 

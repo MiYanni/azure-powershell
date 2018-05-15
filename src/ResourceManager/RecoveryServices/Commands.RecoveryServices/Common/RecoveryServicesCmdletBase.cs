@@ -44,12 +44,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             get
             {
-                if (this.recoveryServicesClient == null)
+                if (recoveryServicesClient == null)
                 {
-                    this.recoveryServicesClient = new PSRecoveryServicesClient(DefaultContext);
+                    recoveryServicesClient = new PSRecoveryServicesClient(DefaultContext);
                 }
 
-                return this.recoveryServicesClient;
+                return recoveryServicesClient;
             }
         }
 
@@ -65,15 +65,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         public void HandleException(Exception ex)
         {
             string clientRequestIdMsg = string.Empty;
-            if (this.recoveryServicesClient != null)
+            if (recoveryServicesClient != null)
             {
-                clientRequestIdMsg = "ClientRequestId: " + this.recoveryServicesClient.ClientRequestId + "\n";
+                clientRequestIdMsg = "ClientRequestId: " + recoveryServicesClient.ClientRequestId + "\n";
             }
 
             CloudException cloudException = ex as CloudException;
             if (cloudException != null)
             {
-                ARMError error = null;
+                ARMError error;
                 try
                 {
                     if (cloudException.Message != null)
@@ -106,14 +106,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices
 
                         throw new InvalidOperationException(exceptionMessage.ToString());
                     }
-                    else
-                    {
-                        throw new Exception(
-                            string.Format(
+                    throw new Exception(
+                        string.Format(
                             Properties.Resources.InvalidCloudExceptionErrorMessage,
                             clientRequestIdMsg + ex.Message),
-                            ex);
-                    }
+                        ex);
                 }
                 catch (XmlException)
                 {
@@ -132,12 +129,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                         cloudException);
                 }
             }
-            else if (ex.Message != null)
+            if (ex.Message != null)
             {
                 throw new Exception(
                     string.Format(
-                    Properties.Resources.InvalidCloudExceptionErrorMessage,
-                    clientRequestIdMsg + ex.Message),
+                        Properties.Resources.InvalidCloudExceptionErrorMessage,
+                        clientRequestIdMsg + ex.Message),
                     ex);
             }
         }
@@ -156,7 +153,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             // Ctrl + C and etc
             base.StopProcessing();
-            this.StopProcessingFlag = true;
+            StopProcessingFlag = true;
         }
     }
 }

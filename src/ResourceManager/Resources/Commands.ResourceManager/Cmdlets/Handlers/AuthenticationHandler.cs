@@ -46,13 +46,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
         /// <param name="cancellationToken">The cancellation token.</param>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            await this.cloudCredentials
-                .ProcessHttpRequestAsync(request: request, cancellationToken: cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false);
+            await cloudCredentials
+                .ProcessHttpRequestAsync(request, cancellationToken)
+                .ConfigureAwait(false);
 
             return await base
                 .SendAsync(request, cancellationToken)
-                .ConfigureAwait(continueOnCapturedContext: false);
+                .ConfigureAwait(false);
         }
 
     }

@@ -28,8 +28,8 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void CustomInit()
         {
-            this.SourceConnectionInfoParam(true);
-            this.SimpleParam(SelectedDatabase, typeof(string[]), "List of database names to collect tables for", true);
+            SourceConnectionInfoParam(true);
+            SimpleParam(SelectedDatabase, typeof(string[]), "List of database names to collect tables for", true);
         }
 
         public override ProjectTaskProperties ProcessTaskCmdlet()

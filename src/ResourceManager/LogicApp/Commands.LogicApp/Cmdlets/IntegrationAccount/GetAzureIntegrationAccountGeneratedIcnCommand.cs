@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
+    using Utilities;
+    using Management.Logic.Models;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -73,21 +73,21 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 
             if (string.IsNullOrEmpty(AgreementType))
             {
-                this.WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
+                WriteWarning(Constants.NoAgreementTypeParameterWarningMessage);
                 AgreementType = "X12";
             }
 
-            this.WriteObject(
-                sendToPipeline: string.IsNullOrEmpty(this.AgreementName) ?
-                    this.IntegrationAccountClient.ListIntegrationAccountGeneratedIcns(
-                        resourceGroupName: this.ResourceGroupName,
-                        integrationAccountName: this.Name,
-                        agreementType: (AgreementType)Enum.Parse(enumType: typeof(AgreementType), value: AgreementType, ignoreCase: true)) as object :
-                    this.IntegrationAccountClient.GetIntegrationAccountGeneratedIcn(
-                        resourceGroupName: this.ResourceGroupName,
-                        integrationAccountName: this.Name,
-                        integrationAccountAgreementName: this.AgreementName),
-                enumerateCollection: true);
+            WriteObject(
+                string.IsNullOrEmpty(AgreementName) ?
+                    IntegrationAccountClient.ListIntegrationAccountGeneratedIcns(
+                        ResourceGroupName,
+                        Name,
+                        (AgreementType)Enum.Parse(typeof(AgreementType), AgreementType, true)) as object :
+                    IntegrationAccountClient.GetIntegrationAccountGeneratedIcn(
+                        ResourceGroupName,
+                        Name,
+                        AgreementName),
+                true);
         }
     }
 }

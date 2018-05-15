@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 2,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -105,27 +105,27 @@ namespace Microsoft.Azure.Commands.Compute
             base.ExecuteCmdlet();
 
 
-            VirtualMachine vm = ComputeClient.ComputeManagementClient.VirtualMachines.Get(this.ResourceGroupName, this.VMName);
+            VirtualMachine vm = ComputeClient.ComputeManagementClient.VirtualMachines.Get(ResourceGroupName, VMName);
             if (vm != null && vm.Resources != null)
             {
                 VirtualMachineExtension extension = vm.Resources.Where(x => x.Publisher.Equals(VirtualMachineSqlServerExtensionContext.ExtensionPublishedNamespace)).FirstOrDefault();
                 if (extension != null)
                 {
-                    this.Name = extension.Name;
-                    this.Version = extension.TypeHandlerVersion;
+                    Name = extension.Name;
+                    Version = extension.TypeHandlerVersion;
                 }
 
-                this.Location = vm.Location;
+                Location = vm.Location;
             }
 
             var parameters = new VirtualMachineExtension
             {
-                Location = this.Location,
+                Location = Location,
                 Publisher = VirtualMachineSqlServerExtensionContext.ExtensionPublishedNamespace,
                 VirtualMachineExtensionType = VirtualMachineSqlServerExtensionContext.ExtensionPublishedType,
-                TypeHandlerVersion = string.IsNullOrEmpty(this.Version) ? VirtualMachineSqlServerExtensionContext.ExtensionDefaultVersion : this.Version,
-                Settings = this.GetPublicConfiguration(),
-                ProtectedSettings = this.GetPrivateConfiguration(),
+                TypeHandlerVersion = string.IsNullOrEmpty(Version) ? VirtualMachineSqlServerExtensionContext.ExtensionDefaultVersion : Version,
+                Settings = GetPublicConfiguration(),
+                ProtectedSettings = GetPrivateConfiguration(),
             };
 
             // Add retry logic due to CRP service restart known issue CRP bug: 3564713
@@ -153,7 +153,7 @@ namespace Microsoft.Azure.Commands.Compute
                     }
                     else
                     {
-                        base.ThrowTerminatingError(new ErrorRecord(ex, "InvalidResult", ErrorCategory.InvalidResult, null));
+                        ThrowTerminatingError(new ErrorRecord(ex, "InvalidResult", ErrorCategory.InvalidResult, null));
                     }
                 }
             }
@@ -169,10 +169,10 @@ namespace Microsoft.Azure.Commands.Compute
         {
             return new SqlServerPublicSettings
             {
-                AutoPatchingSettings = this.AutoPatchingSettings,
-                AutoBackupSettings = this.AutoBackupSettings,
-                KeyVaultCredentialSettings = this.KeyVaultCredentialSettings,
-                AutoTelemetrySettings = new AutoTelemetrySettings() { Region = this.Location },
+                AutoPatchingSettings = AutoPatchingSettings,
+                AutoBackupSettings = AutoBackupSettings,
+                KeyVaultCredentialSettings = KeyVaultCredentialSettings,
+                AutoTelemetrySettings = new AutoTelemetrySettings { Region = Location },
                 DeploymentToken = new Random().Next()
             };
         }
@@ -185,23 +185,23 @@ namespace Microsoft.Azure.Commands.Compute
         {
             PrivateKeyVaultCredentialSettings akvPrivateSettings = null;
 
-            if (this.KeyVaultCredentialSettings != null)
+            if (KeyVaultCredentialSettings != null)
             {
                 akvPrivateSettings = new PrivateKeyVaultCredentialSettings
                 {
-                    AzureKeyVaultUrl = this.KeyVaultCredentialSettings.AzureKeyVaultUrl,
-                    ServicePrincipalName = this.KeyVaultCredentialSettings.ServicePrincipalName,
-                    ServicePrincipalSecret = this.KeyVaultCredentialSettings.ServicePrincipalSecret
+                    AzureKeyVaultUrl = KeyVaultCredentialSettings.AzureKeyVaultUrl,
+                    ServicePrincipalName = KeyVaultCredentialSettings.ServicePrincipalName,
+                    ServicePrincipalSecret = KeyVaultCredentialSettings.ServicePrincipalSecret
                 };
             }
 
             return new SqlServerPrivateSettings
             {
-                StorageUrl = (this.AutoBackupSettings == null) ? string.Empty : this.AutoBackupSettings.StorageUrl,
+                StorageUrl = AutoBackupSettings == null ? string.Empty : AutoBackupSettings.StorageUrl,
                 StorageAccessKey =
-                    (this.AutoBackupSettings == null) ? string.Empty : this.AutoBackupSettings.StorageAccessKey,
-                Password = (this.AutoBackupSettings == null) ? string.Empty : this.AutoBackupSettings.Password,
-                PrivateKeyVaultCredentialSettings = (akvPrivateSettings == null) ? null : akvPrivateSettings
+                    AutoBackupSettings == null ? string.Empty : AutoBackupSettings.StorageAccessKey,
+                Password = AutoBackupSettings == null ? string.Empty : AutoBackupSettings.Password,
+                PrivateKeyVaultCredentialSettings = akvPrivateSettings == null ? null : akvPrivateSettings
             };
         }
     }

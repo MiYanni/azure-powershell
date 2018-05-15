@@ -99,10 +99,10 @@ namespace Microsoft.Azure.Commands.Dns
 
         public override void ExecuteCmdlet()
         {
-            var result = this.RecordSet;
-            if (!string.Equals(this.ParameterSetName, this.RecordSet.RecordType.ToString(), StringComparison.OrdinalIgnoreCase))
+            var result = RecordSet;
+            if (!string.Equals(ParameterSetName, RecordSet.RecordType.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException(string.Format(ProjectResources.Error_AddRecordTypeMismatch, this.ParameterSetName, this.RecordSet.RecordType));
+                throw new ArgumentException(string.Format(ProjectResources.Error_AddRecordTypeMismatch, ParameterSetName, RecordSet.RecordType));
             }
 
             if (result.Records == null)
@@ -114,40 +114,40 @@ namespace Microsoft.Azure.Commands.Dns
             {
                 case RecordType.A:
                     {
-                        result.Records.Add(new ARecord { Ipv4Address = this.Ipv4Address });
+                        result.Records.Add(new ARecord { Ipv4Address = Ipv4Address });
                         break;
                     }
 
                 case RecordType.AAAA:
                     {
-                        result.Records.Add(new AaaaRecord { Ipv6Address = this.Ipv6Address });
+                        result.Records.Add(new AaaaRecord { Ipv6Address = Ipv6Address });
                         break;
                     }
 
                 case RecordType.MX:
                     {
-                        result.Records.Add(new MxRecord { Preference = this.Preference, Exchange = this.Exchange });
+                        result.Records.Add(new MxRecord { Preference = Preference, Exchange = Exchange });
                         break;
                     }
 
                 case RecordType.NS:
                     {
-                        result.Records.Add(new NsRecord { Nsdname = this.Nsdname });
+                        result.Records.Add(new NsRecord { Nsdname = Nsdname });
                         break;
                     }
                 case RecordType.SRV:
                     {
-                        result.Records.Add(new SrvRecord { Priority = this.Priority, Port = this.Port, Target = this.Target, Weight = this.Weight });
+                        result.Records.Add(new SrvRecord { Priority = Priority, Port = Port, Target = Target, Weight = Weight });
                         break;
                     }
                 case RecordType.TXT:
                     {
-                        result.Records.Add(new TxtRecord { Value = this.Value });
+                        result.Records.Add(new TxtRecord { Value = Value });
                         break;
                     }
                 case RecordType.PTR:
                     {
-                        result.Records.Add(new PtrRecord { Ptrdname = this.Ptrdname });
+                        result.Records.Add(new PtrRecord { Ptrdname = Ptrdname });
                         break;
                     }
                 case RecordType.CNAME:
@@ -168,12 +168,12 @@ namespace Microsoft.Azure.Commands.Dns
                             result.Records.Clear();
                         }
 
-                        result.Records.Add(new CnameRecord { Cname = this.Cname });
+                        result.Records.Add(new CnameRecord { Cname = Cname });
                         break;
                     }
                 case RecordType.CAA:
                     {
-                        result.Records.Add(new CaaRecord { Flags = this.CaaFlags, Tag = this.CaaTag, Value = this.CaaValue});
+                        result.Records.Add(new CaaRecord { Flags = CaaFlags, Tag = CaaTag, Value = CaaValue});
                         break;
                     }
                 default:

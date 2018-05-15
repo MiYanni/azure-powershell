@@ -61,33 +61,33 @@ namespace Microsoft.Azure.Commands.Insights.ActionGroups
         {
             IEnumerable<ActionGroupResource> apiResult;
 
-            if (string.IsNullOrWhiteSpace(this.ResourceGroupName))
+            if (string.IsNullOrWhiteSpace(ResourceGroupName))
             {
-                if (string.IsNullOrWhiteSpace(this.Name))
+                if (string.IsNullOrWhiteSpace(Name))
                 {
-                    apiResult = this.MonitorManagementClient.ActionGroups.ListBySubscriptionId();
+                    apiResult = MonitorManagementClient.ActionGroups.ListBySubscriptionId();
                 }
                 else
                 {
                     throw new PSArgumentException("Resource group name cannot be null or empty when name is not");
                 }
             }
-            else if (string.IsNullOrWhiteSpace(this.Name))
+            else if (string.IsNullOrWhiteSpace(Name))
             {
-                apiResult = this.MonitorManagementClient.ActionGroups.ListByResourceGroup(resourceGroupName: this.ResourceGroupName);
+                apiResult = MonitorManagementClient.ActionGroups.ListByResourceGroup(ResourceGroupName);
             }
             else
             {
                 apiResult = new[]
                 {
-                    this.MonitorManagementClient.ActionGroups.Get(
-                        resourceGroupName: this.ResourceGroupName,
-                        actionGroupName: this.Name)
+                    MonitorManagementClient.ActionGroups.Get(
+                        ResourceGroupName,
+                        Name)
                 };
             }
 
             var output = apiResult.Select(ag => new PSActionGroupResource(ag)).ToList();
-            WriteObject(sendToPipeline: output, enumerateCollection: true);
+            WriteObject(output, true);
         }
     }
 }

@@ -61,11 +61,12 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
             // Try to verify the specified sync member exists
             if (MyInvocation.BoundParameters.ContainsKey("SyncMemberName"))
             {
-                ModelAdapter.GetSyncMember(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName, this.SyncMemberName);
+                ModelAdapter.GetSyncMember(ResourceGroupName, ServerName, DatabaseName, SyncGroupName, SyncMemberName);
             }
 
-            return new List<AzureSqlSyncGroupModel>() {
-                ModelAdapter.GetSyncGroup(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName)
+            return new List<AzureSqlSyncGroupModel>
+            {
+                ModelAdapter.GetSyncGroup(ResourceGroupName, ServerName, DatabaseName, SyncGroupName)
             };
         }
 
@@ -78,11 +79,11 @@ namespace Microsoft.Azure.Commands.Sql.DataSync.Cmdlet
         {
             if (MyInvocation.BoundParameters.ContainsKey("SyncMemberName"))
             {
-                ModelAdapter.InvokeSyncMemberSchemaRefresh(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName, this.SyncMemberName);
+                ModelAdapter.InvokeSyncMemberSchemaRefresh(ResourceGroupName, ServerName, DatabaseName, SyncGroupName, SyncMemberName);
             }
             else
             {
-                ModelAdapter.InvokeSyncHubSchemaRefresh(this.ResourceGroupName, this.ServerName, this.DatabaseName, this.SyncGroupName);
+                ModelAdapter.InvokeSyncHubSchemaRefresh(ResourceGroupName, ServerName, DatabaseName, SyncGroupName);
             }
             return null;
         }

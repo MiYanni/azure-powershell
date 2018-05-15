@@ -26,24 +26,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSCloudServiceConfiguration
     {
         
-        internal Microsoft.Azure.Batch.CloudServiceConfiguration omObject;
+        internal CloudServiceConfiguration omObject;
         
         public PSCloudServiceConfiguration(string osFamily, string targetOSVersion = null)
         {
-            this.omObject = new Microsoft.Azure.Batch.CloudServiceConfiguration(osFamily, targetOSVersion);
+            omObject = new CloudServiceConfiguration(osFamily, targetOSVersion);
         }
         
-        internal PSCloudServiceConfiguration(Microsoft.Azure.Batch.CloudServiceConfiguration omObject)
+        internal PSCloudServiceConfiguration(CloudServiceConfiguration omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.CurrentOSVersion;
+                return omObject.CurrentOSVersion;
             }
         }
         
@@ -60,11 +60,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.OSFamily;
+                return omObject.OSFamily;
             }
             set
             {
-                this.omObject.OSFamily = value;
+                omObject.OSFamily = value;
             }
         }
         
@@ -72,11 +72,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.TargetOSVersion;
+                return omObject.TargetOSVersion;
             }
             set
             {
-                this.omObject.TargetOSVersion = value;
+                omObject.TargetOSVersion = value;
             }
         }
     }

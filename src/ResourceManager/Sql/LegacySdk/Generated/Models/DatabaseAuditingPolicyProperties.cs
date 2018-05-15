@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string UseServerDefault
         {
-            get { return this._useServerDefault; }
-            set { this._useServerDefault = value; }
+            get { return _useServerDefault; }
+            set { _useServerDefault = value; }
         }
         
         /// <summary>

@@ -33,13 +33,13 @@ namespace Microsoft.Azure.Commands.Batch
         [ValidateNotNullOrEmpty]
         public int MaxCount
         {
-            get { return this.maxCount; }
-            set { this.maxCount = value; }
+            get { return maxCount; }
+            set { maxCount = value; }
         }
 
         public override void ExecuteCmdlet()
         {
-            foreach (PSNodeAgentSku nodeAgentSku in BatchClient.ListNodeAgentSkus(this.BatchContext, this.Filter, this.MaxCount, this.AdditionalBehaviors))
+            foreach (PSNodeAgentSku nodeAgentSku in BatchClient.ListNodeAgentSkus(BatchContext, Filter, MaxCount, AdditionalBehaviors))
             {
                 WriteObject(nodeAgentSku);
             }

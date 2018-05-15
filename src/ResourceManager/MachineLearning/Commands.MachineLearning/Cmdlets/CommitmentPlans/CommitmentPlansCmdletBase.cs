@@ -30,17 +30,17 @@ namespace Microsoft.Azure.Commands.MachineLearning
         {
             get
             {
-                if (this.commitmentPlansClient == null)
+                if (commitmentPlansClient == null)
                 {
-                    this.commitmentPlansClient = new CommitmentPlansClient(DefaultProfile.DefaultContext);
+                    commitmentPlansClient = new CommitmentPlansClient(DefaultProfile.DefaultContext);
                 }
 
-                this.commitmentPlansClient.VerboseLogger = WriteVerboseWithTimestamp;
-                this.commitmentPlansClient.ErrorLogger = WriteErrorWithTimestamp;
-                this.commitmentPlansClient.WarningLogger = WriteWarningWithTimestamp;
-                return this.commitmentPlansClient;
+                commitmentPlansClient.VerboseLogger = WriteVerboseWithTimestamp;
+                commitmentPlansClient.ErrorLogger = WriteErrorWithTimestamp;
+                commitmentPlansClient.WarningLogger = WriteWarningWithTimestamp;
+                return commitmentPlansClient;
             }
-            set { this.commitmentPlansClient = value; }
+            set { commitmentPlansClient = value; }
         }
     }
 }

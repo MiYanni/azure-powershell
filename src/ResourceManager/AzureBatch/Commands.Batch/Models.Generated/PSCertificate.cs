@@ -26,30 +26,30 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSCertificate
     {
         
-        internal Microsoft.Azure.Batch.Certificate omObject;
+        internal Certificate omObject;
         
         private PSDeleteCertificateError deleteCertificateError;
         
-        internal PSCertificate(Microsoft.Azure.Batch.Certificate omObject)
+        internal PSCertificate(Certificate omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.CertificateFormat? CertificateFormat
+        public Azure.Batch.Common.CertificateFormat? CertificateFormat
         {
             get
             {
-                return this.omObject.CertificateFormat;
+                return omObject.CertificateFormat;
             }
         }
         
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Data;
+                return omObject.Data;
             }
         }
         
@@ -65,12 +65,12 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.deleteCertificateError == null) 
-                            && (this.omObject.DeleteCertificateError != null)))
+                if (deleteCertificateError == null 
+                    && omObject.DeleteCertificateError != null)
                 {
-                    this.deleteCertificateError = new PSDeleteCertificateError(this.omObject.DeleteCertificateError);
+                    deleteCertificateError = new PSDeleteCertificateError(omObject.DeleteCertificateError);
                 }
-                return this.deleteCertificateError;
+                return deleteCertificateError;
             }
         }
         
@@ -78,23 +78,23 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Password;
+                return omObject.Password;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.CertificateState? PreviousState
+        public Azure.Batch.Common.CertificateState? PreviousState
         {
             get
             {
-                return this.omObject.PreviousState;
+                return omObject.PreviousState;
             }
         }
         
-        public System.DateTime? PreviousStateTransitionTime
+        public DateTime? PreviousStateTransitionTime
         {
             get
             {
-                return this.omObject.PreviousStateTransitionTime;
+                return omObject.PreviousStateTransitionTime;
             }
         }
         
@@ -102,23 +102,23 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.PublicData;
+                return omObject.PublicData;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.CertificateState? State
+        public Azure.Batch.Common.CertificateState? State
         {
             get
             {
-                return this.omObject.State;
+                return omObject.State;
             }
         }
         
-        public System.DateTime? StateTransitionTime
+        public DateTime? StateTransitionTime
         {
             get
             {
-                return this.omObject.StateTransitionTime;
+                return omObject.StateTransitionTime;
             }
         }
         
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Thumbprint;
+                return omObject.Thumbprint;
             }
         }
         
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ThumbprintAlgorithm;
+                return omObject.ThumbprintAlgorithm;
             }
         }
         
@@ -142,7 +142,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Url;
+                return omObject.Url;
             }
         }
     }

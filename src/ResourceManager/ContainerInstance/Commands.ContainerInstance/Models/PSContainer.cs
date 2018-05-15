@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Models
         /// </summary>
         public static PSContainer FromContainer(Container container)
         {
-            return new PSContainer()
+            return new PSContainer
             {
                 Name = container?.Name,
                 Image = container?.Image,

@@ -106,9 +106,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 if (string.IsNullOrEmpty(_psVersion))
                 {
-                    if (this.Host != null)
+                    if (Host != null)
                     {
-                        _psVersion = this.Host.Version.ToString();
+                        _psVersion = Host.Version.ToString();
                     }
                     else
                     {
@@ -183,7 +183,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         // Register Dynamic Parameters for use in long running jobs
         public void RegisterDynamicParameters(RuntimeDefinedParameterDictionary parameters)
         {
-            this.AsJobDynamicParameters = parameters;
+            AsJobDynamicParameters = parameters;
         }
 
 
@@ -206,9 +206,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         protected bool CheckIfInteractive()
         {
             bool interactive = true;
-            if (this.Host == null ||
-                this.Host.UI == null ||
-                this.Host.UI.RawUI == null ||
+            if (Host == null ||
+                Host.UI == null ||
+                Host.UI.RawUI == null ||
                 Environment.GetCommandLineArgs().Any(s =>
                     s.Equals("-NonInteractive", StringComparison.OrdinalIgnoreCase)))
             {
@@ -218,7 +218,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 try
                 {
-                    var test = this.Host.UI.RawUI.KeyAvailable;
+                    var test = Host.UI.RawUI.KeyAvailable;
                 }
                 catch
                 {
@@ -239,18 +239,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             if (string.IsNullOrEmpty(ParameterSetName))
             {
                 WriteDebugWithTimestamp(string.Format("{0} begin processing " +
-                   "without ParameterSet.", this.GetType().Name));
+                   "without ParameterSet.", GetType().Name));
             }
             else
             {
                 WriteDebugWithTimestamp(string.Format("{0} begin processing " +
-                   "with ParameterSet '{1}'.", this.GetType().Name, ParameterSetName));
+                   "with ParameterSet '{1}'.", GetType().Name, ParameterSetName));
             }
         }
 
         protected virtual void LogCmdletEndInvocationInfo()
         {
-            string message = string.Format("{0} end processing.", this.GetType().Name);
+            string message = string.Format("{0} end processing.", GetType().Name);
             WriteDebugWithTimestamp(message);
         }
 
@@ -277,8 +277,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             AzureSession.Instance.ClientFactory.AddUserAgent(PSVERSION, string.Format("v{0}", PSVersion));
 
             AzureSession.Instance.ClientFactory.AddHandler(
-                new CmdletInfoHandler(this.CommandRuntime.ToString(),
-                    this.ParameterSetName, this._clientRequestId));
+                new CmdletInfoHandler(CommandRuntime.ToString(),
+                    ParameterSetName, _clientRequestId));
 
         }
 
@@ -315,7 +315,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
             //Now see if the cmdlet has any Breaking change attributes on it and process them if it does
             //This will print any breaking change attribute messages that are applied to the cmdlet
-            BreakingChangeAttributeHelper.ProcessCustomAttributesAtRuntime(this.GetType(), this.MyInvocation, WriteWarning);
+            BreakingChangeAttributeHelper.ProcessCustomAttributesAtRuntime(GetType(), MyInvocation, WriteWarning);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             // SessionState is only available within PowerShell so default to
             // the TestMockSupport.TestExecutionFolder when being run from tests.
-            return (SessionState != null) ?
+            return SessionState != null ?
                 SessionState.Path.CurrentLocation.Path :
                 TestMockSupport.TestExecutionFolder;
         }
@@ -475,7 +475,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         protected void SafeWriteOutputPSObject(string typeName, params object[] args)
         {
-            PSObject customObject = this.ConstructPSObject(typeName, args);
+            PSObject customObject = ConstructPSObject(typeName, args);
             WriteObject(customObject);
         }
 
@@ -508,7 +508,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     Directory.CreateDirectory(_errorRecordFolderPath);
                 }
 
-                CommandInfo cmd = this.MyInvocation.MyCommand;
+                CommandInfo cmd = MyInvocation.MyCommand;
 
                 string filePrefix = cmd.Name;
                 string timeSampSuffix = DateTime.Now.ToString(_fileTimeStampSuffixFormat);
@@ -520,7 +520,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 sb.Append("Cmdlet : ").AppendLine(cmd.Name);
 
                 sb.AppendLine("Parameters");
-                foreach (var item in this.MyInvocation.BoundParameters)
+                foreach (var item in MyInvocation.BoundParameters)
                 {
                     sb.Append(" -").Append(item.Key).Append(" : ");
                     sb.AppendLine(item.Value == null ? "null" : item.Value.ToString());
@@ -567,7 +567,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
             try
             {
-                _metricHelper.SetPSHost(this.Host);
+                _metricHelper.SetPSHost(Host);
                 _metricHelper.LogQoSEvent(_qosEvent, IsUsageMetricEnabled, IsErrorMetricEnabled);
                 _metricHelper.FlushMetric();
                 WriteDebug("Finish sending metric.");
@@ -702,55 +702,52 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 {
                     return _implementationBackgroundJobDescription;
                 }
-                else
+                string name = "Long Running Azure Operation";
+                string commandName = MyInvocation?.MyCommand?.Name;
+                string objectName = null;
+                if (this.IsBound("Name"))
                 {
-                    string name = "Long Running Azure Operation";
-                    string commandName = MyInvocation?.MyCommand?.Name;
-                    string objectName = null;
-                    if (this.IsBound("Name"))
+                    objectName = MyInvocation.BoundParameters["Name"].ToString();
+                }
+                else if (this.IsBound("InputObject") == true)
+                {
+                    var type = MyInvocation.BoundParameters["InputObject"].GetType();
+                    var inputObject = Convert.ChangeType(MyInvocation.BoundParameters["InputObject"], type);
+                    if (type.GetProperty("Name") != null)
                     {
-                        objectName = MyInvocation.BoundParameters["Name"].ToString();
+                        objectName = inputObject.GetType().GetProperty("Name").GetValue(inputObject).ToString();
                     }
-                    else if (this.IsBound("InputObject") == true)
+                    else if (type.GetProperty("ResourceId") != null)
                     {
-                        var type = MyInvocation.BoundParameters["InputObject"].GetType();
-                        var inputObject = Convert.ChangeType(MyInvocation.BoundParameters["InputObject"], type);
-                        if (type.GetProperty("Name") != null)
-                        {
-                            objectName = inputObject.GetType().GetProperty("Name").GetValue(inputObject).ToString();
-                        }
-                        else if (type.GetProperty("ResourceId") != null)
-                        {
-                            string[] tokens = inputObject.GetType().GetProperty("ResourceId").GetValue(inputObject).ToString().Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-                            if (tokens.Length >= 8)
-                            {
-                                objectName = tokens[tokens.Length - 1];
-                            }
-                        }
-                    }
-                    else if (this.IsBound("ResourceId") == true)
-                    {
-                        string[] tokens = MyInvocation.BoundParameters["ResourceId"].ToString().Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] tokens = inputObject.GetType().GetProperty("ResourceId").GetValue(inputObject).ToString().Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
                         if (tokens.Length >= 8)
                         {
                             objectName = tokens[tokens.Length - 1];
                         }
                     }
-
-                    if (!string.IsNullOrWhiteSpace(commandName))
-                    {
-                        if (!string.IsNullOrWhiteSpace(objectName))
-                        {
-                            name = string.Format("Long Running Operation for '{0}' on resource '{1}'", commandName, objectName);
-                        }
-                        else
-                        {
-                            name = string.Format("Long Running Operation for '{0}'", commandName);
-                        }
-                    }
-
-                    return name;
                 }
+                else if (this.IsBound("ResourceId") == true)
+                {
+                    string[] tokens = MyInvocation.BoundParameters["ResourceId"].ToString().Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (tokens.Length >= 8)
+                    {
+                        objectName = tokens[tokens.Length - 1];
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(commandName))
+                {
+                    if (!string.IsNullOrWhiteSpace(objectName))
+                    {
+                        name = string.Format("Long Running Operation for '{0}' on resource '{1}'", commandName, objectName);
+                    }
+                    else
+                    {
+                        name = string.Format("Long Running Operation for '{0}'", commandName);
+                    }
+                }
+
+                return name;
             }
             set
             {

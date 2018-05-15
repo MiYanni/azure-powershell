@@ -18,9 +18,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System.Globalization;
     using System.Management.Automation;
     using System.Security.Cryptography.X509Certificates;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -88,32 +88,32 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
             var integrationAccountCertificate =
-                IntegrationAccountClient.GetIntegrationAccountCertifcate(this.ResourceGroupName,
-                    this.Name, this.CertificateName);
+                IntegrationAccountClient.GetIntegrationAccountCertifcate(ResourceGroupName,
+                    Name, CertificateName);
 
-            if (!string.IsNullOrEmpty(this.KeyName))
+            if (!string.IsNullOrEmpty(KeyName))
             {
-                integrationAccountCertificate.Key.KeyName = this.KeyName;
+                integrationAccountCertificate.Key.KeyName = KeyName;
             }
 
-            if (!string.IsNullOrEmpty(this.KeyVersion))
+            if (!string.IsNullOrEmpty(KeyVersion))
             {
-                integrationAccountCertificate.Key.KeyVersion = this.KeyVersion;
+                integrationAccountCertificate.Key.KeyVersion = KeyVersion;
             }
 
-            if (!string.IsNullOrEmpty(this.KeyVaultId))
+            if (!string.IsNullOrEmpty(KeyVaultId))
             {
-                integrationAccountCertificate.Key.KeyVault.Id = this.KeyVaultId;
+                integrationAccountCertificate.Key.KeyVault.Id = KeyVaultId;
             }
 
             string certificate = null;
 
-            if (!string.IsNullOrEmpty(this.PublicCertificateFilePath))
+            if (!string.IsNullOrEmpty(PublicCertificateFilePath))
             {
-                var certificateFilePath = this.TryResolvePath(this.PublicCertificateFilePath);
+                var certificateFilePath = this.TryResolvePath(PublicCertificateFilePath);
 
                 if (!string.IsNullOrEmpty(certificateFilePath) && CmdletHelper.FileExists(certificateFilePath))
                 {
@@ -127,23 +127,23 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
                 integrationAccountCertificate.PublicCertificate = certificate;
             }
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                integrationAccountCertificate.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                integrationAccountCertificate.Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
             ConfirmAction(Force.IsPresent,
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceWarning,
-                    "Microsoft.Logic/integrationAccounts/certificates", this.Name),
+                    "Microsoft.Logic/integrationAccounts/certificates", Name),
                 string.Format(CultureInfo.InvariantCulture, Properties.Resource.UpdateResourceMessage,
-                    "Microsoft.Logic/integrationAccounts/certificates", this.Name),
+                    "Microsoft.Logic/integrationAccounts/certificates", Name),
                 Name,
                 () =>
                 {
-                    this.WriteObject(
-                        IntegrationAccountClient.UpdateIntegrationAccountCertificate(this.ResourceGroupName,
+                    WriteObject(
+                        IntegrationAccountClient.UpdateIntegrationAccountCertificate(ResourceGroupName,
                             integrationAccount.Name,
-                            this.CertificateName, integrationAccountCertificate), true);
+                            CertificateName, integrationAccountCertificate), true);
                 },
                 null);
         }

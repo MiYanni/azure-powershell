@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.Sql.ImportExport.Model
         /// </summary>
         internal virtual AzureSqlDatabaseImportExportBaseModel Copy()
         {
-            return new AzureSqlDatabaseImportExportBaseModel()
+            return new AzureSqlDatabaseImportExportBaseModel
             {
                 ResourceGroupName = ResourceGroupName,
                 ServerName = ServerName,

@@ -63,12 +63,12 @@ namespace Microsoft.Azure.Commands.Sql.ServerKeyVaultKey.Cmdlet
         {
             List<AzureSqlServerKeyVaultKeyModel> newEntity = new List<AzureSqlServerKeyVaultKeyModel>();
 
-            newEntity.Add(new AzureSqlServerKeyVaultKeyModel()
+            newEntity.Add(new AzureSqlServerKeyVaultKeyModel
             {
-                ResourceGroupName = this.ResourceGroupName,
-                ServerName = this.ServerName,
-                ServerKeyName = AzureSqlServerKeyVaultKeyModel.CreateServerKeyNameFromKeyId(this.KeyId),
-                Uri = this.KeyId,
+                ResourceGroupName = ResourceGroupName,
+                ServerName = ServerName,
+                ServerKeyName = AzureSqlServerKeyVaultKeyModel.CreateServerKeyNameFromKeyId(KeyId),
+                Uri = KeyId,
                 Type = AzureSqlServerKeyVaultKeyModel.ServerKeyType.AzureKeyVault
             });
 
@@ -82,7 +82,8 @@ namespace Microsoft.Azure.Commands.Sql.ServerKeyVaultKey.Cmdlet
         /// <returns>The Server Key added to the server</returns>
         protected override IEnumerable<AzureSqlServerKeyVaultKeyModel> PersistChanges(IEnumerable<AzureSqlServerKeyVaultKeyModel> entity)
         {
-            return new List<AzureSqlServerKeyVaultKeyModel>() {
+            return new List<AzureSqlServerKeyVaultKeyModel>
+            {
                 ModelAdapter.CreateOrUpdate(entity.First())
             };
         }

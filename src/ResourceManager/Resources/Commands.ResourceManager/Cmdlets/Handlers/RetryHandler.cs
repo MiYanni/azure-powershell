@@ -19,9 +19,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities;
+    using Components;
+    using Extensions;
+    using Utilities;
     
     /// <summary>
     /// A basic retry handler.
@@ -57,25 +57,25 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
         {
             HttpResponseMessage response = null;
 
-            for (int attempt = 1; attempt <= RetryHandler.MaxAttempts; ++attempt)
+            for (int attempt = 1; attempt <= MaxAttempts; ++attempt)
             {
                 try
                 {
                     response = await base
-                        .SendAsync(request: request, cancellationToken: cancellationToken)
-                        .ConfigureAwait(continueOnCapturedContext: false);
+                        .SendAsync(request, cancellationToken)
+                        .ConfigureAwait(false);
                     
-                    if (attempt == RetryHandler.MaxAttempts ||
-                        (!response.StatusCode.IsServerFailureRequest() &&
-                         response.StatusCode != HttpStatusCode.RequestTimeout &&
-                         response.StatusCode != HttpStatusCodeExt.TooManyRequests))
+                    if (attempt == MaxAttempts ||
+                        !response.StatusCode.IsServerFailureRequest() &&
+                        response.StatusCode != HttpStatusCode.RequestTimeout &&
+                        response.StatusCode != HttpStatusCodeExt.TooManyRequests)
                     {
                         break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (ex.IsFatal() || attempt == RetryHandler.MaxAttempts)
+                    if (ex.IsFatal() || attempt == MaxAttempts)
                     {
                         throw;
                     }
@@ -86,8 +86,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
                     response.Dispose();
                 }
 
-                await Task.Delay(delay: RetryHandler.GetDelay(attempt), cancellationToken: cancellationToken)
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                await Task.Delay(GetDelay(attempt), cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             return response;
@@ -100,8 +100,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Handlers
         private static TimeSpan GetDelay(int attempt)
         {
             var random = new Random((int)(DateTime.UtcNow.Ticks & 0xFFFF));
-            int num = (int)((Math.Pow(2.0, attempt) - 1.0) * (double)random.Next((int)(RetryHandler.DeltaBackoff.TotalMilliseconds * 0.8), (int)(RetryHandler.DeltaBackoff.TotalMilliseconds * 1.2)));
-            int num2 = (int)Math.Min(RetryHandler.MinBackoff.TotalMilliseconds + num, RetryHandler.MaxBackoff.TotalMilliseconds);
+            int num = (int)((Math.Pow(2.0, attempt) - 1.0) * random.Next((int)(DeltaBackoff.TotalMilliseconds * 0.8), (int)(DeltaBackoff.TotalMilliseconds * 1.2)));
+            int num2 = (int)Math.Min(MinBackoff.TotalMilliseconds + num, MaxBackoff.TotalMilliseconds);
             return TimeSpan.FromMilliseconds(num2);
         }
     }

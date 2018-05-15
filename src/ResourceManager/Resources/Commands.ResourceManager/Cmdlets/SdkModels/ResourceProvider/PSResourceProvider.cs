@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels
         {
             get
             {
-                return this.ResourceTypes
+                return ResourceTypes
                     .SelectMany(type => type.Locations)
                     .Distinct(StringComparer.InvariantCultureIgnoreCase)
                     .ToArray();

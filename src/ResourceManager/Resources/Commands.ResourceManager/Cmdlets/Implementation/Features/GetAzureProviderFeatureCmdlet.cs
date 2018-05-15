@@ -17,12 +17,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     using System;
     using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
+    using SdkModels;
 
     /// <summary>
     /// Gets the preview features of a certain azure resource provider.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRmProviderFeature", DefaultParameterSetName = GetAzureProviderFeatureCmdlet.ListAvailableParameterSet)]
+    [Cmdlet(VerbsCommon.Get, "AzureRmProviderFeature", DefaultParameterSetName = ListAvailableParameterSet)]
     [OutputType(typeof(List<PSProviderFeature>))]
     public class GetAzureProviderFeatureCmdlet : ProviderFeatureCmdletBase
     {
@@ -39,40 +39,40 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the provider namespace
         /// </summary>
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource provider namespace.", ParameterSetName = GetAzureProviderFeatureCmdlet.GetFeatureParameterSet)]
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = false, HelpMessage = "The resource provider namespace.", ParameterSetName = GetAzureProviderFeatureCmdlet.ListAvailableParameterSet)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource provider namespace.", ParameterSetName = GetFeatureParameterSet)]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = false, HelpMessage = "The resource provider namespace.", ParameterSetName = ListAvailableParameterSet)]
         [ValidateNotNullOrEmpty]
         public string ProviderNamespace { get; set; }
 
         /// <summary>
         /// Gets or sets the feature name
         /// </summary>
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = false, HelpMessage = "The feature name.", ParameterSetName = GetAzureProviderFeatureCmdlet.GetFeatureParameterSet)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = false, HelpMessage = "The feature name.", ParameterSetName = GetFeatureParameterSet)]
         [ValidateNotNullOrEmpty]
         public string FeatureName { get; set; }
 
         /// <summary>
         /// Gets or sets a switch indicating whether to list all available features or just the ones registered with the current subscription
         /// </summary>
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = false, HelpMessage = "When set, lists all available features including those not registered with the current subscription.", ParameterSetName = GetAzureProviderFeatureCmdlet.ListAvailableParameterSet)]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = false, HelpMessage = "When set, lists all available features including those not registered with the current subscription.", ParameterSetName = ListAvailableParameterSet)]
         public SwitchParameter ListAvailable { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            var parameterSetName = this.DetermineParameterSetName();
+            var parameterSetName = DetermineParameterSetName();
 
             switch (parameterSetName)
             {
-                case GetAzureProviderFeatureCmdlet.ListAvailableParameterSet:
-                    this.WriteObject(this.ProviderFeatureClient.ListPSProviderFeatures(this.ListAvailable, this.ProviderNamespace), enumerateCollection: true);
+                case ListAvailableParameterSet:
+                    WriteObject(ProviderFeatureClient.ListPSProviderFeatures(ListAvailable, ProviderNamespace), true);
                     break;
 
-                case GetAzureProviderFeatureCmdlet.GetFeatureParameterSet:
-                    this.WriteObject(this.ProviderFeatureClient.ListPSProviderFeatures(this.ProviderNamespace, this.FeatureName), enumerateCollection: true);
+                case GetFeatureParameterSet:
+                    WriteObject(ProviderFeatureClient.ListPSProviderFeatures(ProviderNamespace, FeatureName), true);
                     break;
 
                 default:
-                    throw new ApplicationException(string.Format("Unknown parameter set encountered: '{0}'", this.ParameterSetName));
+                    throw new ApplicationException(string.Format("Unknown parameter set encountered: '{0}'", ParameterSetName));
             }
         }
     }

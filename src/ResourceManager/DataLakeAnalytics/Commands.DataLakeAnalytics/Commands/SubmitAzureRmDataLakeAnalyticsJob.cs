@@ -374,8 +374,8 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics
             }
 
             // Error handling for not passing or passing both script and script path
-            if ((string.IsNullOrEmpty(Script) && string.IsNullOrEmpty(ScriptPath)) ||
-                (!string.IsNullOrEmpty(Script) && !string.IsNullOrEmpty(ScriptPath)))
+            if (string.IsNullOrEmpty(Script) && string.IsNullOrEmpty(ScriptPath) ||
+                !string.IsNullOrEmpty(Script) && !string.IsNullOrEmpty(ScriptPath))
             {
                 throw new CloudException(Resources.AmbiguousScriptParameter);
             }

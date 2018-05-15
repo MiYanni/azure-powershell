@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Dataplane
 
         protected override void BeginProcessing()
         {
-            this._dataCollectionProfile = new AzurePSDataCollectionProfile(false);
+            _dataCollectionProfile = new AzurePSDataCollectionProfile(false);
 
             if (string.IsNullOrEmpty(RolloutEnvironment))
             {

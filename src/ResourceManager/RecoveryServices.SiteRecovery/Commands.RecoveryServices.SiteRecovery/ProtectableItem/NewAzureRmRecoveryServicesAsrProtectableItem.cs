@@ -76,22 +76,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.FriendlyName,
+            if (ShouldProcess(
+                FriendlyName,
                 VerbsCommon.New))
             {
                 // Validate the Fabric Type for VMWare.
-                if (this.ProtectionContainer.FabricType != Constants.VMware)
+                if (ProtectionContainer.FabricType != Constants.VMware)
                 {
                     throw new InvalidOperationException(
                         string.Format(
                             Resources.UnsupportedFabricTypeForDiscoverVirtualMachines,
-                            this.ProtectionContainer.FabricType));
+                            ProtectionContainer.FabricType));
                 }
 
                 // Set the Fabric Name.
-                this.fabricName = Utilities.GetValueFromArmId(
-                    this.ProtectionContainer.ID,
+                fabricName = Utilities.GetValueFromArmId(
+                    ProtectionContainer.ID,
                     ARMResourceTypeConstants.ReplicationFabrics);
 
                 // Create the Discover Protectable Item input request.
@@ -99,23 +99,23 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 {
                     Properties = new DiscoverProtectableItemRequestProperties
                     {
-                        FriendlyName = this.FriendlyName,
-                        IpAddress = this.IPAddress,
-                        OsType = this.OSType
+                        FriendlyName = FriendlyName,
+                        IpAddress = IPAddress,
+                        OsType = OSType
                     }
                 };
 
                 // Discover the Protectable Item.
-                var response = this.RecoveryServicesClient.NewAzureSiteRecoveryProtectableItem(
-                    this.fabricName,
-                    this.ProtectionContainer.Name,
+                var response = RecoveryServicesClient.NewAzureSiteRecoveryProtectableItem(
+                    fabricName,
+                    ProtectionContainer.Name,
                     input);
 
-                var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+                var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                     PSRecoveryServicesClient.GetJobIdFromReponseLocation(
                         response.Location));
 
-                this.WriteObject(new ASRJob(jobResponse));
+                WriteObject(new ASRJob(jobResponse));
             }
         }
         #region Local Parameters

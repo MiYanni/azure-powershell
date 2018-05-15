@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Automation
 
         public RequestSettings(IAutomationManagementClient automationClient)
         {
-            client = ((AutomationManagementClient)automationClient);
+            client = (AutomationManagementClient)automationClient;
             client.HttpClient.DefaultRequestHeaders.Remove(Constants.ClientRequestIdHeaderName);
             client.HttpClient.DefaultRequestHeaders.Add(Constants.ClientRequestIdHeaderName, Guid.NewGuid().ToString());
 

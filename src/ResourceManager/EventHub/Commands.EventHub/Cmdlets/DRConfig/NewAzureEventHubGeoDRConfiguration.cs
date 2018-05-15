@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
 
         public override void ExecuteCmdlet()
         {
-            PSEventHubDRConfigurationAttributes drConfiguration = new PSEventHubDRConfigurationAttributes() { PartnerNamespace = this.PartnerNamespace };
+            PSEventHubDRConfigurationAttributes drConfiguration = new PSEventHubDRConfigurationAttributes { PartnerNamespace = PartnerNamespace };
             if (!string.IsNullOrEmpty(AlternateName))
                 drConfiguration.AlternateName = AlternateName;
 
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
 
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: Name, action: string.Format(Resources.DRNew, Name, getParamGeoDR.ResourceName)))
+                    if (ShouldProcess(Name, string.Format(Resources.DRNew, Name, getParamGeoDR.ResourceName)))
                     {
                         WriteObject(Client.CreateEventHubDRConfiguration(getParamGeoDR.ResourceGroupName, getParamGeoDR.ResourceName, Name, drConfiguration));
                     }
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
 
                 if (getParamGeoDR.ResourceGroupName != null && getParamGeoDR.ResourceName != null)
                 {
-                    if (ShouldProcess(target: Name, action: string.Format(Resources.DRNew, Name, getParamGeoDR.ResourceName)))
+                    if (ShouldProcess(Name, string.Format(Resources.DRNew, Name, getParamGeoDR.ResourceName)))
                     {
                         WriteObject(Client.CreateEventHubDRConfiguration(getParamGeoDR.ResourceGroupName, getParamGeoDR.ResourceName, Name, drConfiguration));
                     }   
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.EventHub.Commands.GeoDR
 
             if(ParameterSetName == GeoDRParameterSet)
             {
-                if (ShouldProcess(target: Name, action: string.Format(Resources.DRNew, Name, Namespace)))
+                if (ShouldProcess(Name, string.Format(Resources.DRNew, Name, Namespace)))
                 {
                     WriteObject(Client.CreateEventHubDRConfiguration(ResourceGroupName, Namespace, Name, drConfiguration));
                 }

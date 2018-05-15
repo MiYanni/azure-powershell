@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            this.ByResourceId();
-            this.ByIntegrationRuntimeObject();
+            ByResourceId();
+            ByIntegrationRuntimeObject();
 
             // ValidationNotNullOrEmpty doesn't handle whitespaces well
             if (string.IsNullOrWhiteSpace(NodeName))

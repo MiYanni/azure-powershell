@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            this.ByResourceId();
-            this.ByIntegrationRuntimeObject();
+            ByResourceId();
+            ByIntegrationRuntimeObject();
 
             // Set HttpClient timeout to 3 minutes. This is workaround for AMS return "Internal Server Error" issue
             // which will make the client call timeout due to retry.
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 // the property can't be changed. Just suppress the excetion.
             }
 
-            var integrationRuntime = this.DataFactoryClient.GetIntegrationRuntimeAsync(
+            var integrationRuntime = DataFactoryClient.GetIntegrationRuntimeAsync(
                 ResourceGroupName,
                 DataFactoryName,
                 Name).ConfigureAwait(true).GetAwaiter().GetResult();
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
                 var task = Task.Run(() =>
                 {
-                    response = this.DataFactoryClient.StartIntegrationRuntimeAsync(
+                    response = DataFactoryClient.StartIntegrationRuntimeAsync(
                         ResourceGroupName,
                         DataFactoryName,
                         Name,

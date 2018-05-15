@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                        Name,
                        () =>
                        {
-                           this.AutomationClient.DeleteModule(this.ResourceGroupName, this.AutomationAccountName, Name);
+                           AutomationClient.DeleteModule(ResourceGroupName, AutomationAccountName, Name);
                        });
         }
     }

@@ -19,19 +19,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
     /// <summary>
     /// The remove azure resource lock cmdlet.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureRmResourceLock", SupportsShouldProcess = true, DefaultParameterSetName = ResourceLockManagementCmdletBase.LockIdParameterSet), OutputType(typeof(PSObject))]
+    [Cmdlet(VerbsCommon.Remove, "AzureRmResourceLock", SupportsShouldProcess = true, DefaultParameterSetName = LockIdParameterSet), OutputType(typeof(PSObject))]
     public class RemoveAzureResourceLockCmdlet : ResourceLockManagementCmdletBase
     {
         /// <summary>
         /// Gets or sets the extension resource name parameter.
         /// </summary>
         [Alias("ExtensionResourceName", "Name")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.ScopeLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.SubscriptionLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.SubscriptionResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
-        [Parameter(ParameterSetName = ResourceLockManagementCmdletBase.TenantResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ResourceGroupLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ResourceGroupResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = ScopeLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = SubscriptionLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = SubscriptionResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
+        [Parameter(ParameterSetName = TenantResourceLevelLock, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the lock.")]
         [ValidateNotNullOrEmpty]
         public string LockName { get; set; }
 
@@ -47,19 +47,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         protected override void OnProcessRecord()
         {
             base.OnProcessRecord();
-            var resourceId = this.GetResourceId(this.LockName);
-            this.ConfirmAction(
-                this.Force,
+            var resourceId = GetResourceId(LockName);
+            ConfirmAction(
+                Force,
                 string.Format("Are you sure you want to delete the following lock: {0}", resourceId),
                 "Deleting the lock...",
                 resourceId,
                 () =>
                 {
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .DeleteResource(
-                            resourceId: resourceId,
-                            apiVersion: this.LockApiVersion,
-                            cancellationToken: this.CancellationToken.Value)
+                            resourceId,
+                            LockApiVersion,
+                            CancellationToken.Value)
                         .Result;
 
                     if (operationResult.HttpStatusCode == System.Net.HttpStatusCode.NoContent)
@@ -67,17 +67,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
                         throw new PSInvalidOperationException(string.Format("The resource lock '{0}' could not be found.", resourceId));
                     }
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                         .GetResourceManagementRequestUri(
-                            resourceId: resourceId,
-                            apiVersion: this.LockApiVersion);
+                            resourceId,
+                            LockApiVersion);
 
                     var activity = string.Format("DELETE {0}", managementUri.PathAndQuery);
 
-                    var result = this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: false)
-                        .WaitOnOperation(operationResult: operationResult);
+                    var result = GetLongRunningOperationTracker(activity, false)
+                        .WaitOnOperation(operationResult);
 
-                    this.WriteObject(true);
+                    WriteObject(true);
                 });
         }
     }

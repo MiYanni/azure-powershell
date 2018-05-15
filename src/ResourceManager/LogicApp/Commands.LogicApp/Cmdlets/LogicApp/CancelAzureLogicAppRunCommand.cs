@@ -15,7 +15,7 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Utilities;
     using ResourceManager.Common.ArgumentCompleters;
     using System.Management.Automation;
 
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
                 Name,
                 () =>
                 {
-                    LogicAppClient.CancelWorkflowRun(this.ResourceGroupName, this.Name, this.RunName);
+                    LogicAppClient.CancelWorkflowRun(ResourceGroupName, Name, RunName);
                 },
                 null);
         }

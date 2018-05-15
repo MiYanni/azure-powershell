@@ -52,10 +52,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 base.ExecuteCmdlet();
 
                 PsBackupProviderManager providerManager =
-                    new PsBackupProviderManager(new Dictionary<Enum, object>()
+                    new PsBackupProviderManager(new Dictionary<Enum, object>
                     {
                     {ItemParams.Item, Item},
-                    {ItemParams.ExpiryDateTimeUTC, ExpiryDateTimeUTC},
+                    {ItemParams.ExpiryDateTimeUTC, ExpiryDateTimeUTC}
                     }, ServiceClientAdapter);
 
                 IPsBackupProvider psBackupProvider =

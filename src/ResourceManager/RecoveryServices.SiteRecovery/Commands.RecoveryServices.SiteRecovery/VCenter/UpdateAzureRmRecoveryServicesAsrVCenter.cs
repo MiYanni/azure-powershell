@@ -71,27 +71,27 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByResourceId:
                     vCenterName = Utilities.GetValueFromArmId(
-                    this.ResourceId,
+                    ResourceId,
                     ARMResourceTypeConstants.vCenters);
 
                     fabricName = Utilities.GetValueFromArmId(
-                    this.ResourceId,
+                    ResourceId,
                     ARMResourceTypeConstants.ReplicationFabrics);
                     break;
 
                 case ASRParameterSets.Default:
-                    vCenterName = this.InputObject.Name;
-                    fabricName = this.InputObject.FabricArmResourceName;
+                    vCenterName = InputObject.Name;
+                    fabricName = InputObject.FabricArmResourceName;
                     break;
             }
 
-            if (this.ShouldProcess(vCenterName, VerbsData.Update))
+            if (ShouldProcess(vCenterName, VerbsData.Update))
             {
-                this.UpdatevCenter();
+                UpdatevCenter();
             }
         }
 
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             var updatevCenterInput = new UpdateVCenterRequest();
 
             var vcenterResponse =
-               this.RecoveryServicesClient.GetAzureRmSiteRecoveryvCenter(
+               RecoveryServicesClient.GetAzureRmSiteRecoveryvCenter(
                    fabricName,
                    vCenterName);
             var updatevCenterProperties =
@@ -116,34 +116,34 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                      RunAsAccountId = vcenterResponse.Properties.RunAsAccountId
                  };
 
-            if (this.Account != null && !string.IsNullOrEmpty(this.Account.AccountId))
+            if (Account != null && !string.IsNullOrEmpty(Account.AccountId))
             {
-                updatevCenterProperties.RunAsAccountId = this.Account.AccountId;
+                updatevCenterProperties.RunAsAccountId = Account.AccountId;
             }
 
-            if (this.Port.HasValue)
+            if (Port.HasValue)
             {
-                updatevCenterProperties.Port = this.Port.ToString();
+                updatevCenterProperties.Port = Port.ToString();
             }
 
             updatevCenterInput.Properties = updatevCenterProperties;
 
-            var response = this.RecoveryServicesClient.UpdateAzureRmSiteRecoveryvCenter(
+            var response = RecoveryServicesClient.UpdateAzureRmSiteRecoveryvCenter(
                 fabricName,
                 vCenterName,
                 updatevCenterInput);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         #region private 
 
-        private string vCenterName = null;
+        private string vCenterName;
 
-        private string fabricName = null;
+        private string fabricName;
         #endregion
     }
 }

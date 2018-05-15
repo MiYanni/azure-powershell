@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Commands.KeyVault
 
                 try
                 {
-                    existingContacts = this.DataServiceClient.GetCertificateContacts(VaultName)?.ToList();
+                    existingContacts = DataServiceClient.GetCertificateContacts(VaultName)?.ToList();
                 }
                 catch (KeyVaultErrorException exception)
                 {
@@ -127,11 +127,11 @@ namespace Microsoft.Azure.Commands.KeyVault
                     existingContacts = null;
                 }
 
-                var resultantContacts = this.DataServiceClient.SetCertificateContacts(VaultName, existingContacts);
+                var resultantContacts = DataServiceClient.SetCertificateContacts(VaultName, existingContacts);
 
                 if (PassThru.IsPresent)
                 {
-                    this.WriteObject(resultantContacts);
+                    WriteObject(resultantContacts);
                 }
             }
         }

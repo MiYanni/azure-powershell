@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDisasterRecoveryConfiguration.Cmdle
         /// <returns>List of Server Disaster Recovery Configuration activities</returns>
         protected override IEnumerable<AzureSqlServerDisasterRecoveryConfigurationActivityModel> GetEntity()
         {
-            return ModelAdapter.ListServerDisasterRecoveryConfigurationActivity(this.ResourceGroupName, this.ServerName, this.ServerDisasterRecoveryConfigurationName, this.OperationId);
+            return ModelAdapter.ListServerDisasterRecoveryConfigurationActivity(ResourceGroupName, ServerName, ServerDisasterRecoveryConfigurationName, OperationId);
         }
 
         /// <summary>

@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
             Position = 0,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -79,11 +79,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
         {
             get
             {
-                return this.version;
+                return version;
             }
             set
             {
-                this.version = value;
+                version = value;
             }
         }
 
@@ -195,15 +195,15 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
         {
             get
             {
-                if (string.IsNullOrEmpty(this.location))
+                if (string.IsNullOrEmpty(location))
                 {
-                    this.Location = GetLocationFromVm(this.ResourceGroupName, this.VMName);
+                    Location = GetLocationFromVm(ResourceGroupName, VMName);
                 }
-                return this.location;
+                return location;
             }
             set
             {
-                this.location = value;
+                location = value;
             }
         }
 
@@ -217,11 +217,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
         {
             get
             {
-                return this.ExtensionDefaultName;
+                return ExtensionDefaultName;
             }
             set
             {
-                this.ExtensionDefaultName = value;
+                ExtensionDefaultName = value;
             }
         }
 
@@ -234,11 +234,11 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
         {
             get
             {
-                return this.autoUpgradeMinorVersion;
+                return autoUpgradeMinorVersion;
             }
             set
             {
-                this.autoUpgradeMinorVersion = value;
+                autoUpgradeMinorVersion = value;
             }
         }
 
@@ -246,18 +246,18 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
         {
             get
             {
-                if (this.publicConfiguration == null)
+                if (publicConfiguration == null)
                 {
                     string ClientConfig = string.Empty;
-                    bool IsClientRbEmpty = string.IsNullOrEmpty(this.ClientRb);
-                    bool IsChefServerUrlEmpty = string.IsNullOrEmpty(this.ChefServerUrl);
-                    bool IsValidationClientNameEmpty = string.IsNullOrEmpty(this.ValidationClientName);
-                    bool IsRunListEmpty = string.IsNullOrEmpty(this.RunList);
-                    bool IsBootstrapOptionsEmpty = string.IsNullOrEmpty(this.BootstrapOptions);
-                    bool IsJsonAttributeEmpty = string.IsNullOrEmpty(this.JsonAttribute);
-                    bool IsChefDaemonIntervalEmpty = string.IsNullOrEmpty(this.ChefDaemonInterval);
+                    bool IsClientRbEmpty = string.IsNullOrEmpty(ClientRb);
+                    bool IsChefServerUrlEmpty = string.IsNullOrEmpty(ChefServerUrl);
+                    bool IsValidationClientNameEmpty = string.IsNullOrEmpty(ValidationClientName);
+                    bool IsRunListEmpty = string.IsNullOrEmpty(RunList);
+                    bool IsBootstrapOptionsEmpty = string.IsNullOrEmpty(BootstrapOptions);
+                    bool IsJsonAttributeEmpty = string.IsNullOrEmpty(JsonAttribute);
+                    bool IsChefDaemonIntervalEmpty = string.IsNullOrEmpty(ChefDaemonInterval);
                     string BootstrapVersion = string.IsNullOrEmpty(this.BootstrapVersion) ? "" : this.BootstrapVersion;
-                    bool IsDaemonEmpty = string.IsNullOrEmpty(this.Daemon);
+                    bool IsDaemonEmpty = string.IsNullOrEmpty(Daemon);
 
                     //Cases handled:
                     // 1. When clientRb given by user and:
@@ -269,7 +269,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
 
                     if (!IsClientRbEmpty)
                     {
-                        ClientConfig = File.ReadAllText(this.ClientRb).TrimEnd('\r', '\n');
+                        ClientConfig = File.ReadAllText(ClientRb).TrimEnd('\r', '\n');
                         // Append ChefServerUrl and ValidationClientName to end of ClientRb
                         if (!IsChefServerUrlEmpty && !IsValidationClientNameEmpty)
                         {
@@ -277,7 +277,7 @@ namespace Microsoft.Azure.Commands.Compute.Extension.Chef
 chef_server_url  '{0}'
 validation_client_name 	'{1}'
 ";
-                            ClientConfig += string.Format(UserConfig, this.ChefServerUrl, this.ValidationClientName);
+                            ClientConfig += string.Format(UserConfig, ChefServerUrl, ValidationClientName);
                         }
                         // Append ChefServerUrl to end of ClientRb
                         else if (!IsChefServerUrlEmpty)
@@ -285,7 +285,7 @@ validation_client_name 	'{1}'
                             string UserConfig = @"
 chef_server_url  '{0}'
 ";
-                            ClientConfig += string.Format(UserConfig, this.ChefServerUrl);
+                            ClientConfig += string.Format(UserConfig, ChefServerUrl);
                         }
                         // Append ValidationClientName to end of ClientRb
                         else if (!IsValidationClientNameEmpty)
@@ -293,7 +293,7 @@ chef_server_url  '{0}'
                             string UserConfig = @"
 validation_client_name 	'{0}'
 ";
-                            ClientConfig += string.Format(UserConfig, this.ValidationClientName);
+                            ClientConfig += string.Format(UserConfig, ValidationClientName);
                         }
                     }
                     // Create ClientRb config using ChefServerUrl and ValidationClientName
@@ -303,7 +303,7 @@ validation_client_name 	'{0}'
 chef_server_url  '{0}'
 validation_client_name 	'{1}'
 ";
-                        ClientConfig = string.Format(UserConfig, this.ChefServerUrl, this.ValidationClientName);
+                        ClientConfig = string.Format(UserConfig, ChefServerUrl, ValidationClientName);
                     }
 
                     var hashTable = new Hashtable();
@@ -312,12 +312,12 @@ validation_client_name 	'{1}'
 
                     if (!IsRunListEmpty)
                     {
-                        hashTable.Add(RunListTemplate, this.RunList);
+                        hashTable.Add(RunListTemplate, RunList);
                     }
 
                     if (!IsBootstrapOptionsEmpty)
                     {
-                        hashTable.Add(BootStrapOptionsTemplate, this.BootstrapOptions);
+                        hashTable.Add(BootStrapOptionsTemplate, BootstrapOptions);
                     }
 
                     if (!IsJsonAttributeEmpty)
@@ -330,15 +330,15 @@ validation_client_name 	'{1}'
                         hashTable.Add(ChefDaemonIntervalTemplate, ChefDaemonInterval);
                     }
 
-                    if (this.Windows.IsPresent && !IsDaemonEmpty)
+                    if (Windows.IsPresent && !IsDaemonEmpty)
                     {
-                        hashTable.Add(DaemonTemplate, this.Daemon);
+                        hashTable.Add(DaemonTemplate, Daemon);
                     }
 
-                    this.publicConfiguration = hashTable;
+                    publicConfiguration = hashTable;
                 }
 
-                return this.publicConfiguration;
+                return publicConfiguration;
             }
         }
 
@@ -346,42 +346,42 @@ validation_client_name 	'{1}'
         {
             get
             {
-                if (this.privateConfiguration == null)
+                if (privateConfiguration == null)
                 {
                     var hashTable = new Hashtable();
 
-                    if (!string.IsNullOrEmpty(this.SecretFile))
-                        hashTable.Add(SecretTemplate, File.ReadAllText(this.SecretFile).TrimEnd('\r', '\n'));
-                    else if (!string.IsNullOrEmpty(this.Secret))
-                        hashTable.Add(SecretTemplate, this.Secret);
+                    if (!string.IsNullOrEmpty(SecretFile))
+                        hashTable.Add(SecretTemplate, File.ReadAllText(SecretFile).TrimEnd('\r', '\n'));
+                    else if (!string.IsNullOrEmpty(Secret))
+                        hashTable.Add(SecretTemplate, Secret);
 
-                    hashTable.Add(PrivateConfigurationTemplate, File.ReadAllText(this.ValidationPem).TrimEnd('\r', '\n'));
-                    this.privateConfiguration = hashTable;
+                    hashTable.Add(PrivateConfigurationTemplate, File.ReadAllText(ValidationPem).TrimEnd('\r', '\n'));
+                    privateConfiguration = hashTable;
                 }
 
-                return this.privateConfiguration;
+                return privateConfiguration;
             }
         }
 
         private void ExecuteCommand()
         {
-            ConfirmAction("Set Chef Extension", this.VMName,
+            ConfirmAction("Set Chef Extension", VMName,
                 () => {
                     var parameters = new VirtualMachineExtension
                     {
-                        Location = this.Location,
-                        Settings = this.PublicConfiguration,
-                        ProtectedSettings = this.PrivateConfiguration,
+                        Location = Location,
+                        Settings = PublicConfiguration,
+                        ProtectedSettings = PrivateConfiguration,
                         Publisher = ExtensionDefaultPublisher,
-                        VirtualMachineExtensionType = this.Name,
-                        TypeHandlerVersion = this.TypeHandlerVersion,
-                        AutoUpgradeMinorVersion = this.AutoUpgradeMinorVersion
+                        VirtualMachineExtensionType = Name,
+                        TypeHandlerVersion = TypeHandlerVersion,
+                        AutoUpgradeMinorVersion = AutoUpgradeMinorVersion
                     };
 
-                    var op = this.VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
-                        this.ResourceGroupName,
-                        this.VMName,
-                        this.Name,
+                    var op = VirtualMachineExtensionClient.CreateOrUpdateWithHttpMessagesAsync(
+                        ResourceGroupName,
+                        VMName,
+                        Name,
                         parameters).GetAwaiter().GetResult();
 
                     var result = ComputeAutoMapperProfile.Mapper.Map<PSAzureOperationResponse>(op);
@@ -391,29 +391,29 @@ validation_client_name 	'{1}'
 
         private void SetDefault()
         {
-            bool IsOrganizationNameEmpty = string.IsNullOrEmpty(this.OrganizationName);
+            bool IsOrganizationNameEmpty = string.IsNullOrEmpty(OrganizationName);
 
             // form validation client name using organization name.
             if (!IsOrganizationNameEmpty)
             {
-                this.ValidationClientName = this.OrganizationName + "-validator";
+                ValidationClientName = OrganizationName + "-validator";
             }
 
-            if (this.Linux.IsPresent)
+            if (Linux.IsPresent)
             {
-                this.Name = LinuxExtensionName;
+                Name = LinuxExtensionName;
             }
-            else if (this.Windows.IsPresent)
+            else if (Windows.IsPresent)
             {
-                this.Name = ExtensionDefaultName;
+                Name = ExtensionDefaultName;
             }
 
-            this.TypeHandlerVersion = this.TypeHandlerVersion ?? GetLatestChefExtensionVersion();
+            TypeHandlerVersion = TypeHandlerVersion ?? GetLatestChefExtensionVersion();
         }
 
         private string GetLatestChefExtensionVersion()
         {
-            var result = ComputeClient.ComputeManagementClient.VirtualMachineExtensionImages.ListVersionsWithHttpMessagesAsync(this.Location, ExtensionDefaultPublisher, this.Name).GetAwaiter().GetResult();
+            var result = ComputeClient.ComputeManagementClient.VirtualMachineExtensionImages.ListVersionsWithHttpMessagesAsync(Location, ExtensionDefaultPublisher, Name).GetAwaiter().GetResult();
 
             var images = from r in result.Body
                          select new PSVirtualMachineExtensionImage
@@ -424,7 +424,7 @@ validation_client_name 	'{1}'
                              Location = r.Location,
                              Version = r.Name,
                              PublisherName = ExtensionDefaultPublisher,
-                             Type = this.Name
+                             Type = Name
                          };
 
             var maxVersion = images.Max(extension => extension.Version);
@@ -436,10 +436,10 @@ validation_client_name 	'{1}'
 
         private void ValidateParameters()
         {
-            bool IsClientRbEmpty = string.IsNullOrEmpty(this.ClientRb);
-            bool IsChefServerUrlEmpty = string.IsNullOrEmpty(this.ChefServerUrl);
-            bool IsValidationClientNameEmpty = string.IsNullOrEmpty(this.ValidationClientName);
-            bool IsDaemonEmpty = string.IsNullOrEmpty(this.Daemon);
+            bool IsClientRbEmpty = string.IsNullOrEmpty(ClientRb);
+            bool IsChefServerUrlEmpty = string.IsNullOrEmpty(ChefServerUrl);
+            bool IsValidationClientNameEmpty = string.IsNullOrEmpty(ValidationClientName);
+            bool IsDaemonEmpty = string.IsNullOrEmpty(Daemon);
             // Validate ClientRb or ChefServerUrl and ValidationClientName should exist.
             if (IsClientRbEmpty && (IsChefServerUrlEmpty || IsValidationClientNameEmpty))
             {
@@ -449,14 +449,14 @@ validation_client_name 	'{1}'
 
             if (!IsDaemonEmpty)
             {
-                if (this.Linux.IsPresent)
+                if (Linux.IsPresent)
                 {
                     throw new ArgumentException(
                         "Invalid use of -Daemon option. It can only be used for Windows and allowed values are 'none', 'service' and 'task'");
                 }
             }
 
-            if (!string.IsNullOrEmpty(this.SecretFile) && !File.Exists(this.SecretFile))
+            if (!string.IsNullOrEmpty(SecretFile) && !File.Exists(SecretFile))
             {
                 throw new FileNotFoundException(
                     "File specified in -SecretFile option does not exist.");

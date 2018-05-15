@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     AvailableToOtherTenants = AvailableToOtherTenants
                 };
 
-                if (ShouldProcess(target: ObjectId.ToString(), action: string.Format("Updating an application with object id '{0}'", ObjectId)))
+                if (ShouldProcess(ObjectId.ToString(), string.Format("Updating an application with object id '{0}'", ObjectId)))
                 {
                     ActiveDirectoryClient.UpdateApplication(ObjectId, parameters);
                     WriteObject(ActiveDirectoryClient.GetApplication(ObjectId));

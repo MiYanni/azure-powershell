@@ -28,12 +28,12 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
         {
             if (metadata != null)
             {
-                this.ResultType = metadata.ResultType;
-                this.Top = metadata.Top;
-                this.Total = metadata.Total;
+                ResultType = metadata.ResultType;
+                Top = metadata.Top;
+                Total = metadata.Total;
                 if (metadata.Id != null)
                 {
-                    this.Id = new Guid(metadata.Id);
+                    Id = new Guid(metadata.Id);
                 }
 
                 List<PSCoreSummary> summaryList = new List<PSCoreSummary>();
@@ -44,11 +44,11 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
                         summaryList.Add(new PSCoreSummary(metadata.CoreSummaries[i]));
                     }
                 }
-                this.CoreSummaries = summaryList;
-                this.Status = metadata.Status;
-                this.StartTime = metadata.StartTime;
-                this.LastUpdated = metadata.LastUpdated;
-                this.ETag = metadata.ETag;
+                CoreSummaries = summaryList;
+                Status = metadata.Status;
+                StartTime = metadata.StartTime;
+                LastUpdated = metadata.LastUpdated;
+                ETag = metadata.ETag;
                 List<PSSearchSort> sortList = new List<PSSearchSort>();
                 if (metadata.Sort != null)
                 {
@@ -57,13 +57,13 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
                         sortList.Add(new PSSearchSort(metadata.Sort[j]));
                     }
                 }
-                this.Sort = sortList;
-                this.RequestTime = metadata.RequestTime;
-                this.AggregatedValueField = metadata.AggregatedValueField;
-                this.AggregatedGroupingFields = metadata.AggregatedGroupingFields;
-                this.Sum = metadata.Sum;
-                this.Max = metadata.Max;
-                this.Schema = new PSMetadataSchema(metadata.Schema);
+                Sort = sortList;
+                RequestTime = metadata.RequestTime;
+                AggregatedValueField = metadata.AggregatedValueField;
+                AggregatedGroupingFields = metadata.AggregatedGroupingFields;
+                Sum = metadata.Sum;
+                Max = metadata.Max;
+                Schema = new PSMetadataSchema(metadata.Schema);
             }
         }
         public string ResultType { get; set; }

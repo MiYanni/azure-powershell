@@ -34,19 +34,19 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string CustomSecurityRulesText
         {
-            get { return JsonConvert.SerializeObject(this.NetworkInterfaceSecurityRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(NetworkInterfaceSecurityRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string DefaultSecurityRulesText
         {
-            get { return JsonConvert.SerializeObject(this.DefaultSecurityRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(DefaultSecurityRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]
         public string EffectiveSecurityRulesText
         {
-            get { return JsonConvert.SerializeObject(this.EffectiveSecurityRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(EffectiveSecurityRules, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
         {
             get
             {
-                return this.azureBackupClientAdapter;
+                return azureBackupClientAdapter;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
         /// Initializes required client adapters
         /// </summary>
         /// <param name="vault"></param>
-        protected void InitializeAzureBackupCmdlet(CmdletModel.AzureRMBackupVault vault)
+        protected void InitializeAzureBackupCmdlet(AzureRMBackupVault vault)
         {
             InitializeAzureBackupCmdlet(vault.ResourceGroupName, vault.Name);
         }

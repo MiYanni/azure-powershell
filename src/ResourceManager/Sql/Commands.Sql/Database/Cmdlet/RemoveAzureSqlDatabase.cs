@@ -45,8 +45,9 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlDatabaseModel> GetEntity()
         {
-            return new List<Model.AzureSqlDatabaseModel>() {
-                ModelAdapter.GetDatabase(this.ResourceGroupName, this.ServerName, this.DatabaseName)
+            return new List<AzureSqlDatabaseModel>
+            {
+                ModelAdapter.GetDatabase(ResourceGroupName, ServerName, DatabaseName)
             };
         }
 
@@ -67,7 +68,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlDatabaseModel> PersistChanges(IEnumerable<AzureSqlDatabaseModel> entity)
         {
-            ModelAdapter.RemoveDatabase(this.ResourceGroupName, this.ServerName, this.DatabaseName);
+            ModelAdapter.RemoveDatabase(ResourceGroupName, ServerName, DatabaseName);
             return entity;
         }
 
@@ -77,9 +78,9 @@ namespace Microsoft.Azure.Commands.Sql.Database.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlDatabaseDescription, this.DatabaseName, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlDatabaseWarning, this.DatabaseName, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseDescription, DatabaseName, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseWarning, DatabaseName, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }

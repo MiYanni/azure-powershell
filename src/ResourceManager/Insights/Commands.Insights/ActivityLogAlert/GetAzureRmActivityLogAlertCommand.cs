@@ -56,22 +56,22 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
         protected override void ProcessRecordInternal()
         {
             List<PSActivityLogAlertResource> output = null;
-            if (string.IsNullOrWhiteSpace(this.ResourceGroupName))
+            if (string.IsNullOrWhiteSpace(ResourceGroupName))
             {
-                if (string.IsNullOrWhiteSpace(this.Name))
+                if (string.IsNullOrWhiteSpace(Name))
                 {
                     // Getting by SubscriptionId
-                    output = this.MonitorManagementClient.ActivityLogAlerts.ListBySubscriptionId()
+                    output = MonitorManagementClient.ActivityLogAlerts.ListBySubscriptionId()
                         .Select(e => new PSActivityLogAlertResource(e))
                         .ToList();
                 }
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(this.Name))
+                if (string.IsNullOrWhiteSpace(Name))
                 {
                     // Getting by resource group
-                    output = this.MonitorManagementClient.ActivityLogAlerts.ListByResourceGroup(resourceGroupName: this.ResourceGroupName)
+                    output = MonitorManagementClient.ActivityLogAlerts.ListByResourceGroup(ResourceGroupName)
                         .Select(e => new PSActivityLogAlertResource(e))
                         .ToList();
                 }
@@ -80,12 +80,12 @@ namespace Microsoft.Azure.Commands.Insights.ActivityLogAlert
                     // Getting by alert name
                     output = new List<PSActivityLogAlertResource>
                     {
-                        new PSActivityLogAlertResource(this.MonitorManagementClient.ActivityLogAlerts.Get(resourceGroupName: this.ResourceGroupName, activityLogAlertName: this.Name))
+                        new PSActivityLogAlertResource(MonitorManagementClient.ActivityLogAlerts.Get(ResourceGroupName, Name))
                     };
                 }
             }
 
-            WriteObject(sendToPipeline: output, enumerateCollection: true);
+            WriteObject(output, true);
         }
     }
 }

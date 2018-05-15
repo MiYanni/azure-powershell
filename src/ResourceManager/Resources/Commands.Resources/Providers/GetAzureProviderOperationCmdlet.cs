@@ -14,15 +14,15 @@
 
 namespace Microsoft.Azure.Commands.Resources
 {
-    using Microsoft.Azure.Commands.Resources.Models;
+    using Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
-    using Microsoft.Azure.Management.ResourceManager;
-    using Microsoft.Azure.Management.ResourceManager.Models;
-    using Microsoft.Azure.Management.Authorization.Models;
+    using ProjectResources = Properties.Resources;
+    using Management.ResourceManager;
+    using Management.ResourceManager.Models;
+    using Management.Authorization.Models;
 
     /// <summary>
     /// Get an existing resource.
@@ -48,22 +48,22 @@ namespace Microsoft.Azure.Commands.Resources
         public override void ExecuteCmdlet()
         {
             // remove leading and trailing whitespaces
-            this.OperationSearchString = this.OperationSearchString.Trim();
+            OperationSearchString = OperationSearchString.Trim();
 
-            ValidateActionSearchString(this.OperationSearchString);
+            ValidateActionSearchString(OperationSearchString);
 
             List<PSResourceProviderOperation> operationsToDisplay;
 
-            if (this.OperationSearchString.Contains(WildCardCharacter))
+            if (OperationSearchString.Contains(WildCardCharacter))
             {
-                operationsToDisplay = this.ProcessProviderOperationsWithWildCard(OperationSearchString);
+                operationsToDisplay = ProcessProviderOperationsWithWildCard(OperationSearchString);
             }
             else
             {
-                operationsToDisplay = this.ProcessProviderOperationsWithoutWildCard(OperationSearchString);
+                operationsToDisplay = ProcessProviderOperationsWithoutWildCard(OperationSearchString);
             }
 
-            this.WriteObject(operationsToDisplay, enumerateCollection: true);
+            WriteObject(operationsToDisplay, true);
         }
 
         private static void ValidateActionSearchString(string actionSearchString)
@@ -94,17 +94,17 @@ namespace Microsoft.Azure.Commands.Resources
             WildcardPattern wildcard = new WildcardPattern(actionSearchString, WildcardOptions.IgnoreCase | WildcardOptions.Compiled);
 
             var providers = new List<ProviderOperationsMetadata>();
-            string provider = this.OperationSearchString.Split(Separator).First();
+            string provider = OperationSearchString.Split(Separator).First();
             if (provider.Equals(WildCardCharacter))
             {
                 // 'Get-AzureRmProviderOperation *' or 'Get-AzureRmProviderOperation */virtualmachines/*'
                 // get operations for all providers
-                providers.AddRange(this.ResourcesClient.ListProviderOperationsMetadata());
+                providers.AddRange(ResourcesClient.ListProviderOperationsMetadata());
             }
             else
             {
                 // 'Get-AzureRmProviderOperation Microsoft.Compute/virtualmachines/*' or 'Get-AzureRmProviderOperation Microsoft.Sql/*'
-                providers.Add(this.ResourcesClient.GetProviderOperationsMetadata(provider));
+                providers.Add(ResourcesClient.GetProviderOperationsMetadata(provider));
             }
 
             return providers.SelectMany(p => GetPSOperationsFromProviderOperationsMetadata(p)).Where(operation => wildcard.IsMatch(operation.Operation)).ToList();
@@ -117,18 +117,18 @@ namespace Microsoft.Azure.Commands.Resources
         {
             string providerFullName = operationString.Split(Separator).First();
 
-            var providerOperations = this.ResourcesClient.GetProviderOperationsMetadata(providerFullName);
-            IEnumerable<PSResourceProviderOperation> flattenedProviderOperations = GetAzureProviderOperationCommand.GetPSOperationsFromProviderOperationsMetadata(providerOperations);
+            var providerOperations = ResourcesClient.GetProviderOperationsMetadata(providerFullName);
+            IEnumerable<PSResourceProviderOperation> flattenedProviderOperations = GetPSOperationsFromProviderOperationsMetadata(providerOperations);
             return flattenedProviderOperations.Where(op => string.Equals(op.Operation, operationString, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
         private static IEnumerable<PSResourceProviderOperation> GetPSOperationsFromProviderOperationsMetadata(ProviderOperationsMetadata providerOperationsMetadata)
         {
-            IEnumerable<PSResourceProviderOperation> operations = providerOperationsMetadata.Operations.Where(op => GetAzureProviderOperationCommand.IsUserOperation(op))
+            IEnumerable<PSResourceProviderOperation> operations = providerOperationsMetadata.Operations.Where(op => IsUserOperation(op))
                         .Select(op => ToPSResourceProviderOperation(op, providerOperationsMetadata.DisplayName));
             if (providerOperationsMetadata.ResourceTypes != null)
             {
-                operations = operations.Concat(providerOperationsMetadata.ResourceTypes.SelectMany(rt => rt.Operations.Where(op => GetAzureProviderOperationCommand.IsUserOperation(op))
+                operations = operations.Concat(providerOperationsMetadata.ResourceTypes.SelectMany(rt => rt.Operations.Where(op => IsUserOperation(op))
                     .Select(op => ToPSResourceProviderOperation(op, providerOperationsMetadata.DisplayName, rt.DisplayName))));
             }
 

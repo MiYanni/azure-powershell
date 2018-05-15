@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
         public string Name { get; set; }
 
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = NameResourceGroupParameterSet, HelpMessage = "Resource Group Name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -104,10 +104,10 @@ namespace Microsoft.Azure.Commands.ContainerRegistry
                 RegistryName = registryName;
             }
 
-            var tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
+            var tags = TagsConversionHelper.CreateTagDictionary(Tag, true);
             var headers = ConversionUtilities.ToDictionary(Header);
 
-            var parameters = new WebhookCreateParameters()
+            var parameters = new WebhookCreateParameters
             {
                 Actions = Action,
                 CustomHeaders = headers,

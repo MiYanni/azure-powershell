@@ -70,9 +70,9 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         protected override void AutomationProcessRecord()
         {
 
-            var createdCertificate = this.AutomationClient.CreateCertificate(this.ResourceGroupName, this.AutomationAccountName, this.Name, this.ResolvePath(this.Path), this.Password, this.Description, this.Exportable.IsPresent);
+            var createdCertificate = AutomationClient.CreateCertificate(ResourceGroupName, AutomationAccountName, Name, this.ResolvePath(Path), Password, Description, Exportable.IsPresent);
 
-            this.WriteObject(createdCertificate);
+            WriteObject(createdCertificate);
         }
     }
 }

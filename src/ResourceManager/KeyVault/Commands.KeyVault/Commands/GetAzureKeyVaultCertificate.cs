@@ -204,12 +204,12 @@ namespace Microsoft.Azure.Commands.KeyVault
 
             if (!string.IsNullOrEmpty(Version))
             {
-                certBundle = this.DataServiceClient.GetCertificate(VaultName, Name, Version);
-                this.WriteObject(certBundle);
+                certBundle = DataServiceClient.GetCertificate(VaultName, Name, Version);
+                WriteObject(certBundle);
             }
             else if (IncludeVersions)
             {
-                certBundle = this.DataServiceClient.GetCertificate(VaultName, Name, string.Empty);
+                certBundle = DataServiceClient.GetCertificate(VaultName, Name, string.Empty);
                 if (certBundle != null)
                 {
                     WriteObject(certBundle);
@@ -230,8 +230,8 @@ namespace Microsoft.Azure.Commands.KeyVault
             }
             else if (!string.IsNullOrEmpty(Name))
             {
-                certBundle = this.DataServiceClient.GetCertificate(VaultName, Name, string.Empty);
-                this.WriteObject(certBundle);
+                certBundle = DataServiceClient.GetCertificate(VaultName, Name, string.Empty);
+                WriteObject(certBundle);
             }
             else
             {

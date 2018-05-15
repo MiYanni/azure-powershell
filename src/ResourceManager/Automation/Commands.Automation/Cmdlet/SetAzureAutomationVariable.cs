@@ -59,26 +59,26 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationProcessRecord()
         {
-            Variable variable = new Variable()
+            Variable variable = new Variable
             {
-                Name = this.Name,
-                Description = this.Description,
-                Encrypted = this.Encrypted,
-                Value = this.Value,
-                AutomationAccountName = this.AutomationAccountName,
-                ResourceGroupName = this.ResourceGroupName
+                Name = Name,
+                Description = Description,
+                Encrypted = Encrypted,
+                Value = Value,
+                AutomationAccountName = AutomationAccountName,
+                ResourceGroupName = ResourceGroupName
             };
 
             Variable ret;
             if (ParameterSetName == AutomationCmdletParameterSets.UpdateVariableValue)
             {
-                ret = this.AutomationClient.UpdateVariable(variable, VariableUpdateFields.OnlyValue);
+                ret = AutomationClient.UpdateVariable(variable, VariableUpdateFields.OnlyValue);
             }
             else
             {
-                ret = this.AutomationClient.UpdateVariable(variable, VariableUpdateFields.OnlyDescription);
+                ret = AutomationClient.UpdateVariable(variable, VariableUpdateFields.OnlyDescription);
             }
-            this.GenerateCmdletOutput(ret);
+            GenerateCmdletOutput(ret);
         }
     }
 }

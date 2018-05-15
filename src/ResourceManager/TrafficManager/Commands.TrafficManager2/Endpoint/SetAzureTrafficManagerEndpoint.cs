@@ -28,10 +28,10 @@ namespace Microsoft.Azure.Commands.TrafficManager
 
         public override void ExecuteCmdlet()
         {
-            TrafficManagerEndpoint trafficManagerEndpoint = this.TrafficManagerClient.SetTrafficManagerEndpoint(this.TrafficManagerEndpoint);
+            TrafficManagerEndpoint trafficManagerEndpoint = TrafficManagerClient.SetTrafficManagerEndpoint(TrafficManagerEndpoint);
 
-            this.WriteVerbose(ProjectResources.Success);
-            this.WriteObject(trafficManagerEndpoint);
+            WriteVerbose(ProjectResources.Success);
+            WriteObject(trafficManagerEndpoint);
         }
     }
 }

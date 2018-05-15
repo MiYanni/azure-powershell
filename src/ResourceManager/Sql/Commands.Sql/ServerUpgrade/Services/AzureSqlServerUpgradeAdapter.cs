@@ -77,9 +77,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerUpgrade.Services
         /// <param name="model">The server upgrade model to start the upgrade</param>
         public void Start(AzureSqlServerUpgradeStartModel model)
         {
-            ServerUpgradeStartParameters parameters = new ServerUpgradeStartParameters()
+            ServerUpgradeStartParameters parameters = new ServerUpgradeStartParameters
             {
-                Properties = new ServerUpgradeProperties()
+                Properties = new ServerUpgradeProperties
                 {
                     Version = model.ServerVersion,
                     ScheduleUpgradeAfterUtcDateTime = model.ScheduleUpgradeAfterUtcDateTime,

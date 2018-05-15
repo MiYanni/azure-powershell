@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.EventHub.Models
         /// value should be between 10485760 to 524288000 bytes</param>
         /// <param name="destination">Properties of Destination where capture
         /// will be stored. (Storage Account, Blob Names)</param>
-        public PSCaptureDescriptionAttributes(Microsoft.Azure.Management.EventHub.Models.CaptureDescription captureDescResource)
+        public PSCaptureDescriptionAttributes(Management.EventHub.Models.CaptureDescription captureDescResource)
         {
             Enabled = captureDescResource.Enabled;
             Encoding = (EnumEncodingCaptureDescription)captureDescResource.Encoding;

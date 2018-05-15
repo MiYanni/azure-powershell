@@ -95,18 +95,18 @@ namespace Microsoft.Azure.Commands.KeyVault
                 VaultName = resourceIdentifier.ResourceName;
             }
 
-            if (ShouldProcess(VaultName, Properties.Resources.RestoreManagedStorageAccount))
+            if (ShouldProcess(VaultName, Resources.RestoreManagedStorageAccount))
             {
-                var resolvedFilePath = this.GetUnresolvedProviderPathFromPSPath(InputFile);
+                var resolvedFilePath = GetUnresolvedProviderPathFromPSPath(InputFile);
 
                 if (!AzureSession.Instance.DataStore.FileExists(resolvedFilePath))
                 {
                     throw new FileNotFoundException(string.Format(Resources.BackupFileNotFound, resolvedFilePath));
                 }
 
-                var restoredManagedStorageAccount = this.DataServiceClient.RestoreManagedStorageAccount(VaultName, resolvedFilePath);
+                var restoredManagedStorageAccount = DataServiceClient.RestoreManagedStorageAccount(VaultName, resolvedFilePath);
 
-                this.WriteObject(restoredManagedStorageAccount);
+                WriteObject(restoredManagedStorageAccount);
             }
         }
     }

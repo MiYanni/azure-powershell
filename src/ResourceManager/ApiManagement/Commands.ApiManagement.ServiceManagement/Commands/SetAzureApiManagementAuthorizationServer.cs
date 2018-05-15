@@ -13,7 +13,7 @@
 //  limitations under the License.
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Commands
 {
-    using Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models;
+    using Models;
     using System;
     using System.Collections;
     using System.Management.Automation;

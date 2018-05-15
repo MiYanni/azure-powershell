@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.NetworkClient.NetworkManagementClient.DdosProtectionPlans.Delete(ResourceGroupName, Name);
+                    NetworkClient.NetworkManagementClient.DdosProtectionPlans.Delete(ResourceGroupName, Name);
                     if (PassThru)
                     {
                         WriteObject(true);

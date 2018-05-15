@@ -14,11 +14,11 @@
 
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.Azure.Management.Logic;
+    using Management.Logic.Models;
+    using Management.Logic;
     using System.Management.Automation;
     using System.Globalization;
-    using Microsoft.Rest.Azure;
+    using Rest.Azure;
 
     /// <summary>
     /// LogicApp client partial class for integration account certificate operations.
@@ -35,15 +35,12 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Newly created integration account certificate object.</returns>
         public IntegrationAccountCertificate CreateIntegrationAccountCertificate(string resourceGroupName, string integrationAccountName, string integrationAccountCertificateName, IntegrationAccountCertificate integrationAccountCertificate)
         {
-            if (!this.DoesIntegrationAccountCertificateExist(resourceGroupName, integrationAccountName,integrationAccountCertificateName))
+            if (!DoesIntegrationAccountCertificateExist(resourceGroupName, integrationAccountName,integrationAccountCertificateName))
             {
-                return this.LogicManagementClient.Certificates.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountCertificateName, integrationAccountCertificate);
+                return LogicManagementClient.Certificates.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountCertificateName, integrationAccountCertificate);
             }
-            else
-            {
-                throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
-                    Properties.Resource.ResourceAlreadyExists, integrationAccountCertificateName, resourceGroupName));
-            }
+            throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,
+                Properties.Resource.ResourceAlreadyExists, integrationAccountCertificateName, resourceGroupName));
         }
 
         /// <summary>
@@ -58,7 +55,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
             bool result = false;
             try
             {
-                var certificate = this.LogicManagementClient.Certificates.Get(resourceGroupName, integrationAccountName, integrationAccountCertificateName);
+                var certificate = LogicManagementClient.Certificates.Get(resourceGroupName, integrationAccountName, integrationAccountCertificateName);
                 result = certificate != null;
             }
             catch
@@ -78,7 +75,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Updated integration account certificate.</returns>
         public IntegrationAccountCertificate UpdateIntegrationAccountCertificate(string resourceGroupName, string integrationAccountName, string integrationAccountCertificateName, IntegrationAccountCertificate integrationAccountCertificate)
         {
-            return this.LogicManagementClient.Certificates.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountCertificateName, integrationAccountCertificate);
+            return LogicManagementClient.Certificates.CreateOrUpdate(resourceGroupName, integrationAccountName, integrationAccountCertificateName, integrationAccountCertificate);
         }
 
         /// <summary>
@@ -90,7 +87,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>Integration account certificate object.</returns>
         public IntegrationAccountCertificate GetIntegrationAccountCertifcate(string resourceGroupName, string integrationAccountName, string integrationAccountCertificateName)
         {
-            return this.LogicManagementClient.Certificates.Get(resourceGroupName, integrationAccountName, integrationAccountCertificateName);
+            return LogicManagementClient.Certificates.Get(resourceGroupName, integrationAccountName, integrationAccountCertificateName);
         }
 
         /// <summary>
@@ -101,7 +98,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <returns>List of integration account certificates.</returns>
         public IPage<IntegrationAccountCertificate> ListIntegrationAccountCertificates(string resourceGroupName, string integrationAccountName)
         {
-            return this.LogicManagementClient.Certificates.ListByIntegrationAccounts(resourceGroupName, integrationAccountName, top: 1000);
+            return LogicManagementClient.Certificates.ListByIntegrationAccounts(resourceGroupName, integrationAccountName, 1000);
         }
 
         /// <summary>
@@ -112,7 +109,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="integrationAccountCertificateName">The integration account certificate name.</param>
         public void RemoveIntegrationAccountCertificate(string resourceGroupName, string integrationAccountName, string integrationAccountCertificateName)
         {
-            this.LogicManagementClient.Certificates.Delete(resourceGroupName, integrationAccountName, integrationAccountCertificateName);
+            LogicManagementClient.Certificates.Delete(resourceGroupName, integrationAccountName, integrationAccountCertificateName);
         }
     }
 }

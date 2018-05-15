@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute
         public SwitchParameter Enable { get; set; }
 
         [Parameter]
-        [ValidateSetAttribute(new string[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Everyday" })]
+        [ValidateSetAttribute(new[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Everyday" })]
         public string DayOfWeek { get; set; }
 
         [Parameter]
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Compute
         public int MaintenanceWindowDuration { get; set; }
 
         [Parameter]
-        [ValidateSetAttribute(new string[] { "Important" })]
+        [ValidateSetAttribute(new[] { "Important" })]
         public string PatchCategory { get; set; }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.Compute
         {
             AutoPatchingSettings autoPatchingSettings = new AutoPatchingSettings();
 
-            autoPatchingSettings.Enable = (Enable.IsPresent) ? Enable.ToBool() : false;
+            autoPatchingSettings.Enable = Enable.IsPresent ? Enable.ToBool() : false;
             autoPatchingSettings.DayOfWeek = DayOfWeek;
             autoPatchingSettings.MaintenanceWindowStartingHour = MaintenanceWindowStartingHour;
             autoPatchingSettings.MaintenanceWindowDuration = MaintenanceWindowDuration;

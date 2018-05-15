@@ -46,10 +46,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRVaultSettings(
             ASRVaultCreds asrVaultCreds)
         {
-            this.ResourceName = asrVaultCreds.ResourceName;
-            this.ResourceGroupName = asrVaultCreds.ResourceGroupName;
-            this.ResourceNamespace = asrVaultCreds.ResourceNamespace;
-            this.ResouceType = asrVaultCreds.ARMResourceType;
+            ResourceName = asrVaultCreds.ResourceName;
+            ResourceGroupName = asrVaultCreds.ResourceGroupName;
+            ResourceNamespace = asrVaultCreds.ResourceNamespace;
+            ResouceType = asrVaultCreds.ARMResourceType;
         }
 
         #region Properties
@@ -98,20 +98,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRRecoveryServicesProvider(
             RecoveryServicesProvider provider)
         {
-            this.ID = provider.Id;
-            this.Name = provider.Name;
-            this.FriendlyName = provider.Properties.FriendlyName;
+            ID = provider.Id;
+            Name = provider.Name;
+            FriendlyName = provider.Properties.FriendlyName;
             if (provider.Properties.LastHeartBeat != null)
             {
-                this.LastHeartbeat = (DateTime)provider.Properties.LastHeartBeat;
+                LastHeartbeat = (DateTime)provider.Properties.LastHeartBeat;
             }
-            this.ProviderVersion = provider.Properties.ProviderVersion;
-            this.ServerVersion = provider.Properties.ServerVersion;
-            this.Connected = provider.Properties.ConnectionStatus.ToLower()
+            ProviderVersion = provider.Properties.ProviderVersion;
+            ServerVersion = provider.Properties.ServerVersion;
+            Connected = provider.Properties.ConnectionStatus.ToLower()
                                  .CompareTo("connected") ==
                              0 ? true : false;
-            this.FabricType = provider.Properties.FabricType;
-            this.Type = provider.Type;
+            FabricType = provider.Properties.FabricType;
+            Type = provider.Type;
         }
 
         #region Properties
@@ -185,16 +185,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRFabric(
             Fabric fabric)
         {
-            this.Name = fabric.Name;
-            this.FriendlyName = fabric.Properties.FriendlyName;
-            this.ID = fabric.Id;
-            this.Type = fabric.Type;
-            this.SiteIdentifier = fabric.Properties.InternalIdentifier;
+            Name = fabric.Name;
+            FriendlyName = fabric.Properties.FriendlyName;
+            ID = fabric.Id;
+            Type = fabric.Type;
+            SiteIdentifier = fabric.Properties.InternalIdentifier;
 
             // Populate Fabric Specific Details for VMWare.
             if (fabric.Properties.CustomDetails is VMwareDetails)
             {
-                this.FabricType = Constants.VMware;
+                FabricType = Constants.VMware;
                 var vmwareFabricSpecificDetails =
                     fabric.Properties.CustomDetails as VMwareDetails;
                 var inMageFabricSpecificDetails = new ASRVMWareSpecificDetails
@@ -227,24 +227,24 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     inMageFabricSpecificDetails.RunAsAccounts.Add(new ASRRunAsAccount(r));
                 }
 
-                this.FabricSpecificDetails = inMageFabricSpecificDetails;
+                FabricSpecificDetails = inMageFabricSpecificDetails;
             }
             else if (fabric.Properties.CustomDetails is HyperVSiteDetails)
             {
-                this.FabricType = Constants.HyperVSite;
+                FabricType = Constants.HyperVSite;
             }
             else if (fabric.Properties.CustomDetails is AzureFabricSpecificDetails)
             {
-                this.FabricType = Constants.Azure;
+                FabricType = Constants.Azure;
                 var azureFabricSpecificDetails = fabric.Properties.CustomDetails as AzureFabricSpecificDetails;
-                this.FabricSpecificDetails = new ASRAzureFabricSpecificDetails
+                FabricSpecificDetails = new ASRAzureFabricSpecificDetails
                 {
                     Location = azureFabricSpecificDetails != null ? azureFabricSpecificDetails.Location : null
                 };
             }
             else if (fabric.Properties.CustomDetails is VmmDetails)
             {
-                this.FabricType = Constants.VMM;
+                FabricType = Constants.VMM;
             }
         }
 
@@ -317,20 +317,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRProtectionContainerMapping(
             ProtectionContainerMapping pcm)
         {
-            this.Name = pcm.Name;
-            this.ID = pcm.Id;
-            this.Health = pcm.Properties.Health;
-            this.HealthErrorDetails = pcm.Properties.HealthErrorDetails;
-            this.PolicyFriendlyName = pcm.Properties.PolicyFriendlyName;
-            this.PolicyId = pcm.Properties.PolicyId;
-            this.SourceFabricFriendlyName = pcm.Properties.SourceFabricFriendlyName;
-            this.SourceProtectionContainerFriendlyName =
+            Name = pcm.Name;
+            ID = pcm.Id;
+            Health = pcm.Properties.Health;
+            HealthErrorDetails = pcm.Properties.HealthErrorDetails;
+            PolicyFriendlyName = pcm.Properties.PolicyFriendlyName;
+            PolicyId = pcm.Properties.PolicyId;
+            SourceFabricFriendlyName = pcm.Properties.SourceFabricFriendlyName;
+            SourceProtectionContainerFriendlyName =
                 pcm.Properties.SourceProtectionContainerFriendlyName;
-            this.State = pcm.Properties.State;
-            this.TargetFabricFriendlyName = pcm.Properties.TargetFabricFriendlyName;
-            this.TargetProtectionContainerFriendlyName =
+            State = pcm.Properties.State;
+            TargetFabricFriendlyName = pcm.Properties.TargetFabricFriendlyName;
+            TargetProtectionContainerFriendlyName =
                 pcm.Properties.TargetProtectionContainerFriendlyName;
-            this.TargetProtectionContainerId = pcm.Properties.TargetProtectionContainerId;
+            TargetProtectionContainerId = pcm.Properties.TargetProtectionContainerId;
         }
 
         #region Properties
@@ -420,15 +420,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             List<ASRPolicy> availablePolicies,
             List<ASRProtectionContainerMapping> protectionContainerMappings)
         {
-            this.ID = pc.Id;
-            this.Name = pc.Name;
-            this.FriendlyName = pc.Properties.FriendlyName;
-            this.FabricFriendlyName = pc.Properties.FabricFriendlyName;
-            this.Role = pc.Properties.Role;
-            this.FabricType = pc.Properties.FabricType;
-            this.Type = pc.Type;
-            this.AvailablePolicies = availablePolicies;
-            this.ProtectionContainerMappings = protectionContainerMappings;
+            ID = pc.Id;
+            Name = pc.Name;
+            FriendlyName = pc.Properties.FriendlyName;
+            FabricFriendlyName = pc.Properties.FabricFriendlyName;
+            Role = pc.Properties.Role;
+            FabricType = pc.Properties.FabricType;
+            Type = pc.Type;
+            AvailablePolicies = availablePolicies;
+            ProtectionContainerMappings = protectionContainerMappings;
         }
 
         #region Properties
@@ -505,10 +505,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRPolicy(
             Policy policy)
         {
-            this.ID = policy.Id;
-            this.Name = policy.Name;
-            this.FriendlyName = policy.Properties.FriendlyName;
-            this.Type = policy.Type;
+            ID = policy.Id;
+            Name = policy.Name;
+            FriendlyName = policy.Properties.FriendlyName;
+            Type = policy.Type;
 
             if (policy.Properties.ProviderSpecificDetails is HyperVReplicaBluePolicyDetails)
             {
@@ -517,7 +517,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
                 var replicationProviderSettings = new ASRHyperVReplicaPolicyDetails();
 
-                this.ReplicationProvider = Constants.HyperVReplica2012R2;
+                ReplicationProvider = Constants.HyperVReplica2012R2;
                 replicationProviderSettings.ReplicaDeletionOption = details.ReplicaDeletionOption;
                 replicationProviderSettings.ApplicationConsistentSnapshotFrequencyInHours =
                     (int)details.ApplicationConsistentSnapshotFrequencyInHours;
@@ -540,7 +540,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     details.OnlineReplicationStartTime == null ? (TimeSpan?)null
                         : TimeSpan.Parse(details.OnlineReplicationStartTime);
 
-                this.ReplicationProviderSettings = replicationProviderSettings;
+                ReplicationProviderSettings = replicationProviderSettings;
             }
             else if (policy.Properties.ProviderSpecificDetails is HyperVReplicaPolicyDetails)
             {
@@ -548,7 +548,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
                 var replicationProviderSettings = new ASRHyperVReplicaPolicyDetails();
 
-                this.ReplicationProvider = Constants.HyperVReplica2012;
+                ReplicationProvider = Constants.HyperVReplica2012;
                 replicationProviderSettings.ReplicaDeletionOption = details.ReplicaDeletionOption;
                 replicationProviderSettings.ApplicationConsistentSnapshotFrequencyInHours =
                     (int)details.ApplicationConsistentSnapshotFrequencyInHours;
@@ -570,7 +570,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     details.OnlineReplicationStartTime == null ? (TimeSpan?)null
                         : TimeSpan.Parse(details.OnlineReplicationStartTime);
 
-                this.ReplicationProviderSettings = replicationProviderSettings;
+                ReplicationProviderSettings = replicationProviderSettings;
             }
             else if (policy.Properties.ProviderSpecificDetails is HyperVReplicaAzurePolicyDetails)
             {
@@ -579,7 +579,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
                 var replicationProviderSettings = new ASRHyperVReplicaAzurePolicyDetails();
 
-                this.ReplicationProvider = Constants.HyperVReplicaAzure;
+                ReplicationProvider = Constants.HyperVReplicaAzure;
                 replicationProviderSettings.ApplicationConsistentSnapshotFrequencyInHours =
                     (int)details.ApplicationConsistentSnapshotFrequencyInHours;
                 replicationProviderSettings.ReplicationFrequencyInSeconds =
@@ -592,7 +592,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 replicationProviderSettings.Encryption = details.Encryption;
                 replicationProviderSettings.ActiveStorageAccountId = details.ActiveStorageAccountId;
 
-                this.ReplicationProviderSettings = replicationProviderSettings;
+                ReplicationProviderSettings = replicationProviderSettings;
             }
             else if (policy.Properties.ProviderSpecificDetails is InMageAzureV2PolicyDetails)
             {
@@ -612,8 +612,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         MultiVmSyncStatus = details.MultiVmSyncStatus
                     };
 
-                this.ReplicationProviderSettings = replicationProviderSettings;
-                this.ReplicationProvider = Constants.InMageAzureV2;
+                ReplicationProviderSettings = replicationProviderSettings;
+                ReplicationProvider = Constants.InMageAzureV2;
             }
             else if (policy.Properties.ProviderSpecificDetails is InMagePolicyDetails)
             {
@@ -628,8 +628,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     MultiVmSyncStatus = details.MultiVmSyncStatus
                 };
 
-                this.ReplicationProviderSettings = replicationProviderSettings;
-                this.ReplicationProvider = Constants.InMage;
+                ReplicationProviderSettings = replicationProviderSettings;
+                ReplicationProvider = Constants.InMage;
             }
             else if (policy.Properties.ProviderSpecificDetails is A2APolicyDetails)
             {
@@ -649,8 +649,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                             (int)details.RecoveryPointThresholdInMinutes
                     };
 
-                this.ReplicationProviderSettings = replicationProviderSettings;
-                this.ReplicationProvider = Constants.A2A;
+                ReplicationProviderSettings = replicationProviderSettings;
+                ReplicationProvider = Constants.A2A;
             }
         }
 
@@ -879,14 +879,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRVMNicDetails(
             VMNicDetails vMNicDetails)
         {
-            this.NicId = vMNicDetails.NicId;
-            this.VMNetworkName = vMNicDetails.VMNetworkName;
-            this.VMSubnetName = vMNicDetails.VMSubnetName;
-            this.RecoveryVMNetworkId = vMNicDetails.RecoveryVMNetworkId;
-            this.RecoveryVMSubnetName = vMNicDetails.RecoveryVMSubnetName;
-            this.ReplicaNicStaticIPAddress = vMNicDetails.ReplicaNicStaticIPAddress;
-            this.IpAddressType = vMNicDetails.IpAddressType;
-            this.SelectionType = vMNicDetails.SelectionType;
+            NicId = vMNicDetails.NicId;
+            VMNetworkName = vMNicDetails.VMNetworkName;
+            VMSubnetName = vMNicDetails.VMSubnetName;
+            RecoveryVMNetworkId = vMNicDetails.RecoveryVMNetworkId;
+            RecoveryVMSubnetName = vMNicDetails.RecoveryVMSubnetName;
+            ReplicaNicStaticIPAddress = vMNicDetails.ReplicaNicStaticIPAddress;
+            IpAddressType = vMNicDetails.IpAddressType;
+            SelectionType = vMNicDetails.SelectionType;
         }
 
         /// <summary>
@@ -950,15 +950,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRProtectableItem(
             ProtectableItem pi)
         {
-            this.ID = pi.Id;
-            this.Name = pi.Name;
-            this.FriendlyName = pi.Properties.FriendlyName;
-            this.ProtectionContainerId = Utilities.GetValueFromArmId(
+            ID = pi.Id;
+            Name = pi.Name;
+            FriendlyName = pi.Properties.FriendlyName;
+            ProtectionContainerId = Utilities.GetValueFromArmId(
                 pi.Id,
                 ARMResourceTypeConstants.ReplicationProtectionContainers);
-            this.ProtectionStatus = pi.Properties.ProtectionStatus;
-            this.ReplicationProtectedItemId = pi.Properties.ReplicationProtectedItemId;
-            this.SupportedReplicationProviders = pi.Properties.SupportedReplicationProviders;
+            ProtectionStatus = pi.Properties.ProtectionStatus;
+            ReplicationProtectedItemId = pi.Properties.ReplicationProtectedItemId;
+            SupportedReplicationProviders = pi.Properties.SupportedReplicationProviders;
             if (pi.Properties.CustomDetails != null)
             {
                 if (pi.Properties.CustomDetails is HyperVVirtualMachineDetails)
@@ -967,11 +967,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         (HyperVVirtualMachineDetails)pi.Properties.CustomDetails;
 
                     var diskDetails = providerSettings.DiskDetails;
-                    this.UpdateDiskDetails(diskDetails);
-                    this.OS = providerSettings.OsDetails == null
+                    UpdateDiskDetails(diskDetails);
+                    OS = providerSettings.OsDetails == null
                         ? null
                         : providerSettings.OsDetails.OsType;
-                    this.FabricObjectId = providerSettings.SourceItemId;
+                    FabricObjectId = providerSettings.SourceItemId;
                 }
                 else if (pi.Properties.CustomDetails is VMwareVirtualMachineDetails)
                 {
@@ -979,7 +979,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         (VMwareVirtualMachineDetails)pi.Properties.CustomDetails;
 
                     // Set the VMWare specific properties.
-                    this.FabricSpecificVMDetails = new ASRVMWareSpecificVMDetails
+                    FabricSpecificVMDetails = new ASRVMWareSpecificVMDetails
                     {
                         IpAddress = providerSettings.IpAddress,
                         AgentVersion = providerSettings.AgentVersion,
@@ -991,8 +991,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
                     // Update Disk Details for VMWare.
                     var diskDetails = providerSettings.DiskDetails;
-                    this.UpdateDiskDetails(diskDetails);
-                    this.OS = providerSettings.OsType;
+                    UpdateDiskDetails(diskDetails);
+                    OS = providerSettings.OsType;
                 }
             }
         }
@@ -1070,13 +1070,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void UpdateDiskDetails(
             IList<DiskDetails> diskDetails)
         {
-            this.Disks = new List<AsrVirtualHardDisk>();
+            Disks = new List<AsrVirtualHardDisk>();
             foreach (var disk in diskDetails)
             {
                 var hd = new AsrVirtualHardDisk();
                 hd.Id = disk.VhdId;
                 hd.Name = disk.VhdName;
-                this.Disks.Add(hd);
+                Disks.Add(hd);
             }
 
             var OSDisk = diskDetails.SingleOrDefault(
@@ -1087,8 +1087,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     0);
             if (OSDisk != null)
             {
-                this.OSDiskId = OSDisk.VhdId;
-                this.OSDiskName = OSDisk.VhdName;
+                OSDiskId = OSDisk.VhdId;
+                OSDiskName = OSDisk.VhdName;
             }
         }
 
@@ -1096,7 +1096,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void UpdateDiskDetails(IList<InMageDiskDetails> diskDetails)
         {
             // Update all the Disks.
-            this.Disks = new List<AsrVirtualHardDisk>();
+            Disks = new List<AsrVirtualHardDisk>();
             foreach (var disk in diskDetails)
             {
                 var hd = new AsrVirtualHardDisk();
@@ -1112,7 +1112,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     volume.Name = vol.Name;
                     hd.Volumes.Add(volume);
                 }
-                this.Disks.Add(hd);
+                Disks.Add(hd);
             }
 
             // Update the OS Disk.
@@ -1125,8 +1125,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         0);
             if (OSDisk != null)
             {
-                this.OSDiskId = OSDisk.DiskId;
-                this.OSDiskName = OSDisk.DiskName;
+                OSDiskId = OSDisk.DiskId;
+                OSDiskName = OSDisk.DiskName;
             }
         }
     }
@@ -1158,86 +1158,86 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRReplicationProtectedItem(
             ReplicationProtectedItem rpi)
         {
-            this.ID = rpi.Id;
-            this.Name = rpi.Name;
-            this.FriendlyName = rpi.Properties.FriendlyName;
-            this.Type = rpi.Type;
-            this.ActiveLocation = rpi.Properties.ActiveLocation;
-            this.AllowedOperations = rpi.Properties.AllowedOperations;
-            this.CurrentScenario = rpi.Properties.CurrentScenario;
-            this.FailoverRecoveryPointId = rpi.Properties.FailoverRecoveryPointId;
-            this.LastSuccessfulFailoverTime = rpi.Properties.LastSuccessfulFailoverTime;
-            this.LastSuccessfulTestFailoverTime = rpi.Properties.LastSuccessfulTestFailoverTime;
-            this.PolicyFriendlyName = rpi.Properties.PolicyFriendlyName;
-            this.PolicyID = rpi.Properties.PolicyId;
-            this.PrimaryFabricFriendlyName = rpi.Properties.PrimaryFabricFriendlyName;
-            this.PrimaryProtectionContainerFriendlyName =
+            ID = rpi.Id;
+            Name = rpi.Name;
+            FriendlyName = rpi.Properties.FriendlyName;
+            Type = rpi.Type;
+            ActiveLocation = rpi.Properties.ActiveLocation;
+            AllowedOperations = rpi.Properties.AllowedOperations;
+            CurrentScenario = rpi.Properties.CurrentScenario;
+            FailoverRecoveryPointId = rpi.Properties.FailoverRecoveryPointId;
+            LastSuccessfulFailoverTime = rpi.Properties.LastSuccessfulFailoverTime;
+            LastSuccessfulTestFailoverTime = rpi.Properties.LastSuccessfulTestFailoverTime;
+            PolicyFriendlyName = rpi.Properties.PolicyFriendlyName;
+            PolicyID = rpi.Properties.PolicyId;
+            PrimaryFabricFriendlyName = rpi.Properties.PrimaryFabricFriendlyName;
+            PrimaryProtectionContainerFriendlyName =
                 rpi.Properties.PrimaryProtectionContainerFriendlyName;
-            this.ProtectableItemId = rpi.Properties.ProtectableItemId;
-            this.ProtectedItemType = rpi.Properties.ProtectedItemType;
-            this.ProtectionState = rpi.Properties.ProtectionState;
-            this.ProtectionStateDescription = rpi.Properties.ProtectionStateDescription;
-            this.RecoveryFabricFriendlyName = rpi.Properties.RecoveryFabricFriendlyName;
-            this.RecoveryFabricId = rpi.Properties.RecoveryFabricId;
-            this.RecoveryProtectionContainerFriendlyName =
+            ProtectableItemId = rpi.Properties.ProtectableItemId;
+            ProtectedItemType = rpi.Properties.ProtectedItemType;
+            ProtectionState = rpi.Properties.ProtectionState;
+            ProtectionStateDescription = rpi.Properties.ProtectionStateDescription;
+            RecoveryFabricFriendlyName = rpi.Properties.RecoveryFabricFriendlyName;
+            RecoveryFabricId = rpi.Properties.RecoveryFabricId;
+            RecoveryProtectionContainerFriendlyName =
                 rpi.Properties.RecoveryProtectionContainerFriendlyName;
-            this.RecoveryServicesProviderId = rpi.Properties.RecoveryServicesProviderId;
-            this.ReplicationHealth = rpi.Properties.ReplicationHealth;
-            this.ReplicationHealthErrors = rpi.Properties.ReplicationHealthErrors;
-            this.TestFailoverState = rpi.Properties.TestFailoverState;
-            this.TestFailoverStateDescription = rpi.Properties.TestFailoverStateDescription;
+            RecoveryServicesProviderId = rpi.Properties.RecoveryServicesProviderId;
+            ReplicationHealth = rpi.Properties.ReplicationHealth;
+            ReplicationHealthErrors = rpi.Properties.ReplicationHealthErrors;
+            TestFailoverState = rpi.Properties.TestFailoverState;
+            TestFailoverStateDescription = rpi.Properties.TestFailoverStateDescription;
 
             if (rpi.Properties.ProviderSpecificDetails is HyperVReplicaAzureReplicationDetails)
             {
                 var providerSpecificDetails =
                     (HyperVReplicaAzureReplicationDetails)rpi.Properties.ProviderSpecificDetails;
 
-                this.ReplicationProvider = Constants.HyperVReplicaAzure;
-                this.RecoveryAzureVMName = providerSpecificDetails.RecoveryAzureVMName;
-                this.RecoveryAzureVMSize = providerSpecificDetails.RecoveryAzureVMSize;
-                this.RecoveryAzureStorageAccount =
+                ReplicationProvider = Constants.HyperVReplicaAzure;
+                RecoveryAzureVMName = providerSpecificDetails.RecoveryAzureVMName;
+                RecoveryAzureVMSize = providerSpecificDetails.RecoveryAzureVMSize;
+                RecoveryAzureStorageAccount =
                     providerSpecificDetails.RecoveryAzureStorageAccount;
-                this.SelectedRecoveryAzureNetworkId =
+                SelectedRecoveryAzureNetworkId =
                     providerSpecificDetails.SelectedRecoveryAzureNetworkId;
                 if (providerSpecificDetails.VmNics != null)
                 {
-                    this.NicDetailsList = new List<ASRVMNicDetails>();
+                    NicDetailsList = new List<ASRVMNicDetails>();
                     foreach (var n in providerSpecificDetails.VmNics)
                     {
-                        this.NicDetailsList.Add(new ASRVMNicDetails(n));
+                        NicDetailsList.Add(new ASRVMNicDetails(n));
                     }
                 }
             }
             else if (rpi.Properties.ProviderSpecificDetails is HyperVReplicaReplicationDetails)
             {
-                this.ReplicationProvider = Constants.HyperVReplica2012;
+                ReplicationProvider = Constants.HyperVReplica2012;
             }
             else if (rpi.Properties.ProviderSpecificDetails is HyperVReplicaBlueReplicationDetails)
             {
-                this.ReplicationProvider = Constants.HyperVReplica2012R2;
+                ReplicationProvider = Constants.HyperVReplica2012R2;
             }
             else if (rpi.Properties.ProviderSpecificDetails is InMageAzureV2ReplicationDetails)
             {
-                this.ReplicationProvider = Constants.InMageAzureV2;
+                ReplicationProvider = Constants.InMageAzureV2;
                 var providerSpecificDetails =
                     (InMageAzureV2ReplicationDetails)rpi.Properties.ProviderSpecificDetails;
 
                 // Set the common properties specific to InMageAzureV2.
-                this.RecoveryAzureVMName = providerSpecificDetails.RecoveryAzureVMName;
-                this.RecoveryAzureVMSize = providerSpecificDetails.RecoveryAzureVMSize;
-                this.RecoveryResourceGroupId =
+                RecoveryAzureVMName = providerSpecificDetails.RecoveryAzureVMName;
+                RecoveryAzureVMSize = providerSpecificDetails.RecoveryAzureVMSize;
+                RecoveryResourceGroupId =
                     providerSpecificDetails.RecoveryAzureResourceGroupId;
-                this.RecoveryAzureStorageAccount =
+                RecoveryAzureStorageAccount =
                     providerSpecificDetails.RecoveryAzureStorageAccount;
-                this.SelectedRecoveryAzureNetworkId =
+                SelectedRecoveryAzureNetworkId =
                     providerSpecificDetails.SelectedRecoveryAzureNetworkId;
 
                 if (providerSpecificDetails.VmNics != null)
                 {
-                    this.NicDetailsList = new List<ASRVMNicDetails>();
+                    NicDetailsList = new List<ASRVMNicDetails>();
                     foreach (var n in providerSpecificDetails.VmNics)
                     {
-                        this.NicDetailsList.Add(new ASRVMNicDetails(n));
+                        NicDetailsList.Add(new ASRVMNicDetails(n));
                     }
                 }
 
@@ -1275,20 +1275,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     }
                 }
 
-                this.ProviderSpecificDetails = inMageAzureV2RPIDetails;
+                ProviderSpecificDetails = inMageAzureV2RPIDetails;
             }
             else if (rpi.Properties.ProviderSpecificDetails is InMageReplicationDetails)
             {
-                this.ReplicationProvider = Constants.InMage;
+                ReplicationProvider = Constants.InMage;
                 var providerSpecificDetails =
                     (InMageReplicationDetails)rpi.Properties.ProviderSpecificDetails;
                 // Set the common properties specific to InMage.
                 if (providerSpecificDetails.VmNics != null)
                 {
-                    this.NicDetailsList = new List<ASRVMNicDetails>();
+                    NicDetailsList = new List<ASRVMNicDetails>();
                     foreach (var n in providerSpecificDetails.VmNics)
                     {
-                        this.NicDetailsList.Add(new ASRVMNicDetails(n));
+                        NicDetailsList.Add(new ASRVMNicDetails(n));
                     }
                 }
 
@@ -1329,24 +1329,24 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                     }
                 }
 
-                this.ProviderSpecificDetails = inMageRPIDetails;
+                ProviderSpecificDetails = inMageRPIDetails;
             }
             else if (rpi.Properties.ProviderSpecificDetails is A2AReplicationDetails)
             {
                 // populate A2A specific  properties.
-                this.ReplicationProvider = Constants.A2A;
+                ReplicationProvider = Constants.A2A;
                 var a2aProviderSpecificDetails = (A2AReplicationDetails)rpi.Properties.ProviderSpecificDetails;
 
-                this.RecoveryAzureVMName = a2aProviderSpecificDetails.RecoveryAzureVMName;
-                this.RecoveryAzureVMSize = a2aProviderSpecificDetails.RecoveryAzureVMSize;
-                this.SelectedRecoveryAzureNetworkId = a2aProviderSpecificDetails.SelectedRecoveryAzureNetworkId;
-                this.ProviderSpecificDetails = new ASRAzureToAzureReplicationDetails(a2aProviderSpecificDetails);
-                this.ProtectionState = a2aProviderSpecificDetails.VmProtectionState;
-                this.ProtectionStateDescription = a2aProviderSpecificDetails.VmProtectionStateDescription;
+                RecoveryAzureVMName = a2aProviderSpecificDetails.RecoveryAzureVMName;
+                RecoveryAzureVMSize = a2aProviderSpecificDetails.RecoveryAzureVMSize;
+                SelectedRecoveryAzureNetworkId = a2aProviderSpecificDetails.SelectedRecoveryAzureNetworkId;
+                ProviderSpecificDetails = new ASRAzureToAzureReplicationDetails(a2aProviderSpecificDetails);
+                ProtectionState = a2aProviderSpecificDetails.VmProtectionState;
+                ProtectionStateDescription = a2aProviderSpecificDetails.VmProtectionStateDescription;
 
                 if (a2aProviderSpecificDetails.VmNics != null)
                 {
-                    this.NicDetailsList =
+                    NicDetailsList =
                            a2aProviderSpecificDetails.VmNics?.ToList()
                            .ConvertAll(nic => new ASRVMNicDetails(nic));
                 }
@@ -1366,7 +1366,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         .ConvertAll(disk => new ASRAzureToAzureProtectedDiskDetails(disk));
                 }
 
-                this.ProviderSpecificDetails = a2aRPIDetails;
+                ProviderSpecificDetails = a2aRPIDetails;
             }
         }
 
@@ -1567,11 +1567,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRRecoveryPoint(
             RecoveryPoint recoveryPoint)
         {
-            this.ID = recoveryPoint.Id;
-            this.Name = recoveryPoint.Name;
-            this.Type = recoveryPoint.Type;
-            this.RecoveryPointTime = recoveryPoint.Properties.RecoveryPointTime;
-            this.RecoveryPointType = recoveryPoint.Properties.RecoveryPointType;
+            ID = recoveryPoint.Id;
+            Name = recoveryPoint.Name;
+            Type = recoveryPoint.Type;
+            RecoveryPointTime = recoveryPoint.Properties.RecoveryPointTime;
+            RecoveryPointType = recoveryPoint.Properties.RecoveryPointType;
         }
 
         /// <summary>
@@ -1620,10 +1620,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             GroupTaskDetails groupTaskDetails)
         {
             //this.Type = groupTaskDetails.Type;
-            this.ChildTasks = new List<ASRTaskBase>();
+            ChildTasks = new List<ASRTaskBase>();
             if (groupTaskDetails.ChildTasks != null)
             {
-                this.ChildTasks = groupTaskDetails.ChildTasks.Select(ct => new ASRTaskBase(ct))
+                ChildTasks = groupTaskDetails.ChildTasks.Select(ct => new ASRTaskBase(ct))
                     .ToList();
             }
         }
@@ -1658,20 +1658,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRTaskBase(
             Management.RecoveryServices.SiteRecovery.Models.ASRTask taskBase)
         {
-            this.ID = taskBase.Name;
-            this.Name = taskBase.FriendlyName;
+            ID = taskBase.Name;
+            Name = taskBase.FriendlyName;
             if (taskBase.EndTime != null)
             {
-                this.EndTime = ((DateTime)taskBase.EndTime).ToLocalTime();
+                EndTime = ((DateTime)taskBase.EndTime).ToLocalTime();
             }
 
             if (taskBase.StartTime != null)
             {
-                this.StartTime = ((DateTime)taskBase.StartTime).ToLocalTime();
+                StartTime = ((DateTime)taskBase.StartTime).ToLocalTime();
             }
 
-            this.State = taskBase.State;
-            this.StateDescription = taskBase.StateDescription;
+            State = taskBase.State;
+            StateDescription = taskBase.StateDescription;
         }
 
         /// <summary>
@@ -1724,21 +1724,21 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRTask(
             Management.RecoveryServices.SiteRecovery.Models.ASRTask task)
         {
-            this.ID = task.Name;
+            ID = task.Name;
             if (task.EndTime != null)
             {
-                this.EndTime = ((DateTime)task.EndTime).ToLocalTime();
+                EndTime = ((DateTime)task.EndTime).ToLocalTime();
             }
-            this.Name = task.FriendlyName;
+            Name = task.FriendlyName;
             if (task.StartTime != null)
             {
-                this.StartTime = ((DateTime)task.StartTime).ToLocalTime();
+                StartTime = ((DateTime)task.StartTime).ToLocalTime();
             }
-            this.State = task.State;
-            this.StateDescription = task.StateDescription;
+            State = task.State;
+            StateDescription = task.StateDescription;
             if (task.GroupTaskCustomDetails != null)
             {
-                this.GroupTaskDetails = new ASRGroupTaskDetails(task.GroupTaskCustomDetails);
+                GroupTaskDetails = new ASRGroupTaskDetails(task.GroupTaskCustomDetails);
             }
         }
 
@@ -1797,42 +1797,42 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public ASRJob(
             Job job)
         {
-            this.ID = job.Id;
-            this.Type = job.Type;
-            this.JobType = job.Properties.ScenarioName;
-            this.DisplayName = job.Properties.FriendlyName;
-            this.ClientRequestId = job.Properties.ActivityId;
-            this.State = job.Properties.State;
-            this.StateDescription = job.Properties.StateDescription;
-            this.Name = job.Name;
-            this.TargetObjectId = job.Properties.TargetObjectId;
-            this.TargetObjectName = job.Properties.TargetObjectName;
+            ID = job.Id;
+            Type = job.Type;
+            JobType = job.Properties.ScenarioName;
+            DisplayName = job.Properties.FriendlyName;
+            ClientRequestId = job.Properties.ActivityId;
+            State = job.Properties.State;
+            StateDescription = job.Properties.StateDescription;
+            Name = job.Name;
+            TargetObjectId = job.Properties.TargetObjectId;
+            TargetObjectName = job.Properties.TargetObjectName;
             if (job.Properties.EndTime.HasValue)
-                this.EndTime = job.Properties.EndTime.Value.ToLocalTime();
+                EndTime = job.Properties.EndTime.Value.ToLocalTime();
             if (job.Properties.StartTime.HasValue)
-                this.StartTime = job.Properties.StartTime.Value.ToLocalTime();
-            if ((job.Properties.AllowedActions != null) &&
-                (job.Properties.AllowedActions.Count > 0))
+                StartTime = job.Properties.StartTime.Value.ToLocalTime();
+            if (job.Properties.AllowedActions != null &&
+                job.Properties.AllowedActions.Count > 0)
             {
-                this.AllowedActions = new List<string>();
+                AllowedActions = new List<string>();
                 foreach (var action in job.Properties.AllowedActions)
                 {
-                    this.AllowedActions.Add(action);
+                    AllowedActions.Add(action);
                 }
             }
 
             if (!string.IsNullOrEmpty(job.Properties.TargetObjectId))
             {
-                this.TargetObjectType = job.Properties.TargetInstanceType;
+                TargetObjectType = job.Properties.TargetInstanceType;
             }
 
-            this.Tasks = new List<ASRTask>();
+            Tasks = new List<ASRTask>();
             foreach (var task in job.Properties.Tasks)
             {
-                this.Tasks.Add(new ASRTask(task));
+                Tasks.Add(new ASRTask(task));
             }
 
-            this.Errors = new List<ASRErrorDetails>();
+            Errors = new List<ASRErrorDetails>();
 
             foreach (var error in job.Properties.Errors)
             {
@@ -1841,7 +1841,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 errorDetails.ServiceErrorDetails = new ASRServiceError(error.ServiceErrorDetails);
                 errorDetails.ProviderErrorDetails =
                     new ASRProviderError(error.ProviderErrorDetails);
-                this.Errors.Add(errorDetails);
+                Errors.Add(errorDetails);
             }
         }
 
@@ -1997,9 +1997,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             ProviderError error)
         {
             //this.CreationTimeUtc = error.CreationTimeUtc;
-            this.ErrorCode = (int)error.ErrorCode;
-            this.ErrorId = error.ErrorId;
-            this.ErrorMessage = error.ErrorMessage;
+            ErrorCode = (int)error.ErrorCode;
+            ErrorId = error.ErrorId;
+            ErrorMessage = error.ErrorMessage;
         }
 
         /// <summary>
@@ -2168,8 +2168,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// <param name="runAsAccountDetails">Run as account object.</param>
         public ASRRunAsAccount(RunAsAccount runAsAccountDetails)
         {
-            this.AccountId = runAsAccountDetails.AccountId;
-            this.AccountName = runAsAccountDetails.AccountName;
+            AccountId = runAsAccountDetails.AccountId;
+            AccountName = runAsAccountDetails.AccountName;
         }
 
         /// <summary>
@@ -2235,16 +2235,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public ASRAzureToAzureProtectedDiskDetails(A2AProtectedDiskDetails disk)
         {
-            this.DiskUri = disk.DiskUri;
-            this.PrimaryDiskAzureStorageAccountId = disk.PrimaryDiskAzureStorageAccountId;
-            this.PrimaryStagingAzureStorageAccountId = disk.PrimaryStagingAzureStorageAccountId;
-            this.RecoveryAzureStorageAccountId = disk.RecoveryAzureStorageAccountId;
-            this.RecoveryDiskUri = disk.RecoveryDiskUri;
-            this.ResyncRequired = disk.ResyncRequired;
-            this.MonitoringPercentageCompletion = disk.MonitoringPercentageCompletion;
-            this.MonitoringJobType = disk.MonitoringJobType;
-            this.DataPendingInStagingStorageAccountInMB = disk.DataPendingInStagingStorageAccountInMB;
-            this.DataPendingAtSourceAgentInMB = disk.DataPendingAtSourceAgentInMB;
+            DiskUri = disk.DiskUri;
+            PrimaryDiskAzureStorageAccountId = disk.PrimaryDiskAzureStorageAccountId;
+            PrimaryStagingAzureStorageAccountId = disk.PrimaryStagingAzureStorageAccountId;
+            RecoveryAzureStorageAccountId = disk.RecoveryAzureStorageAccountId;
+            RecoveryDiskUri = disk.RecoveryDiskUri;
+            ResyncRequired = disk.ResyncRequired;
+            MonitoringPercentageCompletion = disk.MonitoringPercentageCompletion;
+            MonitoringJobType = disk.MonitoringJobType;
+            DataPendingInStagingStorageAccountInMB = disk.DataPendingInStagingStorageAccountInMB;
+            DataPendingAtSourceAgentInMB = disk.DataPendingAtSourceAgentInMB;
         }
 
         /// <summary>
@@ -2310,8 +2310,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public ASRAzureToAzureReplicationDetails()
         {
-            this.ProtectedDisks = new List<ASRAzureToAzureProtectedDiskDetails>();
-            this.VmSyncedConfigDetails = new ASRAzureToAzureVmSyncedConfigDetails();
+            ProtectedDisks = new List<ASRAzureToAzureProtectedDiskDetails>();
+            VmSyncedConfigDetails = new ASRAzureToAzureVmSyncedConfigDetails();
         }
 
         /// <summary>
@@ -2319,31 +2319,31 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public ASRAzureToAzureReplicationDetails(A2AReplicationDetails details)
         {
-            this.FabricObjectId = details.FabricObjectId;
-            this.MultiVmGroupId = details.MultiVmGroupId;
-            this.MultiVmGroupName = details.MultiVmGroupName;
-            this.OSType = details.OsType;
-            this.PrimaryFabricLocation = details.PrimaryFabricLocation;
-            this.ProtectedDisks =
+            FabricObjectId = details.FabricObjectId;
+            MultiVmGroupId = details.MultiVmGroupId;
+            MultiVmGroupName = details.MultiVmGroupName;
+            OSType = details.OsType;
+            PrimaryFabricLocation = details.PrimaryFabricLocation;
+            ProtectedDisks =
                 details.ProtectedDisks.ToList()
                 .ConvertAll(disk => new ASRAzureToAzureProtectedDiskDetails(disk));
-            this.RecoveryAzureResourceGroupId = details.RecoveryAzureResourceGroupId;
-            this.RecoveryAzureCloudService = details.RecoveryCloudService;
-            this.RecoveryAzureVMName = details.RecoveryAzureVMName;
-            this.RecoveryAzureVMSize = details.RecoveryAzureVMSize;
-            this.RecoveryFabricLocation = details.RecoveryFabricLocation;
-            this.SelectedRecoveryAzureNetworkId = details.SelectedRecoveryAzureNetworkId;
-            this.RecoveryAvailabilitySet = details.RecoveryAvailabilitySet;
+            RecoveryAzureResourceGroupId = details.RecoveryAzureResourceGroupId;
+            RecoveryAzureCloudService = details.RecoveryCloudService;
+            RecoveryAzureVMName = details.RecoveryAzureVMName;
+            RecoveryAzureVMSize = details.RecoveryAzureVMSize;
+            RecoveryFabricLocation = details.RecoveryFabricLocation;
+            SelectedRecoveryAzureNetworkId = details.SelectedRecoveryAzureNetworkId;
+            RecoveryAvailabilitySet = details.RecoveryAvailabilitySet;
             if (details.VmSyncedConfigDetails != null)
             {
-                this.VmSyncedConfigDetails =
+                VmSyncedConfigDetails =
                     new ASRAzureToAzureVmSyncedConfigDetails(details.VmSyncedConfigDetails);
             }
-            this.MonitoringJobType = details.MonitoringJobType;
-            this.MonitoringPercentageCompletion = details.MonitoringPercentageCompletion;
+            MonitoringJobType = details.MonitoringJobType;
+            MonitoringPercentageCompletion = details.MonitoringPercentageCompletion;
             if (details.LastHeartbeat != null)
             {
-                this.LastHeartbeat = details.LastHeartbeat.Value.ToLocalTime();
+                LastHeartbeat = details.LastHeartbeat.Value.ToLocalTime();
             }
         }
 
@@ -2447,9 +2447,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public ASRAzureToAzureVmSyncedConfigDetails()
         {
-            this.Tags = new Dictionary<string, string>();
-            this.RoleAssignments = new List<ASRRoleAssignment>();
-            this.InputEndpoints = new List<ASRInputEndpoint>();
+            Tags = new Dictionary<string, string>();
+            RoleAssignments = new List<ASRRoleAssignment>();
+            InputEndpoints = new List<ASRInputEndpoint>();
         }
 
         /// <summary>
@@ -2460,23 +2460,23 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             if (details.Tags == null)
             {
-                this.Tags = new Dictionary<string, string>();
+                Tags = new Dictionary<string, string>();
             }
             else
             {
-                this.Tags = new Dictionary<string, string>(details.Tags);
+                Tags = new Dictionary<string, string>(details.Tags);
             }
 
             if (details.RoleAssignments != null)
             {
-                this.RoleAssignments =
+                RoleAssignments =
                     details.RoleAssignments.ToList()
                     .ConvertAll(role => new ASRRoleAssignment(role));
             }
 
             if (details.InputEndpoints != null)
             {
-                this.InputEndpoints =
+                InputEndpoints =
                     details.InputEndpoints.ToList()
                     .ConvertAll(endpoint => new ASRInputEndpoint(endpoint));
             }
@@ -2508,10 +2508,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public ASRInputEndpoint(InputEndpoint endpoint)
         {
-            this.EndpointName = endpoint.EndpointName;
-            this.PrivatePort = endpoint.PrivatePort;
-            this.PublicPort = endpoint.PublicPort;
-            this.Protocol = endpoint.Protocol;
+            EndpointName = endpoint.EndpointName;
+            PrivatePort = endpoint.PrivatePort;
+            PublicPort = endpoint.PublicPort;
+            Protocol = endpoint.Protocol;
         }
 
         /// <summary>
@@ -2541,10 +2541,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("EndpointName     : " + this.EndpointName);
-            sb.AppendLine("PrivatePort      : " + this.PrivatePort);
-            sb.AppendLine("PublicPort       : " + this.PublicPort);
-            sb.AppendLine("Protocol         : " + this.Protocol);
+            sb.AppendLine("EndpointName     : " + EndpointName);
+            sb.AppendLine("PrivatePort      : " + PrivatePort);
+            sb.AppendLine("PublicPort       : " + PublicPort);
+            sb.AppendLine("Protocol         : " + Protocol);
 
             return sb.ToString();
         }
@@ -2560,11 +2560,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         public ASRRoleAssignment(RoleAssignment role)
         {
-            this.Id = role.Id;
-            this.Name = role.Name;
-            this.Scope = role.Scope;
-            this.PrincipalId = role.PrincipalId;
-            this.RoleDefinitionId = role.RoleDefinitionId;
+            Id = role.Id;
+            Name = role.Name;
+            Scope = role.Scope;
+            PrincipalId = role.PrincipalId;
+            RoleDefinitionId = role.RoleDefinitionId;
         }
 
         /// <summary>
@@ -2599,11 +2599,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Id: " + this.Id);
-            sb.AppendLine("Name: " + this.Name);
-            sb.AppendLine("Scope: " + this.Scope);
-            sb.AppendLine("PrincipalId: " + this.PrincipalId);
-            sb.AppendLine("RoleDefinitionId: " + this.RoleDefinitionId);
+            sb.AppendLine("Id: " + Id);
+            sb.AppendLine("Name: " + Name);
+            sb.AppendLine("Scope: " + Scope);
+            sb.AppendLine("PrincipalId: " + PrincipalId);
+            sb.AppendLine("RoleDefinitionId: " + RoleDefinitionId);
 
             return sb.ToString();
         }

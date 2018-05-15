@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
             GraphClient = AzureSession.Instance.ClientFactory.CreateArmClient<GraphRbacManagementClient>(
                 context, AzureEnvironment.Endpoint.Graph);
 
-            GraphClient.TenantID = context.Tenant.Id.ToString();
+            GraphClient.TenantID = context.Tenant.Id;
         }
 
         public PSADObject GetADObject(ADObjectFilterOptions options)
@@ -264,7 +264,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
             int objectIdBatchCount;
             for(int i=0; i<objectIds.Count; i+=1000)
             {
-                if((i+1000) > objectIds.Count){
+                if(i+1000 > objectIds.Count){
                     objectIdBatchCount = objectIds.Count - i;
                 }
                 else{
@@ -278,7 +278,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
 
         public PSADGroup GetGroupByDisplayName(string displayName)
         {
-            var group = FilterGroups(new ADObjectFilterOptions() { SearchString = displayName });
+            var group = FilterGroups(new ADObjectFilterOptions { SearchString = displayName });
             if (group.Count() > 1)
             {
                 throw new InvalidOperationException(string.Format(ProjectResources.MultipleGroupsWithDisplayNameFound, displayName));
@@ -299,7 +299,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
                 try
                 {
                     // use GetObjectsByObjectId to handle Redirects in the CSP scenario
-                    PSADGroup group = this.GetObjectsByObjectId(new List<string> { options.Id }).FirstOrDefault() as PSADGroup;
+                    PSADGroup group = GetObjectsByObjectId(new List<string> { options.Id }).FirstOrDefault() as PSADGroup;
                     if (group != null)
                     {
                         return new List<PSADGroup> { group };
@@ -555,8 +555,8 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
 
         public void RemoveAllAppCredentials(Guid appObjectId)
         {
-            PatchAppKeyCredentials(appObjectId, keyCredentails: null);
-            PatchAppPasswordCredentials(appObjectId, passwordCredentials: null);
+            PatchAppKeyCredentials(appObjectId, null);
+            PatchAppPasswordCredentials(appObjectId, null);
         }
 
         public Guid GetAppObjectIdFromApplicationId(Guid applicationId)
@@ -703,8 +703,8 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
 
         public void RemoveAllSpCredentials(Guid spObjectId)
         {
-            PatchSpKeyCredentials(spObjectId, keyCredentails: null);
-            PatchSpPasswordCredentials(spObjectId, passwordCredentials: null);
+            PatchSpKeyCredentials(spObjectId, null);
+            PatchSpPasswordCredentials(spObjectId, null);
         }
 
         public Guid GetObjectIdFromUPN(string upn)
@@ -807,7 +807,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
         public PSADServicePrincipal RemoveServicePrincipal(Guid objectId)
         {
             var objectIdString = objectId.ToString();
-            PSADServicePrincipal servicePrincipal = FilterServicePrincipals(new ADObjectFilterOptions() { Id = objectId.ToString() }).FirstOrDefault();
+            PSADServicePrincipal servicePrincipal = FilterServicePrincipals(new ADObjectFilterOptions { Id = objectId.ToString() }).FirstOrDefault();
             if (servicePrincipal != null)
             {
                 GraphClient.ServicePrincipals.Delete(objectIdString);

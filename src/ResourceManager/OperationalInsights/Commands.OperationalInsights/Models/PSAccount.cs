@@ -30,10 +30,10 @@ namespace Microsoft.Azure.Commands.OperationalInsights.Models
                 throw new ArgumentNullException("account");
             }
 
-            this.AccountName = account.DisplayName;
-            this.Name = account.WorkspaceName;
-            this.CustomerId = new Guid(account.CustomerId);
-            this.Location = account.Location;
+            AccountName = account.DisplayName;
+            Name = account.WorkspaceName;
+            CustomerId = new Guid(account.CustomerId);
+            Location = account.Location;
         }
 
         public string AccountName { get; set; }

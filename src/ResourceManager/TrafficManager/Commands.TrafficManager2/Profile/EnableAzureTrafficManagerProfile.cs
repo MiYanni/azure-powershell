@@ -40,28 +40,28 @@ namespace Microsoft.Azure.Commands.TrafficManager
         {
             TrafficManagerProfile profileToEnable = null;
 
-            if (this.ParameterSetName == "Fields")
+            if (ParameterSetName == "Fields")
             {
                 profileToEnable = new TrafficManagerProfile
                 {
-                    Name = this.Name,
-                    ResourceGroupName = this.ResourceGroupName
+                    Name = Name,
+                    ResourceGroupName = ResourceGroupName
                 };
             }
-            else if (this.ParameterSetName == "Object")
+            else if (ParameterSetName == "Object")
             {
-                profileToEnable = this.TrafficManagerProfile;
+                profileToEnable = TrafficManagerProfile;
             }
 
-            bool enabled = this.TrafficManagerClient.EnableDisableTrafficManagerProfile(profileToEnable, shouldEnableProfileStatus: true);
+            bool enabled = TrafficManagerClient.EnableDisableTrafficManagerProfile(profileToEnable, true);
 
             if (enabled)
             {
-                this.WriteVerbose(ProjectResources.Success);
-                this.WriteVerbose(string.Format(ProjectResources.Success_EnableProfile, profileToEnable.Name, profileToEnable.ResourceGroupName));
+                WriteVerbose(ProjectResources.Success);
+                WriteVerbose(string.Format(ProjectResources.Success_EnableProfile, profileToEnable.Name, profileToEnable.ResourceGroupName));
             }
 
-            this.WriteObject(enabled);
+            WriteObject(enabled);
         }
     }
 }

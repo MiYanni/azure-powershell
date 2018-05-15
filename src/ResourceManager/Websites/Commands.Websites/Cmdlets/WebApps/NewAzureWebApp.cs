@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
         {
             try
             {
-                this.ExecuteSynchronouslyOrAsJob( (cmdlet) => cmdlet.ExecuteCmdletActions(this.SessionState));
+                this.ExecuteSynchronouslyOrAsJob( cmdlet => cmdlet.ExecuteCmdletActions(SessionState));
             }
             catch (Exception ex) when (!IsTerminatingError(ex))
             {
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
             if (ParameterSetName == SimpleParameterSet)
             {
                 ValidateWebAppName(Name);
-                if (ShouldProcess(string.Format(Microsoft.Azure.Commands.WebApps.Properties.Resources.SimpleWebAppCreateTarget, Name), Microsoft.Azure.Commands.WebApps.Properties.Resources.SimpleWebAppCreateAction))
+                if (ShouldProcess(string.Format(Properties.Resources.SimpleWebAppCreateTarget, Name), Properties.Resources.SimpleWebAppCreateAction))
                 {
                     var adapter = new PSCmdletAdapter(this, state);
                     adapter.WaitForCompletion(CreateWithSimpleParameters);
@@ -302,7 +302,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
                 var connectionStrings = WebsitesClient.WrappedWebsitesClient.WebApps().ListConnectionStrings(output.ResourceGroup, output.Name);
                 output.SiteConfig.ConnectionStrings = connectionStrings
                     .Properties
-                    .Select(s => new ConnStringInfo()
+                    .Select(s => new ConnStringInfo
                     {
                         Name = s.Key,
                         ConnectionString = s.Value.Value,
@@ -343,7 +343,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
                         else if (!string.IsNullOrWhiteSpace(userName) && !string.IsNullOrWhiteSpace(password))
                         {
                             await git.AddRemoteRepository("azure", $"https://{userName}:{password}@{scmHostName}");
-                            adapter.WriteVerboseAsync(Microsoft.Azure.Commands.WebApps.Properties.Resources.GitRemoteMessage);
+                            adapter.WriteVerboseAsync(Properties.Resources.GitRemoteMessage);
                             newOutput.GitRemoteName = "azure";
                         }
                     }
@@ -353,7 +353,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
             {
                 // do not write errors for problems with adding git repository
                 var repoPath = GitRepositoryPath ?? adapter?.SessionState?.Path?.CurrentFileSystemLocation?.Path;
-                adapter.WriteWarningAsync(String.Format(Microsoft.Azure.Commands.WebApps.Properties.Resources.GitRemoteAddFailure, repoPath, exception.Message));
+                adapter.WriteWarningAsync(String.Format(Properties.Resources.GitRemoteAddFailure, repoPath, exception.Message));
             }
             adapter.WriteObjectAsync(output);
         }

@@ -35,7 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         private long activeTaskCount = 0;
         private int maxConcurrency = 0;
         private CountdownEvent taskCounter;
-        private CancellationToken cancellationToken;
+        private CancellationToken _cancellationToken;
         private bool IsFirstWait;
 
         public long TotalTaskCount { get { return Interlocked.Read(ref totalTaskCount); } }
@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         {
             taskQueue = new ConcurrentQueue<Tuple<long, Func<long, Task>>>();
             this.maxConcurrency = maxConcurrency;
-            this.cancellationToken = cancellationToken;
+            this._cancellationToken = cancellationToken;
             taskCounter = new CountdownEvent(1);
             IsFirstWait = true;
             TaskStatus = new ConcurrentDictionary<long, bool>();
@@ -169,7 +169,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// </summary>
         private void RunRemainingTask()
         {
-            if (cancellationToken.IsCancellationRequested)
+            if (_cancellationToken.IsCancellationRequested)
             {
                 return;
             }
@@ -189,7 +189,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <param name="taskGenerator">Task generator</param>
         public void RunTask(Func<long, Task> taskGenerator)
         {
-            if (cancellationToken.IsCancellationRequested)
+            if (_cancellationToken.IsCancellationRequested)
             {
                 return;
             }

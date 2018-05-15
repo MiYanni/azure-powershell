@@ -32,23 +32,23 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(Name, Microsoft.Azure.Commands.Network.Properties.Resources.OverwritingResourceMessage))
+            if (ShouldProcess(Name, Properties.Resources.OverwritingResourceMessage))
             {
                 base.ExecuteCmdlet();
 
-                var oldAuthCertificate = this.ApplicationGateway.AuthenticationCertificates.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                var oldAuthCertificate = ApplicationGateway.AuthenticationCertificates.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
                 if (oldAuthCertificate == null)
                 {
                     throw new ArgumentException("Authentication certificate with the specified name does not exist");
                 }
 
-                var newAuthCertificate = base.NewObject();
+                var newAuthCertificate = NewObject();
 
-                this.ApplicationGateway.AuthenticationCertificates.Remove(oldAuthCertificate);
-                this.ApplicationGateway.AuthenticationCertificates.Add(newAuthCertificate);
+                ApplicationGateway.AuthenticationCertificates.Remove(oldAuthCertificate);
+                ApplicationGateway.AuthenticationCertificates.Add(newAuthCertificate);
 
-                WriteObject(this.ApplicationGateway);
+                WriteObject(ApplicationGateway);
             }
         }
     }

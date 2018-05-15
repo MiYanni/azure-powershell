@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var present = this.IsRouteFilterRulePresent(this.RouteFilter.ResourceGroupName, this.RouteFilter.Name, this.Name);
+            var present = IsRouteFilterRulePresent(RouteFilter.ResourceGroupName, RouteFilter.Name, Name);
 
             ConfirmAction(
                Force.IsPresent,
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Network
                Name,
                () =>
                {
-                   var rule = this.RouteFilter.Rules.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+                   var rule = RouteFilter.Rules.SingleOrDefault(resource => string.Equals(resource.Name, Name, StringComparison.CurrentCultureIgnoreCase));
 
                    if (rule != null)
                    {
@@ -54,14 +54,14 @@ namespace Microsoft.Azure.Commands.Network
 
                    rule = new PSRouteFilterRule();
 
-                   rule.Name = this.Name;
-                   rule.Access = this.Access;
-                   rule.RouteFilterRuleType = this.RouteFilterRuleType;
-                   rule.Communities = this.CommunityList;
+                   rule.Name = Name;
+                   rule.Access = Access;
+                   rule.RouteFilterRuleType = RouteFilterRuleType;
+                   rule.Communities = CommunityList;
 
-                   this.RouteFilter.Rules.Add(rule);
+                   RouteFilter.Rules.Add(rule);
 
-                   WriteObject(this.RouteFilter);
+                   WriteObject(RouteFilter);
                },
                () => present);
         }

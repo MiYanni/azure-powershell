@@ -84,15 +84,15 @@ namespace Microsoft.Azure.Commands.Consumption.Cmdlets.UsageDetails
         public override void ExecuteCmdlet()
         {
             var expand = default(string);
-            if (!string.IsNullOrWhiteSpace(this.Expand) &&
-                 this.Expand.Equals(Constants.Expands.MeterDetails, StringComparison.InvariantCultureIgnoreCase) ||
-                this.IncludeMeterDetails.IsPresent)
+            if (!string.IsNullOrWhiteSpace(Expand) &&
+                 Expand.Equals(Constants.Expands.MeterDetails, StringComparison.InvariantCultureIgnoreCase) ||
+                IncludeMeterDetails.IsPresent)
             {
                 expand = "properties/meterDetails";
             }
-            if (!string.IsNullOrWhiteSpace(this.Expand) &&
-                this.Expand.Equals(Constants.Expands.AdditionalInfo, StringComparison.InvariantCultureIgnoreCase) ||
-                this.IncludeAdditionalProperties.IsPresent)
+            if (!string.IsNullOrWhiteSpace(Expand) &&
+                Expand.Equals(Constants.Expands.AdditionalInfo, StringComparison.InvariantCultureIgnoreCase) ||
+                IncludeAdditionalProperties.IsPresent)
             {
                 if (expand == default(string))
                 {
@@ -106,16 +106,16 @@ namespace Microsoft.Azure.Commands.Consumption.Cmdlets.UsageDetails
 
             string filter = null;
           
-            if (this.StartDate.HasValue)
+            if (StartDate.HasValue)
             {
-                var from = this.StartDate.Value.Date;
+                var from = StartDate.Value.Date;
                 string fromFilter = "properties/usageStart ge " + "'" + from.ToString(Constants.Formats.DateTimeParameterFormat) + "'";
                 filter = fromFilter;
             }            
 
-            if (this.EndDate.HasValue)
+            if (EndDate.HasValue)
             {
-                var to = this.EndDate.Value.Date;
+                var to = EndDate.Value.Date;
                 string toFilter = "properties/usageEnd le " + "'" + to.ToString(Constants.Formats.DateTimeParameterFormat) + "'";
                 if (string.IsNullOrWhiteSpace(filter))
                 {
@@ -127,9 +127,9 @@ namespace Microsoft.Azure.Commands.Consumption.Cmdlets.UsageDetails
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(this.ResourceGroup))
+            if (!string.IsNullOrWhiteSpace(ResourceGroup))
             {
-                string resourceGroupFilter = "properties/resourceGroup eq " + "'" + this.ResourceGroup + "'";
+                string resourceGroupFilter = "properties/resourceGroup eq " + "'" + ResourceGroup + "'";
                 if (string.IsNullOrWhiteSpace(filter))
                 {
                     filter = resourceGroupFilter;
@@ -141,9 +141,9 @@ namespace Microsoft.Azure.Commands.Consumption.Cmdlets.UsageDetails
             }
 
             
-            if (!string.IsNullOrWhiteSpace(this.InstanceName))
+            if (!string.IsNullOrWhiteSpace(InstanceName))
             {
-                string instanceNameFilter = "properties/instanceName eq " + "'" + this.InstanceName + "'";
+                string instanceNameFilter = "properties/instanceName eq " + "'" + InstanceName + "'";
                 if (string.IsNullOrWhiteSpace(filter))
                 {
                     filter = instanceNameFilter;
@@ -154,9 +154,9 @@ namespace Microsoft.Azure.Commands.Consumption.Cmdlets.UsageDetails
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(this.InstanceId))
+            if (!string.IsNullOrWhiteSpace(InstanceId))
             {
-                string instanceIdFilter = "properties/instanceId eq " + "'" + this.InstanceId + "'";
+                string instanceIdFilter = "properties/instanceId eq " + "'" + InstanceId + "'";
                 if (string.IsNullOrWhiteSpace(filter))
                 {
                     filter = instanceIdFilter;
@@ -167,9 +167,9 @@ namespace Microsoft.Azure.Commands.Consumption.Cmdlets.UsageDetails
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(this.Tag))
+            if (!string.IsNullOrWhiteSpace(Tag))
             {
-                string tagsFilter = "properties/tags eq " + "'" + this.Tag + "'";
+                string tagsFilter = "properties/tags eq " + "'" + Tag + "'";
                 if (string.IsNullOrWhiteSpace(filter))
                 {
                     filter = tagsFilter;
@@ -181,19 +181,19 @@ namespace Microsoft.Azure.Commands.Consumption.Cmdlets.UsageDetails
             }
 
             int numberToFetch = MaxNumberToFetch;
-            if (this.Top.HasValue && this.Top.Value < numberToFetch)
+            if (Top.HasValue && Top.Value < numberToFetch)
             {
-                numberToFetch = this.Top.Value;
+                numberToFetch = Top.Value;
             }
-            if (this.MaxCount.HasValue && this.MaxCount.Value < numberToFetch)
+            if (MaxCount.HasValue && MaxCount.Value < numberToFetch)
             {
-                numberToFetch = this.MaxCount.Value;
+                numberToFetch = MaxCount.Value;
             }
 
             IPage<UsageDetail> usageDetails = null;         
             try
             {
-                if (!string.IsNullOrWhiteSpace(this.BillingPeriodName))
+                if (!string.IsNullOrWhiteSpace(BillingPeriodName))
                 {
                     usageDetails = ConsumptionManagementClient.UsageDetails.ListByBillingPeriod(BillingPeriodName,
                         expand, filter, default(string), numberToFetch);

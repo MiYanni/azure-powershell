@@ -56,22 +56,22 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             IEnumerable<NodeConfiguration> nodeConfigurations;
 
-            if (this.Name != null)
+            if (Name != null)
             {
-                nodeConfigurations = new List<NodeConfiguration> { this.AutomationClient.GetNodeConfiguration(this.ResourceGroupName, this.AutomationAccountName, this.Name, this.RollupStatus) };
-                this.GenerateCmdletOutput(nodeConfigurations);
+                nodeConfigurations = new List<NodeConfiguration> { AutomationClient.GetNodeConfiguration(ResourceGroupName, AutomationAccountName, Name, RollupStatus) };
+                GenerateCmdletOutput(nodeConfigurations);
             }
-            else if (this.ConfigurationName != null)
+            else if (ConfigurationName != null)
             {
                 var nextLink = string.Empty;
 
                 do
                 {
                     // ByConfiguration 
-                    nodeConfigurations = this.AutomationClient.ListNodeConfigurationsByConfigurationName(this.ResourceGroupName, this.AutomationAccountName, this.ConfigurationName, this.RollupStatus, ref nextLink);
+                    nodeConfigurations = AutomationClient.ListNodeConfigurationsByConfigurationName(ResourceGroupName, AutomationAccountName, ConfigurationName, RollupStatus, ref nextLink);
                     if (nodeConfigurations != null)
                     {
-                        this.GenerateCmdletOutput(nodeConfigurations);
+                        GenerateCmdletOutput(nodeConfigurations);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));
@@ -84,10 +84,10 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                 do
                 {
                     // ByAll
-                    nodeConfigurations = this.AutomationClient.ListNodeConfigurations(this.ResourceGroupName, this.AutomationAccountName, this.RollupStatus, ref nextLink);
+                    nodeConfigurations = AutomationClient.ListNodeConfigurations(ResourceGroupName, AutomationAccountName, RollupStatus, ref nextLink);
                     if (nodeConfigurations != null)
                     {
-                        this.GenerateCmdletOutput(nodeConfigurations);
+                        GenerateCmdletOutput(nodeConfigurations);
                     }
 
                 } while (!string.IsNullOrEmpty(nextLink));

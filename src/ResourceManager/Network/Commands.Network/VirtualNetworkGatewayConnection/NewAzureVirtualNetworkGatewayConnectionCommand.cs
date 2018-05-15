@@ -152,11 +152,11 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             WriteWarning("The output object type of this cmdlet will be modified in a future release.");
-            var present = this.IsVirtualNetworkGatewayConnectionPresent(this.ResourceGroupName, this.Name);
+            var present = IsVirtualNetworkGatewayConnectionPresent(ResourceGroupName, Name);
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Microsoft.Azure.Commands.Network.Properties.Resources.OverwritingResource, Name),
-                Microsoft.Azure.Commands.Network.Properties.Resources.OverwritingResourceMessage,
+                string.Format(Properties.Resources.OverwritingResource, Name),
+                Properties.Resources.OverwritingResourceMessage,
                 Name,
                 () =>
                 {
@@ -169,50 +169,50 @@ namespace Microsoft.Azure.Commands.Network
         private PSVirtualNetworkGatewayConnection CreateVirtualNetworkGatewayConnection()
         {
             var vnetGatewayConnection = new PSVirtualNetworkGatewayConnection();
-            vnetGatewayConnection.Name = this.Name;
-            vnetGatewayConnection.ResourceGroupName = this.ResourceGroupName;
-            vnetGatewayConnection.Location = this.Location;
-            vnetGatewayConnection.VirtualNetworkGateway1 = this.VirtualNetworkGateway1;
-            vnetGatewayConnection.VirtualNetworkGateway2 = this.VirtualNetworkGateway2;
-            vnetGatewayConnection.LocalNetworkGateway2 = this.LocalNetworkGateway2;
-            vnetGatewayConnection.ConnectionType = this.ConnectionType;
-            vnetGatewayConnection.RoutingWeight = this.RoutingWeight;
-            vnetGatewayConnection.SharedKey = this.SharedKey;
-            vnetGatewayConnection.EnableBgp = this.EnableBgp;
-            vnetGatewayConnection.UsePolicyBasedTrafficSelectors = this.UsePolicyBasedTrafficSelectors;
+            vnetGatewayConnection.Name = Name;
+            vnetGatewayConnection.ResourceGroupName = ResourceGroupName;
+            vnetGatewayConnection.Location = Location;
+            vnetGatewayConnection.VirtualNetworkGateway1 = VirtualNetworkGateway1;
+            vnetGatewayConnection.VirtualNetworkGateway2 = VirtualNetworkGateway2;
+            vnetGatewayConnection.LocalNetworkGateway2 = LocalNetworkGateway2;
+            vnetGatewayConnection.ConnectionType = ConnectionType;
+            vnetGatewayConnection.RoutingWeight = RoutingWeight;
+            vnetGatewayConnection.SharedKey = SharedKey;
+            vnetGatewayConnection.EnableBgp = EnableBgp;
+            vnetGatewayConnection.UsePolicyBasedTrafficSelectors = UsePolicyBasedTrafficSelectors;
 
-            if (!string.IsNullOrEmpty(this.AuthorizationKey))
+            if (!string.IsNullOrEmpty(AuthorizationKey))
             {
-                vnetGatewayConnection.AuthorizationKey = this.AuthorizationKey;
+                vnetGatewayConnection.AuthorizationKey = AuthorizationKey;
             }
             
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
-                if (this.Peer != null)
+                if (Peer != null)
                 {
-                    this.PeerId = this.Peer.Id;
+                    PeerId = Peer.Id;
                 }
             }
 
-            if (!string.IsNullOrEmpty(this.PeerId))
+            if (!string.IsNullOrEmpty(PeerId))
             {
                 vnetGatewayConnection.Peer = new PSResourceId();
-                vnetGatewayConnection.Peer.Id = this.PeerId;
+                vnetGatewayConnection.Peer.Id = PeerId;
             }
             
-            if (this.IpsecPolicies != null)
+            if (IpsecPolicies != null)
             {
-                vnetGatewayConnection.IpsecPolicies = this.IpsecPolicies;
+                vnetGatewayConnection.IpsecPolicies = IpsecPolicies;
             }
 
             // Map to the sdk object
             var vnetGatewayConnectionModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualNetworkGatewayConnection>(vnetGatewayConnection);
-            vnetGatewayConnectionModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            vnetGatewayConnectionModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
 
             // Execute the Create VirtualNetworkConnection call
-            this.VirtualNetworkGatewayConnectionClient.CreateOrUpdate(this.ResourceGroupName, this.Name, vnetGatewayConnectionModel);
+            VirtualNetworkGatewayConnectionClient.CreateOrUpdate(ResourceGroupName, Name, vnetGatewayConnectionModel);
 
-            var getVirtualNetworkGatewayConnection = this.GetVirtualNetworkGatewayConnection(this.ResourceGroupName, this.Name);
+            var getVirtualNetworkGatewayConnection = GetVirtualNetworkGatewayConnection(ResourceGroupName, Name);
 
             return getVirtualNetworkGatewayConnection;
         }

@@ -38,8 +38,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<string> AuditActionsAndGroups
         {
-            get { return this._auditActionsAndGroups; }
-            set { this._auditActionsAndGroups = value; }
+            get { return _auditActionsAndGroups; }
+            set { _auditActionsAndGroups = value; }
         }
         
         private bool _isStorageSecondaryKeyInUse;
@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public bool IsStorageSecondaryKeyInUse
         {
-            get { return this._isStorageSecondaryKeyInUse; }
-            set { this._isStorageSecondaryKeyInUse = value; }
+            get { return _isStorageSecondaryKeyInUse; }
+            set { _isStorageSecondaryKeyInUse = value; }
         }
         
         private int _retentionDays;
@@ -60,8 +60,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public int RetentionDays
         {
-            get { return this._retentionDays; }
-            set { this._retentionDays = value; }
+            get { return _retentionDays; }
+            set { _retentionDays = value; }
         }
         
         private string _state;
@@ -72,8 +72,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string State
         {
-            get { return this._state; }
-            set { this._state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
         
         private string _storageAccountAccessKey;
@@ -84,8 +84,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageAccountAccessKey
         {
-            get { return this._storageAccountAccessKey; }
-            set { this._storageAccountAccessKey = value; }
+            get { return _storageAccountAccessKey; }
+            set { _storageAccountAccessKey = value; }
         }
         
         private string _storageAccountSubscriptionId;
@@ -95,8 +95,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageAccountSubscriptionId
         {
-            get { return this._storageAccountSubscriptionId; }
-            set { this._storageAccountSubscriptionId = value; }
+            get { return _storageAccountSubscriptionId; }
+            set { _storageAccountSubscriptionId = value; }
         }
         
         private string _storageEndpoint;
@@ -107,8 +107,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string StorageEndpoint
         {
-            get { return this._storageEndpoint; }
-            set { this._storageEndpoint = value; }
+            get { return _storageEndpoint; }
+            set { _storageEndpoint = value; }
         }
         
         /// <summary>
@@ -116,7 +116,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public BlobAuditingProperties()
         {
-            this.AuditActionsAndGroups = new LazyList<string>();
+            AuditActionsAndGroups = new LazyList<string>();
         }
     }
 }

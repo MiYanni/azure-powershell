@@ -16,9 +16,9 @@
 namespace Microsoft.Azure.Commands.LogicApp.Utilities
 {
     using System;
-    using Microsoft.Azure.Commands.Common.Authentication;
-    using Microsoft.Azure.Commands.Common.Authentication.Models;
-    using Microsoft.Azure.Management.Logic;
+    using Common.Authentication;
+    using Common.Authentication.Models;
+    using Management.Logic;
     using Common.Authentication.Abstractions;
 
     /// <summary>
@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="context">The Azure context instance</param>
         public IntegrationAccountClient(IAzureContext context)
         {
-            this.LogicManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<LogicManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);            
-            this.LogicManagementClient.SubscriptionId = context.Subscription.Id.ToString();            
+            LogicManagementClient = AzureSession.Instance.ClientFactory.CreateArmClient<LogicManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);            
+            LogicManagementClient.SubscriptionId = context.Subscription.Id.ToString();            
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.LogicApp.Utilities
         /// <param name="client">client reference</param>
         public IntegrationAccountClient(ILogicManagementClient client)
         {
-            this.LogicManagementClient = client;
+            LogicManagementClient = client;
         }
 
         /// <summary>

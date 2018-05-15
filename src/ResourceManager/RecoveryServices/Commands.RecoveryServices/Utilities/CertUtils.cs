@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             var bytes = cert.Export(X509ContentType.Pfx, password);
 
             // PfxValidation is not done here because these are newly created certs and assumed valid.
-            return NewX509Certificate2(bytes, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable, shouldValidatePfx: false);
+            return NewX509Certificate2(bytes, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable, false);
         }
 
         /// <summary>
@@ -149,8 +149,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         public static string GetCertInBase64EncodedForm(string certFileName)
         {
             FileStream fileStream = null;
-            byte[] data = null;
-            string certInBase64EncodedForm = null;
+            byte[] data;
+            string certInBase64EncodedForm;
 
             try
             {

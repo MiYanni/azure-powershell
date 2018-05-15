@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             LinkedServiceResource linkedService;
             try
             {
-                linkedService = SafeJsonConvert.DeserializeObject<LinkedServiceResource>(rawJsonContent, this.DataFactoryManagementClient.DeserializationSettings);
+                linkedService = SafeJsonConvert.DeserializeObject<LinkedServiceResource>(rawJsonContent, DataFactoryManagementClient.DeserializationSettings);
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             }
 
             // If create or update failed, the current behavior is to throw
-            return this.DataFactoryManagementClient.LinkedServices.CreateOrUpdate(
+            return DataFactoryManagementClient.LinkedServices.CreateOrUpdate(
                     resourceGroupName,
                     dataFactoryName,
                     linkedServiceName,
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         public virtual PSLinkedService GetLinkedService(string resourceGroupName, string dataFactoryName,
             string linkedServiceName)
         {
-            LinkedServiceResource response = this.DataFactoryManagementClient.LinkedServices.Get(resourceGroupName, dataFactoryName,
+            LinkedServiceResource response = DataFactoryManagementClient.LinkedServices.Get(resourceGroupName, dataFactoryName,
                 linkedServiceName);
 
             if (response == null)
@@ -74,11 +74,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             IPage<LinkedServiceResource> response;
             if (filterOptions.NextLink.IsNextPageLink())
             {
-                response = this.DataFactoryManagementClient.LinkedServices.ListByFactoryNext(filterOptions.NextLink);
+                response = DataFactoryManagementClient.LinkedServices.ListByFactoryNext(filterOptions.NextLink);
             }
             else
             {
-                response = this.DataFactoryManagementClient.LinkedServices.ListByFactory(filterOptions.ResourceGroupName,
+                response = DataFactoryManagementClient.LinkedServices.ListByFactory(filterOptions.ResourceGroupName,
                     filterOptions.DataFactoryName);
             }
             filterOptions.NextLink = response != null ? response.NextPageLink : null;
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
 
         public virtual HttpStatusCode DeleteLinkedService(string resourceGroupName, string dataFactoryName, string linkedServiceName)
         {
-            Rest.Azure.AzureOperationResponse response = this.DataFactoryManagementClient.LinkedServices.DeleteWithHttpMessagesAsync(resourceGroupName,
+            Rest.Azure.AzureOperationResponse response = DataFactoryManagementClient.LinkedServices.DeleteWithHttpMessagesAsync(resourceGroupName,
                 dataFactoryName, linkedServiceName).Result;
 
             return response.Response.StatusCode;
@@ -175,10 +175,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 {
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
     }

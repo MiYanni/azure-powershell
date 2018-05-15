@@ -172,34 +172,34 @@ namespace Microsoft.Azure.Commands.PolicyInsights.Models
                 return;
             }
 
-            this.AdditionalProperties = policyState.AdditionalProperties;
-            this.AdditionalProperties.Remove("@odata.id");
+            AdditionalProperties = policyState.AdditionalProperties;
+            AdditionalProperties.Remove("@odata.id");
 
-            this.Timestamp = policyState.Timestamp;
-            this.ResourceId = policyState.ResourceId;
-            this.PolicyAssignmentId = policyState.PolicyAssignmentId;
-            this.PolicyDefinitionId = policyState.PolicyDefinitionId;
-            this.EffectiveParameters = policyState.EffectiveParameters;
-            this.IsCompliant = policyState.IsCompliant;
-            this.SubscriptionId = policyState.SubscriptionId;
-            this.ResourceType = policyState.ResourceType;
-            this.ResourceLocation = policyState.ResourceLocation;
-            this.ResourceGroup = policyState.ResourceGroup;
-            this.ResourceTags = policyState.ResourceTags;
-            this.PolicyAssignmentName = policyState.PolicyAssignmentName;
-            this.PolicyAssignmentOwner = policyState.PolicyAssignmentOwner;
-            this.PolicyAssignmentParameters = policyState.PolicyAssignmentParameters;
-            this.PolicyAssignmentScope = policyState.PolicyAssignmentScope;
-            this.PolicyDefinitionName = policyState.PolicyDefinitionName;
-            this.PolicyDefinitionAction = policyState.PolicyDefinitionAction;
-            this.PolicyDefinitionCategory = policyState.PolicyDefinitionCategory;
-            this.PolicySetDefinitionId = policyState.PolicySetDefinitionId;
-            this.PolicySetDefinitionName = policyState.PolicySetDefinitionName;
-            this.PolicySetDefinitionOwner = policyState.PolicySetDefinitionOwner;
-            this.PolicySetDefinitionCategory = policyState.PolicySetDefinitionCategory;
-            this.PolicySetDefinitionParameters = policyState.PolicySetDefinitionParameters;
-            this.ManagementGroupIds = policyState.ManagementGroupIds;
-            this.PolicyDefinitionReferenceId = policyState.PolicyDefinitionReferenceId;
+            Timestamp = policyState.Timestamp;
+            ResourceId = policyState.ResourceId;
+            PolicyAssignmentId = policyState.PolicyAssignmentId;
+            PolicyDefinitionId = policyState.PolicyDefinitionId;
+            EffectiveParameters = policyState.EffectiveParameters;
+            IsCompliant = policyState.IsCompliant;
+            SubscriptionId = policyState.SubscriptionId;
+            ResourceType = policyState.ResourceType;
+            ResourceLocation = policyState.ResourceLocation;
+            ResourceGroup = policyState.ResourceGroup;
+            ResourceTags = policyState.ResourceTags;
+            PolicyAssignmentName = policyState.PolicyAssignmentName;
+            PolicyAssignmentOwner = policyState.PolicyAssignmentOwner;
+            PolicyAssignmentParameters = policyState.PolicyAssignmentParameters;
+            PolicyAssignmentScope = policyState.PolicyAssignmentScope;
+            PolicyDefinitionName = policyState.PolicyDefinitionName;
+            PolicyDefinitionAction = policyState.PolicyDefinitionAction;
+            PolicyDefinitionCategory = policyState.PolicyDefinitionCategory;
+            PolicySetDefinitionId = policyState.PolicySetDefinitionId;
+            PolicySetDefinitionName = policyState.PolicySetDefinitionName;
+            PolicySetDefinitionOwner = policyState.PolicySetDefinitionOwner;
+            PolicySetDefinitionCategory = policyState.PolicySetDefinitionCategory;
+            PolicySetDefinitionParameters = policyState.PolicySetDefinitionParameters;
+            ManagementGroupIds = policyState.ManagementGroupIds;
+            PolicyDefinitionReferenceId = policyState.PolicyDefinitionReferenceId;
         }
     }
 }

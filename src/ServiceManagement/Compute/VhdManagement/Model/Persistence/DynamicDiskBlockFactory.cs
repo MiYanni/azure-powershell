@@ -24,8 +24,8 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         public DynamicDiskBlockFactory(VhdFile vhdFile) : base(vhdFile)
         {
-            this.bitMapFactory = new BitMapFactory(vhdFile);
-            this.sectorFactory = new SectorFactory(vhdFile, this);
+            bitMapFactory = new BitMapFactory(vhdFile);
+            sectorFactory = new SectorFactory(vhdFile, this);
         }
 
         public override Block Create(uint block)
@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
                     cachedBlock = new Block(this)
                     {
                         BlockIndex = block,
-                        VhdUniqueId = this.vhdFile.Footer.UniqueId,
+                        VhdUniqueId = vhdFile.Footer.UniqueId,
                         LogicalRange = IndexRange.FromLength(block * GetBlockSize(), vhdFile.Header.BlockSize),
                         BitMap = null,
                         Empty = true
@@ -51,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
                 cachedBlock = new Block(this)
                 {
                     BlockIndex = block,
-                    VhdUniqueId = this.vhdFile.Footer.UniqueId,
+                    VhdUniqueId = vhdFile.Footer.UniqueId,
                     LogicalRange = IndexRange.FromLength(block * GetBlockSize(), vhdFile.Header.BlockSize),
                     BitMap = bitMapFactory.Create(block),
                     Empty = false
@@ -64,9 +64,9 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         {
             if (block.Empty)
             {
-                return this.sectorFactory.CreateEmptySector(block.BlockIndex, sector);
+                return sectorFactory.CreateEmptySector(block.BlockIndex, sector);
             }
-            return this.sectorFactory.Create(block, sector);
+            return sectorFactory.Create(block, sector);
         }
 
         protected override byte[] DoReadBlockData(Block block)

@@ -52,12 +52,12 @@ namespace Microsoft.Azure.Commands.Insights.Alerts
         protected override void ProcessRecordInternal()
         {
             if (ShouldProcess(
-                target: string.Format("Remove an alert rule: {0} from resource group: {1}", this.Name, this.ResourceGroupName),
-                action: "Remove an alert rule"))
+                string.Format("Remove an alert rule: {0} from resource group: {1}", Name, ResourceGroupName),
+                "Remove an alert rule"))
             {
-                var result = this.MonitorManagementClient.AlertRules.DeleteWithHttpMessagesAsync(resourceGroupName: this.ResourceGroupName, ruleName: this.Name).Result;
+                var result = MonitorManagementClient.AlertRules.DeleteWithHttpMessagesAsync(ResourceGroupName, Name).Result;
 
-                var response = new AzureOperationResponse()
+                var response = new AzureOperationResponse
                 {
                     RequestId = result.RequestId,
                     StatusCode = result.Response != null ? result.Response.StatusCode : HttpStatusCode.OK

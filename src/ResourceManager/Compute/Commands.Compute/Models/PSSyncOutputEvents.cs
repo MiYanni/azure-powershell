@@ -35,8 +35,8 @@ namespace Microsoft.Azure.Commands.Compute.Models
         public PSSyncOutputEvents(PSCmdlet cmdlet)
         {
             this.cmdlet = cmdlet;
-            this.runspace = RunspaceFactory.CreateRunspace(this.cmdlet.Host);
-            this.runspace.Open();
+            runspace = RunspaceFactory.CreateRunspace(this.cmdlet.Host);
+            runspace.Open();
         }
 
         private static string FormatDuration(TimeSpan ts)
@@ -254,7 +254,7 @@ namespace Microsoft.Azure.Commands.Compute.Models
                     return;
                 }
 
-                var progressCommand = String.Format(@"Write-Progress -Id {0} -Activity '{1}' -Status '{2}' -SecondsRemaining {3} -PercentComplete {4}", 2, Rsrc.PSSyncOutputEventsProgressEmptyBlockDetection, Rsrc.PSSyncOutputEventsEmptyBlockDetectionDetecting, -1, ((double)processedRangeCount / totalRangeCount) * 100);
+                var progressCommand = String.Format(@"Write-Progress -Id {0} -Activity '{1}' -Status '{2}' -SecondsRemaining {3} -PercentComplete {4}", 2, Rsrc.PSSyncOutputEventsProgressEmptyBlockDetection, Rsrc.PSSyncOutputEventsEmptyBlockDetectionDetecting, -1, (double)processedRangeCount / totalRangeCount * 100);
                 ps.Runspace = runspace;
                 ps.AddScript(progressCommand);
                 ps.Invoke();
@@ -288,7 +288,7 @@ namespace Microsoft.Azure.Commands.Compute.Models
                 {
                     runspace.Dispose();
                 }
-                this.disposed = true;
+                disposed = true;
             }
         }
     }

@@ -47,10 +47,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Container
             {
                 base.ExecuteCmdlet();
 
-                if ((AzureRmBackupManagementServer.BackupEngineType !=
+                if (AzureRmBackupManagementServer.BackupEngineType !=
                     BackupEngineType.DpmBackupEngine.ToString() &&
                     AzureRmBackupManagementServer.BackupEngineType !=
-                    BackupEngineType.AzureBackupServerEngine.ToString()) ||
+                    BackupEngineType.AzureBackupServerEngine.ToString() ||
                     AzureRmBackupManagementServer.BackupManagementType.ToString() !=
                     BackupManagementType.SCDPM.ToString() &&
                     AzureRmBackupManagementServer.BackupManagementType.ToString() !=

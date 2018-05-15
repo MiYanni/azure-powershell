@@ -66,8 +66,8 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
                     Mail = Mail
                 };
 
-                ulong first = MyInvocation.BoundParameters.ContainsKey("First") ? this.PagingParameters.First : ulong.MaxValue;
-                ulong skip = MyInvocation.BoundParameters.ContainsKey("Skip") ? this.PagingParameters.Skip : 0;
+                ulong first = MyInvocation.BoundParameters.ContainsKey("First") ? PagingParameters.First : ulong.MaxValue;
+                ulong skip = MyInvocation.BoundParameters.ContainsKey("Skip") ? PagingParameters.Skip : 0;
                 WriteObject(ActiveDirectoryClient.FilterUsers(options, first, skip), true);
             });
         }

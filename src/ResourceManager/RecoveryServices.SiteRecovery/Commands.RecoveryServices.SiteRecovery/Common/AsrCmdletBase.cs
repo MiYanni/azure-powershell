@@ -49,12 +49,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             get
             {
-                if (this.recoveryServicesClient == null)
+                if (recoveryServicesClient == null)
                 {
-                    this.recoveryServicesClient = new PSRecoveryServicesClient(this.DefaultProfile);
+                    recoveryServicesClient = new PSRecoveryServicesClient(DefaultProfile);
                 }
 
-                return this.recoveryServicesClient;
+                return recoveryServicesClient;
             }
         }
 
@@ -66,11 +66,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             try
             {
                 base.ExecuteCmdlet();
-                this.ExecuteSiteRecoveryCmdlet();
+                ExecuteSiteRecoveryCmdlet();
             }
             catch (Exception ex)
             {
-                this.HandleException(ex);
+                HandleException(ex);
             }
         }
 
@@ -90,17 +90,17 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             Exception ex)
         {
             var clientRequestIdMsg = string.Empty;
-            if (this.recoveryServicesClient != null)
+            if (recoveryServicesClient != null)
             {
                 clientRequestIdMsg = "ClientRequestId: " +
-                                     this.recoveryServicesClient.ClientRequestId +
+                                     recoveryServicesClient.ClientRequestId +
                                      "\n";
             }
 
             var cloudException = ex as CloudException;
-            if ((cloudException != null) &&
-                (cloudException.Body != null) &&
-                (cloudException.Response != null))
+            if (cloudException != null &&
+                cloudException.Body != null &&
+                cloudException.Response != null)
             {
                 try
                 {
@@ -201,18 +201,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             do
             {
                 Thread.Sleep(PSRecoveryServicesClient.TimeToSleepBeforeFetchingJobDetailsAgain);
-                job = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(jobId);
-                this.WriteProgress(
+                job = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(jobId);
+                WriteProgress(
                     new ProgressRecord(
                         0,
                         Resources.WaitingForCompletion,
                         job.Properties.State));
             }
-            while (!((job.Properties.State == TaskStatus.Cancelled) ||
-                     (job.Properties.State == TaskStatus.Failed) ||
-                     (job.Properties.State == TaskStatus.Suspended) ||
-                     (job.Properties.State == TaskStatus.Succeeded) ||
-                     this.StopProcessingFlag));
+            while (!(job.Properties.State == TaskStatus.Cancelled ||
+                     job.Properties.State == TaskStatus.Failed ||
+                     job.Properties.State == TaskStatus.Suspended ||
+                     job.Properties.State == TaskStatus.Succeeded ||
+                     StopProcessingFlag));
 
             return job;
         }
@@ -224,7 +224,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             // Ctrl + C and etc
             base.StopProcessing();
-            this.StopProcessingFlag = true;
+            StopProcessingFlag = true;
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                         paramName));
             }
 
-            this.WriteWarningWithTimestamp(
+            WriteWarningWithTimestamp(
                 string.Format(
                     Resources.IDBasedParamUsageNotSupportedFromNextRelease,
                     paramName));

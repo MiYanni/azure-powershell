@@ -26,17 +26,17 @@ namespace Microsoft.Azure.Commands.MachineLearning
         {
             get
             {
-                if (this.webServicesClient == null)
+                if (webServicesClient == null)
                 {
-                    this.webServicesClient = new WebServicesClient(DefaultProfile.DefaultContext);
+                    webServicesClient = new WebServicesClient(DefaultProfile.DefaultContext);
                 }
 
-                this.webServicesClient.VerboseLogger = WriteVerboseWithTimestamp;
-                this.webServicesClient.ErrorLogger = WriteErrorWithTimestamp;
-                this.webServicesClient.WarningLogger = WriteWarningWithTimestamp;
-                return this.webServicesClient;
+                webServicesClient.VerboseLogger = WriteVerboseWithTimestamp;
+                webServicesClient.ErrorLogger = WriteErrorWithTimestamp;
+                webServicesClient.WarningLogger = WriteWarningWithTimestamp;
+                return webServicesClient;
             }
-            set { this.webServicesClient = value; }
+            set { webServicesClient = value; }
         }
     }
 }

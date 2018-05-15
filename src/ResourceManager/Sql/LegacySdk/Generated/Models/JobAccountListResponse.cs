@@ -40,8 +40,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<JobAccount> JobAccounts
         {
-            get { return this._jobAccounts; }
-            set { this._jobAccounts = value; }
+            get { return _jobAccounts; }
+            set { _jobAccounts = value; }
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public JobAccountListResponse()
         {
-            this.JobAccounts = new LazyList<JobAccount>();
+            JobAccounts = new LazyList<JobAccount>();
         }
         
         /// <summary>
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<JobAccount> GetEnumerator()
         {
-            return this.JobAccounts.GetEnumerator();
+            return JobAccounts.GetEnumerator();
         }
         
         /// <summary>
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

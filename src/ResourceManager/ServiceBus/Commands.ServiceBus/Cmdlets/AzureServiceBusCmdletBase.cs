@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands
     public abstract class AzureServiceBusCmdletBase : AzureRMCmdlet
     {
         protected static TimeSpan LongRunningOperationDefaultTimeout = TimeSpan.FromMinutes(1);
-        private Microsoft.Azure.Commands.ServiceBus.ServiceBusClient  _client;
+        private ServiceBusClient  _client;
 
         protected const string ServiceBusNamespaceVerb = "AzureRmServiceBusNamespace";
 
@@ -164,13 +164,13 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands
             return tspan;
         }
 
-        public Microsoft.Azure.Commands.ServiceBus.ServiceBusClient Client
+        public ServiceBusClient Client
         {
             get
             {
                 if (_client == null)
                 {
-                    _client = new Microsoft.Azure.Commands.ServiceBus.ServiceBusClient(DefaultContext);
+                    _client = new ServiceBusClient(DefaultContext);
                 }
                 return _client;
             }
@@ -231,7 +231,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands
             if (!string.IsNullOrEmpty(InputFile))
             {
                 string fileName = this.TryResolvePath(InputFile);
-                if (!(new FileInfo(fileName)).Exists)
+                if (!new FileInfo(fileName).Exists)
                 {
                     throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture, Resources.FileDoesNotExist, fileName));
                 }
@@ -275,7 +275,7 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands
 
                     if (tag.Value != null && !(tag.Value is string))
                         throw new ArgumentException("Tag has invalid value");
-                    string value = (tag.Value == null) ? string.Empty : (string)tag.Value;
+                    string value = tag.Value == null ? string.Empty : (string)tag.Value;
                     tagsDictionary[key] = value;
                 }
                 return tagsDictionary;

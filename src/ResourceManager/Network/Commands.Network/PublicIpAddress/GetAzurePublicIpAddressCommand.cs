@@ -142,20 +142,20 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 PSPublicIpAddress publicIp;
                 if (ParameterSetName.Contains("ScaleSetIp"))
                 {
                     var publicIpVmss = PublicIpAddressClient.GetVirtualMachineScaleSetPublicIPAddress(
-                        this.ResourceGroupName, this.VirtualMachineScaleSetName, this.VirtualMachineIndex, this.NetworkInterfaceName, this.IpConfigurationName, this.Name, this.ExpandResource);
+                        ResourceGroupName, VirtualMachineScaleSetName, VirtualMachineIndex, NetworkInterfaceName, IpConfigurationName, Name, ExpandResource);
                     publicIp = ToPsPublicIpAddress(publicIpVmss);
-                    publicIp.ResourceGroupName = this.ResourceGroupName;
+                    publicIp.ResourceGroupName = ResourceGroupName;
                     publicIp.Tag = TagsConversionHelper.CreateTagHashtable(publicIpVmss.Tags);
                 }
                 else
                 {
-                    publicIp = this.GetPublicIpAddress(this.ResourceGroupName, this.Name, this.ExpandResource);
+                    publicIp = GetPublicIpAddress(ResourceGroupName, Name, ExpandResource);
                 }
 
                 WriteObject(publicIp);
@@ -163,54 +163,54 @@ namespace Microsoft.Azure.Commands.Network
             else
             {
                 IPage<PublicIPAddress> publicipPage;
-                if (!string.IsNullOrEmpty(this.ResourceGroupName))
+                if (!string.IsNullOrEmpty(ResourceGroupName))
                 {
                     if (ParameterSetName.Contains("ScaleSetIp"))
                     {
-                        if (string.IsNullOrEmpty(this.VirtualMachineIndex))
+                        if (string.IsNullOrEmpty(VirtualMachineIndex))
                         {
                             publicipPage =
-                                this.PublicIpAddressClient.ListVirtualMachineScaleSetPublicIPAddresses(
-                                    this.ResourceGroupName,
-                                    this.VirtualMachineScaleSetName);
+                                PublicIpAddressClient.ListVirtualMachineScaleSetPublicIPAddresses(
+                                    ResourceGroupName,
+                                    VirtualMachineScaleSetName);
                         }
                         else
                         {
                             publicipPage =
-                                this.PublicIpAddressClient.ListVirtualMachineScaleSetVMPublicIPAddresses(
-                                    this.ResourceGroupName,
-                                    this.VirtualMachineScaleSetName,
-                                    this.VirtualMachineIndex,
-                                    this.NetworkInterfaceName,
-                                    this.IpConfigurationName);
+                                PublicIpAddressClient.ListVirtualMachineScaleSetVMPublicIPAddresses(
+                                    ResourceGroupName,
+                                    VirtualMachineScaleSetName,
+                                    VirtualMachineIndex,
+                                    NetworkInterfaceName,
+                                    IpConfigurationName);
                         }
                     }
                     else
                     {
-                        publicipPage = this.PublicIpAddressClient.List(this.ResourceGroupName);
+                        publicipPage = PublicIpAddressClient.List(ResourceGroupName);
                     }
                 }
                 else
                 {
-                    publicipPage = this.PublicIpAddressClient.ListAll();
+                    publicipPage = PublicIpAddressClient.ListAll();
                 }
 
                 // Get all resources by polling on next page link
                 List<PublicIPAddress> publicIPList;
                 if (ParameterSetName.Contains("ScaleSetIp"))
                 {
-                    if (string.IsNullOrEmpty(this.VirtualMachineIndex))
+                    if (string.IsNullOrEmpty(VirtualMachineIndex))
                     {
-                        publicIPList = ListNextLink<PublicIPAddress>.GetAllResourcesByPollingNextLink(publicipPage, this.PublicIpAddressClient.ListVirtualMachineScaleSetPublicIPAddressesNext);
+                        publicIPList = ListNextLink<PublicIPAddress>.GetAllResourcesByPollingNextLink(publicipPage, PublicIpAddressClient.ListVirtualMachineScaleSetPublicIPAddressesNext);
                     }
                     else
                     {
-                        publicIPList = ListNextLink<PublicIPAddress>.GetAllResourcesByPollingNextLink(publicipPage, this.PublicIpAddressClient.ListVirtualMachineScaleSetVMPublicIPAddressesNext);
+                        publicIPList = ListNextLink<PublicIPAddress>.GetAllResourcesByPollingNextLink(publicipPage, PublicIpAddressClient.ListVirtualMachineScaleSetVMPublicIPAddressesNext);
                     }
                 }
                 else
                 {
-                    publicIPList = ListNextLink<PublicIPAddress>.GetAllResourcesByPollingNextLink(publicipPage, this.PublicIpAddressClient.ListNext);
+                    publicIPList = ListNextLink<PublicIPAddress>.GetAllResourcesByPollingNextLink(publicipPage, PublicIpAddressClient.ListNext);
                 }
 
                 var psPublicIps = new List<PSPublicIpAddress>();
@@ -218,8 +218,8 @@ namespace Microsoft.Azure.Commands.Network
                 // populate the publicIpAddresses with the ResourceGroupName
                 foreach (var publicIp in publicIPList)
                 {
-                    var psPublicIp = this.ToPsPublicIpAddress(publicIp);
-                    psPublicIp.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(publicIp.Id);
+                    var psPublicIp = ToPsPublicIpAddress(publicIp);
+                    psPublicIp.ResourceGroupName = GetResourceGroup(publicIp.Id);
                     psPublicIps.Add(psPublicIp);
                 }
 

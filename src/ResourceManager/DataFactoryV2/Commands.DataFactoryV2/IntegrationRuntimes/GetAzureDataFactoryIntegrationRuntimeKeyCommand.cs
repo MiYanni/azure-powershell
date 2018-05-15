@@ -25,8 +25,8 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
     {
         public override void ExecuteCmdlet()
         {
-            this.ByResourceId();
-            this.ByIntegrationRuntimeObject();
+            ByResourceId();
+            ByIntegrationRuntimeObject();
 
             var keys = DataFactoryClient.GetIntegrationRuntimeKeyAsync(
                 ResourceGroupName,

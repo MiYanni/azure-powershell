@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.Compute
         ProfileNouns.AdditionalUnattendContent),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class NewAzureAdditionalUnattendContentCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class NewAzureAdditionalUnattendContentCommand : ResourceManager.Common.AzureRMCmdlet
     {
         private const ComponentNames defaultComponentName = ComponentNames.MicrosoftWindowsShellSetup;
         private const PassNames defaultPassName = PassNames.OobeSystem;
@@ -59,35 +59,35 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.VM.OSProfile == null)
+            if (VM.OSProfile == null)
             {
-                this.VM.OSProfile = new OSProfile();
+                VM.OSProfile = new OSProfile();
             }
 
-            if (this.VM.OSProfile.WindowsConfiguration == null && this.VM.OSProfile.LinuxConfiguration == null)
+            if (VM.OSProfile.WindowsConfiguration == null && VM.OSProfile.LinuxConfiguration == null)
             {
-                this.VM.OSProfile.WindowsConfiguration = new WindowsConfiguration();
+                VM.OSProfile.WindowsConfiguration = new WindowsConfiguration();
             }
-            else if (this.VM.OSProfile.WindowsConfiguration == null && this.VM.OSProfile.LinuxConfiguration != null)
+            else if (VM.OSProfile.WindowsConfiguration == null && VM.OSProfile.LinuxConfiguration != null)
             {
-                throw new ArgumentException(Microsoft.Azure.Commands.Compute.Properties.Resources.BothWindowsAndLinuxConfigurationsSpecified);
-            }
-
-            if (this.VM.OSProfile.WindowsConfiguration.AdditionalUnattendContent == null)
-            {
-                this.VM.OSProfile.WindowsConfiguration.AdditionalUnattendContent = new List<AdditionalUnattendContent>();
+                throw new ArgumentException(Properties.Resources.BothWindowsAndLinuxConfigurationsSpecified);
             }
 
-            this.VM.OSProfile.WindowsConfiguration.AdditionalUnattendContent.Add(
+            if (VM.OSProfile.WindowsConfiguration.AdditionalUnattendContent == null)
+            {
+                VM.OSProfile.WindowsConfiguration.AdditionalUnattendContent = new List<AdditionalUnattendContent>();
+            }
+
+            VM.OSProfile.WindowsConfiguration.AdditionalUnattendContent.Add(
                 new AdditionalUnattendContent
                 {
                     ComponentName = defaultComponentName,
-                    Content = this.Content,
+                    Content = Content,
                     PassName = defaultPassName,
-                    SettingName = this.SettingName,
+                    SettingName = SettingName,
                 });
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

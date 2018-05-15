@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string AdministratorType
         {
-            get { return this._administratorType; }
-            set { this._administratorType = value; }
+            get { return _administratorType; }
+            set { _administratorType = value; }
         }
         
         private string _login;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Login
         {
-            get { return this._login; }
-            set { this._login = value; }
+            get { return _login; }
+            set { _login = value; }
         }
         
         private Guid _sid;
@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Guid Sid
         {
-            get { return this._sid; }
-            set { this._sid = value; }
+            get { return _sid; }
+            set { _sid = value; }
         }
         
         private Guid _tenantId;
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public Guid TenantId
         {
-            get { return this._tenantId; }
-            set { this._tenantId = value; }
+            get { return _tenantId; }
+            set { _tenantId = value; }
         }
         
         /// <summary>
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         public ServerAdministratorProperties(Guid tenantId)
             : this()
         {
-            this.TenantId = tenantId;
+            TenantId = tenantId;
         }
     }
 }

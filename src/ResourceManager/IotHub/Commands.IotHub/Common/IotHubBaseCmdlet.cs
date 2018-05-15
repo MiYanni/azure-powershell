@@ -29,12 +29,12 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             get
             {
-                if (this.iothubClient == null)
+                if (iothubClient == null)
                 {
-                    this.iothubClient = AzureSession.Instance.ClientFactory.CreateArmClient<IotHubClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
+                    iothubClient = AzureSession.Instance.ClientFactory.CreateArmClient<IotHubClient>(DefaultProfile.DefaultContext, AzureEnvironment.Endpoint.ResourceManager);
                 }
 
-                return this.iothubClient;
+                return iothubClient;
             }
         }
 

@@ -43,19 +43,19 @@ namespace Microsoft.Azure.Commands.Insights.LogProfiles
         protected override void ProcessRecordInternal()
         {
             var result = new PSLogProfileCollection();
-            if (string.IsNullOrWhiteSpace(this.Name))
+            if (string.IsNullOrWhiteSpace(Name))
             {
-                IEnumerable<LogProfileResource> resultList = this.MonitorManagementClient.LogProfiles.ListAsync(cancellationToken: CancellationToken.None).Result;
+                IEnumerable<LogProfileResource> resultList = MonitorManagementClient.LogProfiles.ListAsync(CancellationToken.None).Result;
 
-                result.AddRange(resultList.Select(x => new PSLogProfile(logProfile: x)));
+                result.AddRange(resultList.Select(x => new PSLogProfile(x)));
             }
             else
             {
-                LogProfileResource logProfile = this.MonitorManagementClient.LogProfiles.GetAsync(logProfileName: this.Name, cancellationToken: CancellationToken.None).Result;
-                result.Add(new PSLogProfile(logProfile: logProfile));
+                LogProfileResource logProfile = MonitorManagementClient.LogProfiles.GetAsync(Name, CancellationToken.None).Result;
+                result.Add(new PSLogProfile(logProfile));
             }
 
-            WriteObject(result, enumerateCollection: true);
+            WriteObject(result, true);
         }
     }
 }

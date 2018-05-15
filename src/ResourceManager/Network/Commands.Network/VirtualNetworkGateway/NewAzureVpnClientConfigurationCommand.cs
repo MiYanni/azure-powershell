@@ -84,39 +84,39 @@ namespace Microsoft.Azure.Commands.Network
             {
                 PSVpnClientParameters vpnClientParams = new PSVpnClientParameters();
 
-                vpnClientParams.ProcessorArchitecture = string.IsNullOrWhiteSpace(this.ProcessorArchitecture) ?
+                vpnClientParams.ProcessorArchitecture = string.IsNullOrWhiteSpace(ProcessorArchitecture) ?
                     MNM.ProcessorArchitecture.Amd64.ToString() :
-                    this.ProcessorArchitecture;
+                    ProcessorArchitecture;
 
-                vpnClientParams.AuthenticationMethod = string.IsNullOrWhiteSpace(this.AuthenticationMethod)
+                vpnClientParams.AuthenticationMethod = string.IsNullOrWhiteSpace(AuthenticationMethod)
                     ? MNM.AuthenticationMethod.EAPTLS.ToString()
-                    : this.AuthenticationMethod;
+                    : AuthenticationMethod;
 
                 // Read the radius server root certificate if present
-                if (!string.IsNullOrWhiteSpace(this.RadiusRootCertificateFile))
+                if (!string.IsNullOrWhiteSpace(RadiusRootCertificateFile))
                 {
-                    if (File.Exists(this.RadiusRootCertificateFile))
+                    if (File.Exists(RadiusRootCertificateFile))
                     {
                         try
                         {
-                            X509Certificate2 radiusRootCertificate = new X509Certificate2(this.RadiusRootCertificateFile);
+                            X509Certificate2 radiusRootCertificate = new X509Certificate2(RadiusRootCertificateFile);
                             vpnClientParams.RadiusServerAuthCertificate = Convert.ToBase64String(radiusRootCertificate.Export(X509ContentType.Cert));
                         }
                         catch (Exception)
                         {
-                            WriteWarning("Invalid radius root certificate specified at path " + this.RadiusRootCertificateFile);
+                            WriteWarning("Invalid radius root certificate specified at path " + RadiusRootCertificateFile);
                         }
                     }
                     else
                     {
-                        WriteWarning("Cannot find radius root certificate with path " + this.RadiusRootCertificateFile);
+                        WriteWarning("Cannot find radius root certificate with path " + RadiusRootCertificateFile);
                     }
                 }
 
                 // Read the radius server root certificate if present
-                if (this.ClientRootCertificateFileList != null)
+                if (ClientRootCertificateFileList != null)
                 {
-                    foreach (string clientRootCertPath in this.ClientRootCertificateFileList)
+                    foreach (string clientRootCertPath in ClientRootCertificateFileList)
                     {
                         vpnClientParams.ClientRootCertificates = new List<string>();
                         if (File.Exists(clientRootCertPath))
@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Commands.Network
 
                 // There may be a required Json serialize for the package URL to conform to REST-API
                 // The try-catch below handles the case till the change is made and deployed to PROD
-                string serializedPackageUrl = this.NetworkClient.GenerateVpnProfile(this.ResourceGroupName, this.Name, vnetVpnClientParametersModel);
+                string serializedPackageUrl = NetworkClient.GenerateVpnProfile(ResourceGroupName, Name, vnetVpnClientParametersModel);
                 string packageUrl = string.Empty;
                 try
                 {
@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.Network
                     packageUrl = serializedPackageUrl;
                 }
 
-                PSVpnProfile vpnProfile = new PSVpnProfile() { VpnProfileSASUrl = packageUrl };
+                PSVpnProfile vpnProfile = new PSVpnProfile { VpnProfileSASUrl = packageUrl };
                 WriteObject(vpnProfile);
             }
         }

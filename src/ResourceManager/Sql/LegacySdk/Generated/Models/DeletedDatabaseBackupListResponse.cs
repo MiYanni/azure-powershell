@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IList<DeletedDatabaseBackup> DeletedDatabaseBackups
         {
-            get { return this._deletedDatabaseBackups; }
-            set { this._deletedDatabaseBackups = value; }
+            get { return _deletedDatabaseBackups; }
+            set { _deletedDatabaseBackups = value; }
         }
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DeletedDatabaseBackupListResponse()
         {
-            this.DeletedDatabaseBackups = new LazyList<DeletedDatabaseBackup>();
+            DeletedDatabaseBackups = new LazyList<DeletedDatabaseBackup>();
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public IEnumerator<DeletedDatabaseBackup> GetEnumerator()
         {
-            return this.DeletedDatabaseBackups.GetEnumerator();
+            return DeletedDatabaseBackups.GetEnumerator();
         }
         
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

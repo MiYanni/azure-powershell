@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 {
     [Cmdlet("Remove", "AzureRmVmssNetworkInterfaceConfiguration", SupportsShouldProcess = true)]
     [OutputType(typeof(PSVirtualMachineScaleSet))]
-    public partial class RemoveAzureRmVmssNetworkInterfaceConfigurationCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public partial class RemoveAzureRmVmssNetworkInterfaceConfigurationCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -57,41 +57,41 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         protected override void ProcessRecord()
         {
             // VirtualMachineProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
 
             // NetworkProfile
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
 
             // NetworkInterfaceConfigurations
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations == null)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations == null)
             {
-                WriteObject(this.VirtualMachineScaleSet);
+                WriteObject(VirtualMachineScaleSet);
                 return;
             }
-            var vNetworkInterfaceConfigurations = this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations.First
+            var vNetworkInterfaceConfigurations = VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations.First
                 (e =>
-                    (this.Name != null && e.Name == this.Name)
-                    || (this.Id != null && e.Id == this.Id)
+                    Name != null && e.Name == Name
+                    || Id != null && e.Id == Id
                 );
 
             if (vNetworkInterfaceConfigurations != null)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations.Remove(vNetworkInterfaceConfigurations);
+                VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations.Remove(vNetworkInterfaceConfigurations);
             }
 
-            if (this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations.Count == 0)
+            if (VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations.Count == 0)
             {
-                this.VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations = null;
+                VirtualMachineScaleSet.VirtualMachineProfile.NetworkProfile.NetworkInterfaceConfigurations = null;
             }
-            WriteObject(this.VirtualMachineScaleSet);
+            WriteObject(VirtualMachineScaleSet);
         }
     }
 }

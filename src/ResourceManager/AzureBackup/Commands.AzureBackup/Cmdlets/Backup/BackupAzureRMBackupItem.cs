@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.Cmdlets
                 WriteDebug(string.Format(Resources.TriggeringBackup, operationId));
 
                 var operationStatus = TrackOperation(Item.ResourceGroupName, Item.ResourceName, operationId);
-                WriteObject(GetCreatedJobs(Item.ResourceGroupName, Item.ResourceName, new Models.AzureRMBackupVault(Item.ResourceGroupName, Item.ResourceName, Item.Location), operationStatus.JobList).FirstOrDefault());
+                WriteObject(GetCreatedJobs(Item.ResourceGroupName, Item.ResourceName, new AzureRMBackupVault(Item.ResourceGroupName, Item.ResourceName, Item.Location), operationStatus.JobList).FirstOrDefault());
             });
         }
     }

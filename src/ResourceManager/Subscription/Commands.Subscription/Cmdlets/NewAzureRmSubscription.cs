@@ -43,10 +43,10 @@ namespace Microsoft.Azure.Commands.Subscription.Cmdlets
                 {
                     _activeDirectoryClient = new ActiveDirectoryClient(DefaultContext);
                 }
-                return this._activeDirectoryClient;
+                return _activeDirectoryClient;
             }
 
-            set { this._activeDirectoryClient = value; }
+            set { _activeDirectoryClient = value; }
         }
 
         /// <summary>
@@ -88,24 +88,24 @@ namespace Microsoft.Azure.Commands.Subscription.Cmdlets
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(target: this.Name, action: "Create subscription"))
+            if (ShouldProcess(Name, "Create subscription"))
             {
-                var owners = this.ResolveObjectIds(this.OwnerObjectId, this.OwnerApplicationId, this.OwnerSignInName).Select(id => new AdPrincipal() { ObjectId = id }).ToArray();
+                var owners = ResolveObjectIds(OwnerObjectId, OwnerApplicationId, OwnerSignInName).Select(id => new AdPrincipal { ObjectId = id }).ToArray();
 
                 // Create the subscription.
-                var result = this.SubscriptionClient.SubscriptionFactory.CreateSubscriptionInEnrollmentAccount(EnrollmentAccountObjectId, new SubscriptionCreationParameters()
+                var result = SubscriptionClient.SubscriptionFactory.CreateSubscriptionInEnrollmentAccount(EnrollmentAccountObjectId, new SubscriptionCreationParameters
                 {
-                    DisplayName = this.Name,
-                    OfferType = this.OfferType,
+                    DisplayName = Name,
+                    OfferType = OfferType,
                     Owners = owners
                 });
 
                 // Write output.
-                var createdSubscription = new AzureSubscription()
+                var createdSubscription = new AzureSubscription
                 {
                     // SubscriptionLink format is: "/subscriptions/{subscriptionid}"
                     Id = result.SubscriptionLink.Split('/')[2],
-                    Name = this.Name,
+                    Name = Name,
                     // By definition, a new subscription is always in the enabled state.
                     State = "Enabled",
                 };

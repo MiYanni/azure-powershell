@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2.Models
             }
 
             this.dataFactory = dataFactory;
-            this.ResourceGroupName = resourceGroupName;
+            ResourceGroupName = resourceGroupName;
         }
 
         public string DataFactoryName

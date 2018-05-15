@@ -26,33 +26,33 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSNetworkSecurityGroupRule
     {
         
-        internal Microsoft.Azure.Batch.NetworkSecurityGroupRule omObject;
+        internal NetworkSecurityGroupRule omObject;
         
-        public PSNetworkSecurityGroupRule(int priority, Microsoft.Azure.Batch.Common.NetworkSecurityGroupRuleAccess access, string sourceAddressPrefix)
+        public PSNetworkSecurityGroupRule(int priority, Azure.Batch.Common.NetworkSecurityGroupRuleAccess access, string sourceAddressPrefix)
         {
-            this.omObject = new Microsoft.Azure.Batch.NetworkSecurityGroupRule(priority, access, sourceAddressPrefix);
+            omObject = new NetworkSecurityGroupRule(priority, access, sourceAddressPrefix);
         }
         
-        internal PSNetworkSecurityGroupRule(Microsoft.Azure.Batch.NetworkSecurityGroupRule omObject)
+        internal PSNetworkSecurityGroupRule(NetworkSecurityGroupRule omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.NetworkSecurityGroupRuleAccess Access
+        public Azure.Batch.Common.NetworkSecurityGroupRuleAccess Access
         {
             get
             {
-                return this.omObject.Access;
+                return omObject.Access;
             }
         }
         
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Priority;
+                return omObject.Priority;
             }
         }
         
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.SourceAddressPrefix;
+                return omObject.SourceAddressPrefix;
             }
         }
     }

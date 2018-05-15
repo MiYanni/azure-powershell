@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Compute
            Position = 0,
            ValueFromPipelineByPropertyName = true,
            HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -84,23 +84,23 @@ namespace Microsoft.Azure.Commands.Compute
             {
                 var avSetParams = new AvailabilitySet
                 {
-                    Location = this.Location,
-                    PlatformUpdateDomainCount = this.PlatformUpdateDomainCount,
-                    PlatformFaultDomainCount = this.PlatformFaultDomainCount
+                    Location = Location,
+                    PlatformUpdateDomainCount = PlatformUpdateDomainCount,
+                    PlatformFaultDomainCount = PlatformFaultDomainCount
                 };
 
-                if (!string.IsNullOrEmpty(this.Sku))
+                if (!string.IsNullOrEmpty(Sku))
                 {
                     avSetParams.Sku = new Sku();
-                    if (!string.IsNullOrEmpty(this.Sku))
+                    if (!string.IsNullOrEmpty(Sku))
                     {
-                        avSetParams.Sku.Name = this.Sku;
+                        avSetParams.Sku.Name = Sku;
                     }
                 }
 
-                var result = this.AvailabilitySetClient.CreateOrUpdateWithHttpMessagesAsync(
-                    this.ResourceGroupName,
-                    this.Name,
+                var result = AvailabilitySetClient.CreateOrUpdateWithHttpMessagesAsync(
+                    ResourceGroupName,
+                    Name,
                     avSetParams).GetAwaiter().GetResult();
 
                 var psResult = ComputeAutoMapperProfile.Mapper.Map<PSAvailabilitySet>(result);

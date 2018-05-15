@@ -42,14 +42,14 @@ namespace Microsoft.Azure.Commands.Billing.Models
         {
             if (billingPeriod != null)
             {
-                this.Id = billingPeriod.Id;
-                this.Type = billingPeriod.Type;
-                this.Name = billingPeriod.Name;
-                this.BillingPeriodStartDate = billingPeriod.BillingPeriodStartDate;
-                this.BillingPeriodEndDate = billingPeriod.BillingPeriodEndDate;
+                Id = billingPeriod.Id;
+                Type = billingPeriod.Type;
+                Name = billingPeriod.Name;
+                BillingPeriodStartDate = billingPeriod.BillingPeriodStartDate;
+                BillingPeriodEndDate = billingPeriod.BillingPeriodEndDate;
                 if (billingPeriod.InvoiceIds != null)
                 {
-                    this.InvoiceNames = billingPeriod.InvoiceIds.Select(x => Utilities.GetResourceNameFromId(x)).ToList();
+                    InvoiceNames = billingPeriod.InvoiceIds.Select(x => Utilities.GetResourceNameFromId(x)).ToList();
                 }
             }
         }

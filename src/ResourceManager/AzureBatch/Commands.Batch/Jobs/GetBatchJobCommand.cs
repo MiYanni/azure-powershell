@@ -46,8 +46,8 @@ namespace Microsoft.Azure.Commands.Batch
         [Parameter(ParameterSetName = Constants.ParentObjectParameterSet)]
         public int MaxCount
         {
-            get { return this.maxCount; }
-            set { this.maxCount = value; }
+            get { return maxCount; }
+            set { maxCount = value; }
         }
 
         [Parameter]
@@ -60,15 +60,15 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            ListJobOptions options = new ListJobOptions(this.BatchContext, this.AdditionalBehaviors)
+            ListJobOptions options = new ListJobOptions(BatchContext, AdditionalBehaviors)
             {
-                JobId = this.Id,
-                JobScheduleId = this.JobScheduleId,
-                JobSchedule = this.JobSchedule,
-                Filter = this.Filter,
-                Select = this.Select,
-                Expand = this.Expand,
-                MaxCount = this.MaxCount
+                JobId = Id,
+                JobScheduleId = JobScheduleId,
+                JobSchedule = JobSchedule,
+                Filter = Filter,
+                Select = Select,
+                Expand = Expand,
+                MaxCount = MaxCount
             };
 
             // The enumerator will internally query the service in chunks. Using WriteObject with the enumerate flag will enumerate

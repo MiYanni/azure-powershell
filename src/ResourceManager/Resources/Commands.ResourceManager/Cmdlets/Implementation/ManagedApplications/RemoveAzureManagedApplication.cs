@@ -15,14 +15,14 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
 {
     using Common.ArgumentCompleters;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
+    using Components;
     using System.Management.Automation;
 
     /// <summary>
     /// Removes the managed application.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureRmManagedApplication", SupportsShouldProcess = true,
-        DefaultParameterSetName = RemoveAzureManagedApplicationCmdlet.ManagedApplicationNameParameterSet), 
+        DefaultParameterSetName = ManagedApplicationNameParameterSet), 
         OutputType(typeof(bool))]
     public class RemoveAzureManagedApplicationCmdlet : ManagedApplicationCmdletBase
     {
@@ -39,14 +39,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// <summary>
         /// Gets or sets the managed application name parameter.
         /// </summary>
-        [Parameter(ParameterSetName = RemoveAzureManagedApplicationCmdlet.ManagedApplicationNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The managed application name.")]
+        [Parameter(ParameterSetName = ManagedApplicationNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The managed application name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the managed application resource group parameter
         /// </summary>
-        [Parameter(ParameterSetName = RemoveAzureManagedApplicationCmdlet.ManagedApplicationNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
+        [Parameter(ParameterSetName = ManagedApplicationNameParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         /// Gets or sets the managed application id parameter
         /// </summary>
         [Alias("ResourceId")]
-        [Parameter(ParameterSetName = RemoveAzureManagedApplicationCmdlet.ManagedApplicationIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified managed application Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
+        [Parameter(ParameterSetName = ManagedApplicationIdParameterSet, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The fully qualified managed application Id, including the subscription. e.g. /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")]
         [ValidateNotNullOrEmpty]
         public string Id { get; set; }
 
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         {
             base.OnProcessRecord();
 
-            this.RunCmdlet();
+            RunCmdlet();
         }
 
         /// <summary>
@@ -81,36 +81,36 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
         private void RunCmdlet()
         {
             base.OnProcessRecord();
-            string resourceId = this.Id ?? this.GetResourceId();
-            var apiVersion = string.IsNullOrWhiteSpace(this.ApiVersion) ? Constants.ApplicationApiVersion : this.ApiVersion;
+            string resourceId = Id ?? GetResourceId();
+            var apiVersion = string.IsNullOrWhiteSpace(ApiVersion) ? Constants.ApplicationApiVersion : ApiVersion;
 
-            this.ConfirmAction(
-                this.Force,
+            ConfirmAction(
+                Force,
                 string.Format("Are you sure you want to delete the following managed application: {0}", resourceId),
                 "Deleting the managed application...",
                 resourceId,
                 () =>
                 {
-                    var operationResult = this.GetResourcesClient()
+                    var operationResult = GetResourcesClient()
                         .DeleteResource(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
-                            cancellationToken: this.CancellationToken.Value,
-                            odataQuery: null)
+                            resourceId,
+                            apiVersion,
+                            CancellationToken.Value,
+                            null)
                         .Result;
 
-                    var managementUri = this.GetResourcesClient()
+                    var managementUri = GetResourcesClient()
                         .GetResourceManagementRequestUri(
-                            resourceId: resourceId,
-                            apiVersion: apiVersion,
+                            resourceId,
+                            apiVersion,
                             odataQuery: null);
 
                     var activity = string.Format("DELETE {0}", managementUri.PathAndQuery);
 
-                    this.GetLongRunningOperationTracker(activityName: activity, isResourceCreateOrUpdate: false)
-                        .WaitOnOperation(operationResult: operationResult);
+                    GetLongRunningOperationTracker(activity, false)
+                        .WaitOnOperation(operationResult);
 
-                    this.WriteObject(true);
+                    WriteObject(true);
                 });
         }
 
@@ -122,9 +122,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation
             var subscriptionId = DefaultContext.Subscription.Id;
             return string.Format("/subscriptions/{0}/resourcegroups/{1}/providers/{2}/{3}",
                 subscriptionId.ToString(),
-                this.ResourceGroupName,
+                ResourceGroupName,
                 Constants.MicrosoftApplicationType,
-                this.Name);
+                Name);
         }
     }
 }

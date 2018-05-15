@@ -26,42 +26,42 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSCertificateReference
     {
         
-        internal Microsoft.Azure.Batch.CertificateReference omObject;
+        internal CertificateReference omObject;
         
         public PSCertificateReference()
         {
-            this.omObject = new Microsoft.Azure.Batch.CertificateReference();
+            omObject = new CertificateReference();
         }
         
         public PSCertificateReference(PSCertificate baseCertificate)
         {
-            this.omObject = new Microsoft.Azure.Batch.CertificateReference(baseCertificate.omObject);
+            omObject = new CertificateReference(baseCertificate.omObject);
         }
         
-        internal PSCertificateReference(Microsoft.Azure.Batch.CertificateReference omObject)
+        internal PSCertificateReference(CertificateReference omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
         
-        public Microsoft.Azure.Batch.Common.CertStoreLocation? StoreLocation
+        public Azure.Batch.Common.CertStoreLocation? StoreLocation
         {
             get
             {
-                return this.omObject.StoreLocation;
+                return omObject.StoreLocation;
             }
             set
             {
-                this.omObject.StoreLocation = value;
+                omObject.StoreLocation = value;
             }
         }
         
@@ -69,11 +69,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.StoreName;
+                return omObject.StoreName;
             }
             set
             {
-                this.omObject.StoreName = value;
+                omObject.StoreName = value;
             }
         }
         
@@ -81,11 +81,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.Thumbprint;
+                return omObject.Thumbprint;
             }
             set
             {
-                this.omObject.Thumbprint = value;
+                omObject.Thumbprint = value;
             }
         }
         
@@ -93,23 +93,23 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.ThumbprintAlgorithm;
+                return omObject.ThumbprintAlgorithm;
             }
             set
             {
-                this.omObject.ThumbprintAlgorithm = value;
+                omObject.ThumbprintAlgorithm = value;
             }
         }
         
-        public Microsoft.Azure.Batch.Common.CertificateVisibility? Visibility
+        public Azure.Batch.Common.CertificateVisibility? Visibility
         {
             get
             {
-                return this.omObject.Visibility;
+                return omObject.Visibility;
             }
             set
             {
-                this.omObject.Visibility = value;
+                omObject.Visibility = value;
             }
         }
     }

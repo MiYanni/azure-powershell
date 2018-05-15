@@ -26,13 +26,13 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSStartTask
     {
         
-        internal Microsoft.Azure.Batch.StartTask omObject;
+        internal StartTask omObject;
         
         private PSTaskContainerSettings containerSettings;
         
@@ -44,19 +44,19 @@ namespace Microsoft.Azure.Commands.Batch.Models
         
         public PSStartTask()
         {
-            this.omObject = new Microsoft.Azure.Batch.StartTask();
+            omObject = new StartTask();
         }
         
         public PSStartTask(string commandLine)
         {
-            this.omObject = new Microsoft.Azure.Batch.StartTask(commandLine);
+            omObject = new StartTask(commandLine);
         }
         
-        internal PSStartTask(Microsoft.Azure.Batch.StartTask omObject)
+        internal PSStartTask(StartTask omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -65,11 +65,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.CommandLine;
+                return omObject.CommandLine;
             }
             set
             {
-                this.omObject.CommandLine = value;
+                omObject.CommandLine = value;
             }
         }
         
@@ -77,24 +77,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.containerSettings == null) 
-                            && (this.omObject.ContainerSettings != null)))
+                if (containerSettings == null 
+                    && omObject.ContainerSettings != null)
                 {
-                    this.containerSettings = new PSTaskContainerSettings(this.omObject.ContainerSettings);
+                    containerSettings = new PSTaskContainerSettings(omObject.ContainerSettings);
                 }
-                return this.containerSettings;
+                return containerSettings;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.ContainerSettings = null;
+                    omObject.ContainerSettings = null;
                 }
                 else
                 {
-                    this.omObject.ContainerSettings = value.omObject;
+                    omObject.ContainerSettings = value.omObject;
                 }
-                this.containerSettings = value;
+                containerSettings = value;
             }
         }
         
@@ -102,46 +102,46 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.environmentSettings == null) 
-                            && (this.omObject.EnvironmentSettings != null)))
+                if (environmentSettings == null 
+                    && omObject.EnvironmentSettings != null)
                 {
                     List<PSEnvironmentSetting> list;
                     list = new List<PSEnvironmentSetting>();
-                    IEnumerator<Microsoft.Azure.Batch.EnvironmentSetting> enumerator;
-                    enumerator = this.omObject.EnvironmentSettings.GetEnumerator();
+                    IEnumerator<EnvironmentSetting> enumerator;
+                    enumerator = omObject.EnvironmentSettings.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSEnvironmentSetting(enumerator.Current));
                     }
-                    this.environmentSettings = list;
+                    environmentSettings = list;
                 }
-                return this.environmentSettings;
+                return environmentSettings;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.EnvironmentSettings = null;
+                    omObject.EnvironmentSettings = null;
                 }
                 else
                 {
-                    this.omObject.EnvironmentSettings = new List<Microsoft.Azure.Batch.EnvironmentSetting>();
+                    omObject.EnvironmentSettings = new List<EnvironmentSetting>();
                 }
-                this.environmentSettings = value;
+                environmentSettings = value;
             }
         }
         
-        public System.Int32? MaxTaskRetryCount
+        public Int32? MaxTaskRetryCount
         {
             get
             {
-                return this.omObject.MaxTaskRetryCount;
+                return omObject.MaxTaskRetryCount;
             }
             set
             {
-                this.omObject.MaxTaskRetryCount = value;
+                omObject.MaxTaskRetryCount = value;
             }
         }
         
@@ -149,34 +149,34 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.resourceFiles == null) 
-                            && (this.omObject.ResourceFiles != null)))
+                if (resourceFiles == null 
+                    && omObject.ResourceFiles != null)
                 {
                     List<PSResourceFile> list;
                     list = new List<PSResourceFile>();
-                    IEnumerator<Microsoft.Azure.Batch.ResourceFile> enumerator;
-                    enumerator = this.omObject.ResourceFiles.GetEnumerator();
+                    IEnumerator<ResourceFile> enumerator;
+                    enumerator = omObject.ResourceFiles.GetEnumerator();
                     for (
                     ; enumerator.MoveNext(); 
                     )
                     {
                         list.Add(new PSResourceFile(enumerator.Current));
                     }
-                    this.resourceFiles = list;
+                    resourceFiles = list;
                 }
-                return this.resourceFiles;
+                return resourceFiles;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.ResourceFiles = null;
+                    omObject.ResourceFiles = null;
                 }
                 else
                 {
-                    this.omObject.ResourceFiles = new List<Microsoft.Azure.Batch.ResourceFile>();
+                    omObject.ResourceFiles = new List<ResourceFile>();
                 }
-                this.resourceFiles = value;
+                resourceFiles = value;
             }
         }
         
@@ -184,36 +184,36 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.userIdentity == null) 
-                            && (this.omObject.UserIdentity != null)))
+                if (userIdentity == null 
+                    && omObject.UserIdentity != null)
                 {
-                    this.userIdentity = new PSUserIdentity(this.omObject.UserIdentity);
+                    userIdentity = new PSUserIdentity(omObject.UserIdentity);
                 }
-                return this.userIdentity;
+                return userIdentity;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.UserIdentity = null;
+                    omObject.UserIdentity = null;
                 }
                 else
                 {
-                    this.omObject.UserIdentity = value.omObject;
+                    omObject.UserIdentity = value.omObject;
                 }
-                this.userIdentity = value;
+                userIdentity = value;
             }
         }
         
-        public System.Boolean? WaitForSuccess
+        public Boolean? WaitForSuccess
         {
             get
             {
-                return this.omObject.WaitForSuccess;
+                return omObject.WaitForSuccess;
             }
             set
             {
-                this.omObject.WaitForSuccess = value;
+                omObject.WaitForSuccess = value;
             }
         }
     }

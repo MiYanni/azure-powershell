@@ -322,23 +322,23 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         private void CopyFrom(AzureSMProfile other)
         {
-            this.ProfilePath = other.ProfilePath;
-            this.EnvironmentTable.Clear();
+            ProfilePath = other.ProfilePath;
+            EnvironmentTable.Clear();
             foreach (var environment in other.EnvironmentTable)
             {
-                this.EnvironmentTable[environment.Key] = environment.Value;
+                EnvironmentTable[environment.Key] = environment.Value;
             }
 
-            this.AccountTable.Clear();
+            AccountTable.Clear();
             foreach (var account in other.AccountTable)
             {
-                this.AccountTable[account.Key] = account.Value;
+                AccountTable[account.Key] = account.Value;
             }
 
-            this.SubscriptionTable.Clear();
+            SubscriptionTable.Clear();
             foreach (var subscription in other.SubscriptionTable)
             {
-                this.SubscriptionTable[subscription.Key] = subscription.Value;
+                SubscriptionTable[subscription.Key] = subscription.Value;
             }
             this.CopyPropertiesFrom(other);
         }

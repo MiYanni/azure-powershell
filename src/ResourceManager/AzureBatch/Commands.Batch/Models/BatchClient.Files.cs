@@ -65,39 +65,36 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 JobOperations jobOperations = options.Context.BatchOMClient.JobOperations;
                 NodeFile nodeFile = jobOperations.GetNodeFile(options.JobId, options.TaskId, options.Path, options.AdditionalBehaviors);
                 PSNodeFile psNodeFile = new PSNodeFile(nodeFile);
-                return new PSNodeFile[] { psNodeFile };
+                return new[] { psNodeFile };
             }
             // List node files using the specified filter
+            string taskId = options.Task == null ? options.TaskId : options.Task.Id;
+            ODATADetailLevel odata = null;
+            string verboseLogString = null;
+            if (!string.IsNullOrEmpty(options.Filter))
+            {
+                verboseLogString = string.Format(Resources.GetNodeFileByTaskByOData, taskId);
+                odata = new ODATADetailLevel(options.Filter);
+            }
             else
             {
-                string taskId = options.Task == null ? options.TaskId : options.Task.Id;
-                ODATADetailLevel odata = null;
-                string verboseLogString = null;
-                if (!string.IsNullOrEmpty(options.Filter))
-                {
-                    verboseLogString = string.Format(Resources.GetNodeFileByTaskByOData, taskId);
-                    odata = new ODATADetailLevel(filterClause: options.Filter);
-                }
-                else
-                {
-                    verboseLogString = string.Format(Resources.GetNodeFileByTaskNoFilter, taskId);
-                }
-                WriteVerbose(verboseLogString);
-
-                IPagedEnumerable<NodeFile> nodeFiles = null;
-                if (options.Task != null)
-                {
-                    nodeFiles = options.Task.omObject.ListNodeFiles(options.Recursive, odata, options.AdditionalBehaviors);
-                }
-                else
-                {
-                    JobOperations jobOperations = options.Context.BatchOMClient.JobOperations;
-                    nodeFiles = jobOperations.ListNodeFiles(options.JobId, options.TaskId, options.Recursive, odata, options.AdditionalBehaviors);
-                }
-                Func<NodeFile, PSNodeFile> mappingFunction = f => { return new PSNodeFile(f); };
-                return PSPagedEnumerable<PSNodeFile, NodeFile>.CreateWithMaxCount(
-                    nodeFiles, mappingFunction, options.MaxCount, () => WriteVerbose(string.Format(Resources.MaxCount, options.MaxCount)));
+                verboseLogString = string.Format(Resources.GetNodeFileByTaskNoFilter, taskId);
             }
+            WriteVerbose(verboseLogString);
+
+            IPagedEnumerable<NodeFile> nodeFiles = null;
+            if (options.Task != null)
+            {
+                nodeFiles = options.Task.omObject.ListNodeFiles(options.Recursive, odata, options.AdditionalBehaviors);
+            }
+            else
+            {
+                JobOperations jobOperations = options.Context.BatchOMClient.JobOperations;
+                nodeFiles = jobOperations.ListNodeFiles(options.JobId, options.TaskId, options.Recursive, odata, options.AdditionalBehaviors);
+            }
+            Func<NodeFile, PSNodeFile> mappingFunction = f => { return new PSNodeFile(f); };
+            return PSPagedEnumerable<PSNodeFile, NodeFile>.CreateWithMaxCount(
+                nodeFiles, mappingFunction, options.MaxCount, () => WriteVerbose(string.Format(Resources.MaxCount, options.MaxCount)));
         }
 
         // Lists the node files under a compute node.
@@ -110,39 +107,36 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 PoolOperations poolOperations = options.Context.BatchOMClient.PoolOperations;
                 NodeFile nodeFile = poolOperations.GetNodeFile(options.PoolId, options.ComputeNodeId, options.Path, options.AdditionalBehaviors);
                 PSNodeFile psNodeFile = new PSNodeFile(nodeFile);
-                return new PSNodeFile[] { psNodeFile };
+                return new[] { psNodeFile };
             }
             // List node files using the specified filter
+            string computeNodeId = options.ComputeNode == null ? options.ComputeNodeId : options.ComputeNode.Id;
+            ODATADetailLevel odata = null;
+            string verboseLogString = null;
+            if (!string.IsNullOrEmpty(options.Filter))
+            {
+                verboseLogString = string.Format(Resources.GetNodeFileByComputeNodeByOData, computeNodeId);
+                odata = new ODATADetailLevel(options.Filter);
+            }
             else
             {
-                string computeNodeId = options.ComputeNode == null ? options.ComputeNodeId : options.ComputeNode.Id;
-                ODATADetailLevel odata = null;
-                string verboseLogString = null;
-                if (!string.IsNullOrEmpty(options.Filter))
-                {
-                    verboseLogString = string.Format(Resources.GetNodeFileByComputeNodeByOData, computeNodeId);
-                    odata = new ODATADetailLevel(filterClause: options.Filter);
-                }
-                else
-                {
-                    verboseLogString = string.Format(Resources.GetNodeFileByComputeNodeNoFilter, computeNodeId);
-                }
-                WriteVerbose(verboseLogString);
-
-                IPagedEnumerable<NodeFile> nodeFiles = null;
-                if (options.ComputeNode != null)
-                {
-                    nodeFiles = options.ComputeNode.omObject.ListNodeFiles(options.Recursive, odata, options.AdditionalBehaviors);
-                }
-                else
-                {
-                    PoolOperations poolOperations = options.Context.BatchOMClient.PoolOperations;
-                    nodeFiles = poolOperations.ListNodeFiles(options.PoolId, options.ComputeNodeId, options.Recursive, odata, options.AdditionalBehaviors);
-                }
-                Func<NodeFile, PSNodeFile> mappingFunction = f => { return new PSNodeFile(f); };
-                return PSPagedEnumerable<PSNodeFile, NodeFile>.CreateWithMaxCount(
-                    nodeFiles, mappingFunction, options.MaxCount, () => WriteVerbose(string.Format(Resources.MaxCount, options.MaxCount)));
+                verboseLogString = string.Format(Resources.GetNodeFileByComputeNodeNoFilter, computeNodeId);
             }
+            WriteVerbose(verboseLogString);
+
+            IPagedEnumerable<NodeFile> nodeFiles = null;
+            if (options.ComputeNode != null)
+            {
+                nodeFiles = options.ComputeNode.omObject.ListNodeFiles(options.Recursive, odata, options.AdditionalBehaviors);
+            }
+            else
+            {
+                PoolOperations poolOperations = options.Context.BatchOMClient.PoolOperations;
+                nodeFiles = poolOperations.ListNodeFiles(options.PoolId, options.ComputeNodeId, options.Recursive, odata, options.AdditionalBehaviors);
+            }
+            Func<NodeFile, PSNodeFile> mappingFunction = f => { return new PSNodeFile(f); };
+            return PSPagedEnumerable<PSNodeFile, NodeFile>.CreateWithMaxCount(
+                nodeFiles, mappingFunction, options.MaxCount, () => WriteVerbose(string.Format(Resources.MaxCount, options.MaxCount)));
         }
 
         /// <summary>
@@ -164,18 +158,18 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 case PSNodeFileType.Task:
                     {
                         JobOperations jobOperations = parameters.Context.BatchOMClient.JobOperations;
-                        jobOperations.DeleteNodeFile(parameters.JobId, parameters.TaskId, parameters.Path, recursive: recursive, additionalBehaviors: parameters.AdditionalBehaviors);
+                        jobOperations.DeleteNodeFile(parameters.JobId, parameters.TaskId, parameters.Path, recursive, parameters.AdditionalBehaviors);
                         break;
                     }
                 case PSNodeFileType.ComputeNode:
                     {
                         PoolOperations poolOperations = parameters.Context.BatchOMClient.PoolOperations;
-                        poolOperations.DeleteNodeFile(parameters.PoolId, parameters.ComputeNodeId, parameters.Path, recursive: recursive, additionalBehaviors: parameters.AdditionalBehaviors);
+                        poolOperations.DeleteNodeFile(parameters.PoolId, parameters.ComputeNodeId, parameters.Path, recursive, parameters.AdditionalBehaviors);
                         break;
                     }
                 case PSNodeFileType.PSNodeFileInstance:
                     {
-                        parameters.NodeFile.omObject.Delete(recursive: recursive, additionalBehaviors: parameters.AdditionalBehaviors);
+                        parameters.NodeFile.omObject.Delete(recursive, parameters.AdditionalBehaviors);
                         break;
                     }
                 default:
@@ -245,7 +239,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
             });
 
             additionalBehaviors = additionalBehaviors != null ? new List<BatchClientBehavior> { interceptor }.Union(additionalBehaviors) :
-                new List<BatchClientBehavior>() { interceptor };
+                new List<BatchClientBehavior> { interceptor };
 
             if (byteRange != null)
             {
@@ -295,7 +289,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
             }
         }
 
-        private void CopyRDPStream(Stream destinationStream, Microsoft.Azure.Batch.BatchClient client, string poolId, string computeNodeId,
+        private void CopyRDPStream(Stream destinationStream, Azure.Batch.BatchClient client, string poolId, string computeNodeId,
             PSComputeNode computeNode, IEnumerable<BatchClientBehavior> additionalBehaviors = null)
         {
             if (computeNode == null)

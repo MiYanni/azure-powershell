@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public DateTime CreationDate
         {
-            get { return this._creationDate; }
-            set { this._creationDate = value; }
+            get { return _creationDate; }
+            set { _creationDate = value; }
         }
         
         private string _serverKeyType;
@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string ServerKeyType
         {
-            get { return this._serverKeyType; }
-            set { this._serverKeyType = value; }
+            get { return _serverKeyType; }
+            set { _serverKeyType = value; }
         }
         
         private string _thumbprint;
@@ -58,8 +58,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Thumbprint
         {
-            get { return this._thumbprint; }
-            set { this._thumbprint = value; }
+            get { return _thumbprint; }
+            set { _thumbprint = value; }
         }
         
         private string _uri;
@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Management.Sql.LegacySdk.Models
         /// </summary>
         public string Uri
         {
-            get { return this._uri; }
-            set { this._uri = value; }
+            get { return _uri; }
+            set { _uri = value; }
         }
         
         /// <summary>

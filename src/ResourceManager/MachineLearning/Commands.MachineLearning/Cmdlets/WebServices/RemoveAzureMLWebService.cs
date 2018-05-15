@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
 {
     [Cmdlet(
         VerbsCommon.Remove, 
-        WebServicesCmdletBase.CommandletSuffix,
+        CommandletSuffix,
         SupportsShouldProcess = true)]
     [OutputType(typeof(void))]
     public class RemoveAzureMLWebService : WebServicesCmdletBase
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.MachineLearning
         protected const string RemoveByObjectParameterSet = "RemoveByObject";
 
         [Parameter(
-            ParameterSetName = RemoveAzureMLWebService.RemoveByNameGroupParameterSet, 
+            ParameterSetName = RemoveByNameGroupParameterSet, 
             Mandatory = true, 
             HelpMessage = "The name of the resource group for the Azure ML web service.")]
         [ResourceGroupCompleter]
@@ -41,14 +41,14 @@ namespace Microsoft.Azure.Commands.MachineLearning
         public string ResourceGroupName { get; set; }
 
         [Parameter(
-            ParameterSetName = RemoveAzureMLWebService.RemoveByNameGroupParameterSet, 
+            ParameterSetName = RemoveByNameGroupParameterSet, 
             Mandatory = true, 
             HelpMessage = "The name of the web service.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
         [Parameter(
-            ParameterSetName = RemoveAzureMLWebService.RemoveByObjectParameterSet, 
+            ParameterSetName = RemoveByObjectParameterSet, 
             Mandatory = true, 
             HelpMessage = "The machine learning web service object.", 
             ValueFromPipeline = true)]
@@ -60,16 +60,16 @@ namespace Microsoft.Azure.Commands.MachineLearning
 
         protected override void RunCmdlet()
         {
-            if (ShouldProcess(this.Name, @"Deleting machine learning web service.."))
+            if (ShouldProcess(Name, @"Deleting machine learning web service.."))
             {
                 if (string.Equals(
-                                this.ParameterSetName,
-                                RemoveAzureMLWebService.RemoveByObjectParameterSet,
+                                ParameterSetName,
+                                RemoveByObjectParameterSet,
                                 StringComparison.OrdinalIgnoreCase))
                 {
                     string subscriptionId, resourceGroup, webServiceName;
                     if (!CmdletHelpers.TryParseMlResourceMetadataFromResourceId(
-                                        this.MlWebService.Id,
+                                        MlWebService.Id,
                                         out subscriptionId,
                                         out resourceGroup,
                                         out webServiceName))
@@ -77,18 +77,18 @@ namespace Microsoft.Azure.Commands.MachineLearning
                         throw new ValidationMetadataException(Resources.InvalidWebServiceIdOnObject);
                     }
 
-                    this.ResourceGroupName = resourceGroup;
-                    this.Name = webServiceName;
+                    ResourceGroupName = resourceGroup;
+                    Name = webServiceName;
                 }
 
-                if (this.Force.IsPresent || 
+                if (Force.IsPresent || 
                     ShouldContinue(
-                        Resources.RemoveMlServiceWarning.FormatInvariant(this.Name), 
+                        Resources.RemoveMlServiceWarning.FormatInvariant(Name), 
                         string.Empty))
                 {
-                    this.WebServicesClient.DeleteAzureMlWebService(
-                                                                this.ResourceGroupName,
-                                                                this.Name);
+                    WebServicesClient.DeleteAzureMlWebService(
+                                                                ResourceGroupName,
+                                                                Name);
                 }
             }
         }

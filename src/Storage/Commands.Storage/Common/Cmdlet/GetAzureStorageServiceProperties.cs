@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
 {
-    using Microsoft.WindowsAzure.Storage.Shared.Protocol;
+    using WindowsAzure.Storage.Shared.Protocol;
     using System.Management.Automation;
     using System.Security.Permissions;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+    using Model.ResourceModel;
 
     /// <summary>
     /// Show Azure Storage service properties

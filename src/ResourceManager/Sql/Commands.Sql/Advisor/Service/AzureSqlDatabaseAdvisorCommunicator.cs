@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.Sql.Advisor.Service
             return GetCurrentSqlClient().DatabaseAdvisors.Update(resourceGroupName, serverName, databaseName, advisorName,
                     new AdvisorUpdateParameters
                     {
-                        Properties = new AdvisorUpdateProperties()
+                        Properties = new AdvisorUpdateProperties
                         {
                             AutoExecuteStatus = autoExecuteStatus
                         }

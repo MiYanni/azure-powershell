@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlElasticPoolActivityModel> GetEntity()
         {
-            return ModelAdapter.GetElasticPoolActivity(this.ResourceGroupName, this.ServerName, this.ElasticPoolName);
+            return ModelAdapter.GetElasticPoolActivity(ResourceGroupName, ServerName, ElasticPoolName);
         }
 
         /// <summary>

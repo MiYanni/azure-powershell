@@ -72,33 +72,33 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            if (this.ShouldProcess(
-                this.ReplicationProtectedItem.FriendlyName,
+            if (ShouldProcess(
+                ReplicationProtectedItem.FriendlyName,
                 "Apply recovery point"))
             {
-                if (!string.IsNullOrEmpty(this.DataEncryptionPrimaryCertFile))
+                if (!string.IsNullOrEmpty(DataEncryptionPrimaryCertFile))
                 {
-                    var certBytesPrimary = File.ReadAllBytes(this.DataEncryptionPrimaryCertFile);
-                    this.primaryKekCertpfx = Convert.ToBase64String(certBytesPrimary);
+                    var certBytesPrimary = File.ReadAllBytes(DataEncryptionPrimaryCertFile);
+                    primaryKekCertpfx = Convert.ToBase64String(certBytesPrimary);
                 }
 
-                if (!string.IsNullOrEmpty(this.DataEncryptionSecondaryCertFile))
+                if (!string.IsNullOrEmpty(DataEncryptionSecondaryCertFile))
                 {
                     var certBytesSecondary =
-                        File.ReadAllBytes(this.DataEncryptionSecondaryCertFile);
-                    this.secondaryKekCertpfx = Convert.ToBase64String(certBytesSecondary);
+                        File.ReadAllBytes(DataEncryptionSecondaryCertFile);
+                    secondaryKekCertpfx = Convert.ToBase64String(certBytesSecondary);
                 }
 
-                switch (this.ParameterSetName)
+                switch (ParameterSetName)
                 {
                     case ASRParameterSets.ByPEObject:
-                        this.fabricName = Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                        fabricName = Utilities.GetValueFromArmId(
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationFabrics);
-                        this.protectionContainerName = Utilities.GetValueFromArmId(
-                            this.ReplicationProtectedItem.ID,
+                        protectionContainerName = Utilities.GetValueFromArmId(
+                            ReplicationProtectedItem.ID,
                             ARMResourceTypeConstants.ReplicationProtectionContainers);
-                        this.StartPEApplyRecoveryPoint();
+                        StartPEApplyRecoveryPoint();
                         break;
                 }
             }
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             var applyRecoveryPointInputProperties = new ApplyRecoveryPointInputProperties
             {
-                RecoveryPointId = this.RecoveryPoint.ID,
+                RecoveryPointId = RecoveryPoint.ID,
                 ProviderSpecificDetails = new ApplyRecoveryPointProviderSpecificInput()
             };
 
@@ -120,22 +120,22 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
             if (0 ==
                 string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.HyperVReplicaAzure,
                     StringComparison.OrdinalIgnoreCase))
             {
                 var hyperVReplicaAzureApplyRecoveryPointInput =
                     new HyperVReplicaAzureApplyRecoveryPointInput
                     {
-                        PrimaryKekCertificatePfx = this.primaryKekCertpfx,
-                        SecondaryKekCertificatePfx = this.secondaryKekCertpfx,
+                        PrimaryKekCertificatePfx = primaryKekCertpfx,
+                        SecondaryKekCertificatePfx = secondaryKekCertpfx,
                         VaultLocation = "dummy"
                     };
                 input.Properties.ProviderSpecificDetails =
                     hyperVReplicaAzureApplyRecoveryPointInput;
             }
             else if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMageAzureV2,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 input.Properties.ProviderSpecificDetails = inMageAzureV2ApplyRecoveryPointInput;
             }
             else if (string.Compare(
-                    this.ReplicationProtectedItem.ReplicationProvider,
+                    ReplicationProtectedItem.ReplicationProvider,
                     Constants.InMage,
                     StringComparison.OrdinalIgnoreCase) ==
                 0)
@@ -154,23 +154,23 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
                 throw new InvalidOperationException(
                     string.Format(
                         Resources.UnsupportedReplicationProviderForApplyRecoveryPoint,
-                        this.ReplicationProtectedItem.ReplicationProvider));
+                        ReplicationProtectedItem.ReplicationProvider));
             }
-            else if (Constants.A2A.Equals(this.ReplicationProtectedItem.ReplicationProvider,StringComparison.OrdinalIgnoreCase))
+            else if (Constants.A2A.Equals(ReplicationProtectedItem.ReplicationProvider,StringComparison.OrdinalIgnoreCase))
             {
                 input.Properties.ProviderSpecificDetails = new A2AApplyRecoveryPointInput();
             }
 
-            var response = this.RecoveryServicesClient.StartAzureSiteRecoveryApplyRecoveryPoint(
-                this.fabricName,
-                this.protectionContainerName,
-                this.ReplicationProtectedItem.Name,
+            var response = RecoveryServicesClient.StartAzureSiteRecoveryApplyRecoveryPoint(
+                fabricName,
+                protectionContainerName,
+                ReplicationProtectedItem.Name,
                 input);
 
-            var jobResponse = this.RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
+            var jobResponse = RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(
                 PSRecoveryServicesClient.GetJobIdFromReponseLocation(response.Location));
 
-            this.WriteObject(new ASRJob(jobResponse));
+            WriteObject(new ASRJob(jobResponse));
         }
 
         #region local parameters

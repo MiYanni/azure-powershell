@@ -64,11 +64,11 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
 
         public override void ExecuteCmdlet()
         {
-            if (this.ParameterSetName.Equals(ResourceIdParameterSet))
+            if (ParameterSetName.Equals(ResourceIdParameterSet))
             {
-                DmsResourceIdentifier ids = new DmsResourceIdentifier(this.ResourceId);
-                this.ResourceGroupName = ids.ResourceGroupName;
-                this.Name = ids.ServiceName;
+                DmsResourceIdentifier ids = new DmsResourceIdentifier(ResourceId);
+                ResourceGroupName = ids.ResourceGroupName;
+                Name = ids.ServiceName;
             }
 
             IList<PSDataMigrationService> results = new List<PSDataMigrationService>();
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
             if ((MyInvocation.BoundParameters.ContainsKey("Name") || !string.IsNullOrEmpty(Name))
                 && (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName") || !string.IsNullOrEmpty(ResourceGroupName)))
             {
-                results.Add(new PSDataMigrationService(DataMigrationClient.Services.Get(this.ResourceGroupName, this.Name)));
+                results.Add(new PSDataMigrationService(DataMigrationClient.Services.Get(ResourceGroupName, Name)));
             }
             else if (MyInvocation.BoundParameters.ContainsKey("ResourceGroupName") || !string.IsNullOrEmpty(ResourceGroupName))
             {

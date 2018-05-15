@@ -16,8 +16,8 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 {
     using System;
     using System.Collections.Generic;
-    using Microsoft.Azure.Commands.Scheduler.Models;
-    using Microsoft.Azure.Management.Scheduler.Models;
+    using Models;
+    using Management.Scheduler.Models;
 
     public static class Converter
     {
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (jobCollectionDefinitionList == null)
             {
-                throw new ArgumentNullException(paramName: "jobCollectionDefinition");
+                throw new ArgumentNullException("jobCollectionDefinition");
             }
 
             var psJobCollectionDefinitionList = new List<PSJobCollectionDefinition>();
@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 if (jobCollectionDefinition != null)
                 {
-                    psJobCollectionDefinitionList.Add(Converter.ConvertJobCollectionDefinitionToPS(jobCollectionDefinition));
+                    psJobCollectionDefinitionList.Add(ConvertJobCollectionDefinitionToPS(jobCollectionDefinition));
                 }
             }
 
@@ -56,17 +56,17 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (jobCollectionDefinition == null)
             {
-                throw new ArgumentNullException(paramName: "jobCollectionDefinition");
+                throw new ArgumentNullException("jobCollectionDefinition");
             }
 
-            var psJobCollectionDefinition = new PSJobCollectionDefinition()
+            var psJobCollectionDefinition = new PSJobCollectionDefinition
             {
                 ResourceGroupName = jobCollectionDefinition.Id.Split('/')[4],
                 JobCollectionName = jobCollectionDefinition.Name,
                 Location = jobCollectionDefinition.Location,
                 Plan = jobCollectionDefinition.Properties.Sku.Name.ToString(),
                 MaxJobCount = jobCollectionDefinition.Properties.Quota.MaxJobCount.ToString(),
-                MaxRecurrence = Converter.GetMaxRecurrenceInString(jobCollectionDefinition.Properties.Quota),
+                MaxRecurrence = GetMaxRecurrenceInString(jobCollectionDefinition.Properties.Quota),
                 State = jobCollectionDefinition.Properties.State.ToString(),
                 Uri = jobCollectionDefinition.Id,
             };
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (jobHistoryList == null)
             {
-                throw new ArgumentNullException(paramName: "jobHistoryList");
+                throw new ArgumentNullException("jobHistoryList");
             }
 
             var psJobHistoryList = new List<PSJobHistory>();
@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 if (jobHistory != null)
                 {
-                    psJobHistoryList.Add(Converter.ConvertJobHistoryDefinitionToPSJobHistory(jobHistory));
+                    psJobHistoryList.Add(ConvertJobHistoryDefinitionToPSJobHistory(jobHistory));
                 }
             }
 
@@ -128,10 +128,10 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (jobHistory == null)
             {
-                throw new ArgumentNullException(paramName: "jobHistory");
+                throw new ArgumentNullException("jobHistory");
             }
 
-            var psJobHistory = new PSJobHistory()
+            var psJobHistory = new PSJobHistory
             {
                 JobName = jobHistory.Name,
                 Status = jobHistory.Properties.Status.ToString(),
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 Retry = jobHistory.Properties.RetryCount
             };
 
-            PSJobActionHistory psJobActionHistory = Converter.GetHistoryDetails(jobHistory.Properties.Message);
+            PSJobActionHistory psJobActionHistory = GetHistoryDetails(jobHistory.Properties.Message);
             psJobActionHistory.JobHistoryActionName = jobHistory.Properties.ActionName.ToString();
 
             psJobHistory.ActionHistory = psJobActionHistory;
@@ -166,7 +166,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 int beginIndexHostName = message.IndexOf(Constants.ApostropheSeparator) + 1;
                 int endIndexHostName = message.IndexOf(Constants.ApostropheSeparator, beginIndexHostName + 1);
 
-                var psHttpJobActionHistory = new PSHttpJobActionHistory()
+                var psHttpJobActionHistory = new PSHttpJobActionHistory
                 {
                     JobActionType = JobActionType.Http.ToString(),
                     HostName = message.Substring(beginIndexHostName, endIndexHostName - beginIndexHostName)
@@ -192,9 +192,9 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
                 return psHttpJobActionHistory;
             }
-            else if (message.Contains("StorageQueue Action"))
+            if (message.Contains("StorageQueue Action"))
             {
-                var psStorageJobActionHistory = new PSStorageJobActionHistory()
+                var psStorageJobActionHistory = new PSStorageJobActionHistory
                 {
                     JobActionType = JobActionType.StorageQueue.ToString(),
                 };
@@ -238,14 +238,14 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
                 return psStorageJobActionHistory;
             }
-            else if (message.Contains("ServiceBusQueue Action"))
+            if (message.Contains("ServiceBusQueue Action"))
             {
                 int serviceBusQueueNameBeginIndex = message.IndexOf(Constants.ApostropheSeparator) + 1;
                 int serviceBusQueueNameEndIndex = message.IndexOfAny(Constants.ApostropheSemicolonSeparator, serviceBusQueueNameBeginIndex);
                 int serviceBusNamespaceBeginIndex = message.IndexOf(Constants.ApostropheSeparator, serviceBusQueueNameEndIndex + 1) + 1;
                 int serviceBusNamespaceEndIndex = message.IndexOf(Constants.ApostropheSeparator, serviceBusNamespaceBeginIndex);
 
-                var psServiceBusQueueHistory = new PSServiceBusJobActionHistory()
+                var psServiceBusQueueHistory = new PSServiceBusJobActionHistory
                 {
                     JobActionType = JobActionType.ServiceBusQueue.ToString(),
                     ServiceBusQueueName = message.Substring(serviceBusQueueNameBeginIndex, serviceBusQueueNameEndIndex - serviceBusQueueNameBeginIndex),
@@ -256,14 +256,14 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
 
                 return psServiceBusQueueHistory;
             }
-            else if (message.Contains("ServiceBusTopic Action"))
+            if (message.Contains("ServiceBusTopic Action"))
             {
                 int serviceBusTopicPathBeginIndex = message.IndexOf(Constants.ApostropheSeparator) + 1;
                 int serviceBusTopicPathEndIndex = message.IndexOfAny(Constants.ApostropheSemicolonSeparator, serviceBusTopicPathBeginIndex);
                 int serviceBusNamespaceBeginIndex = message.IndexOf(Constants.ApostropheSeparator, serviceBusTopicPathEndIndex + 1) + 1;
                 int serviceBusNamespaceEndIndex = message.IndexOf(Constants.ApostropheSeparator, serviceBusNamespaceBeginIndex);
 
-                var psServiceBusTopicHistory = new PSServiceBusJobActionHistory()
+                var psServiceBusTopicHistory = new PSServiceBusJobActionHistory
                 {
                     JobActionType = JobActionType.ServiceBusTopic.ToString(),
                     ServiceBusTopicPath = message.Substring(serviceBusTopicPathBeginIndex, serviceBusTopicPathEndIndex - serviceBusTopicPathBeginIndex),
@@ -287,7 +287,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (jobsDefinitionList == null)
             {
-                throw new ArgumentNullException(paramName: "jobsDefinitionList");
+                throw new ArgumentNullException("jobsDefinitionList");
             }
 
             var psJobDefinitionList = new List<PSSchedulerJobDefinition>();
@@ -296,7 +296,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 if (jobDefinition != null)
                 {
-                    psJobDefinitionList.Add(Converter.ConvertJobDefinitionToPS(jobDefinition));
+                    psJobDefinitionList.Add(ConvertJobDefinitionToPS(jobDefinition));
                 }
             }
 
@@ -312,18 +312,18 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (jobDefinition == null)
             {
-                throw new ArgumentNullException(paramName: "jobDefinition");
+                throw new ArgumentNullException("jobDefinition");
             }
 
-            var psSchedulerJobDefinition = new PSSchedulerJobDefinition()
+            var psSchedulerJobDefinition = new PSSchedulerJobDefinition
             {
                 ResourceGroupName = jobDefinition.Id.Split('/')[4],
                 JobCollectionName = jobDefinition.Name.Split('/')[0],
                 JobName = jobDefinition.Name.Split('/')[1],
                 Status = jobDefinition.Properties.State.ToString(),
                 StartTime = jobDefinition.Properties.StartTime,
-                Recurrence = Converter.ConvertRecurrenceToString(jobDefinition.Properties.Recurrence),
-                EndSchedule = Converter.GetEndSchedule(jobDefinition.Properties.Recurrence),
+                Recurrence = ConvertRecurrenceToString(jobDefinition.Properties.Recurrence),
+                EndSchedule = GetEndSchedule(jobDefinition.Properties.Recurrence),
             };
 
             if (jobDefinition.Properties.Status != null)
@@ -335,8 +335,8 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 psSchedulerJobDefinition.Executions = jobDefinition.Properties.Status.ExecutionCount;
             }
 
-            psSchedulerJobDefinition.JobAction = Converter.GetSchedulerJobActionDetails(jobDefinition.Properties.Action);
-            psSchedulerJobDefinition.JobErrorAction = Converter.GetSchedulerJobErrorActionDetails(jobDefinition.Properties.Action.ErrorAction);
+            psSchedulerJobDefinition.JobAction = GetSchedulerJobActionDetails(jobDefinition.Properties.Action);
+            psSchedulerJobDefinition.JobErrorAction = GetSchedulerJobErrorActionDetails(jobDefinition.Properties.Action.ErrorAction);
 
             return psSchedulerJobDefinition;
         }
@@ -352,25 +352,19 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 return "Run once";
             }
-            else
+            if (recurrence.Count == null && recurrence.EndTime == null)
             {
-                if (recurrence.Count == null && recurrence.EndTime == null)
-                {
-                    return "None";
-                }
-                else if (recurrence.Count != null && recurrence.EndTime != null)
-                {
-                    return "Until " + recurrence.Count + " executions. Or on " + recurrence.EndTime + " whichever occurs first.";
-                }
-                else if (recurrence.Count != null)
-                {
-                    return "Until " + recurrence.Count + " executions.";
-                }
-                else
-                {
-                    return "On " + recurrence.EndTime + ".";
-                }
+                return "None";
             }
+            if (recurrence.Count != null && recurrence.EndTime != null)
+            {
+                return "Until " + recurrence.Count + " executions. Or on " + recurrence.EndTime + " whichever occurs first.";
+            }
+            if (recurrence.Count != null)
+            {
+                return "Until " + recurrence.Count + " executions.";
+            }
+            return "On " + recurrence.EndTime + ".";
         }
 
         /// <summary>
@@ -397,23 +391,23 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (jobAction == null)
             {
-                throw new ArgumentNullException(paramName: "jobAction");
+                throw new ArgumentNullException("jobAction");
             }
 
             switch (jobAction.Type)
             {
                 case JobActionType.Http:
                 case JobActionType.Https:
-                    return Converter.GetSchedulerHttpJobActionDetails(jobAction.Type.Value, jobAction.Request);
+                    return GetSchedulerHttpJobActionDetails(jobAction.Type.Value, jobAction.Request);
 
                 case JobActionType.StorageQueue:
-                    return Converter.GetSchedulerStorageJobActionDetails(jobAction.Type.Value, jobAction.QueueMessage);
+                    return GetSchedulerStorageJobActionDetails(jobAction.Type.Value, jobAction.QueueMessage);
 
                 case JobActionType.ServiceBusQueue:
-                    return Converter.GetSchedulerServiceBusQueueJobActionDetails(jobAction.Type.Value, jobAction.ServiceBusQueueMessage);
+                    return GetSchedulerServiceBusQueueJobActionDetails(jobAction.Type.Value, jobAction.ServiceBusQueueMessage);
 
                 case JobActionType.ServiceBusTopic:
-                    return Converter.GetSchedulerServiceBusTopicJobActionDetails(jobAction.Type.Value, jobAction.ServiceBusTopicMessage);
+                    return GetSchedulerServiceBusTopicJobActionDetails(jobAction.Type.Value, jobAction.ServiceBusTopicMessage);
 
                 default:
                     return null;
@@ -436,16 +430,16 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             {
                 case JobActionType.Http:
                 case JobActionType.Https:
-                    return Converter.GetSchedulerHttpJobActionDetails(erroJobAction.Type.Value, erroJobAction.Request);
+                    return GetSchedulerHttpJobActionDetails(erroJobAction.Type.Value, erroJobAction.Request);
 
                 case JobActionType.StorageQueue:
-                    return Converter.GetSchedulerStorageJobActionDetails(erroJobAction.Type.Value, erroJobAction.QueueMessage);
+                    return GetSchedulerStorageJobActionDetails(erroJobAction.Type.Value, erroJobAction.QueueMessage);
 
                 case JobActionType.ServiceBusQueue:
-                    return Converter.GetSchedulerServiceBusQueueJobActionDetails(erroJobAction.Type.Value, erroJobAction.ServiceBusQueueMessage);
+                    return GetSchedulerServiceBusQueueJobActionDetails(erroJobAction.Type.Value, erroJobAction.ServiceBusQueueMessage);
 
                 case JobActionType.ServiceBusTopic:
-                    return Converter.GetSchedulerServiceBusTopicJobActionDetails(erroJobAction.Type.Value, erroJobAction.ServiceBusTopicMessage);
+                    return GetSchedulerServiceBusTopicJobActionDetails(erroJobAction.Type.Value, erroJobAction.ServiceBusTopicMessage);
 
                 default:
                     return null;
@@ -462,7 +456,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (request == null)
             {
-                throw new ArgumentNullException(paramName: "request");
+                throw new ArgumentNullException("request");
             }
 
             var psHttpJobActionDetails = new PSHttpJobActionDetails(jobActionType)
@@ -471,7 +465,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 RequestHeaders = request.Headers,
                 RequestMethod = request.Method,
                 Uri = request.Uri,
-                HttpJobAuthentication = Converter.GetSchedulerHttpJobAuthenticationDetails(request.Authentication),
+                HttpJobAuthentication = GetSchedulerHttpJobAuthenticationDetails(request.Authentication),
             };
 
             return psHttpJobActionDetails;
@@ -494,7 +488,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 case HttpAuthenticationType.ClientCertificate:
                     var clientCertAuthentication = authentication as ClientCertAuthentication;
 
-                    var psClientCertAuthentication = new PSHttpJobClientCertAuthenticationDetails()
+                    var psClientCertAuthentication = new PSHttpJobClientCertAuthenticationDetails
                     {
                         HttpAuthType = Constants.HttpAuthenticationClientCertificate,
                     };
@@ -511,7 +505,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 case HttpAuthenticationType.Basic:
                     var basicAuthentication = authentication as BasicAuthentication;
 
-                    var psBasicAuthentication = new PSHttpJobBasicAuthenticationDetails()
+                    var psBasicAuthentication = new PSHttpJobBasicAuthenticationDetails
                     {
                         HttpAuthType = Constants.HttpAuthenticationBasic,
                         Username = basicAuthentication == null ? null : basicAuthentication.Username,
@@ -522,7 +516,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                 case HttpAuthenticationType.ActiveDirectoryOAuth:
                     var oAuthAuthentication = authentication as OAuthAuthentication;
 
-                    var psOAuthAuthentication = new PSHttpJobOAuthAuthenticationDetails()
+                    var psOAuthAuthentication = new PSHttpJobOAuthAuthenticationDetails
                     {
                         HttpAuthType = Constants.HttpAuthenticationActiveDirectoryOAuth,
                     };
@@ -537,7 +531,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
                     return psOAuthAuthentication;
 
                 default:
-                    return new PSHttpJobAuthenticationDetails()
+                    return new PSHttpJobAuthenticationDetails
                     {
                         HttpAuthType = Constants.HttpAuthenticationNone
                     };
@@ -554,7 +548,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (storageQueue == null)
             {
-                throw new ArgumentNullException(paramName: "storageQueue");
+                throw new ArgumentNullException("storageQueue");
             }
 
             var psStorageJobActionDetails = new PSStorageJobActionDetails(jobActionType)
@@ -576,7 +570,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <returns>PSServiceBusJobActionDetails.</returns>
         internal static PSServiceBusJobActionDetails GetSchedulerServiceBusQueueJobActionDetails(JobActionType jobActionType, ServiceBusQueueMessage serviceBusQueueMessage)
         {
-            var psServiceBusjobActionDetails = Converter.GetServiceBusJobActionDetails(jobActionType, serviceBusQueueMessage);
+            var psServiceBusjobActionDetails = GetServiceBusJobActionDetails(jobActionType, serviceBusQueueMessage);
             psServiceBusjobActionDetails.ServiceBusQueueName = serviceBusQueueMessage.QueueName;
 
             return psServiceBusjobActionDetails;
@@ -590,7 +584,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         /// <returns>PSServiceBusJobActionDetails.</returns>
         internal static PSServiceBusJobActionDetails GetSchedulerServiceBusTopicJobActionDetails(JobActionType jobActionType, ServiceBusTopicMessage serviceBusTopicMessage)
         {
-            var psServiceBusjobActionDetails = Converter.GetServiceBusJobActionDetails(jobActionType, serviceBusTopicMessage);
+            var psServiceBusjobActionDetails = GetServiceBusJobActionDetails(jobActionType, serviceBusTopicMessage);
             psServiceBusjobActionDetails.ServiceBusTopicPath = serviceBusTopicMessage.TopicPath;
 
             return psServiceBusjobActionDetails;
@@ -606,12 +600,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (serviceBusMessage == null)
             {
-                throw new ArgumentNullException(paramName: "serviceBusMessage");
+                throw new ArgumentNullException("serviceBusMessage");
             }
 
             var psServieBusJobActionDetails = new PSServiceBusJobActionDetails(jobActionType)
             {
-                ServiceBusAuthentication = Converter.GetServiceBusActionAuthenticationDetails(serviceBusMessage.Authentication),
+                ServiceBusAuthentication = GetServiceBusActionAuthenticationDetails(serviceBusMessage.Authentication),
                 ServiceBusMessage = serviceBusMessage.Message,
                 ServiceBusNamespaceProperty = serviceBusMessage.NamespaceProperty,
                 ServiceBusTransportType = serviceBusMessage.TransportType.ToString()
@@ -629,10 +623,10 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (authentication == null)
             {
-                throw new ArgumentNullException(paramName: "authentication");
+                throw new ArgumentNullException("authentication");
             }
 
-            var psServiceBusAuthentication = new PSServiceBusJobActionAuthenticationDetails()
+            var psServiceBusAuthentication = new PSServiceBusJobActionAuthenticationDetails
             {
                 ServiceBusSasKey = authentication.SasKey,
                 ServiceBusSasKeyName = authentication.SasKeyName,

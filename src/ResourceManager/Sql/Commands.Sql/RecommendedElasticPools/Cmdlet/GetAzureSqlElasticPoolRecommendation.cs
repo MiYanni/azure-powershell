@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Sql.RecommendedElasticPools.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<UpgradeRecommendedElasticPoolProperties> GetEntity()
         {
-            return ModelAdapter.ListRecommendedElasticPoolProperties(this.ResourceGroupName, this.ServerName);
+            return ModelAdapter.ListRecommendedElasticPoolProperties(ResourceGroupName, ServerName);
         }
     }
 }

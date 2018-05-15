@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         [JsonIgnore]
         public string CountriesText
         {
-            get { return JsonConvert.SerializeObject(Countries, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+            get { return JsonConvert.SerializeObject(Countries, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }); }
         }
     }
 }

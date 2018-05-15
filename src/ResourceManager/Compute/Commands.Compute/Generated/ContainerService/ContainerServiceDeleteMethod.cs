@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string containerServiceName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "ContainerServiceName" },
+                 new[] { "ResourceGroupName", "ContainerServiceName" },
                  new object[] { resourceGroupName, containerServiceName });
         }
     }
@@ -104,13 +104,13 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.Name, VerbsCommon.Remove)
-                    && (this.Force.IsPresent ||
-                        this.ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
+                if (ShouldProcess(Name, VerbsCommon.Remove)
+                    && (Force.IsPresent ||
+                        ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
                                             "Remove-AzureRmContainerService operation")))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string containerServiceName = this.Name;
+                    string resourceGroupName = ResourceGroupName;
+                    string containerServiceName = Name;
 
                     ContainerServicesClient.Delete(resourceGroupName, containerServiceName);
 
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

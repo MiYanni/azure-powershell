@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
     using System;
     using System.Management.Automation;
     using Azure.Management.DeviceProvisioningServices;
-    using Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Models;
-    using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
-    using Microsoft.Azure.Management.DeviceProvisioningServices.Models;
-    using DPSResources = Microsoft.Azure.Commands.Management.DeviceProvisioningServices.Properties.Resources;
+    using Models;
+    using ResourceManager.Common.ArgumentCompleters;
+    using Azure.Management.DeviceProvisioningServices.Models;
+    using DPSResources = Properties.Resources;
 
     [Cmdlet(VerbsCommon.New, "AzureRmIoTDeviceProvisioningServiceCertificateVerificationCode", DefaultParameterSetName = ResourceParameterSet, SupportsShouldProcess = true)]
     [OutputType(typeof(PSVerificationCodeResponse))]
@@ -94,22 +94,22 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
                 switch (ParameterSetName)
                 {
                     case InputObjectParameterSet:
-                        this.ResourceGroupName = this.InputObject.ResourceGroupName;
-                        this.Name = this.InputObject.Name;
-                        this.CertificateName = this.InputObject.CertificateName;
-                        this.Etag = this.InputObject.Etag;
-                        this.GetIotDpsCertificateVerificationCode();
+                        ResourceGroupName = InputObject.ResourceGroupName;
+                        Name = InputObject.Name;
+                        CertificateName = InputObject.CertificateName;
+                        Etag = InputObject.Etag;
+                        GetIotDpsCertificateVerificationCode();
                         break;
 
                     case ResourceIdParameterSet:
-                        this.ResourceGroupName = IotDpsUtils.GetResourceGroupName(this.ResourceId);
-                        this.Name = IotDpsUtils.GetIotDpsName(this.ResourceId);
-                        this.CertificateName = IotDpsUtils.GetIotDpsCertificateName(this.ResourceId);
-                        this.GetIotDpsCertificateVerificationCode();
+                        ResourceGroupName = IotDpsUtils.GetResourceGroupName(ResourceId);
+                        Name = IotDpsUtils.GetIotDpsName(ResourceId);
+                        CertificateName = IotDpsUtils.GetIotDpsCertificateName(ResourceId);
+                        GetIotDpsCertificateVerificationCode();
                         break;
 
                     case ResourceParameterSet:
-                        this.GetIotDpsCertificateVerificationCode();
+                        GetIotDpsCertificateVerificationCode();
                         break;
 
                     default:
@@ -120,8 +120,8 @@ namespace Microsoft.Azure.Commands.Management.DeviceProvisioningServices
 
         private void GetIotDpsCertificateVerificationCode()
         {
-            VerificationCodeResponse verificationCodeResponse = this.IotDpsClient.DpsCertificate.GenerateVerificationCode(this.CertificateName, this.Etag, this.ResourceGroupName, this.Name);
-            this.WriteObject(IotDpsUtils.ToPSVerificationCodeResponse(verificationCodeResponse));
+            VerificationCodeResponse verificationCodeResponse = IotDpsClient.DpsCertificate.GenerateVerificationCode(CertificateName, Etag, ResourceGroupName, Name);
+            WriteObject(IotDpsUtils.ToPSVerificationCodeResponse(verificationCodeResponse));
         }
     }
 }

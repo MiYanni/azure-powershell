@@ -93,20 +93,17 @@ namespace Microsoft.Azure.Commands.Automation.Model
             NodeConfigurationName = nodeConfiguraionName;
             
             if (automationJob == null && automationJobSchedule == null) return;
+            if (automationJob != null)
+            {
+                JobId = automationJob.Properties.JobId;
+                JobStatus = automationJob.Properties.Status;
+                Job = new Job(resourceGroupName, accountName, automationJob);
+            }
             else
             {
-                if (automationJob != null)
-                {
-                    JobId = automationJob.Properties.JobId;
-                    JobStatus = automationJob.Properties.Status;
-                    Job = new Job(resourceGroupName, accountName, automationJob);
-                }
-                else
-                {
-                    JobScheduleId = automationJobSchedule.Properties.Id;
-                    JobStatus = Scheduled;
-                    JobSchedule = new JobSchedule(resourceGroupName, accountName, automationJobSchedule);
-                }
+                JobScheduleId = automationJobSchedule.Properties.Id;
+                JobStatus = Scheduled;
+                JobSchedule = new JobSchedule(resourceGroupName, accountName, automationJobSchedule);
             }
 
             NodeConfigurationName = nodeConfiguraionName;
@@ -225,19 +222,16 @@ namespace Microsoft.Azure.Commands.Automation.Model
             NodeConfigurationName = nodeConfiguraionName;
 
             if (automationJob == null && automationJobSchedule == null) return;
+            if (automationJob != null)
+            {
+                JobId = automationJob.Properties.JobId;
+                JobStatus = automationJob.Properties.Status;
+                Job = new Job(resourceGroupName, accountName, automationJob);
+            }
             else
             {
-                if (automationJob != null)
-                {
-                    JobId = automationJob.Properties.JobId;
-                    JobStatus = automationJob.Properties.Status;
-                    Job = new Job(resourceGroupName, accountName, automationJob);
-                }
-                else
-                {
-                    JobScheduleId = automationJobSchedule.Properties.Id;
-                    JobSchedule = new JobSchedule(resourceGroupName, accountName, automationJobSchedule);
-                }
+                JobScheduleId = automationJobSchedule.Properties.Id;
+                JobSchedule = new JobSchedule(resourceGroupName, accountName, automationJobSchedule);
             }
 
             if (nodeGroups != null)

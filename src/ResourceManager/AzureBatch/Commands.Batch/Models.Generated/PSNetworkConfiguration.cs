@@ -26,26 +26,26 @@ namespace Microsoft.Azure.Commands.Batch.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Azure.Batch;
+    using Azure.Batch;
     
     
     public partial class PSNetworkConfiguration
     {
         
-        internal Microsoft.Azure.Batch.NetworkConfiguration omObject;
+        internal NetworkConfiguration omObject;
         
         private PSPoolEndpointConfiguration endpointConfiguration;
         
         public PSNetworkConfiguration()
         {
-            this.omObject = new Microsoft.Azure.Batch.NetworkConfiguration();
+            omObject = new NetworkConfiguration();
         }
         
-        internal PSNetworkConfiguration(Microsoft.Azure.Batch.NetworkConfiguration omObject)
+        internal PSNetworkConfiguration(NetworkConfiguration omObject)
         {
-            if ((omObject == null))
+            if (omObject == null)
             {
-                throw new System.ArgumentNullException("omObject");
+                throw new ArgumentNullException("omObject");
             }
             this.omObject = omObject;
         }
@@ -54,24 +54,24 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                if (((this.endpointConfiguration == null) 
-                            && (this.omObject.EndpointConfiguration != null)))
+                if (endpointConfiguration == null 
+                    && omObject.EndpointConfiguration != null)
                 {
-                    this.endpointConfiguration = new PSPoolEndpointConfiguration(this.omObject.EndpointConfiguration);
+                    endpointConfiguration = new PSPoolEndpointConfiguration(omObject.EndpointConfiguration);
                 }
-                return this.endpointConfiguration;
+                return endpointConfiguration;
             }
             set
             {
-                if ((value == null))
+                if (value == null)
                 {
-                    this.omObject.EndpointConfiguration = null;
+                    omObject.EndpointConfiguration = null;
                 }
                 else
                 {
-                    this.omObject.EndpointConfiguration = value.omObject;
+                    omObject.EndpointConfiguration = value.omObject;
                 }
-                this.endpointConfiguration = value;
+                endpointConfiguration = value;
             }
         }
         
@@ -79,11 +79,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
         {
             get
             {
-                return this.omObject.SubnetId;
+                return omObject.SubnetId;
             }
             set
             {
-                this.omObject.SubnetId = value;
+                omObject.SubnetId = value;
             }
         }
     }

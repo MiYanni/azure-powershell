@@ -94,29 +94,29 @@ namespace Microsoft.Azure.Commands.EventGrid
 
         public override void ExecuteCmdlet()
         {
-            if (this.ShouldProcess(this.EventSubscriptionName, $"Remove event subscription {this.EventSubscriptionName}"))
+            if (ShouldProcess(EventSubscriptionName, $"Remove event subscription {EventSubscriptionName}"))
             {
                 string scope;
 
-                if (!string.IsNullOrEmpty(this.ResourceId))
+                if (!string.IsNullOrEmpty(ResourceId))
                 {
-                    scope = this.ResourceId;
+                    scope = ResourceId;
                 }
-                else if (this.InputObject != null)
+                else if (InputObject != null)
                 {
-                    scope = this.InputObject.Id;
+                    scope = InputObject.Id;
                 }
                 else
                 {
                     // ResourceID not specified, build the scope for the event subscription for either the 
                     // subscription, or resource group, or custom topic depending on which of the parameters are provided.
-                    scope = EventGridUtils.GetScope(this.DefaultContext.Subscription.Id, this.ResourceGroupName, this.TopicName);
+                    scope = EventGridUtils.GetScope(DefaultContext.Subscription.Id, ResourceGroupName, TopicName);
                 }
 
-                this.Client.DeleteEventSubscription(scope, this.EventSubscriptionName);
-                if (this.PassThru)
+                Client.DeleteEventSubscription(scope, EventSubscriptionName);
+                if (PassThru)
                 {
-                    this.WriteObject(true);
+                    WriteObject(true);
                 }
             }
         }

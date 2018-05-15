@@ -113,45 +113,36 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// <summary>
         /// Get logging operations
         /// </summary>
-        /// <param name="LoggingOperations">The string type of Logging operations</param>
+        /// <param name="loggingOperations">The string type of Logging operations</param>
         /// <example>GetLoggingOperations("all"), GetLoggingOperations("read, write")</example>
         /// <returns>LoggingOperations object</returns>
-        internal StorageClient.LoggingOperations GetLoggingOperations(string LoggingOperations)
+        internal StorageClient.LoggingOperations GetLoggingOperations(string loggingOperations)
         {
-            LoggingOperations = LoggingOperations.ToLower();
-            if (LoggingOperations.IndexOf("all") != -1)
+            loggingOperations = loggingOperations.ToLower();
+            if (loggingOperations.IndexOf("all") != -1)
             {
-                if (LoggingOperations == "all")
+                if (loggingOperations == "all")
                 {
                     return StorageClient.LoggingOperations.All;
                 }
-                else
-                {
-                    throw new ArgumentException(LoggingOperationHelpMessage);
-                }
+                throw new ArgumentException(LoggingOperationHelpMessage);
             }
-            else if (LoggingOperations.IndexOf("none") != -1)
+            if (loggingOperations.IndexOf("none") != -1)
             {
-                if (LoggingOperations == "none")
+                if (loggingOperations == "none")
                 {
                     return StorageClient.LoggingOperations.None;
                 }
-                else
-                {
-                    throw new ArgumentException(LoggingOperationHelpMessage);
-                }
+                throw new ArgumentException(LoggingOperationHelpMessage);
             }
-            else
+            try
             {
-                try
-                {
-                    return (StorageClient.LoggingOperations)Enum.Parse(typeof(StorageClient.LoggingOperations),
-                        LoggingOperations, true);
-                }
-                catch
-                {
-                    throw new ArgumentException(String.Format(Resources.InvalidEnumName, LoggingOperations));
-                }
+                return (StorageClient.LoggingOperations)Enum.Parse(typeof(StorageClient.LoggingOperations),
+                    loggingOperations, true);
+            }
+            catch
+            {
+                throw new ArgumentException(String.Format(Resources.InvalidEnumName, loggingOperations));
             }
         }
 

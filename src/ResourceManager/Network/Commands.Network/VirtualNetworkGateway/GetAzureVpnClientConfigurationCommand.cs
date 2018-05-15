@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Network.VirtualNetworkGateway
             // The try-catch below handles the case till the change is made and deployed to PROD
             if (ShouldProcess("AzureRmVpnClientConfiguration", VerbsCommon.Get))
             {
-                string serializedPackageUrl = this.NetworkClient.GetVpnProfilePackageUrl(this.ResourceGroupName, this.Name);
+                string serializedPackageUrl = NetworkClient.GetVpnProfilePackageUrl(ResourceGroupName, Name);
                 string packageUrl = string.Empty;
                 try
                 {
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Network.VirtualNetworkGateway
                     packageUrl = serializedPackageUrl;
                 }
 
-                MNM.PSVpnProfile vpnProfile = new MNM.PSVpnProfile() { VpnProfileSASUrl = packageUrl };
+                MNM.PSVpnProfile vpnProfile = new MNM.PSVpnProfile { VpnProfileSASUrl = packageUrl };
                 WriteObject(vpnProfile);
             }
         }

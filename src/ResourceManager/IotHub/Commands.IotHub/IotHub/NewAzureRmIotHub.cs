@@ -15,11 +15,11 @@
 namespace Microsoft.Azure.Commands.Management.IotHub
 {
     using System.Management.Automation;
-    using Microsoft.Azure.Commands.Management.IotHub.Common;
-    using Microsoft.Azure.Commands.Management.IotHub.Models;
-    using Microsoft.Azure.Management.IotHub;
-    using Microsoft.Azure.Management.IotHub.Models;
-    using ResourceProperties = Microsoft.Azure.Commands.Management.IotHub.Properties;
+    using Common;
+    using Models;
+    using Azure.Management.IotHub;
+    using Azure.Management.IotHub.Models;
+    using ResourceProperties = Properties;
     using ResourceManager.Common.ArgumentCompleters;
 
     [Cmdlet(VerbsCommon.New, "AzureRmIotHub", SupportsShouldProcess = true)]
@@ -70,24 +70,24 @@ namespace Microsoft.Azure.Commands.Management.IotHub
         {
             if (ShouldProcess(Name, ResourceProperties.Resources.AddIotHub))
             {
-                var iotHubDescription = new IotHubDescription()
+                var iotHubDescription = new IotHubDescription
                 {
-                    Location = this.Location,
-                    Sku = new IotHubSkuInfo()
+                    Location = Location,
+                    Sku = new IotHubSkuInfo
                     {
-                        Name = this.SkuName.ToString(),
-                        Capacity = this.Units
+                        Name = SkuName.ToString(),
+                        Capacity = Units
                     }
                 };
 
-                if (this.Properties != null)
+                if (Properties != null)
                 {
-                    iotHubDescription.Properties = IotHubUtils.ToIotHubProperties(this.Properties);
+                    iotHubDescription.Properties = IotHubUtils.ToIotHubProperties(Properties);
                 }
 
-                this.IotHubClient.IotHubResource.CreateOrUpdate(this.ResourceGroupName, this.Name, iotHubDescription);
-                IotHubDescription updatedIotHubDescription = this.IotHubClient.IotHubResource.Get(this.ResourceGroupName, this.Name);
-                this.WriteObject(IotHubUtils.ToPSIotHub(updatedIotHubDescription), false);
+                IotHubClient.IotHubResource.CreateOrUpdate(ResourceGroupName, Name, iotHubDescription);
+                IotHubDescription updatedIotHubDescription = IotHubClient.IotHubResource.Get(ResourceGroupName, Name);
+                WriteObject(IotHubUtils.ToPSIotHub(updatedIotHubDescription), false);
             }
         }
     }

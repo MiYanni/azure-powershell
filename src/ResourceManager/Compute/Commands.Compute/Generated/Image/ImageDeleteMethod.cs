@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             string imageName = string.Empty;
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "ImageName" },
+                 new[] { "ResourceGroupName", "ImageName" },
                  new object[] { resourceGroupName, imageName });
         }
     }
@@ -105,13 +105,13 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         {
             ExecuteClientAction(() =>
             {
-                if (ShouldProcess(this.ImageName, VerbsCommon.Remove)
-                    && (this.Force.IsPresent ||
-                        this.ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
+                if (ShouldProcess(ImageName, VerbsCommon.Remove)
+                    && (Force.IsPresent ||
+                        ShouldContinue(Properties.Resources.ResourceRemovalConfirmation,
                                             "Remove-AzureRmImage operation")))
                 {
-                    string resourceGroupName = this.ResourceGroupName;
-                    string imageName = this.ImageName;
+                    string resourceGroupName = ResourceGroupName;
+                    string imageName = ImageName;
 
                     var result = ImagesClient.Delete(resourceGroupName, imageName);
                     var psObject = new PSOperationStatusResponse();
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             Position = 1,
             Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

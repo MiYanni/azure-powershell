@@ -24,9 +24,9 @@ namespace Microsoft.Azure.Commands.Batch.Utils
     using System.Net.Http.Headers;
     using System.Threading;
     using Common.Authentication;
-    using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
+    using Common.Authentication.Abstractions;
 
-    internal class BatchAadTokenProvider : Microsoft.Rest.ITokenProvider
+    internal class BatchAadTokenProvider : ITokenProvider
     {
         private const string BearerAuthScheme = "Bearer";
 
@@ -47,17 +47,17 @@ namespace Microsoft.Azure.Commands.Batch.Utils
         protected virtual string GetBatchAadToken()
         {
             string batchEndpoint;
-            this.azureContext.Environment.TryGetEndpointString(AzureEnvironment.Endpoint.BatchEndpointResourceId, out batchEndpoint);
+            azureContext.Environment.TryGetEndpointString(AzureEnvironment.Endpoint.BatchEndpointResourceId, out batchEndpoint);
             if (string.IsNullOrEmpty(batchEndpoint))
             {
                 // Default to public cloud if key is not present.
-                this.azureContext.Environment.SetEndpoint(AzureEnvironment.Endpoint.BatchEndpointResourceId, AzureEnvironmentConstants.BatchEndpointResourceId);
+                azureContext.Environment.SetEndpoint(AzureEnvironment.Endpoint.BatchEndpointResourceId, AzureEnvironmentConstants.BatchEndpointResourceId);
             }
 
             IAccessToken tokenResult = AzureSession.Instance.AuthenticationFactory.Authenticate(
-                this.azureContext.Account,
-                this.azureContext.Environment,
-                this.azureContext.Tenant.Id.ToString(),
+                azureContext.Account,
+                azureContext.Environment,
+                azureContext.Tenant.Id.ToString(),
                 null,
                 ShowDialog.Auto,
                 null,

@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Microsoft.Azure.Management.Scheduler.Models;
+    using Management.Scheduler.Models;
 
     public static class ExtensionMethods
     {
@@ -81,12 +81,12 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
         {
             if (target == null)
             {
-                throw new ArgumentNullException(paramName: "target");
+                throw new ArgumentNullException("target");
             }
 
             if (source == null)
             {
-                throw new ArgumentNullException(paramName: "source");
+                throw new ArgumentNullException("source");
             }
 
             foreach (var element in source)
@@ -157,10 +157,10 @@ namespace Microsoft.Azure.Commands.Scheduler.Utilities
             
             if(typeof(T).BaseType.FullName == "System.ValueType")
             {
-                return (T) Enum.Parse(Nullable.GetUnderlyingType(typeof(T)), targetValue, ignoreCase: true);
+                return (T) Enum.Parse(Nullable.GetUnderlyingType(typeof(T)), targetValue, true);
             }
 
-            return (T)Enum.Parse(typeof(T), targetValue, ignoreCase: true);
+            return (T)Enum.Parse(typeof(T), targetValue, true);
         }
 
         /// <summary>

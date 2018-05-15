@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Commands.Sql.Service
             GetCurrentSqlClient().RecommendedIndexes.Update(resourceGroupName, serverName, databaseName, schema, table, recommendedIndexName,
                     new RecommendedIndexUpdateParameters
                     {
-                        Properties = new RecommendedIndexUpdateProperties()
+                        Properties = new RecommendedIndexUpdateProperties
                         {
                             State = state
                         }

@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands
             if (!string.IsNullOrEmpty(InputFile))
             {
                 string fileName = this.TryResolvePath(InputFile);
-                if (!(new FileInfo(fileName)).Exists)
+                if (!new FileInfo(fileName).Exists)
                 {
                     throw new PSArgumentException(string.Format(CultureInfo.InvariantCulture,Resources.FileDoesNotExist, fileName));
                 }
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Commands.Relay.Commands
 
                     if (tag.Value != null && !(tag.Value is string))
                         throw new ArgumentException("Tag has invalid value");
-                    string value = (tag.Value == null) ? string.Empty : (string)tag.Value;
+                    string value = tag.Value == null ? string.Empty : (string)tag.Value;
                     tagsDictionary[key] = value;
                 }
                 return tagsDictionary;

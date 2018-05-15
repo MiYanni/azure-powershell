@@ -15,7 +15,7 @@
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
     using Common;
-    using Microsoft.WindowsAzure.Storage.File;
+    using WindowsAzure.Storage.File;
     using Model.Contract;
     using System;
     using System.Globalization;
@@ -81,7 +81,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            Func<long, Task> taskGenerator = (taskId) => GetAzureShareStoredAccessPolicyAsync(taskId, Channel, ShareName, Policy);
+            Func<long, Task> taskGenerator = taskId => GetAzureShareStoredAccessPolicyAsync(taskId, Channel, ShareName, Policy);
             RunTask(taskGenerator);
         }
     }

@@ -117,37 +117,37 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// <summary>
         /// The deployment operations resource type.
         /// </summary>
-        public static readonly string MicrosoftResourcesDeploymentOperationsType = Constants.MicrosoftResourceNamesapce + "/deployments/operations";
+        public static readonly string MicrosoftResourcesDeploymentOperationsType = MicrosoftResourceNamesapce + "/deployments/operations";
 
         /// <summary>
         /// The deployments resource type.
         /// </summary>
-        public static readonly string MicrosoftResourcesDeploymentType = Constants.MicrosoftResourceNamesapce + "/deployments";
+        public static readonly string MicrosoftResourcesDeploymentType = MicrosoftResourceNamesapce + "/deployments";
 
         /// <summary>
         /// The policy definition resource type.
         /// </summary>
-        public static readonly string MicrosoftAuthorizationPolicyDefinitionType = Constants.MicrosoftAuthorizationNamespace + "/policydefinitions";
+        public static readonly string MicrosoftAuthorizationPolicyDefinitionType = MicrosoftAuthorizationNamespace + "/policydefinitions";
 
         /// <summary>
         /// The policy set definition resource type.
         /// </summary>
-        public static readonly string MicrosoftAuthorizationPolicySetDefinitionType = Constants.MicrosoftAuthorizationNamespace + "/policysetdefinitions";
+        public static readonly string MicrosoftAuthorizationPolicySetDefinitionType = MicrosoftAuthorizationNamespace + "/policysetdefinitions";
 
         /// <summary>
         /// The policy definition resource type.
         /// </summary>
-        public static readonly string MicrosoftAuthorizationPolicyAssignmentType = Constants.MicrosoftAuthorizationNamespace + "/policyassignments";
+        public static readonly string MicrosoftAuthorizationPolicyAssignmentType = MicrosoftAuthorizationNamespace + "/policyassignments";
 
         /// <summary>
         /// The application definition resource type.
         /// </summary>
-        public static readonly string MicrosoftApplicationDefinitionType = Constants.MicrosoftSolutionNamespace + "/applicationdefinitions";
+        public static readonly string MicrosoftApplicationDefinitionType = MicrosoftSolutionNamespace + "/applicationdefinitions";
 
         /// <summary>
         /// The application resource type.
         /// </summary>
-        public static readonly string MicrosoftApplicationType = Constants.MicrosoftSolutionNamespace + "/applications";
+        public static readonly string MicrosoftApplicationType = MicrosoftSolutionNamespace + "/applications";
 
         /// <summary>
         /// The type name of the generic resource.

@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
             if (String.IsNullOrEmpty(destination.Uri.Query))
             {
                 var destinationBlob = Create(destination);
-                return destinationBlob.Container.CreateIfNotExistsAsync(this.CreateRequestOptions(), operationContext: null)
+                return destinationBlob.Container.CreateIfNotExistsAsync(CreateRequestOptions(), null)
                                       .ConfigureAwait(false).GetAwaiter().GetResult();
             }
             return true;
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
         {
             return new BlobRequestOptions
             {
-                ServerTimeout = this.operationTimeout,
+                ServerTimeout = operationTimeout,
                 RetryPolicy = new LinearRetry(delayBetweenRetries, 5)
             };
         }

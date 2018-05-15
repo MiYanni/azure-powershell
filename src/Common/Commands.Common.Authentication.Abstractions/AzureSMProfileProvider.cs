@@ -40,11 +40,11 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
                 }
                 catch (LockRecursionException lockException)
                 {
-                    throw new InvalidOperationException(Abstractions.Properties.Resources.ProfileLockReadRecursion, lockException);
+                    throw new InvalidOperationException(Properties.Resources.ProfileLockReadRecursion, lockException);
                 }
                 catch (ObjectDisposedException disposedException)
                 {
-                    throw new InvalidOperationException(Abstractions.Properties.Resources.ProfileLockReadDisposed, disposedException);
+                    throw new InvalidOperationException(Properties.Resources.ProfileLockReadDisposed, disposedException);
                 }
             }
         }
@@ -84,11 +84,11 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Abstractions
             }
             catch (LockRecursionException lockException)
             {
-                throw new InvalidOperationException(Abstractions.Properties.Resources.ProfileLockWriteRecursion, lockException);
+                throw new InvalidOperationException(Properties.Resources.ProfileLockWriteRecursion, lockException);
             }
             catch (ObjectDisposedException disposedException)
             {
-                throw new InvalidOperationException(Abstractions.Properties.Resources.ProfileLockWriteDisposed, disposedException);
+                throw new InvalidOperationException(Properties.Resources.ProfileLockWriteDisposed, disposedException);
             }
         }
 

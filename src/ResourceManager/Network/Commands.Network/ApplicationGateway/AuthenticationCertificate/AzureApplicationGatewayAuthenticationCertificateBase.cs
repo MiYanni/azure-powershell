@@ -39,13 +39,13 @@ namespace Microsoft.Azure.Commands.Network
 
             var authCertificate = new PSApplicationGatewayAuthenticationCertificate();
 
-            authCertificate.Name = this.Name;
+            authCertificate.Name = Name;
             authCertificate.Data = Convert.ToBase64String(cert.Export(X509ContentType.Cert));
             authCertificate.Id =
                 ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                    this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                    Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayAuthenticationCertificateName,
-                    this.Name);
+                    NetworkClient.NetworkManagementClient.SubscriptionId,
+                    Properties.Resources.ApplicationGatewayAuthenticationCertificateName,
+                    Name);
 
             return authCertificate;
         }

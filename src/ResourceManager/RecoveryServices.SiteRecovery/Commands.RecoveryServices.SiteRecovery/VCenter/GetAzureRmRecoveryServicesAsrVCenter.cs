@@ -69,16 +69,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
             base.ExecuteSiteRecoveryCmdlet();
 
-            switch (this.ParameterSetName)
+            switch (ParameterSetName)
             {
                 case ASRParameterSets.ByResourceId:
-                    this.GetvCenterByResourceId();
+                    GetvCenterByResourceId();
                     break;
                 case ASRParameterSets.ByName:
-                    this.GetvCenterByName();
+                    GetvCenterByName();
                     break;
                 case ASRParameterSets.ByFabricObject:
-                    this.GetAllvCentersInFabric();
+                    GetAllvCentersInFabric();
                     break;
             }
         }
@@ -89,9 +89,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void GetAllvCentersInFabric()
         {
             var vCenterListResponse =
-                this.RecoveryServicesClient.ListAzureRmSiteRecoveryvCenter(this.Fabric.Name);
+                RecoveryServicesClient.ListAzureRmSiteRecoveryvCenter(Fabric.Name);
 
-            this.WriteObject(vCenterListResponse.Select(p => new ASRvCenter(p)), true);
+            WriteObject(vCenterListResponse.Select(p => new ASRvCenter(p)), true);
         }
 
         /// <summary>
@@ -100,11 +100,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         private void GetvCenterByName()
         {
             var vcenterResponse =
-                this.RecoveryServicesClient.GetAzureRmSiteRecoveryvCenter(
-                    this.Fabric.Name,
-                    this.Name);
+                RecoveryServicesClient.GetAzureRmSiteRecoveryvCenter(
+                    Fabric.Name,
+                    Name);
 
-            this.WriteObject(new ASRvCenter(vcenterResponse));
+            WriteObject(new ASRvCenter(vcenterResponse));
         }
 
         /// <summary>
@@ -112,20 +112,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// </summary>
         private void GetvCenterByResourceId()
         {
-            var fabricName = this.Name = Utilities.GetValueFromArmId(
-                    this.ResourceId,
+            var fabricName = Name = Utilities.GetValueFromArmId(
+                    ResourceId,
                     ARMResourceTypeConstants.ReplicationFabrics);
 
-            var name = this.Name = Utilities.GetValueFromArmId(
-                    this.ResourceId,
+            var name = Name = Utilities.GetValueFromArmId(
+                    ResourceId,
                     ARMResourceTypeConstants.vCenters);
 
             var vcenterResponse =
-                this.RecoveryServicesClient.GetAzureRmSiteRecoveryvCenter(
+                RecoveryServicesClient.GetAzureRmSiteRecoveryvCenter(
                     fabricName,
                     name);
 
-            this.WriteObject(new ASRvCenter(vcenterResponse));
+            WriteObject(new ASRvCenter(vcenterResponse));
         }
     }
 }

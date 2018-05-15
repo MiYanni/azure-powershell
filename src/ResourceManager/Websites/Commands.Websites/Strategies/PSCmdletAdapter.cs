@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.WebApps.Strategies
 
         public PSCmdletAdapter(AzurePSCmdlet cmdlet, SessionState state)
         {
-            this.CommandRuntime = cmdlet.CommandRuntime;
+            CommandRuntime = cmdlet.CommandRuntime;
             _sessionState = state;
         }
 

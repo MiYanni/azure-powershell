@@ -36,14 +36,14 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            var authorization = this.ExpressRouteCircuit.Authorizations.SingleOrDefault(resource => string.Equals(resource.Name, this.Name, System.StringComparison.CurrentCultureIgnoreCase));
+            var authorization = ExpressRouteCircuit.Authorizations.SingleOrDefault(resource => string.Equals(resource.Name, Name, System.StringComparison.CurrentCultureIgnoreCase));
 
             if (authorization != null)
             {
-                this.ExpressRouteCircuit.Authorizations.Remove(authorization);
+                ExpressRouteCircuit.Authorizations.Remove(authorization);
             }
 
-            WriteObject(this.ExpressRouteCircuit);
+            WriteObject(ExpressRouteCircuit);
         }
     }
 }

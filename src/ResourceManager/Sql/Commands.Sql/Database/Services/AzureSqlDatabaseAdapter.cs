@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
         {
             var resp = Communicator.List(resourceGroupName, serverName);
 
-            return resp.Select((db) =>
+            return resp.Select(db =>
             {
                 return CreateDatabaseModelFromResponse(resourceGroupName, serverName, db);
             }).ToList();
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
         {
             var resp = Communicator.ListExpanded(resourceGroupName, serverName);
 
-            return resp.Select((db) =>
+            return resp.Select(db =>
             {
                 return CreateExpandedDatabaseModelFromResponse(resourceGroupName, serverName, db);
             }).ToList();
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
             {
                 Location = model.Database.Location,
                 Tags = model.Database.Tags,
-                Properties = new DatabaseCreateOrUpdateProperties()
+                Properties = new DatabaseCreateOrUpdateProperties
                 {
                     Collation = model.Database.CollationName,
                     Edition = model.Database.Edition == DatabaseEdition.None ? null : model.Database.Edition.ToString(),
@@ -246,9 +246,9 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
             if (!string.IsNullOrEmpty(elasticPoolName))
             {
                 var response = ElasticPoolCommunicator.ListDatabaseActivity(resourceGroupName, serverName, elasticPoolName);
-                IEnumerable<AzureSqlDatabaseActivityModel> list = response.Select((r) =>
+                IEnumerable<AzureSqlDatabaseActivityModel> list = response.Select(r =>
                    {
-                       return new AzureSqlDatabaseActivityModel()
+                       return new AzureSqlDatabaseActivityModel
                        {
                            DatabaseName = r.DatabaseName,
                            EndTime = r.EndTime,
@@ -261,14 +261,14 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
                            ServerName = r.ServerName,
                            StartTime = r.StartTime,
                            State = r.State,
-                           Properties = new AzureSqlDatabaseActivityModel.DatabaseState()
+                           Properties = new AzureSqlDatabaseActivityModel.DatabaseState
                            {
-                               Current = new Dictionary<string, string>()
+                               Current = new Dictionary<string, string>
                                {
                                     {"CurrentElasticPoolName", r.CurrentElasticPoolName},
                                     {"CurrentServiceObjectiveName", r.CurrentServiceObjective},
                                },
-                               Requested = new Dictionary<string, string>()
+                               Requested = new Dictionary<string, string>
                                {
                                     {"RequestedElasticPoolName", r.RequestedElasticPoolName},
                                     {"RequestedServiceObjectiveName", r.RequestedServiceObjective},
@@ -288,9 +288,9 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
             else
             {
                 var response = Communicator.ListOperations(resourceGroupName, serverName, databaseName);
-                IEnumerable<AzureSqlDatabaseActivityModel> list = response.Select((r) =>
+                IEnumerable<AzureSqlDatabaseActivityModel> list = response.Select(r =>
                 {
-                    return new AzureSqlDatabaseActivityModel()
+                    return new AzureSqlDatabaseActivityModel
                     {
                         DatabaseName = r.DatabaseName,
                         ErrorCode = r.ErrorCode,
@@ -302,7 +302,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
                         ServerName = r.ServerName,
                         StartTime = r.StartTime,
                         State = r.State,
-                        Properties = new AzureSqlDatabaseActivityModel.DatabaseState()
+                        Properties = new AzureSqlDatabaseActivityModel.DatabaseState
                         {
                             Current = new Dictionary<string, string>(),
                             Requested = new Dictionary<string, string>()
@@ -316,7 +316,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
                 // Check if we have a operation id constraint
                 if (operationId.HasValue)
                 {
-                    list = list.Where(pl => Guid.Equals(pl.OperationId, operationId));
+                    list = list.Where(pl => Equals(pl.OperationId, operationId));
                 }
 
                 return list.ToList();
@@ -327,12 +327,12 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
         {
             if (!string.IsNullOrEmpty(elasticPoolName))
             {
-                throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.ElasticPoolDatabaseActivityCancelNotSupported));
+                throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.ElasticPoolDatabaseActivityCancelNotSupported));
             }
 
             if (!operationId.HasValue)
             {
-                throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.OperationIdRequired));
+                throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture, Properties.Resources.OperationIdRequired));
             }
 
             Communicator.CancelOperation(resourceGroupName, serverName, databaseName, operationId.Value);

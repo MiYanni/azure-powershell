@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            var availableSslOptions = this.ApplicationGatewayClient.ListAvailableSslOptions();
+            var availableSslOptions = ApplicationGatewayClient.ListAvailableSslOptions();
             var psAvailableSslOptions = NetworkResourceManagerProfile.Mapper.Map<PSApplicationGatewayAvailableSslOptions>(availableSslOptions);
             WriteObject(psAvailableSslOptions);
         }

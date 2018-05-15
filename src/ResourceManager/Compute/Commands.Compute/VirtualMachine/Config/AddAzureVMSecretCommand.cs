@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Compute
         ProfileNouns.VaultSecretGroup),
     OutputType(
         typeof(PSVirtualMachine))]
-    public class NewAzureVaultSecretGroupCommand : Microsoft.Azure.Commands.ResourceManager.Common.AzureRMCmdlet
+    public class NewAzureVaultSecretGroupCommand : ResourceManager.Common.AzureRMCmdlet
     {
         [Alias("VMProfile")]
         [Parameter(
@@ -64,37 +64,37 @@ namespace Microsoft.Azure.Commands.Compute
 
         public override void ExecuteCmdlet()
         {
-            if (this.VM.OSProfile == null)
+            if (VM.OSProfile == null)
             {
-                this.VM.OSProfile = new OSProfile();
+                VM.OSProfile = new OSProfile();
             }
 
-            if (this.VM.OSProfile.Secrets == null)
+            if (VM.OSProfile.Secrets == null)
             {
-                this.VM.OSProfile.Secrets = new List<VaultSecretGroup>();
+                VM.OSProfile.Secrets = new List<VaultSecretGroup>();
             }
 
             int i = 0;
 
-            for (; i <= this.VM.OSProfile.Secrets.Count; i++)
+            for (; i <= VM.OSProfile.Secrets.Count; i++)
             {
-                if (i == this.VM.OSProfile.Secrets.Count)
+                if (i == VM.OSProfile.Secrets.Count)
                 {
                     var sourceVault = new SubResource
                     {
-                        Id = this.SourceVaultId
+                        Id = SourceVaultId
                     };
 
                     var vaultCertificates = new List<VaultCertificate>{
-                        new VaultCertificate()
+                        new VaultCertificate
                         {
-                            CertificateStore = this.CertificateStore,
-                            CertificateUrl = this.CertificateUrl,
+                            CertificateStore = CertificateStore,
+                            CertificateUrl = CertificateUrl,
                         }
                     };
 
-                    this.VM.OSProfile.Secrets.Add(
-                        new VaultSecretGroup()
+                    VM.OSProfile.Secrets.Add(
+                        new VaultSecretGroup
                         {
                             SourceVault = sourceVault,
                             VaultCertificates = vaultCertificates,
@@ -103,25 +103,25 @@ namespace Microsoft.Azure.Commands.Compute
                     break;
                 }
 
-                if (this.VM.OSProfile.Secrets[i].SourceVault != null && this.VM.OSProfile.Secrets[i].SourceVault.Id.Equals(this.SourceVaultId))
+                if (VM.OSProfile.Secrets[i].SourceVault != null && VM.OSProfile.Secrets[i].SourceVault.Id.Equals(SourceVaultId))
                 {
-                    if (this.VM.OSProfile.Secrets[i].VaultCertificates == null)
+                    if (VM.OSProfile.Secrets[i].VaultCertificates == null)
                     {
-                        this.VM.OSProfile.Secrets[i].VaultCertificates = new List<VaultCertificate>();
+                        VM.OSProfile.Secrets[i].VaultCertificates = new List<VaultCertificate>();
                     }
 
-                    this.VM.OSProfile.Secrets[i].VaultCertificates.Add(
-                        new VaultCertificate()
+                    VM.OSProfile.Secrets[i].VaultCertificates.Add(
+                        new VaultCertificate
                         {
-                            CertificateStore = this.CertificateStore,
-                            CertificateUrl = this.CertificateUrl,
+                            CertificateStore = CertificateStore,
+                            CertificateUrl = CertificateUrl,
                         });
 
                     break;
                 }
             }
 
-            WriteObject(this.VM);
+            WriteObject(VM);
         }
     }
 }

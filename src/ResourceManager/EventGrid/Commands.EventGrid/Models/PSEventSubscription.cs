@@ -21,14 +21,14 @@ namespace Microsoft.Azure.Commands.EventGrid.Models
     {
         public PSEventSubscription(EventSubscription eventSubscription)
         {
-            this.Id = eventSubscription.Id;
-            this.EventSubscriptionName = eventSubscription.Name;
-            this.Type = eventSubscription.Type;
-            this.ProvisioningState = eventSubscription.ProvisioningState;
-            this.Destination = eventSubscription.Destination;
-            this.Filter = eventSubscription.Filter;
-            this.Labels = eventSubscription.Labels;
-            this.Topic = eventSubscription.Topic;
+            Id = eventSubscription.Id;
+            EventSubscriptionName = eventSubscription.Name;
+            Type = eventSubscription.Type;
+            ProvisioningState = eventSubscription.ProvisioningState;
+            Destination = eventSubscription.Destination;
+            Filter = eventSubscription.Filter;
+            Labels = eventSubscription.Labels;
+            Topic = eventSubscription.Topic;
         }
 
         public PSEventSubscription(EventSubscription eventSubscription, string fullEndpointUrl)
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.EventGrid.Models
         {
             get
             {
-                var webhookDestination = this.Destination as WebHookEventSubscriptionDestination;
+                var webhookDestination = Destination as WebHookEventSubscriptionDestination;
                 if (webhookDestination != null)
                 {
                     if (webhookDestination.EndpointUrl != null)
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.EventGrid.Models
                     return webhookDestination.EndpointBaseUrl;
                 }
 
-                var eventHubDestination = this.Destination as EventHubEventSubscriptionDestination;
+                var eventHubDestination = Destination as EventHubEventSubscriptionDestination;
                 if (eventHubDestination != null)
                 {
                     return eventHubDestination.ResourceId;

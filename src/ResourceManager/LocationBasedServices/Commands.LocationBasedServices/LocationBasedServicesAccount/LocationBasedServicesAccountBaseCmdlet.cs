@@ -117,10 +117,10 @@ namespace Microsoft.Azure.Commands.LocationBasedServices
             // validate the resource provider type
             if (string.Equals(ResourceProviderName,
                               ResourceIdentifier.GetProviderFromResourceType(resourceIdentifier.ResourceType),
-                              System.StringComparison.InvariantCultureIgnoreCase)
+                              StringComparison.InvariantCultureIgnoreCase)
                 && string.Equals(ResourceTypeName,
                                  ResourceIdentifier.GetTypeFromResourceType(resourceIdentifier.ResourceType),
-                                 System.StringComparison.InvariantCultureIgnoreCase))
+                                 StringComparison.InvariantCultureIgnoreCase))
             {
                 resourceGroupName = resourceIdentifier.ResourceGroupName;
                 resourceName = resourceIdentifier.ResourceName;

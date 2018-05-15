@@ -47,8 +47,9 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         /// <returns>The entity going to be deleted</returns>
         protected override IEnumerable<Model.AzureSqlServerModel> GetEntity()
         {
-            return new List<Model.AzureSqlServerModel>() {
-                ModelAdapter.GetServer(this.ResourceGroupName, this.ServerName)
+            return new List<Model.AzureSqlServerModel>
+            {
+                ModelAdapter.GetServer(ResourceGroupName, ServerName)
             };
         }
 
@@ -69,7 +70,7 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         /// <returns>The server that was deleted</returns>
         protected override IEnumerable<Model.AzureSqlServerModel> PersistChanges(IEnumerable<Model.AzureSqlServerModel> entity)
         {
-            ModelAdapter.RemoveServer(this.ResourceGroupName, this.ServerName);
+            ModelAdapter.RemoveServer(ResourceGroupName, ServerName);
             return entity;
         }
 
@@ -79,9 +80,9 @@ namespace Microsoft.Azure.Commands.Sql.Server.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerDescription, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerWarning, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerDescription, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerWarning, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }

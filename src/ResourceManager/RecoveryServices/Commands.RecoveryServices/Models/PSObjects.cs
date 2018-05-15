@@ -72,14 +72,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="vault">vault object</param>
         public ARSVault(Vault vault)
         {
-            this.ID = vault.Id;
-            this.Name = vault.Name;
-            this.Type = vault.Type;
-            this.Location = vault.Location;
-            this.ResourceGroupName = PSRecoveryServicesClient.GetResourceGroup(vault.Id);
-            this.SubscriptionId = PSRecoveryServicesClient.GetSubscriptionId(vault.Id);
-            this.Properties = new ARSVaultProperties();
-            this.Properties.ProvisioningState = vault.Properties.ProvisioningState;
+            ID = vault.Id;
+            Name = vault.Name;
+            Type = vault.Type;
+            Location = vault.Location;
+            ResourceGroupName = PSRecoveryServicesClient.GetResourceGroup(vault.Id);
+            SubscriptionId = PSRecoveryServicesClient.GetSubscriptionId(vault.Id);
+            Properties = new ARSVaultProperties();
+            Properties.ProvisioningState = vault.Properties.ProvisioningState;
         }
 
         #endregion

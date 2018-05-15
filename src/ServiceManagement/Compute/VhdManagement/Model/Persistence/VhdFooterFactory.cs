@@ -65,7 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
         public VhdFooterFactory(VhdDataReader dataReader)
         {
             this.dataReader = dataReader;
-            this.diskTypeFactory = new DiskTypeFactory();
+            diskTypeFactory = new DiskTypeFactory();
         }
 
         public VhdFooter CreateFooter()
@@ -201,12 +201,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private long ReadPhysicalSize(VhdPropertyAttribute attribute)
         {
-            return (long)dataReader.ReadUInt64(this.GetFooterOffset() + attribute.Offset);
+            return (long)dataReader.ReadUInt64(GetFooterOffset() + attribute.Offset);
         }
 
         private IAsyncResult BeginReadPhysicalSize(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt64(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt64(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private long EndReadPhysicalSize(IAsyncResult result)
@@ -222,13 +222,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadWholeFooter(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadBytes(this.GetFooterOffset() + attribute.Offset, attribute.Size, callback, state);
+            return dataReader.BeginReadBytes(GetFooterOffset() + attribute.Offset, attribute.Size, callback, state);
         }
 
         private byte[] EndReadWholeFooter(IAsyncResult result)
         {
             var value = dataReader.EndReadBytes(result);
-            return (byte[])value;
+            return value;
         }
 
         private byte[] ReadReserved(VhdPropertyAttribute attribute)
@@ -238,13 +238,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadReserved(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadBytes(this.GetFooterOffset() + attribute.Offset, attribute.Size, callback, state);
+            return dataReader.BeginReadBytes(GetFooterOffset() + attribute.Offset, attribute.Size, callback, state);
         }
 
         private byte[] EndReadReserved(IAsyncResult result)
         {
             var value = dataReader.EndReadBytes(result);
-            return (byte[])value;
+            return value;
         }
 
         private bool ReadSavedState(VhdPropertyAttribute attribute)
@@ -254,13 +254,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadSavedState(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadBoolean(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadBoolean(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private bool EndReadSavedState(IAsyncResult result)
         {
             var value = dataReader.EndReadBoolean(result);
-            return (bool)value;
+            return value;
         }
 
         private uint ReadCheckSum(VhdPropertyAttribute attribute)
@@ -270,13 +270,13 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadCheckSum(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt32(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt32(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private uint EndReadCheckSum(IAsyncResult result)
         {
             var value = dataReader.EndReadUInt32(result);
-            return (uint)value;
+            return value;
         }
 
         private DiskGeometry ReadDiskGeometry(VhdPropertyAttribute attribute)
@@ -330,7 +330,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadCreatorHostOsType(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt32(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt32(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private HostOsType EndReadCreatorHostOsType(IAsyncResult result)
@@ -347,7 +347,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadCreatorVersion(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt32(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt32(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private VhdCreatorVersion EndReadCreatorVersion(IAsyncResult result)
@@ -364,7 +364,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadCreatorApplication(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadBytes(this.GetFooterOffset() + attribute.Offset, attribute.Size, callback, state);
+            return dataReader.BeginReadBytes(GetFooterOffset() + attribute.Offset, attribute.Size, callback, state);
         }
 
         private string EndReadCreatorApplication(IAsyncResult result)
@@ -380,7 +380,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadFeatures(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt32(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt32(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private VhdFeature EndReadFeatures(IAsyncResult result)
@@ -395,7 +395,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadUniqueId(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadGuid(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadGuid(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private Guid EndReadUniqueId(IAsyncResult result)
@@ -410,7 +410,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadTimeStamp(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadDateTime(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadDateTime(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private DateTime EndReadTimeStamp(IAsyncResult result)
@@ -425,7 +425,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadHeaderOffset(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt64(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt64(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private long EndReadHeaderOffset(IAsyncResult result)
@@ -441,7 +441,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadDiskType(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt32(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt32(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private DiskType EndReadDiskType(IAsyncResult result)
@@ -452,12 +452,12 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private long ReadVirtualSize(VhdPropertyAttribute attribute)
         {
-            return (long)dataReader.ReadUInt64(this.GetFooterOffset() + attribute.Offset);
+            return (long)dataReader.ReadUInt64(GetFooterOffset() + attribute.Offset);
         }
 
         private IAsyncResult BeginReadVirtualSize(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt64(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt64(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private long EndReadVirtualSize(IAsyncResult result)
@@ -476,7 +476,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private VhdFileFormatVersion ReadVhdFileFormatVersion(VhdPropertyAttribute attribute)
         {
-            var version = dataReader.ReadUInt32(this.GetFooterOffset() + attribute.Offset);
+            var version = dataReader.ReadUInt32(GetFooterOffset() + attribute.Offset);
             return CreateVhdFileFormatVersion(version);
         }
 
@@ -490,7 +490,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadVhdFileFormatVersion(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadUInt32(this.GetFooterOffset() + attribute.Offset, callback, state);
+            return dataReader.BeginReadUInt32(GetFooterOffset() + attribute.Offset, callback, state);
         }
 
         private VhdFileFormatVersion EndReadVhdFileFormatVersion(IAsyncResult result)
@@ -501,7 +501,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private VhdCookie ReadVhdCookie(VhdPropertyAttribute attribute)
         {
-            byte[] value = dataReader.ReadBytes(this.GetFooterOffset() + attribute.Offset, attribute.Size);
+            byte[] value = dataReader.ReadBytes(GetFooterOffset() + attribute.Offset, attribute.Size);
             return CreateVhdCookie(value);
         }
 
@@ -515,7 +515,7 @@ namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 
         private IAsyncResult BeginReadVhdCookie(VhdPropertyAttribute attribute, AsyncCallback callback, object state)
         {
-            return dataReader.BeginReadBytes(this.GetFooterOffset() + attribute.Offset, attribute.Size, callback, state);
+            return dataReader.BeginReadBytes(GetFooterOffset() + attribute.Offset, attribute.Size, callback, state);
         }
 
         private VhdCookie EndReadVhdCookie(IAsyncResult result)

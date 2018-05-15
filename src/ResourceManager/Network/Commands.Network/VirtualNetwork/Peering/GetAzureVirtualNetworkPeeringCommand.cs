@@ -48,22 +48,22 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                var vnet = this.GetVirtualNetworkPeering(this.ResourceGroupName, this.VirtualNetworkName, this.Name);
+                var vnet = GetVirtualNetworkPeering(ResourceGroupName, VirtualNetworkName, Name);
 
                 WriteObject(vnet);
             }
             else
             {
-                var vnetPeeringList = this.VirtualNetworkPeeringClient.List(this.ResourceGroupName, this.VirtualNetworkName);
+                var vnetPeeringList = VirtualNetworkPeeringClient.List(ResourceGroupName, VirtualNetworkName);
 
                 var psVnetPeerings = new List<PSVirtualNetworkPeering>();
                 foreach (var virtualNetworkPeering in vnetPeeringList)
                 {
-                    var psVnetPeering = this.ToPsVirtualNetworkPeering(virtualNetworkPeering);
-                    psVnetPeering.ResourceGroupName = this.ResourceGroupName;
-                    psVnetPeering.VirtualNetworkName = this.VirtualNetworkName;
+                    var psVnetPeering = ToPsVirtualNetworkPeering(virtualNetworkPeering);
+                    psVnetPeering.ResourceGroupName = ResourceGroupName;
+                    psVnetPeering.VirtualNetworkName = VirtualNetworkName;
                     psVnetPeerings.Add(psVnetPeering);
                 }
 

@@ -19,10 +19,10 @@ namespace Microsoft.Azure.Management.Internal.Resources
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Rest;
-    using Microsoft.Rest.Serialization;
+    using Rest;
+    using Rest.Serialization;
     using Newtonsoft.Json;
-    using Microsoft.Rest.Azure;
+    using Rest.Azure;
     using Models;
 
     /// <summary>
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Management.Internal.Resources
         /// </param>
         protected ManagementLinkClient(params DelegatingHandler[] handlers) : base(handlers)
         {
-            this.Initialize();
+            Initialize();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Management.Internal.Resources
         /// </param>
         protected ManagementLinkClient(HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : base(rootHandler, handlers)
         {
-            this.Initialize();
+            Initialize();
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Management.Internal.Resources
             {
                 throw new ArgumentNullException("baseUri");
             }
-            this.BaseUri = baseUri;
+            BaseUri = baseUri;
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Microsoft.Azure.Management.Internal.Resources
             {
                 throw new ArgumentNullException("baseUri");
             }
-            this.BaseUri = baseUri;
+            BaseUri = baseUri;
         }
 
         /// <summary>
@@ -166,10 +166,10 @@ namespace Microsoft.Azure.Management.Internal.Resources
             {
                 throw new ArgumentNullException("credentials");
             }
-            this.Credentials = credentials;
-            if (this.Credentials != null)
+            Credentials = credentials;
+            if (Credentials != null)
             {
-                this.Credentials.InitializeServiceClient(this);
+                Credentials.InitializeServiceClient(this);
             }
         }
 
@@ -191,10 +191,10 @@ namespace Microsoft.Azure.Management.Internal.Resources
             {
                 throw new ArgumentNullException("credentials");
             }
-            this.Credentials = credentials;
-            if (this.Credentials != null)
+            Credentials = credentials;
+            if (Credentials != null)
             {
-                this.Credentials.InitializeServiceClient(this);
+                Credentials.InitializeServiceClient(this);
             }
         }
 
@@ -220,11 +220,11 @@ namespace Microsoft.Azure.Management.Internal.Resources
             {
                 throw new ArgumentNullException("credentials");
             }
-            this.BaseUri = baseUri;
-            this.Credentials = credentials;
-            if (this.Credentials != null)
+            BaseUri = baseUri;
+            Credentials = credentials;
+            if (Credentials != null)
             {
-                this.Credentials.InitializeServiceClient(this);
+                Credentials.InitializeServiceClient(this);
             }
         }
 
@@ -253,11 +253,11 @@ namespace Microsoft.Azure.Management.Internal.Resources
             {
                 throw new ArgumentNullException("credentials");
             }
-            this.BaseUri = baseUri;
-            this.Credentials = credentials;
-            if (this.Credentials != null)
+            BaseUri = baseUri;
+            Credentials = credentials;
+            if (Credentials != null)
             {
-                this.Credentials.InitializeServiceClient(this);
+                Credentials.InitializeServiceClient(this);
             }
         }
 
@@ -266,12 +266,12 @@ namespace Microsoft.Azure.Management.Internal.Resources
         /// </summary>
         private void Initialize()
         {
-            this.ResourceLinks = new ResourceLinksOperations(this);
-            this.BaseUri = new Uri("https://management.azure.com");
-            this.ApiVersion = "2016-09-01";
-            this.AcceptLanguage = "en-US";
-            this.LongRunningOperationRetryTimeout = 30;
-            this.GenerateClientRequestId = true;
+            ResourceLinks = new ResourceLinksOperations(this);
+            BaseUri = new Uri("https://management.azure.com");
+            ApiVersion = "2016-09-01";
+            AcceptLanguage = "en-US";
+            LongRunningOperationRetryTimeout = 30;
+            GenerateClientRequestId = true;
             SerializationSettings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,

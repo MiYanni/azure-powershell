@@ -15,7 +15,7 @@
 namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 {
     using System.Globalization;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
+    using Utilities;
     using System.Management.Automation;
     using ResourceManager.Common.ArgumentCompleters;
 
@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
             ConfirmAction(Force.IsPresent,
-                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceWarning, "Microsoft.Logic/integrationAccounts", this.Name),
-                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceMessage, "Microsoft.Logic/integrationAccounts", this.Name),
+                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceWarning, "Microsoft.Logic/integrationAccounts", Name),
+                string.Format(CultureInfo.InvariantCulture, Properties.Resource.RemoveResourceMessage, "Microsoft.Logic/integrationAccounts", Name),
                 Name,
                 () => {
                           IntegrationAccountClient.RemoveIntegrationAccount(ResourceGroupName, Name);

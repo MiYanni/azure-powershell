@@ -83,17 +83,17 @@ namespace Microsoft.Azure.Commands.Network
 
             var vApplicationSecurityGroup = new PSApplicationSecurityGroup
             {
-                Location = this.Location,
+                Location = Location,
             };
 
-            var vApplicationSecurityGroupModel = NetworkResourceManagerProfile.Mapper.Map<MNM.ApplicationSecurityGroup>(vApplicationSecurityGroup);
-            vApplicationSecurityGroupModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            var vApplicationSecurityGroupModel = NetworkResourceManagerProfile.Mapper.Map<ApplicationSecurityGroup>(vApplicationSecurityGroup);
+            vApplicationSecurityGroupModel.Tags = TagsConversionHelper.CreateTagDictionary(Tag, validate: true);
             var present = true;
             try
             {
-                this.NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.Get(this.ResourceGroupName, this.Name);
+                NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.Get(ResourceGroupName, Name);
             }
-            catch (Microsoft.Rest.Azure.CloudException exception)
+            catch (Rest.Azure.CloudException exception)
             {
                 if (exception.Response.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -113,10 +113,10 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
             () =>
             {
-                this.NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.CreateOrUpdate(this.ResourceGroupName, this.Name, vApplicationSecurityGroupModel);
-                var getApplicationSecurityGroup = this.NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.Get(this.ResourceGroupName, this.Name);
+                NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.CreateOrUpdate(ResourceGroupName, Name, vApplicationSecurityGroupModel);
+                var getApplicationSecurityGroup = NetworkClient.NetworkManagementClient.ApplicationSecurityGroups.Get(ResourceGroupName, Name);
                 var psApplicationSecurityGroup = NetworkResourceManagerProfile.Mapper.Map<PSApplicationSecurityGroup>(getApplicationSecurityGroup);
-                psApplicationSecurityGroup.ResourceGroupName = this.ResourceGroupName;
+                psApplicationSecurityGroup.ResourceGroupName = ResourceGroupName;
                 psApplicationSecurityGroup.Tag = TagsConversionHelper.CreateTagHashtable(getApplicationSecurityGroup.Tags);
                 WriteObject(psApplicationSecurityGroup, true);
             },

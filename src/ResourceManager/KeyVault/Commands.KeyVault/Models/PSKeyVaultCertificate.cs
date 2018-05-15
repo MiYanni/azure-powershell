@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             if ( certificateBundle.Tags != null )
             {
-                Tags = (certificateBundle.Tags == null) ? null : certificateBundle.Tags.ConvertToHashtable();
+                Tags = certificateBundle.Tags == null ? null : certificateBundle.Tags.ConvertToHashtable();
             }
         }
 
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
             if (certificateBundle.Tags != null)
             {
-                Tags = (certificateBundle.Tags == null) ? null : certificateBundle.Tags.ConvertToHashtable();
+                Tags = certificateBundle.Tags == null ? null : certificateBundle.Tags.ConvertToHashtable();
             }
         }
 
@@ -148,7 +148,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
                 return null;
             }
 
-            return certificateBundles.Select(certificateBundle => PSKeyVaultCertificate.FromCertificateBundle(certificateBundle)).ToList();
+            return certificateBundles.Select(certificateBundle => FromCertificateBundle(certificateBundle)).ToList();
         }
     }
 }

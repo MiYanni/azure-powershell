@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.Aks
             Mandatory = true,
             ParameterSetName = GroupNameParameterSet,
             HelpMessage = "Resource group name")]
-        [ResourceGroupCompleter()]
+        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -199,7 +199,7 @@ namespace Microsoft.Azure.Commands.Aks
                 browserProcess.Start();
                 return;
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 WriteVerbose("Starting on Unix with xdg-open");
                 browserProcess.StartInfo.FileName = "xdg-open";

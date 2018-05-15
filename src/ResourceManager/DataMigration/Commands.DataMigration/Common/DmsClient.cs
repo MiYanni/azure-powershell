@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Common
 
         public DmsClient(IDataMigrationServiceClient dmsClient)
         {
-            this.DataMigrationServiceClient = dmsClient;
+            DataMigrationServiceClient = dmsClient;
         }
     }
 }

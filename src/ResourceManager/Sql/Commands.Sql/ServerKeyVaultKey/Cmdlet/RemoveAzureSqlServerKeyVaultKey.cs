@@ -48,8 +48,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerKeyVaultKey.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlServerKeyVaultKeyModel> GetEntity()
         {
-            return new List<AzureSqlServerKeyVaultKeyModel>() {
-                ModelAdapter.Get(this.ResourceGroupName, this.ServerName, this.KeyId)
+            return new List<AzureSqlServerKeyVaultKeyModel>
+            {
+                ModelAdapter.Get(ResourceGroupName, ServerName, KeyId)
             };
         }
 
@@ -70,7 +71,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerKeyVaultKey.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlServerKeyVaultKeyModel> PersistChanges(IEnumerable<AzureSqlServerKeyVaultKeyModel> entity)
         {
-            ModelAdapter.Delete(this.ResourceGroupName, this.ServerName, this.KeyId);
+            ModelAdapter.Delete(ResourceGroupName, ServerName, KeyId);
             return entity;
         }
     }

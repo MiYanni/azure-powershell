@@ -23,11 +23,11 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Models
 {
     public class PSCluster : Cluster
     {
-        public string PSClusterString { get { return this.ToString(); } }
+        public string PSClusterString { get { return ToString(); } }
 
         public PSCluster(Cluster cluster)
             : base(
-                  location: cluster.Location,
+                  cluster.Location,
                   id: cluster.Id,
                   name: cluster.Name,
                   type: cluster.Type,
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.ServiceFabric.Models
 
         public override string ToString()
         {
-            return this.ToString(this, "");
+            return ToString(this, "");
         }
 
         private string ToString(object objects, string space)

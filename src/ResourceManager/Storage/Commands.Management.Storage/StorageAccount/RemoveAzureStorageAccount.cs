@@ -52,13 +52,13 @@ namespace Microsoft.Azure.Commands.Management.Storage
         {
             base.ExecuteCmdlet();
 
-            if (ShouldProcess(this.Name, "Remove Storage Account"))
+            if (ShouldProcess(Name, "Remove Storage Account"))
             {
-                if (this.Force || ShouldContinue(string.Format("Remove Storage Account '{0}' and all content in it", this.Name), ""))
+                if (Force || ShouldContinue(string.Format("Remove Storage Account '{0}' and all content in it", Name), ""))
                 {
-                    this.StorageClient.StorageAccounts.Delete(
-                    this.ResourceGroupName,
-                    this.Name);
+                    StorageClient.StorageAccounts.Delete(
+                    ResourceGroupName,
+                    Name);
                 }
             }
         }

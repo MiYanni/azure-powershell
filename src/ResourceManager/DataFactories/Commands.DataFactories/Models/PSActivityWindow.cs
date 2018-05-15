@@ -21,11 +21,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
 {
     public class PSActivityWindow
     {
-        private ActivityWindow activityWindow;
+        private ActivityWindow _activityWindow;
 
         public PSActivityWindow()
         {
-            this.activityWindow = new ActivityWindow();
+            _activityWindow = new ActivityWindow();
         }
 
         public PSActivityWindow(ActivityWindow activityWindow)
@@ -35,18 +35,18 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 throw new ArgumentNullException("activityWindow");
             }
 
-            this.activityWindow = activityWindow;
+            this._activityWindow = activityWindow;
         }
 
         public string ResourceGroupName
         {
             get
             {
-                return activityWindow.ResourceGroupName;
+                return _activityWindow.ResourceGroupName;
             }
             internal set
             {
-                activityWindow.ResourceGroupName = value;
+                _activityWindow.ResourceGroupName = value;
             }
         }
 
@@ -54,11 +54,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.DataFactoryName;
+                return _activityWindow.DataFactoryName;
             }
             internal set
             {
-                activityWindow.DataFactoryName = value;
+                _activityWindow.DataFactoryName = value;
             }
         }
 
@@ -66,11 +66,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.PipelineName;
+                return _activityWindow.PipelineName;
             }
             internal set
             {
-                activityWindow.PipelineName = value;
+                _activityWindow.PipelineName = value;
             }
         }
 
@@ -78,11 +78,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.ActivityName;
+                return _activityWindow.ActivityName;
             }
             internal set
             {
-                activityWindow.ActivityName = value;
+                _activityWindow.ActivityName = value;
             }
         }
 
@@ -90,11 +90,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.ActivityType;
+                return _activityWindow.ActivityType;
             }
             internal set
             {
-                activityWindow.ActivityType = value;
+                _activityWindow.ActivityType = value;
             }
         }
 
@@ -102,11 +102,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.LinkedServiceName;
+                return _activityWindow.LinkedServiceName;
             }
             internal set
             {
-                activityWindow.LinkedServiceName = value;
+                _activityWindow.LinkedServiceName = value;
             }
         }
 
@@ -114,11 +114,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.WindowState;
+                return _activityWindow.WindowState;
             }
             internal set
             {
-                activityWindow.WindowState = value;
+                _activityWindow.WindowState = value;
             }
         }
 
@@ -126,11 +126,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.WindowSubstate;
+                return _activityWindow.WindowSubstate;
             }
             internal set
             {
-                activityWindow.WindowSubstate = value;
+                _activityWindow.WindowSubstate = value;
             }
         }
 
@@ -138,11 +138,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.Duration;
+                return _activityWindow.Duration;
             }
             internal set
             {
-                activityWindow.Duration = value;
+                _activityWindow.Duration = value;
             }
         }
 
@@ -150,11 +150,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.InputDatasets;
+                return _activityWindow.InputDatasets;
             }
             internal set
             {
-                activityWindow.InputDatasets = value;
+                _activityWindow.InputDatasets = value;
             }
         }
 
@@ -162,11 +162,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.OutputDatasets;
+                return _activityWindow.OutputDatasets;
             }
             internal set
             {
-                activityWindow.OutputDatasets = value;
+                _activityWindow.OutputDatasets = value;
             }
         }
 
@@ -174,11 +174,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.PercentComplete;
+                return _activityWindow.PercentComplete;
             }
             internal set
             {
-                activityWindow.PercentComplete = value;
+                _activityWindow.PercentComplete = value;
             }
         }
 
@@ -186,11 +186,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.RunAttempts;
+                return _activityWindow.RunAttempts;
             }
             internal set
             {
-                activityWindow.RunAttempts = value;
+                _activityWindow.RunAttempts = value;
             }
         }
 
@@ -198,11 +198,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.RunStart;
+                return _activityWindow.RunStart;
             }
             internal set
             {
-                activityWindow.RunStart = value;
+                _activityWindow.RunStart = value;
             }
         }
 
@@ -210,11 +210,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.RunEnd;
+                return _activityWindow.RunEnd;
             }
             internal set
             {
-                activityWindow.RunEnd = value;
+                _activityWindow.RunEnd = value;
             }
         }
 
@@ -222,11 +222,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.WindowStart;
+                return _activityWindow.WindowStart;
             }
             internal set
             {
-                activityWindow.WindowStart = value;
+                _activityWindow.WindowStart = value;
             }
         }
 
@@ -234,11 +234,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return activityWindow.WindowEnd;
+                return _activityWindow.WindowEnd;
             }
             internal set
             {
-                activityWindow.WindowEnd = value;
+                _activityWindow.WindowEnd = value;
             }
         }
 

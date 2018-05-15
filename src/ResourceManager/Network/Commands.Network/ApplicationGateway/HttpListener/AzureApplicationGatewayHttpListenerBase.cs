@@ -84,19 +84,19 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.ExecuteCmdlet();
 
-            if (string.Equals(ParameterSetName, Microsoft.Azure.Commands.Network.Properties.Resources.SetByResource))
+            if (string.Equals(ParameterSetName, Properties.Resources.SetByResource))
             {
                 if (FrontendIPConfiguration != null)
                 {
-                    this.FrontendIPConfigurationId = this.FrontendIPConfiguration.Id;
+                    FrontendIPConfigurationId = FrontendIPConfiguration.Id;
                 }
                 if (FrontendPort != null)
                 {
-                    this.FrontendPortId = this.FrontendPort.Id;
+                    FrontendPortId = FrontendPort.Id;
                 }
                 if (SslCertificate != null)
                 {
-                    this.SslCertificateId = this.SslCertificate.Id;
+                    SslCertificateId = SslCertificate.Id;
                 }
             }
         }
@@ -104,40 +104,40 @@ namespace Microsoft.Azure.Commands.Network
         public PSApplicationGatewayHttpListener NewObject()
         {
             var httpListener = new PSApplicationGatewayHttpListener();
-            httpListener.Name = this.Name;
-            httpListener.Protocol = this.Protocol;
-            httpListener.HostName = this.HostName;
+            httpListener.Name = Name;
+            httpListener.Protocol = Protocol;
+            httpListener.HostName = HostName;
 
-            if(string.Equals(this.RequireServerNameIndication,"true", StringComparison.OrdinalIgnoreCase))
+            if(string.Equals(RequireServerNameIndication,"true", StringComparison.OrdinalIgnoreCase))
             {
                 httpListener.RequireServerNameIndication = true;
             }
-            else if(string.Equals(this.RequireServerNameIndication, "false", StringComparison.OrdinalIgnoreCase))
+            else if(string.Equals(RequireServerNameIndication, "false", StringComparison.OrdinalIgnoreCase))
             {
                 httpListener.RequireServerNameIndication = false;
             }
 
-            if (!string.IsNullOrEmpty(this.FrontendIPConfigurationId))
+            if (!string.IsNullOrEmpty(FrontendIPConfigurationId))
             {
                 httpListener.FrontendIpConfiguration = new PSResourceId();
-                httpListener.FrontendIpConfiguration.Id = this.FrontendIPConfigurationId;
+                httpListener.FrontendIpConfiguration.Id = FrontendIPConfigurationId;
             }
 
-            if (!string.IsNullOrEmpty(this.FrontendPortId))
+            if (!string.IsNullOrEmpty(FrontendPortId))
             {
                 httpListener.FrontendPort = new PSResourceId();
-                httpListener.FrontendPort.Id = this.FrontendPortId;
+                httpListener.FrontendPort.Id = FrontendPortId;
             }
-            if (!string.IsNullOrEmpty(this.SslCertificateId))
+            if (!string.IsNullOrEmpty(SslCertificateId))
             {
                 httpListener.SslCertificate = new PSResourceId();
-                httpListener.SslCertificate.Id = this.SslCertificateId;
+                httpListener.SslCertificate.Id = SslCertificateId;
             }
 
             httpListener.Id = ApplicationGatewayChildResourceHelper.GetResourceNotSetId(
-                                this.NetworkClient.NetworkManagementClient.SubscriptionId,
-                                Microsoft.Azure.Commands.Network.Properties.Resources.ApplicationGatewayHttpListenerName,
-                                this.Name);
+                                NetworkClient.NetworkManagementClient.SubscriptionId,
+                                Properties.Resources.ApplicationGatewayHttpListenerName,
+                                Name);
 
             return httpListener;
         }

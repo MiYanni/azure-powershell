@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
             Created = keyItem.Attributes.Created;
             Updated = keyItem.Attributes.Updated;
             RecoveryLevel = keyItem.Attributes.RecoveryLevel;
-            Tags = (keyItem.Tags == null) ? null : keyItem.Tags.ConvertToHashtable();
+            Tags = keyItem.Tags == null ? null : keyItem.Tags.ConvertToHashtable();
         }
 
         internal PSKeyVaultKeyIdentityItem(PSKeyVaultKey keyBundle)
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Models
 
         public string TagsTable
         {
-            get { return (Tags == null) ? null : Tags.ConvertToTagsTable(); }
+            get { return Tags == null ? null : Tags.ConvertToTagsTable(); }
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
     {
         public static PSADObject ToPSADObject(this User user)
         {
-            return new PSADObject()
+            return new PSADObject
             {
                 DisplayName = user.DisplayName,
                 Id = new Guid(user.ObjectId)
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
 
         public static PSADObject ToPSADObject(this ADGroup group)
         {
-            return new PSADObject()
+            return new PSADObject
             {
                 DisplayName = group.DisplayName,
                 Id = new Guid(group.ObjectId)
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
 
             if (obj.ObjectType == typeof(User).Name)
             {
-                return new PSADUser()
+                return new PSADUser
                 {
                     DisplayName = obj.DisplayName,
                     Id = new Guid(obj.ObjectId),
@@ -52,9 +52,9 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
                     UserPrincipalName = obj.UserPrincipalName
                 };
             }
-            else if (obj.ObjectType == "Group")
+            if (obj.ObjectType == "Group")
             {
-                return new PSADGroup()
+                return new PSADGroup
                 {
                     DisplayName = obj.DisplayName,
                     Type = obj.ObjectType,
@@ -64,9 +64,9 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
                 };
 
             }
-            else if (obj.ObjectType == typeof(ServicePrincipal).Name)
+            if (obj.ObjectType == typeof(ServicePrincipal).Name)
             {
-                return new PSADServicePrincipal()
+                return new PSADServicePrincipal
                 {
                     DisplayName = obj.DisplayName,
                     Id = new Guid(obj.ObjectId),
@@ -74,20 +74,17 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
                     ServicePrincipalNames = obj.ServicePrincipalNames.ToArray()
                 };
             }
-            else
+            return new PSADObject
             {
-                return new PSADObject()
-                {
-                    DisplayName = obj.DisplayName,
-                    Id = new Guid(obj.ObjectId),
-                    Type = obj.ObjectType
-                };
-            }
+                DisplayName = obj.DisplayName,
+                Id = new Guid(obj.ObjectId),
+                Type = obj.ObjectType
+            };
         }
 
         public static PSADObject ToPSADGroup(this AADObject obj)
         {
-            return new PSADObject()
+            return new PSADObject
             {
                 DisplayName = obj.DisplayName,
                 Id = new Guid(obj.ObjectId)
@@ -96,7 +93,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
 
         public static PSADUser ToPSADUser(this User user)
         {
-            return new PSADUser()
+            return new PSADUser
             {
                 DisplayName = user.DisplayName,
                 Id = new Guid(user.ObjectId),
@@ -107,7 +104,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
 
         public static PSADGroup ToPSADGroup(this ADGroup group)
         {
-            return new PSADGroup()
+            return new PSADGroup
             {
                 DisplayName = group.DisplayName,
                 Id = new Guid(group.ObjectId),
@@ -119,7 +116,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
 
         public static PSADServicePrincipal ToPSADServicePrincipal(this ServicePrincipal servicePrincipal)
         {
-            return new PSADServicePrincipal()
+            return new PSADServicePrincipal
             {
                 DisplayName = servicePrincipal.DisplayName,
                 Id = new Guid(servicePrincipal.ObjectId),
@@ -133,7 +130,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
         {
             if (application != null)
             {
-                return new PSADApplication()
+                return new PSADApplication
                 {
                     ObjectId = Guid.Parse(application.ObjectId),
                     DisplayName = application.DisplayName,
@@ -146,10 +143,7 @@ namespace Microsoft.Azure.Graph.RBAC.Version1_6.ActiveDirectory
                     AvailableToOtherTenants = application.AvailableToOtherTenants ?? false
                 };
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public static KeyCredential ToGraphKeyCredential(this PSADKeyCredential PSKeyCredential)

@@ -115,7 +115,7 @@ namespace Microsoft.Azure.Commands.Sql.Database.Services
         /// <summary>
         /// Lists database activities
         /// </summary>
-        public Microsoft.Rest.Azure.IPage<Management.Sql.Models.DatabaseOperation> ListOperations(string resourceGroupName, string serverName, string databaseName)
+        public Rest.Azure.IPage<DatabaseOperation> ListOperations(string resourceGroupName, string serverName, string databaseName)
         {
             return GetCurrentSqlClient().DatabaseOperations.ListByDatabase(resourceGroupName, serverName, databaseName);
         }

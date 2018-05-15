@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
             VirtualMachineScaleSet parameters = new VirtualMachineScaleSet();
 
             return ConvertFromObjectsToArguments(
-                 new string[] { "ResourceGroupName", "VMScaleSetName", "Parameters" },
+                 new[] { "ResourceGroupName", "VMScaleSetName", "Parameters" },
                  new object[] { resourceGroupName, vmScaleSetName, parameters });
         }
     }
@@ -128,12 +128,12 @@ namespace Microsoft.Azure.Commands.Compute.Automation
                 default:
                     ExecuteClientAction(() =>
                     {
-                        if (ShouldProcess(this.VMScaleSetName, VerbsCommon.New))
+                        if (ShouldProcess(VMScaleSetName, VerbsCommon.New))
                         {
-                            string resourceGroupName = this.ResourceGroupName;
-                            string vmScaleSetName = this.VMScaleSetName;
+                            string resourceGroupName = ResourceGroupName;
+                            string vmScaleSetName = VMScaleSetName;
                             VirtualMachineScaleSet parameters = new VirtualMachineScaleSet();
-                            ComputeAutomationAutoMapperProfile.Mapper.Map<PSVirtualMachineScaleSet, VirtualMachineScaleSet>(this.VirtualMachineScaleSet, parameters);
+                            ComputeAutomationAutoMapperProfile.Mapper.Map<PSVirtualMachineScaleSet, VirtualMachineScaleSet>(VirtualMachineScaleSet, parameters);
 
                             var result = VirtualMachineScaleSetsClient.CreateOrUpdate(resourceGroupName, vmScaleSetName, parameters);
                             var psObject = new PSVirtualMachineScaleSet();
@@ -153,7 +153,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
         [Parameter(
             ParameterSetName = SimpleParameterSet,
             Mandatory = false)]
-        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter()]
+        [ResourceManager.Common.ArgumentCompleters.ResourceGroupCompleter]
         public string ResourceGroupName { get; set; }
 
         [Parameter(

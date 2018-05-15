@@ -49,10 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.CustomAttributes
             {
                 return Resources.BreakingChangesAttributesCmdLetDeprecationMessageNoReplacement;
             }
-            else
-            {
-                return string.Format(Resources.BreakingChangesAttributesCmdLetDeprecationMessageWithReplacement, ReplacementCmdletName);
-            }
+            return string.Format(Resources.BreakingChangesAttributesCmdLetDeprecationMessageWithReplacement, ReplacementCmdletName);
         }
     }
 }

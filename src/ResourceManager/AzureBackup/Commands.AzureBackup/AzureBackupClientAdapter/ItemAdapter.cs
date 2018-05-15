@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         public IList<CSMProtectedItemResponse> ListDataSources(string resourceGroupName, string resourceName, CSMProtectedItemQueryObject query)
         {
             var response = AzureBackupClient.DataSource.ListCSMAsync(resourceGroupName, resourceName, query, GetCustomRequestHeaders(), CmdletCancellationToken).Result;
-            return (response != null) ? response.CSMProtectedItemListResponse.Value : null;
+            return response != null ? response.CSMProtectedItemListResponse.Value : null;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         public IList<CSMItemResponse> ListProtectableObjects(string resourceGroupName, string resourceName, CSMItemQueryObject query)
         {
             var response = AzureBackupClient.ProtectableObject.ListCSMAsync(resourceGroupName, resourceName, query, GetCustomRequestHeaders(), CmdletCancellationToken).Result;
-            return (response != null) ? response.CSMItemListResponse.Value : null;
+            return response != null ? response.CSMItemListResponse.Value : null;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         public IEnumerable<CSMRecoveryPointResponse> ListRecoveryPoints(string resourceGroupName, string resourceName, string containerName, string itemName)
         {
             var response = AzureBackupClient.RecoveryPoint.ListAsync(resourceGroupName, resourceName, GetCustomRequestHeaders(), containerName, itemName, CmdletCancellationToken).Result;
-            return (response != null) ? response.CSMRecoveryPointListResponse.Value : null;
+            return response != null ? response.CSMRecoveryPointListResponse.Value : null;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Commands.AzureBackup.ClientAdapter
         public CSMRecoveryPointResponse GetRecoveryPoint(string resourceGroupName, string resourceName, string containerName, string itemName, string recoveryPointName)
         {
             var response = AzureBackupClient.RecoveryPoint.GetAsync(resourceGroupName, resourceName, GetCustomRequestHeaders(), containerName, itemName, recoveryPointName, CmdletCancellationToken).Result;
-            return (response != null) ? response.CSMRecoveryPointResponse : null;
+            return response != null ? response.CSMRecoveryPointResponse : null;
         }
 
         /// <summary>

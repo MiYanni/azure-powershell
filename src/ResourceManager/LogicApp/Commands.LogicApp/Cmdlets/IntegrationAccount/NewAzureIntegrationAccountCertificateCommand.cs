@@ -17,9 +17,9 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
     using System;
     using System.Management.Automation;
     using System.Security.Cryptography.X509Certificates;
-    using Microsoft.Azure.Commands.LogicApp.Utilities;
-    using Microsoft.Azure.Management.Logic.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities;
+    using Management.Logic.Models;
+    using WindowsAzure.Commands.Utilities.Common;
     using ResourceManager.Common.ArgumentCompleters;
 
     /// <summary>
@@ -100,18 +100,18 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
         {
             base.ExecuteCmdlet();
 
-            if (this.Metadata != null)
+            if (Metadata != null)
             {
-                this.Metadata = CmdletHelper.ConvertToMetadataJObject(this.Metadata);
+                Metadata = CmdletHelper.ConvertToMetadataJObject(Metadata);
             }
 
             string certificate = null;
 
-            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(this.ResourceGroupName, this.Name);
+            var integrationAccount = IntegrationAccountClient.GetIntegrationAccount(ResourceGroupName, Name);
 
-            if (!string.IsNullOrEmpty(this.PublicCertificateFilePath))
+            if (!string.IsNullOrEmpty(PublicCertificateFilePath))
             {
-                var certificateFilePath = this.TryResolvePath(this.PublicCertificateFilePath);
+                var certificateFilePath = this.TryResolvePath(PublicCertificateFilePath);
 
                 if (!string.IsNullOrEmpty(certificateFilePath) && CmdletHelper.FileExists(certificateFilePath))
                 {
@@ -122,26 +122,26 @@ namespace Microsoft.Azure.Commands.LogicApp.Cmdlets
 
             KeyVaultKeyReference keyref = null;
 
-            if (!string.IsNullOrEmpty(this.KeyName) && !string.IsNullOrEmpty(this.KeyVersion) && !string.IsNullOrEmpty(this.KeyVaultId))
+            if (!string.IsNullOrEmpty(KeyName) && !string.IsNullOrEmpty(KeyVersion) && !string.IsNullOrEmpty(KeyVaultId))
             {
                 keyref = new KeyVaultKeyReference
                 {
-                    KeyName = this.KeyName,
-                    KeyVersion = this.KeyVersion,
-                    KeyVault = new KeyVaultKeyReferenceKeyVault()
+                    KeyName = KeyName,
+                    KeyVersion = KeyVersion,
+                    KeyVault = new KeyVaultKeyReferenceKeyVault
                     {
-                        Id = this.KeyVaultId
+                        Id = KeyVaultId
                     }
                 };
             }
 
-            this.WriteObject(
-                IntegrationAccountClient.CreateIntegrationAccountCertificate(this.ResourceGroupName,
+            WriteObject(
+                IntegrationAccountClient.CreateIntegrationAccountCertificate(ResourceGroupName,
                     integrationAccount.Name,
-                    this.CertificateName, new IntegrationAccountCertificate
+                    CertificateName, new IntegrationAccountCertificate
                     {
                         Key = keyref,
-                        Metadata = this.Metadata,
+                        Metadata = Metadata,
                         PublicCertificate = certificate
                     }
                     ), true);

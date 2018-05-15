@@ -72,9 +72,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         public override void ExecuteCmdlet()
         {
             if (!Force.IsPresent && !ShouldProcess(
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlDatabaseFromAzureSqlDatabaseFailoverGroupDescription, this.FailoverGroupName, this.ServerName),
-               string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlDatabaseeFromAzureSqlDatabaseFailoverGroupWarning, this.FailoverGroupName, this.ServerName),
-               Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseFromAzureSqlDatabaseFailoverGroupDescription, FailoverGroupName, ServerName),
+               string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlDatabaseeFromAzureSqlDatabaseFailoverGroupWarning, FailoverGroupName, ServerName),
+               Properties.Resources.ShouldProcessCaption))
             {
                 return;
             }
@@ -88,8 +88,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The list of entities</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> GetEntity()
         {
-            return new List<AzureSqlFailoverGroupModel>() {
-                ModelAdapter.GetFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName)
+            return new List<AzureSqlFailoverGroupModel>
+            {
+                ModelAdapter.GetFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName)
             };
         }
 
@@ -106,7 +107,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
 
             dbs.AddRange(ConvertDatabaseModelToDatabaseHelper(Database));
 
-            newEntity.Add(new AzureSqlFailoverGroupModel()
+            newEntity.Add(new AzureSqlFailoverGroupModel
             {
                 Databases = GetUpdatedDatabaseList(dbs)
             });
@@ -121,8 +122,9 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
         /// <returns>The input entity</returns>
         protected override IEnumerable<AzureSqlFailoverGroupModel> PersistChanges(IEnumerable<AzureSqlFailoverGroupModel> entity)
         {
-            return new List<AzureSqlFailoverGroupModel>() {
-                ModelAdapter.AddOrRemoveDatabaseToFailoverGroup(this.ResourceGroupName, this.ServerName, this.FailoverGroupName,entity.First())
+            return new List<AzureSqlFailoverGroupModel>
+            {
+                ModelAdapter.AddOrRemoveDatabaseToFailoverGroup(ResourceGroupName, ServerName, FailoverGroupName,entity.First())
             };
         }
 
@@ -144,7 +146,7 @@ namespace Microsoft.Azure.Commands.Sql.FailoverGroup.Cmdlet
                 else
                 {
                     WriteWarning(
-                        string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.FailoverGroupRemoveDatabaseNotExists, db, this.FailoverGroupName, this.ServerName)
+                        string.Format(Properties.Resources.FailoverGroupRemoveDatabaseNotExists, db, FailoverGroupName, ServerName)
                     );
                 }
             }

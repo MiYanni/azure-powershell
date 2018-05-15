@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 		{
 			try
 			{
-				ModelAdapter.GetServerDnsAlias(this.ResourceGroupName, this.ServerName, this.Name);
+				ModelAdapter.GetServerDnsAlias(ResourceGroupName, ServerName, Name);
 			}
 			catch (CloudException ex)
 			{
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 
 			// The server dns alias already exists
 			throw new PSArgumentException(
-				string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.ServerDnsAliasNameExists, this.Name), "ServerDNSAlias");
+				string.Format(Properties.Resources.ServerDnsAliasNameExists, Name), "ServerDNSAlias");
 		}
 
 		/// <summary>
@@ -76,11 +76,11 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 		protected override IEnumerable<Model.AzureSqlServerDnsAliasModel> ApplyUserInputToModel(IEnumerable<Model.AzureSqlServerDnsAliasModel> model)
 		{
 			List<Model.AzureSqlServerDnsAliasModel> newEntity = new List<Model.AzureSqlServerDnsAliasModel>();
-			newEntity.Add(new Model.AzureSqlServerDnsAliasModel()
+			newEntity.Add(new Model.AzureSqlServerDnsAliasModel
 			{
-				ResourceGroupName = this.ResourceGroupName,
-				ServerName = this.ServerName,
-				DnsAliasName = this.Name
+				ResourceGroupName = ResourceGroupName,
+				ServerName = ServerName,
+				DnsAliasName = Name
 			});
 
 			return newEntity;
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 		/// <returns>The created server dns alias</returns>
 		protected override IEnumerable<Model.AzureSqlServerDnsAliasModel> PersistChanges(IEnumerable<Model.AzureSqlServerDnsAliasModel> entity)
 		{
-			var resp = new List<Model.AzureSqlServerDnsAliasModel>()
+			var resp = new List<Model.AzureSqlServerDnsAliasModel>
 			{
 				ModelAdapter.UpsertServerDnsAlias(entity.First())
 			};

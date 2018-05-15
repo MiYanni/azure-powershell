@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Commands.DataMigration.Cmdlets
                 switch (type)
                 {
                     case ServerTypeEnum.SQL:
-                        this.connCmdlet = new SqlConnectionInfoCmdlet(this.MyInvocation);
+                        connCmdlet = new SqlConnectionInfoCmdlet(MyInvocation);
                         break;
                     default:
                         throw new PSArgumentException();

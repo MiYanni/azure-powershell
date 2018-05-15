@@ -99,9 +99,9 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
         /// <returns>The entity going to be deleted</returns>
         protected override IEnumerable<Model.AzureSqlServerDnsAliasModel> GetEntity()
 		{
-			return new List<Model.AzureSqlServerDnsAliasModel>()
+			return new List<Model.AzureSqlServerDnsAliasModel>
 			{
-				ModelAdapter.GetServerDnsAlias(this.ResourceGroupName, this.ServerName, this.Name)
+				ModelAdapter.GetServerDnsAlias(ResourceGroupName, ServerName, Name)
 			};
 		}
 
@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 		/// </summary>
 		protected override IEnumerable<Model.AzureSqlServerDnsAliasModel> PersistChanges(IEnumerable<Model.AzureSqlServerDnsAliasModel> entity)
 		{
-			ModelAdapter.RemoveServerDnsAlias(this.ResourceGroupName, this.ServerName, this.Name);
+			ModelAdapter.RemoveServerDnsAlias(ResourceGroupName, ServerName, Name);
 			return entity;
 		}
 
@@ -129,15 +129,15 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 		/// </summary>
 		public override void ExecuteCmdlet()
 		{
-			if (ShouldProcess(string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerDnsAliasDescription, this.Name),
- string.Format(CultureInfo.InvariantCulture, Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerDnsAliasWarning, this.Name),
- Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+			if (ShouldProcess(string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerDnsAliasDescription, Name),
+ string.Format(CultureInfo.InvariantCulture, Properties.Resources.RemoveAzureSqlServerDnsAliasWarning, Name),
+ Properties.Resources.ShouldProcessCaption))
 			{
 				if (Force || ShouldContinue(string.Format(CultureInfo.InvariantCulture,
-						Microsoft.Azure.Commands.Sql.Properties.Resources.RemoveAzureSqlServerDnsAliasWarning, this.Name),
-					Microsoft.Azure.Commands.Sql.Properties.Resources.ShouldProcessCaption))
+						Properties.Resources.RemoveAzureSqlServerDnsAliasWarning, Name),
+					Properties.Resources.ShouldProcessCaption))
 				{
-					if (string.Equals(this.ParameterSetName, RemoveByInputObjectParameterSet, System.StringComparison.OrdinalIgnoreCase))
+					if (string.Equals(ParameterSetName, RemoveByInputObjectParameterSet, System.StringComparison.OrdinalIgnoreCase))
 					{
 						var resourceInfo = new ResourceIdentifier(InputObject.Id);
 						ResourceGroupName = resourceInfo.ResourceGroupName;
@@ -147,7 +147,7 @@ namespace Microsoft.Azure.Commands.Sql.ServerDnsAlias.Cmdlet
 
 						Name = resourceInfo.ResourceName;
 					}
-					else if (string.Equals(this.ParameterSetName, RemoveByResourceIdParameterSet, System.StringComparison.OrdinalIgnoreCase))
+					else if (string.Equals(ParameterSetName, RemoveByResourceIdParameterSet, System.StringComparison.OrdinalIgnoreCase))
 					{
 						var resourceInfo = new ResourceIdentifier(ResourceId);
 						ResourceGroupName = resourceInfo.ResourceGroupName;

@@ -56,23 +56,23 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common
             {
                 return serializer.Deserialize<AzureContext>(reader);
             }
-            else if (objectType == typeof(IAzureAccount))
+            if (objectType == typeof(IAzureAccount))
             {
                 return serializer.Deserialize<AzureAccount>(reader);
             }
-            else if (objectType  == typeof(IAzureSubscription))
+            if (objectType  == typeof(IAzureSubscription))
             {
                 return serializer.Deserialize<AzureSubscription>(reader);
             }
-            else if (objectType == typeof(IAzureTenant))
+            if (objectType == typeof(IAzureTenant))
             {
                 return serializer.Deserialize<AzureTenant>(reader);
             }
-            else if (objectType == typeof(IAzureEnvironment))
+            if (objectType == typeof(IAzureEnvironment))
             {
                 return serializer.Deserialize<AzureEnvironment>(reader);
             }
-            else if (objectType == typeof(IAzureTokenCache))
+            if (objectType == typeof(IAzureTokenCache))
             {
                 var tempResult = serializer.Deserialize<CacheBuffer>(reader);
                 var cache = AzureSession.Instance.TokenCache;
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common
 
                 return cache;
             }
-            else if (objectType == typeof(Dictionary<string, IAzureEnvironment>))
+            if (objectType == typeof(Dictionary<string, IAzureEnvironment>))
             {
                 var tempResult = serializer.Deserialize<Dictionary<string, AzureEnvironment>>(reader);
                 var result = new Dictionary<string, IAzureEnvironment>(StringComparer.OrdinalIgnoreCase);
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common
 
                 return result;
             }
-            else if (objectType == typeof(Dictionary<string, IAzureContext>))
+            if (objectType == typeof(Dictionary<string, IAzureContext>))
             {
                 var tempResult = serializer.Deserialize<Dictionary<string, AzureContext>>(reader);
                 var result = new Dictionary<string, IAzureContext>(StringComparer.OrdinalIgnoreCase);

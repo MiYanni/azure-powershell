@@ -28,9 +28,9 @@ namespace Microsoft.WindowsAzure.Commands.Sync.IO
         {
             this.innerStream = innerStream;
             this.progressInterval = progressInterval;
-            this.readStatus = new ProgressStatus(0, this.innerStream.Length, new ComputeStats());
+            readStatus = new ProgressStatus(0, this.innerStream.Length, new ComputeStats());
 
-            this.progressTracker = new ProgressTracker(this.readStatus,
+            progressTracker = new ProgressTracker(readStatus,
                 Program.SyncOutput.ProgressOperationStatus,
                 Program.SyncOutput.ProgressOperationComplete,
                 this.progressInterval);
@@ -38,67 +38,67 @@ namespace Microsoft.WindowsAzure.Commands.Sync.IO
 
         public override void Flush()
         {
-            this.innerStream.Flush();
+            innerStream.Flush();
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return this.innerStream.Seek(offset, origin);
+            return innerStream.Seek(offset, origin);
         }
 
         public override void SetLength(long value)
         {
-            this.innerStream.SetLength(value);
+            innerStream.SetLength(value);
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            var readCount = this.innerStream.Read(buffer, offset, count);
+            var readCount = innerStream.Read(buffer, offset, count);
             readStatus.AddToProcessedBytes(readCount);
             return readCount;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            this.innerStream.Write(buffer, offset, count);
+            innerStream.Write(buffer, offset, count);
         }
 
         public override bool CanRead
         {
-            get { return this.innerStream.CanRead; }
+            get { return innerStream.CanRead; }
         }
 
         public override bool CanSeek
         {
-            get { return this.innerStream.CanSeek; }
+            get { return innerStream.CanSeek; }
         }
 
         public override bool CanWrite
         {
-            get { return this.innerStream.CanWrite; }
+            get { return innerStream.CanWrite; }
         }
 
         public override long Length
         {
-            get { return this.innerStream.Length; }
+            get { return innerStream.Length; }
         }
 
         public override long Position
         {
-            get { return this.innerStream.Position; }
-            set { this.innerStream.Position = value; }
+            get { return innerStream.Position; }
+            set { innerStream.Position = value; }
         }
 
         public override void Close()
         {
-            this.progressTracker.Dispose();
-            this.innerStream.Close();
+            progressTracker.Dispose();
+            innerStream.Close();
         }
 
         protected override void Dispose(bool disposing)
         {
-            this.progressTracker.Dispose();
-            this.innerStream.Dispose();
+            progressTracker.Dispose();
+            innerStream.Dispose();
         }
     }
 }

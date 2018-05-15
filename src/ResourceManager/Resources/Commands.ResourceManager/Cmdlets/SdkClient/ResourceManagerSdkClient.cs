@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         public ResourceManagerSdkClient(
             IResourceManagementClient resourceManagementClient)
         {
-            this.ResourceManagementClient = resourceManagementClient;
+            ResourceManagementClient = resourceManagementClient;
         }
 
         /// <summary>
@@ -114,12 +114,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         {
             if (templateParameterObject != null)
             {
-                return SerializeHashtable(templateParameterObject, addValueLayer: false);
+                return SerializeHashtable(templateParameterObject, false);
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public string SerializeHashtable(Hashtable templateParameterObject, bool addValueLayer)
@@ -138,7 +135,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
 
         public virtual PSResourceProvider UnregisterProvider(string providerName)
         {
-            var response = this.ResourceManagementClient.Providers.Unregister(providerName);
+            var response = ResourceManagementClient.Providers.Unregister(providerName);
 
             if (response == null)
             {
@@ -169,7 +166,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
 
         private ResourceGroup CreateOrUpdateResourceGroup(string name, string location, Hashtable tags)
         {
-            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(tags, validate: true);
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(tags, true);
 
             var result = ResourceManagementClient.ResourceGroups.CreateOrUpdate(name,
                 new ResourceGroup
@@ -381,8 +378,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
                             List<DeploymentOperation> newNestedOperations = new List<DeploymentOperation>();
 
                             var result = ResourceManagementClient.DeploymentOperations.List(
-                                resourceGroupName: resourceGroupName,
-                                deploymentName: deploymentName);
+                                resourceGroupName,
+                                deploymentName);
 
                             newNestedOperations = GetNewOperations(operations, result);
 
@@ -463,7 +460,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         {
             if (!string.IsNullOrEmpty(providerName))
             {
-                var provider = this.ResourceManagementClient.Providers.Get(providerName);
+                var provider = ResourceManagementClient.Providers.Get(providerName);
 
                 if (provider == null)
                 {
@@ -472,40 +469,37 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
 
                 return new List<Provider> { provider };
             }
-            else
+            var returnList = new List<Provider>();
+            var tempResult = ResourceManagementClient.Providers.List(null);
+            returnList.AddRange(tempResult);
+
+            while (!string.IsNullOrWhiteSpace(tempResult.NextPageLink))
             {
-                var returnList = new List<Provider>();
-                var tempResult = this.ResourceManagementClient.Providers.List(null);
+                tempResult = ResourceManagementClient.Providers.ListNext(tempResult.NextPageLink);
                 returnList.AddRange(tempResult);
-
-                while (!string.IsNullOrWhiteSpace(tempResult.NextPageLink))
-                {
-                    tempResult = this.ResourceManagementClient.Providers.ListNext(tempResult.NextPageLink);
-                    returnList.AddRange(tempResult);
-                }
-
-                return listAvailable
-                    ? returnList
-                    : returnList.Where(this.IsProviderRegistered).ToList();
             }
+
+            return listAvailable
+                ? returnList
+                : returnList.Where(IsProviderRegistered).ToList();
         }
 
         public List<Provider> GetRegisteredProviders(List<Provider> providers)
         {
-            return providers.CoalesceEnumerable().Where(this.IsProviderRegistered).ToList();
+            return providers.CoalesceEnumerable().Where(IsProviderRegistered).ToList();
         }
 
         private bool IsProviderRegistered(Provider provider)
         {
             return string.Equals(
-                ResourceManagerSdkClient.RegisteredStateName,
+                RegisteredStateName,
                 provider.RegistrationState,
                 StringComparison.InvariantCultureIgnoreCase);
         }
 
         public PSResourceProvider RegisterProvider(string providerName)
         {
-            var response = this.ResourceManagementClient.Providers.Register(providerName);
+            var response = ResourceManagementClient.Providers.Register(providerName);
 
             if (response == null)
             {
@@ -727,10 +721,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
                 return deployments.Where(d => excludedProvisioningStates
                     .All(s => !s.Equals(d.ProvisioningState, StringComparison.OrdinalIgnoreCase))).ToList();
             }
-            else
-            {
-                return deployments;
-            }
+            return deployments;
         }
 
         /// <summary>
@@ -759,10 +750,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
                 }
                 throw new InvalidOperationException(ProjectResources.FailedDeploymentValidation);
             }
-            else
-            {
-                WriteVerbose(ProjectResources.TemplateValid);
-            }
+            WriteVerbose(ProjectResources.TemplateValid);
 
             ResourceManagementClient.Deployments.BeginCreateOrUpdate(parameters.ResourceGroupName, parameters.DeploymentName, deployment);
             WriteVerbose(string.Format(ProjectResources.CreatedDeployment, parameters.DeploymentName));
@@ -789,14 +777,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
             {
                 return parameters.DeploymentName;
             }
-            else if (!string.IsNullOrEmpty(parameters.TemplateFile))
+            if (!string.IsNullOrEmpty(parameters.TemplateFile))
             {
                 return Path.GetFileNameWithoutExtension(parameters.TemplateFile);
             }
-            else
-            {
-                return Guid.NewGuid().ToString();
-            }
+            return Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -844,12 +829,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
                 {
                     throw new ArgumentException(string.Format(ProjectResources.NoDeploymentToCancel, deploymentName));
                 }
-                else
-                {
-                    throw new ArgumentException(string.Format(ProjectResources.NoRunningDeployments, resourceGroup));
-                }
+                throw new ArgumentException(string.Format(ProjectResources.NoRunningDeployments, resourceGroup));
             }
-            else if (deployments.Count == 1)
+            if (deployments.Count == 1)
             {
                 ResourceManagementClient.Deployments.Cancel(resourceGroup, deployments.First().DeploymentName);
             }

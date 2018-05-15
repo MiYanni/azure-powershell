@@ -28,8 +28,8 @@ namespace Microsoft.Azure.Commands.Compute
 
         public KeyValuePair(string key, object value)
         {
-            this.Key = key;
-            this.Value = value;
+            Key = key;
+            Value = value;
         }
     }
 }
