@@ -162,22 +162,6 @@ namespace Microsoft.Azure.Commands.DataLakeAnalytics.Models
                 baseAccount.Endpoint,
                 baseAccount.AccountId)
         {
-            DefaultDataLakeStoreAccount = null;
-            DataLakeStoreAccounts = null;
-            MaxDegreeOfParallelism = null;
-            QueryStoreRetention = null;
-            MaxJobCount = null;
-            SystemMaxDegreeOfParallelism = null;
-            SystemMaxJobCount = null;
-            StorageAccounts = null;
-            NewTier = null;
-            CurrentTier = null;
-            FirewallState = null;
-            FirewallAllowAzureIps = null;
-            FirewallRules = null;
-            MaxDegreeOfParallelismPerJob = null;
-            MinPriorityPerJob = null;
-            ComputePolicies = null;
         }
     }
 }

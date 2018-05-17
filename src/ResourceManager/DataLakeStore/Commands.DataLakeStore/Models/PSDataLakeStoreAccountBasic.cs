@@ -125,18 +125,6 @@ namespace Microsoft.Azure.Commands.DataLakeStore.Models
                 baseAccount.Endpoint,
                 baseAccount.AccountId)
         {
-            Identity = null;
-            EncryptionState = null;
-            EncryptionProvisioningState = null;
-            EncryptionConfig = null;
-            FirewallState = null;
-            FirewallRules = null;
-            TrustedIdProviderState = null;
-            TrustedIdProviders = null;
-            DefaultGroup = null;
-            NewTier = null;
-            CurrentTier = null;
-            FirewallAllowAzureIps = null;
         }
     }
 }
