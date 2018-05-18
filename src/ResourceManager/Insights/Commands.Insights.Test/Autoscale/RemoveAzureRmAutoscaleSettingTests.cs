@@ -42,21 +42,21 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
             insightsAutoscaleOperationsMock = new Mock<IAutoscaleSettingsOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RemoveAzureRmAutoscaleSettingCommand()
+            cmdlet = new RemoveAzureRmAutoscaleSettingCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
             insightsAutoscaleOperationsMock.Setup(f => f.DeleteWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Microsoft.Rest.Azure.AzureOperationResponse>(new Microsoft.Rest.Azure.AzureOperationResponse()))
+                .Returns(Task.FromResult(new Rest.Azure.AzureOperationResponse()))
                 .Callback((string resourceGrp, string settingNm, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     resourceGroup = resourceGrp;
                     settingName = settingNm;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.AutoscaleSettings).Returns(this.insightsAutoscaleOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.AutoscaleSettings).Returns(insightsAutoscaleOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
             cmdlet.Name = Utilities.Name;
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal(Utilities.Name, this.settingName);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal(Utilities.Name, settingName);
         }
     }
 }

@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new RemoveAzureAutomationAccount
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new RemoveAzureAutomationAccount
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -49,16 +49,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string resourceGroupName = "resourceGroup";
             string accountName = "automation";
 
-            this.mockAutomationClient.Setup(f => f.DeleteAutomationAccount(resourceGroupName, accountName));
+            mockAutomationClient.Setup(f => f.DeleteAutomationAccount(resourceGroupName, accountName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.Name = accountName;
-            this.cmdlet.Force = true;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.Name = accountName;
+            cmdlet.Force = true;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.DeleteAutomationAccount(resourceGroupName, accountName), Times.Once());
+            mockAutomationClient.Verify(f => f.DeleteAutomationAccount(resourceGroupName, accountName), Times.Once());
         }
     }
 }

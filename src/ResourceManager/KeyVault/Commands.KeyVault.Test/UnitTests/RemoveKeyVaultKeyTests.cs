@@ -30,18 +30,18 @@ namespace Microsoft.Azure.Commands.KeyVault.Test.UnitTests
 
         public RemoveKeyVaultKeyTests()
         {
-            base.SetupTest();
+            SetupTest();
 
-            cmdlet = new RemoveAzureKeyVaultKey()
+            cmdlet = new RemoveAzureKeyVaultKey
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 DataServiceClient = keyVaultClientMock.Object,
                 VaultName = VaultName
             };
 
-            keyAttributes = new PSKeyVaultKeyAttributes(true, DateTime.Now, DateTime.Now, "HSM", new string[] { "All" }, null);
+            keyAttributes = new PSKeyVaultKeyAttributes(true, DateTime.Now, DateTime.Now, "HSM", new[] { "All" }, null);
             webKey = new WebKey.JsonWebKey();
-            keyBundle = new PSDeletedKeyVaultKey() { Attributes = keyAttributes, Key = webKey, Name = KeyName, VaultName = VaultName };
+            keyBundle = new PSDeletedKeyVaultKey { Attributes = keyAttributes, Key = webKey, Name = KeyName, VaultName = VaultName };
         }
 
         [Fact]

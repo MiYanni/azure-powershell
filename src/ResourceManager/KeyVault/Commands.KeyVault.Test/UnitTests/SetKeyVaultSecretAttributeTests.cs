@@ -29,12 +29,12 @@ namespace Microsoft.Azure.Commands.KeyVault.Test.UnitTests
         private PSKeyVaultSecret secret;
         public SetKeyVaultSecretAttributeTests()
         {
-            base.SetupTest();
+            SetupTest();
 
             secretAttributes = new PSKeyVaultSecretAttributes(true, DateTime.UtcNow.AddYears(2), DateTime.UtcNow, "contenttype", null);
-            secret = new PSKeyVaultSecret() { VaultName = VaultName, Name = SecretName, Version = SecretVersion, SecretValue = null, Attributes = secretAttributes };
+            secret = new PSKeyVaultSecret { VaultName = VaultName, Name = SecretName, Version = SecretVersion, SecretValue = null, Attributes = secretAttributes };
 
-            cmdlet = new UpdateAzureKeyVaultSecret()
+            cmdlet = new UpdateAzureKeyVaultSecret
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 DataServiceClient = keyVaultClientMock.Object,

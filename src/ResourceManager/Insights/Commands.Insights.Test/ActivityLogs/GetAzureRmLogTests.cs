@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Events
             insightsEventOperationsMock = new Mock<IActivityLogsOperations>();
             MonitorClientMock = new Mock<MonitorClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureRmLogCommand()
+            cmdlet = new GetAzureRmLogCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorClient = MonitorClientMock.Object
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Events
             finalResponse = Utilities.InitializeFinalResponse();
 
             insightsEventOperationsMock.Setup(f => f.ListWithHttpMessagesAsync(It.IsAny<ODataQuery<EventData>>(), It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IPage<EventData>>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((ODataQuery<EventData> f, string s, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     filter = f;
@@ -64,13 +64,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Events
                 });
 
             insightsEventOperationsMock.Setup(f => f.ListNextWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IPage<EventData>>>(finalResponse))
+                .Returns(Task.FromResult(finalResponse))
                 .Callback((string next, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     nextLink = next;
                 });
 
-            MonitorClientMock.SetupGet(f => f.ActivityLogs).Returns(this.insightsEventOperationsMock.Object);
+            MonitorClientMock.SetupGet(f => f.ActivityLogs).Returns(insightsEventOperationsMock.Object);
         }
 
         [Fact]
@@ -80,13 +80,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Events
             var startDate = DateTime.Now.AddSeconds(-1);
 
             Utilities.ExecuteVerifications(
-                cmdlet: cmdlet,
-                insinsightsEventOperationsMockightsClientMock: this.insightsEventOperationsMock,
-                requiredFieldName: null,
-                requiredFieldValue: null,
-                filter: ref this.filter,
-                startDate: startDate,
-                nextLink: ref this.nextLink);
+                cmdlet,
+                insightsEventOperationsMock,
+                null,
+                null,
+                ref filter,
+                startDate,
+                ref nextLink);
         }
 
         [Fact]
@@ -102,13 +102,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Events
             cmdlet.ResourceProvider = null;
 
             Utilities.ExecuteVerifications(
-                cmdlet: cmdlet,
-                insinsightsEventOperationsMockightsClientMock: this.insightsEventOperationsMock,
-                requiredFieldName: "correlationId",
-                requiredFieldValue: Utilities.Correlation,
-                filter: ref this.filter,
-                startDate: startDate,
-                nextLink: ref this.nextLink);
+                cmdlet,
+                insightsEventOperationsMock,
+                "correlationId",
+                Utilities.Correlation,
+                ref filter,
+                startDate,
+                ref nextLink);
         }
 
         [Fact]
@@ -124,13 +124,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Events
             cmdlet.ResourceProvider = null;
 
             Utilities.ExecuteVerifications(
-                cmdlet: cmdlet,
-                insinsightsEventOperationsMockightsClientMock: this.insightsEventOperationsMock,
-                requiredFieldName: "resourceGroupName",
-                requiredFieldValue: Utilities.ResourceGroup,
-                filter: ref this.filter,
-                startDate: startDate,
-                nextLink: ref this.nextLink);
+                cmdlet,
+                insightsEventOperationsMock,
+                "resourceGroupName",
+                Utilities.ResourceGroup,
+                ref filter,
+                startDate,
+                ref nextLink);
         }
 
         [Fact]
@@ -146,13 +146,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Events
             cmdlet.ResourceProvider = null;
 
             Utilities.ExecuteVerifications(
-                cmdlet: cmdlet,
-                insinsightsEventOperationsMockightsClientMock: this.insightsEventOperationsMock,
-                requiredFieldName: "resourceUri",
-                requiredFieldValue: Utilities.ResourceUri,
-                filter: ref this.filter,
-                startDate: startDate,
-                nextLink: ref this.nextLink);
+                cmdlet,
+                insightsEventOperationsMock,
+                "resourceUri",
+                Utilities.ResourceUri,
+                ref filter,
+                startDate,
+                ref nextLink);
         }
 
         [Fact]
@@ -168,13 +168,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Events
             cmdlet.CorrelationId = null;
 
             Utilities.ExecuteVerifications(
-                cmdlet: cmdlet,
-                insinsightsEventOperationsMockightsClientMock: this.insightsEventOperationsMock,
-                requiredFieldName: "resourceProvider",
-                requiredFieldValue: Utilities.ResourceProvider,
-                filter: ref this.filter,
-                startDate: startDate,
-                nextLink: ref this.nextLink);
+                cmdlet,
+                insightsEventOperationsMock,
+                "resourceProvider",
+                Utilities.ResourceProvider,
+                ref filter,
+                startDate,
+                ref nextLink);
         }
     }
 }

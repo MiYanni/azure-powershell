@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RestartBatchComputeNodeCommand()
+            cmdlet = new RestartBatchComputeNodeCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                 ComputeNodeRebootOptions,
                 AzureOperationHeaderResponse<ComputeNodeRebootHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();
@@ -89,11 +89,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ComputeNodeRebootOption? requestRebootOption = null;
 
             // Don't go to the service on a Reboot ComputeNode call
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 ComputeNodeRebootBatchRequest request = (ComputeNodeRebootBatchRequest)baseRequest;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
                     // Grab the reboot option from the outgoing request.
                     requestRebootOption = request.Parameters;
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                     return task;
                 };
             });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             cmdlet.ExecuteCmdlet();
 

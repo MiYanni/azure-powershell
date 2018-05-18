@@ -60,8 +60,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static BatchAccountContext CreateTestAccountAndResourceGroup(BatchController controller, string resourceGroupName, string accountName, string location)
         {
-            controller.ResourceManagementClient.ResourceGroups.CreateOrUpdate(resourceGroupName, new ResourceGroup() { Location = location });
-            BatchAccount createResponse = controller.BatchManagementClient.BatchAccount.Create(resourceGroupName, accountName, new BatchAccountCreateParameters() { Location = location });
+            controller.ResourceManagementClient.ResourceGroups.CreateOrUpdate(resourceGroupName, new ResourceGroup { Location = location });
+            BatchAccount createResponse = controller.BatchManagementClient.BatchAccount.Create(resourceGroupName, accountName, new BatchAccountCreateParameters { Location = location });
             BatchAccountContext context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(createResponse, null);
             BatchAccountKeys response = controller.BatchManagementClient.BatchAccount.GetKeys(resourceGroupName, accountName);
             context.PrimaryAccountKey = response.Primary;
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             PSCertificateReference[] certReferences = null;
             if (certReference != null)
             {
-                certReferences = new PSCertificateReference[] { new PSCertificateReference(certReference) };
+                certReferences = new[] { new PSCertificateReference(certReference) };
             }
             PSStartTask psStartTask = null;
             if (startTask != null)
@@ -250,7 +250,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
                 // We got the pool not found error, so continue and create the pool
             }
 
-            CreateTestPool(controller, context, MpiPoolId, targetDedicated, targetLowPriority: 0);
+            CreateTestPool(controller, context, MpiPoolId, targetDedicated, 0);
         }
 
         public static void WaitForSteadyPoolAllocation(BatchController controller, BatchAccountContext context, string poolId)
@@ -410,7 +410,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             if (HttpMockServer.Mode == HttpRecorderMode.Record)
             {
                 TaskStateMonitor monitor = context.BatchOMClient.Utilities.CreateTaskStateMonitor();
-                monitor.WaitAll(tasks.Select(t => t.omObject), TaskState.Completed, TimeSpan.FromMinutes(10), null);
+                monitor.WaitAll(tasks.Select(t => t.omObject), TaskState.Completed, TimeSpan.FromMinutes(10));
             }
         }
 

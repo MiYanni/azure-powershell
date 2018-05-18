@@ -36,12 +36,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationConnection
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationConnection
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -53,17 +53,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string connectionName = "connection";
 
-            this.mockAutomationClient.Setup(f => f.GetConnection(resourceGroupName, accountName, connectionName));
+            mockAutomationClient.Setup(f => f.GetConnection(resourceGroupName, accountName, connectionName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = connectionName;
-            this.cmdlet.SetParameterSet("ByConnectionName");
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = connectionName;
+            cmdlet.SetParameterSet("ByConnectionName");
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetConnection(resourceGroupName, accountName, connectionName), Times.Once());
+            mockAutomationClient.Verify(f => f.GetConnection(resourceGroupName, accountName, connectionName), Times.Once());
         }
 
         [TestMethod]
@@ -74,15 +74,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListConnections(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<Connection>());
+            mockAutomationClient.Setup(f => f.ListConnections(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<Connection>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListConnections(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListConnections(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
 
         [TestMethod]
@@ -93,17 +93,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string connectionTypeName = "connectionType";
 
-            this.mockAutomationClient.Setup(f => f.ListConnectionsByType(resourceGroupName, accountName, connectionTypeName)).Returns((string a, string b, string c) => new List<Connection>());
+            mockAutomationClient.Setup(f => f.ListConnectionsByType(resourceGroupName, accountName, connectionTypeName)).Returns((string a, string b, string c) => new List<Connection>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ConnectionTypeName = connectionTypeName;
-            this.cmdlet.SetParameterSet("ByConnectionTypeName");
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ConnectionTypeName = connectionTypeName;
+            cmdlet.SetParameterSet("ByConnectionTypeName");
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListConnectionsByType(resourceGroupName, accountName, connectionTypeName), Times.Once());
+            mockAutomationClient.Verify(f => f.ListConnectionsByType(resourceGroupName, accountName, connectionTypeName), Times.Once());
         }
     }
 }

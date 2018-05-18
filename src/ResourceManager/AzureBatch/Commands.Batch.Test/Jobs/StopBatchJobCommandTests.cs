@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new StopBatchJobCommand()
+            cmdlet = new StopBatchJobCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
 
             // Don't go to the service on a Terminate CloudJob call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<string, JobTerminateOptions, AzureOperationHeaderResponse<JobTerminateHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();
@@ -79,12 +79,12 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
 
             // Don't go to the service on a Terminate CloudJob call
             Action<BatchRequest<string, JobTerminateOptions, AzureOperationHeaderResponse<JobTerminateHeaders>>> extractTerminateReasponAction =
-                (request) =>
+                request =>
                 {
                     requestTerminateReason = request.Parameters;
                 };
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(requestAction: extractTerminateReasponAction);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             cmdlet.ExecuteCmdlet();
 

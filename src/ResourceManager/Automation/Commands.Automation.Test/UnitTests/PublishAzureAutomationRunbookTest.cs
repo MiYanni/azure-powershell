@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new PublishAzureAutomationRunbook
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new PublishAzureAutomationRunbook
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -50,16 +50,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string runbookName = "runbook";
 
-            this.mockAutomationClient.Setup(f => f.PublishRunbook(resourceGroupName, accountName, runbookName));
+            mockAutomationClient.Setup(f => f.PublishRunbook(resourceGroupName, accountName, runbookName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = runbookName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = runbookName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.PublishRunbook(resourceGroupName, accountName, runbookName), Times.Once());
+            mockAutomationClient.Verify(f => f.PublishRunbook(resourceGroupName, accountName, runbookName), Times.Once());
         }
     }
 }

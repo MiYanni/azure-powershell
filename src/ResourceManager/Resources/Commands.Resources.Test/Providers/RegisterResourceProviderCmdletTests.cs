@@ -14,16 +14,16 @@
 
 namespace Microsoft.Azure.Commands.Resources.Test
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
-    using Microsoft.Azure.Commands.Resources.Models;
-    using Microsoft.Azure.Management.ResourceManager;
-    using Microsoft.Azure.Management.ResourceManager.Models;
-    using Microsoft.Azure.ServiceManagemenet.Common.Models;
-    using Microsoft.Rest.Azure;
-    using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
+    using ResourceManager.Cmdlets.Implementation;
+    using ResourceManager.Cmdlets.SdkClient;
+    using ResourceManager.Cmdlets.SdkModels;
+    using Commands.Resources.Models;
+    using Management.ResourceManager;
+    using Management.ResourceManager.Models;
+    using ServiceManagemenet.Common.Models;
+    using Rest.Azure;
+    using WindowsAzure.Commands.Common.Test.Mocks;
+    using WindowsAzure.Commands.ScenarioTest;
     using Moq;
     using System;
     using System.Collections.Generic;
@@ -59,21 +59,21 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         public RegisterAzureProviderCmdletTests(ITestOutputHelper output)
         {
-            this.providerOperationsMock = new Mock<IProvidersOperations>();
+            providerOperationsMock = new Mock<IProvidersOperations>();
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
             var resourceManagementClient = new Mock<IResourceManagementClient>();
 
             resourceManagementClient
                 .SetupGet(client => client.Providers)
-                .Returns(() => this.providerOperationsMock.Object);
+                .Returns(() => providerOperationsMock.Object);
 
-            this.commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock = new Mock<ICommandRuntime>();
 
-            this.commandRuntimeMock
+            commandRuntimeMock
               .Setup(m => m.ShouldProcess(It.IsAny<string>(), It.IsAny<string>()))
               .Returns(() => true);
 
-            this.cmdlet = new RegisterAzureProviderCmdlet()
+            cmdlet = new RegisterAzureProviderCmdlet
             {
                 ResourceManagerSdkClient = new ResourceManagerSdkClient
                 {
@@ -109,24 +109,26 @@ namespace Microsoft.Azure.Commands.Resources.Test
 
             var registrationResult = provider;
 
-            this.providerOperationsMock
+            providerOperationsMock
                 .Setup(client => client.RegisterWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()))
                 .Callback((string providerName, Dictionary<string, List<string>> customHeaders, CancellationToken ignored) =>
                         Assert.Equal(ProviderName, providerName, StringComparer.OrdinalIgnoreCase))
-                .Returns(() => Task.FromResult(new AzureOperationResponse<Provider>() {
+                .Returns(() => Task.FromResult(new AzureOperationResponse<Provider>
+                {
                     Body = registrationResult
                 }));
 
-            this.providerOperationsMock
+            providerOperationsMock
               .Setup(f => f.GetWithHttpMessagesAsync(It.IsAny<string>(), null, null, It.IsAny<CancellationToken>()))
-              .Returns(() => Task.FromResult( new AzureOperationResponse<Provider>() {
+              .Returns(() => Task.FromResult( new AzureOperationResponse<Provider>
+                {
                    Body = provider
               }));
 
-            this.cmdlet.ProviderNamespace = ProviderName;
+            cmdlet.ProviderNamespace = ProviderName;
 
             // 1. register succeeds
-            this.commandRuntimeMock
+            commandRuntimeMock
                 .Setup(m => m.WriteObject(It.IsAny<object>()))
                 .Callback((object obj) =>
                 {
@@ -137,9 +139,9 @@ namespace Microsoft.Azure.Commands.Resources.Test
 
             //registrationResult.StatusCode = HttpStatusCode.OK;
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
-            this.VerifyCallPatternAndReset(succeeded: true);
+            VerifyCallPatternAndReset(true);
 
             // 2. register fails w/ error
             //registrationResult.StatusCode = HttpStatusCode.NotFound;
@@ -147,12 +149,12 @@ namespace Microsoft.Azure.Commands.Resources.Test
 
             try
             {
-                this.cmdlet.ExecuteCmdlet();
+                cmdlet.ExecuteCmdlet();
                 Assert.False(true, "The cmdlet succeeded when it should have failed.");
             }
             catch (KeyNotFoundException)
             {
-                this.VerifyCallPatternAndReset(succeeded: false);
+                VerifyCallPatternAndReset(false);
             }
         }
 
@@ -161,11 +163,11 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         private void VerifyCallPatternAndReset(bool succeeded)
         {
-            this.providerOperationsMock.Verify(f => f.RegisterWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once());
-            this.commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>()), succeeded ? Times.Once() : Times.Never());
+            providerOperationsMock.Verify(f => f.RegisterWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once());
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>()), succeeded ? Times.Once() : Times.Never());
 
-            this.providerOperationsMock.ResetCalls();
-            this.commandRuntimeMock.ResetCalls();
+            providerOperationsMock.ResetCalls();
+            commandRuntimeMock.ResetCalls();
         }
     }
 }

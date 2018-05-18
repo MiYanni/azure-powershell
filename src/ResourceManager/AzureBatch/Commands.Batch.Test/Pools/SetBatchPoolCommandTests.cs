@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new SetBatchPoolCommand()
+            cmdlet = new SetBatchPoolCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -79,9 +79,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
             // Update the pool
             cmdlet.Pool.StartTask = new PSStartTask("cmd /c echo start task");
-            cmdlet.Pool.CertificateReferences = new List<PSCertificateReference>()
+            cmdlet.Pool.CertificateReferences = new List<PSCertificateReference>
             {
-                new PSCertificateReference()
+                new PSCertificateReference
                 {
                     StoreLocation = Azure.Batch.Common.CertStoreLocation.LocalMachine,
                     Thumbprint = "thumbprint",
@@ -90,15 +90,15 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                     Visibility = Azure.Batch.Common.CertificateVisibility.StartTask
                 }
             };
-            cmdlet.Pool.ApplicationPackageReferences = new List<PSApplicationPackageReference>()
+            cmdlet.Pool.ApplicationPackageReferences = new List<PSApplicationPackageReference>
             {
-                new PSApplicationPackageReference()
+                new PSApplicationPackageReference
                 {
                     ApplicationId = "myApp",
                     Version = "1.0"
                 }
             };
-            cmdlet.Pool.Metadata = new List<PSMetadataItem>()
+            cmdlet.Pool.Metadata = new List<PSMetadataItem>
             {
                 new PSMetadataItem("meta1", "value1")
             };
@@ -109,11 +109,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 PoolUpdatePropertiesParameter,
                 PoolUpdatePropertiesOptions,
-                AzureOperationHeaderResponse<PoolUpdatePropertiesHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<PoolUpdatePropertiesHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters

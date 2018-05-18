@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
         private static AzureOperationResponse<T> CreateAzureOperationResponse<T>(T type)
         {
-            return new AzureOperationResponse<T>()
+            return new AzureOperationResponse<T>
             {
                 Body = type
             };
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         private IPage<T> GetPagableType<T>(List<T> collection)
         {
             var pagableResult = new Page<T>();
-            pagableResult.SetItemValue<T>(collection);
+            pagableResult.SetItemValue(collection);
             return pagableResult;
         }
 
@@ -138,8 +138,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 null,
                 null,
                 new CancellationToken()))
-            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<GenericResource>>()
-            {
+            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<GenericResource>>
+                {
                 Body = GetPagableType(result)
             }));
         }
@@ -173,7 +173,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             providersMock = new Mock<IProvidersOperations>();
             providersMock.Setup(f => f.ListWithHttpMessagesAsync(null, null, null, new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() =>
-                new AzureOperationResponse<IPage<Provider>>()
+                new AzureOperationResponse<IPage<Provider>>
                 {
                     Body = new Page<Provider>()
                 }));
@@ -232,10 +232,10 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         public void NewResourceGroupChecksForPermissionForExistingResource()
         {
             RejectActionCounter = 0;
-            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters() { ResourceGroupName = resourceGroupName, ConfirmAction = RejectAction };
+            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters { ResourceGroupName = resourceGroupName, ConfirmAction = RejectAction };
             resourceGroupMock.Setup(f => f.CheckExistenceWithHttpMessagesAsync(parameters.ResourceGroupName, null, new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() =>
-                    new AzureOperationResponse<bool>()
+                    new AzureOperationResponse<bool>
                     {
                         Body = true
                     }));
@@ -244,23 +244,23 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 parameters.ResourceGroupName,
                 null,
                 new CancellationToken()))
-                    .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<ResourceGroup>()
-                    {
-                        Body = new ResourceGroup() { Name = parameters.ResourceGroupName, Location = parameters.Location }
+                    .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<ResourceGroup>
+                {
+                        Body = new ResourceGroup { Name = parameters.ResourceGroupName, Location = parameters.Location }
                     }));
 
             resourceOperationsMock.Setup(f => f.ListWithHttpMessagesAsync(null, null, It.IsAny<CancellationToken>()))
                 .Returns(() => Task.Factory.StartNew(() =>
                 {
-                    var resources = new List<GenericResource>()
-                        {
-                            CreateGenericResource(location: "West US", id: null, name: "foo", type: null),
-                            CreateGenericResource(location: "West US", id: null, name: "bar", type: null)
+                    var resources = new List<GenericResource>
+                    {
+                            CreateGenericResource("West US", null, "foo"),
+                            CreateGenericResource("West US", null, "bar")
                         };
                     var result = new Page<GenericResource>();
                     result.SetItemValue(resources);
 
-                    return new AzureOperationResponse<IPage<GenericResource>>() { Body = result };
+                    return new AzureOperationResponse<IPage<GenericResource>> { Body = result };
                 }));
 
             resourcesClient.CreatePSResourceGroup(parameters);
@@ -271,7 +271,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void NewResourceGroupWithoutDeploymentSucceeds()
         {
-            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters()
+            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters
             {
                 ResourceGroupName = resourceGroupName,
                 Location = resourceGroupLocation,
@@ -285,7 +285,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 It.IsAny<ResourceGroup>(),
                 null,
                 new CancellationToken()))
-                    .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(new ResourceGroup() { Name = parameters.ResourceGroupName, Location = parameters.Location })));
+                    .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(new ResourceGroup { Name = parameters.ResourceGroupName, Location = parameters.Location })));
             SetupListForResourceGroupAsync(parameters.ResourceGroupName, new List<GenericResource>());
 
             PSResourceGroup result = resourcesClient.CreatePSResourceGroup(parameters);
@@ -300,7 +300,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         {
             Uri templateUri = new Uri("http://templateuri.microsoft.com");
             Deployment deploymentFromValidate = new Deployment();
-            PSValidateResourceGroupDeploymentParameters parameters = new PSValidateResourceGroupDeploymentParameters()
+            PSValidateResourceGroupDeploymentParameters parameters = new PSValidateResourceGroupDeploymentParameters
             {
                 ResourceGroupName = resourceGroupName,
                 TemplateFile = templateFile,
@@ -314,12 +314,12 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                     var result = CreateAzureOperationResponse(new DeploymentValidateResult
                     {
                         Error = new ResourceManagementErrorWithDetails(
-                            code: "404",
-                            message: "Awesome error message",
+                            "404",
+                            "Awesome error message",
                             details: new List<ResourceManagementErrorWithDetails>{
                                 new ResourceManagementErrorWithDetails(
-                                    code: "SubError",
-                                    message: "Sub error message")
+                                    "SubError",
+                                    "Sub error message")
                             })
                     });
                     result.Response = new System.Net.Http.HttpResponseMessage();
@@ -340,7 +340,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         {
             Uri templateUri = new Uri("http://templateuri.microsoft.com");
             Deployment deploymentFromValidate = new Deployment();
-            PSValidateResourceGroupDeploymentParameters parameters = new PSValidateResourceGroupDeploymentParameters()
+            PSValidateResourceGroupDeploymentParameters parameters = new PSValidateResourceGroupDeploymentParameters
             {
                 ResourceGroupName = resourceGroupName,
                 TemplateFile = templateFile,
@@ -380,7 +380,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                     string deploymentName = "abc123";
                     Deployment deploymentFromGet = new Deployment();
                     Deployment deploymentFromValidate = new Deployment();
-                    PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters()
+                    PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters
                     {
                         ResourceGroupName = resourceGroupName,
                         Location = resourceGroupLocation,
@@ -397,7 +397,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                         null,
                         new CancellationToken()))
                         .Returns(Task.Factory.StartNew(() =>
-                            new AzureOperationResponse<DeploymentValidateResult>()
+                            new AzureOperationResponse<DeploymentValidateResult>
                             {
                                 Body = new DeploymentValidateResult
                                 {
@@ -416,7 +416,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                         It.IsAny<Deployment>(),
                         null,
                         new CancellationToken()))
-                        .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>()
+                        .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>
                         {
                             Body = new DeploymentExtended
                             {
@@ -436,7 +436,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                         It.IsAny<string>(),
                         null,
                         new CancellationToken()))
-                        .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>()
+                        .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>
                         {
                             Body = true
                         }));
@@ -452,8 +452,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                         new DeploymentOperation(
                             operationId: operationId,
                             properties: new DeploymentOperationProperties(
-                                provisioningState: "Accepted",
-                                targetResource: new TargetResource()
+                                "Accepted",
+                                targetResource: new TargetResource
                                 {
                                     ResourceType = "Microsoft.Website",
                                     ResourceName = resourceName
@@ -463,8 +463,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                         new DeploymentOperation(
                             operationId: operationId,
                             properties: new DeploymentOperationProperties(
-                                provisioningState: "Running",
-                                targetResource: new TargetResource()
+                                "Running",
+                                targetResource: new TargetResource
                                 {
                                     ResourceType = "Microsoft.Website",
                                     ResourceName = resourceName
@@ -474,8 +474,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                         new DeploymentOperation(
                             operationId: operationId,
                             properties: new DeploymentOperationProperties(
-                                provisioningState: "Succeeded",
-                                targetResource: new TargetResource()
+                                "Succeeded",
+                                targetResource: new TargetResource
                                 {
                                     ResourceType = "Microsoft.Website",
                                     ResourceName = resourceName
@@ -486,33 +486,33 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                             f.ListWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), null, null,
                                 new CancellationToken()))
                         .Returns(Task.Factory.StartNew(() =>
-                            new AzureOperationResponse<IPage<DeploymentOperation>>()
+                            new AzureOperationResponse<IPage<DeploymentOperation>>
                             {
                                 Body = GetPagableType(
-                                    new List<DeploymentOperation>()
+                                    new List<DeploymentOperation>
                                     {
                                         operationQueue.Dequeue()
                                     })
                             }))
-                        .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<DeploymentOperation>>()
+                        .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<DeploymentOperation>>
                         {
                             Body = GetPagableType(
-                                new List<DeploymentOperation>()
+                                new List<DeploymentOperation>
                                 {
                                     operationQueue.Dequeue()
                                 })
                         }))
-                        .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<DeploymentOperation>>()
+                        .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<DeploymentOperation>>
                         {
                             Body = GetPagableType(
-                                new List<DeploymentOperation>()
+                                new List<DeploymentOperation>
                                 {
                                     operationQueue.Dequeue()
                                 })
                         }));
 
                     var deploymentQueue = new Queue<DeploymentExtended>();
-                    deploymentQueue.Enqueue(new DeploymentExtended()
+                    deploymentQueue.Enqueue(new DeploymentExtended
                     {
                         Name = deploymentName,
                         Properties = new DeploymentPropertiesExtended(
@@ -543,17 +543,17 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                         .Returns(
                             Task.Factory.StartNew(
                                 () =>
-                                    new AzureOperationResponse<DeploymentExtended>() { Body = deploymentQueue.Dequeue() }))
+                                    new AzureOperationResponse<DeploymentExtended> { Body = deploymentQueue.Dequeue() }))
                         .Returns(
                             Task.Factory.StartNew(
                                 () =>
-                                    new AzureOperationResponse<DeploymentExtended>() { Body = deploymentQueue.Dequeue() }))
+                                    new AzureOperationResponse<DeploymentExtended> { Body = deploymentQueue.Dequeue() }))
                         .Returns(
                             Task.Factory.StartNew(
                                 () =>
-                                    new AzureOperationResponse<DeploymentExtended>() { Body = deploymentQueue.Dequeue() }));
+                                    new AzureOperationResponse<DeploymentExtended> { Body = deploymentQueue.Dequeue() }));
 
-                    Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment result =
+                    ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment result =
                         resourcesClient.ExecuteDeployment(parameters);
                     Assert.Equal(deploymentName, deploymentName);
                     Assert.Equal("Succeeded", result.ProvisioningState);
@@ -582,7 +582,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string deploymentName = "abc123";
             ConcurrentBag<string> deploymentNames = new ConcurrentBag<string>();
 
-            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters()
+            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters
             {
                 ResourceGroupName = resourceGroupName,
                 Location = resourceGroupLocation,
@@ -598,7 +598,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 null,
                 new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() =>
-                    new AzureOperationResponse<DeploymentValidateResult>()
+                    new AzureOperationResponse<DeploymentValidateResult>
                     {
                         Body = new DeploymentValidateResult
                         {
@@ -617,9 +617,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
                         if (deploymentNames.Contains(getDeploymentName))
                         {
-                            return new AzureOperationResponse<DeploymentExtended>()
+                            return new AzureOperationResponse<DeploymentExtended>
                             {
-                                Body = new DeploymentExtended()
+                                Body = new DeploymentExtended
                                 {
                                     Name = getDeploymentName,
                                     Id = requestId,
@@ -647,7 +647,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
                         deploymentNames.Add(createDeploymentName);
 
-                        return new AzureOperationResponse<DeploymentExtended>()
+                        return new AzureOperationResponse<DeploymentExtended>
                         {
                             Body = new DeploymentExtended
                             {
@@ -669,7 +669,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
                         deploymentNames.Add(createDeploymentName);
 
-                        return new AzureOperationResponse<DeploymentExtended>()
+                        return new AzureOperationResponse<DeploymentExtended>
                         {
                             Body = new DeploymentExtended
                             {
@@ -683,7 +683,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 parameters.DeploymentName,
                 null,
                 new CancellationToken()))
-                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>()
+                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>
                 {
                     Body = true
                 }));
@@ -699,8 +699,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 new DeploymentOperation(
                     operationId: operationId,
                     properties: new DeploymentOperationProperties(
-                        provisioningState: "Succeeded",
-                        targetResource: new TargetResource()
+                        "Succeeded",
+                        targetResource: new TargetResource
                         {
                             ResourceType = "Microsoft.Website",
                             ResourceName = resourceName
@@ -719,10 +719,10 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
                         if (deploymentNames.Contains(getDeploymentName))
                         {
-                            return new AzureOperationResponse<IPage<DeploymentOperation>>()
+                            return new AzureOperationResponse<IPage<DeploymentOperation>>
                             {
                                 Body = GetPagableType(
-                                    new List<DeploymentOperation>()
+                                    new List<DeploymentOperation>
                                     {
                                         operationQueue.Dequeue()
                                     })
@@ -732,7 +732,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                         throw new CloudException(String.Format("Deployment '{0}' could not be found.", getDeploymentName));
                     });
 
-            Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment result = resourcesClient.ExecuteDeployment(parameters);
+            ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment result = resourcesClient.ExecuteDeployment(parameters);
             Assert.Equal(deploymentName, result.DeploymentName);
             Assert.Equal("Succeeded", result.ProvisioningState);
             progressLoggerMock.Verify(
@@ -747,7 +747,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             Uri templateUri = new Uri("http://templateuri.microsoft.com");
             Deployment deploymentFromGet = new Deployment();
             Deployment deploymentFromValidate = new Deployment();
-            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters()
+            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters
             {
                 ResourceGroupName = resourceGroupName,
                 Location = resourceGroupLocation,
@@ -756,7 +756,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 ConfirmAction = ConfirmAction
             };
             resourceGroupMock.Setup(f => f.CheckExistenceWithHttpMessagesAsync(parameters.ResourceGroupName, null, new CancellationToken()))
-                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>() { Body = false }));
+                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool> { Body = false }));
 
             resourceGroupMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(
                 parameters.ResourceGroupName,
@@ -764,20 +764,20 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 null,
                 new CancellationToken()))
                     .Returns(Task.Factory.StartNew(() =>
-                    new AzureOperationResponse<ResourceGroup>()
+                    new AzureOperationResponse<ResourceGroup>
                     {
-                        Body = new ResourceGroup() { Name = parameters.ResourceGroupName, Location = parameters.Location }
+                        Body = new ResourceGroup { Name = parameters.ResourceGroupName, Location = parameters.Location }
                     }));
 
             resourceGroupMock.Setup(f => f.GetWithHttpMessagesAsync(resourceGroupName, null, new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() =>
-                new AzureOperationResponse<ResourceGroup>()
+                new AzureOperationResponse<ResourceGroup>
                 {
-                    Body = new ResourceGroup() { Location = resourceGroupLocation }
+                    Body = new ResourceGroup { Location = resourceGroupLocation }
                 }));
 
             deploymentsMock.Setup(f => f.BeginCreateOrUpdateWithHttpMessagesAsync(resourceGroupName, deploymentName, It.IsAny<Deployment>(), null, new CancellationToken()))
-                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>()
+                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>
                 {
                     Body = new DeploymentExtended
                     {
@@ -787,9 +787,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 .Callback((string name, string dName, Deployment bDeploy, Dictionary<string, List<string>> customHeaders, CancellationToken token) =>
                 { deploymentFromGet = bDeploy; });
             deploymentsMock.Setup(f => f.GetWithHttpMessagesAsync(resourceGroupName, deploymentName, null, new CancellationToken()))
-                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>()
+                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>
                 {
-                    Body = new DeploymentExtended()
+                    Body = new DeploymentExtended
                     {
                         Name = deploymentName,
                         Properties = new DeploymentPropertiesExtended(
@@ -809,20 +809,20 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 It.IsAny<string>(),
                 null,
                 new CancellationToken()))
-                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>()
+                .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>
                 {
                     Body = true
                 }));
 
-            SetupListForResourceGroupAsync(parameters.ResourceGroupName, new List<GenericResource>() { CreateGenericResource(null, null, "website") });
+            SetupListForResourceGroupAsync(parameters.ResourceGroupName, new List<GenericResource> { CreateGenericResource(null, null, "website") });
             deploymentOperationsMock.Setup(f => f.ListWithHttpMessagesAsync(resourceGroupName, deploymentName, null, null, new CancellationToken()))
-                .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(GetPagableType(new List<DeploymentOperation>()
-                    {
+                .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(GetPagableType(new List<DeploymentOperation>
+                {
                         new DeploymentOperation(
                             operationId: Guid.NewGuid().ToString(),
                             properties: new DeploymentOperationProperties(
-                                provisioningState: "Succeeded",
-                                targetResource: new TargetResource()
+                                "Succeeded",
+                                targetResource: new TargetResource
                                 {
                                     ResourceType = "Microsoft.Website",
                                     ResourceName = resourceName
@@ -830,8 +830,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                     }))));
 
             PSResourceGroup result = resourcesClient.CreatePSResourceGroup(parameters);
-            Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment deploymentResult = resourcesClient.ExecuteDeployment(parameters);
-            deploymentsMock.Verify((f => f.BeginCreateOrUpdateWithHttpMessagesAsync(resourceGroupName, deploymentName, deploymentFromGet, null, new CancellationToken())), Times.Once());
+            ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment deploymentResult = resourcesClient.ExecuteDeployment(parameters);
+            deploymentsMock.Verify(f => f.BeginCreateOrUpdateWithHttpMessagesAsync(resourceGroupName, deploymentName, deploymentFromGet, null, new CancellationToken()), Times.Once());
             Assert.Equal(parameters.ResourceGroupName, deploymentResult.ResourceGroupName);
 
             Assert.Equal(DeploymentMode.Incremental, deploymentFromGet.Properties.Mode);
@@ -853,7 +853,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             Uri templateUri = new Uri("http://templateuri.microsoft.com");
             Deployment deploymentFromGet = new Deployment();
             Deployment deploymentFromValidate = new Deployment();
-            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters()
+            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters
             {
                 ResourceGroupName = resourceGroupName,
                 Location = resourceGroupLocation,
@@ -870,10 +870,10 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 null,
                 new CancellationToken()))
                     .Returns(Task.Factory.StartNew(() =>
-                        CreateAzureOperationResponse(new ResourceGroup() { Name = parameters.ResourceGroupName, Location = parameters.Location })
+                        CreateAzureOperationResponse(new ResourceGroup { Name = parameters.ResourceGroupName, Location = parameters.Location })
                     ));
             resourceGroupMock.Setup(f => f.GetWithHttpMessagesAsync(resourceGroupName, null, new CancellationToken()))
-                .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(new ResourceGroup() { Location = resourceGroupLocation })
+                .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(new ResourceGroup { Location = resourceGroupLocation })
                 ));
             deploymentsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(resourceGroupName, deploymentName, It.IsAny<Deployment>(), null, new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(new DeploymentExtended
@@ -882,8 +882,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 })))
                 .Callback((string name, string dName, Deployment bDeploy, Dictionary<string, List<string>> customHeaders, CancellationToken token) => { deploymentFromGet = bDeploy; });
             deploymentsMock.Setup(f => f.GetWithHttpMessagesAsync(resourceGroupName, deploymentName, null, new CancellationToken()))
-                .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(new DeploymentExtended()
-                {
+                .Returns(Task.Factory.StartNew(() => CreateAzureOperationResponse(new DeploymentExtended
+                    {
                     Name = deploymentName,
                     Properties = new DeploymentPropertiesExtended(
                         mode: DeploymentMode.Incremental,
@@ -896,15 +896,17 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                     Error = new ResourceManagementErrorWithDetails()
                 })))
                 .Callback((string resourceGroup, string deployment, Deployment d, Dictionary<string, List<string>> customHeaders, CancellationToken c) => { deploymentFromValidate = d; });
-            SetupListForResourceGroupAsync(parameters.ResourceGroupName, new List<GenericResource>() {
+            SetupListForResourceGroupAsync(parameters.ResourceGroupName, new List<GenericResource>
+            {
                 CreateGenericResource(null, null, "website") });
-            var listOperations = new List<DeploymentOperation>() {
+            var listOperations = new List<DeploymentOperation>
+            {
                 new DeploymentOperation(
                     operationId: Guid.NewGuid().ToString(),
                     properties: new DeploymentOperationProperties(
-                        provisioningState: "Failed",
+                        "Failed",
                         statusMessage: "{\"Code\":\"Conflict\"}",
-                        targetResource: new TargetResource()
+                        targetResource: new TargetResource
                         {
                             ResourceType = "Microsoft.Website",
                             ResourceName = resourceName
@@ -918,7 +920,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
             PSResourceGroup result = resourcesClient.CreatePSResourceGroup(parameters);
 
-            deploymentsMock.Verify((f => f.CreateOrUpdateWithHttpMessagesAsync(resourceGroupName, deploymentName, deploymentFromGet, null, new CancellationToken())), Times.Once());
+            deploymentsMock.Verify(f => f.CreateOrUpdateWithHttpMessagesAsync(resourceGroupName, deploymentName, deploymentFromGet, null, new CancellationToken()), Times.Once());
             Assert.Equal(parameters.ResourceGroupName, result.ResourceGroupName);
             Assert.Equal(parameters.Location, result.Location);
 
@@ -940,7 +942,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             Uri templateUri = new Uri("http://templateuri.microsoft.com");
             Deployment deploymentFromGet = new Deployment();
             Deployment deploymentFromValidate = new Deployment();
-            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters()
+            PSCreateResourceGroupParameters parameters = new PSCreateResourceGroupParameters
             {
                 ResourceGroupName = resourceGroupName,
                 Location = resourceGroupLocation,
@@ -949,8 +951,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 ConfirmAction = ConfirmAction
             };
             resourceGroupMock.Setup(f => f.CheckExistenceWithHttpMessagesAsync(parameters.ResourceGroupName, null, new CancellationToken()))
-            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>()
-            {
+            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<bool>
+                {
                 Body = false
             }));
 
@@ -960,14 +962,14 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 null,
                 new CancellationToken()))
             .Returns(Task.Factory.StartNew(() =>
-                new AzureOperationResponse<ResourceGroup>()
+                new AzureOperationResponse<ResourceGroup>
                 {
-                    Body = new ResourceGroup() { Name = parameters.ResourceGroupName, Location = parameters.Location }
+                    Body = new ResourceGroup { Name = parameters.ResourceGroupName, Location = parameters.Location }
                 }
             ));
             resourceGroupMock.Setup(f => f.GetWithHttpMessagesAsync(resourceGroupName, null, new CancellationToken()))
             .Returns(Task.Factory.StartNew(() =>
-                new AzureOperationResponse<ResourceGroup>() { Body = new ResourceGroup() { Location = resourceGroupLocation } }
+                new AzureOperationResponse<ResourceGroup> { Body = new ResourceGroup { Location = resourceGroupLocation } }
             ));
             deploymentsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(
                 resourceGroupName,
@@ -975,8 +977,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 It.IsAny<Deployment>(),
                 null,
                 new CancellationToken()))
-            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>()
-            {
+            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>
+                {
                 Body = new DeploymentExtended
                 {
                     Id = requestId
@@ -987,9 +989,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             { deploymentFromGet = bDeploy; });
             deploymentsMock.Setup(f => f.GetWithHttpMessagesAsync(resourceGroupName, deploymentName, null, new CancellationToken()))
             .Returns(Task.Factory.StartNew(() =>
-                new AzureOperationResponse<DeploymentExtended>()
+                new AzureOperationResponse<DeploymentExtended>
                 {
-                    Body = new DeploymentExtended()
+                    Body = new DeploymentExtended
                     {
                         Name = deploymentName,
                         Properties = new DeploymentPropertiesExtended(
@@ -1005,7 +1007,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 null,
                 new CancellationToken()))
             .Returns(Task.Factory.StartNew(() =>
-                new AzureOperationResponse<DeploymentValidateResult>()
+                new AzureOperationResponse<DeploymentValidateResult>
                 {
                     Body = new DeploymentValidateResult
                     {
@@ -1017,18 +1019,20 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                     CancellationToken c) =>
             { deploymentFromValidate = d; });
 
-            SetupListForResourceGroupAsync(parameters.ResourceGroupName, new List<GenericResource>() {
-                CreateGenericResource(location: null, id: null, name: "website", type: null)});
+            SetupListForResourceGroupAsync(parameters.ResourceGroupName, new List<GenericResource>
+            {
+                CreateGenericResource(null, null, "website")});
 
-            var listOperations = new List<DeploymentOperation>() {
+            var listOperations = new List<DeploymentOperation>
+            {
                 new DeploymentOperation(
                     operationId: Guid.NewGuid().ToString(),
                     properties: new DeploymentOperationProperties(
-                        provisioningState: "Failed",
+                        "Failed",
                         statusMessage: JsonConvert.SerializeObject(
-                            value: new ResourceManagementErrorWithDetails(
+                            new ResourceManagementErrorWithDetails(
                                 message: "A really bad error occured")),
-                        targetResource: new TargetResource()
+                        targetResource: new TargetResource
                         {
                             ResourceType = "Microsoft.Website",
                             ResourceName = resourceName
@@ -1042,21 +1046,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 null,
                 new CancellationToken()))
             .Returns(Task.Factory.StartNew(() =>
-                new AzureOperationResponse<IPage<DeploymentOperation>>()
+                new AzureOperationResponse<IPage<DeploymentOperation>>
                 {
-                    Body = GetPagableType<DeploymentOperation>(listOperations)
+                    Body = GetPagableType(listOperations)
                 }
             ));
 
             PSResourceGroup result = resourcesClient.CreatePSResourceGroup(parameters);
-            Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment deploymentResult = resourcesClient.ExecuteDeployment(parameters);
+            ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment deploymentResult = resourcesClient.ExecuteDeployment(parameters);
 
-            deploymentsMock.Verify((f => f.CreateOrUpdateWithHttpMessagesAsync(
+            deploymentsMock.Verify(f => f.CreateOrUpdateWithHttpMessagesAsync(
                     resourceGroupName,
                     deploymentName,
                     deploymentFromGet,
                     null,
-                    new CancellationToken())),
+                    new CancellationToken()),
                 Times.Never);
             Assert.Equal(parameters.ResourceGroupName, deploymentResult.ResourceGroupName);
 
@@ -1081,7 +1085,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 resourceGroupLocation,
                 "/subscriptions/abc123/resourceGroups/group1/providers/Microsoft.Test/servers/r12345sql/db/r45678db",
                 resourceName + "2");
-            ResourceGroup resourceGroup = new ResourceGroup()
+            ResourceGroup resourceGroup = new ResourceGroup
             {
                 Name = name,
                 Location = resourceGroupLocation,
@@ -1089,11 +1093,11 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             };
             resourceGroupMock.Setup(f => f.GetWithHttpMessagesAsync(name, null, new CancellationToken()))
                              .Returns(Task.Factory.StartNew(() =>
-                                new AzureOperationResponse<ResourceGroup>()
+                                new AzureOperationResponse<ResourceGroup>
                                 {
                                     Body = resourceGroup
                                 }));
-            SetupListForResourceGroupAsync(name, new List<GenericResource>() { resource1, resource2 });
+            SetupListForResourceGroupAsync(name, new List<GenericResource> { resource1, resource2 });
 
             List<PSResourceGroup> actual = resourcesClient.FilterResourceGroups(name, null, true);
 
@@ -1107,22 +1111,22 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void GetsAllResourceGroups()
         {
-            ResourceGroup resourceGroup1 = new ResourceGroup() { Name = resourceGroupName + 1, Location = resourceGroupLocation };
-            ResourceGroup resourceGroup2 = new ResourceGroup() { Name = resourceGroupName + 2, Location = resourceGroupLocation };
-            ResourceGroup resourceGroup3 = new ResourceGroup() { Name = resourceGroupName + 3, Location = resourceGroupLocation };
-            ResourceGroup resourceGroup4 = new ResourceGroup() { Name = resourceGroupName + 4, Location = resourceGroupLocation };
-            var listResult = new List<ResourceGroup>() { resourceGroup1, resourceGroup2, resourceGroup3, resourceGroup4 };
+            ResourceGroup resourceGroup1 = new ResourceGroup { Name = resourceGroupName + 1, Location = resourceGroupLocation };
+            ResourceGroup resourceGroup2 = new ResourceGroup { Name = resourceGroupName + 2, Location = resourceGroupLocation };
+            ResourceGroup resourceGroup3 = new ResourceGroup { Name = resourceGroupName + 3, Location = resourceGroupLocation };
+            ResourceGroup resourceGroup4 = new ResourceGroup { Name = resourceGroupName + 4, Location = resourceGroupLocation };
+            var listResult = new List<ResourceGroup> { resourceGroup1, resourceGroup2, resourceGroup3, resourceGroup4 };
             var pagableResult = new Page<ResourceGroup>();
             pagableResult.SetItemValue(listResult);
             resourceGroupMock.Setup(f => f.ListWithHttpMessagesAsync(null, null, new CancellationToken()))
-            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<ResourceGroup>>()
-            {
+            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<ResourceGroup>>
+                {
                 Body = pagableResult
             }));
-            SetupListForResourceGroupAsync(resourceGroup1.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup2.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup3.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup4.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup1.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup2.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup3.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup4.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
 
             List<PSResourceGroup> actual = resourcesClient.FilterResourceGroups(null, null, false);
 
@@ -1137,22 +1141,22 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void GetsAllResourceGroupsWithDetails()
         {
-            ResourceGroup resourceGroup1 = new ResourceGroup() { Name = resourceGroupName + 1, Location = resourceGroupLocation };
-            ResourceGroup resourceGroup2 = new ResourceGroup() { Name = resourceGroupName + 2, Location = resourceGroupLocation };
-            ResourceGroup resourceGroup3 = new ResourceGroup() { Name = resourceGroupName + 3, Location = resourceGroupLocation };
-            ResourceGroup resourceGroup4 = new ResourceGroup() { Name = resourceGroupName + 4, Location = resourceGroupLocation };
-            var listResult = new List<ResourceGroup>() { resourceGroup1, resourceGroup2, resourceGroup3, resourceGroup4 };
+            ResourceGroup resourceGroup1 = new ResourceGroup { Name = resourceGroupName + 1, Location = resourceGroupLocation };
+            ResourceGroup resourceGroup2 = new ResourceGroup { Name = resourceGroupName + 2, Location = resourceGroupLocation };
+            ResourceGroup resourceGroup3 = new ResourceGroup { Name = resourceGroupName + 3, Location = resourceGroupLocation };
+            ResourceGroup resourceGroup4 = new ResourceGroup { Name = resourceGroupName + 4, Location = resourceGroupLocation };
+            var listResult = new List<ResourceGroup> { resourceGroup1, resourceGroup2, resourceGroup3, resourceGroup4 };
             var pagableResult = new Page<ResourceGroup>();
             pagableResult.SetItemValue(listResult);
             resourceGroupMock.Setup(f => f.ListWithHttpMessagesAsync(null, null, new CancellationToken()))
-            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<ResourceGroup>>()
-            {
+            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<IPage<ResourceGroup>>
+                {
                 Body = pagableResult
             }));
-            SetupListForResourceGroupAsync(resourceGroup1.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup2.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup3.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup4.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup1.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup2.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup3.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup4.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
 
             List<PSResourceGroup> actual = resourcesClient.FilterResourceGroups(null, null, true);
 
@@ -1171,23 +1175,23 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             Dictionary<string, string> tag2 = new Dictionary<string, string> { { "tag1", "valx" } };
             Dictionary<string, string> tag3 = new Dictionary<string, string> { { "tag2", "" } };
 
-            ResourceGroup resourceGroup1 = new ResourceGroup() { Name = resourceGroupName + 1, Location = resourceGroupLocation, Tags = tag1 };
-            ResourceGroup resourceGroup2 = new ResourceGroup() { Name = resourceGroupName + 2, Location = resourceGroupLocation, Tags = tag2 };
-            ResourceGroup resourceGroup3 = new ResourceGroup() { Name = resourceGroupName + 3, Location = resourceGroupLocation, Tags = tag3 };
-            ResourceGroup resourceGroup4 = new ResourceGroup() { Name = resourceGroupName + 4, Location = resourceGroupLocation };
-            var listResult = new List<ResourceGroup>() { resourceGroup1, resourceGroup2, resourceGroup3, resourceGroup4 };
+            ResourceGroup resourceGroup1 = new ResourceGroup { Name = resourceGroupName + 1, Location = resourceGroupLocation, Tags = tag1 };
+            ResourceGroup resourceGroup2 = new ResourceGroup { Name = resourceGroupName + 2, Location = resourceGroupLocation, Tags = tag2 };
+            ResourceGroup resourceGroup3 = new ResourceGroup { Name = resourceGroupName + 3, Location = resourceGroupLocation, Tags = tag3 };
+            ResourceGroup resourceGroup4 = new ResourceGroup { Name = resourceGroupName + 4, Location = resourceGroupLocation };
+            var listResult = new List<ResourceGroup> { resourceGroup1, resourceGroup2, resourceGroup3, resourceGroup4 };
             var pagableResult = new Page<ResourceGroup>();
             pagableResult.SetItemValue(listResult);
             resourceGroupMock.Setup(f => f.ListWithHttpMessagesAsync(null, null, new CancellationToken()))
                              .Returns(Task.Factory.StartNew(() =>
-                                new AzureOperationResponse<IPage<ResourceGroup>>()
+                                new AzureOperationResponse<IPage<ResourceGroup>>
                                 {
                                     Body = pagableResult
                                 }));
-            SetupListForResourceGroupAsync(resourceGroup1.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup2.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup3.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup4.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup1.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup2.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup3.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup4.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
 
             List<PSResourceGroup> groups1 = resourcesClient.FilterResourceGroups(null, 
                 new Hashtable(new Dictionary<string, string> { { "tag1", "val1" } }), false);
@@ -1222,23 +1226,23 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             Dictionary<string, string> tag2 = new Dictionary<string, string> { { "tag1", "valx" } };
             Dictionary<string, string> tag3 = new Dictionary<string, string> { { "tag2", "" } };
 
-            ResourceGroup resourceGroup1 = new ResourceGroup() { Name = resourceGroupName + 1, Location = resourceGroupLocation, Tags = tag1 };
-            ResourceGroup resourceGroup2 = new ResourceGroup() { Name = resourceGroupName + 2, Location = resourceGroupLocation, Tags = tag2 };
-            ResourceGroup resourceGroup3 = new ResourceGroup() { Name = resourceGroupName + 3, Location = resourceGroupLocation, Tags = tag3 };
-            ResourceGroup resourceGroup4 = new ResourceGroup() { Name = resourceGroupName + 4, Location = resourceGroupLocation };
-            var listResult = new List<ResourceGroup>() { resourceGroup1, resourceGroup2, resourceGroup3, resourceGroup4 };
+            ResourceGroup resourceGroup1 = new ResourceGroup { Name = resourceGroupName + 1, Location = resourceGroupLocation, Tags = tag1 };
+            ResourceGroup resourceGroup2 = new ResourceGroup { Name = resourceGroupName + 2, Location = resourceGroupLocation, Tags = tag2 };
+            ResourceGroup resourceGroup3 = new ResourceGroup { Name = resourceGroupName + 3, Location = resourceGroupLocation, Tags = tag3 };
+            ResourceGroup resourceGroup4 = new ResourceGroup { Name = resourceGroupName + 4, Location = resourceGroupLocation };
+            var listResult = new List<ResourceGroup> { resourceGroup1, resourceGroup2, resourceGroup3, resourceGroup4 };
             var pagableResult = new Page<ResourceGroup>();
             pagableResult.SetItemValue(listResult);
             resourceGroupMock.Setup(f => f.ListWithHttpMessagesAsync(null, null, new CancellationToken()))
                              .Returns(Task.Factory.StartNew(() =>
-                                new AzureOperationResponse<IPage<ResourceGroup>>()
+                                new AzureOperationResponse<IPage<ResourceGroup>>
                                 {
                                     Body = pagableResult
                                 }));
-            SetupListForResourceGroupAsync(resourceGroup1.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup2.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup3.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
-            SetupListForResourceGroupAsync(resourceGroup4.Name, new List<GenericResource>() { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup1.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup2.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup3.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
+            SetupListForResourceGroupAsync(resourceGroup4.Name, new List<GenericResource> { CreateGenericResource(null, null, "resource") });
 
             List<PSResourceGroup> groups1 = resourcesClient.FilterResourceGroups(null,
                 new Hashtable(new Dictionary<string, string> { { "tag1", "val1" } }), true);
@@ -1271,7 +1275,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         {
             resourceGroupMock.Setup(f => f.CheckExistenceWithHttpMessagesAsync(resourceGroupName, null, new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() =>
-                    new AzureOperationResponse<bool>()
+                    new AzureOperationResponse<bool>
                     {
                         Body = true
                     }));
@@ -1285,34 +1289,34 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void FiltersOneResourceGroupDeployment()
         {
-            FilterResourceGroupDeploymentOptions options = new FilterResourceGroupDeploymentOptions()
+            FilterResourceGroupDeploymentOptions options = new FilterResourceGroupDeploymentOptions
             {
                 DeploymentName = deploymentName,
                 ResourceGroupName = resourceGroupName
             };
             deploymentsMock.Setup(f => f.GetWithHttpMessagesAsync(resourceGroupName, deploymentName, null, new CancellationToken()))
-            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>()
-            {
-                Body = new DeploymentExtended()
+            .Returns(Task.Factory.StartNew(() => new AzureOperationResponse<DeploymentExtended>
+                {
+                Body = new DeploymentExtended
                 {
                     Name = deploymentName,
                     Properties = new DeploymentPropertiesExtended(
                         mode: DeploymentMode.Incremental,
                         correlationId: "123",
-                        templateLink: new TemplateLink()
+                        templateLink: new TemplateLink
                         {
                             Uri = "http://microsoft.com/"
                         })
                 }
             }));
 
-            List<Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment> result = resourcesClient.FilterResourceGroupDeployments(options);
+            List<ResourceManager.Cmdlets.SdkModels.PSResourceGroupDeployment> result = resourcesClient.FilterResourceGroupDeployments(options);
 
             Assert.Equal(deploymentName, result[0].DeploymentName);
             Assert.Equal(resourceGroupName, result[0].ResourceGroupName);
             Assert.Equal(DeploymentMode.Incremental, result[0].Mode);
             Assert.Equal("123", result[0].CorrelationId);
-            Assert.Equal(new Uri("http://microsoft.com").ToString(), result[0].TemplateLink.Uri.ToString());
+            Assert.Equal(new Uri("http://microsoft.com").ToString(), result[0].TemplateLink.Uri);
         }
 
         [Fact]
@@ -1321,36 +1325,36 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         {
             DeploymentExtended actualParameters = new DeploymentExtended();
 
-            var listResult = new List<DeploymentExtended>()
+            var listResult = new List<DeploymentExtended>
             {
-                new DeploymentExtended()
+                new DeploymentExtended
                 {
                     Name = deploymentName + 1,
                     Properties = new DeploymentPropertiesExtended(
                         mode: DeploymentMode.Incremental,
-                        templateLink: new TemplateLink()
+                        templateLink: new TemplateLink
                         {
                             Uri = "http://microsoft1.com"
                         },
                         provisioningState: "Succeeded")
                 },
-                new DeploymentExtended()
+                new DeploymentExtended
                 {
                     Name = deploymentName + 2,
                     Properties = new DeploymentPropertiesExtended(
                         mode: DeploymentMode.Incremental,
-                        templateLink: new TemplateLink()
+                        templateLink: new TemplateLink
                         {
                             Uri = "http://microsoft1.com"
                         },
                         provisioningState: "Failed")
                 },
-                new DeploymentExtended()
+                new DeploymentExtended
                 {
                     Name = deploymentName + 3,
                     Properties = new DeploymentPropertiesExtended(
                         mode: DeploymentMode.Incremental,
-                        templateLink: new TemplateLink()
+                        templateLink: new TemplateLink
                         {
                             Uri = "http://microsoft1.com"
                         },
@@ -1358,8 +1362,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 }
             };
             var pagableResult = new Page<DeploymentExtended>();
-            pagableResult.SetItemValue<DeploymentExtended>(listResult);
-            var result = new AzureOperationResponse<IPage<DeploymentExtended>>()
+            pagableResult.SetItemValue(listResult);
+            var result = new AzureOperationResponse<IPage<DeploymentExtended>>
             {
                 Body = pagableResult
             };

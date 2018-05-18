@@ -35,12 +35,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new NewAzureAutomationVariable
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new NewAzureAutomationVariable
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -63,20 +63,20 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             variable.Encrypted = true;
             variable.AutomationAccountName = accountName;
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f => f.CreateVariable(variable));
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = variableName;
-            this.cmdlet.Description = description;
-            this.cmdlet.Value = value;
-            this.cmdlet.Encrypted = true;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByName);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = variableName;
+            cmdlet.Description = description;
+            cmdlet.Value = value;
+            cmdlet.Encrypted = true;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByName);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.CreateVariable(variable), Times.Once());
+            mockAutomationClient.Verify(f => f.CreateVariable(variable), Times.Once());
         }
     }
 }

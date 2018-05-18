@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             var tenantId = Guid.NewGuid();
             var subscriptionId = Guid.NewGuid();
             var domain = "Contoso.com";
-            var context = new PSAzureContext()
+            var context = new PSAzureContext
             {
                 Account = new PSAzureRmAccount
                 {
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
                     Id = tenantId.ToString()
                 }
             };
-            return new AzureRmProfile() { DefaultContext = context };
+            return new AzureRmProfile { DefaultContext = context };
         }
 
         public static IAzureContextContainer CreateAzureSMProfile(string storageAccount)

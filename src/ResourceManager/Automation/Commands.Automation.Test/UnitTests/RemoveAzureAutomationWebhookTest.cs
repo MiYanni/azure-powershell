@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new RemoveAzureAutomationWebhook
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new RemoveAzureAutomationWebhook
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -49,18 +49,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string resourceGroupName = "resourceGroup";
             string accountName = "account";
             string webhookName = "webhookName";
-            this.cmdlet.SetParameterSet("ByName");
+            cmdlet.SetParameterSet("ByName");
 
-            this.mockAutomationClient.Setup(f => f.DeleteWebhook(resourceGroupName, accountName, webhookName));
+            mockAutomationClient.Setup(f => f.DeleteWebhook(resourceGroupName, accountName, webhookName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = webhookName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = webhookName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.DeleteWebhook(resourceGroupName, accountName, webhookName), Times.Once());
+            mockAutomationClient.Verify(f => f.DeleteWebhook(resourceGroupName, accountName, webhookName), Times.Once());
         }
     }
 }

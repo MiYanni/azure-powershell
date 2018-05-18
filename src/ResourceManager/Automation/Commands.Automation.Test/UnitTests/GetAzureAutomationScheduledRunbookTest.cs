@@ -36,12 +36,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationScheduledRunbook
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationScheduledRunbook
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -53,17 +53,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             var jobScheduleId = new Guid();
 
-            this.mockAutomationClient.Setup(f => f.GetJobSchedule(resourceGroupName, accountName, jobScheduleId));
+            mockAutomationClient.Setup(f => f.GetJobSchedule(resourceGroupName, accountName, jobScheduleId));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.JobScheduleId = jobScheduleId;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByJobScheduleId);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.JobScheduleId = jobScheduleId;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByJobScheduleId);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetJobSchedule(resourceGroupName, accountName, jobScheduleId), Times.Once());
+            mockAutomationClient.Verify(f => f.GetJobSchedule(resourceGroupName, accountName, jobScheduleId), Times.Once());
         }
 
         [TestMethod]
@@ -75,18 +75,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string runbookName = "runbook";
             string scheduleName = "schedule";
 
-            this.mockAutomationClient.Setup(f => f.GetJobSchedule(resourceGroupName, accountName, runbookName, scheduleName));
+            mockAutomationClient.Setup(f => f.GetJobSchedule(resourceGroupName, accountName, runbookName, scheduleName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.RunbookName = runbookName;
-            this.cmdlet.ScheduleName = scheduleName;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByRunbookNameAndScheduleName);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.RunbookName = runbookName;
+            cmdlet.ScheduleName = scheduleName;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByRunbookNameAndScheduleName);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetJobSchedule(resourceGroupName, accountName, runbookName, scheduleName), Times.Once());
+            mockAutomationClient.Verify(f => f.GetJobSchedule(resourceGroupName, accountName, runbookName, scheduleName), Times.Once());
         }
 
         [TestMethod]
@@ -98,17 +98,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string runbookName = "runbook";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<JobSchedule>());
+            mockAutomationClient.Setup(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<JobSchedule>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.RunbookName = runbookName;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByRunbookName);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.RunbookName = runbookName;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByRunbookName);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
 
         [TestMethod]
@@ -120,17 +120,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string scheduleName = "schedule";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<JobSchedule>());
+            mockAutomationClient.Setup(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<JobSchedule>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ScheduleName = scheduleName;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByScheduleName);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ScheduleName = scheduleName;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByScheduleName);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
 
         [TestMethod]
@@ -141,16 +141,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<JobSchedule>());
+            mockAutomationClient.Setup(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<JobSchedule>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByAll);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByAll);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobSchedules(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
     }
 }

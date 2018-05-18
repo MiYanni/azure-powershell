@@ -246,7 +246,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             /// <param name="headerValues">The headers.</param>
             public override HttpClientHelper CreateHttpClientHelper(SubscriptionCloudCredentials credentials, IEnumerable<ProductInfoHeaderValue> headerValues, Dictionary<string, string> cmdletHeaderValues)
             {
-                return new HttpClientHelperImpl(credentials: credential, headerValues: headerValues, cmdletHeaderValues: cmdletHeaderValues);
+                return new HttpClientHelperImpl(credential, headerValues, cmdletHeaderValues);
             }
 
             /// <summary>
@@ -260,7 +260,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 /// <param name="credentials">The credentials.</param>
                 /// <param name="headerValues">The headers.</param>
                 public HttpClientHelperImpl(SubscriptionCloudCredentials credentials, IEnumerable<ProductInfoHeaderValue> headerValues, Dictionary<string, string> cmdletHeaderValues)
-                    : base(credentials: credentials, headerValues: headerValues, cmdletHeaderValues: cmdletHeaderValues)
+                    : base(credentials, headerValues, cmdletHeaderValues)
                 {
                 }
 

@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchAccountNodeAgentSkuCommand()
+            cmdlet = new GetBatchAccountNodeAgentSkuCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
             cmdlet.BatchContext = context;
 
-            string[] idsOfNodeAgentSkus = new[] { "batch.node.centos 7", "batch.node.debian 8", "batch.node.opensuse 13.2" };
+            string[] idsOfNodeAgentSkus = { "batch.node.centos 7", "batch.node.debian 8", "batch.node.opensuse 13.2" };
 
             // Don't go to the service on an Get NodeAgentSkus call
             AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders> response =
@@ -61,9 +61,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.AccountListNodeAgentSkusOptions,
-                AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders>>(responseToUse: response);
+                AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeAgentSku> pipeline = new List<PSNodeAgentSku>();
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 
             // Don't go to the service on an Get NodeAgentSkus call
             AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders> getResponse = BatchTestHelpers.CreateGenericAzureOperationListResponse<ProxyModels.NodeAgentSku, ProxyModels.AccountListNodeAgentSkusHeaders>();
-            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<ProxyModels.AccountListNodeAgentSkusOptions, AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders>>(responseToUse: getResponse);
+            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<ProxyModels.AccountListNodeAgentSkusOptions, AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders>>(getResponse);
             ResponseInterceptor responseInterceptor = new ResponseInterceptor((response, request) =>
             {
                 ProxyModels.AccountListNodeAgentSkusOptions listNodeAgentSkusOptions = (ProxyModels.AccountListNodeAgentSkusOptions)request.Options;
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 
                 return Task.FromResult(response);
             });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor, responseInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor, responseInterceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();

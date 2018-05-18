@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullEnvironments()
         {
-            Assert.Null((PSAzureEnvironment)null);
+            Assert.Null(null);
             var environment = (PSAzureEnvironment)new AzureEnvironment();
             Assert.NotNull(environment);
             Assert.Null(environment.ActiveDirectoryAuthority);
@@ -263,7 +263,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             string sqlSuffix, string storageSuffix, string trafficManagerSuffix, string batchResource, string dataLakeResource,
             string azureOperationalInsightsEndpointResourceId, string azureOperationalInsightsEndpoint)
         {
-            var environment = new AzureEnvironment() { Name = name, OnPremise = onPremise };
+            var environment = new AzureEnvironment { Name = name, OnPremise = onPremise };
             SetEndpoint(AzureEnvironment.Endpoint.ActiveDirectory, environment, activeDirectory);
             CheckEndpoint(AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId,
                 environment, serviceResource);
@@ -329,8 +329,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullAzureSubscriptions()
         {
-            Assert.Null((PSAzureSubscription)null);
-            var subscription = (PSAzureSubscription)(new AzureSubscription());
+            Assert.Null(null);
+            var subscription = (PSAzureSubscription)new AzureSubscription();
             Assert.NotNull(subscription);
             Assert.Null(subscription.CurrentStorageAccountName);
             Assert.Equal(Guid.Empty, subscription.GetId());
@@ -347,7 +347,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertValidAzureSubscriptions(string account, string name, string environment, string storageAccount, string expectedAccountName)
         {
-            var oldSubscription = new AzureSubscription()
+            var oldSubscription = new AzureSubscription
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = name
@@ -359,7 +359,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             oldSubscription.SetProperty(AzureSubscription.Property.Tenants, Guid.NewGuid().ToString());
             var subscription = (PSAzureSubscription)oldSubscription;
             Assert.Equal(oldSubscription.Name, subscription.Name);
-            Assert.Equal(oldSubscription.Id.ToString(), subscription.Id);
+            Assert.Equal(oldSubscription.Id, subscription.Id);
             Assert.Equal(oldSubscription.GetProperty(AzureSubscription.Property.Tenants), subscription.TenantId);
             Assert.Equal(expectedAccountName, subscription.CurrentStorageAccountName);
             Assert.Equal(storageAccount, subscription.CurrentStorageAccount);
@@ -371,8 +371,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullPSAzureSubscriptions()
         {
-            Assert.Null((AzureSubscription)null);
-            var subscription = (AzureSubscription)(new PSAzureSubscription());
+            Assert.Null(null);
+            var subscription = (AzureSubscription)new PSAzureSubscription();
             Assert.NotNull(subscription);
             Assert.False(subscription.IsPropertySet(AzureSubscription.Property.StorageAccount));
             Assert.False(subscription.IsPropertySet(AzureSubscription.Property.Tenants));
@@ -387,7 +387,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertValidPSAzureSubscriptions(string name, string storageAccount)
         {
-            var oldSubscription = new PSAzureSubscription()
+            var oldSubscription = new PSAzureSubscription
             {
                 CurrentStorageAccount = storageAccount,
                 Id = Guid.NewGuid().ToString(),
@@ -396,7 +396,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             };
             var subscription = (AzureSubscription)oldSubscription;
             Assert.Equal(oldSubscription.Name, subscription.Name);
-            Assert.Equal(oldSubscription.Id, subscription.Id.ToString());
+            Assert.Equal(oldSubscription.Id, subscription.Id);
             Assert.Equal(oldSubscription.TenantId, subscription.GetProperty(AzureSubscription.Property.Tenants));
             Assert.Equal(storageAccount, subscription.GetProperty(AzureSubscription.Property.StorageAccount));
         }
@@ -405,8 +405,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullAzureTenants()
         {
-            Assert.Null((PSAzureTenant)null);
-            var tenant = (PSAzureTenant)(new AzureTenant());
+            Assert.Null(null);
+            var tenant = (PSAzureTenant)new AzureTenant();
             Assert.NotNull(tenant);
             Assert.Null(tenant.Directory);
             Assert.Equal(Guid.Empty, tenant.GetId());
@@ -419,14 +419,14 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertValidAzureTenants(string domain)
         {
-            var oldTenant = new AzureTenant()
+            var oldTenant = new AzureTenant
             {
                 Directory = domain,
                 Id = Guid.NewGuid().ToString(),
             };
             var tenant = (PSAzureTenant)oldTenant;
             Assert.Equal(oldTenant.Directory, tenant.Directory);
-            Assert.Equal(oldTenant.Id.ToString(), tenant.Id);
+            Assert.Equal(oldTenant.Id, tenant.Id);
             Assert.NotNull(tenant.ToString());
             Assert.Equal(oldTenant.Id, tenant.TenantId);
         }
@@ -435,8 +435,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullPSAzureTenants()
         {
-            Assert.Null((AzureTenant)null);
-            var tenant = (AzureTenant)(new PSAzureTenant());
+            Assert.Null(null);
+            var tenant = (AzureTenant)new PSAzureTenant();
             Assert.NotNull(tenant);
             Assert.Null(tenant.Directory);
             Assert.Equal(Guid.Empty, tenant.GetId());
@@ -448,22 +448,22 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertValidPSAzureTenants(string domain)
         {
-            var oldTenant = new PSAzureTenant()
+            var oldTenant = new PSAzureTenant
             {
                 Directory = domain,
                 Id = Guid.NewGuid().ToString()
             };
             var tenant = (AzureTenant)oldTenant;
             Assert.Equal(oldTenant.Directory, tenant.Directory);
-            Assert.Equal(oldTenant.Id, tenant.Id.ToString());
+            Assert.Equal(oldTenant.Id, tenant.Id);
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullAzureAccounts()
         {
-            Assert.Null((PSAzureRmAccount)null);
-            var account = (PSAzureRmAccount)(new AzureAccount());
+            Assert.Null(null);
+            var account = (PSAzureRmAccount)new AzureAccount();
             Assert.NotNull(account);
             Assert.Null(account.Id);
             Assert.Null(account.Type);
@@ -478,24 +478,23 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertValidAzureAccounts(string id, string type)
         {
-            var oldAccount = new AzureAccount()
+            var oldAccount = new AzureAccount
             {
                 Type = type,
                 Id = id
             };
 
             var account = (PSAzureRmAccount)oldAccount;
-            Assert.Equal(oldAccount.Type.ToString(), account.Type);
+            Assert.Equal(oldAccount.Type, account.Type);
             Assert.Equal(oldAccount.Id, account.Id);
-            var accountString = account.ToString();
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullPSAzureAccounts()
         {
-            Assert.Null((AzureAccount)null);
-            var account = (AzureAccount)(new PSAzureRmAccount());
+            Assert.Null(null);
+            var account = (AzureAccount)new PSAzureRmAccount();
             Assert.NotNull(account);
             Assert.Null(account.Id);
             Assert.Null(account.Type);
@@ -523,8 +522,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullAzureContexts()
         {
-            Assert.Null((PSAzureContext)null);
-            var context = (PSAzureContext)(new AzureContext(null, null, null, null));
+            Assert.Null(null);
+            var context = (PSAzureContext)new AzureContext(null, null, null, null);
             Assert.NotNull(context);
             Assert.Null(context.Account);
             Assert.Null(context.Tenant);
@@ -547,23 +546,23 @@ namespace Microsoft.Azure.Commands.Profile.Test
             subscription.SetEnvironment(EnvironmentName.AzureCloud);
             var oldContext = new AzureContext(
 
-                account: new AzureAccount() { Id = account, Type = AzureAccount.AccountType.User },
+                account: new AzureAccount { Id = account, Type = AzureAccount.AccountType.User },
                 environment: AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud],
                 subscription: subscription,
-                tenant: new AzureTenant() { Id = tenantId.ToString(), Directory = domain });
+                tenant: new AzureTenant { Id = tenantId.ToString(), Directory = domain });
             oldContext.Subscription.SetProperty(AzureSubscription.Property.StorageAccount, storageAccount);
             oldContext.Subscription.SetProperty(AzureSubscription.Property.Tenants, tenantId.ToString());
             var context = (PSAzureContext)oldContext;
             Assert.NotNull(context);
             Assert.NotNull(context.Account);
-            Assert.Equal(oldContext.Account.Type.ToString(), context.Account.Type);
+            Assert.Equal(oldContext.Account.Type, context.Account.Type);
             Assert.Equal(oldContext.Account.Id, context.Account.Id);
             Assert.NotNull(context.Tenant);
             Assert.Equal(oldContext.Tenant.Directory, context.Tenant.Directory);
-            Assert.Equal(oldContext.Tenant.Id.ToString(), context.Tenant.Id);
+            Assert.Equal(oldContext.Tenant.Id, context.Tenant.Id);
             Assert.NotNull(context.Subscription);
             Assert.Equal(oldContext.Subscription.Name, context.Subscription.Name);
-            Assert.Equal(oldContext.Subscription.Id.ToString(), context.Subscription.Id);
+            Assert.Equal(oldContext.Subscription.Id, context.Subscription.Id);
             Assert.Equal(oldContext.Subscription.GetTenant(), context.Subscription.GetTenant());
             Assert.Equal(expectedAccountName, ((PSAzureSubscription)context.Subscription).CurrentStorageAccountName);
             Assert.Equal(storageAccount, context.Subscription.GetStorageAccount());
@@ -575,7 +574,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             string result = null;
             if (!string.IsNullOrWhiteSpace(account) && account.Contains("@"))
             {
-                var parts = account.Split(new char[] { '@' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                var parts = account.Split(new[] { '@' }, 2, StringSplitOptions.RemoveEmptyEntries);
                 result = parts[1];
             }
 
@@ -586,8 +585,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertNullPSAzureContexts()
         {
-            Assert.Null((AzureContext)null);
-            var context = (AzureContext)(new PSAzureContext());
+            Assert.Null(null);
+            var context = (AzureContext)new PSAzureContext();
             Assert.NotNull(context);
             Assert.Null(context.Account);
             Assert.Null(context.Environment);
@@ -605,7 +604,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             var tenantId = Guid.NewGuid();
             var subscriptionId = Guid.NewGuid();
             var domain = GetDomainName(account);
-            var oldContext = new PSAzureContext()
+            var oldContext = new PSAzureContext
             {
                 Account = new PSAzureRmAccount
                 {
@@ -630,14 +629,14 @@ namespace Microsoft.Azure.Commands.Profile.Test
             var context = (AzureContext)oldContext;
             Assert.NotNull(context);
             Assert.NotNull(context.Account);
-            Assert.Equal(oldContext.Account.Type, context.Account.Type.ToString());
+            Assert.Equal(oldContext.Account.Type, context.Account.Type);
             Assert.Equal(oldContext.Account.Id, context.Account.Id);
             Assert.NotNull(context.Tenant);
             Assert.Equal(oldContext.Tenant.Directory, context.Tenant.Directory);
-            Assert.Equal(oldContext.Tenant.Id, context.Tenant.Id.ToString());
+            Assert.Equal(oldContext.Tenant.Id, context.Tenant.Id);
             Assert.NotNull(context.Subscription);
             Assert.Equal(oldContext.Subscription.Name, context.Subscription.Name);
-            Assert.Equal(oldContext.Subscription.Id, context.Subscription.Id.ToString());
+            Assert.Equal(oldContext.Subscription.Id, context.Subscription.Id);
             Assert.True(context.Subscription.IsPropertySet(AzureSubscription.Property.Tenants));
             Assert.Equal(oldContext.Subscription.GetTenant(), context.Subscription.GetTenant());
             Assert.True(context.Subscription.IsPropertySet(AzureSubscription.Property.StorageAccount));

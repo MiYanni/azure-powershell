@@ -38,12 +38,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         
         public GetAzureAutomationDscNodeReportTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationDscNodeReport
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationDscNodeReport
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -56,18 +56,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string resourceGroupName = "resourceGroup";
             string accountName = "account";
             Guid id = Guid.NewGuid();
-            this.cmdlet.SetParameterSet("ByLatest");
+            cmdlet.SetParameterSet("ByLatest");
 
-            this.mockAutomationClient.Setup(f => f.GetLatestDscNodeReport(resourceGroupName, accountName, id));
+            mockAutomationClient.Setup(f => f.GetLatestDscNodeReport(resourceGroupName, accountName, id));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.NodeId = id;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.NodeId = id;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetLatestDscNodeReport(resourceGroupName, accountName, id), Times.Once());
+            mockAutomationClient.Verify(f => f.GetLatestDscNodeReport(resourceGroupName, accountName, id), Times.Once());
         }
 
         [Fact]
@@ -81,19 +81,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             Guid nodeId = Guid.NewGuid();
             Guid reportId = Guid.NewGuid();
             string nextLink = string.Empty;
-            this.cmdlet.SetParameterSet("ById");
+            cmdlet.SetParameterSet("ById");
 
-            this.mockAutomationClient.Setup(f => f.GetDscNodeReportByReportId(resourceGroupName, accountName, nodeId, reportId));
+            mockAutomationClient.Setup(f => f.GetDscNodeReportByReportId(resourceGroupName, accountName, nodeId, reportId));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.NodeId = nodeId;
-            this.cmdlet.Id = reportId;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.NodeId = nodeId;
+            cmdlet.Id = reportId;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetDscNodeReportByReportId(resourceGroupName, accountName, nodeId, reportId), Times.Once());
+            mockAutomationClient.Verify(f => f.GetDscNodeReportByReportId(resourceGroupName, accountName, nodeId, reportId), Times.Once());
         }
 
         [Fact]
@@ -109,18 +109,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             DateTimeOffset startTime = DateTimeOffset.Now;
             DateTimeOffset endTime = DateTimeOffset.Now;
 
-            this.mockAutomationClient.Setup(f => f.ListDscNodeReports(resourceGroupName, accountName, id, startTime, endTime, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListDscNodeReports(resourceGroupName, accountName, id, startTime, endTime, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.NodeId = id;
-            this.cmdlet.StartTime = startTime;
-            this.cmdlet.EndTime = endTime;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.NodeId = id;
+            cmdlet.StartTime = startTime;
+            cmdlet.EndTime = endTime;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListDscNodeReports(resourceGroupName, accountName, id, startTime, endTime, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListDscNodeReports(resourceGroupName, accountName, id, startTime, endTime, ref nextLink), Times.Once());
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ApplicationPackages
         {
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchApplicationPackageCommand()
+            cmdlet = new GetBatchApplicationPackageCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ApplicationPackages
             string applicationId = "test";
             string applicationVersion = "foo";
 
-            PSApplicationPackage expected = new PSApplicationPackage() { Id = applicationId, Version = applicationVersion };
+            PSApplicationPackage expected = new PSApplicationPackage { Id = applicationId, Version = applicationVersion };
             batchClientMock.Setup(b => b.GetApplicationPackage(resourceGroup, accountName, applicationId, applicationVersion)).Returns(expected);
 
             cmdlet.AccountName = accountName;

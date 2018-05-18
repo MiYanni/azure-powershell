@@ -25,96 +25,96 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestInitialize]
         public void DownloadInitialize()
         {
-            this.destinationFilePath = Path.GetTempFileName();
-            this.destinationPath = Path.GetTempPath();
+            destinationFilePath = Path.GetTempFileName();
+            destinationPath = Path.GetTempPath();
 
-            if (System.IO.File.Exists(this.destinationFilePath))
+            if (System.IO.File.Exists(destinationFilePath))
             {
-                System.IO.File.Delete(this.destinationFilePath);
+                System.IO.File.Delete(destinationFilePath);
             }
         }
 
         [TestCleanup]
         public void DownloadCleanup()
         {
-            if (System.IO.File.Exists(this.destinationFilePath))
+            if (System.IO.File.Exists(destinationFilePath))
             {
-                System.IO.File.Delete(this.destinationFilePath);
+                System.IO.File.Delete(destinationFilePath);
             }
         }
 
         [TestMethod]
         public void DownloadFileUsingShareNameAndPathToLocalFileTest()
         {
-            this.CmdletInstance.DisableDataCollection();
+            CmdletInstance.DisableDataCollection();
             DownloadFileInternal(
                 "share",
                 "remoteFile",
-                this.destinationFilePath,
-                () => this.CmdletInstance.RunCmdlet(
+                destinationFilePath,
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.ShareNameParameterSetName,
                     new KeyValuePair<string, object>("ShareName", "share"),
                     new KeyValuePair<string, object>("Path", "remoteFile"),
-                    new KeyValuePair<string, object>("Destination", this.destinationFilePath)));
+                    new KeyValuePair<string, object>("Destination", destinationFilePath)));
         }
 
         [TestMethod]
         public void DownloadFileUsingShareObjectAndPathToLocalFileTest()
         {
-            this.CmdletInstance.DisableDataCollection();
+            CmdletInstance.DisableDataCollection();
             DownloadFileInternal(
                 "share",
                 "remoteFile",
-                this.destinationFilePath,
-                () => this.CmdletInstance.RunCmdlet(
+                destinationFilePath,
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.ShareParameterSetName,
-                    new KeyValuePair<string, object>("Share", this.MockChannel.GetShareReference("share")),
+                    new KeyValuePair<string, object>("Share", MockChannel.GetShareReference("share")),
                     new KeyValuePair<string, object>("Path", "remoteFile"),
-                    new KeyValuePair<string, object>("Destination", this.destinationFilePath)));
+                    new KeyValuePair<string, object>("Destination", destinationFilePath)));
         }
 
         [TestMethod]
         public void DownloadFileUsingDirectoryAndPathToLocalFileTest()
         {
-            this.CmdletInstance.DisableDataCollection();
+            CmdletInstance.DisableDataCollection();
             DownloadFileInternal(
                 "share",
                 "remoteFile",
-                this.destinationFilePath,
-                () => this.CmdletInstance.RunCmdlet(
+                destinationFilePath,
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.DirectoryParameterSetName,
-                    new KeyValuePair<string, object>("Directory", this.MockChannel.GetShareReference("share").GetRootDirectoryReference()),
+                    new KeyValuePair<string, object>("Directory", MockChannel.GetShareReference("share").GetRootDirectoryReference()),
                     new KeyValuePair<string, object>("Path", "remoteFile"),
-                    new KeyValuePair<string, object>("Destination", this.destinationFilePath)));
+                    new KeyValuePair<string, object>("Destination", destinationFilePath)));
         }
 
         [TestMethod]
         public void DownloadFileUsingFileObjectToLocalFileTest()
         {
-            this.CmdletInstance.DisableDataCollection();
+            CmdletInstance.DisableDataCollection();
             DownloadFileInternal(
                 "share",
                 "remoteFile",
-                this.destinationFilePath,
-                () => this.CmdletInstance.RunCmdlet(
+                destinationFilePath,
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.FileParameterSetName,
-                    new KeyValuePair<string, object>("File", this.MockChannel.GetShareReference("share").GetRootDirectoryReference().GetFileReference("remoteFile")),
-                    new KeyValuePair<string, object>("Destination", this.destinationFilePath)));
+                    new KeyValuePair<string, object>("File", MockChannel.GetShareReference("share").GetRootDirectoryReference().GetFileReference("remoteFile")),
+                    new KeyValuePair<string, object>("Destination", destinationFilePath)));
         }
 
         [TestMethod]
         public void DownloadFileUsingFileObjectToLocalDirectoryTest()
         {
-            this.CmdletInstance.DisableDataCollection();
-            this.destinationFilePath = Path.Combine(this.destinationPath, "remoteFile");
+            CmdletInstance.DisableDataCollection();
+            destinationFilePath = Path.Combine(destinationPath, "remoteFile");
             DownloadFileInternal(
                 "share",
                 "remoteFile",
-                this.destinationFilePath,
-                () => this.CmdletInstance.RunCmdlet(
+                destinationFilePath,
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.FileParameterSetName,
-                    new KeyValuePair<string, object>("File", this.MockChannel.GetShareReference("share").GetRootDirectoryReference().GetFileReference("remoteFile")),
-                    new KeyValuePair<string, object>("Destination", this.destinationPath)));
+                    new KeyValuePair<string, object>("File", MockChannel.GetShareReference("share").GetRootDirectoryReference().GetFileReference("remoteFile")),
+                    new KeyValuePair<string, object>("Destination", destinationPath)));
         }
 
         private void DownloadFileInternal(string shareName, string fileName, string destination, Action downloadFileAction)
@@ -132,7 +132,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
             downloadFileAction();
 
             mockupTransferManager.ThrowAssertExceptionIfAvailable();
-            this.MockCmdRunTime.OutputPipeline.AssertNoObject();
+            MockCmdRunTime.OutputPipeline.AssertNoObject();
         }
 
         private sealed class DownloadTransferManager : MockTransferManager

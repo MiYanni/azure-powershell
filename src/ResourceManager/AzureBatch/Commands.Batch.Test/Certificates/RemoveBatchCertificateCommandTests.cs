@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RemoveBatchCertificateCommand()
+            cmdlet = new RemoveBatchCertificateCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
 
             // Don't go to the service on a Delete Certificate call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<CertificateDeleteOptions, AzureOperationHeaderResponse<CertificateDeleteHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();

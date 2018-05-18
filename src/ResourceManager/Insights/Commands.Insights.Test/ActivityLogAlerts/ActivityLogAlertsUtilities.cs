@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
         public static ActivityLogAlertResource CreateActivityLogAlertResource(string location, string name)
         {
             return new ActivityLogAlertResource(
-                location: location,
+                location,
                 name: name,
                 condition: new ActivityLogAlertAllOfCondition(
                     new List<ActivityLogAlertLeafCondition>
@@ -52,8 +52,8 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
                     new List<ActivityLogAlertActionGroup>
                     {
                         CreateActionGroup(
-                            id: "actionGrp1",
-                            webhooks: new Dictionary<string, string>())
+                            "actionGrp1",
+                            new Dictionary<string, string>())
                     }));
         }
     }

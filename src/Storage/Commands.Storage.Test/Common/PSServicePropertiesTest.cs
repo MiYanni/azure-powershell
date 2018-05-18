@@ -88,33 +88,33 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
         /// </summary>
         static private void CompareServiceProperties(PSSeriviceProperties pSSeriviceProperties, ServiceProperties serviceProperties)
         {
-            if ((pSSeriviceProperties != null && pSSeriviceProperties.HourMetrics != null) || (serviceProperties != null && serviceProperties.HourMetrics != null))
+            if (pSSeriviceProperties != null && pSSeriviceProperties.HourMetrics != null || serviceProperties != null && serviceProperties.HourMetrics != null)
             {
                 Assert.AreEqual(serviceProperties.HourMetrics.Version, pSSeriviceProperties.HourMetrics.Version);
                 Assert.AreEqual(serviceProperties.HourMetrics.MetricsLevel, pSSeriviceProperties.HourMetrics.MetricsLevel);
                 Assert.AreEqual(serviceProperties.HourMetrics.RetentionDays, pSSeriviceProperties.HourMetrics.RetentionDays);
             }
-            if ((pSSeriviceProperties != null && pSSeriviceProperties.MinuteMetrics != null) || (serviceProperties != null && serviceProperties.MinuteMetrics != null))
+            if (pSSeriviceProperties != null && pSSeriviceProperties.MinuteMetrics != null || serviceProperties != null && serviceProperties.MinuteMetrics != null)
             {
                 Assert.AreEqual(serviceProperties.MinuteMetrics.Version, pSSeriviceProperties.MinuteMetrics.Version);
                 Assert.AreEqual(serviceProperties.MinuteMetrics.MetricsLevel, pSSeriviceProperties.MinuteMetrics.MetricsLevel);
                 Assert.AreEqual(serviceProperties.MinuteMetrics.RetentionDays, pSSeriviceProperties.MinuteMetrics.RetentionDays);
             }
-            if ((pSSeriviceProperties != null && pSSeriviceProperties.Logging != null) || (serviceProperties != null && serviceProperties.Logging != null))
+            if (pSSeriviceProperties != null && pSSeriviceProperties.Logging != null || serviceProperties != null && serviceProperties.Logging != null)
             {
                 Assert.AreEqual(serviceProperties.Logging.Version, pSSeriviceProperties.Logging.Version);
                 Assert.AreEqual(serviceProperties.Logging.LoggingOperations, pSSeriviceProperties.Logging.LoggingOperations);
                 Assert.AreEqual(serviceProperties.Logging.RetentionDays, pSSeriviceProperties.Logging.RetentionDays);
             }
-            if ((pSSeriviceProperties != null && pSSeriviceProperties.Cors != null) || (serviceProperties != null && serviceProperties.Cors != null))
+            if (pSSeriviceProperties != null && pSSeriviceProperties.Cors != null || serviceProperties != null && serviceProperties.Cors != null)
             {
                 CompareCors(pSSeriviceProperties.Cors, serviceProperties.Cors);
             }
-            if ((pSSeriviceProperties != null && pSSeriviceProperties.DefaultServiceVersion != null) || (serviceProperties != null && serviceProperties.DefaultServiceVersion != null))
+            if (pSSeriviceProperties != null && pSSeriviceProperties.DefaultServiceVersion != null || serviceProperties != null && serviceProperties.DefaultServiceVersion != null)
             {
                 Assert.AreEqual(serviceProperties.DefaultServiceVersion, pSSeriviceProperties.DefaultServiceVersion);
             }
-            if ((pSSeriviceProperties != null && pSSeriviceProperties.DeleteRetentionPolicy != null) || (serviceProperties != null && serviceProperties.DeleteRetentionPolicy != null))
+            if (pSSeriviceProperties != null && pSSeriviceProperties.DeleteRetentionPolicy != null || serviceProperties != null && serviceProperties.DeleteRetentionPolicy != null)
             {
                 Assert.AreEqual(serviceProperties.DeleteRetentionPolicy.Enabled, pSSeriviceProperties.DeleteRetentionPolicy.Enabled);
                 Assert.AreEqual(serviceProperties.DeleteRetentionPolicy.RetentionDays, pSSeriviceProperties.DeleteRetentionPolicy.RetentionDays);
@@ -146,7 +146,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
                 foreach (string method in psCorsRule.AllowedMethods)
                 {
                     CorsHttpMethods allowedCorsMethod = CorsHttpMethods.None;
-                    if (Enum.TryParse<CorsHttpMethods>(method, true, out allowedCorsMethod))
+                    if (Enum.TryParse(method, true, out allowedCorsMethod))
                     {
                         psAllowedMethods |= allowedCorsMethod;
                     }
@@ -186,7 +186,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
         {
             CorsProperties coresproperties = new CorsProperties();
             coresproperties.CorsRules.Add(
-                    new CorsRule()
+                    new CorsRule
                     {
                         AllowedHeaders = new List<string>
                         {
@@ -207,7 +207,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
                         MaxAgeInSeconds = 100
                     });
             coresproperties.CorsRules.Add(
-                new CorsRule()
+                new CorsRule
                 {
                     AllowedHeaders = new List<string>
                     {
@@ -228,7 +228,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
                     MaxAgeInSeconds = 2000
                 });
             coresproperties.CorsRules.Add(
-                new CorsRule()
+                new CorsRule
                 {
                     AllowedHeaders = new List<string>
                     {

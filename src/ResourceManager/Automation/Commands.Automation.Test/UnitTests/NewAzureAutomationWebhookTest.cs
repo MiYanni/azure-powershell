@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new NewAzureAutomationWebhook
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new NewAzureAutomationWebhook
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -52,21 +52,21 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string runbookName = "runbookName";
             DateTimeOffset expiryTime = DateTimeOffset.Now.AddDays(1);
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f => f.CreateWebhook(resourceGroupName, accountName, name, runbookName, true, expiryTime, null, null));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = name;
-            this.cmdlet.RunbookName = runbookName;
-            this.cmdlet.ExpiryTime = expiryTime;
-            this.cmdlet.IsEnabled = true;
-            this.cmdlet.Parameters = null;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = name;
+            cmdlet.RunbookName = runbookName;
+            cmdlet.ExpiryTime = expiryTime;
+            cmdlet.IsEnabled = true;
+            cmdlet.Parameters = null;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(
+            mockAutomationClient.Verify(
                 f => f.CreateWebhook(resourceGroupName, accountName, name, runbookName, true, expiryTime, null, null),
                 Times.Once());
         }

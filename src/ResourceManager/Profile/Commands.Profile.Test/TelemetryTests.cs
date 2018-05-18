@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         public void HashofNullNetworkMACAddressIsNull()
         {
             Mock<INetworkHelper> helper = new Mock<INetworkHelper>();
-            helper.Setup((f) => f.GetMACAddress()).Returns(() => null);
+            helper.Setup(f => f.GetMACAddress()).Returns(() => null);
             var metricHelper = new MetricHelper(helper.Object);
             metricHelper.HashMacAddress = string.Empty;
             try
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
                 // there are no issues with retrieving the value
                 Assert.Null(metricHelper.HashMacAddress);
                 Assert.Null(metricHelper.HashMacAddress);
-                helper.Verify((f) => f.GetMACAddress(), Times.Once);
+                helper.Verify(f => f.GetMACAddress(), Times.Once);
             }
             finally
             {
@@ -67,14 +67,14 @@ namespace Microsoft.Azure.Commands.Profile.Test
         public void HashofEmptyNetworkMACAddressIsNull()
         {
             Mock<INetworkHelper> helper = new Mock<INetworkHelper>();
-            helper.Setup((f) => f.GetMACAddress()).Returns(string.Empty);
+            helper.Setup(f => f.GetMACAddress()).Returns(string.Empty);
             var metricHelper = new MetricHelper(helper.Object);
             metricHelper.HashMacAddress = string.Empty;
             try
             {
                 Assert.Null(metricHelper.HashMacAddress);
                 Assert.Null(metricHelper.HashMacAddress);
-                helper.Verify((f) => f.GetMACAddress(), Times.Once);
+                helper.Verify(f => f.GetMACAddress(), Times.Once);
             }
             finally
             {
@@ -87,14 +87,14 @@ namespace Microsoft.Azure.Commands.Profile.Test
         public void HashMacAddressOnThrowIsNull()
         {
             Mock<INetworkHelper> helper = new Mock<INetworkHelper>();
-            helper.Setup((f) => f.GetMACAddress()).Throws(new InvalidOperationException("This exception should be handled"));
+            helper.Setup(f => f.GetMACAddress()).Throws(new InvalidOperationException("This exception should be handled"));
             var metricHelper = new MetricHelper(helper.Object);
             metricHelper.HashMacAddress = string.Empty;
             try
             {
                 Assert.Null(metricHelper.HashMacAddress);
                 Assert.Null(metricHelper.HashMacAddress);
-                helper.Verify((f) => f.GetMACAddress(), Times.Once);
+                helper.Verify(f => f.GetMACAddress(), Times.Once);
             }
             finally
             {
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             var hash = MetricHelper.GenerateSha256HashString(inputValue);
             Assert.NotNull(hash);
             Assert.True(hash.Length > 0);
-            Assert.NotEqual<string>(inputValue, hash, StringComparer.OrdinalIgnoreCase);
+            Assert.NotEqual(inputValue, hash, StringComparer.OrdinalIgnoreCase);
         }
 
         [Fact]

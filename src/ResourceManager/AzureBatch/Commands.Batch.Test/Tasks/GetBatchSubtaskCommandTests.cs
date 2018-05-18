@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Subtasks
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchSubtaskCommand()
+            cmdlet = new GetBatchSubtaskCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Subtasks
                 AzureOperationResponse<ProxyModels.CloudTaskListSubtasksResult,
                 ProxyModels.TaskListSubtasksHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             Assert.Throws<ArgumentNullException>(() => cmdlet.ExecuteCmdlet());
 
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Subtasks
             cmdlet.JobId = "job-1";
             cmdlet.TaskId = "task1";
 
-            int[] idsOfConstructedSubtasks = new[] { 1, 2, 3 };
+            int[] idsOfConstructedSubtasks = { 1, 2, 3 };
 
             // Build some SubtaskInformation objects instead of querying the service on a List Subtasks call
             AzureOperationResponse<ProxyModels.CloudTaskListSubtasksResult, ProxyModels.TaskListSubtasksHeaders> response = BatchTestHelpers.CreateCloudTaskListSubtasksResponse(idsOfConstructedSubtasks);
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Subtasks
                 ProxyModels.TaskListSubtasksOptions,
                 AzureOperationResponse<ProxyModels.CloudTaskListSubtasksResult,
                 ProxyModels.TaskListSubtasksHeaders>>(response);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSSubtaskInformation> pipeline = new List<PSSubtaskInformation>();
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Subtasks
             int maxCount = 2;
             cmdlet.MaxCount = maxCount;
 
-            int[] idsOfConstructedSubtasks = new[] { 1, 2, 3 };
+            int[] idsOfConstructedSubtasks = { 1, 2, 3 };
 
             // Build some SubtaskInformation objects instead of querying the service on a List Subtasks call
             AzureOperationResponse<ProxyModels.CloudTaskListSubtasksResult, ProxyModels.TaskListSubtasksHeaders> response = BatchTestHelpers.CreateCloudTaskListSubtasksResponse(idsOfConstructedSubtasks);
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Subtasks
                 ProxyModels.TaskListSubtasksOptions,
                 AzureOperationResponse<ProxyModels.CloudTaskListSubtasksResult,
                 ProxyModels.TaskListSubtasksHeaders>>(response);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSSubtaskInformation> pipeline = new List<PSSubtaskInformation>();

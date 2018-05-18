@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new EnableBatchJobCommand()
+            cmdlet = new EnableBatchJobCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
 
             // Don't go to the service on an Enable CloudJob call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<JobEnableOptions, AzureOperationHeaderResponse<JobEnableHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();

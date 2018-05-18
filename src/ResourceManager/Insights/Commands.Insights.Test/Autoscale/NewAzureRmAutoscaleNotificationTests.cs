@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
         {
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            Cmdlet = new NewAzureRmAutoscaleNotificationCommand()
+            Cmdlet = new NewAzureRmAutoscaleNotificationCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
@@ -55,10 +55,10 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
             Cmdlet.CustomEmail = new string[0];
             Assert.Throws<ArgumentException>(() => Cmdlet.ExecuteCmdlet());
 
-            Cmdlet.CustomEmail = new string[] { "gu@ms.com" };
+            Cmdlet.CustomEmail = new[] { "gu@ms.com" };
             Cmdlet.ExecuteCmdlet();
 
-            Cmdlet.CustomEmail = new string[] { "gu@ms.com", "ga@sm.net" };
+            Cmdlet.CustomEmail = new[] { "gu@ms.com", "ga@sm.net" };
             Cmdlet.ExecuteCmdlet();
 
             Cmdlet.CustomEmail = null;
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
                 Properties = null
             };
 
-            Cmdlet.Webhook = new WebhookNotification[] { notification };
+            Cmdlet.Webhook = new[] { notification };
             Cmdlet.ExecuteCmdlet();
 
             Cmdlet.SendEmailToSubscriptionAdministrator = true;

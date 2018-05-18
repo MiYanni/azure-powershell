@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<PSAzureEnvironment>()), Times.Once());
             var profileClient = new RMProfileClient(AzureRmProfileProvider.Instance.GetProfile<AzureRmProfile>());
-            IAzureEnvironment env = AzureRmProfileProvider.Instance.Profile.Environments.First((e) => string.Equals(e.Name, "KaTaL", StringComparison.OrdinalIgnoreCase));
+            IAzureEnvironment env = AzureRmProfileProvider.Instance.Profile.Environments.First(e => string.Equals(e.Name, "KaTaL", StringComparison.OrdinalIgnoreCase));
             Assert.Equal(env.Name, cmdlet.Name);
             Assert.Equal(env.GetEndpoint(AzureEnvironment.Endpoint.PublishSettingsFileUrl), dict["PublishSettingsFileUrl"]);
             Assert.Equal(env.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement), dict["ServiceEndpoint"]);
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Stack",
@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -200,7 +200,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             Assert.Equal(env.GetEndpoint(AzureEnvironment.Endpoint.PublishSettingsFileUrl), cmdlet.PublishSettingsFileUrl);
 
             // Execute the same without PublishSettingsFileUrl and make sure the first value is preserved
-            var cmdlet2 = new AddAzureRMEnvironmentCommand()
+            var cmdlet2 = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -221,7 +221,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             Assert.True(env2.OnPremise);
             Assert.Equal(env2.GetEndpoint(AzureEnvironment.Endpoint.PublishSettingsFileUrl), cmdlet.PublishSettingsFileUrl);
 
-            var cmdlet3 = new AddAzureRMEnvironmentCommand()
+            var cmdlet3 = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -245,7 +245,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -309,7 +309,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
         {
             var commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = EnvironmentName.AzureCloud,
@@ -328,7 +328,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             PSAzureEnvironment actual = null;
             commandRuntimeMock.Setup(f => f.WriteObject(It.IsAny<object>()))
                 .Callback((object output) => actual = (PSAzureEnvironment)output);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -355,7 +355,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             PSAzureEnvironment actual = null;
             commandRuntimeMock.Setup(f => f.WriteObject(It.IsAny<PSAzureEnvironment>()))
                 .Callback((object output) => actual = (PSAzureEnvironment)output);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -443,7 +443,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             commandRuntimeMock.Setup(f => f.WriteObject(It.IsAny<PSAzureEnvironment>()))
                 .Callback((object output) => actual = (PSAzureEnvironment)output);
 
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "katal",
@@ -464,7 +464,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             PSAzureEnvironment actual = null;
             commandRuntimeMock.Setup(f => f.WriteObject(It.IsAny<PSAzureEnvironment>()))
                 .Callback((object output) => actual = (PSAzureEnvironment)output);
-            var cmdlet = new AddAzureRMEnvironmentCommand()
+            var cmdlet = new AddAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -491,7 +491,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             commandRuntimeMock.Setup(c => c.WriteObject(It.IsAny<object>(), It.IsAny<bool>()))
                 .Callback<object, bool>((e, _) => environments = (List<PSAzureEnvironment>)e);
 
-            var cmdlet = new GetAzureRMEnvironmentCommand()
+            var cmdlet = new GetAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
@@ -512,7 +512,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             commandRuntimeMock.Setup(c => c.WriteObject(It.IsAny<object>(), It.IsAny<bool>()))
                 .Callback<object, bool>((e, _) => environments = (List<PSAzureEnvironment>)e);
 
-            var cmdlet = new GetAzureRMEnvironmentCommand()
+            var cmdlet = new GetAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = EnvironmentName.AzureChinaCloud
@@ -560,7 +560,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
 
-            var cmdlet = new SetAzureRMEnvironmentCommand()
+            var cmdlet = new SetAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -583,7 +583,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             Assert.False(env.OnPremise);
 
             // Update onpremise to true
-            var cmdlet2 = new SetAzureRMEnvironmentCommand()
+            var cmdlet2 = new SetAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -604,7 +604,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             Assert.True(env2.OnPremise);
 
             // Update gallery endpoint
-            var cmdlet3 = new SetAzureRMEnvironmentCommand()
+            var cmdlet3 = new SetAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Katal",
@@ -633,7 +633,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
-            var cmdlet = new SetAzureRMEnvironmentCommand()
+            var cmdlet = new SetAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Stack",
@@ -671,7 +671,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             envHelperMock.Verify(f => f.RetrieveMetaDataEndpoints(It.IsAny<string>()), Times.Once);
 
             // Update onpremise to true
-            var cmdlet2 = new SetAzureRMEnvironmentCommand()
+            var cmdlet2 = new SetAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Stack",
@@ -692,7 +692,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             Assert.True(env2.OnPremise);
 
             // Update gallery endpoint
-            var cmdlet3 = new SetAzureRMEnvironmentCommand()
+            var cmdlet3 = new SetAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "Stack",
@@ -729,7 +729,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
                 Name = name
             });
 
-            var cmdlet = new RemoveAzureRMEnvironmentCommand()
+            var cmdlet = new RemoveAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = name
@@ -749,7 +749,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
 
-            var cmdlet = new RemoveAzureRMEnvironmentCommand()
+            var cmdlet = new RemoveAzureRMEnvironmentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = "test2",
@@ -768,7 +768,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
 
             foreach (string name in AzureEnvironment.PublicEnvironments.Keys)
             {
-                var cmdlet = new RemoveAzureRMEnvironmentCommand()
+                var cmdlet = new RemoveAzureRMEnvironmentCommand
                 {
                     CommandRuntime = commandRuntimeMock.Object,
                     Name = name

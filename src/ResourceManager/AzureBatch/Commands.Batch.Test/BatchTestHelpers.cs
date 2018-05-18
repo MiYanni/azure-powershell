@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
                 type: "type",
                 location: location,
                 provisioningState: ProvisioningState.Succeeded,
-                autoStorage: new AutoStorageProperties() { StorageAccountId = storageId },
+                autoStorage: new AutoStorageProperties { StorageAccountId = storageId },
                 tags: tags == null ? null : TagsConversionHelper.CreateTagDictionary(tags, true));
 
             return resource;
@@ -128,21 +128,18 @@ namespace Microsoft.Azure.Commands.Batch.Test
             where TOptions : ProxyModels.IOptions, new()
             where TResponse : class, IAzureOperationResponse, new()
         {
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 BatchRequest<TOptions, TResponse> request = (BatchRequest<TOptions, TResponse>)baseRequest;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
-                    responseToUse = responseToUse ?? new TResponse()
+                    responseToUse = responseToUse ?? new TResponse
                     {
                         Response = new HttpResponseMessage()
                     };
 
-                    if (requestAction != null)
-                    {
-                        requestAction(request);
-                    }
+                    requestAction?.Invoke(request);
 
                     Task<TResponse> task = Task.FromResult(responseToUse);
                     return task;
@@ -164,18 +161,15 @@ namespace Microsoft.Azure.Commands.Batch.Test
             where TOptions : ProxyModels.IOptions, new()
             where TResponse : class, IAzureOperationResponse, new()
         {
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 BatchRequest<TBody, TOptions, TResponse> request = (BatchRequest<TBody, TOptions, TResponse>)baseRequest;
 
-                if (requestAction != null)
-                {
-                    requestAction(request);
-                }
+                requestAction?.Invoke(request);
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
-                    TResponse response = responseToUse ?? new TResponse()
+                    TResponse response = responseToUse ?? new TResponse
                     {
                         Response = new HttpResponseMessage()
                     };
@@ -197,7 +191,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
             where TBody : class, new()
             where THeader : class, new()
         {
-            var response = new AzureOperationResponse<TBody, THeader>()
+            var response = new AzureOperationResponse<TBody, THeader>
             {
                 Body = new TBody(),
                 Headers = new THeader()
@@ -216,7 +210,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
             where TBody : class, new()
             where THeader : class, new()
         {
-            var response = new AzureOperationResponse<IPage<TBody>, THeader>()
+            var response = new AzureOperationResponse<IPage<TBody>, THeader>
             {
                 Body = new MockPagedEnumerable<TBody>(),
                 Headers = new THeader()
@@ -232,13 +226,13 @@ namespace Microsoft.Azure.Commands.Batch.Test
         /// <param name="fileName">The name of the file to put in the response body.</param>
         public static RequestInterceptor CreateFakeGetFileAndPropertiesFromTaskResponseInterceptor(string fileName)
         {
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 FileGetFromTaskBatchRequest fileRequest = baseRequest as FileGetFromTaskBatchRequest;
 
                 if (fileRequest != null)
                 {
-                    fileRequest.ServiceRequestFunc = (cancellationToken) =>
+                    fileRequest.ServiceRequestFunc = cancellationToken =>
                     {
                         var response = new AzureOperationResponse<Stream, ProxyModels.FileGetFromTaskHeaders>();
                         response.Headers = new ProxyModels.FileGetFromTaskHeaders();
@@ -253,7 +247,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
                 {
                     FileGetNodeFilePropertiesFromTaskBatchRequest propRequest = (FileGetNodeFilePropertiesFromTaskBatchRequest)baseRequest;
 
-                    propRequest.ServiceRequestFunc = (cancellationToken) =>
+                    propRequest.ServiceRequestFunc = cancellationToken =>
                     {
                         var response = new AzureOperationHeaderResponse<ProxyModels.FileGetPropertiesFromTaskHeaders>();
                         response.Headers = new ProxyModels.FileGetPropertiesFromTaskHeaders();
@@ -274,13 +268,13 @@ namespace Microsoft.Azure.Commands.Batch.Test
         /// <param name="fileName">The name of the file to put in the response body.</param>
         public static RequestInterceptor CreateFakeGetFileAndPropertiesFromComputeNodeResponseInterceptor(string fileName)
         {
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 FileGetFromComputeNodeBatchRequest fileRequest = baseRequest as FileGetFromComputeNodeBatchRequest;
 
                 if (fileRequest != null)
                 {
-                    fileRequest.ServiceRequestFunc = (cancellationToken) =>
+                    fileRequest.ServiceRequestFunc = cancellationToken =>
                     {
                         var response = new AzureOperationResponse<Stream, ProxyModels.FileGetFromComputeNodeHeaders>();
                         response.Headers = new ProxyModels.FileGetFromComputeNodeHeaders();
@@ -295,7 +289,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
                 {
                     FileGetNodeFilePropertiesFromComputeNodeBatchRequest propRequest = (FileGetNodeFilePropertiesFromComputeNodeBatchRequest)baseRequest;
 
-                    propRequest.ServiceRequestFunc = (cancellationToken) =>
+                    propRequest.ServiceRequestFunc = cancellationToken =>
                     {
                         var response = new AzureOperationHeaderResponse<ProxyModels.FileGetPropertiesFromComputeNodeHeaders>();
                         response.Headers = new ProxyModels.FileGetPropertiesFromComputeNodeHeaders();
@@ -421,7 +415,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
             {
                 while (startTimeEnumerator.MoveNext() && endTimeEnumerator.MoveNext() && poolIdEnumerator.MoveNext())
                 {
-                    poolUsageList.Add(new ProxyModels.PoolUsageMetrics()
+                    poolUsageList.Add(new ProxyModels.PoolUsageMetrics
                     {
                         PoolId = poolIdEnumerator.Current,
                         StartTime = startTimeEnumerator.Current,
@@ -431,8 +425,8 @@ namespace Microsoft.Azure.Commands.Batch.Test
             }
 
             var response = new AzureOperationResponse
-                <IPage<ProxyModels.PoolUsageMetrics>, ProxyModels.PoolListUsageMetricsHeaders>()
-            {
+                <IPage<ProxyModels.PoolUsageMetrics>, ProxyModels.PoolListUsageMetricsHeaders>
+                {
                 Response = new HttpResponseMessage(HttpStatusCode.OK),
                 Body = new MockPagedEnumerable<ProxyModels.PoolUsageMetrics>(poolUsageList)
             };
@@ -447,15 +441,15 @@ namespace Microsoft.Azure.Commands.Batch.Test
             double avgCPUPercentage,
             DateTime startTime)
         {
-            var stats = new ProxyModels.PoolStatistics()
+            var stats = new ProxyModels.PoolStatistics
             {
-                ResourceStats = new ProxyModels.ResourceStatistics() { AvgCPUPercentage = avgCPUPercentage },
-                UsageStats = new ProxyModels.UsageStatistics() { StartTime =  startTime }
+                ResourceStats = new ProxyModels.ResourceStatistics { AvgCPUPercentage = avgCPUPercentage },
+                UsageStats = new ProxyModels.UsageStatistics { StartTime =  startTime }
             };
 
             var response = new AzureOperationResponse
-                <ProxyModels.PoolStatistics, ProxyModels.PoolGetAllLifetimeStatisticsHeaders>()
-            {
+                <ProxyModels.PoolStatistics, ProxyModels.PoolGetAllLifetimeStatisticsHeaders>
+                {
                 Body = stats,
                 Response = new HttpResponseMessage(HttpStatusCode.Accepted)
             };
@@ -468,14 +462,14 @@ namespace Microsoft.Azure.Commands.Batch.Test
         /// </summary>
         public static AzureOperationResponse<ProxyModels.JobStatistics, ProxyModels.JobGetAllLifetimeStatisticsHeaders> CreateJobStatisticsResponse(DateTime startTime)
         {
-            var stats = new ProxyModels.JobStatistics()
+            var stats = new ProxyModels.JobStatistics
             {
                 StartTime = startTime
             };
 
             var response = new AzureOperationResponse
-                <ProxyModels.JobStatistics, ProxyModels.JobGetAllLifetimeStatisticsHeaders>()
-            {
+                <ProxyModels.JobStatistics, ProxyModels.JobGetAllLifetimeStatisticsHeaders>
+                {
                 Body = stats,
                 Response = new HttpResponseMessage(HttpStatusCode.Accepted)
             };
@@ -491,7 +485,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
             var settings = new ProxyModels.ComputeNodeGetRemoteLoginSettingsResult();
             settings.RemoteLoginIPAddress = ipAddress;
 
-            var response = new AzureOperationResponse<ProxyModels.ComputeNodeGetRemoteLoginSettingsResult, ProxyModels.ComputeNodeGetRemoteLoginSettingsHeaders>()
+            var response = new AzureOperationResponse<ProxyModels.ComputeNodeGetRemoteLoginSettingsResult, ProxyModels.ComputeNodeGetRemoteLoginSettingsHeaders>
             {
                 Response = new HttpResponseMessage(HttpStatusCode.OK),
                 Body = settings
@@ -549,7 +543,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
             ProxyModels.JobSpecification jobSpec = new ProxyModels.JobSpecification();
             ProxyModels.Schedule schedule = new ProxyModels.Schedule();
 
-            ProxyModels.CloudJobSchedule jobSchedule = new ProxyModels.CloudJobSchedule(id: jobScheduleId, schedule: schedule, jobSpecification: jobSpec);
+            ProxyModels.CloudJobSchedule jobSchedule = new ProxyModels.CloudJobSchedule(jobScheduleId, schedule: schedule, jobSpecification: jobSpec);
             response.Body = jobSchedule;
 
             return response;
@@ -569,7 +563,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
 
             foreach (string id in jobScheduleIds)
             {
-                jobSchedules.Add(new ProxyModels.CloudJobSchedule(id: id, schedule: schedule, jobSpecification: jobSpec));
+                jobSchedules.Add(new ProxyModels.CloudJobSchedule(id, schedule: schedule, jobSpecification: jobSpec));
             }
 
             response.Body = new MockPagedEnumerable<ProxyModels.CloudJobSchedule>(jobSchedules);
@@ -655,7 +649,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
 
             foreach (string id in jobIds)
             {
-                ProxyModels.CloudJob job = new ProxyModels.CloudJob(id: id);
+                ProxyModels.CloudJob job = new ProxyModels.CloudJob(id);
                 jobs.Add(job);
             }
 
@@ -745,8 +739,8 @@ namespace Microsoft.Azure.Commands.Batch.Test
             var taskAddResults = taskCollection.Select(mappingFunc);
 
             var response = new AzureOperationResponse
-                <ProxyModels.TaskAddCollectionResult, ProxyModels.TaskAddCollectionHeaders>()
-            {
+                <ProxyModels.TaskAddCollectionResult, ProxyModels.TaskAddCollectionHeaders>
+                {
                 Response = new HttpResponseMessage(HttpStatusCode.Created),
                 Body = new ProxyModels.TaskAddCollectionResult(taskAddResults.ToList())
             };
@@ -787,9 +781,9 @@ namespace Microsoft.Azure.Commands.Batch.Test
         public static AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders> CreateNodeAgentSkuResponse(IEnumerable<string> skuIds)
         {
             IEnumerable<ProxyModels.NodeAgentSku> nodeAgents =
-                skuIds.Select(id => new ProxyModels.NodeAgentSku() { Id = id });
+                skuIds.Select(id => new ProxyModels.NodeAgentSku { Id = id });
 
-            var response = new AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders>()
+            var response = new AzureOperationResponse<IPage<ProxyModels.NodeAgentSku>, ProxyModels.AccountListNodeAgentSkusHeaders>
             {
                 Response = new HttpResponseMessage(HttpStatusCode.OK),
                 Body = new MockPagedEnumerable<ProxyModels.NodeAgentSku>(nodeAgents)
@@ -891,11 +885,11 @@ namespace Microsoft.Azure.Commands.Batch.Test
         /// </summary>
         public static CloudJob CreateFakeBoundJob(BatchAccountContext context, ProxyModels.CloudJob cloudJob)
         {
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 JobGetBatchRequest request = (JobGetBatchRequest)baseRequest;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
                     var response = new AzureOperationResponse<ProxyModels.CloudJob, ProxyModels.JobGetHeaders> { Body = cloudJob };
 
@@ -914,15 +908,15 @@ namespace Microsoft.Azure.Commands.Batch.Test
         {
             string jobScheduleId = "testJobSchedule";
 
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 JobScheduleGetBatchRequest request = (JobScheduleGetBatchRequest)baseRequest;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
                     var response = new AzureOperationResponse<ProxyModels.CloudJobSchedule, ProxyModels.JobScheduleGetHeaders>();
 
-                    response.Body = new ProxyModels.CloudJobSchedule(id: jobScheduleId, schedule: new ProxyModels.Schedule(), jobSpecification: new ProxyModels.JobSpecification());
+                    response.Body = new ProxyModels.CloudJobSchedule(jobScheduleId, schedule: new ProxyModels.Schedule(), jobSpecification: new ProxyModels.JobSpecification());
 
                     Task<AzureOperationResponse<ProxyModels.CloudJobSchedule, ProxyModels.JobScheduleGetHeaders>> task = Task.FromResult(response);
                     return task;
@@ -939,11 +933,11 @@ namespace Microsoft.Azure.Commands.Batch.Test
         {
             string poolId = "testPool";
 
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 PoolGetBatchRequest request = (PoolGetBatchRequest)baseRequest;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
                     var response = new AzureOperationResponse<ProxyModels.CloudPool, ProxyModels.PoolGetHeaders>();
                     response.Body = new ProxyModels.CloudPool(poolId, "small", "4");
@@ -963,11 +957,11 @@ namespace Microsoft.Azure.Commands.Batch.Test
         {
             string taskId = "testTask";
 
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 TaskGetBatchRequest request = (TaskGetBatchRequest)baseRequest;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
                     var response = new AzureOperationResponse<ProxyModels.CloudTask, ProxyModels.TaskGetHeaders>();
                     response.Body = new ProxyModels.CloudTask(taskId, "cmd /c dir /s");
@@ -1007,7 +1001,7 @@ namespace Microsoft.Azure.Commands.Batch.Test
                 throw new ArgumentNullException("otherEnum");
             }
 
-            T result = (T)Enum.Parse(typeof(T), otherEnum.ToString(), ignoreCase: true);
+            T result = (T)Enum.Parse(typeof(T), otherEnum.ToString(), true);
             return result;
         }
 

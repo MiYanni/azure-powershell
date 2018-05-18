@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchTaskCommand()
+            cmdlet = new GetBatchTaskCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                 AzureOperationResponse<IPage<ProxyModels.CloudTask>,
                 ProxyModels.TaskListHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             Assert.Throws<ArgumentNullException>(() => cmdlet.ExecuteCmdlet());
 
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                 ProxyModels.TaskGetOptions,
                 AzureOperationResponse<ProxyModels.CloudTask, ProxyModels.TaskGetHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudTask> pipeline = new List<PSCloudTask>();
@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
 
                 return Task.FromResult(response);
             });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor, responseInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor, responseInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
 
             AzureOperationResponse<IPage<ProxyModels.CloudTask>, ProxyModels.TaskListHeaders> response = BatchTestHelpers.CreateGenericAzureOperationListResponse<ProxyModels.CloudTask, ProxyModels.TaskListHeaders>();
             Action<BatchRequest<ProxyModels.TaskListOptions, AzureOperationResponse<IPage<ProxyModels.CloudTask>, ProxyModels.TaskListHeaders>>> extractTaskListAction =
-                (request) =>
+                request =>
                 {
                     ProxyModels.TaskListOptions options = request.Options;
                     requestFilter = options.Filter;
@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                     requestExpand = options.Expand;
                 };
 
-            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(responseToUse: response, requestAction: extractTaskListAction);
+            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(response, extractTaskListAction);
             cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor };
 
             cmdlet.ExecuteCmdlet();
@@ -193,7 +193,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             cmdlet.Id = null;
             cmdlet.Filter = null;
 
-            string[] idsOfConstructedTasks = new[] { "testTask1", "testTask2", "testTask3" };
+            string[] idsOfConstructedTasks = { "testTask1", "testTask2", "testTask3" };
 
             // Build some CloudTasks instead of querying the service on a List CloudTasks call
             AzureOperationResponse<IPage<ProxyModels.CloudTask>, ProxyModels.TaskListHeaders> response = BatchTestHelpers.CreateCloudTaskListResponse(idsOfConstructedTasks);
@@ -201,7 +201,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                 ProxyModels.TaskListOptions,
                 AzureOperationResponse<IPage<ProxyModels.CloudTask>, ProxyModels.TaskListHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudTask> pipeline = new List<PSCloudTask>();
@@ -227,7 +227,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
         public void ListTasksMaxCountTest()
         {
             // Verify default max count
-            Assert.Equal(Microsoft.Azure.Commands.Batch.Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
+            Assert.Equal(Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
 
             // Setup cmdlet to list tasks without filters and a max count
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
@@ -238,7 +238,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             int maxCount = 2;
             cmdlet.MaxCount = maxCount;
 
-            string[] idsOfConstructedTasks = new[] { "testTask1", "testTask2", "testTask3" };
+            string[] idsOfConstructedTasks = { "testTask1", "testTask2", "testTask3" };
 
             // Build some CloudTasks instead of querying the service on a List CloudTasks call
             AzureOperationResponse<IPage<ProxyModels.CloudTask>, ProxyModels.TaskListHeaders> response = BatchTestHelpers.CreateCloudTaskListResponse(idsOfConstructedTasks);
@@ -246,7 +246,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                 ProxyModels.TaskListOptions,
                 AzureOperationResponse<IPage<ProxyModels.CloudTask>, ProxyModels.TaskListHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudTask> pipeline = new List<PSCloudTask>();
@@ -299,7 +299,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<ProxyModels.TaskGetOptions,
                 AzureOperationResponse<ProxyModels.CloudTask, ProxyModels.TaskGetHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             var pipeline = new List<PSCloudTask>();

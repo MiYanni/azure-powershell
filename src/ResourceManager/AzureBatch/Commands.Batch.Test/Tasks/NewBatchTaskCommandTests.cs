@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new NewBatchTaskCommand()
+            cmdlet = new NewBatchTaskCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -68,10 +68,10 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
 
             // Don't go to the service on an Add CloudTask call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
-                ProxyModels.TaskAddParameter,
-                ProxyModels.TaskAddOptions,
-                AzureOperationHeaderResponse<ProxyModels.TaskAddHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+                TaskAddParameter,
+                TaskAddOptions,
+                AzureOperationHeaderResponse<TaskAddHeaders>>();
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             cmdlet.EnvironmentSettings.Add("env1", "value1");
             cmdlet.MultiInstanceSettings = new PSMultiInstanceSettings("cmd /c echo coordinating", 3)
             {
-                CommonResourceFiles = new List<PSResourceFile>()
+                CommonResourceFiles = new List<PSResourceFile>
                 {
                     new PSResourceFile("https://some.blob", "myFile.txt")
                 }
@@ -108,11 +108,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 TaskAddParameter,
                 TaskAddOptions,
-                AzureOperationHeaderResponse<TaskAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<TaskAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters
@@ -167,7 +167,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                     Assert.Equal(applicationVersion, applicationPackageReference.Version);
                 });
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -180,11 +180,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
 
             TaskAddParameter requestParameters = null;
 
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 TaskAddBatchRequest request = (TaskAddBatchRequest)baseRequest;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
                     requestParameters = request.Parameters;
 
@@ -216,11 +216,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             var exitConditions = requestParameters.ExitConditions;
             Assert.Equal(1, exitConditions.ExitCodeRanges.First().Start);
             Assert.Equal(5, exitConditions.ExitCodeRanges.First().End);
-            Assert.Equal(ProxyModels.DependencyAction.Satisfy, exitConditions.ExitCodeRanges.First().ExitOptions.DependencyAction);
-            Assert.Equal(ProxyModels.JobAction.None, exitConditions.ExitCodes.First().ExitOptions.JobAction);
-            Assert.Equal(ProxyModels.JobAction.Terminate, exitConditions.PreProcessingError.JobAction);
-            Assert.Equal(ProxyModels.JobAction.None, exitConditions.FileUploadError.JobAction);
-            Assert.Equal(ProxyModels.JobAction.None, exitConditions.DefaultProperty.JobAction);
+            Assert.Equal(DependencyAction.Satisfy, exitConditions.ExitCodeRanges.First().ExitOptions.DependencyAction);
+            Assert.Equal(JobAction.None, exitConditions.ExitCodes.First().ExitOptions.JobAction);
+            Assert.Equal(JobAction.Terminate, exitConditions.PreProcessingError.JobAction);
+            Assert.Equal(JobAction.None, exitConditions.FileUploadError.JobAction);
+            Assert.Equal(JobAction.None, exitConditions.DefaultProperty.JobAction);
         }
 
         [Fact]
@@ -242,11 +242,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 TaskAddParameter,
                 TaskAddOptions,
-                AzureOperationHeaderResponse<TaskAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<TaskAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters
@@ -284,11 +284,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 TaskAddParameter,
                 TaskAddOptions,
-                AzureOperationHeaderResponse<TaskAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<TaskAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters
@@ -312,11 +312,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
 
             Assert.Throws<ArgumentNullException>(() => cmdlet.ExecuteCmdlet());
 
-            string[] taskIds = new[] {"simple1", "simple2"};
+            string[] taskIds = {"simple1", "simple2"};
             PSCloudTask expected1 = new PSCloudTask(taskIds[0], commandLine);
             PSCloudTask expected2 = new PSCloudTask(taskIds[1], commandLine);
 
-            cmdlet.Tasks = new PSCloudTask[] {expected1, expected2};
+            cmdlet.Tasks = new[] {expected1, expected2};
 
             IList<TaskAddParameter> requestCollection = null;
 
@@ -324,7 +324,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                 IList<TaskAddParameter>,
                 TaskAddCollectionOptions,
                 AzureOperationResponse<TaskAddCollectionResult, TaskAddCollectionHeaders>>> extractCollection =
-                (request) =>
+                request =>
                 {
                     requestCollection = request.Parameters;
                 };
@@ -333,9 +333,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             AzureOperationResponse<TaskAddCollectionResult, TaskAddCollectionHeaders> response =
                 BatchTestHelpers.CreateTaskCollectionResponse(cmdlet.Tasks);
 
-            RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(responseToUse: response, requestAction: extractCollection);
+            RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(response, extractCollection);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -383,7 +383,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                     Assert.Equal(uploadCondition.ToString().ToLowerInvariant(), outputFile.UploadOptions.UploadCondition.ToString().ToLowerInvariant());
                 });
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -423,7 +423,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                     Assert.Equal(password, containerSettings.Registry.Password);
                 });
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();

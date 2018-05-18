@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             BatchAccountContext context = null;
             string computeNodeId = null;
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-ComputeNodeUserEndToEnd '{0}' '{1}'", poolId, computeNodeId) }; },
+                () => { return new[] { string.Format("Test-ComputeNodeUserEndToEnd '{0}' '{1}'", poolId, computeNodeId) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();

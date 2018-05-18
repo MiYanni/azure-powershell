@@ -37,12 +37,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
 
         public NewAzureAutomationScheduleTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new NewAzureAutomationSchedule
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new NewAzureAutomationSchedule
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -55,18 +55,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string scheduleName = "schedule";
 
-            this.mockAutomationClient.Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()));
+            mockAutomationClient.Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()));
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = DateTimeOffset.Now;
-            this.cmdlet.OneTime = true;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByOneTime);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = DateTimeOffset.Now;
+            cmdlet.OneTime = true;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByOneTime);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
         }
 
@@ -80,18 +80,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string scheduleName = "schedule";
             byte dayInterval = 1;
 
-            this.mockAutomationClient.Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()));
+            mockAutomationClient.Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()));
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = DateTimeOffset.Now;
-            this.cmdlet.DayInterval = dayInterval;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByDaily);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = DateTimeOffset.Now;
+            cmdlet.DayInterval = dayInterval;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByDaily);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
         }
 
@@ -105,18 +105,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string scheduleName = "schedule";
             byte hourInterval = 1;
 
-            this.mockAutomationClient.Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()));
+            mockAutomationClient.Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()));
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = DateTimeOffset.Now;
-            this.cmdlet.HourInterval = hourInterval;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByHourly);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = DateTimeOffset.Now;
+            cmdlet.HourInterval = hourInterval;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByHourly);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
         }
 
@@ -130,24 +130,24 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string scheduleName = "schedule";
             byte dayInterval = 1;
 
-            this.mockAutomationClient
+            mockAutomationClient
                 .Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()))
                 .Returns((string a, string b, Schedule s) => s);
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = DateTimeOffset.Now;
-            this.cmdlet.DayInterval = dayInterval;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByDaily);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = DateTimeOffset.Now;
+            cmdlet.DayInterval = dayInterval;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByDaily);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
 
-            Assert.AreEqual<int>(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
-            var schedule = (Schedule)((MockCommandRuntime)this.cmdlet.CommandRuntime)
+            Assert.AreEqual(1, ((MockCommandRuntime)cmdlet.CommandRuntime).OutputPipeline.Count);
+            var schedule = (Schedule)((MockCommandRuntime)cmdlet.CommandRuntime)
                 .OutputPipeline
                 .FirstOrDefault();
             Assert.IsNotNull(schedule);
@@ -181,24 +181,24 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string scheduleName = "schedule";
             byte hourInterval = 1;
 
-            this.mockAutomationClient
+            mockAutomationClient
                 .Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()))
                 .Returns((string a, string b, Schedule s) => s);
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = DateTimeOffset.Now;
-            this.cmdlet.HourInterval = hourInterval;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByHourly);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = DateTimeOffset.Now;
+            cmdlet.HourInterval = hourInterval;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByHourly);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
 
-            Assert.AreEqual<int>(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
-            var schedule = (Schedule)((MockCommandRuntime)this.cmdlet.CommandRuntime)
+            Assert.AreEqual(1, ((MockCommandRuntime)cmdlet.CommandRuntime).OutputPipeline.Count);
+            var schedule = (Schedule)((MockCommandRuntime)cmdlet.CommandRuntime)
                 .OutputPipeline
                 .FirstOrDefault();
             Assert.IsNotNull(schedule);
@@ -234,25 +234,25 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             var startTime = DateTimeOffset.Now;
             var expiryTime = startTime.AddDays(10);
 
-            this.mockAutomationClient
+            mockAutomationClient
                 .Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()))
                 .Returns((string a, string b, Schedule s) => s);
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = startTime;
-            this.cmdlet.ExpiryTime = expiryTime;
-            this.cmdlet.DayInterval = dayInterval;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByDaily);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = startTime;
+            cmdlet.ExpiryTime = expiryTime;
+            cmdlet.DayInterval = dayInterval;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByDaily);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
 
-            Assert.AreEqual<int>(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
-            var schedule = (Schedule)((MockCommandRuntime)this.cmdlet.CommandRuntime)
+            Assert.AreEqual(1, ((MockCommandRuntime)cmdlet.CommandRuntime).OutputPipeline.Count);
+            var schedule = (Schedule)((MockCommandRuntime)cmdlet.CommandRuntime)
                 .OutputPipeline
                 .FirstOrDefault();
             Assert.IsNotNull(schedule);
@@ -287,25 +287,25 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             var startTime = DateTimeOffset.Now;
             var expiryTime = startTime.AddDays(10);
 
-            this.mockAutomationClient
+            mockAutomationClient
                 .Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()))
                 .Returns((string a, string b, Schedule s) => s);
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = startTime;
-            this.cmdlet.ExpiryTime = expiryTime;
-            this.cmdlet.HourInterval = hourInterval;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByHourly);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = startTime;
+            cmdlet.ExpiryTime = expiryTime;
+            cmdlet.HourInterval = hourInterval;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByHourly);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
 
-            Assert.AreEqual<int>(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
-            var schedule = (Schedule)((MockCommandRuntime)this.cmdlet.CommandRuntime)
+            Assert.AreEqual(1, ((MockCommandRuntime)cmdlet.CommandRuntime).OutputPipeline.Count);
+            var schedule = (Schedule)((MockCommandRuntime)cmdlet.CommandRuntime)
                 .OutputPipeline
                 .FirstOrDefault();
             Assert.IsNotNull(schedule);
@@ -342,26 +342,26 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             var expiryTime = startTime.AddDays(10);
             var timeZone = "America/Los_Angeles";
 
-            this.mockAutomationClient
+            mockAutomationClient
                 .Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()))
                 .Returns((string a, string b, Schedule s) => s);
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = startTime;
-            this.cmdlet.ExpiryTime = expiryTime;
-            this.cmdlet.WeekInterval = weekInterval;
-            this.cmdlet.TimeZone = timeZone;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByWeekly);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = startTime;
+            cmdlet.ExpiryTime = expiryTime;
+            cmdlet.WeekInterval = weekInterval;
+            cmdlet.TimeZone = timeZone;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByWeekly);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
 
-            Assert.AreEqual(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
-            var schedule = (Schedule)((MockCommandRuntime)this.cmdlet.CommandRuntime)
+            Assert.AreEqual(1, ((MockCommandRuntime)cmdlet.CommandRuntime).OutputPipeline.Count);
+            var schedule = (Schedule)((MockCommandRuntime)cmdlet.CommandRuntime)
                 .OutputPipeline
                 .FirstOrDefault();
             Assert.IsNotNull(schedule);
@@ -383,26 +383,26 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             var expiryTime = startTime.AddDays(10);
             var timeZone = "America/Los_Angeles";
 
-            this.mockAutomationClient
+            mockAutomationClient
                 .Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()))
                 .Returns((string a, string b, Schedule s) => s);
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = startTime;
-            this.cmdlet.ExpiryTime = expiryTime;
-            this.cmdlet.MonthInterval = monthInterval;
-            this.cmdlet.TimeZone = timeZone;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByMonthlyDaysOfMonth);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = startTime;
+            cmdlet.ExpiryTime = expiryTime;
+            cmdlet.MonthInterval = monthInterval;
+            cmdlet.TimeZone = timeZone;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByMonthlyDaysOfMonth);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
 
-            Assert.AreEqual(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
-            var schedule = (Schedule)((MockCommandRuntime)this.cmdlet.CommandRuntime)
+            Assert.AreEqual(1, ((MockCommandRuntime)cmdlet.CommandRuntime).OutputPipeline.Count);
+            var schedule = (Schedule)((MockCommandRuntime)cmdlet.CommandRuntime)
                 .OutputPipeline
                 .FirstOrDefault();
             Assert.IsNotNull(schedule);
@@ -424,26 +424,26 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             var expiryTime = startTime.AddDays(10);
             var timeZone = "America/Los_Angeles";
 
-            this.mockAutomationClient
+            mockAutomationClient
                 .Setup(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()))
                 .Returns((string a, string b, Schedule s) => s);
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.StartTime = startTime;
-            this.cmdlet.ExpiryTime = expiryTime;
-            this.cmdlet.MonthInterval = monthInterval;
-            this.cmdlet.TimeZone = timeZone;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByMonthlyDayOfWeek);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.StartTime = startTime;
+            cmdlet.ExpiryTime = expiryTime;
+            cmdlet.MonthInterval = monthInterval;
+            cmdlet.TimeZone = timeZone;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByMonthlyDayOfWeek);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient
+            mockAutomationClient
                 .Verify(f => f.CreateSchedule(resourceGroupName, accountName, It.IsAny<Schedule>()), Times.Once());
 
-            Assert.AreEqual(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
-            var schedule = (Schedule)((MockCommandRuntime)this.cmdlet.CommandRuntime)
+            Assert.AreEqual(1, ((MockCommandRuntime)cmdlet.CommandRuntime).OutputPipeline.Count);
+            var schedule = (Schedule)((MockCommandRuntime)cmdlet.CommandRuntime)
                 .OutputPipeline
                 .FirstOrDefault();
             Assert.IsNotNull(schedule);

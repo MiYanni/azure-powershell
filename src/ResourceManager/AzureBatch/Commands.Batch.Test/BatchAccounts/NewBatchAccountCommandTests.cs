@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new NewBatchAccountCommand()
+            cmdlet = new NewBatchAccountCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object

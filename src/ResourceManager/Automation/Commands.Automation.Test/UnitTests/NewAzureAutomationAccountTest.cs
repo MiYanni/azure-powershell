@@ -32,12 +32,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new NewAzureAutomationAccount
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new NewAzureAutomationAccount
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -50,17 +50,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string location = "East US";
             string plan = "Free";
 
-            this.mockAutomationClient.Setup(f => f.CreateAutomationAccount(resourceGroupName, accountName, location, plan, null));
+            mockAutomationClient.Setup(f => f.CreateAutomationAccount(resourceGroupName, accountName, location, plan, null));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.Location = location;
-            this.cmdlet.Name = accountName;
-            this.cmdlet.Plan = plan;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.Location = location;
+            cmdlet.Name = accountName;
+            cmdlet.Plan = plan;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.CreateAutomationAccount(resourceGroupName, accountName, location, plan, null), Times.Once());
+            mockAutomationClient.Verify(f => f.CreateAutomationAccount(resourceGroupName, accountName, location, plan, null), Times.Once());
         }
     }
 }

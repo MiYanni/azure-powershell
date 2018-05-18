@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
         private readonly Mock<MonitorManagementClient> insightsManagementClientMock;
         private readonly Mock<IServiceDiagnosticSettingsOperations> insightsDiagnosticsOperationsMock;
         private Mock<ICommandRuntime> commandRuntimeMock;
-        private Microsoft.Rest.Azure.AzureOperationResponse<ServiceDiagnosticSettingsResource> response;
+        private Rest.Azure.AzureOperationResponse<ServiceDiagnosticSettingsResource> response;
         private const string resourceId = "/subscriptions/123/resourcegroups/rg/providers/rp/resource/myresource";
         private string calledResourceId;
 
@@ -43,13 +43,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             insightsDiagnosticsOperationsMock = new Mock<IServiceDiagnosticSettingsOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureRmDiagnosticSettingCommand()
+            cmdlet = new GetAzureRmDiagnosticSettingCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
-            response = new Microsoft.Rest.Azure.AzureOperationResponse<ServiceDiagnosticSettingsResource>()
+            response = new Rest.Azure.AzureOperationResponse<ServiceDiagnosticSettingsResource>
             {
                 Body = new ServiceDiagnosticSettingsResource
                 {
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
                     {
                         new LogSettings
                         {
-                            RetentionPolicy = new RetentionPolicy()
+                            RetentionPolicy = new RetentionPolicy
                             {
                                 Days = 10,
                                 Enabled = true
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
                         },
                         new LogSettings
                         {
-                            RetentionPolicy = new RetentionPolicy()
+                            RetentionPolicy = new RetentionPolicy
                             {
                                 Days = 5,
                                 Enabled = false
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
                     {
                         new MetricSettings
                         {
-                            RetentionPolicy = new RetentionPolicy()
+                            RetentionPolicy = new RetentionPolicy
                             {
                                 Days = 7,
                                 Enabled = false
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
                         },
                         new MetricSettings
                         {
-                            RetentionPolicy = new RetentionPolicy()
+                            RetentionPolicy = new RetentionPolicy
                             {
                                 Days = 3,
                                 Enabled = true
@@ -106,13 +106,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             };
 
             insightsDiagnosticsOperationsMock.Setup(f => f.GetWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Microsoft.Rest.Azure.AzureOperationResponse<ServiceDiagnosticSettingsResource>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string resourceId, Dictionary<string, List<string>> headers, CancellationToken cancellationToken) =>
                 {
-                    this.calledResourceId = resourceId;
+                    calledResourceId = resourceId;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.ServiceDiagnosticSettings).Returns(this.insightsDiagnosticsOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.ServiceDiagnosticSettings).Returns(insightsDiagnosticsOperationsMock.Object);
         }
 
         [Fact]

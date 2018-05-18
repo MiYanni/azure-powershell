@@ -34,14 +34,14 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void GetAzureSqlCapabilityAttributes()
         {
             Type type = typeof(GetAzureSqlCapability);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.None);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "LocationName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerVersionName", isMandatory: false, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "EditionName", isMandatory: false, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServiceObjectiveName", isMandatory: false, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Defaults", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "LocationName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerVersionName", false, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "EditionName", false, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServiceObjectiveName", false, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Defaults", false, false);
         }
     }
 }

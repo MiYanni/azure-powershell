@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchComputeNodeCommand()
+            cmdlet = new GetBatchComputeNodeCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
                 ProxyModels.ComputeNodeGetOptions,
                 AzureOperationResponse<ProxyModels.ComputeNode, ProxyModels.ComputeNodeGetHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSComputeNode> pipeline = new List<PSComputeNode>();
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
 
                 return Task.FromResult(response);
             });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor, responseInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor, responseInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -129,17 +129,17 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
                 BatchTestHelpers.CreateGenericAzureOperationListResponse<ProxyModels.ComputeNode, ProxyModels.ComputeNodeListHeaders>();
 
             Action<BatchRequest<ProxyModels.ComputeNodeListOptions, AzureOperationResponse<IPage<ProxyModels.ComputeNode>, ProxyModels.ComputeNodeListHeaders>>> listComputeNodeAction =
-                (request) =>
+                request =>
                 {
-                    ProxyModels.ComputeNodeListOptions options = (ProxyModels.ComputeNodeListOptions)request.Options;
+                    ProxyModels.ComputeNodeListOptions options = request.Options;
 
                     requestFilter = options.Filter;
                     requestSelect = options.Select;
                 };
 
-            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<ProxyModels.ComputeNodeListOptions, AzureOperationResponse<IPage<ProxyModels.ComputeNode>, ProxyModels.ComputeNodeListHeaders>>(response, listComputeNodeAction);
+            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(response, listComputeNodeAction);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -158,7 +158,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
             cmdlet.Id = null;
             cmdlet.Filter = null;
 
-            string[] idsOfConstructedComputeNodes = new[] { "computeNode1", "computeNode2", "computeNode3" };
+            string[] idsOfConstructedComputeNodes = { "computeNode1", "computeNode2", "computeNode3" };
 
             // Build some compute nodes instead of querying the service on a List ComputeNodes call
             AzureOperationResponse<IPage<ProxyModels.ComputeNode>, ProxyModels.ComputeNodeListHeaders> response =
@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
                 AzureOperationResponse<IPage<ProxyModels.ComputeNode>,
                 ProxyModels.ComputeNodeListHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSComputeNode> pipeline = new List<PSComputeNode>();
@@ -194,7 +194,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
         public void ListComputeNodesMaxCountTest()
         {
             // Verify default max count
-            Assert.Equal(Microsoft.Azure.Commands.Batch.Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
+            Assert.Equal(Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
 
             // Setup cmdlet to list compute nodes without filters and a max count
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
@@ -205,7 +205,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
             int maxCount = 2;
             cmdlet.MaxCount = maxCount;
 
-            string[] idsOfConstructedComputeNodes = new[] { "computeNode1", "computeNode2", "computeNode3" };
+            string[] idsOfConstructedComputeNodes = { "computeNode1", "computeNode2", "computeNode3" };
 
             // Build some compute nodes instead of querying the service on a List ComputeNodes call
             AzureOperationResponse<IPage<ProxyModels.ComputeNode>, ProxyModels.ComputeNodeListHeaders> response = BatchTestHelpers.CreateComputeNodeListResponse(idsOfConstructedComputeNodes);
@@ -213,7 +213,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
                 ProxyModels.ComputeNodeListOptions,
                 AzureOperationResponse<IPage<ProxyModels.ComputeNode>, ProxyModels.ComputeNodeListHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSComputeNode> pipeline = new List<PSComputeNode>();

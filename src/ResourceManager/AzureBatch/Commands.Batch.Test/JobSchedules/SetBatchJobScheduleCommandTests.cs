@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new SetBatchJobScheduleCommand()
+            cmdlet = new SetBatchJobScheduleCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -77,10 +77,10 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             cmdlet.JobSchedule = new PSCloudJobSchedule(BatchTestHelpers.CreateFakeBoundJobSchedule(context));
 
             // Make changes to the job schedule
-            PSJobSpecification jobSpec = new PSJobSpecification()
+            PSJobSpecification jobSpec = new PSJobSpecification
             {
                 DisplayName = "job display name",
-                CommonEnvironmentSettings = new List<PSEnvironmentSetting>()
+                CommonEnvironmentSettings = new List<PSEnvironmentSetting>
                 {
                     new PSEnvironmentSetting("common1", "val1"),
                     new PSEnvironmentSetting("common2", "val2")
@@ -88,14 +88,14 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
                 JobManagerTask = new PSJobManagerTask("job manager", "cmd /c echo job manager"),
                 JobPreparationTask = new PSJobPreparationTask("cmd /c echo job prep"),
                 JobReleaseTask = new PSJobReleaseTask("cmd /c echo job release"),
-                PoolInformation = new PSPoolInformation()
+                PoolInformation = new PSPoolInformation
                 {
                     PoolId = "myPool"
                 }
             };
             cmdlet.JobSchedule.JobSpecification = jobSpec;
 
-            PSSchedule schedule = new PSSchedule()
+            PSSchedule schedule = new PSSchedule
             {
                 DoNotRunAfter = DateTime.Now.AddYears(1),
                 DoNotRunUntil = DateTime.Now.AddDays(1),
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             };
             cmdlet.JobSchedule.Schedule = schedule;
 
-            cmdlet.JobSchedule.Metadata = new List<PSMetadataItem>()
+            cmdlet.JobSchedule.Metadata = new List<PSMetadataItem>
             {
                 new PSMetadataItem("metadata1", "value1")
             };
@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 JobScheduleUpdateParameter,
                 JobScheduleUpdateOptions,
-                AzureOperationHeaderResponse<JobScheduleUpdateHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<JobScheduleUpdateHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });

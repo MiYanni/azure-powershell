@@ -48,17 +48,17 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
             insightsEventOperationsMock = new Mock<IActivityLogsOperations>();
             MonitorClientMock = new Mock<MonitorClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureRmAutoscaleHistoryCommand()
+            cmdlet = new GetAzureRmAutoscaleHistoryCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorClient = MonitorClientMock.Object
             };
 
-            response = Test.Utilities.InitializeResponse();
+            response = Utilities.InitializeResponse();
             finalResponse = Utilities.InitializeFinalResponse();
 
             insightsEventOperationsMock.Setup(f => f.ListWithHttpMessagesAsync(It.IsAny<ODataQuery<EventData>>(), It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IPage<EventData>>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((ODataQuery<EventData> f, string s, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     filter = f;
@@ -66,13 +66,13 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
                 });
 
             insightsEventOperationsMock.Setup(f => f.ListNextWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IPage<EventData>>>(finalResponse))
+                .Returns(Task.FromResult(finalResponse))
                 .Callback((string next, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     nextLink = next;
                 });
 
-            MonitorClientMock.SetupGet(f => f.ActivityLogs).Returns(this.insightsEventOperationsMock.Object);
+            MonitorClientMock.SetupGet(f => f.ActivityLogs).Returns(insightsEventOperationsMock.Object);
         }
 
         [Fact]
@@ -81,14 +81,14 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
         {
             var startDate = DateTime.Now.AddSeconds(-1);
 
-            Test.Utilities.ExecuteVerifications(
-                cmdlet: cmdlet,
-                insinsightsEventOperationsMockightsClientMock: this.insightsEventOperationsMock,
-                requiredFieldName: "resourceType",
-                requiredFieldValue: GetAzureRmAutoscaleHistoryCommand.AutoscaleResourceType,
-                filter: ref this.filter,
-                startDate: startDate,
-                nextLink: ref this.nextLink);
+            Utilities.ExecuteVerifications(
+                cmdlet,
+                insightsEventOperationsMock,
+                "resourceType",
+                GetAzureRmAutoscaleHistoryCommand.AutoscaleResourceType,
+                ref filter,
+                startDate,
+                ref nextLink);
         }
     }
 }

@@ -34,10 +34,10 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void GetAzureSqlDatabaseServerServiceObjectiveAttributes()
         {
             Type type = typeof(GetAzureSqlServerServiceObjective);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.None);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServiceObjectiveName", isMandatory: false, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServiceObjectiveName", false, true);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Metrics
         private readonly Mock<MonitorClient> MonitorClientMock;
         private readonly Mock<IMetricDefinitionsOperations> insightsMetricDefinitionOperationsMock;
         private Mock<ICommandRuntime> commandRuntimeMock;
-        private Microsoft.Rest.Azure.AzureOperationResponse<IEnumerable<MetricDefinition>> response;
+        private Rest.Azure.AzureOperationResponse<IEnumerable<MetricDefinition>> response;
         private string resourceId;
         private ODataQuery<MetricDefinition> filter;
 
@@ -42,26 +42,26 @@ namespace Microsoft.Azure.Commands.Insights.Test.Metrics
             insightsMetricDefinitionOperationsMock = new Mock<IMetricDefinitionsOperations>();
             MonitorClientMock = new Mock<MonitorClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureRmMetricDefinitionCommand()
+            cmdlet = new GetAzureRmMetricDefinitionCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorClient = MonitorClientMock.Object
             };
 
-            response = new Microsoft.Rest.Azure.AzureOperationResponse<IEnumerable<MetricDefinition>>()
+            response = new Rest.Azure.AzureOperationResponse<IEnumerable<MetricDefinition>>
             {
                 Body = Utilities.InitializeMetricDefinitionResponse()
             };
 
             insightsMetricDefinitionOperationsMock.Setup(f => f.ListWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<ODataQuery<MetricDefinition>>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Microsoft.Rest.Azure.AzureOperationResponse<IEnumerable<MetricDefinition>>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string resource, ODataQuery<MetricDefinition> query, Dictionary<string, List<string>> header, CancellationToken t) =>
                 {
                     resourceId = resource;
                     filter = query;
                 });
 
-            MonitorClientMock.SetupGet(f => f.MetricDefinitions).Returns(this.insightsMetricDefinitionOperationsMock.Object);
+            MonitorClientMock.SetupGet(f => f.MetricDefinitions).Returns(insightsMetricDefinitionOperationsMock.Object);
         }
 
         [Fact]

@@ -71,9 +71,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Blob
             string name = "test";
             MockCmdRunTime.ResetPipelines();
             command.Name = name;
-            this.Confirmed = false;
+            Confirmed = false;
             RunAsyncCommand(() => command.ExecuteCmdlet());
-            string result = (string)MockCmdRunTime.VerboseStream.FirstOrDefault();
+            string result = MockCmdRunTime.VerboseStream.FirstOrDefault();
             Assert.AreEqual(String.Format(Resources.RemoveContainerCancelled, name), result);
         }
 
@@ -86,9 +86,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Blob
 
             MockCmdRunTime.ResetPipelines();
             command.Name = name;
-            this.Confirmed = true;
+            Confirmed = true;
             RunAsyncCommand(() => command.ExecuteCmdlet());
-            string result = (string)MockCmdRunTime.VerboseStream.FirstOrDefault();
+            string result = MockCmdRunTime.VerboseStream.FirstOrDefault();
             Assert.AreEqual(String.Format(Resources.RemoveContainerSuccessfully, name), result);
 
             MockCmdRunTime.ResetPipelines();
@@ -96,7 +96,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Blob
             command.Name = name;
             command.Force = true;
             RunAsyncCommand(() => command.ExecuteCmdlet());
-            result = (string)MockCmdRunTime.VerboseStream.FirstOrDefault();
+            result = MockCmdRunTime.VerboseStream.FirstOrDefault();
             Assert.AreEqual(String.Format(Resources.RemoveContainerSuccessfully, name), result);
         }
 

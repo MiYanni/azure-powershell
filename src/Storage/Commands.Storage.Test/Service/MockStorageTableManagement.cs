@@ -172,7 +172,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>Table permission</returns>
         public TablePermissions GetTablePermissions(CloudTable table, TableRequestOptions requestOptions, OperationContext operationContext)
         {
-            return this.tablePermissions;
+            return tablePermissions;
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns></returns>
         public Task SetTablePermissionsAsync(CloudTable table, TablePermissions tablePermissions, TableRequestOptions requestOptions, OperationContext operationContext)
         {
-            return Task.Factory.StartNew(() => this.SetTablePermissions(table, tablePermissions, requestOptions, operationContext));
+            return Task.Factory.StartNew(() => SetTablePermissions(table, tablePermissions, requestOptions, operationContext));
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns></returns>
         public Task<TablePermissions> GetTablePermissionsAsync(CloudTable table, TableRequestOptions requestOptions, OperationContext operationContext)
         {
-            return Task.Factory.StartNew(() => this.GetTablePermissions(table,
+            return Task.Factory.StartNew(() => GetTablePermissions(table,
                 requestOptions, operationContext));
         }
 

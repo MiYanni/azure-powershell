@@ -55,9 +55,9 @@ namespace Microsoft.Azure.Commands.Insights.Test
                     localizedValue: "Microsoft Resources",
                     value: "Microsoft Resources"),
                 authorization: new SenderAuthorization(
-                    action: "PUT",
-                    role: "Sender",
-                    scope: "None"),
+                    "PUT",
+                    "Sender",
+                    "None"),
                 caller: Caller,
                 claims: new Dictionary<string, string>
                 {
@@ -116,43 +116,43 @@ namespace Microsoft.Azure.Commands.Insights.Test
                 return InitializeFinalResponse(numRecords);
             }
 
-            List<EventData> events = Utilities.CreateListOfFakeEvents(numRecords);
+            List<EventData> events = CreateListOfFakeEvents(numRecords);
             var x = JsonConvert.SerializeObject(events);
-            x = string.Concat("{", string.Format("\"value\":{0},\"nextLink\":\"{1}\"", x, Utilities.ContinuationToken), "}");
+            x = string.Concat("{", string.Format("\"value\":{0},\"nextLink\":\"{1}\"", x, ContinuationToken), "}");
 
-            return new AzureOperationResponse<IPage<EventData>>()
+            return new AzureOperationResponse<IPage<EventData>>
             {
-                Body = JsonConvert.DeserializeObject<Azure.Management.Monitor.Models.Page1<EventData>>(x)
+                Body = JsonConvert.DeserializeObject<Management.Monitor.Models.Page1<EventData>>(x)
             };
         }
 
         public static AzureOperationResponse<IPage<EventData>> InitializeFinalResponse(int numRecords = 5)
         {
-            List<EventData> eventData = Utilities.CreateListOfFakeEvents(numRecords);
+            List<EventData> eventData = CreateListOfFakeEvents(numRecords);
             var x = JsonConvert.SerializeObject(eventData);
             x = string.Concat("{\"value\":", x, ",\"nextLink\":null}");
 
-            return new AzureOperationResponse<IPage<EventData>>()
+            return new AzureOperationResponse<IPage<EventData>>
             {
-                Body = JsonConvert.DeserializeObject<Azure.Management.Monitor.Models.Page1<EventData>>(x)
+                Body = JsonConvert.DeserializeObject<Management.Monitor.Models.Page1<EventData>>(x)
             };
         }
 
         public static AzureOperationResponse<LogProfileResource> InitializeLogProfileResponse()
         {
             // This is effectively testing the conversion EventData -> PSEventData internally in the execution of the cmdlet
-            EventData eventData = Utilities.CreateFakeEvent();
+            EventData eventData = CreateFakeEvent();
             var x = JsonConvert.SerializeObject(eventData);
 
-            return new AzureOperationResponse<LogProfileResource>()
+            return new AzureOperationResponse<LogProfileResource>
             {
                 Body = new LogProfileResource(
-                    name:Utilities.Name,
+                    name:Name,
                     location: "East US", 
                     id: "MyLogProfileId", 
-                    locations: new string[] { "EastUs" }, 
-                    categories: new List<string>() { "cat2" },
-                    retentionPolicy: new RetentionPolicy(enabled: true, days: 10))
+                    locations: new[] { "EastUs" }, 
+                    categories: new List<string> { "cat2" },
+                    retentionPolicy: new RetentionPolicy(true, 10))
 
                 {
                     ServiceBusRuleId = "myBusId",
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Commands.Insights.Test
 
         public static void VerifyContinuationToken(string nextLink)
         {
-            Assert.Equal(Utilities.ContinuationToken, nextLink, ignoreCase:true, ignoreLineEndingDifferences:true,ignoreWhiteSpaceDifferences:true);
+            Assert.Equal(ContinuationToken, nextLink, true, true,true);
         }
 
         public static void VerifyFilterIsUsable(ODataQuery<EventData> filter)
@@ -213,19 +213,19 @@ namespace Microsoft.Azure.Commands.Insights.Test
 
         public static void VerifyCallerInCall(ODataQuery<EventData> filter, DateTime? startDate, string filedName, string fieldValue)
         {
-            VerifyFilterIsUsable(filter: filter);
-            VerifyStartDateInFilter(filter: filter, startDate: startDate);
-            VerifyConditionInFilter(filter: filter, field: filedName, value: fieldValue);
-            VerifyConditionInFilter(filter: filter, field: "caller", value: Utilities.Caller);
+            VerifyFilterIsUsable(filter);
+            VerifyStartDateInFilter(filter, startDate);
+            VerifyConditionInFilter(filter, filedName, fieldValue);
+            VerifyConditionInFilter(filter, "caller", Caller);
         }
 
         public static void VerifyStatusAndCallerInCall(ODataQuery<EventData> filter, DateTime? startDate, string filedName, string fieldValue)
         {
-            VerifyFilterIsUsable(filter: filter);
-            VerifyStartDateInFilter(filter: filter, startDate: startDate);
-            VerifyConditionInFilter(filter: filter, field: filedName, value: fieldValue);
-            VerifyConditionInFilter(filter: filter, field: "caller", value: Utilities.Caller);
-            VerifyConditionInFilter(filter: filter, field: "status", value: Utilities.Status);
+            VerifyFilterIsUsable(filter);
+            VerifyStartDateInFilter(filter, startDate);
+            VerifyConditionInFilter(filter, filedName, fieldValue);
+            VerifyConditionInFilter(filter, "caller", Caller);
+            VerifyConditionInFilter(filter, "status", Status);
         }
 
         public static void ExecuteVerifications(LogsCmdletBase cmdlet, Mock<IActivityLogsOperations> insinsightsEventOperationsMockightsClientMock, string requiredFieldName, string requiredFieldValue, ref ODataQuery<EventData> filter, DateTime startDate, ref string nextLink)
@@ -233,49 +233,49 @@ namespace Microsoft.Azure.Commands.Insights.Test
             // Calling without optional parameters
             cmdlet.ExecuteCmdlet();
 
-            VerifyFilterIsUsable(filter: filter);
-            VerifyStartDateInFilter(filter: filter, startDate: null);
-            VerifyConditionInFilter(filter: filter, field: requiredFieldName, value: requiredFieldValue);
-            VerifyContinuationToken(nextLink: nextLink);
+            VerifyFilterIsUsable(filter);
+            VerifyStartDateInFilter(filter, null);
+            VerifyConditionInFilter(filter, requiredFieldName, requiredFieldValue);
+            VerifyContinuationToken(nextLink);
 
             // Calling with only start date
             cmdlet.StartTime = startDate;
             nextLink = null;
             cmdlet.ExecuteCmdlet();
 
-            VerifyFilterIsUsable(filter: filter);
-            VerifyStartDateInFilter(filter: filter, startDate: startDate);
-            VerifyConditionInFilter(filter: filter, field: requiredFieldName, value: requiredFieldValue);
-            VerifyContinuationToken(nextLink: nextLink);
+            VerifyFilterIsUsable(filter);
+            VerifyStartDateInFilter(filter, startDate);
+            VerifyConditionInFilter(filter, requiredFieldName, requiredFieldValue);
+            VerifyContinuationToken(nextLink);
 
             // Calling with only start and end date
             cmdlet.EndTime = startDate.AddSeconds(2);
             nextLink = null;
             cmdlet.ExecuteCmdlet();
 
-            VerifyFilterIsUsable(filter: filter);
-            VerifyStartDateInFilter(filter: filter, startDate: startDate);
-            VerifyEndDateInFilter(filter: filter, endDate: startDate.AddSeconds(2));
-            VerifyConditionInFilter(filter: filter, field: requiredFieldName, value: requiredFieldValue);
-            VerifyContinuationToken(nextLink: nextLink);
+            VerifyFilterIsUsable(filter);
+            VerifyStartDateInFilter(filter, startDate);
+            VerifyEndDateInFilter(filter, startDate.AddSeconds(2));
+            VerifyConditionInFilter(filter, requiredFieldName, requiredFieldValue);
+            VerifyContinuationToken(nextLink);
 
             // Calling with only caller
             cmdlet.EndTime = null;
-            cmdlet.Caller = Utilities.Caller;
+            cmdlet.Caller = Caller;
             nextLink = null;
             cmdlet.ExecuteCmdlet();
 
-            VerifyCallerInCall(filter: filter, startDate: startDate, filedName: requiredFieldName, fieldValue: requiredFieldValue);
-            VerifyContinuationToken(nextLink: nextLink);
+            VerifyCallerInCall(filter, startDate, requiredFieldName, requiredFieldValue);
+            VerifyContinuationToken(nextLink);
 
             // Calling with caller and status
-            cmdlet.Status = Utilities.Status;
+            cmdlet.Status = Status;
             nextLink = null;
             cmdlet.ExecuteCmdlet();
 
-            VerifyStatusAndCallerInCall(filter: filter, startDate: startDate, filedName: requiredFieldName, fieldValue: requiredFieldValue);
-            VerifyDetailedOutput(cmdlet: cmdlet);
-            VerifyContinuationToken(nextLink: nextLink);
+            VerifyStatusAndCallerInCall(filter, startDate, requiredFieldName, requiredFieldValue);
+            VerifyDetailedOutput(cmdlet);
+            VerifyContinuationToken(nextLink);
 
             // Calling with maxEvents (Note: # of returned objects is not testable here, only the call is being tested)
             var cmdLetLogs = cmdlet as GetAzureRmLogCommand;
@@ -287,21 +287,21 @@ namespace Microsoft.Azure.Commands.Insights.Test
                 cmdLetLogs.MaxRecord = 3;
                 cmdLetLogs.ExecuteCmdlet();
 
-                VerifyFilterIsUsable(filter: filter);
-                VerifyStartDateInFilter(filter: filter, startDate: null);
-                VerifyConditionInFilter(filter: filter, field: requiredFieldName, value: requiredFieldValue);
+                VerifyFilterIsUsable(filter);
+                VerifyStartDateInFilter(filter, null);
+                VerifyConditionInFilter(filter, requiredFieldName, requiredFieldValue);
 
                 // Negative value
                 nextLink = null;
                 cmdLetLogs.MaxRecord = -1;
                 cmdLetLogs.ExecuteCmdlet();
 
-                VerifyFilterIsUsable(filter: filter);
-                VerifyStartDateInFilter(filter: filter, startDate: null);
-                VerifyConditionInFilter(filter: filter, field: requiredFieldName, value: requiredFieldValue);
+                VerifyFilterIsUsable(filter);
+                VerifyStartDateInFilter(filter, null);
+                VerifyConditionInFilter(filter, requiredFieldName, requiredFieldValue);
 
                 // The default should have been used, check continuation token
-                VerifyContinuationToken(nextLink: nextLink);
+                VerifyContinuationToken(nextLink);
 
                 cmdLetLogs.MaxRecord = 0;
             }
@@ -325,9 +325,9 @@ namespace Microsoft.Azure.Commands.Insights.Test
 
         public static AlertRuleResource CreateFakeRuleResource()
         {
-            var condition = new ThresholdRuleCondition()
+            var condition = new ThresholdRuleCondition
             {
-                DataSource = new RuleMetricDataSource()
+                DataSource = new RuleMetricDataSource
                 {
                     MetricName = "CpuTime",
                     ResourceUri = ResourceUri,
@@ -345,12 +345,12 @@ namespace Microsoft.Azure.Commands.Insights.Test
                 isEnabled: true,
                 condition: condition)
             {
-                Actions = new BindingList<RuleAction>()
+                Actions = new BindingList<RuleAction>
                 {
                     new RuleEmailAction(),
                 },
                 Description = null,
-                Tags = new Dictionary<string, string>()
+                Tags = new Dictionary<string, string>
                 {
                     {"$type", "Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary,Microsoft.WindowsAzure.Management.Common.Storage"},
                     {"hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/garyyang1","Resource"}
@@ -404,8 +404,8 @@ namespace Microsoft.Azure.Commands.Insights.Test
 
         public static void VerifyFieldAndValueInCall(string filter, string filedName, string fieldValue)
         {
-            VerifyFilterIsUsable(filter: filter);
-            VerifyConditionInFilter(filter: filter, field: filedName, value: fieldValue);
+            VerifyFilterIsUsable(filter);
+            VerifyConditionInFilter(filter, filedName, fieldValue);
         }
 
         public static void ExecuteVerifications(ManagementCmdletBase cmdlet, string expectedResourceGroup, ref string resourceGroup, ref string nameOrTargetUri)
@@ -413,7 +413,7 @@ namespace Microsoft.Azure.Commands.Insights.Test
             // Calling without optional parameters
             cmdlet.ExecuteCmdlet();
 
-            VerifyFilterIsUsable(filter: resourceGroup);
+            VerifyFilterIsUsable(resourceGroup);
             Assert.Equal(expectedResourceGroup, resourceGroup);
             Assert.Null(nameOrTargetUri);
 
@@ -436,7 +436,7 @@ namespace Microsoft.Azure.Commands.Insights.Test
                 Assert.Equal(ResourceUri, nameOrTargetUri);
 
                 // Calling with Detailed ouput and resourceuri
-                VerifyDetailedOutput(cmdlet: typedCmdlet, expectedResourceGroup: expectedResourceGroup, resourceGroup: ref resourceGroup, nameOrTargetUri: ref nameOrTargetUri);
+                VerifyDetailedOutput(typedCmdlet, expectedResourceGroup, ref resourceGroup, ref nameOrTargetUri);
             }
         }
 

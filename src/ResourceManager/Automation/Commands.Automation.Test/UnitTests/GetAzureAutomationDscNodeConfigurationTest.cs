@@ -38,12 +38,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         
         public GetAzureAutomationDscNodeConfigurationTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationDscNodeConfiguration
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationDscNodeConfiguration
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -58,17 +58,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string nodeConfigurationName = "config.localhost";
             string rollupStatus = "Good";
             
-            this.mockAutomationClient.Setup(f => f.GetNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, rollupStatus));
+            mockAutomationClient.Setup(f => f.GetNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, rollupStatus));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = nodeConfigurationName;
-            this.cmdlet.RollupStatus = rollupStatus;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = nodeConfigurationName;
+            cmdlet.RollupStatus = rollupStatus;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, rollupStatus), Times.Once());
+            mockAutomationClient.Verify(f => f.GetNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, rollupStatus), Times.Once());
         }
 
         [Fact]
@@ -83,17 +83,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string rollupStatus = "Good";
             string nextLink = string.Empty;
             
-            this.mockAutomationClient.Setup(f => f.ListNodeConfigurationsByConfigurationName(resourceGroupName, accountName, configurationName, rollupStatus, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListNodeConfigurationsByConfigurationName(resourceGroupName, accountName, configurationName, rollupStatus, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ConfigurationName = configurationName;
-            this.cmdlet.RollupStatus = rollupStatus;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ConfigurationName = configurationName;
+            cmdlet.RollupStatus = rollupStatus;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListNodeConfigurationsByConfigurationName(resourceGroupName, accountName, configurationName, rollupStatus, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListNodeConfigurationsByConfigurationName(resourceGroupName, accountName, configurationName, rollupStatus, ref nextLink), Times.Once());
         }
 
         [Fact]
@@ -107,16 +107,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string rollupStatus = "Good";
             string nextLink = string.Empty;
             
-            this.mockAutomationClient.Setup(f => f.ListNodeConfigurations(resourceGroupName, accountName, rollupStatus, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListNodeConfigurations(resourceGroupName, accountName, rollupStatus, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.RollupStatus = rollupStatus;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.RollupStatus = rollupStatus;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListNodeConfigurations(resourceGroupName, accountName, rollupStatus, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListNodeConfigurations(resourceGroupName, accountName, rollupStatus, ref nextLink), Times.Once());
         }
     }
 }

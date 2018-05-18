@@ -34,13 +34,13 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void NewAzureSqlServerAttributes()
         {
             Type type = typeof(NewAzureSqlServer);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.Low);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "SqlAdministratorCredentials", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerVersion", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "SqlAdministratorCredentials", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerVersion", false, false);
         }
 
         [Fact]
@@ -48,13 +48,13 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void SetAzureSqlServerAttributes()
         {
             Type type = typeof(SetAzureSqlServer);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: true);
+            UnitTestHelper.CheckCmdletModifiesData(type, true);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.Medium);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "SqlAdministratorPassword", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerVersion", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "SqlAdministratorPassword", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerVersion", false, false);
         }
 
         [Fact]
@@ -62,9 +62,9 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void RemoveAzureSqlServerAttributes()
         {
             Type type = typeof(RemoveAzureSqlServer);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: true);
+            UnitTestHelper.CheckCmdletModifiesData(type, true);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
         }
 
         [Fact]
@@ -72,10 +72,10 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void GetAzureSqlServerAttributes()
         {
             Type type = typeof(GetAzureSqlServer);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.None);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: false, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", false, true);
         }
     }
 }

@@ -45,24 +45,24 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
         public SetDiagnosticSettingCommandTests(Xunit.Abstractions.ITestOutputHelper output)
         {
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
-            this.insightsDiagnosticsOperationsMock = new Mock<IServiceDiagnosticSettingsOperations>();
-            this.insightsManagementClientMock = new Mock<MonitorManagementClient>();
-            this.commandRuntimeMock = new Mock<ICommandRuntime>();
-            this.cmdlet = new SetAzureRmDiagnosticSettingCommand()
+            insightsDiagnosticsOperationsMock = new Mock<IServiceDiagnosticSettingsOperations>();
+            insightsManagementClientMock = new Mock<MonitorManagementClient>();
+            commandRuntimeMock = new Mock<ICommandRuntime>();
+            cmdlet = new SetAzureRmDiagnosticSettingCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
             
-            this.ExistingSetting = GetDefaultSetting();
+            ExistingSetting = GetDefaultSetting();
 
             insightsDiagnosticsOperationsMock.Setup(f => f.GetWithHttpMessagesAsync(
                 It.IsAny<string>(),
                 It.IsAny<Dictionary<string, List<string>>>(),
                 It.IsAny<CancellationToken>()))
-                   .Returns(Task.FromResult<AzureOperationResponse<ServiceDiagnosticSettingsResource>>(new AzureOperationResponse<ServiceDiagnosticSettingsResource>
+                   .Returns(Task.FromResult(new AzureOperationResponse<ServiceDiagnosticSettingsResource>
                    {
-                       Body = this.ExistingSetting
+                       Body = ExistingSetting
                    }));
 
             insightsDiagnosticsOperationsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
                         });
                     });
 
-            insightsManagementClientMock.SetupGet(f => f.ServiceDiagnosticSettings).Returns(this.insightsDiagnosticsOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.ServiceDiagnosticSettings).Returns(insightsDiagnosticsOperationsMock.Object);
 
             cmdlet.ResourceId = resourceId;
 
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             expectedSettings.StorageAccountId = null;
 
             VerifyCalledOnce();
-            VerifySettings(expectedSettings, this.calledSettings);
+            VerifySettings(expectedSettings, calledSettings);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             expectedSettings.StorageAccountId = newStorageId;
 
             VerifyCalledOnce();
-            VerifySettings(expectedSettings, this.calledSettings);
+            VerifySettings(expectedSettings, calledSettings);
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             expectedSettings.ServiceBusRuleId = newServiceBusId;
 
             VerifyCalledOnce();
-            VerifySettings(expectedSettings, this.calledSettings);
+            VerifySettings(expectedSettings, calledSettings);
         }
 
         [Fact]
@@ -149,7 +149,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             expectedSettings.WorkspaceId = newWorkspaceId;
 
             VerifyCalledOnce();
-            VerifySettings(expectedSettings, this.calledSettings);
+            VerifySettings(expectedSettings, calledSettings);
         }
 
         [Fact]
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             expectedSettings.Logs[0].Enabled = false;
 
             VerifyCalledOnce();
-            VerifySettings(expectedSettings, this.calledSettings);
+            VerifySettings(expectedSettings, calledSettings);
         }
 
         [Fact]
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             expectedSettings.Metrics[1].Enabled = false;
 
             VerifyCalledOnce();
-            VerifySettings(expectedSettings, this.calledSettings);
+            VerifySettings(expectedSettings, calledSettings);
         }
 
         [Fact]
@@ -195,7 +195,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             expectedSettings.ServiceBusRuleId = null;
 
             VerifyCalledOnce();
-            VerifySettings(expectedSettings, this.calledSettings);
+            VerifySettings(expectedSettings, calledSettings);
         }
 
         [Fact]
@@ -209,7 +209,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Diagnostics
             expectedSettings.WorkspaceId = null;
 
             VerifyCalledOnce();
-            VerifySettings(expectedSettings, this.calledSettings);
+            VerifySettings(expectedSettings, calledSettings);
         }
 
         private void VerifyCalledOnce()

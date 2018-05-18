@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
 
         public StartAzureAutomationDscCompilationJobTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new StartAzureAutomationDscCompilationJob
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new StartAzureAutomationDscCompilationJob
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -51,14 +51,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string configurationName = "runbook";
             bool incrementNodeConfigurationBuild = true;
-            var parameters = new Dictionary<string, string>()
+            var parameters = new Dictionary<string, string>
             {
                 {"Key1", "Value1"},
                 {"Key2", "Value2"},
             };
             
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f =>
                     f.StartCompilationJob(resourceGroupName, accountName, configurationName, parameters, null, incrementNodeConfigurationBuild)
                 );
@@ -68,17 +68,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             // IDictionary parameters, IDictionary configurationData, bool incrementNodeConfigurationBuild = false);
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ConfigurationName = configurationName;
-            this.cmdlet.Parameters = parameters;
-            this.cmdlet.IncrementNodeConfigurationBuild = incrementNodeConfigurationBuild;
-            this.cmdlet.ConfigurationData = null;
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ConfigurationName = configurationName;
+            cmdlet.Parameters = parameters;
+            cmdlet.IncrementNodeConfigurationBuild = incrementNodeConfigurationBuild;
+            cmdlet.ConfigurationData = null;
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.StartCompilationJob(resourceGroupName, accountName, configurationName, parameters, null, incrementNodeConfigurationBuild),
+            mockAutomationClient.Verify(f => f.StartCompilationJob(resourceGroupName, accountName, configurationName, parameters, null, incrementNodeConfigurationBuild),
                 Times.Once());
         }
     }

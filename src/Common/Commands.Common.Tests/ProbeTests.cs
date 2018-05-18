@@ -41,7 +41,7 @@ namespace Commands.Common.Tests
             Assert.False(
                 GeneralUtilities.Probe(
                     _pwsh, " -c 'echo foo'",
-                    criterion: (processExitInfo) =>
+                    criterion: processExitInfo =>
                     {
                         return processExitInfo.StdOut.Any(x => x.Contains("bar"));
                     }));
@@ -54,7 +54,7 @@ namespace Commands.Common.Tests
             Assert.True(
                 GeneralUtilities.Probe(
                     _pwsh, " -c 'echo foo'",
-                    criterion: (processExitInfo) =>
+                    criterion: processExitInfo =>
                     {
                         return processExitInfo.StdOut.Any(x => x.Contains("foo"));
                     }));

@@ -145,7 +145,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         {
             if (output != null)
             {
-                LogPowerShellStream<PSObject>(xunitLogger, output, "OUTPUT");
+                LogPowerShellStream(xunitLogger, output, "OUTPUT");
             }
             if (xunitLogger != null &&
                 powershell.Commands != null &&
@@ -161,11 +161,11 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 xunitLogger.Information("===================================================\n");
             }
 
-            LogPowerShellStream<DebugRecord>(xunitLogger, powershell.Streams.Debug, "DEBUG");
-            LogPowerShellStream<string>(xunitLogger, powershell.Streams.Error.Select(FormatErrorRecord).ToList(), "ERROR");
-            LogPowerShellStream<ProgressRecord>(xunitLogger, powershell.Streams.Progress, "PROGRESS");
-            LogPowerShellStream<VerboseRecord>(xunitLogger, powershell.Streams.Verbose, "VERBOSE");
-            LogPowerShellStream<WarningRecord>(xunitLogger, powershell.Streams.Warning, "WARNING");
+            LogPowerShellStream(xunitLogger, powershell.Streams.Debug, "DEBUG");
+            LogPowerShellStream(xunitLogger, powershell.Streams.Error.Select(FormatErrorRecord).ToList(), "ERROR");
+            LogPowerShellStream(xunitLogger, powershell.Streams.Progress, "PROGRESS");
+            LogPowerShellStream(xunitLogger, powershell.Streams.Verbose, "VERBOSE");
+            LogPowerShellStream(xunitLogger, powershell.Streams.Warning, "WARNING");
         }
 
         /// <summary>

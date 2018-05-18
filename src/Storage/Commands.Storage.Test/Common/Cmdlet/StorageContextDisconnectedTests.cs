@@ -136,7 +136,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: true);
+                SetSM_RMProfile(true, true);
 
                 var cmdlet = new NewAzureStorageContext
                 {
@@ -168,7 +168,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             {
                 var mock = new MockCommandRuntime();
 
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: false);
+                SetSM_RMProfile(true);
                 var cmdlet = new NewAzureStorageContext
                 {
                     CommandRuntime = mock,
@@ -231,7 +231,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: false, isRMProfileNull: false);
+                SetSM_RMProfile();
 
                 var cmdlet = new NewAzureStorageContext
                 {
@@ -262,7 +262,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: false);
+                SetSM_RMProfile(true);
 
                 var cmdlet = new NewAzureStorageContext
                 {
@@ -330,7 +330,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: false, isRMProfileNull: false);
+                SetSM_RMProfile();
 
                 var cmdlet = new NewAzureStorageContext
                 {
@@ -363,7 +363,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: true);
+                SetSM_RMProfile(true, true);
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -396,7 +396,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: false);
+                SetSM_RMProfile(true);
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -464,7 +464,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: false, isRMProfileNull: false);
+                SetSM_RMProfile();
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -497,7 +497,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: true);
+                SetSM_RMProfile(true, true);
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -530,7 +530,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: false);
+                SetSM_RMProfile(true);
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -598,7 +598,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: false, isRMProfileNull: false);
+                SetSM_RMProfile();
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -631,7 +631,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: true);
+                SetSM_RMProfile(true, true);
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -666,7 +666,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: false);
+                SetSM_RMProfile(true);
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -738,7 +738,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: false, isRMProfileNull: false);
+                SetSM_RMProfile();
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -773,7 +773,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: true);
+                SetSM_RMProfile(true, true);
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -805,7 +805,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: true, isRMProfileNull: false);
+                SetSM_RMProfile(true);
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();
@@ -871,7 +871,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common.Cmdlet
             try
             {
                 var mock = new MockCommandRuntime();
-                SetSM_RMProfile(isSMProfileNull: false, isRMProfileNull: false);
+                SetSM_RMProfile();
 
                 AzureSMProfileProvider.Instance.Profile = null;
                 AzureRmProfileProvider.Instance.Profile = new TestContextContainer();

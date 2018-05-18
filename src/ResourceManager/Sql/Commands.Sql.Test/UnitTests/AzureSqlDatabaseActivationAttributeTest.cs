@@ -35,11 +35,11 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void SuspendAzureSqlDatabaseAttributes()
         {
             Type type = typeof(SuspendAzureSqlDatabase);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, ConfirmImpact.Medium);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, true);
         }
 
         [Fact]
@@ -47,11 +47,11 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void ResumeAzureSqlDatabaseAttributes()
         {
             Type type = typeof(ResumeAzureSqlDatabase);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, ConfirmImpact.Medium);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, true);
         }
     }
 }

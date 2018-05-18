@@ -45,11 +45,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             BatchAccountContext context = null;
             string poolId = "resizePool";
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-ResizeAndStopResizePool '{0}'", poolId) }; },
+                () => { return new[] { string.Format("Test-ResizeAndStopResizePool '{0}'", poolId) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
-                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, targetDedicated: 0, targetLowPriority: 0);
+                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, 0, 0);
                 },
                 () =>
                 {
@@ -67,11 +67,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             BatchAccountContext context = null;
             string poolId = "autoscalePool";
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-AutoScaleActions '{0}'", poolId) }; },
+                () => { return new[] { string.Format("Test-AutoScaleActions '{0}'", poolId) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
-                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, targetDedicated: 0, targetLowPriority: 0);
+                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, 0, 0);
                 },
                 () =>
                 {
@@ -89,11 +89,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             BatchAccountContext context = null;
             string poolId = "changeospool";
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-ChangeOSVersion '{0}' '{1}'", poolId, specificOSVersion) }; },
+                () => { return new[] { string.Format("Test-ChangeOSVersion '{0}' '{1}'", poolId, specificOSVersion) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
-                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, targetDedicated: 0, targetLowPriority: 0);
+                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, 0, 0);
                 },
                 () =>
                 {

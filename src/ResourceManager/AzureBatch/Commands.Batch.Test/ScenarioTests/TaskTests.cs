@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             string jobId = "taskCrudJob";
             BatchAccountContext context = null;
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-TaskCRUD '{0}'", jobId) }; },
+                () => { return new[] { string.Format("Test-TaskCRUD '{0}'", jobId) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             string jobId = "createTaskCollectionJob";
             BatchAccountContext context = null;
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-CreateTaskCollection '{0}'", jobId) }; },
+                () => { return new[] { string.Format("Test-CreateTaskCollection '{0}'", jobId) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             string taskId1 = "testTask1";
             string taskId2 = "testTask2";
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-TerminateTask '{0}' '{1}' '{2}'", jobId, taskId1, taskId2) }; },
+                () => { return new[] { string.Format("Test-TerminateTask '{0}' '{1}' '{2}'", jobId, taskId1, taskId2) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             int numInstances = 3;
             BatchAccountContext context = null;
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-ListAllSubtasks '{0}' '{1}' '{2}'", jobId, taskId, numInstances) }; },
+                () => { return new[] { string.Format("Test-ListAllSubtasks '{0}' '{1}' '{2}'", jobId, taskId, numInstances) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();

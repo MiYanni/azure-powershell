@@ -80,8 +80,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
 
             Assert.Equal(payload.ModuleName, serializedPayload["moduleName"]);
             Assert.Equal(payload.ModuleVersion, serializedPayload["moduleVersion"]);
-            Assert.Equal(payload.SubscriptionId.ToString(), serializedPayload["subscriptionId"]);
-            Assert.Equal(payload.TenantId.ToString(), serializedPayload["tenantId"]);
+            Assert.Equal(payload.SubscriptionId, serializedPayload["subscriptionId"]);
+            Assert.Equal(payload.TenantId, serializedPayload["tenantId"]);
             Assert.Equal(payload.Environment, serializedPayload["environment"]);
             Assert.Equal(payload.Recommendation.ToString(), serializedPayload["recommendation"]);
             Assert.Equal(payload.PositiveComments, serializedPayload["positiveComments"]);

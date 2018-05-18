@@ -32,13 +32,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
 
         public ImportAzureAutomationDscNodeConfigurationTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
             
-            this.cmdlet = new ImportAzureAutomationDscNodeConfiguration
+            cmdlet = new ImportAzureAutomationDscNodeConfiguration
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -54,27 +54,27 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string nodeConfigurationName = "runbook.configuration";
             bool incrementNodeConfigBuild = false;
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f =>
                     f.CreateNodeConfiguration(resourceGroupName, accountName, path, configurationName, incrementNodeConfigBuild, false)
                 );
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f => f.GetNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, null)
                 );
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ConfigurationName = configurationName;
-            this.cmdlet.Path = path;
-            this.cmdlet.IncrementNodeConfigurationBuild = incrementNodeConfigBuild;
-            this.cmdlet.Force = false;
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ConfigurationName = configurationName;
+            cmdlet.Path = path;
+            cmdlet.IncrementNodeConfigurationBuild = incrementNodeConfigBuild;
+            cmdlet.Force = false;
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.CreateNodeConfiguration(resourceGroupName, accountName, path, configurationName, incrementNodeConfigBuild, false),
+            mockAutomationClient.Verify(f => f.CreateNodeConfiguration(resourceGroupName, accountName, path, configurationName, incrementNodeConfigBuild, false),
                 Times.Once());
         }
     }

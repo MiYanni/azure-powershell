@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new NewBatchCertificateCommand()
+            cmdlet = new NewBatchCertificateCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
                 CertificateAddOptions,
                 AzureOperationHeaderResponse<CertificateAddHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -93,11 +93,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
             CertificateAddParameter requestParameters = null;
 
             // Don't go to the service on an Add Certificate call
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 CertificateAddBatchRequest request = (CertificateAddBatchRequest)baseRequest;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
                     requestParameters = request.Parameters;
 
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
                 };
             });
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify that when just the raw data is specified, the request body matches expectations
             cmdlet.RawData = cert.RawData;

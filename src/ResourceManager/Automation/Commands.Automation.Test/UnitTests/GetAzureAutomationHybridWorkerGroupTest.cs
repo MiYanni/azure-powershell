@@ -24,12 +24,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         
         public GetAzureAutomationHybridWorkerGroupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationHybridWorkerGroup
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationHybridWorkerGroup
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -42,17 +42,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string hybridRunbookWorkerGroupName = "hybridRunbookWorkerGroup";
 
-            this.mockAutomationClient.Setup(f => f.GetHybridRunbookWorkerGroup(resourceGroupName, accountName, hybridRunbookWorkerGroupName));
+            mockAutomationClient.Setup(f => f.GetHybridRunbookWorkerGroup(resourceGroupName, accountName, hybridRunbookWorkerGroupName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = hybridRunbookWorkerGroupName;
-            this.cmdlet.SetParameterSet("ByName");
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = hybridRunbookWorkerGroupName;
+            cmdlet.SetParameterSet("ByName");
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetHybridRunbookWorkerGroup(resourceGroupName, accountName, hybridRunbookWorkerGroupName), Times.Once());
+            mockAutomationClient.Verify(f => f.GetHybridRunbookWorkerGroup(resourceGroupName, accountName, hybridRunbookWorkerGroupName), Times.Once());
         }
 
         [Fact]
@@ -64,16 +64,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListHybridRunbookWorkerGroups(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<HybridRunbookWorkerGroup>()); ;
+            mockAutomationClient.Setup(f => f.ListHybridRunbookWorkerGroups(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<HybridRunbookWorkerGroup>()); ;
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.SetParameterSet("ByAll");
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.SetParameterSet("ByAll");
+            cmdlet.ExecuteCmdlet();
 
             //Assert
-            this.mockAutomationClient.Verify(f => f.ListHybridRunbookWorkerGroups(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListHybridRunbookWorkerGroups(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
     }
 }

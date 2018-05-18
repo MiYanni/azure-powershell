@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RemoveBatchPoolCommand()
+            cmdlet = new RemoveBatchPoolCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
             // Don't go to the service on a Delete CloudPool call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<PoolDeleteOptions, AzureOperationHeaderResponse<PoolDeleteHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();

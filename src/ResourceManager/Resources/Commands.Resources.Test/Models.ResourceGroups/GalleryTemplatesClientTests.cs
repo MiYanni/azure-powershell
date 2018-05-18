@@ -63,9 +63,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string[] parameters = { "Name", "Location", "Mode" };
             string[] parameterSetNames = { "__AllParameterSets" };
             string key = "computeMode";
-            TemplateFileParameterV1 value = new TemplateFileParameterV1()
+            TemplateFileParameterV1 value = new TemplateFileParameterV1
             {
-                AllowedValues = new List<object>() { "Mode1", "Mode2", "Mode3" },
+                AllowedValues = new List<object> { "Mode1", "Mode2", "Mode3" },
                 DefaultValue = "Mode1",
                 MaxLength = "5",
                 MinLength = "1",
@@ -97,9 +97,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string[] parameters = { "Name", "Location", "Mode" };
             string[] parameterSetNames = { "__AllParameterSets" };
             string key = "Name";
-            TemplateFileParameterV1 value = new TemplateFileParameterV1()
+            TemplateFileParameterV1 value = new TemplateFileParameterV1
             {
-                AllowedValues = new List<object>() { "Mode1", "Mode2", "Mode3" },
+                AllowedValues = new List<object> { "Mode1", "Mode2", "Mode3" },
                 MaxLength = "5",
                 MinLength = "1",
                 Type = "bool"
@@ -130,9 +130,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string[] parameters = { "Username", "Location", "Mode" };
             string[] parameterSetNames = { "__AllParameterSets" };
             string key = "user";
-            TemplateFileParameterV1 value = new TemplateFileParameterV1()
+            TemplateFileParameterV1 value = new TemplateFileParameterV1
             {
-                AllowedValues = new List<object>() { "Mode1", "Mode2", "Mode3" },
+                AllowedValues = new List<object> { "Mode1", "Mode2", "Mode3" },
                 MaxLength = "5",
                 MinLength = "1",
                 Type = "bool"
@@ -163,9 +163,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string[] parameters = { "Name", "Location", "Mode" };
             string[] parameterSetNames = { "__AllParameterSets" };
             string key = "name";
-            TemplateFileParameterV1 value = new TemplateFileParameterV1()
+            TemplateFileParameterV1 value = new TemplateFileParameterV1
             {
-                AllowedValues = new List<object>() { "Mode1", "Mode2", "Mode3" },
+                AllowedValues = new List<object> { "Mode1", "Mode2", "Mode3" },
                 MaxLength = "5",
                 MinLength = "1",
                 Type = "bool"
@@ -196,7 +196,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string[] parameters = { "Name", "Location", "Mode" };
             string[] parameterSetNames = { "__AllParameterSets" };
             string key = "computeMode";
-            TemplateFileParameterV1 value = new TemplateFileParameterV1()
+            TemplateFileParameterV1 value = new TemplateFileParameterV1
             {
                 AllowedValues = new List<object>(),
                 DefaultValue = "Mode1",
@@ -224,7 +224,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string[] parameters = { "Name", "Location", "Mode" };
             string[] parameterSetNames = { "__AllParameterSets" };
             string key = "computeMode";
-            TemplateFileParameterV1 value = new TemplateFileParameterV1()
+            TemplateFileParameterV1 value = new TemplateFileParameterV1
             {
                 AllowedValues = null,
                 DefaultValue = "Mode1",
@@ -252,9 +252,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string[] parameters = { "Name", "Location", "Mode" };
             string[] parameterSetNames = { "__AllParameterSets" };
             string key = "appSku";
-            TemplateFileParameterV1 value = new TemplateFileParameterV1()
+            TemplateFileParameterV1 value = new TemplateFileParameterV1
             {
-                AllowedValues = new List<object>()
+                AllowedValues = new List<object>
                 {
                     JObject.Parse("{\"code\" : \"F1\", \"name\" : \"Free\"}"),
                     JObject.Parse("{\"code\" : \"F2\", \"name\" : \"Shared\"}"),
@@ -284,9 +284,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             string[] parameters = { "Name", "Location", "Mode" };
             string[] parameterSetNames = { "__AllParameterSets" };
             string key = "ranks";
-            TemplateFileParameterV1 value = new TemplateFileParameterV1()
+            TemplateFileParameterV1 value = new TemplateFileParameterV1
             {
-                AllowedValues = new List<object>()
+                AllowedValues = new List<object>
                 {
                     JArray.Parse("[\"1\", \"3\", \"5\"]"),
                     JArray.Parse("[\"A\", \"D\", \"F\"]"),
@@ -351,7 +351,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             templateParameterObject["string"] = "myvalue";
             templateParameterObject["int"] = 12;
             templateParameterObject["bool"] = true;
-            templateParameterObject["object"] = new Hashtable()
+            templateParameterObject["object"] = new Hashtable
             {
                 { "code", "F1" },
                 { "name", "Free" }
@@ -417,7 +417,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
             Assert.Equal("int", result["int"].Name);
             Assert.Equal(typeof(int), result["int"].ParameterType);
-            Assert.Equal((System.Int64)12, result["int"].Value);
+            Assert.Equal((Int64)12, result["int"].Value);
 
             Assert.Equal("bool", result["bool"].Name);
             Assert.Equal(typeof(bool), result["bool"].ParameterType);
@@ -506,7 +506,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 Dictionary<string, TemplateFileParameterV1> result =
                     TemplateUtility.ParseTemplateParameterFileContents(@"Resources\WebSite.param.dev.json".AsAbsoluteLocation());
                 Assert.True(result["isWorker"].Value as bool?);
-                Assert.Equal((System.Int64) 1, result["numberOfWorker"].Value);
+                Assert.Equal((Int64) 1, result["numberOfWorker"].Value);
             });
         }
     }

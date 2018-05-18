@@ -46,7 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
         [TestMethod]
         public void IsNotFoundExceptionTest()
         {
-            RequestResult result = new RequestResult()
+            RequestResult result = new RequestResult
             {
                 HttpStatusCode = 500
             };
@@ -55,7 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
             StorageException exception = new StorageException(result, message, innerException);
             Assert.IsFalse(exception.IsNotFoundException());
 
-            result = new RequestResult()
+            result = new RequestResult
             {
                 HttpStatusCode = 404
             };
@@ -73,7 +73,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
         [TestMethod]
         public void RepackStorageExceptionWithoutStatusMessageTest()
         {
-            RequestResult result = new RequestResult()
+            RequestResult result = new RequestResult
             {
                 HttpStatusCode = 500
             };
@@ -87,7 +87,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
         public void RepackStorageExceptionTest()
         {
             string status = String.Empty;
-            RequestResult result = new RequestResult()
+            RequestResult result = new RequestResult
             {
                 HttpStatusCode = 404
             };

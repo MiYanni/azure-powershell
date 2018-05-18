@@ -31,20 +31,20 @@ namespace Microsoft.Azure.Commands.KeyVault.Test.UnitTests
 
         public SetKeyVaultSecretTests()
         {
-            base.SetupTest();
+            SetupTest();
 
             secretAttributes = new PSKeyVaultSecretAttributes(true, null, null, null, null);
             secureSecretValue = SecretValue.ConvertToSecureString();
-            secret = new PSKeyVaultSecret() { VaultName = VaultName, Name = SecretName, Version = SecretVersion, SecretValue = secureSecretValue, Attributes = secretAttributes };
+            secret = new PSKeyVaultSecret { VaultName = VaultName, Name = SecretName, Version = SecretVersion, SecretValue = secureSecretValue, Attributes = secretAttributes };
 
-            cmdlet = new SetAzureKeyVaultSecret()
+            cmdlet = new SetAzureKeyVaultSecret
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 DataServiceClient = keyVaultClientMock.Object,
                 VaultName = secret.VaultName,
                 Name = secret.Name,
                 SecretValue = secret.SecretValue,
-                Disable = new SwitchParameter(!(secretAttributes.Enabled.Value)),
+                Disable = new SwitchParameter(!secretAttributes.Enabled.Value),
                 Expires = secretAttributes.Expires,
                 NotBefore = secretAttributes.NotBefore,
                 ContentType = secretAttributes.ContentType,

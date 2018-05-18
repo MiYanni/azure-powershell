@@ -35,14 +35,14 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         {
             Type type = typeof(NewAzureSqlDatabaseExport);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageKeyType", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageKey", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageUri", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "AdministratorLogin", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "AdministratorLoginPassword", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "AuthenticationType", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageKeyType", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageKey", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageUri", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "AdministratorLogin", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "AdministratorLoginPassword", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "AuthenticationType", false, false);
         }
 
         [Fact]
@@ -51,17 +51,17 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         {
             Type type = typeof(NewAzureSqlDatabaseImport);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageKeyType", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageKey", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageUri", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "AdministratorLogin", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "AdministratorLoginPassword", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "AuthenticationType", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Edition", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServiceObjectiveName", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseMaxSizeBytes", isMandatory: true, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageKeyType", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageKey", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "StorageUri", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "AdministratorLogin", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "AdministratorLoginPassword", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "AuthenticationType", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Edition", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServiceObjectiveName", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseMaxSizeBytes", true, false);
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         {
             Type type = typeof(GetAzureSqlDatabaseImportExportStatus);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "OperationStatusLink", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "OperationStatusLink", true, true);
         }
     }
 }

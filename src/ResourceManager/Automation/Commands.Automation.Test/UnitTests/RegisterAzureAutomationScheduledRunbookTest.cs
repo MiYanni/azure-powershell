@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new RegisterAzureAutomationScheduledRunbook
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new RegisterAzureAutomationScheduledRunbook
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -51,18 +51,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string runbookName = "runbook";
             string scheduleName = "schedule";
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f => f.RegisterScheduledRunbook(resourceGroupName, accountName, runbookName, scheduleName, null, null));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.RunbookName = runbookName;
-            this.cmdlet.ScheduleName = scheduleName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.RunbookName = runbookName;
+            cmdlet.ScheduleName = scheduleName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.RegisterScheduledRunbook(resourceGroupName, accountName, runbookName, scheduleName, null, null), Times.Once());
+            mockAutomationClient.Verify(f => f.RegisterScheduledRunbook(resourceGroupName, accountName, runbookName, scheduleName, null, null), Times.Once());
         }
     }
 }

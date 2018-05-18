@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             controller.RunPsTestWorkflow(
                 () =>
                 {
-                    return new string[]
+                    return new[]
                     {
                         string.Format(string.Format("Test-UploadApplicationPackage '{0}' '{1}' '{2}'", id, version, filePath))
                     };
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             controller.RunPsTestWorkflow(
                 () =>
                 {
-                    return new string[]
+                    return new[]
                     {
                         string.Format(string.Format("Test-UpdateApplicationPackage '{0}' '{1}' '{2}'", id, version, filePath))
                     };
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             controller.RunPsTestWorkflow(
                 () =>
                 {
-                    return new string[]
+                    return new[]
                     {
                         string.Format(string.Format("Test-CreatePoolWithApplicationPackage '{0}' '{1}' '{2}'", id, version, poolId))
                     };
@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             controller.RunPsTestWorkflow(
                 () =>
                 {
-                    return new string[]
+                    return new[]
                     {
                         string.Format("Test-UpdatePoolWithApplicationPackage '{0}' '{1}' '{2}'", id, version, poolId)
                     };
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
                 {
                     context = new ScenarioTestContext();
                     ScenarioTestHelpers.CreateApplicationPackage(controller, context, id, version, filePath);
-                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, targetDedicated: 1, targetLowPriority: 0);
+                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, 1, 0);
                 },
                 () =>
                 {

@@ -30,29 +30,29 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File
 
         public StorageFileTestBase()
         {
-            this.MockCmdRunTime = new MockCommandRuntime();
+            MockCmdRunTime = new MockCommandRuntime();
             cmdlet = (T)Activator.CreateInstance(typeof(T));
-            cmdlet.CommandRuntime = this.MockCmdRunTime;
-            cmdlet.Channel = this.channel;
+            cmdlet.CommandRuntime = MockCmdRunTime;
+            cmdlet.Channel = channel;
             cmdlet.ShareChannel = true;
-            this.sessionStateDisposable = cmdlet.InitializeSessionState();
+            sessionStateDisposable = cmdlet.InitializeSessionState();
         }
 
         protected MockStorageFileManagement MockChannel
         {
-            get { return this.channel; }
+            get { return channel; }
         }
 
         protected T CmdletInstance
         {
-            get { return this.cmdlet; }
+            get { return cmdlet; }
         }
 
         public void Dispose()
         {
-            if (this.sessionStateDisposable != null)
+            if (sessionStateDisposable != null)
             {
-                this.sessionStateDisposable.Dispose();
+                sessionStateDisposable.Dispose();
             }
         }
     }

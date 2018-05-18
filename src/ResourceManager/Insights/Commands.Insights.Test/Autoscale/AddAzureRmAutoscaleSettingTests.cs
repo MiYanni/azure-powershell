@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
         private readonly Mock<MonitorManagementClient> insightsManagementClientMock;
         private readonly Mock<IAutoscaleSettingsOperations> insightsAutoscaleOperationsMock;
         private Mock<ICommandRuntime> commandRuntimeMock;
-        private Microsoft.Rest.Azure.AzureOperationResponse<AutoscaleSettingResource> response;
+        private AzureOperationResponse<AutoscaleSettingResource> response;
         private string resourceGroup;
         private string settingName;
         private AutoscaleSettingResource createOrUpdatePrms;
@@ -49,19 +49,19 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
             insightsAutoscaleOperationsMock = new Mock<IAutoscaleSettingsOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new AddAzureRmAutoscaleSettingCommand()
+            cmdlet = new AddAzureRmAutoscaleSettingCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
-            response = new AzureOperationResponse<AutoscaleSettingResource>()
+            response = new AzureOperationResponse<AutoscaleSettingResource>
             {
                 Body = new AutoscaleSettingResource()
             };
 
             insightsAutoscaleOperationsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<AutoscaleSettingResource>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Microsoft.Rest.Azure.AzureOperationResponse<AutoscaleSettingResource>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string resourceGrp, string settingNm, AutoscaleSettingResource createOrUpdateParams, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     resourceGroup = resourceGrp;
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
                     createOrUpdatePrms = createOrUpdateParams;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.AutoscaleSettings).Returns(this.insightsAutoscaleOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.AutoscaleSettings).Returns(insightsAutoscaleOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -82,9 +82,9 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void AddAutoscaleSettingCommandParametersProcessing()
         {
-            var spec = this.CreateCompleteSpec(location: "East US", name: "SettingName", profiles: null);
-            var autoscaleRules = new List<ScaleRule> { this.CreateAutoscaleRule("IncommingReq") };
-            var autoscaleProfile = new List<AutoscaleProfile> { this.CreateAutoscaleProfile(autoscaleRules: autoscaleRules, fixedDate: true) };
+            var spec = CreateCompleteSpec("East US", "SettingName");
+            var autoscaleRules = new List<ScaleRule> { CreateAutoscaleRule("IncommingReq") };
+            var autoscaleProfile = new List<AutoscaleProfile> { CreateAutoscaleProfile(autoscaleRules) };
 
             // Testing with a complete spec as parameter (Update semantics)
             // Add-AutoscaleSetting -SettingSpec <AutoscaleSettingResource> -ResourceGroup <String> [-DisableSetting [<SwitchParameter>]] [-AutoscaleProfiles <List[AutoscaleProfile]>] [-Profile <AzureSMProfile>] [<CommonParameters>]
@@ -94,9 +94,9 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
             cmdlet.ResourceGroupName = Utilities.ResourceGroup;
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal("SettingName", this.settingName);
-            Assert.NotNull(this.createOrUpdatePrms);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal("SettingName", settingName);
+            Assert.NotNull(createOrUpdatePrms);
 
             // Add-AutoscaleSetting -SettingSpec <AutoscaleSettingResource> -ResourceGroup <String> [-DisableSetting [<SwitchParameter>]] [-AutoscaleProfiles <List[AutoscaleProfile]>] [-Profile <AzureSMProfile>] [<CommonParameters>]
             // Add-AutoscaleSetting -SettingSpec $spec -ResourceGroup $Utilities.ResourceGroup -DisableSetting
@@ -104,9 +104,9 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
             cmdlet.DisableSetting = true;
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal("SettingName", this.settingName);
-            Assert.NotNull(this.createOrUpdatePrms);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal("SettingName", settingName);
+            Assert.NotNull(createOrUpdatePrms);
 
             // Add-AutoscaleSetting -SettingSpec <AutoscaleSettingResource> -ResourceGroup <String> [-DisableSetting [<SwitchParameter>]] [-AutoscaleProfiles <List[AutoscaleProfile]>] [-Profile <AzureSMProfile>] [<CommonParameters>]
             // Adding a profile
@@ -175,12 +175,12 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
         {
             if (profiles == null)
             {
-                profiles = new List<AutoscaleProfile>() { this.CreateAutoscaleProfile() };
+                profiles = new List<AutoscaleProfile> { CreateAutoscaleProfile() };
             }
 
             var setting = new AutoscaleSettingResource(
-                location: location,
-                profiles: profiles,
+                location,
+                profiles,
                 name: name)
             {
                 Enabled = true,

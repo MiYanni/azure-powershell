@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
             }
 
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            Cmdlet = new NewAzureRmAutoscaleProfileCommand()
+            Cmdlet = new NewAzureRmAutoscaleProfileCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
@@ -51,11 +51,11 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void NewAutoscaleProfileCommandParametersProcessing()
         {
-            this.InitializeAutoscaleProfile();
-            this.InitializeForRecurrentSchedule();
+            InitializeAutoscaleProfile();
+            InitializeForRecurrentSchedule();
             Cmdlet.ExecuteCmdlet();
 
-            this.InitializeForFixedDate();
+            InitializeForFixedDate();
             Cmdlet.ExecuteCmdlet();
 
             Cmdlet.ScheduleDay = null;
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
 
         internal void InitializeAutoscaleProfile(List<ScaleRule> rules = null)
         {
-            List<ScaleRule> autoscaleRules = rules ?? new List<ScaleRule> { this.CreateAutoscaleRule() };
+            List<ScaleRule> autoscaleRules = rules ?? new List<ScaleRule> { CreateAutoscaleRule() };
 
             Cmdlet.Name = "profile1";
             Cmdlet.DefaultCapacity = "1";

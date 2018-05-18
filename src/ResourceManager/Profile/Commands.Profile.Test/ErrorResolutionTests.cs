@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             Assert.True(output == null || output.Count == 0);
             output = cmdlet.ExecuteCmdletInPipeline<AzureErrorRecord>("Resolve-Error", new ErrorRecord[] { null, null });
             Assert.True(output == null || output.Count == 0);
-            output = cmdlet.ExecuteCmdletInPipeline<AzureErrorRecord>("Resolve-Error", new ErrorRecord[] { null, new ErrorRecord(new Exception(null), null, ErrorCategory.AuthenticationError, null) });
+            output = cmdlet.ExecuteCmdletInPipeline<AzureErrorRecord>("Resolve-Error", new[] { null, new ErrorRecord(new Exception(null), null, ErrorCategory.AuthenticationError, null) });
             Assert.NotNull(output);
             Assert.Single(output);
             var record = output[0] as AzureExceptionRecord;
@@ -66,12 +66,12 @@ namespace Microsoft.Azure.Commands.Profile.Test
             var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
             var hyakException = new TestHyakException("exception message", CloudHttpRequestErrorInfo.Create(request), CloudHttpResponseErrorInfo.Create(response))
             {
-                Error = new Hyak.Common.CloudError { Code="HyakCode", Message="HyakError"}
+                Error = new CloudError { Code="HyakCode", Message="HyakError"}
             };
 
-            var autorestException = new Microsoft.Rest.Azure.CloudException("exception message")
+            var autorestException = new Rest.Azure.CloudException("exception message")
             {
-                Body = new Microsoft.Rest.Azure.CloudError { Code = "AutorestCode", Message = "Autorest message" },
+                Body = new Rest.Azure.CloudError { Code = "AutorestCode", Message = "Autorest message" },
                 Request = new Rest.HttpRequestMessageWrapper(request, ""),
                 Response = new Rest.HttpResponseMessageWrapper(response, ""),
                 RequestId = "AutoRestRequestId"
@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             Assert.NotNull(autorestResult);
             Assert.Equal(ErrorCategory.InvalidOperation, autorestResult.ErrorCategory.Category);
             Assert.NotNull(autorestResult.Exception);
-            Assert.Equal(typeof(Microsoft.Rest.Azure.CloudException), autorestResult.Exception.GetType());
+            Assert.Equal(typeof(Rest.Azure.CloudException), autorestResult.Exception.GetType());
             Assert.Equal("exception message", autorestResult.Exception.Message);
             Assert.NotNull(autorestResult.RequestMessage);
             Assert.Equal(HttpMethod.Get.ToString(), autorestResult.RequestMessage.Verb);
@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             var runtime = new MockCommandRuntime();
             var hyakException = new TestHyakException(null, null, null);
  
-            var autorestException = new Microsoft.Rest.Azure.CloudException();
+            var autorestException = new Rest.Azure.CloudException();
  
             var cmdlet = new ResolveError
             {
@@ -161,7 +161,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             Assert.NotNull(autorestResult);
             Assert.Equal(ErrorCategory.InvalidOperation, autorestResult.ErrorCategory.Category);
             Assert.NotNull(autorestResult.Exception);
-            Assert.Equal(typeof(Microsoft.Rest.Azure.CloudException), autorestResult.Exception.GetType());
+            Assert.Equal(typeof(Rest.Azure.CloudException), autorestResult.Exception.GetType());
         }
 
         [Fact]

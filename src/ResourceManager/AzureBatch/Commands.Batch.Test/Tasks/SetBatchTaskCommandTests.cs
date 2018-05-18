@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new SetBatchTaskCommand()
+            cmdlet = new SetBatchTaskCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -86,11 +86,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.TaskConstraints,
                 ProxyModels.TaskUpdateOptions,
-                AzureOperationHeaderResponse<ProxyModels.TaskUpdateHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<ProxyModels.TaskUpdateHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters

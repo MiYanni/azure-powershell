@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
 
             foreach(ProductInfoHeaderValue hv in piHv)
             {
-                if(hv.Product.Name.Equals("PSVersion") && (!string.IsNullOrEmpty(hv.Product.Version)))
+                if(hv.Product.Name.Equals("PSVersion") && !string.IsNullOrEmpty(hv.Product.Version))
                 {
                     psUserAgentString = string.Format("{0}-{1}", hv.Product.Name, hv.Product.Version);
                 }
@@ -217,7 +217,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
 
             Assert.NotNull(AzureRmProfileProvider.Instance.Profile.DefaultContext);
             Assert.Equal("AzureSDKTeam.onmicrosoft.com", AzureRmProfileProvider.Instance.Profile.DefaultContext.Tenant.Directory);
-            Assert.Equal(cmdlt.TenantId, AzureRmProfileProvider.Instance.Profile.DefaultContext.Tenant.Id.ToString());
+            Assert.Equal(cmdlt.TenantId, AzureRmProfileProvider.Instance.Profile.DefaultContext.Tenant.Id);
             Assert.Null(AzureRmProfileProvider.Instance.Profile.DefaultContext.Subscription);
         }
 
@@ -241,8 +241,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
             cmdlt.InvokeEndProcessing();
 
             Assert.NotNull(AzureRmProfileProvider.Instance.Profile.DefaultContext);
-            Assert.Equal(cmdlt.TenantId, AzureRmProfileProvider.Instance.Profile.DefaultContext.Tenant.Id.ToString());
-            Assert.Equal(cmdlt.ApplicationId, AzureRmProfileProvider.Instance.Profile.DefaultContext.Account.Id.ToString());
+            Assert.Equal(cmdlt.TenantId, AzureRmProfileProvider.Instance.Profile.DefaultContext.Tenant.Id);
+            Assert.Equal(cmdlt.ApplicationId, AzureRmProfileProvider.Instance.Profile.DefaultContext.Account.Id);
             Assert.NotNull(AzureRmProfileProvider.Instance.Profile.DefaultContext.Subscription);
             Assert.Equal(
                 cmdlt.CertificateThumbprint,
@@ -362,7 +362,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             cmdlt.CommandRuntime = commandRuntimeMock;
             cmdlt.Environment = "unknown";
             var testPassed = false;
-            cmdlt.SetBoundParameters(new Dictionary<string, object>() { { "Environment", "unknown" } });
+            cmdlt.SetBoundParameters(new Dictionary<string, object> { { "Environment", "unknown" } });
             cmdlt.SetParameterSet("UserWithSubscriptionId");
 
             // Act
@@ -394,7 +394,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             cmdlt.SkipValidation = true;
             cmdlt.TenantId = Guid.NewGuid().ToString();
             cmdlt.Subscription = Guid.NewGuid().ToString();
-            cmdlt.SetBoundParameters(new Dictionary<string, object>() { { "Subscription", cmdlt.Subscription } });
+            cmdlt.SetBoundParameters(new Dictionary<string, object> { { "Subscription", cmdlt.Subscription } });
             cmdlt.SetParameterSet("AccessTokenWithSubscriptionId");
 
             cmdlt.InvokeBeginProcessing();

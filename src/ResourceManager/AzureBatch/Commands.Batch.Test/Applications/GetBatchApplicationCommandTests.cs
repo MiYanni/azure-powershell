@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
         {
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchApplicationCommand()
+            cmdlet = new GetBatchApplicationCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             PSApplication expected01 = new PSApplication();
             PSApplication expected02 = new PSApplication();
 
-            batchClientMock.Setup(b => b.ListApplications(resourceGroup, accountName01)).Returns(new List<PSApplication>() { expected01, expected02 });
+            batchClientMock.Setup(b => b.ListApplications(resourceGroup, accountName01)).Returns(new List<PSApplication> { expected01, expected02 });
 
             cmdlet.AccountName = accountName01;
             cmdlet.ResourceGroupName = resourceGroup;

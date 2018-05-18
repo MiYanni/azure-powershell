@@ -43,31 +43,31 @@ namespace Microsoft.Azure.Commands.Insights.Test.LogProfiles
             insightsLogProfileOperationsMock = new Mock<ILogProfilesOperations>();
             MonitorClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureRmLogProfileCommand()
+            cmdlet = new GetAzureRmLogProfileCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = MonitorClientMock.Object
             };
 
-            response = Test.Utilities.InitializeLogProfileResponse();
+            response = Utilities.InitializeLogProfileResponse();
 
             insightsLogProfileOperationsMock.Setup(f => f.GetWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<LogProfileResource>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string pfn, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     logProfileName = pfn;
                 });
 
-            responseList = new AzureOperationResponse<IEnumerable<LogProfileResource>>()
+            responseList = new AzureOperationResponse<IEnumerable<LogProfileResource>>
             {
-                Body = new List<LogProfileResource>() {response.Body}
+                Body = new List<LogProfileResource> {response.Body}
             };
 
             insightsLogProfileOperationsMock.Setup(f => f.ListWithHttpMessagesAsync(It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IEnumerable<LogProfileResource>>>(responseList))
+                .Returns(Task.FromResult(responseList))
                 .Callback((Dictionary<string, List<string>> headers, CancellationToken t) => {});
 
-            MonitorClientMock.SetupGet(f => f.LogProfiles).Returns(this.insightsLogProfileOperationsMock.Object);
+            MonitorClientMock.SetupGet(f => f.LogProfiles).Returns(insightsLogProfileOperationsMock.Object);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.LogProfiles
             cmdlet.Name = Utilities.Name;
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.Name, this.logProfileName);
+            Assert.Equal(Utilities.Name, logProfileName);
         }
     }
 }

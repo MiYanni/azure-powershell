@@ -216,7 +216,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 items = new T[0];
             }
 
-            return collection.Concat<T>(items).ToArray<T>();
+            return collection.Concat(items).ToArray();
         }
 
         /// <summary>

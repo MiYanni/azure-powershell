@@ -37,12 +37,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void NewDirectoryUsingShareObjectAndPathTest()
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.ShareParameterSetName,
-                new KeyValuePair<string, object>("Share", this.MockChannel.GetShareReference("share")),
+                new KeyValuePair<string, object>("Share", MockChannel.GetShareReference("share")),
                 new KeyValuePair<string, object>("Path", "newDirectory"));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFileDirectory>()
                 .AssertSingleObject(x => x.Name == "newDirectory" && x.Share.Name == "share");
         }
@@ -50,12 +50,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void NewDirectoryUsingDirectoryObjectAndPathTest()
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.DirectoryParameterSetName,
-                new KeyValuePair<string, object>("Directory", this.MockChannel.GetShareReference("share").GetRootDirectoryReference()),
+                new KeyValuePair<string, object>("Directory", MockChannel.GetShareReference("share").GetRootDirectoryReference()),
                 new KeyValuePair<string, object>("Path", "newDirectory"));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFileDirectory>()
                 .AssertSingleObject(x => x.Name == "newDirectory" && x.Share.Name == "share");
         }
@@ -80,12 +80,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
 
         private void NewDirectoryAndAssert(string directoryName)
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.ShareNameParameterSetName,
                 new KeyValuePair<string, object>("ShareName", "share"),
                 new KeyValuePair<string, object>("Path", directoryName));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFileDirectory>()
                 .AssertSingleObject(x => x.Name == directoryName && x.Share.Name == "share");
         }
@@ -94,7 +94,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         {
             try
             {
-                this.CmdletInstance.RunCmdlet(
+                CmdletInstance.RunCmdlet(
                     Constants.ShareNameParameterSetName,
                     new KeyValuePair<string, object>("ShareName", "share"),
                     new KeyValuePair<string, object>("Path", directoryName));

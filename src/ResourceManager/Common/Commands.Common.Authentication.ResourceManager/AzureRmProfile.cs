@@ -119,9 +119,9 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
                 string contents = GetJsonText(store.ReadFileAsText(ProfilePath));
                 LegacyAzureRmProfile oldProfile;
                 AzureRmProfile profile = null;
-                if (SafeDeserializeObject<LegacyAzureRmProfile>(contents, out oldProfile)
+                if (SafeDeserializeObject(contents, out oldProfile)
                     && oldProfile.TryConvert(out profile)
-                    || SafeDeserializeObject<AzureRmProfile>(contents, out profile, new AzureRmProfileConverter()))
+                    || SafeDeserializeObject(contents, out profile, new AzureRmProfileConverter()))
                 {
                     Initialize(profile);
                 }
@@ -134,9 +134,9 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Models
             string contents = provider.CreateReader().ReadToEnd();
             LegacyAzureRmProfile oldProfile;
             AzureRmProfile profile = null;
-            if (!(SafeDeserializeObject<LegacyAzureRmProfile>(contents, out oldProfile)
+            if (!(SafeDeserializeObject(contents, out oldProfile)
                 && oldProfile.TryConvert(out profile))
-                && !SafeDeserializeObject<AzureRmProfile>(contents, out profile, new AzureRmProfileConverter(false)))
+                && !SafeDeserializeObject(contents, out profile, new AzureRmProfileConverter(false)))
             {
                 return;
             }

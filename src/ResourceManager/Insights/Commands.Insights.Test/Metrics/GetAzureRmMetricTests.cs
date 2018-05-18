@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Metrics
         private readonly Mock<MonitorClient> MonitorClientMock;
         private readonly Mock<IMetricsOperations> insightsMetricOperationsMock;
         private Mock<ICommandRuntime> commandRuntimeMock;
-        private Microsoft.Rest.Azure.AzureOperationResponse<IEnumerable<Metric>> response;
+        private Rest.Azure.AzureOperationResponse<IEnumerable<Metric>> response;
         private string resourceId;
         private ODataQuery<Metric> filter;
 
@@ -44,26 +44,26 @@ namespace Microsoft.Azure.Commands.Insights.Test.Metrics
             insightsMetricOperationsMock = new Mock<IMetricsOperations>();
             MonitorClientMock = new Mock<MonitorClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureRmMetricCommand()
+            cmdlet = new GetAzureRmMetricCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorClient = MonitorClientMock.Object
             };
 
-            response = new Microsoft.Rest.Azure.AzureOperationResponse<IEnumerable<Metric>>()
+            response = new Rest.Azure.AzureOperationResponse<IEnumerable<Metric>>
             {
                 Body = new List<Metric>()
             };
 
             insightsMetricOperationsMock.Setup(f => f.ListWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<ODataQuery<Metric>>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Microsoft.Rest.Azure.AzureOperationResponse<IEnumerable<Metric>>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string r, ODataQuery<Metric> s, Dictionary<string, List<string>> headers, CancellationToken t) =>
                  {
                     resourceId = r;
                     filter = s;
                 });
 
-            MonitorClientMock.SetupGet(f => f.Metrics).Returns(this.insightsMetricOperationsMock.Object);
+            MonitorClientMock.SetupGet(f => f.Metrics).Returns(insightsMetricOperationsMock.Object);
  }
 
         [Fact]

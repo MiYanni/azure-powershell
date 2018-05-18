@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new StopBatchCertificateDeletionCommand()
+            cmdlet = new StopBatchCertificateDeletionCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
                 CertificateCancelDeletionOptions,
                 AzureOperationHeaderResponse<CertificateCancelDeletionHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();

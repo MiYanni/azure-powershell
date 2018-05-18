@@ -36,9 +36,9 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
             Type type = typeof(GetAzureSqlDatabaseIndexRecommendations);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.None);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: false, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "IndexRecommendationName", isMandatory: false, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", false, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "IndexRecommendationName", false, true);
         }
 
         [Fact]
@@ -48,9 +48,9 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
             Type type = typeof(StartAzureSqlDatabaseExecuteIndexRecommendation);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.Low);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "IndexRecommendationName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "IndexRecommendationName", true, true);
         }
 
         [Fact]
@@ -60,9 +60,9 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
             Type type = typeof(StopAzureSqlDatabaseExecuteIndexRecommendation);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.Low);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "IndexRecommendationName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "IndexRecommendationName", true, true);
         }
     }
 }

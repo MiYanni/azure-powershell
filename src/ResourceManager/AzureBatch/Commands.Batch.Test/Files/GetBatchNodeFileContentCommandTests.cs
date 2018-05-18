@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchNodeFileContentCommand()
+            cmdlet = new GetBatchNodeFileContentCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
 
             // Don't go to the service on a Get NodeFile call or Get NodeFile Properties call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeGetFileAndPropertiesFromTaskResponseInterceptor(cmdlet.Path);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             using (MemoryStream memStream = new MemoryStream())
             {
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
 
             // Don't go to the service on a Get NodeFile call or Get NodeFile Properties call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeGetFileAndPropertiesFromComputeNodeResponseInterceptor(cmdlet.Path);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             using (MemoryStream memStream = new MemoryStream())
             {

@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchRemoteDesktopProtocolFileCommand()
+            cmdlet = new GetBatchRemoteDesktopProtocolFileCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 ComputeNodeGetRemoteDesktopOptions,
                 AzureOperationResponse<Stream, ComputeNodeGetRemoteDesktopHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             using (MemoryStream memStream = new MemoryStream())
             {

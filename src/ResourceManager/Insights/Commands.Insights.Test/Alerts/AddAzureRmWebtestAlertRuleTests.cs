@@ -48,33 +48,33 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
             insightsAlertRuleOperationsMock = new Mock<IAlertRulesOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new AddAzureRmWebtestAlertRuleCommand()
+            cmdlet = new AddAzureRmWebtestAlertRuleCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
-            AlertRuleResource alertRuleResourceInput = new AlertRuleResource()
+            AlertRuleResource alertRuleResourceInput = new AlertRuleResource
             {
                 Location = null, 
                 IsEnabled = true, 
                 AlertRuleResourceName = "a name"
             };
 
-            response = new Rest.Azure.AzureOperationResponse<AlertRuleResource>()
+            response = new Rest.Azure.AzureOperationResponse<AlertRuleResource>
             {
                 Body = alertRuleResourceInput
             };
 
             insightsAlertRuleOperationsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<AlertRuleResource>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Rest.Azure.AzureOperationResponse<AlertRuleResource>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string resourceGrp, string name, AlertRuleResource createOrUpdateParams, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     resourceGroup = resourceGrp;
                     createOrUpdatePrms = createOrUpdateParams;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.AlertRules).Returns(this.insightsAlertRuleOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.AlertRules).Returns(insightsAlertRuleOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -97,28 +97,28 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResults(
-                location: "East US",
-                tagsKey: "hidden-link:",
-                isEnabled: true,
-                actionsNull: true,
-                actionsCount: 0,
-                failedLocationCount: 10,
-                totalMinutes: 15);
+            AssertResults(
+                "East US",
+                "hidden-link:",
+                true,
+                true,
+                0,
+                10,
+                15);
 
             // Test null actions and disabled
             cmdlet.DisableRule = true;
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResults(
-                location: "East US",
-                tagsKey: "hidden-link:",
-                isEnabled: false,
-                actionsNull: true,
-                actionsCount: 0,
-                failedLocationCount: 10,
-                totalMinutes: 15);
+            AssertResults(
+                "East US",
+                "hidden-link:",
+                false,
+                true,
+                0,
+                10,
+                15);
 
             // Test empty actions
             cmdlet.DisableRule = false;
@@ -126,14 +126,14 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResults(
-                location: "East US",
-                tagsKey: "hidden-link:",
-                isEnabled: true,
-                actionsNull: false,
-                actionsCount: 0,
-                failedLocationCount: 10,
-                totalMinutes: 15);
+            AssertResults(
+                "East US",
+                "hidden-link:",
+                true,
+                false,
+                0,
+                10,
+                15);
 
             // Test non-empty actions (one action)
             List<string> eMails = new List<string>();
@@ -148,14 +148,14 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResults(
-                location: "East US",
-                tagsKey: "hidden-link:",
-                isEnabled: true,
-                actionsNull: false,
-                actionsCount: 1,
-                failedLocationCount: 10,
-                totalMinutes: 15);
+            AssertResults(
+                "East US",
+                "hidden-link:",
+                true,
+                false,
+                1,
+                10,
+                15);
 
             // Test non-empty actions (two actions)
             var properties = new Dictionary<string, string>();
@@ -170,52 +170,52 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResults(
-                location: "East US",
-                tagsKey: "hidden-link:",
-                isEnabled: true,
-                actionsNull: false,
-                actionsCount: 2,
-                failedLocationCount: 10,
-                totalMinutes: 15);
+            AssertResults(
+                "East US",
+                "hidden-link:",
+                true,
+                false,
+                2,
+                10,
+                15);
 
             // Test non-empty actions (two actions) and non-default window size
             cmdlet.WindowSize = TimeSpan.FromMinutes(300);
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResults(
-                location: "East US",
-                tagsKey: "hidden-link:",
-                isEnabled: true,
-                actionsNull: false,
-                actionsCount: 2,
-                failedLocationCount: 10,
-                totalMinutes: 300);
+            AssertResults(
+                "East US",
+                "hidden-link:",
+                true,
+                false,
+                2,
+                10,
+                300);
         }
 
         private void AssertResults(string location, string tagsKey, bool isEnabled, bool actionsNull, int actionsCount, int failedLocationCount, double totalMinutes)
         {
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal(location, this.createOrUpdatePrms.Location);
-            Assert.True(this.createOrUpdatePrms.Tags.ContainsKey(tagsKey));
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal(location, createOrUpdatePrms.Location);
+            Assert.True(createOrUpdatePrms.Tags.ContainsKey(tagsKey));
 
-            Assert.NotNull(this.createOrUpdatePrms);
+            Assert.NotNull(createOrUpdatePrms);
             if (actionsNull)
             {
-                Assert.Null(this.createOrUpdatePrms.Actions);
+                Assert.Null(createOrUpdatePrms.Actions);
             }
             else
             {
-                Assert.NotNull(this.createOrUpdatePrms.Actions);
-                Assert.Equal(actionsCount, this.createOrUpdatePrms.Actions.Count);
+                Assert.NotNull(createOrUpdatePrms.Actions);
+                Assert.Equal(actionsCount, createOrUpdatePrms.Actions.Count);
             }
 
-            Assert.Equal(Utilities.Name, this.createOrUpdatePrms.AlertRuleResourceName);
-            Assert.Equal(isEnabled, this.createOrUpdatePrms.IsEnabled);
-            Assert.True(this.createOrUpdatePrms.Condition is LocationThresholdRuleCondition);
+            Assert.Equal(Utilities.Name, createOrUpdatePrms.AlertRuleResourceName);
+            Assert.Equal(isEnabled, createOrUpdatePrms.IsEnabled);
+            Assert.True(createOrUpdatePrms.Condition is LocationThresholdRuleCondition);
 
-            var condition = this.createOrUpdatePrms.Condition as LocationThresholdRuleCondition;
+            var condition = createOrUpdatePrms.Condition as LocationThresholdRuleCondition;
             Assert.Equal(failedLocationCount, condition.FailedLocationCount);
             Assert.Equal(totalMinutes, ((TimeSpan)condition.WindowSize).TotalMinutes);
 

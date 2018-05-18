@@ -30,13 +30,13 @@ namespace Microsoft.Azure.Commands.KeyVault.Test.UnitTests
 
         public SetKeyVaultKeyAttributeTests()
         {
-            base.SetupTest();
+            SetupTest();
 
             keyAttributes = new PSKeyVaultKeyAttributes(true, DateTime.Now, DateTime.Now, null, null, null);
             webKey = new WebKey.JsonWebKey();
-            keyBundle = new PSKeyVaultKey() { Attributes = keyAttributes, Key = webKey, Name = KeyName, VaultName = VaultName, Version = KeyVersion };
+            keyBundle = new PSKeyVaultKey { Attributes = keyAttributes, Key = webKey, Name = KeyName, VaultName = VaultName, Version = KeyVersion };
 
-            cmdlet = new UpdateAzureKeyVaultKey()
+            cmdlet = new UpdateAzureKeyVaultKey
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 DataServiceClient = keyVaultClientMock.Object,

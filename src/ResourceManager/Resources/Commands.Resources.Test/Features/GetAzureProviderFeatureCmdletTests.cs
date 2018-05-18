@@ -14,14 +14,14 @@
 
 namespace Microsoft.Azure.Commands.Resources.Test
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
-    using Microsoft.Azure.Management.ResourceManager;
-    using Microsoft.Azure.Management.ResourceManager.Models;
-    using Microsoft.Rest.Azure;
-    using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
+    using ResourceManager.Cmdlets.Implementation;
+    using ResourceManager.Cmdlets.SdkClient;
+    using ResourceManager.Cmdlets.SdkModels;
+    using Management.ResourceManager;
+    using Management.ResourceManager.Models;
+    using Rest.Azure;
+    using WindowsAzure.Commands.Common.Test.Mocks;
+    using WindowsAzure.Commands.ScenarioTest;
     using Moq;
     using System;
     using System.Collections.Generic;
@@ -58,16 +58,16 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         public GetAzureProviderFeatureCmdletTests(ITestOutputHelper output)
         {
-            this.featureOperationsMock = new Mock<IFeaturesOperations>();
+            featureOperationsMock = new Mock<IFeaturesOperations>();
             var featureClient = new Mock<IFeatureClient>();
 
             featureClient
                 .SetupGet(client => client.Features)
-                .Returns(() => this.featureOperationsMock.Object);
+                .Returns(() => featureOperationsMock.Object);
 
-            this.commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock = new Mock<ICommandRuntime>();
 
-            this.cmdlet = new GetAzureProviderFeatureCmdletTest
+            cmdlet = new GetAzureProviderFeatureCmdletTest
             {
                 //CommandRuntime = commandRuntimeMock.Object,
                 ProviderFeatureClient = new ProviderFeatureClient
@@ -129,19 +129,19 @@ namespace Microsoft.Azure.Commands.Resources.Test
 
             var pagableResult = new Page<FeatureResult>();
             //var listResult = new[] { provider1RegisteredFeature, provider1UnregisteredFeature, provider2UnregisteredFeature };
-            var listResult = new List<FeatureResult>() { provider1RegisteredFeature, provider1UnregisteredFeature, provider2UnregisteredFeature };
-            pagableResult.SetItemValue<FeatureResult>(listResult);
-            var result = new AzureOperationResponse<IPage<FeatureResult>>()
+            var listResult = new List<FeatureResult> { provider1RegisteredFeature, provider1UnregisteredFeature, provider2UnregisteredFeature };
+            pagableResult.SetItemValue(listResult);
+            var result = new AzureOperationResponse<IPage<FeatureResult>>
             {
                 Body = pagableResult
             };
 
-            this.featureOperationsMock
+            featureOperationsMock
                 .Setup(f => f.ListAllWithHttpMessagesAsync(null, It.IsAny<CancellationToken>()))
                 .Returns(() => Task.FromResult(result));
 
             // 1. List only registered features of providers
-            this.commandRuntimeMock
+            commandRuntimeMock
                 .Setup(m => m.WriteObject(It.IsAny<object>()))
                 .Callback((object obj) =>
                 {
@@ -156,16 +156,16 @@ namespace Microsoft.Azure.Commands.Resources.Test
                     Assert.Equal(ProviderFeatureClient.RegisteredStateName, provider.RegistrationState, StringComparer.OrdinalIgnoreCase);
                 });
 
-            this.cmdlet.ParameterSetOverride = GetAzureProviderFeatureCmdlet.ListAvailableParameterSet;
+            cmdlet.ParameterSetOverride = GetAzureProviderFeatureCmdlet.ListAvailableParameterSet;
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
-            this.VerifyListAllCallPatternAndReset();
+            VerifyListAllCallPatternAndReset();
 
             // 2. List all features of all providers
-            this.cmdlet.ListAvailable = true;
+            cmdlet.ListAvailable = true;
 
-            this.commandRuntimeMock
+            commandRuntimeMock
               .Setup(m => m.WriteObject(It.IsAny<object>()))
               .Callback((object obj) =>
               {
@@ -174,26 +174,26 @@ namespace Microsoft.Azure.Commands.Resources.Test
                   Assert.Equal(listResult.Count(), features.Length);
               });
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
-            this.VerifyListAllCallPatternAndReset();
+            VerifyListAllCallPatternAndReset();
 
             // 3.a. List only registered features of a particular provider - and they exist
             string providerOfChoice = Provider1Namespace;
-            this.cmdlet.ListAvailable = false;
-            this.cmdlet.ProviderNamespace = providerOfChoice;
+            cmdlet.ListAvailable = false;
+            cmdlet.ProviderNamespace = providerOfChoice;
             //pagableResult.SetItemValue<FeatureResult>(new List<FeatureResult>() { provider1RegisteredFeature, provider1UnregisteredFeature });
 
-            this.featureOperationsMock
+            featureOperationsMock
                 .Setup(f => f.ListWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()))
                 .Callback((string providerName, Dictionary<string, List<string>> customHeaders, CancellationToken ignored) => Assert.Equal(providerOfChoice, providerName, StringComparer.OrdinalIgnoreCase))
                 .Returns(() => Task.FromResult(
-                    new AzureOperationResponse<IPage<FeatureResult>>()
+                    new AzureOperationResponse<IPage<FeatureResult>>
                     {
                         Body = pagableResult
                     }));
 
-            this.commandRuntimeMock
+            commandRuntimeMock
                 .Setup(m => m.WriteObject(It.IsAny<object>()))
                 .Callback((object obj) =>
                 {
@@ -208,19 +208,19 @@ namespace Microsoft.Azure.Commands.Resources.Test
                     Assert.Equal(ProviderFeatureClient.RegisteredStateName, provider.RegistrationState, StringComparer.OrdinalIgnoreCase);
                 });
 
-            this.cmdlet.ParameterSetOverride = GetAzureProviderFeatureCmdlet.GetFeatureParameterSet;
+            cmdlet.ParameterSetOverride = GetAzureProviderFeatureCmdlet.GetFeatureParameterSet;
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
-            this.VerifyListProviderFeaturesCallPatternAndReset();
+            VerifyListProviderFeaturesCallPatternAndReset();
 
             // 3.b. List only registered features of a particular provider - and they do not exist
             providerOfChoice = Provider2Namespace;
-            this.cmdlet.ListAvailable = false;
-            this.cmdlet.ProviderNamespace = providerOfChoice;
+            cmdlet.ListAvailable = false;
+            cmdlet.ProviderNamespace = providerOfChoice;
             //pagableResult.SetItemValue<FeatureResult>(new List<FeatureResult>() { provider2UnregisteredFeature });
 
-            this.commandRuntimeMock
+            commandRuntimeMock
                 .Setup(m => m.WriteObject(It.IsAny<object>()))
                 .Callback((object obj) =>
                 {
@@ -230,17 +230,17 @@ namespace Microsoft.Azure.Commands.Resources.Test
                     Assert.Empty(features);
                 });
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
-            this.VerifyListProviderFeaturesCallPatternAndReset();
+            VerifyListProviderFeaturesCallPatternAndReset();
 
             // 4. List all features of a particular provider
             providerOfChoice = Provider1Namespace;
-            this.cmdlet.ProviderNamespace = providerOfChoice;
-            this.cmdlet.ListAvailable = true;
+            cmdlet.ProviderNamespace = providerOfChoice;
+            cmdlet.ListAvailable = true;
             //pagableResult.SetItemValue<FeatureResult>(new List<FeatureResult>() { provider1RegisteredFeature, provider1UnregisteredFeature });
 
-            this.commandRuntimeMock
+            commandRuntimeMock
               .Setup(m => m.WriteObject(It.IsAny<object>()))
               .Callback((object obj) =>
               {
@@ -252,30 +252,30 @@ namespace Microsoft.Azure.Commands.Resources.Test
                   Assert.True(features.All(feature => string.Equals(feature.ProviderName, Provider1Namespace, StringComparison.OrdinalIgnoreCase)));
               });
 
-            this.cmdlet.ParameterSetOverride = GetAzureProviderFeatureCmdlet.ListAvailableParameterSet;
+            cmdlet.ParameterSetOverride = GetAzureProviderFeatureCmdlet.ListAvailableParameterSet;
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
-            this.VerifyListProviderFeaturesCallPatternAndReset();
+            VerifyListProviderFeaturesCallPatternAndReset();
 
             // 5. get a single provider feature by name
-            this.cmdlet.ProviderNamespace = Provider2Namespace;
-            this.cmdlet.FeatureName = Feature1Name;
-            this.cmdlet.ListAvailable = false;
+            cmdlet.ProviderNamespace = Provider2Namespace;
+            cmdlet.FeatureName = Feature1Name;
+            cmdlet.ListAvailable = false;
 
-            this.featureOperationsMock
+            featureOperationsMock
               .Setup(f => f.GetWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<CancellationToken>()))
               .Callback((string providerName, string featureName, Dictionary<string, List<string>> customHeaders, CancellationToken ignored) =>
               {
                   Assert.Equal(Provider2Namespace, providerName, StringComparer.OrdinalIgnoreCase);
                   Assert.Equal(Feature1Name, featureName, StringComparer.OrdinalIgnoreCase);
               })
-              .Returns(() => Task.FromResult(new AzureOperationResponse<FeatureResult>()
-              {
+              .Returns(() => Task.FromResult(new AzureOperationResponse<FeatureResult>
+                {
                   Body = provider2UnregisteredFeature
               }));
 
-            this.commandRuntimeMock
+            commandRuntimeMock
                 .Setup(m => m.WriteObject(It.IsAny<object>()))
                 .Callback((object obj) =>
                 {
@@ -288,11 +288,11 @@ namespace Microsoft.Azure.Commands.Resources.Test
                     Assert.Equal("Unregistered", feature.RegistrationState, StringComparer.OrdinalIgnoreCase);
                 });
 
-            this.cmdlet.ParameterSetOverride = GetAzureProviderFeatureCmdlet.GetFeatureParameterSet;
+            cmdlet.ParameterSetOverride = GetAzureProviderFeatureCmdlet.GetFeatureParameterSet;
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
-            this.VerifyGetCallPatternAndReset();
+            VerifyGetCallPatternAndReset();
         }
 
         /// <summary>
@@ -300,8 +300,8 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         private void ResetCalls()
         {
-            this.featureOperationsMock.ResetCalls();
-            this.commandRuntimeMock.ResetCalls();
+            featureOperationsMock.ResetCalls();
+            commandRuntimeMock.ResetCalls();
         }
 
         /// <summary>
@@ -309,14 +309,14 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         private void VerifyGetCallPatternAndReset()
         {
-            this.featureOperationsMock.Verify(f => f.GetWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once());
-            this.featureOperationsMock.Verify(f => f.ListWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
-            this.featureOperationsMock.Verify(f => f.ListAllWithHttpMessagesAsync(null, It.IsAny<CancellationToken>()), Times.Never);
-            this.featureOperationsMock.Verify(f => f.ListNextWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
-            this.featureOperationsMock.Verify(f => f.ListAllNextWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
-            this.commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>(), It.IsAny<bool>()), Times.Once());
+            featureOperationsMock.Verify(f => f.GetWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once());
+            featureOperationsMock.Verify(f => f.ListWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
+            featureOperationsMock.Verify(f => f.ListAllWithHttpMessagesAsync(null, It.IsAny<CancellationToken>()), Times.Never);
+            featureOperationsMock.Verify(f => f.ListNextWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
+            featureOperationsMock.Verify(f => f.ListAllNextWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>(), It.IsAny<bool>()), Times.Once());
 
-            this.ResetCalls();
+            ResetCalls();
         }
 
         /// <summary>
@@ -324,11 +324,11 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         private void VerifyListAllCallPatternAndReset()
         {
-            this.featureOperationsMock.Verify(f => f.ListAllWithHttpMessagesAsync(null, It.IsAny<CancellationToken>()), Times.Once());
-            this.featureOperationsMock.Verify(f => f.ListAllNextWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
-            this.commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>(), It.IsAny<bool>()), Times.Once());
+            featureOperationsMock.Verify(f => f.ListAllWithHttpMessagesAsync(null, It.IsAny<CancellationToken>()), Times.Once());
+            featureOperationsMock.Verify(f => f.ListAllNextWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>(), It.IsAny<bool>()), Times.Once());
 
-            this.ResetCalls();
+            ResetCalls();
         }
 
         /// <summary>
@@ -336,11 +336,11 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         private void VerifyListProviderFeaturesCallPatternAndReset()
         {
-            this.featureOperationsMock.Verify(f => f.ListWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once());
-            this.featureOperationsMock.Verify(f => f.ListNextWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
-            this.commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>(), It.IsAny<bool>()), Times.Once());
+            featureOperationsMock.Verify(f => f.ListWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once());
+            featureOperationsMock.Verify(f => f.ListNextWithHttpMessagesAsync(It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Never);
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>(), It.IsAny<bool>()), Times.Once());
 
-            this.ResetCalls();
+            ResetCalls();
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
             /// </summary>
             public override string DetermineParameterSetName()
             {
-                return this.ParameterSetOverride;
+                return ParameterSetOverride;
             }
         }
     }

@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test
         /// <returns>an unique string</returns>
         public static string GetUniqueString(string prefix = "", string replaceBar = "-")
         { 
-            string name = prefix + System.Guid.NewGuid().ToString().Replace("-", replaceBar);
+            string name = prefix + Guid.NewGuid().ToString().Replace("-", replaceBar);
             return name;
         }
 
@@ -92,7 +92,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test
             catch (Exception ex)
             {
                 Assert.IsInstanceOfType(ex, typeof(T));
-                Assert.AreEqual<string>(expectedMessage, ex.Message);
+                Assert.AreEqual(expectedMessage, ex.Message);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test
             {
                 Exception innerException = ex.InnerException;
                 Assert.IsInstanceOfType(innerException, typeof(T));
-                Assert.AreEqual<string>(expectedMessage, innerException.Message);
+                Assert.AreEqual(expectedMessage, innerException.Message);
             }
         }
     }

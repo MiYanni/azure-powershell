@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Resources
             resourcesClientMock = new Mock<ResourceManagerSdkClient>();
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new StopAzureResourceGroupDeploymentCmdlet()
+            cmdlet = new StopAzureResourceGroupDeploymentCmdlet
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 ResourceManagerSdkClient = resourcesClientMock.Object

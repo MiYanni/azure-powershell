@@ -37,12 +37,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         
         public GetAzureAutomationConfigurationTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationDscConfiguration
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationDscConfiguration
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -55,17 +55,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string resourceGroupName = "resourceGroup";
             string accountName = "account";
             string nextLink = string.Empty;
-            this.cmdlet.SetParameterSet("ByAll");
+            cmdlet.SetParameterSet("ByAll");
 
-            this.mockAutomationClient.Setup(f => f.ListDscConfigurations(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<DscConfiguration>());
+            mockAutomationClient.Setup(f => f.ListDscConfigurations(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<DscConfiguration>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListDscConfigurations(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListDscConfigurations(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
 
         [Fact]
@@ -77,18 +77,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string resourceGroupName = "resourceGroup";
             string accountName = "account";
             string configurationName = "configuration";
-            this.cmdlet.SetParameterSet("ByConfigurationName");
+            cmdlet.SetParameterSet("ByConfigurationName");
 
-            this.mockAutomationClient.Setup(f => f.GetConfiguration(resourceGroupName, accountName, configurationName));
+            mockAutomationClient.Setup(f => f.GetConfiguration(resourceGroupName, accountName, configurationName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = configurationName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = configurationName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetConfiguration(resourceGroupName, accountName, configurationName), Times.Once());
+            mockAutomationClient.Verify(f => f.GetConfiguration(resourceGroupName, accountName, configurationName), Times.Once());
         }
     }
 }

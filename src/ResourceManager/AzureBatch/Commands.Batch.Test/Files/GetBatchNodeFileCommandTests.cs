@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchNodeFileCommand()
+            cmdlet = new GetBatchNodeFileCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 ProxyModels.FileListFromTaskOptions,
                 AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromTaskHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             Assert.Throws<ArgumentException>(() => cmdlet.ExecuteCmdlet());
 
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 ProxyModels.FileGetPropertiesFromTaskOptions,
                 AzureOperationHeaderResponse<ProxyModels.FileGetPropertiesFromTaskHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeFile> pipeline = new List<PSNodeFile>();
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             cmdlet.Path = null;
             cmdlet.Filter = "startswith(name,'std')";
 
-            string[] namesOfConstructedNodeFiles = new[] { "stdout.txt", "stderr.txt" };
+            string[] namesOfConstructedNodeFiles = { "stdout.txt", "stderr.txt" };
 
             // Build some NodeFiles instead of querying the service on a List NodeFiles call
             AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromTaskHeaders> response =
@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 ProxyModels.FileListFromTaskOptions,
                 AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromTaskHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeFile> pipeline = new List<PSNodeFile>();
@@ -170,7 +170,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             cmdlet.Path = null;
             cmdlet.Filter = null;
 
-            string[] namesOfConstructedNodeFiles = new[] { "stdout.txt", "stderr.txt", "wd" };
+            string[] namesOfConstructedNodeFiles = { "stdout.txt", "stderr.txt", "wd" };
 
             // Build some NodeFiles instead of querying the service on a List NodeFiles call
             AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromTaskHeaders> response =
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 AzureOperationResponse<IPage<ProxyModels.NodeFile>,
                 ProxyModels.FileListFromTaskHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeFile> pipeline = new List<PSNodeFile>();
@@ -207,7 +207,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
         public void ListNodeFilesByTaskMaxCountTest()
         {
             // Verify default max count
-            Assert.Equal(Microsoft.Azure.Commands.Batch.Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
+            Assert.Equal(Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
 
             // Setup cmdlet to list node files and a max count. 
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
@@ -219,7 +219,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             int maxCount = 2;
             cmdlet.MaxCount = maxCount;
 
-            string[] namesOfConstructedNodeFiles = new[] { "stdout.txt", "stderr.txt", "wd" };
+            string[] namesOfConstructedNodeFiles = { "stdout.txt", "stderr.txt", "wd" };
 
             // Build some NodeFiles instead of querying the service on a List NodeFiles call
             AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromTaskHeaders> response =
@@ -229,7 +229,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 ProxyModels.FileListFromTaskOptions,
                 AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromTaskHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeFile> pipeline = new List<PSNodeFile>();
@@ -271,7 +271,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 ProxyModels.FileListFromComputeNodeOptions,
                 AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromComputeNodeHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             Assert.Throws<ArgumentException>(() => cmdlet.ExecuteCmdlet());
 
@@ -300,7 +300,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 ProxyModels.FileGetPropertiesFromComputeNodeOptions,
                 AzureOperationHeaderResponse<ProxyModels.FileGetPropertiesFromComputeNodeHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeFile> pipeline = new List<PSNodeFile>();
@@ -325,7 +325,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             cmdlet.Path = null;
             cmdlet.Filter = "startswith(name,'startup')";
 
-            string[] namesOfConstructedNodeFiles = new[] { "startup\\stdout.txt", "startup\\stderr.txt" };
+            string[] namesOfConstructedNodeFiles = { "startup\\stdout.txt", "startup\\stderr.txt" };
 
             // Build some NodeFiles instead of querying the service on a List NodeFiles call
             AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromComputeNodeHeaders> response =
@@ -336,7 +336,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 AzureOperationResponse<IPage<ProxyModels.NodeFile>,
                 ProxyModels.FileListFromComputeNodeHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeFile> pipeline = new List<PSNodeFile>();
@@ -369,7 +369,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             cmdlet.Path = null;
             cmdlet.Filter = null;
 
-            string[] namesOfConstructedNodeFiles = new[] { "startup", "workitems", "shared" };
+            string[] namesOfConstructedNodeFiles = { "startup", "workitems", "shared" };
 
             // Build some NodeFiles instead of querying the service on a List NodeFiles call
             AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromComputeNodeHeaders> response =
@@ -380,7 +380,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 AzureOperationResponse<IPage<ProxyModels.NodeFile>,
                 ProxyModels.FileListFromComputeNodeHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeFile> pipeline = new List<PSNodeFile>();
@@ -406,7 +406,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
         public void ListNodeFilesByComputeNodeMaxCountTest()
         {
             // Verify default max count
-            Assert.Equal(Microsoft.Azure.Commands.Batch.Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
+            Assert.Equal(Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
 
             // Setup cmdlet to list vm files and a max count. 
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
@@ -418,7 +418,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             int maxCount = 2;
             cmdlet.MaxCount = maxCount;
 
-            string[] namesOfConstructedNodeFiles = new[] { "startup", "workitems", "shared" };
+            string[] namesOfConstructedNodeFiles = { "startup", "workitems", "shared" };
 
             // Build some NodeFiles instead of querying the service on a List NodeFiles call
             AzureOperationResponse<IPage<ProxyModels.NodeFile>, ProxyModels.FileListFromComputeNodeHeaders> response =
@@ -429,7 +429,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 AzureOperationResponse<IPage<ProxyModels.NodeFile>,
                 ProxyModels.FileListFromComputeNodeHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSNodeFile> pipeline = new List<PSNodeFile>();

@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Resources
             resourcesClientMock = new Mock<ResourceManagerSdkClient>();
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new TestAzureResourceGroupDeploymentCmdlet()
+            cmdlet = new TestAzureResourceGroupDeploymentCmdlet
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 ResourceManagerSdkClient = resourcesClientMock.Object
@@ -56,24 +56,24 @@ namespace Microsoft.Azure.Commands.Resources.Test.Resources
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ValidatesPSResourceGroupDeploymentWithUserTemplate()
         {
-            PSValidateResourceGroupDeploymentParameters expectedParameters = new PSValidateResourceGroupDeploymentParameters()
+            PSValidateResourceGroupDeploymentParameters expectedParameters = new PSValidateResourceGroupDeploymentParameters
             {
                 TemplateFile = templateFile
             };
             PSValidateResourceGroupDeploymentParameters actualParameters = new PSValidateResourceGroupDeploymentParameters();
-            List<PSResourceManagerError> expected = new List<PSResourceManagerError>()
+            List<PSResourceManagerError> expected = new List<PSResourceManagerError>
             {
-                new PSResourceManagerError()
+                new PSResourceManagerError
                 {
                     Code = "202",
                     Message = "bad input",
                 },
-                new PSResourceManagerError()
+                new PSResourceManagerError
                 {
                     Code = "203",
                     Message = "bad input 2",
                 },
-                new PSResourceManagerError()
+                new PSResourceManagerError
                 {
                     Code = "203",
                     Message = "bad input 3",

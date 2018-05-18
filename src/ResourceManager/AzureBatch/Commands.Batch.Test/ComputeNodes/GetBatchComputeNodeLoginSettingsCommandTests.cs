@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchComputeNodeRemoteLoginSettingsCommand()
+            cmdlet = new GetBatchComputeNodeRemoteLoginSettingsCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
                 BatchTestHelpers.CreateRemoteLoginSettingsGetResponse(ipAddress);
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ComputeNodeGetRemoteLoginSettingsOptions,
-                AzureOperationResponse<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>>(responseToUse: response);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+                AzureOperationResponse<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>>(response);
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             PSRemoteLoginSettings loginSettings = null;

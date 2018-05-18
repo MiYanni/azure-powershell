@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchTaskCountsCommand()
+            cmdlet = new GetBatchTaskCountsCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
                 ProxyModels.JobGetTaskCountsOptions,
                 AzureOperationResponse<ProxyModels.TaskCounts, ProxyModels.JobGetTaskCountsHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             PSTaskCounts taskCounts = null;

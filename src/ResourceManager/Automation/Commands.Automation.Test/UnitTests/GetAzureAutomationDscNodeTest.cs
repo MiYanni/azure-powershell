@@ -38,12 +38,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         
         public GetAzureAutomationDscNodeTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationDscNode
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationDscNode
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -56,18 +56,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string resourceGroupName = "resourceGroup";
             string accountName = "account";
             Guid id = Guid.NewGuid();
-            this.cmdlet.SetParameterSet("ById");
+            cmdlet.SetParameterSet("ById");
 
-            this.mockAutomationClient.Setup(f => f.GetDscNodeById(resourceGroupName, accountName, id)).Returns((string a, string b, Guid c) => new DscNode());
+            mockAutomationClient.Setup(f => f.GetDscNodeById(resourceGroupName, accountName, id)).Returns((string a, string b, Guid c) => new DscNode());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Id = id;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Id = id;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetDscNodeById(resourceGroupName, accountName, id), Times.Once());
+            mockAutomationClient.Verify(f => f.GetDscNodeById(resourceGroupName, accountName, id), Times.Once());
         }
 
         [Fact]
@@ -81,19 +81,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string nodeName = "configuration";
             string nextLink = string.Empty;
             string status = DscNodeStatus.Compliant.ToString();
-            this.cmdlet.SetParameterSet("ByName");
+            cmdlet.SetParameterSet("ByName");
 
-            this.mockAutomationClient.Setup(f => f.ListDscNodesByName(resourceGroupName, accountName, nodeName, status, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListDscNodesByName(resourceGroupName, accountName, nodeName, status, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = nodeName;
-            this.cmdlet.Status = DscNodeStatus.Compliant;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = nodeName;
+            cmdlet.Status = DscNodeStatus.Compliant;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListDscNodesByName(resourceGroupName, accountName, nodeName, status, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListDscNodesByName(resourceGroupName, accountName, nodeName, status, ref nextLink), Times.Once());
         }
 
         [Fact]
@@ -107,19 +107,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string nodeConfigurationName = "config.localhost";
             string nextLink = string.Empty;
             string status = DscNodeStatus.Compliant.ToString();
-            this.cmdlet.SetParameterSet("ByNodeConfiguration");
+            cmdlet.SetParameterSet("ByNodeConfiguration");
 
-            this.mockAutomationClient.Setup(f => f.ListDscNodesByNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, status, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListDscNodesByNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, status, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.NodeConfigurationName = nodeConfigurationName;
-            this.cmdlet.Status = DscNodeStatus.Compliant;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.NodeConfigurationName = nodeConfigurationName;
+            cmdlet.Status = DscNodeStatus.Compliant;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListDscNodesByNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, status, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListDscNodesByNodeConfiguration(resourceGroupName, accountName, nodeConfigurationName, status, ref nextLink), Times.Once());
         }
 
         [Fact]
@@ -132,19 +132,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string nextLink = string.Empty;
             string configurationName = "config";
             string status = DscNodeStatus.Compliant.ToString();
-            this.cmdlet.SetParameterSet("ByConfiguration");
+            cmdlet.SetParameterSet("ByConfiguration");
 
-            this.mockAutomationClient.Setup(f => f.ListDscNodesByConfiguration(resourceGroupName, accountName, configurationName, status, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListDscNodesByConfiguration(resourceGroupName, accountName, configurationName, status, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Status = DscNodeStatus.Compliant;
-            this.cmdlet.ConfigurationName = configurationName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Status = DscNodeStatus.Compliant;
+            cmdlet.ConfigurationName = configurationName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListDscNodesByConfiguration(resourceGroupName, accountName, configurationName, status, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListDscNodesByConfiguration(resourceGroupName, accountName, configurationName, status, ref nextLink), Times.Once());
         }
 
         [Fact]
@@ -156,18 +156,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "account";
             string nextLink = string.Empty;
             string status = DscNodeStatus.Compliant.ToString();
-            this.cmdlet.SetParameterSet("ByAll");
+            cmdlet.SetParameterSet("ByAll");
 
-            this.mockAutomationClient.Setup(f => f.ListDscNodes(resourceGroupName, accountName, status, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListDscNodes(resourceGroupName, accountName, status, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Status = DscNodeStatus.Compliant;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Status = DscNodeStatus.Compliant;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListDscNodes(resourceGroupName, accountName, status, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListDscNodes(resourceGroupName, accountName, status, ref nextLink), Times.Once());
         }
     }
 }

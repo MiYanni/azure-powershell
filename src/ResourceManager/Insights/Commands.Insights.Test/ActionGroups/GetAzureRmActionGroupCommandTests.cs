@@ -44,45 +44,45 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
             insightsOperationsMock = new Mock<IActionGroupsOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureRmActionGroupCommand()
+            cmdlet = new GetAzureRmActionGroupCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
-            ActionGroupResource responseObject = ActionGroupsUtilities.CreateActionGroupResource(name: "actiongroup1", shortName: "ag1");
+            ActionGroupResource responseObject = ActionGroupsUtilities.CreateActionGroupResource("actiongroup1", "ag1");
 
-            responseSimple = new AzureOperationResponse<ActionGroupResource>()
+            responseSimple = new AzureOperationResponse<ActionGroupResource>
             {
                 Body = responseObject
             };
 
-            responsePage = new AzureOperationResponse<IEnumerable<ActionGroupResource>>()
+            responsePage = new AzureOperationResponse<IEnumerable<ActionGroupResource>>
             {
                 Body = new List<ActionGroupResource> { responseObject }
             };
 
             insightsOperationsMock.Setup(f => f.GetWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<ActionGroupResource>>(responseSimple))
+                .Returns(Task.FromResult(responseSimple))
                 .Callback((string resourceGrp, string name, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
-                    this.resourceGroup = resourceGrp;
+                    resourceGroup = resourceGrp;
                     this.name = name;
                 });
 
             insightsOperationsMock.Setup(f => f.ListByResourceGroupWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IEnumerable<ActionGroupResource>>>(responsePage))
+                .Returns(Task.FromResult(responsePage))
                 .Callback((string resourceGrp, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
-                    this.resourceGroup = resourceGrp;
+                    resourceGroup = resourceGrp;
                 });
 
             insightsOperationsMock.Setup(f => f.ListBySubscriptionIdWithHttpMessagesAsync(It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IEnumerable<ActionGroupResource>>>(responsePage))
+                .Returns(Task.FromResult(responsePage))
                 .Callback((Dictionary<string, List<string>> headers, CancellationToken t) =>
                 { });
 
-            insightsManagementClientMock.SetupGet(f => f.ActionGroups).Returns(this.insightsOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.ActionGroups).Returns(insightsOperationsMock.Object);
         }
 
         [Fact]
@@ -96,15 +96,15 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
             cmdlet.ResourceGroupName = Utilities.ResourceGroup;
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Null(this.name);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Null(name);
 
             // Get by name
             cmdlet.Name = Utilities.Name;
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal(Utilities.Name, this.name);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal(Utilities.Name, name);
 
             // Error
             cmdlet.ResourceGroupName = "   ";

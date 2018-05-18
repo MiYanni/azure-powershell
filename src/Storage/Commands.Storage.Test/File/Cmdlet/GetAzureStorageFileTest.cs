@@ -31,12 +31,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void GetFileFromRootTest_ShareNameParameterSet()
         {
-            var share = this.MockChannel.GetShareReference(ShareName);
+            var share = MockChannel.GetShareReference(ShareName);
             var listItems = Enumerable.Range(0, 10).Select(x => share.GetRootDirectoryReference().GetFileReference(string.Format("file{0}", x))).Cast<IListFileItem>()
                 .Concat(Enumerable.Range(0, 5).Select(x => share.GetRootDirectoryReference().GetDirectoryReference(string.Format("dir{0}", x)))).ToArray();
 
-            this.ListFilesAndAssertResults(
-                () => this.CmdletInstance.RunCmdlet(
+            ListFilesAndAssertResults(
+                () => CmdletInstance.RunCmdlet(
                     Constants.ShareNameParameterSetName,
                     new KeyValuePair<string, object>("ShareName", ShareName)),
                 listItems);
@@ -45,12 +45,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void GetFileFromRootTest_ShareParameterSet()
         {
-            var share = this.MockChannel.GetShareReference(ShareName);
+            var share = MockChannel.GetShareReference(ShareName);
             var listItems = Enumerable.Range(0, 10).Select(x => share.GetRootDirectoryReference().GetFileReference(string.Format("file{0}", x))).Cast<IListFileItem>()
                 .Concat(Enumerable.Range(0, 5).Select(x => share.GetRootDirectoryReference().GetDirectoryReference(string.Format("dir{0}", x)))).ToArray();
 
-            this.ListFilesAndAssertResults(
-                () => this.CmdletInstance.RunCmdlet(
+            ListFilesAndAssertResults(
+                () => CmdletInstance.RunCmdlet(
                     Constants.ShareParameterSetName,
                     new KeyValuePair<string, object>("Share", share)),
                 listItems);
@@ -59,13 +59,13 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void GetFileFromSubDirectoryTest_UsingDirectoryObject()
         {
-            var share = this.MockChannel.GetShareReference(ShareName);
+            var share = MockChannel.GetShareReference(ShareName);
             var dir = share.GetRootDirectoryReference().GetDirectoryReference("dir");
             var listItems = Enumerable.Range(0, 10).Select(x => dir.GetFileReference(string.Format("file{0}", x))).Cast<IListFileItem>()
                 .Concat(Enumerable.Range(0, 5).Select(x => dir.GetDirectoryReference(string.Format("dir{0}", x)))).ToArray();
 
-            this.ListFilesAndAssertResults(
-                () => this.CmdletInstance.RunCmdlet(
+            ListFilesAndAssertResults(
+                () => CmdletInstance.RunCmdlet(
                     Constants.DirectoryParameterSetName,
                     new KeyValuePair<string, object>("Directory", dir)),
                 listItems,
@@ -75,54 +75,54 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void GetFileFromSubDirectoryTest_UsingShareObjectWithPath()
         {
-            var share = this.MockChannel.GetShareReference(ShareName);
+            var share = MockChannel.GetShareReference(ShareName);
             var dir = share.GetRootDirectoryReference().GetDirectoryReference("dir");
 
-            this.MockChannel.SetsAvailableDirectories(dir.Name);
+            MockChannel.SetsAvailableDirectories(dir.Name);
 
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                     Constants.ShareNameParameterSetName,
                     new KeyValuePair<string, object>("ShareName", ShareName),
                     new KeyValuePair<string, object>("Path", dir.Name));
 
             List<IListFileItem> fileList = new List<IListFileItem>();
             fileList.Add(dir);
-            this.MockCmdRunTime.OutputPipeline.AssertListFileItems(fileList);
+            MockCmdRunTime.OutputPipeline.AssertListFileItems(fileList);
         }
 
         [TestMethod]
         public void GetFileFromSubDirectoryTest_UsingShareNameWithPath()
         {
-            var share = this.MockChannel.GetShareReference(ShareName);
+            var share = MockChannel.GetShareReference(ShareName);
             var dir = share.GetRootDirectoryReference().GetDirectoryReference("dir");
-            this.MockChannel.SetsAvailableDirectories(dir.Name);
+            MockChannel.SetsAvailableDirectories(dir.Name);
 
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                     Constants.ShareNameParameterSetName,
                     new KeyValuePair<string, object>("ShareName", ShareName),
                     new KeyValuePair<string, object>("Path", dir.Name));
 
             List<IListFileItem> fileList = new List<IListFileItem>();
             fileList.Add(dir);
-            this.MockCmdRunTime.OutputPipeline.AssertListFileItems(fileList);
+            MockCmdRunTime.OutputPipeline.AssertListFileItems(fileList);
         }
 
         [TestMethod]
         public void GetFileFromSubDirectoryTest_GetFromNonExistingDirectory()
         {
-            this.CmdletInstance.DisableDataCollection();
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.DisableDataCollection();
+            CmdletInstance.RunCmdlet(
                 Constants.ShareNameParameterSetName,
                 new KeyValuePair<string, object>("ShareName", ShareName),
                 new KeyValuePair<string, object>("Path", "NonExist"));
-            this.MockCmdRunTime.ErrorStream.AssertMockupException("DirectoryNotFound");
+            MockCmdRunTime.ErrorStream.AssertMockupException("DirectoryNotFound");
         }
 
         private void ListFilesAndAssertResults(Action runCmdletAction, IListFileItem[] listedItems, CloudFileDirectory dir = null)
         {
-            this.MockChannel.SetsEnumerationResults(dir == null ? string.Empty : dir.Name, listedItems);
+            MockChannel.SetsEnumerationResults(dir == null ? string.Empty : dir.Name, listedItems);
             runCmdletAction();
-            this.MockCmdRunTime.OutputPipeline.AssertListFileItems(listedItems);
+            MockCmdRunTime.OutputPipeline.AssertListFileItems(listedItems);
         }
     }
 }

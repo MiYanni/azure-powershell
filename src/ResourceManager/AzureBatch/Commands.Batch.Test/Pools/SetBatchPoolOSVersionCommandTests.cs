@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new SetBatchPoolOSVersionCommand()
+            cmdlet = new SetBatchPoolOSVersionCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
             // Don't go to the service on an Upgrade OS call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<string, PoolUpgradeOSOptions, AzureOperationHeaderResponse<PoolUpgradeOSHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();
@@ -84,21 +84,21 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             cmdlet.TargetOSVersion = targetOS;
 
             // Don't go to the service on an Upgrade OS call
-            RequestInterceptor interceptor = new RequestInterceptor((baseRequest) =>
+            RequestInterceptor interceptor = new RequestInterceptor(baseRequest =>
             {
                 PoolUpgradeOSBatchRequest request = (PoolUpgradeOSBatchRequest)baseRequest;
 
                 // Grab the target OS version off the outgoing request
                 requestTargetOS = request.Parameters;
 
-                request.ServiceRequestFunc = (cancellationToken) =>
+                request.ServiceRequestFunc = cancellationToken =>
                 {
                     var response = new AzureOperationHeaderResponse<PoolUpgradeOSHeaders>();
                     Task<AzureOperationHeaderResponse<PoolUpgradeOSHeaders>> task = Task.FromResult(response);
                     return task;
                 };
             });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             cmdlet.ExecuteCmdlet();
 

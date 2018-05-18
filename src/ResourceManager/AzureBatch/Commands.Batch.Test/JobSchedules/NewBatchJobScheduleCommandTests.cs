@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new NewBatchJobScheduleCommand()
+            cmdlet = new NewBatchJobScheduleCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
                 JobScheduleAddParameter,
                 JobScheduleAddOptions,
                 AzureOperationHeaderResponse<JobScheduleAddHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -77,10 +77,10 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
 
             cmdlet.Id = "testJobSchedule";
             cmdlet.DisplayName = "display name";
-            Models.PSJobSpecification jobSpec = new Models.PSJobSpecification()
+            Models.PSJobSpecification jobSpec = new Models.PSJobSpecification
             {
                 DisplayName = "job display name",
-                CommonEnvironmentSettings = new List<Models.PSEnvironmentSetting>()
+                CommonEnvironmentSettings = new List<Models.PSEnvironmentSetting>
                 {
                     new Models.PSEnvironmentSetting("common1", "val1"),
                     new Models.PSEnvironmentSetting("common2", "val2")
@@ -88,13 +88,13 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
                 JobManagerTask = new Models.PSJobManagerTask("job manager", "cmd /c echo job manager"),
                 JobPreparationTask = new Models.PSJobPreparationTask("cmd /c echo job prep"),
                 JobReleaseTask = new Models.PSJobReleaseTask("cmd /c echo job release"),
-                PoolInformation = new Models.PSPoolInformation()
+                PoolInformation = new Models.PSPoolInformation
                 {
                     PoolId = "myPool"
                 }
             };
             cmdlet.JobSpecification = jobSpec;
-            Models.PSSchedule schedule = new Models.PSSchedule()
+            Models.PSSchedule schedule = new Models.PSSchedule
             {
                 DoNotRunAfter = DateTime.Now.AddYears(1),
                 DoNotRunUntil = DateTime.Now.AddDays(1),
@@ -112,11 +112,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 JobScheduleAddParameter,
                 JobScheduleAddOptions,
-                AzureOperationHeaderResponse<JobScheduleAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<JobScheduleAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters

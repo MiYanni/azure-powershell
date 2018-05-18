@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new SetAzureAutomationSchedule
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new SetAzureAutomationSchedule
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -51,17 +51,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string scheduleName = "schedule";
             string description = "desc";
 
-            this.mockAutomationClient.Setup(f => f.UpdateSchedule(resourceGroupName, accountName, scheduleName, null, description));
+            mockAutomationClient.Setup(f => f.UpdateSchedule(resourceGroupName, accountName, scheduleName, null, description));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.Description = description;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.Description = description;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.UpdateSchedule(resourceGroupName, accountName, scheduleName, null, description), Times.Once());
+            mockAutomationClient.Verify(f => f.UpdateSchedule(resourceGroupName, accountName, scheduleName, null, description), Times.Once());
         }
     }
 }

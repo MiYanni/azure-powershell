@@ -34,15 +34,15 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void NewAzureSqlServerDisasterRecoveryConfigurationAttributes()
         {
             Type type = typeof(NewAzureSqlServerDisasterRecoveryConfiguration);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.Low);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ResourceGroupName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "VirtualEndpointName", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "PartnerResourceGroupName", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "PartnerServerName", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "FailoverPolicy", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ResourceGroupName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "VirtualEndpointName", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "PartnerResourceGroupName", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "PartnerServerName", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "FailoverPolicy", false, false);
         }
 
         [Fact]
@@ -50,12 +50,12 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void GetAzureSqlServerDisasterRecoveryConfigurationAttributes()
         {
             Type type = typeof(GetAzureSqlServerDisasterRecoveryConfiguration);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.None);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ResourceGroupName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "VirtualEndpointName", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ResourceGroupName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "VirtualEndpointName", false, false);
         }
 
         [Fact]
@@ -63,13 +63,13 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void SetAzureSqlServerDisasterRecoveryConfigurationAttributes()
         {
             Type type = typeof(SetAzureSqlServerDisasterRecoveryConfiguration);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ResourceGroupName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "VirtualEndpointName", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Failover", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "AllowDataLoss", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ResourceGroupName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "VirtualEndpointName", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Failover", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "AllowDataLoss", false, false);
         }
 
         [Fact]
@@ -77,11 +77,11 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void RemoveAzureSqlServerDisasterRecoveryConfigurationAttributes()
         {
             Type type = typeof(RemoveAzureSqlServerDisasterRecoveryConfiguration);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: true);
+            UnitTestHelper.CheckCmdletModifiesData(type, true);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ResourceGroupName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "VirtualEndpointName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ResourceGroupName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "VirtualEndpointName", true, true);
         }
     }
 }

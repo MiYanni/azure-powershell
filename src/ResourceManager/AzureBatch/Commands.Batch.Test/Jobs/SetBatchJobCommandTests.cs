@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new SetBatchJobCommand()
+            cmdlet = new SetBatchJobCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -54,16 +54,16 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
             cmdlet.BatchContext = context;
 
-            cmdlet.Job = new PSCloudJob(BatchTestHelpers.CreateFakeBoundJob(context, new CloudJob(id: "testJob")));
+            cmdlet.Job = new PSCloudJob(BatchTestHelpers.CreateFakeBoundJob(context, new CloudJob("testJob")));
 
             // Update job
             cmdlet.Job.Constraints = new PSJobConstraints(TimeSpan.FromHours(1), 5);
-            cmdlet.Job.PoolInformation = new PSPoolInformation()
+            cmdlet.Job.PoolInformation = new PSPoolInformation
             {
                 PoolId = "myPool"
             };
             cmdlet.Job.Priority = 2;
-            cmdlet.Job.Metadata = new List<PSMetadataItem>()
+            cmdlet.Job.Metadata = new List<PSMetadataItem>
             {
                 new PSMetadataItem("meta1", "value1"),
                 new PSMetadataItem("meta2", "value2")
@@ -75,11 +75,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 JobUpdateParameter,
                 JobUpdateOptions,
-                AzureOperationHeaderResponse<JobUpdateHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<JobUpdateHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters
@@ -104,8 +104,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
 
             Assert.Throws<ArgumentNullException>(() => cmdlet.ExecuteCmdlet());
 
-            CloudJob cloudJob = new Azure.Batch.Protocol.Models.CloudJob(
-                id: "job-id",
+            CloudJob cloudJob = new CloudJob(
+                "job-id",
                 poolInfo: new Azure.Batch.Protocol.Models.PoolInformation(),
                 onAllTasksComplete: (Azure.Batch.Protocol.Models.OnAllTasksComplete?)OnAllTasksComplete.TerminateJob);
 

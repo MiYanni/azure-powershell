@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
             resourcesClientMock = new Mock<ResourceManagerSdkClient>();
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureResourceGroupDeploymentCmdlet()
+            cmdlet = new GetAzureResourceGroupDeploymentCmdlet
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 ResourceManagerSdkClient = resourcesClientMock.Object
@@ -56,14 +56,14 @@ namespace Microsoft.Azure.Commands.Resources.Test
         public void GetsResourcesGroupDeployments()
         {
             List<PSResourceGroupDeployment> result = new List<PSResourceGroupDeployment>();
-            PSResourceGroupDeployment expected = new PSResourceGroupDeployment()
+            PSResourceGroupDeployment expected = new PSResourceGroupDeployment
             {
                 DeploymentName = deploymentName,
                 CorrelationId = "123",
                 ResourceGroupName = resourceGroupName,
                 Mode = DeploymentMode.Incremental
             };
-            FilterResourceGroupDeploymentOptions options = new FilterResourceGroupDeploymentOptions()
+            FilterResourceGroupDeploymentOptions options = new FilterResourceGroupDeploymentOptions
             {
                 ResourceGroupName = resourceGroupName
             };
@@ -88,14 +88,14 @@ namespace Microsoft.Azure.Commands.Resources.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void GetSepcificResourcesGroupDeployment()
         {
-            FilterResourceGroupDeploymentOptions options = new FilterResourceGroupDeploymentOptions()
+            FilterResourceGroupDeploymentOptions options = new FilterResourceGroupDeploymentOptions
             {
                 DeploymentName = deploymentName,
                 ResourceGroupName = resourceGroupName
             };
             FilterResourceGroupDeploymentOptions actual = new FilterResourceGroupDeploymentOptions();
             List<PSResourceGroupDeployment> result = new List<PSResourceGroupDeployment>();
-            PSResourceGroupDeployment expected = new PSResourceGroupDeployment()
+            PSResourceGroupDeployment expected = new PSResourceGroupDeployment
             {
                 DeploymentName = deploymentName,
                 CorrelationId = "123",

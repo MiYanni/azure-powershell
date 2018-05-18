@@ -35,12 +35,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new NewAzureAutomationCertificate
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new NewAzureAutomationCertificate
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -59,19 +59,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             Array.ForEach(password.ToCharArray(), secureString.AppendChar);
             secureString.MakeReadOnly();
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f => f.CreateCertificate(resourceGroupName, accountName, certificateName, path, secureString, description, false));
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = certificateName;
-            this.cmdlet.Description = description;
-            this.cmdlet.Path = path;
-            this.cmdlet.Password = secureString;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = certificateName;
+            cmdlet.Description = description;
+            cmdlet.Path = path;
+            cmdlet.Password = secureString;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.CreateCertificate(resourceGroupName, accountName, certificateName, path, secureString, description, false), Times.Once());
+            mockAutomationClient.Verify(f => f.CreateCertificate(resourceGroupName, accountName, certificateName, path, secureString, description, false), Times.Once());
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RemoveBatchTaskCommand()
+            cmdlet = new RemoveBatchTaskCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Tasks
 
             // Don't go to the service on a Delete CloudTask call
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<TaskDeleteOptions, AzureOperationHeaderResponse<TaskDeleteHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();

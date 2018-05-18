@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new EnableBatchAutoScaleCommand()
+            cmdlet = new EnableBatchAutoScaleCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                 PoolEnableAutoScaleOptions,
                 AzureOperationHeaderResponse<PoolEnableAutoScaleHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();
@@ -86,13 +86,13 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
             // Don't go to the service on an Enable AutoScale call
             Action<BatchRequest<PoolEnableAutoScaleParameter, PoolEnableAutoScaleOptions, AzureOperationHeaderResponse<PoolEnableAutoScaleHeaders>>> extractFormulaAction =
-                (request) =>
+                request =>
                 {
                     requestFormula = request.Parameters.AutoScaleFormula;
                     requestInterval = request.Parameters.AutoScaleEvaluationInterval;
                 };
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(requestAction: extractFormulaAction);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             cmdlet.ExecuteCmdlet();
 

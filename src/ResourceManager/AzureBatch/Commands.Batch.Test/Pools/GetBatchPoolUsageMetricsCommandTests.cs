@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchPoolUsageMetrics()
+            cmdlet = new GetBatchPoolUsageMetrics
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -60,18 +60,18 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             cmdlet.StartTime = new DateTime(year, month, day, 0, 0, 0);
             cmdlet.EndTime = new DateTime(year, month, day, 1, 0, 0);
 
-            string[] poolIds = new[] { "p1", "p2" };
-            DateTime[] startTimes = new[] { new DateTime(year, month, day, 0, 0, 0), new DateTime(year, month, day, 0, 30, 0) };
-            DateTime[] endTimes = new[] { new DateTime(year, month, day, 0, 30, 0), new DateTime(year, month, day, 1, 0, 0) };
+            string[] poolIds = { "p1", "p2" };
+            DateTime[] startTimes = { new DateTime(year, month, day, 0, 0, 0), new DateTime(year, month, day, 0, 30, 0) };
+            DateTime[] endTimes = { new DateTime(year, month, day, 0, 30, 0), new DateTime(year, month, day, 1, 0, 0) };
 
             AzureOperationResponse<IPage<ProxyModels.PoolUsageMetrics>, ProxyModels.PoolListUsageMetricsHeaders> response =
                 BatchTestHelpers.CreatePoolListUsageMetricsResponse(poolIds, startTimes, endTimes);
 
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.PoolListUsageMetricsOptions,
-                AzureOperationResponse<IPage<ProxyModels.PoolUsageMetrics>, ProxyModels.PoolListUsageMetricsHeaders>>(responseToUse: response);
+                AzureOperationResponse<IPage<ProxyModels.PoolUsageMetrics>, ProxyModels.PoolListUsageMetricsHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSPoolUsageMetrics> pipeline = new List<PSPoolUsageMetrics>();
@@ -106,9 +106,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             cmdlet.Filter = "poolId lt 'p2'";
 
             string requestFilter = null;
-            string[] poolIds = new[] { "p1" };
-            DateTime[] startTimes = new[] { new DateTime(year, month, day, 0, 0, 0) };
-            DateTime[] endTimes = new[] { new DateTime(year, month, day, 0, 30, 0) };
+            string[] poolIds = { "p1" };
+            DateTime[] startTimes = { new DateTime(year, month, day, 0, 0, 0) };
+            DateTime[] endTimes = { new DateTime(year, month, day, 0, 30, 0) };
 
             AzureOperationResponse<IPage<ProxyModels.PoolUsageMetrics>, ProxyModels.PoolListUsageMetricsHeaders> response =
                 BatchTestHelpers.CreatePoolListUsageMetricsResponse(poolIds, startTimes, endTimes);
@@ -116,7 +116,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             // Don't go to the service on an Get PoolUsageMetrics call
             RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.PoolListUsageMetricsOptions,
-                AzureOperationResponse<IPage<ProxyModels.PoolUsageMetrics>, ProxyModels.PoolListUsageMetricsHeaders>>(responseToUse: response);
+                AzureOperationResponse<IPage<ProxyModels.PoolUsageMetrics>, ProxyModels.PoolListUsageMetricsHeaders>>(response);
 
             ResponseInterceptor responseInterceptor = new ResponseInterceptor((responseToUse, request) =>
             {
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                 return Task.FromResult(responseToUse);
             });
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor, responseInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor, responseInterceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();

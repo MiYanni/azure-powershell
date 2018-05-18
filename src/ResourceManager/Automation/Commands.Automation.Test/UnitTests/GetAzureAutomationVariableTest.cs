@@ -36,12 +36,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationVariable
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationVariable
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -53,17 +53,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string variableName = "variable";
 
-            this.mockAutomationClient.Setup(f => f.GetVariable(resourceGroupName, accountName, variableName));
+            mockAutomationClient.Setup(f => f.GetVariable(resourceGroupName, accountName, variableName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = variableName;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByName);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = variableName;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByName);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetVariable(resourceGroupName, accountName, variableName), Times.Once());
+            mockAutomationClient.Verify(f => f.GetVariable(resourceGroupName, accountName, variableName), Times.Once());
         }
 
         [TestMethod]
@@ -74,16 +74,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListVariables(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<Variable>());
+            mockAutomationClient.Setup(f => f.ListVariables(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<Variable>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByAll);
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.SetParameterSet(AutomationCmdletParameterSets.ByAll);
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListVariables(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListVariables(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
     }
 }

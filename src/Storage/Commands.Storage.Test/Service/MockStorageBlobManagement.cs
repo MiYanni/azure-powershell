@@ -365,7 +365,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         {
             CloudBlobContainer container = blob.Container;
 
-            if (!this.DoesContainerExist(container, null, null))
+            if (!DoesContainerExist(container, null, null))
             {
                 throw new StorageException(ContainerNotFound);
             }
@@ -466,7 +466,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <param name="properties">Service properties</param>
         /// <param name="options">Request options</param>
         /// <param name="operationContext">Operation context</param>
-        public void SetStorageServiceProperties(StorageServiceType type, WindowsAzure.Storage.Shared.Protocol.ServiceProperties properties, IRequestOptions options, OperationContext operationContext)
+        public void SetStorageServiceProperties(StorageServiceType type, ServiceProperties properties, IRequestOptions options, OperationContext operationContext)
         {
             throw new NotImplementedException("No need to cover this in unit test since there are no additional logics on this api");
         }
@@ -511,7 +511,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>A task object which retrieve the permission of the specified container</returns>
         public Task<BlobContainerPermissions> GetContainerPermissionsAsync(CloudBlobContainer container, AccessCondition accessCondition, BlobRequestOptions options, OperationContext operationContext, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() => this.GetContainerPermissions(container,
+            return Task.Factory.StartNew(() => GetContainerPermissions(container,
                 accessCondition, options, operationContext));
         }
 
@@ -525,7 +525,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>A task object that asynchronously check whether the specified container exists </returns>
         public Task<bool> DoesContainerExistAsync(CloudBlobContainer container, BlobRequestOptions requestOptions, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.DoesContainerExist(container, requestOptions, operationContext));
+            return Task.Factory.StartNew(() => DoesContainerExist(container, requestOptions, operationContext));
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>A task object that asynchronously check whether the specified blob exists.</returns>
         public Task<bool> DoesBlobExistAsync(CloudBlob blob, BlobRequestOptions options, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.DoesBlobExist(blob, options, operationContext));
+            return Task.Factory.StartNew(() => DoesBlobExist(blob, options, operationContext));
         }
 
         /// <summary>
@@ -553,7 +553,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>A task object that asynchronously get the blob reference from server</returns>
         public Task<CloudBlob> GetBlobReferenceFromServerAsync(CloudBlobContainer container, string blobName, AccessCondition accessCondition, BlobRequestOptions options, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.GetBlobReferenceFromServer(container, blobName, accessCondition, options, operationContext));
+            return Task.Factory.StartNew(() => GetBlobReferenceFromServer(container, blobName, accessCondition, options, operationContext));
         }
 
         /// <summary>
@@ -567,7 +567,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>Return a task that asynchronously fetch blob attributes</returns>
         public Task FetchBlobAttributesAsync(CloudBlob blob, AccessCondition accessCondition, BlobRequestOptions options, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.FetchBlobAttributes(blob, accessCondition, options, operationContext));
+            return Task.Factory.StartNew(() => FetchBlobAttributes(blob, accessCondition, options, operationContext));
         }
 
         /// <summary>
@@ -581,7 +581,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>Return a task that asynchronously create a container if it doesn't exist.</returns>
         public Task<bool> CreateContainerIfNotExistsAsync(CloudBlobContainer container, BlobContainerPublicAccessType accessType, BlobRequestOptions requestOptions, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.CreateContainerIfNotExists(container, requestOptions, operationContext)); 
+            return Task.Factory.StartNew(() => CreateContainerIfNotExists(container, requestOptions, operationContext)); 
         }
 
         /// <summary>
@@ -595,7 +595,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>Return a task that asynchronously delete the specified container.</returns>
         public Task DeleteContainerAsync(CloudBlobContainer container, AccessCondition accessCondition, BlobRequestOptions requestOptions, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.DeleteContainer(container, accessCondition, requestOptions, operationContext));
+            return Task.Factory.StartNew(() => DeleteContainer(container, accessCondition, requestOptions, operationContext));
         }
 
         /// <summary>
@@ -610,7 +610,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>Return a task that asynchronously abort the blob copy operation</returns>
         public Task AbortCopyAsync(CloudBlob blob, string copyId, AccessCondition accessCondition, BlobRequestOptions requestOption, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.AbortCopy(blob, copyId, accessCondition, requestOption, operationContext));
+            return Task.Factory.StartNew(() => AbortCopy(blob, copyId, accessCondition, requestOption, operationContext));
         }
 
         /// <summary>
@@ -623,7 +623,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <param name="operationContext">Operation context</param>
         public Task SetContainerPermissionsAsync(CloudBlobContainer container, BlobContainerPermissions permissions, AccessCondition accessCondition, BlobRequestOptions requestOptions, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.SetContainerPermissions(container, permissions, accessCondition, requestOptions, operationContext));
+            return Task.Factory.StartNew(() => SetContainerPermissions(container, permissions, accessCondition, requestOptions, operationContext));
         }
 
         /// <summary>
@@ -638,7 +638,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <returns>Return a task that asynchronously delete the specified blob</returns>
         public Task DeleteCloudBlobAsync(CloudBlob blob, DeleteSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, BlobRequestOptions requestOptions, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.DeleteCloudBlob(blob, deleteSnapshotsOption, accessCondition, requestOptions, operationContext));
+            return Task.Factory.StartNew(() => DeleteCloudBlob(blob, deleteSnapshotsOption, accessCondition, requestOptions, operationContext));
         }
 
         /// <summary>
@@ -650,7 +650,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <param name="operationContext">An object that represents the context for the current operation.</param>
         public Task SetBlobPropertiesAsync(CloudBlob blob, AccessCondition accessCondition, BlobRequestOptions options, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.SetBlobProperties(blob, accessCondition, options, operationContext));
+            return Task.Factory.StartNew(() => SetBlobProperties(blob, accessCondition, options, operationContext));
         }
 
         /// <summary>
@@ -662,7 +662,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Service
         /// <param name="operationContext">An object that represents the context for the current operation.</param>
         public Task SetBlobMetadataAsync(CloudBlob blob, AccessCondition accessCondition, BlobRequestOptions options, OperationContext operationContext, CancellationToken cmdletCancellationToken)
         {
-            return Task.Factory.StartNew(() => this.SetBlobMetadata(blob, accessCondition, options, operationContext));
+            return Task.Factory.StartNew(() => SetBlobMetadata(blob, accessCondition, options, operationContext));
         }
 
         /// <summary>

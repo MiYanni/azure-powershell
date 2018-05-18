@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new NewBatchPoolCommand()
+            cmdlet = new NewBatchPoolCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                 PoolAddOptions,
                 AzureOperationHeaderResponse<PoolAddHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -78,10 +78,10 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             cmdlet.BatchContext = context;
 
             cmdlet.Id = "testPool";
-            cmdlet.ApplicationLicenses = new List<string>() { "foo", "bar"};
-            cmdlet.CertificateReferences = new PSCertificateReference[]
+            cmdlet.ApplicationLicenses = new List<string> { "foo", "bar"};
+            cmdlet.CertificateReferences = new[]
             {
-                new PSCertificateReference()
+                new PSCertificateReference
                 {
                     StoreLocation = Azure.Batch.Common.CertStoreLocation.LocalMachine,
                     Thumbprint = "thumbprint",
@@ -110,11 +110,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 PoolAddParameter,
                 PoolAddOptions,
-                AzureOperationHeaderResponse<PoolAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<PoolAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             commandRuntimeMock.Setup(cr => cr.ShouldProcess(It.IsAny<string>())).Returns(true);
             cmdlet.ExecuteCmdlet();
 
@@ -161,11 +161,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 PoolAddParameter,
                 PoolAddOptions,
-                AzureOperationHeaderResponse<PoolAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<PoolAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             commandRuntimeMock.Setup(cr => cr.ShouldProcess(It.IsAny<string>())).Returns(true);
             cmdlet.ExecuteCmdlet();
 
@@ -198,14 +198,14 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                 PoolAddParameter,
                 PoolAddOptions,
                 AzureOperationHeaderResponse<PoolAddHeaders>>> extractPoolAction =
-                (request) =>
+                request =>
                 {
                     subnetId = request.Parameters.NetworkConfiguration.SubnetId;
                 };
 
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(requestAction: extractPoolAction);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -234,11 +234,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 PoolAddParameter,
                 PoolAddOptions,
-                AzureOperationHeaderResponse<PoolAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<PoolAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             commandRuntimeMock.Setup(cr => cr.ShouldProcess(It.IsAny<string>())).Returns(true);
             cmdlet.ExecuteCmdlet();
 
@@ -260,7 +260,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
             PSUserAccount adminUser = new PSUserAccount("admin", "password1", Azure.Batch.Common.ElevationLevel.Admin);
             PSUserAccount nonAdminUser = new PSUserAccount("user2", "password2", Azure.Batch.Common.ElevationLevel.NonAdmin);
-            PSUserAccount sshUser = new PSUserAccount("user3", "password3", linuxUserConfiguration: new PSLinuxUserConfiguration(uid: 1, gid: 2, sshPrivateKey: "my ssh key"));
+            PSUserAccount sshUser = new PSUserAccount("user3", "password3", linuxUserConfiguration: new PSLinuxUserConfiguration(1, 2, "my ssh key"));
             cmdlet.UserAccount = new [] { adminUser, nonAdminUser, sshUser };
 
             PoolAddParameter requestParameters = null;
@@ -269,11 +269,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 PoolAddParameter,
                 PoolAddOptions,
-                AzureOperationHeaderResponse<PoolAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<PoolAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             commandRuntimeMock.Setup(cr => cr.ShouldProcess(It.IsAny<string>())).Returns(true);
             cmdlet.ExecuteCmdlet();
 

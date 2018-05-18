@@ -48,33 +48,33 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
             insightsAlertRuleOperationsMock = new Mock<IAlertRulesOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new AddAzureRmMetricAlertRuleCommand()
+            cmdlet = new AddAzureRmMetricAlertRuleCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
-            AlertRuleResource alertRuleResourceInput = new AlertRuleResource()
+            AlertRuleResource alertRuleResourceInput = new AlertRuleResource
             {
                 AlertRuleResourceName = "a name", 
                 Location = null, 
                 IsEnabled = true
             };
 
-            response = new Rest.Azure.AzureOperationResponse<AlertRuleResource>()
+            response = new Rest.Azure.AzureOperationResponse<AlertRuleResource>
             {
                 Body = alertRuleResourceInput
             };
 
             insightsAlertRuleOperationsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<AlertRuleResource>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Rest.Azure.AzureOperationResponse<AlertRuleResource>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string resourceGrp, string name, AlertRuleResource alertRuleResourceIn, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     resourceGroup = resourceGrp;
                     alertRuleResource = alertRuleResourceIn;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.AlertRules).Returns(this.insightsAlertRuleOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.AlertRules).Returns(insightsAlertRuleOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -101,36 +101,36 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResult(
-                location: "East US",
-                tagsKey: "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
-                isEnabled: true,
-                actionsNull: true,
-                actionsCount: 0,
-                threshold: 1,
-                conditionOperator: ConditionOperator.GreaterThan,
-                totalMinutes: 10,
-                timeAggregationOperator: TimeAggregationOperator.Total,
-                metricName: "Requests",
-                resourceUri: "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
+            AssertResult(
+                "East US",
+                "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
+                true,
+                true,
+                0,
+                1,
+                ConditionOperator.GreaterThan,
+                10,
+                TimeAggregationOperator.Total,
+                "Requests",
+                "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
 
             // Test null actions and disabled
             cmdlet.DisableRule = true;
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResult(
-                location: "East US",
-                tagsKey: "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
-                isEnabled: false,
-                actionsNull: true,
-                actionsCount: 0,
-                threshold: 1,
-                conditionOperator: ConditionOperator.GreaterThan,
-                totalMinutes: 10,
-                timeAggregationOperator: TimeAggregationOperator.Total,
-                metricName: "Requests",
-                resourceUri: "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
+            AssertResult(
+                "East US",
+                "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
+                false,
+                true,
+                0,
+                1,
+                ConditionOperator.GreaterThan,
+                10,
+                TimeAggregationOperator.Total,
+                "Requests",
+                "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
 
             // Test empty actions
             cmdlet.DisableRule = false;
@@ -138,18 +138,18 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResult(
-                location: "East US",
-                tagsKey: "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
-                isEnabled: true,
-                actionsNull: false,
-                actionsCount: 0,
-                threshold: 1,
-                conditionOperator: ConditionOperator.GreaterThan,
-                totalMinutes: 10,
-                timeAggregationOperator: TimeAggregationOperator.Total,
-                metricName: "Requests",
-                resourceUri: "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
+            AssertResult(
+                "East US",
+                "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
+                true,
+                false,
+                0,
+                1,
+                ConditionOperator.GreaterThan,
+                10,
+                TimeAggregationOperator.Total,
+                "Requests",
+                "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
 
             // Test non-empty actions (one action)
             List<string> eMails = new List<string>();
@@ -164,18 +164,18 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResult(
-                location: "East US",
-                tagsKey: "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
-                isEnabled: true,
-                actionsNull: false,
-                actionsCount: 1,
-                threshold: 1,
-                conditionOperator: ConditionOperator.GreaterThan,
-                totalMinutes: 10,
-                timeAggregationOperator: TimeAggregationOperator.Total,
-                metricName: "Requests",
-                resourceUri: "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
+            AssertResult(
+                "East US",
+                "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
+                true,
+                false,
+                1,
+                1,
+                ConditionOperator.GreaterThan,
+                10,
+                TimeAggregationOperator.Total,
+                "Requests",
+                "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
 
             // Test non-empty actions (two actions)
             var properties = new Dictionary<string, string>();
@@ -190,36 +190,36 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResult(
-                location: "East US",
-                tagsKey: "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
-                isEnabled: true,
-                actionsNull: false,
-                actionsCount: 2,
-                threshold: 1,
-                conditionOperator: ConditionOperator.GreaterThan,
-                totalMinutes: 10,
-                timeAggregationOperator: TimeAggregationOperator.Total,
-                metricName: "Requests",
-                resourceUri: "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
+            AssertResult(
+                "East US",
+                "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
+                true,
+                false,
+                2,
+                1,
+                ConditionOperator.GreaterThan,
+                10,
+                TimeAggregationOperator.Total,
+                "Requests",
+                "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
 
             // Test non-empty actions (two actions) and non-default window size
             cmdlet.WindowSize = TimeSpan.FromMinutes(300);
 
             cmdlet.ExecuteCmdlet();
 
-            this.AssertResult(
-                location: "East US",
-                tagsKey: "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
-                isEnabled: true,
-                actionsNull: false,
-                actionsCount: 2,
-                threshold: 1,
-                conditionOperator: ConditionOperator.GreaterThan,
-                totalMinutes: 300,
-                timeAggregationOperator: TimeAggregationOperator.Total,
-                metricName: "Requests",
-                resourceUri: "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
+            AssertResult(
+                "East US",
+                "hidden-link:/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo",
+                true,
+                false,
+                2,
+                1,
+                ConditionOperator.GreaterThan,
+                300,
+                TimeAggregationOperator.Total,
+                "Requests",
+                "/subscriptions/a93fb07c-6c93-40be-bf3b-4f0deba10f4b/resourceGroups/Default-Web-EastUS/providers/microsoft.web/sites/misitiooeltuyo");
         }
 
         private void AssertResult(
@@ -235,28 +235,28 @@ namespace Microsoft.Azure.Commands.Insights.Test.Alerts
             string metricName,
             string resourceUri)
         {
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal(location, this.alertRuleResource.Location);
-            Assert.True(this.alertRuleResource.Tags.ContainsKey(tagsKey));
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal(location, alertRuleResource.Location);
+            Assert.True(alertRuleResource.Tags.ContainsKey(tagsKey));
 
-            Assert.NotNull(this.alertRuleResource);
+            Assert.NotNull(alertRuleResource);
 
             if (actionsNull)
             {
-                Assert.Null(this.alertRuleResource.Actions);
+                Assert.Null(alertRuleResource.Actions);
             }
             else
             {
-                Assert.NotNull(this.alertRuleResource.Actions);
-                Assert.Equal(actionsCount, this.alertRuleResource.Actions.Count);
+                Assert.NotNull(alertRuleResource.Actions);
+                Assert.Equal(actionsCount, alertRuleResource.Actions.Count);
             }
 
-            Assert.Equal(Utilities.Name, this.alertRuleResource.AlertRuleResourceName);
-            Assert.Equal(isEnabled, this.alertRuleResource.IsEnabled);
+            Assert.Equal(Utilities.Name, alertRuleResource.AlertRuleResourceName);
+            Assert.Equal(isEnabled, alertRuleResource.IsEnabled);
 
-            Assert.True(this.alertRuleResource.Condition is ThresholdRuleCondition);
+            Assert.True(alertRuleResource.Condition is ThresholdRuleCondition);
 
-            var condition = this.alertRuleResource.Condition as ThresholdRuleCondition;
+            var condition = alertRuleResource.Condition as ThresholdRuleCondition;
             Assert.Equal(threshold, condition.Threshold);
             Assert.Equal(conditionOperator, condition.OperatorProperty);
             Assert.Equal(totalMinutes, ((TimeSpan)condition.WindowSize).TotalMinutes);

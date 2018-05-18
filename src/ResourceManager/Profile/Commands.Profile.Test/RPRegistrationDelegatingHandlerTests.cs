@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
                 {
                     AzureOperationResponse<Provider> r = new AzureOperationResponse<Provider>
                     {
-                        Body = new Provider(registrationState: RegistrationState.Registered.ToString())
+                        Body = new Provider(registrationState: RegistrationState.Registered)
                     };
 
                     return Task.FromResult(r);
@@ -203,7 +203,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
                 {
                     AzureOperationResponse<Provider> r = new AzureOperationResponse<Provider>
                     {
-                        Body = new Provider(registrationState: RegistrationState.Pending.ToString())
+                        Body = new Provider(registrationState: RegistrationState.Pending)
                     };
                      
                     return Task.FromResult(r);
@@ -285,12 +285,12 @@ namespace Microsoft.Azure.Commands.Profile.Test
         public MockResponseDelegatingHandler(Dictionary<HttpRequestMessage, List<HttpResponseMessage>> mapping)
         {
             this.mapping = mapping;
-            this.RequestsCount = 0;
+            RequestsCount = 0;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            return await Task.Run<HttpResponseMessage>(() =>
+            return await Task.Run(() =>
             {
                 var response = mapping[request].First();
                 mapping[request].Remove(response);

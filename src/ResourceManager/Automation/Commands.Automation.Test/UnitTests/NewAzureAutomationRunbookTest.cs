@@ -35,12 +35,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new NewAzureAutomationRunbook
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new NewAzureAutomationRunbook
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -55,19 +55,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             var tags = new Dictionary<string, string>();
             tags.Add("tag1", "tags2");
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f => f.CreateRunbookByName(resourceGroupName, accountName, runbookName, description, tags, null, null, null, false));
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = runbookName;
-            this.cmdlet.Description = description;
-            this.cmdlet.Tags = tags;
-            this.cmdlet.SetParameterSet("ByRunbookName");
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = runbookName;
+            cmdlet.Description = description;
+            cmdlet.Tags = tags;
+            cmdlet.SetParameterSet("ByRunbookName");
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.CreateRunbookByName(resourceGroupName, accountName, runbookName, description, tags, null, null, null, false), Times.Once());
+            mockAutomationClient.Verify(f => f.CreateRunbookByName(resourceGroupName, accountName, runbookName, description, tags, null, null, null, false), Times.Once());
         }
     }
 }

@@ -127,10 +127,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 }
                 finally
                 {
-                    if (cleanup != null)
-                    {
-                        cleanup();
-                    }
+                    cleanup?.Invoke();
                 }
             }
         }

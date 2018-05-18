@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodeUsers
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new SetBatchComputeNodeUserCommand()
+            cmdlet = new SetBatchComputeNodeUserCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodeUsers
                 ComputeNodeUpdateUserOptions,
                 AzureOperationHeaderResponse<ComputeNodeUpdateUserHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -91,13 +91,13 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodeUsers
 
             // Don't go to the service on an Update ComputeNodeUser call
             Action<BatchRequest<NodeUpdateUserParameter, ComputeNodeUpdateUserOptions, AzureOperationHeaderResponse<ComputeNodeUpdateUserHeaders>>> extractUserUpdateParametersAction =
-                (request) =>
+                request =>
                 {
                     requestPassword = request.Parameters.Password;
                     requestExpiryTime = request.Parameters.ExpiryTime.GetValueOrDefault();
                 };
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(requestAction: extractUserUpdateParametersAction);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             cmdlet.ExecuteCmdlet();
 

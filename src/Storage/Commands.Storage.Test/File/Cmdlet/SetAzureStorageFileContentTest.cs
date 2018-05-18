@@ -36,7 +36,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestInitialize]
         public void UploadInitialize()
         {
-            using (var writer = System.IO.File.CreateText(this.sourceFilePath))
+            using (var writer = System.IO.File.CreateText(sourceFilePath))
             {
                 writer.WriteLine("SampleContent");
             }
@@ -45,9 +45,9 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestCleanup]
         public void UploadCleanup()
         {
-            if (System.IO.File.Exists(this.sourceFilePath))
+            if (System.IO.File.Exists(sourceFilePath))
             {
-                System.IO.File.Delete(this.sourceFilePath);
+                System.IO.File.Delete(sourceFilePath);
             }
         }
 
@@ -56,12 +56,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         {
             UploadFileInternal(
                 "share",
-                this.sourceFilePath,
+                sourceFilePath,
                 "remoteFile",
-                () => this.CmdletInstance.RunCmdlet(
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.ShareNameParameterSetName,
                     new KeyValuePair<string, object>("ShareName", "share"),
-                    new KeyValuePair<string, object>("Source", this.sourceFilePath),
+                    new KeyValuePair<string, object>("Source", sourceFilePath),
                     new KeyValuePair<string, object>("Path", "remoteFile")));
         }
 
@@ -70,12 +70,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         {
             UploadFileInternal(
                 "share",
-                this.sourceFilePath,
+                sourceFilePath,
                 "remoteFile",
-                () => this.CmdletInstance.RunCmdlet(
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.ShareParameterSetName,
-                    new KeyValuePair<string, object>("Share", this.MockChannel.GetShareReference("share")),
-                    new KeyValuePair<string, object>("Source", this.sourceFilePath),
+                    new KeyValuePair<string, object>("Share", MockChannel.GetShareReference("share")),
+                    new KeyValuePair<string, object>("Source", sourceFilePath),
                     new KeyValuePair<string, object>("Path", "remoteFile")));
         }
 
@@ -84,58 +84,58 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         {
             UploadFileInternal(
                 "share",
-                this.sourceFilePath,
+                sourceFilePath,
                 "remoteFile",
-                () => this.CmdletInstance.RunCmdlet(
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.DirectoryParameterSetName,
-                    new KeyValuePair<string, object>("Directory", this.MockChannel.GetShareReference("share").GetRootDirectoryReference()),
-                    new KeyValuePair<string, object>("Source", this.sourceFilePath),
+                    new KeyValuePair<string, object>("Directory", MockChannel.GetShareReference("share").GetRootDirectoryReference()),
+                    new KeyValuePair<string, object>("Source", sourceFilePath),
                     new KeyValuePair<string, object>("Path", "remoteFile")));
         }
 
         [TestMethod]
         public void UploadFileUsingDirectoryObjectOnlyTest()
         {
-            this.MockChannel.SetsAvailableDirectories("dir");
+            MockChannel.SetsAvailableDirectories("dir");
 
             UploadFileInternal(
                 "share",
-                this.sourceFilePath,
-                Path.GetFileName(this.sourceFilePath),
-                () => this.CmdletInstance.RunCmdlet(
+                sourceFilePath,
+                Path.GetFileName(sourceFilePath),
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.DirectoryParameterSetName,
-                    new KeyValuePair<string, object>("Directory", this.MockChannel.GetShareReference("share").GetRootDirectoryReference().GetDirectoryReference("dir")),
-                    new KeyValuePair<string, object>("Source", this.sourceFilePath)));
+                    new KeyValuePair<string, object>("Directory", MockChannel.GetShareReference("share").GetRootDirectoryReference().GetDirectoryReference("dir")),
+                    new KeyValuePair<string, object>("Source", sourceFilePath)));
         }
 
         [TestMethod]
         public void UploadFileUsingShareObjectOnlyTest()
         {
-            this.MockChannel.SetsAvailableDirectories("");
+            MockChannel.SetsAvailableDirectories("");
 
             UploadFileInternal(
                 "share",
-                this.sourceFilePath,
-                Path.GetFileName(this.sourceFilePath),
-                () => this.CmdletInstance.RunCmdlet(
+                sourceFilePath,
+                Path.GetFileName(sourceFilePath),
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.ShareParameterSetName,
-                    new KeyValuePair<string, object>("Share", this.MockChannel.GetShareReference("share")),
-                    new KeyValuePair<string, object>("Source", this.sourceFilePath)));
+                    new KeyValuePair<string, object>("Share", MockChannel.GetShareReference("share")),
+                    new KeyValuePair<string, object>("Source", sourceFilePath)));
         }
 
         [TestMethod]
         public void UploadFileUsingShareNameOnlyTest()
         {
-            this.MockChannel.SetsAvailableDirectories("");
+            MockChannel.SetsAvailableDirectories("");
 
             UploadFileInternal(
                 "share",
-                this.sourceFilePath,
-                Path.GetFileName(this.sourceFilePath),
-                () => this.CmdletInstance.RunCmdlet(
+                sourceFilePath,
+                Path.GetFileName(sourceFilePath),
+                () => CmdletInstance.RunCmdlet(
                     PSHFile.Constants.ShareNameParameterSetName,
                     new KeyValuePair<string, object>("ShareName", "share"),
-                    new KeyValuePair<string, object>("Source", this.sourceFilePath)));
+                    new KeyValuePair<string, object>("Source", sourceFilePath)));
         }
 
         private void UploadFileInternal(string shareName, string sourceFilePath, string destinationFileName, Action uploadFileAction)
@@ -153,8 +153,8 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
             uploadFileAction();
 
             mockupTransferManager.ThrowAssertExceptionIfAvailable();
-            this.MockCmdRunTime.OutputPipeline.AssertNoObject();
-            this.MockCmdRunTime.ErrorStream.AssertNoObject();
+            MockCmdRunTime.OutputPipeline.AssertNoObject();
+            MockCmdRunTime.ErrorStream.AssertNoObject();
         }
 
         private sealed class UploadTransferManager : MockTransferManager

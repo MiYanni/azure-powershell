@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodeUsers
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new NewBatchComputeNodeUserCommand()
+            cmdlet = new NewBatchComputeNodeUserCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodeUsers
                 ProxyModels.ComputeNodeAddUserOptions,
                 AzureOperationHeaderResponse<ProxyModels.ComputeNodeAddUserHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -92,12 +92,12 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodeUsers
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.ComputeNodeUser,
                 ProxyModels.ComputeNodeAddUserOptions,
-                AzureOperationHeaderResponse<ProxyModels.ComputeNodeAddUserHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<ProxyModels.ComputeNodeAddUserHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters

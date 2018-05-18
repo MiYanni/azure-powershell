@@ -29,49 +29,49 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void GetShareByNameTest()
         {
-            this.MockChannel.SetsAvailableShare("share");
+            MockChannel.SetsAvailableShare("share");
 
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.SpecificParameterSetName,
                 new KeyValuePair<string, object>("Name", "share"));
 
-            this.MockCmdRunTime.OutputPipeline.Cast<CloudFileShare>().AssertSingleObject(x => x.Name == "share");
+            MockCmdRunTime.OutputPipeline.Cast<CloudFileShare>().AssertSingleObject(x => x.Name == "share");
         }
 
         [TestMethod]
         public void GetNonExistingShareByNameTest()
         {
-            this.CmdletInstance.DisableDataCollection();
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.DisableDataCollection();
+            CmdletInstance.RunCmdlet(
                 Constants.SpecificParameterSetName,
                 new KeyValuePair<string, object>("Name", "share"));
 
-            this.MockCmdRunTime.ErrorStream.AssertMockupException("ShareNotExist");
+            MockCmdRunTime.ErrorStream.AssertMockupException("ShareNotExist");
         }
 
         [TestMethod]
         public void GetShareByPrefixTest()
         {
             var expectedShares = Enumerable.Range(0, 10).Select(x => string.Format(CultureInfo.InvariantCulture, "share{0}", x)).ToArray();
-            this.MockChannel.SetsAvailableShare(expectedShares.Concat(Enumerable.Range(0, 5).Select(x => string.Format(CultureInfo.InvariantCulture, "nonshare{0}", x))).ToArray());
+            MockChannel.SetsAvailableShare(expectedShares.Concat(Enumerable.Range(0, 5).Select(x => string.Format(CultureInfo.InvariantCulture, "nonshare{0}", x))).ToArray());
 
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.MatchingPrefixParameterSetName,
                 new KeyValuePair<string, object>("Prefix", "share"));
 
-            this.MockCmdRunTime.OutputPipeline.AssertShares(expectedShares);
+            MockCmdRunTime.OutputPipeline.AssertShares(expectedShares);
         }
 
         [TestMethod]
         public void GetShareByPrefixTest_NoShareMatchingPrefix()
         {
-            this.MockChannel.SetsAvailableShare(Enumerable.Range(0, 5).Select(x => string.Format(CultureInfo.InvariantCulture, "nonshare{0}", x)).ToArray());
+            MockChannel.SetsAvailableShare(Enumerable.Range(0, 5).Select(x => string.Format(CultureInfo.InvariantCulture, "nonshare{0}", x)).ToArray());
 
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.MatchingPrefixParameterSetName,
                 new KeyValuePair<string, object>("Prefix", "share"));
 
-            Assert.AreEqual(0, this.MockCmdRunTime.OutputPipeline.Count, "Should be no result returned.");
+            Assert.AreEqual(0, MockCmdRunTime.OutputPipeline.Count, "Should be no result returned.");
         }
     }
 }

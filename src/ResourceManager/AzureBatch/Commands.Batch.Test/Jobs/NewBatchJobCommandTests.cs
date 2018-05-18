@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new NewBatchJobCommand()
+            cmdlet = new NewBatchJobCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
                             Assert.Equal(OnTaskFailure.PerformExitOptionsJobAction, request.Parameters.OnTaskFailure);
                         });
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             cmdlet.JobManagerTask = new PSJobManagerTask("job manager", "cmd /c echo job manager");
             cmdlet.JobPreparationTask = new PSJobPreparationTask("cmd /c echo job prep");
             cmdlet.JobReleaseTask = new PSJobReleaseTask("cmd /c echo job release");
-            cmdlet.PoolInformation = new PSPoolInformation()
+            cmdlet.PoolInformation = new PSPoolInformation
             {
                 PoolId = "myPool"
             };
@@ -106,11 +106,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 JobAddParameter,
                 JobAddOptions,
-                AzureOperationHeaderResponse<JobAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<JobAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters
@@ -155,7 +155,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
                         Assert.Equal(applicationVersion, applicationPackageReference.Version);
                     });
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameters are set
             cmdlet.ExecuteCmdlet();
@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
 
             PSUserAccount adminUser = new PSUserAccount("admin", "password1", Azure.Batch.Common.ElevationLevel.Admin);
             PSUserAccount nonAdminUser = new PSUserAccount("user2", "password2", Azure.Batch.Common.ElevationLevel.NonAdmin);
-            PSUserAccount sshUser = new PSUserAccount("user3", "password3", Azure.Batch.Common.ElevationLevel.Admin, new PSLinuxUserConfiguration(uid: 1, gid:2, sshPrivateKey: "my ssh key"));
+            PSUserAccount sshUser = new PSUserAccount("user3", "password3", Azure.Batch.Common.ElevationLevel.Admin, new PSLinuxUserConfiguration(1, 2, "my ssh key"));
             cmdlet.PoolInformation = new PSPoolInformation
             {
                 AutoPoolSpecification = new PSAutoPoolSpecification
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
                     PoolSpecification = new PSPoolSpecification
                     {
                         CloudServiceConfiguration = new PSCloudServiceConfiguration("4", "*"),
-                        UserAccounts = new List<PSUserAccount>() { adminUser, nonAdminUser, sshUser }
+                        UserAccounts = new List<PSUserAccount> { adminUser, nonAdminUser, sshUser }
                     }
                 }
             };
@@ -193,11 +193,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 JobAddParameter,
                 JobAddOptions,
-                AzureOperationHeaderResponse<JobAddHeaders>>(requestAction: (r) =>
+                AzureOperationHeaderResponse<JobAddHeaders>>(requestAction: r =>
                 {
                     requestParameters = r.Parameters;
                 });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
             cmdlet.ExecuteCmdlet();
 
             // Verify the request parameters match the cmdlet parameters

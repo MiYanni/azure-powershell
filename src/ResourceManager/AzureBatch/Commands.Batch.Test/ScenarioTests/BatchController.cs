@@ -98,10 +98,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 
                 try
                 {
-                    if (initialize != null)
-                    {
-                        initialize();
-                    }
+                    initialize?.Invoke();
 
                     if (scriptBuilder != null)
                     {

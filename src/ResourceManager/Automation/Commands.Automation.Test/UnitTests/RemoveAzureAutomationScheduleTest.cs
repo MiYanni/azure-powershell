@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new RemoveAzureAutomationSchedule
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new RemoveAzureAutomationSchedule
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -50,17 +50,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string scheduleName = "schedule";
 
-            this.mockAutomationClient.Setup(f => f.DeleteSchedule(resourceGroupName, accountName, scheduleName));
+            mockAutomationClient.Setup(f => f.DeleteSchedule(resourceGroupName, accountName, scheduleName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = scheduleName;
-            this.cmdlet.Force = true;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = scheduleName;
+            cmdlet.Force = true;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.DeleteSchedule(resourceGroupName, accountName, scheduleName), Times.Once());
+            mockAutomationClient.Verify(f => f.DeleteSchedule(resourceGroupName, accountName, scheduleName), Times.Once());
         }
     }
 }

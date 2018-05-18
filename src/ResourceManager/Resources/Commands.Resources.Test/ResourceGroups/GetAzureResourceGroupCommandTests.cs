@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
             resourcesClientMock = new Mock<ResourceManagerSdkClient>();
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureResourceGroupCmdlet()
+            cmdlet = new GetAzureResourceGroupCmdlet
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 ResourceManagerSdkClient = resourcesClientMock.Object
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
         public void GetsResourcesGroups()
         {
             List<PSResourceGroup> result = new List<PSResourceGroup>();
-            PSResourceGroup expected = new PSResourceGroup()
+            PSResourceGroup expected = new PSResourceGroup
             {
                 Location = resourceGroupLocation,
                 ResourceGroupName = resourceGroupName
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
         public void GetsResourcesGroupsById()
         {
             List<PSResourceGroup> result = new List<PSResourceGroup>();
-            PSResourceGroup expected = new PSResourceGroup()
+            PSResourceGroup expected = new PSResourceGroup
             {
                 Location = resourceGroupLocation,
                 ResourceGroupName = resourceGroupName

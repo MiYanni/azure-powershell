@@ -34,12 +34,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationJob
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationJob
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -52,16 +52,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string runbookName = "runbook";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, null, null, null, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, null, null, null, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.RunbookName = runbookName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.RunbookName = runbookName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, null, null, null, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, null, null, null, ref nextLink), Times.Once());
         }
 
         public void GetAzureAutomationJobByRunbookNamAndStartTimeEndTimeeSuccessfull()
@@ -75,16 +75,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             DateTime startTime = new DateTime(2014, 12, 30, 17, 0, 0, 0);
             DateTime endTime = new DateTime(2014, 12, 30, 18, 0, 0, 0);
 
-            this.mockAutomationClient.Setup(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, startTime, endTime, null, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, startTime, endTime, null, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.RunbookName = runbookName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.RunbookName = runbookName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, startTime, endTime, null, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, startTime, endTime, null, ref nextLink), Times.Once());
         }
 
         public void GetAzureAutomationCompletedJobByRunbookNamAndStartTimeEndTimeeSuccessfull()
@@ -99,17 +99,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             DateTime endTime = new DateTime(2014, 12, 30, 18, 0, 0, 0);
             string status = "Completed";
 
-            this.mockAutomationClient.Setup(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, startTime, endTime, status, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, startTime, endTime, status, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.RunbookName = runbookName;
-            this.cmdlet.Status = status;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.RunbookName = runbookName;
+            cmdlet.Status = status;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, startTime, endTime, status, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobsByRunbookName(resourceGroupName, accountName, runbookName, startTime, endTime, status, ref nextLink), Times.Once());
         }
 
         [TestMethod]
@@ -120,15 +120,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListJobs(resourceGroupName, accountName, null, null, null, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListJobs(resourceGroupName, accountName, null, null, null, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobs(resourceGroupName, accountName, null, null, null, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobs(resourceGroupName, accountName, null, null, null, ref nextLink), Times.Once());
         }
 
         [TestMethod]
@@ -143,17 +143,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             DateTime endTime = new DateTime(2014, 12, 30, 18, 0, 0, 0);
 
             // look for jobs between 5pm to 6pm on 30th december 2014 
-            this.mockAutomationClient.Setup(f => f.ListJobs(resourceGroupName, accountName, startTime, endTime, null, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListJobs(resourceGroupName, accountName, startTime, endTime, null, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.StartTime = startTime;
-            this.cmdlet.EndTime = endTime;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.StartTime = startTime;
+            cmdlet.EndTime = endTime;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobs(resourceGroupName, accountName, startTime, endTime, null, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobs(resourceGroupName, accountName, startTime, endTime, null, ref nextLink), Times.Once());
         }
 
         [TestMethod]
@@ -169,18 +169,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string status = "Completed";
 
             // look for jobs between 5pm to 6pm on 30th december 2014 
-            this.mockAutomationClient.Setup(f => f.ListJobs(resourceGroupName, accountName, startTime, endTime, status, ref nextLink));
+            mockAutomationClient.Setup(f => f.ListJobs(resourceGroupName, accountName, startTime, endTime, status, ref nextLink));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.StartTime = startTime;
-            this.cmdlet.EndTime = endTime;
-            this.cmdlet.Status = status;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.StartTime = startTime;
+            cmdlet.EndTime = endTime;
+            cmdlet.Status = status;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListJobs(resourceGroupName, accountName, startTime, endTime, status, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListJobs(resourceGroupName, accountName, startTime, endTime, status, ref nextLink), Times.Once());
         }
 
         public void GetAzureAutomationJobByIdSuccessfull()
@@ -191,16 +191,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             Guid jobId = Guid.NewGuid();
 
             // look for jobs between 5pm to 6pm on 30th december 2014 
-            this.mockAutomationClient.Setup(f => f.GetJob(resourceGroupName, accountName, jobId));
+            mockAutomationClient.Setup(f => f.GetJob(resourceGroupName, accountName, jobId));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Id = jobId;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Id = jobId;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetJob(resourceGroupName, accountName, jobId), Times.Once());
+            mockAutomationClient.Verify(f => f.GetJob(resourceGroupName, accountName, jobId), Times.Once());
         }
 
     }

@@ -43,21 +43,21 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
             insightsOperationsMock = new Mock<IActivityLogAlertsOperations>();
             monitorClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RemoveAzureRmActivityLogAlertCommand()
+            cmdlet = new RemoveAzureRmActivityLogAlertCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = monitorClientMock.Object
             };
 
             insightsOperationsMock.Setup(f => f.DeleteWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Microsoft.Rest.Azure.AzureOperationResponse>(new Microsoft.Rest.Azure.AzureOperationResponse()))
+                .Returns(Task.FromResult(new Rest.Azure.AzureOperationResponse()))
                 .Callback((string r, string n, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
-                    this.resourceGroup = r;
-                    this.name = n;
+                    resourceGroup = r;
+                    name = n;
                 });
 
-            monitorClientMock.SetupGet(f => f.ActivityLogAlerts).Returns(this.insightsOperationsMock.Object);
+            monitorClientMock.SetupGet(f => f.ActivityLogAlerts).Returns(insightsOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -74,12 +74,12 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
             cmdlet.Name = "alert1";
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal("alert1", this.name);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal("alert1", name);
 
             cmdlet.Name = null;
             cmdlet.ResourceGroupName = null;
-            var resource = new ActivityLogAlertResource(location: "Global", scopes: null, condition: null, name: "andy0307rule", actions: null, id: "subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Default-ActivityLogAlerts/providers/microsoft.insights/activityLogAlerts/andy0307rule")
+            var resource = new ActivityLogAlertResource("Global", null, null, name: "andy0307rule", actions: null, id: "subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Default-ActivityLogAlerts/providers/microsoft.insights/activityLogAlerts/andy0307rule")
             {
                 Enabled = false
             };
@@ -87,10 +87,10 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
             cmdlet.InputObject = new OutputClasses.PSActivityLogAlertResource(resource);
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal("Default-ActivityLogAlerts", this.resourceGroup);
-            Assert.Equal("andy0307rule", this.name);
+            Assert.Equal("Default-ActivityLogAlerts", resourceGroup);
+            Assert.Equal("andy0307rule", name);
 
-            resource = new ActivityLogAlertResource(location: "Global", scopes: null, condition: null, name: "andy0307rule", actions: null, id: "//subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Default-ActivityLogAlerts/providers/microsoft.insights/activityLogAlerts/andy0307rule")
+            resource = new ActivityLogAlertResource("Global", null, null, name: "andy0307rule", actions: null, id: "//subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Default-ActivityLogAlerts/providers/microsoft.insights/activityLogAlerts/andy0307rule")
             {
                 Enabled = false
             };
@@ -98,15 +98,15 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
             cmdlet.InputObject = new OutputClasses.PSActivityLogAlertResource(resource);
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal("Default-ActivityLogAlerts", this.resourceGroup);
-            Assert.Equal("andy0307rule", this.name);
+            Assert.Equal("Default-ActivityLogAlerts", resourceGroup);
+            Assert.Equal("andy0307rule", name);
 
             cmdlet.InputObject = null;
             cmdlet.ResourceId = "/subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Default-ActivityLogAlerts/providers/microsoft.insights/activityLogAlerts/andy0307rule";
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal("Default-ActivityLogAlerts", this.resourceGroup);
-            Assert.Equal("andy0307rule", this.name);
+            Assert.Equal("Default-ActivityLogAlerts", resourceGroup);
+            Assert.Equal("andy0307rule", name);
         }
     }
 }

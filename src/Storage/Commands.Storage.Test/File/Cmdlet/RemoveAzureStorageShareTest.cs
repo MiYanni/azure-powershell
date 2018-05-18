@@ -28,12 +28,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void RemoveShareUsingShareNameTest()
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.ShareNameParameterSetName,
                 new KeyValuePair<string, object>("Name", "share"),
                 new KeyValuePair<string, object>("PassThru", new SwitchParameter(true)));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFileShare>()
                 .AssertSingleObject(x => x.Name == "share");
         }
@@ -41,12 +41,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void RemoveFileUsingShareObjectTest()
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.ShareParameterSetName,
-                new KeyValuePair<string, object>("Share", this.MockChannel.GetShareReference("share")),
+                new KeyValuePair<string, object>("Share", MockChannel.GetShareReference("share")),
                 new KeyValuePair<string, object>("PassThru", new SwitchParameter(true)));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFileShare>()
                 .AssertSingleObject(x => x.Name == "share");
         }

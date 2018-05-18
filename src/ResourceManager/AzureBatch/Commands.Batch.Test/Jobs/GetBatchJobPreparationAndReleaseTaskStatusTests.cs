@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchJobPreparationAndReleaseTaskStatusCommand()
+            cmdlet = new GetBatchJobPreparationAndReleaseTaskStatusCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -62,8 +62,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             var taskExecutionInformationList = new List<ProxyModels.JobPreparationAndReleaseTaskExecutionInformation>
             {
                 new ProxyModels.JobPreparationAndReleaseTaskExecutionInformation(
-                    poolId: poolId,
-                    nodeId: Guid.NewGuid().ToString(),
+                    poolId,
+                    Guid.NewGuid().ToString(),
                     jobPreparationTaskExecutionInfo: new ProxyModels.JobPreparationTaskExecutionInformation(
                         retryCount: 0,
                         state: ProxyModels.JobPreparationTaskState.Completed,
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.JobListPreparationAndReleaseTaskStatusOptions,
                 AzureOperationResponse<IPage<ProxyModels.JobPreparationAndReleaseTaskExecutionInformation>, ProxyModels.JobListPreparationAndReleaseTaskStatusHeaders>>(response);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             var pipeline = new List<PSJobPreparationAndReleaseTaskExecutionInformation>();
@@ -118,8 +118,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             for (int i = 0; i < countReturned; i++)
             {
                 var jpjrInfo = new ProxyModels.JobPreparationAndReleaseTaskExecutionInformation(
-                    poolId: poolId,
-                    nodeId: Guid.NewGuid().ToString(),
+                    poolId,
+                    Guid.NewGuid().ToString(),
                     jobPreparationTaskExecutionInfo: new ProxyModels.JobPreparationTaskExecutionInformation(
                         retryCount: 0,
                         state: ProxyModels.JobPreparationTaskState.Completed,
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Jobs
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.JobListPreparationAndReleaseTaskStatusOptions,
                 AzureOperationResponse<IPage<ProxyModels.JobPreparationAndReleaseTaskExecutionInformation>, ProxyModels.JobListPreparationAndReleaseTaskStatusHeaders>>(response);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             var pipeline = new List<PSJobPreparationAndReleaseTaskExecutionInformation>();

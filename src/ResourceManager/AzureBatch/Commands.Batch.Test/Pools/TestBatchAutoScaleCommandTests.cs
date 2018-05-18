@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new TestBatchAutoScaleCommand()
+            cmdlet = new TestBatchAutoScaleCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                 ProxyModels.PoolEvaluateAutoScaleOptions,
                 AzureOperationResponse<ProxyModels.AutoScaleRun, ProxyModels.PoolEvaluateAutoScaleHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();
@@ -93,13 +93,13 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
             // Don't go to the service on an Evaluate AutoScale call
             Action<BatchRequest<string, ProxyModels.PoolEvaluateAutoScaleOptions, AzureOperationResponse<ProxyModels.AutoScaleRun, ProxyModels.PoolEvaluateAutoScaleHeaders>>> extractFormulaAction =
-                (request) =>
+                request =>
                 {
                     requestFormula = request.Parameters;
                 };
 
-            RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(responseToUse: response, requestAction: extractFormulaAction);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(response, extractFormulaAction);
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             cmdlet.ExecuteCmdlet();
 

@@ -14,14 +14,14 @@
 
 namespace Microsoft.Azure.Commands.Resources.Test
 {
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Implementation;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient;
-    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
-    using Microsoft.Azure.Management.ResourceManager;
-    using Microsoft.Azure.Management.ResourceManager.Models;
-    using Microsoft.Rest.Azure;
-    using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
+    using ResourceManager.Cmdlets.Implementation;
+    using ResourceManager.Cmdlets.SdkClient;
+    using ResourceManager.Cmdlets.SdkModels;
+    using Management.ResourceManager;
+    using Management.ResourceManager.Models;
+    using Rest.Azure;
+    using WindowsAzure.Commands.Common.Test.Mocks;
+    using WindowsAzure.Commands.ScenarioTest;
     using Moq;
     using System;
     using System.Collections.Generic;
@@ -58,20 +58,20 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         public RegisterAzureProviderFeatureCmdletTests(ITestOutputHelper output)
         {
-            this.featureOperationsMock = new Mock<IFeaturesOperations>();
+            featureOperationsMock = new Mock<IFeaturesOperations>();
             var featureClient = new Mock<IFeatureClient>();
 
             featureClient
                 .SetupGet(client => client.Features)
-                .Returns(() => this.featureOperationsMock.Object);
+                .Returns(() => featureOperationsMock.Object);
 
-            this.commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock = new Mock<ICommandRuntime>();
 
-            this.commandRuntimeMock
+            commandRuntimeMock
               .Setup(m => m.ShouldProcess(It.IsAny<string>(), It.IsAny<string>()))
               .Returns(() => true);
 
-            this.cmdlet = new RegisterAzureProviderFeatureCmdlet()
+            cmdlet = new RegisterAzureProviderFeatureCmdlet
             {
                 //CommandRuntime = commandRuntimeMock.Object,
                 ProviderFeatureClient = new ProviderFeatureClient
@@ -105,22 +105,22 @@ namespace Microsoft.Azure.Commands.Resources.Test
                 Type = "Microsoft.Features/feature"
             };
 
-            this.featureOperationsMock
+            featureOperationsMock
                 .Setup(client => client.RegisterWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<CancellationToken>()))
                 .Callback((string providerName, string featureName, Dictionary<string, List<string>> customHeaders, CancellationToken ignored) =>
                 {
                     Assert.Equal(ProviderName, providerName, StringComparer.OrdinalIgnoreCase);
                     Assert.Equal(FeatureName, featureName, StringComparer.OrdinalIgnoreCase);
                 })
-                .Returns(() => Task.FromResult(new AzureOperationResponse<FeatureResult>()
+                .Returns(() => Task.FromResult(new AzureOperationResponse<FeatureResult>
                 {
                     Body = registeredFeature
                 }));
             
-            this.cmdlet.ProviderNamespace = ProviderName;
-            this.cmdlet.FeatureName = FeatureName;
+            cmdlet.ProviderNamespace = ProviderName;
+            cmdlet.FeatureName = FeatureName;
 
-            this.commandRuntimeMock
+            commandRuntimeMock
                 .Setup(m => m.WriteObject(It.IsAny<object>()))
                 .Callback((object obj) =>
                 {
@@ -130,9 +130,9 @@ namespace Microsoft.Azure.Commands.Resources.Test
                     Assert.Equal(FeatureName, feature.FeatureName, StringComparer.OrdinalIgnoreCase);
                 });
 
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ExecuteCmdlet();
 
-            this.VerifyCallPatternAndReset(succeeded: true);
+            VerifyCallPatternAndReset(true);
         }
 
         /// <summary>
@@ -140,12 +140,12 @@ namespace Microsoft.Azure.Commands.Resources.Test
         /// </summary>
         private void VerifyCallPatternAndReset(bool succeeded)
         {
-            this.featureOperationsMock.Verify(f => f.RegisterWithHttpMessagesAsync(It.IsAny<string>(),
+            featureOperationsMock.Verify(f => f.RegisterWithHttpMessagesAsync(It.IsAny<string>(),
                 It.IsAny<string>(), null, It.IsAny<CancellationToken>()), Times.Once());
-            this.commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>()), succeeded ? Times.Once() : Times.Never());
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<object>()), succeeded ? Times.Once() : Times.Never());
 
-            this.featureOperationsMock.ResetCalls();
-            this.commandRuntimeMock.ResetCalls();
+            featureOperationsMock.ResetCalls();
+            commandRuntimeMock.ResetCalls();
         }
     }
 }

@@ -14,10 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Table
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.Table.Cmdlet;
-    using Microsoft.WindowsAzure.Storage.Table;
+    using VisualStudio.TestTools.UnitTesting;
+    using Storage.Common;
+    using Storage.Table.Cmdlet;
+    using WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -74,9 +74,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Table
             expectedPermissions |= SharedAccessTablePermissions.Update;
             SharedAccessTablePolicy resultPolicy = tableMock.tablePermissions.SharedAccessPolicies[policyName];
             Assert.IsNotNull(resultPolicy);
-            Assert.AreEqual<SharedAccessTablePermissions>(expectedPermissions, resultPolicy.Permissions);
-            Assert.AreEqual<DateTimeOffset?>(startTime.ToUniversalTime(), resultPolicy.SharedAccessStartTime);
-            Assert.AreEqual<DateTimeOffset?>(expiryTime.ToUniversalTime(), resultPolicy.SharedAccessExpiryTime);
+            Assert.AreEqual(expectedPermissions, resultPolicy.Permissions);
+            Assert.AreEqual(startTime.ToUniversalTime(), resultPolicy.SharedAccessStartTime);
+            Assert.AreEqual(expiryTime.ToUniversalTime(), resultPolicy.SharedAccessExpiryTime);
         }
     }
 }

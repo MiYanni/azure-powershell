@@ -28,13 +28,13 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void RemoveFileUsingShareNameAndPathTest()
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.ShareNameParameterSetName,
                 new KeyValuePair<string, object>("ShareName", "share"),
                 new KeyValuePair<string, object>("Path", "file"),
                 new KeyValuePair<string, object>("PassThru", new SwitchParameter(true)));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFile>()
                 .AssertSingleObject(x => x.Share.Name == "share" && x.Name == "file");
         }
@@ -42,13 +42,13 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void RemoveFileUsingShareObjectAndPathTest()
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.ShareParameterSetName,
-                new KeyValuePair<string, object>("Share", this.MockChannel.GetShareReference("share")),
+                new KeyValuePair<string, object>("Share", MockChannel.GetShareReference("share")),
                 new KeyValuePair<string, object>("Path", "file"),
                 new KeyValuePair<string, object>("PassThru", new SwitchParameter(true)));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFile>()
                 .AssertSingleObject(x => x.Share.Name == "share" && x.Name == "file");
         }
@@ -56,13 +56,13 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void RemoveFileUsingDirectoryObjectAndPathTest()
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.DirectoryParameterSetName,
-                new KeyValuePair<string, object>("Directory", this.MockChannel.GetShareReference("share").GetRootDirectoryReference()),
+                new KeyValuePair<string, object>("Directory", MockChannel.GetShareReference("share").GetRootDirectoryReference()),
                 new KeyValuePair<string, object>("Path", "file"),
                 new KeyValuePair<string, object>("PassThru", new SwitchParameter(true)));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFile>()
                 .AssertSingleObject(x => x.Share.Name == "share" && x.Name == "file");
         }
@@ -70,12 +70,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void RemoveFileUsingFileObjectTest()
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.FileParameterSetName,
-                new KeyValuePair<string, object>("File", this.MockChannel.GetShareReference("share").GetRootDirectoryReference().GetFileReference("file")),
+                new KeyValuePair<string, object>("File", MockChannel.GetShareReference("share").GetRootDirectoryReference().GetFileReference("file")),
                 new KeyValuePair<string, object>("PassThru", new SwitchParameter(true)));
 
-            this.MockCmdRunTime.OutputPipeline
+            MockCmdRunTime.OutputPipeline
                 .Cast<CloudFile>()
                 .AssertSingleObject(x => x.Share.Name == "share" && x.Name == "file");
         }

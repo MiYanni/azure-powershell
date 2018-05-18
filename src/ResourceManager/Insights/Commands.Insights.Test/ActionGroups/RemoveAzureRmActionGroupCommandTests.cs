@@ -42,21 +42,21 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
             insightsOperationsMock = new Mock<IActionGroupsOperations>();
             monitorClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RemoveAzureRmActionGroupCommand()
+            cmdlet = new RemoveAzureRmActionGroupCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = monitorClientMock.Object
             };
 
             insightsOperationsMock.Setup(f => f.DeleteWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Microsoft.Rest.Azure.AzureOperationResponse>(new Microsoft.Rest.Azure.AzureOperationResponse()))
+                .Returns(Task.FromResult(new Rest.Azure.AzureOperationResponse()))
                 .Callback((string r, string n, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
-                    this.resourceGroup = r;
-                    this.name = n;
+                    resourceGroup = r;
+                    name = n;
                 });
 
-            monitorClientMock.SetupGet(f => f.ActionGroups).Returns(this.insightsOperationsMock.Object);
+            monitorClientMock.SetupGet(f => f.ActionGroups).Returns(insightsOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -73,8 +73,8 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
             cmdlet.Name = "group1";
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal("group1", this.name);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal("group1", name);
         }
     }
 }

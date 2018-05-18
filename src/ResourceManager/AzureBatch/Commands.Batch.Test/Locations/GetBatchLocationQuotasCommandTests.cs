@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Subscriptions
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchLocationQuotasCommand()
+            cmdlet = new GetBatchLocationQuotasCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Subscriptions
 
             // Return a pre-built object when the command is issued.
             string location = "westus";
-            PSBatchLocationQuotas quotas = new PSBatchLocationQuotas(location, new BatchLocationQuota(accountQuota: 5));
+            PSBatchLocationQuotas quotas = new PSBatchLocationQuotas(location, new BatchLocationQuota(5));
             batchClientMock.Setup(b => b.GetLocationQuotas(location)).Returns(quotas);
 
             cmdlet.Location = location;

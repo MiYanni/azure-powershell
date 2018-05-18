@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ScenarioTests
             string callingClassType,
             string mockName)
         {
-            var providers = new Dictionary<string, string>()
+            var providers = new Dictionary<string, string>
             {
                 { "Microsoft.Insights", null }
             };
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ScenarioTests
             var providersToIgnore = new Dictionary<string, string>();
             providersToIgnore.Add("Microsoft.Azure.Management.Resources.ResourceManagementClient", "2016-02-01");
 
-            HttpMockServer.Matcher = new PermissiveRecordMatcherWithApiExclusion(ignoreResourcesClient: true, providers: providers, userAgents: providersToIgnore);
+            HttpMockServer.Matcher = new PermissiveRecordMatcherWithApiExclusion(true, providers, providersToIgnore);
             HttpMockServer.RecordsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SessionRecords");
 
             using (RestTestFramework.MockContext context = RestTestFramework.MockContext.Start(callingClassType, mockName))
@@ -128,33 +128,33 @@ namespace Microsoft.Azure.Commands.Insights.Test.ScenarioTests
                 // This allows the use of a particular subscription if the user is associated to several
                 // "TEST_CSM_ORGID_AUTHENTICATION=SubscriptionId=<subscription-id>"
                 string subId = Environment.GetEnvironmentVariable("TEST_CSM_ORGID_AUTHENTICATION");
-                RestTestFramework.TestEnvironment environment = new RestTestFramework.TestEnvironment(connectionString: subId);
-                this.MonitorClient = this.GetMonitorClient(context: context, env: environment);
-                this.MonitorManagementClient = this.GetInsightsManagementClient(context: context, env: environment);
+                RestTestFramework.TestEnvironment environment = new RestTestFramework.TestEnvironment(subId);
+                MonitorClient = GetMonitorClient(context, environment);
+                MonitorManagementClient = GetInsightsManagementClient(context, environment);
             }
             else if (HttpMockServer.Mode == HttpRecorderMode.Playback)
             {
-                this.MonitorClient = this.GetMonitorClient(context: context, env: null);
-                this.MonitorManagementClient = this.GetInsightsManagementClient(context: context, env: null);
+                MonitorClient = GetMonitorClient(context, null);
+                MonitorManagementClient = GetInsightsManagementClient(context, null);
             }
 
             _helper.SetupManagementClients(
-                this.MonitorClient, 
-                this.MonitorManagementClient);
+                MonitorClient, 
+                MonitorManagementClient);
         }
 
         private IMonitorClient GetMonitorClient(RestTestFramework.MockContext context, RestTestFramework.TestEnvironment env)
         {
             // currentEnvironment: RestTestFramework.TestEnvironmentFactory.GetTestEnvironment());
             return env != null 
-                ? context.GetServiceClient<MonitorClient>(currentEnvironment: env) 
+                ? context.GetServiceClient<MonitorClient>(env) 
                 : context.GetServiceClient<MonitorClient>();
         }
 
         private IMonitorManagementClient GetInsightsManagementClient(RestTestFramework.MockContext context, RestTestFramework.TestEnvironment env)
         {
             return env != null 
-                ? context.GetServiceClient<MonitorManagementClient>(currentEnvironment: env) 
+                ? context.GetServiceClient<MonitorManagementClient>(env) 
                 : context.GetServiceClient<MonitorManagementClient>();
         }
     }

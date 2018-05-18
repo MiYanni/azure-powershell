@@ -52,21 +52,21 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
-            response = new AzureOperationResponse<ActivityLogAlertResource>()
+            response = new AzureOperationResponse<ActivityLogAlertResource>
             {
                 Body = new ActivityLogAlertResource()
             };
 
             insightsOperationsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ActivityLogAlertResource>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Microsoft.Rest.Azure.AzureOperationResponse<ActivityLogAlertResource>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string resourceGrp, string name, ActivityLogAlertResource createOrUpdateParams, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
-                    this.resourceGroup = resourceGrp;
+                    resourceGroup = resourceGrp;
                     this.name = name;
-                    this.createOrUpdatePrms = createOrUpdateParams;
+                    createOrUpdatePrms = createOrUpdateParams;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.ActivityLogAlerts).Returns(this.insightsOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.ActivityLogAlerts).Returns(insightsOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -86,49 +86,49 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
             cmdlet.Action = new List<ActivityLogAlertActionGroup>
             {
                 ActivityLogAlertsUtilities.CreateActionGroup(
-                    id: "ActGrpId", 
-                    webhooks: new Dictionary<string, string> { { "key1", "value1" } })
+                    "ActGrpId", 
+                    new Dictionary<string, string> { { "key1", "value1" } })
             };
             cmdlet.Condition = new List<ActivityLogAlertLeafCondition>
             {
                 ActivityLogAlertsUtilities.CreateLeafCondition(
-                    field: "field",
-                    equals: "equals")
+                    "field",
+                    "equals")
             };
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal("ActivityLogAlertName", this.name);
-            Assert.Null(this.createOrUpdatePrms.Id);
-            Assert.Equal(Location, this.createOrUpdatePrms.Location);
-            Assert.NotNull(this.createOrUpdatePrms);
-            Assert.NotNull(this.createOrUpdatePrms.Actions);
-            Assert.NotNull(this.createOrUpdatePrms.Actions.ActionGroups);
-            Assert.Equal(1, this.createOrUpdatePrms.Actions.ActionGroups.Count);
-            Assert.Equal("ActGrpId", this.createOrUpdatePrms.Actions.ActionGroups[0].ActionGroupId);
-            Assert.NotNull(this.createOrUpdatePrms.Actions.ActionGroups[0].WebhookProperties);
-            Assert.True(this.createOrUpdatePrms.Actions.ActionGroups[0].WebhookProperties.ContainsKey("key1"));
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal("ActivityLogAlertName", name);
+            Assert.Null(createOrUpdatePrms.Id);
+            Assert.Equal(Location, createOrUpdatePrms.Location);
+            Assert.NotNull(createOrUpdatePrms);
+            Assert.NotNull(createOrUpdatePrms.Actions);
+            Assert.NotNull(createOrUpdatePrms.Actions.ActionGroups);
+            Assert.Equal(1, createOrUpdatePrms.Actions.ActionGroups.Count);
+            Assert.Equal("ActGrpId", createOrUpdatePrms.Actions.ActionGroups[0].ActionGroupId);
+            Assert.NotNull(createOrUpdatePrms.Actions.ActionGroups[0].WebhookProperties);
+            Assert.True(createOrUpdatePrms.Actions.ActionGroups[0].WebhookProperties.ContainsKey("key1"));
 
-            Assert.NotNull(this.createOrUpdatePrms.Condition);
-            Assert.NotNull(this.createOrUpdatePrms.Condition.AllOf);
-            Assert.Equal(1, this.createOrUpdatePrms.Condition.AllOf.Count);
-            Assert.Equal("field", this.createOrUpdatePrms.Condition.AllOf[0].Field);
-            Assert.Equal("equals", this.createOrUpdatePrms.Condition.AllOf[0].Equals);
+            Assert.NotNull(createOrUpdatePrms.Condition);
+            Assert.NotNull(createOrUpdatePrms.Condition.AllOf);
+            Assert.Equal(1, createOrUpdatePrms.Condition.AllOf.Count);
+            Assert.Equal("field", createOrUpdatePrms.Condition.AllOf[0].Field);
+            Assert.Equal("equals", createOrUpdatePrms.Condition.AllOf[0].Equals);
 
-            Assert.True(this.createOrUpdatePrms.Enabled);
-            Assert.Null(this.createOrUpdatePrms.Description);
-            Assert.Null(this.createOrUpdatePrms.Type);
-            Assert.Null(this.createOrUpdatePrms.Tags);
+            Assert.True(createOrUpdatePrms.Enabled);
+            Assert.Null(createOrUpdatePrms.Description);
+            Assert.Null(createOrUpdatePrms.Type);
+            Assert.Null(createOrUpdatePrms.Tags);
 
             cmdlet.DisableAlert = SwitchParameter.Present;
             cmdlet.Description = "description";
             cmdlet.Tag = new Dictionary<string, string>();
             cmdlet.ExecuteCmdlet();
 
-            Assert.False(this.createOrUpdatePrms.Enabled);
-            Assert.Equal("description", this.createOrUpdatePrms.Description);
-            Assert.Null(this.createOrUpdatePrms.Type);
-            Assert.NotNull(this.createOrUpdatePrms.Tags);
+            Assert.False(createOrUpdatePrms.Enabled);
+            Assert.Equal("description", createOrUpdatePrms.Description);
+            Assert.Null(createOrUpdatePrms.Type);
+            Assert.NotNull(createOrUpdatePrms.Tags);
         }
     }
 }

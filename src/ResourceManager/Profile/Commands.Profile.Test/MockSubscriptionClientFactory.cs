@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.Test
                 .Returns(
                     (Dictionary<string, List<string>> ch, CancellationToken token) =>
                         {
-                            var tenants = _tenants.Select((k) => new TenantIdDescription(id: k, tenantId: k));
+                            var tenants = _tenants.Select(k => new TenantIdDescription(k, k));
                             var mockPage = new MockPage<TenantIdDescription>(tenants.ToList());
 
                             AzureOperationResponse<IPage<TenantIdDescription>> r = new AzureOperationResponse<IPage<TenantIdDescription>>
@@ -98,19 +98,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.Test
                         {
                             result.Body =
                                 new Subscription(
-                                    id: subId,
-                                    subscriptionId: subId,
-                                    tenantId: null,
-                                    displayName: GetSubscriptionNameFromId(subId),
-                                    state: SubscriptionState.Enabled,
-                                    subscriptionPolicies: null,
-                                    authorizationSource: null);
+                                    subId,
+                                    subId,
+                                    null,
+                                    GetSubscriptionNameFromId(subId),
+                                    SubscriptionState.Enabled);
                         }
 
                         return Task.FromResult(result);
                     });
             subscriptionMock.Setup(
-                (s) => s.ListWithHttpMessagesAsync(null, It.IsAny<CancellationToken>())).Returns(
+                s => s.ListWithHttpMessagesAsync(null, It.IsAny<CancellationToken>())).Returns(
                     (Dictionary<string, List<string>> ch, CancellationToken token) =>
                     {
                         if (_listAsyncQueue != null && _listAsyncQueue.Any())
@@ -130,20 +128,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.Test
                                         subscriptionList.Select(
                                             sub =>
                                                 new Subscription(
-                                                    id: sub,
-                                                    subscriptionId: sub,
-                                                    tenantId: null,
-                                                    displayName: GetSubscriptionNameFromId(sub),
-                                                    state: SubscriptionState.Enabled,
-                                                    subscriptionPolicies: null,
-                                                    authorizationSource: null))), "LinkToNextPage")
+                                                    sub,
+                                                    sub,
+                                                    null,
+                                                    GetSubscriptionNameFromId(sub),
+                                                    SubscriptionState.Enabled))), "LinkToNextPage")
                             };
                         }
 
                         return Task.FromResult(result);
                     });
             subscriptionMock.Setup(
-                (s) => s.ListNextWithHttpMessagesAsync("LinkToNextPage", null, It.IsAny<CancellationToken>())).Returns(
+                s => s.ListNextWithHttpMessagesAsync("LinkToNextPage", null, It.IsAny<CancellationToken>())).Returns(
                     (string nextLink, Dictionary<string, List<string>> ch, CancellationToken token) =>
                     {
                         AzureOperationResponse<IPage<Subscription>> result = null;
@@ -158,13 +154,11 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.Test
                                         subscriptionList.Select(
                                             sub =>
                                                 new Subscription(
-                                                id: sub,
-                                                subscriptionId: sub,
-                                                tenantId: null,
-                                                displayName: GetSubscriptionNameFromId(sub),
-                                                state: SubscriptionState.Disabled,
-                                                subscriptionPolicies: null,
-                                                authorizationSource: null))))
+                                                sub,
+                                                sub,
+                                                null,
+                                                GetSubscriptionNameFromId(sub),
+                                                SubscriptionState.Disabled))))
                             };
                         }
                         return Task.FromResult(result);
@@ -201,14 +195,14 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.Test
             /// <returns>A an enumerator that can be used to iterate through the collection.</returns>
             public IEnumerator<T> GetEnumerator()
             {
-                return (Items == null) ? Enumerable.Empty<T>().GetEnumerator() : Items.GetEnumerator();
+                return Items == null ? Enumerable.Empty<T>().GetEnumerator() : Items.GetEnumerator();
             }
 
             /// <summary>
             /// Returns an enumerator that iterates through the collection.
             /// </summary>
             /// <returns>A an enumerator that can be used to iterate through the collection.</returns>
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }

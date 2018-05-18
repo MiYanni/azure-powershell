@@ -40,7 +40,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Service
 
         public void SetsEnumerationResults(string directoryName, IEnumerable<IListFileItem> enumerationItems)
         {
-            this.enumerationResults[directoryName] = enumerationItems.ToArray();
+            enumerationResults[directoryName] = enumerationItems.ToArray();
         }
 
         public void SetsAvailableShare(params string[] shareNames)
@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Service
 
         public void SetsAvailableDirectories(params string[] directoryNames)
         {
-            this.availableDirectoryNames.AddRange(directoryNames);
+            availableDirectoryNames.AddRange(directoryNames);
         }
 
         public CloudFileShare GetShareReference(string shareName, DateTimeOffset? snapshotTime = null)
@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Service
         public Task EnumerateFilesAndDirectoriesAsync(CloudFileDirectory directory, Action<IListFileItem> enumerationAction, FileRequestOptions options, OperationContext operationContext, CancellationToken token)
         {
             IListFileItem[] enumerationItems;
-            if (this.enumerationResults.TryGetValue(directory.Name, out enumerationItems))
+            if (enumerationResults.TryGetValue(directory.Name, out enumerationItems))
             {
                 foreach (var item in enumerationItems)
                 {
@@ -88,7 +88,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Service
 
         public Task FetchShareAttributesAsync(CloudFileShare share, AccessCondition accessCondition, FileRequestOptions options, OperationContext operationContext, CancellationToken token)
         {
-            if (this.availableShareNames.Contains(share.Name))
+            if (availableShareNames.Contains(share.Name))
             {
                 return Task.FromResult(true);
             }
@@ -100,11 +100,11 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Service
 
         public Task EnumerateSharesAsync(string prefix, ShareListingDetails detailsIncluded, Action<CloudFileShare> enumerationAction, FileRequestOptions options, OperationContext operationContext, CancellationToken token)
         {
-            foreach (var shareName in this.availableShareNames)
+            foreach (var shareName in availableShareNames)
             {
                 if (shareName.StartsWith(prefix))
                 {
-                    enumerationAction(this.client.GetShareReference(shareName));
+                    enumerationAction(client.GetShareReference(shareName));
                 }
             }
 
@@ -118,7 +118,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Service
 
         public Task<bool> DirectoryExistsAsync(CloudFileDirectory directory, FileRequestOptions options, OperationContext operationContext, CancellationToken cancellationToken)
         {
-            return Task.FromResult(this.availableDirectoryNames.Contains(directory.Name));
+            return Task.FromResult(availableDirectoryNames.Contains(directory.Name));
         }
 
         public Task<bool> FileExistsAsync(CloudFile file, FileRequestOptions options, OperationContext operationContext, CancellationToken cancellationToken)
@@ -172,7 +172,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Service
 
         public Task FetchFileAttributesAsync(CloudFile file, AccessCondition accessCondition, FileRequestOptions options, OperationContext operationContext, CancellationToken token)
         {
-            if (this.availableDirectoryNames.Contains(file.Name))
+            if (availableDirectoryNames.Contains(file.Name))
             {
                 return Task.FromResult(true);
             }
@@ -184,7 +184,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Service
 
         public Task FetchDirectoryAttributesAsync(CloudFileDirectory directory, AccessCondition accessCondition, FileRequestOptions options, OperationContext operationContext, CancellationToken cancellationToken)
         {
-            if (this.availableDirectoryNames.Contains(directory.Name))
+            if (availableDirectoryNames.Contains(directory.Name))
             {
                 return Task.FromResult(true);
             }

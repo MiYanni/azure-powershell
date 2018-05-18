@@ -34,12 +34,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new SetAzureAutomationRunbook
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new SetAzureAutomationRunbook
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -51,16 +51,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string runbookName = "runbook";
 
-            this.mockAutomationClient.Setup(f => f.UpdateRunbook(resourceGroupName, accountName, runbookName, null, null, null, null));
+            mockAutomationClient.Setup(f => f.UpdateRunbook(resourceGroupName, accountName, runbookName, null, null, null, null));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = runbookName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = runbookName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.UpdateRunbook(resourceGroupName, accountName, runbookName, null, null, null, null), Times.Once());
+            mockAutomationClient.Verify(f => f.UpdateRunbook(resourceGroupName, accountName, runbookName, null, null, null, null), Times.Once());
         }
 
         [TestMethod]
@@ -74,18 +74,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             var tags = new Dictionary<string, string>();
             tags.Add("tag1", "tags2");
 
-            this.mockAutomationClient.Setup(f => f.UpdateRunbook(resourceGroupName, accountName, runbookName, null, tags, logProgress, null));
+            mockAutomationClient.Setup(f => f.UpdateRunbook(resourceGroupName, accountName, runbookName, null, tags, logProgress, null));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = runbookName;
-            this.cmdlet.Tag = tags;
-            this.cmdlet.LogProgress = logProgress;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = runbookName;
+            cmdlet.Tag = tags;
+            cmdlet.LogProgress = logProgress;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.UpdateRunbook(resourceGroupName, accountName, runbookName, null, tags, logProgress, null), Times.Once());
+            mockAutomationClient.Verify(f => f.UpdateRunbook(resourceGroupName, accountName, runbookName, null, tags, logProgress, null), Times.Once());
         }
     }
 }

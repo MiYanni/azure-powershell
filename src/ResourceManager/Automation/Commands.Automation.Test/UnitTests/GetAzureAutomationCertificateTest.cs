@@ -36,12 +36,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationCertificate
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationCertificate
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -53,17 +53,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string certificateName = "certificate";
 
-            this.mockAutomationClient.Setup(f => f.GetCertificate(resourceGroupName, accountName, certificateName));
+            mockAutomationClient.Setup(f => f.GetCertificate(resourceGroupName, accountName, certificateName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = certificateName;
-            this.cmdlet.SetParameterSet("ByCertificateName");
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = certificateName;
+            cmdlet.SetParameterSet("ByCertificateName");
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetCertificate(resourceGroupName, accountName, certificateName), Times.Once());
+            mockAutomationClient.Verify(f => f.GetCertificate(resourceGroupName, accountName, certificateName), Times.Once());
         }
 
         [TestMethod]
@@ -74,15 +74,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListCertificates(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<CertificateInfo>());
+            mockAutomationClient.Setup(f => f.ListCertificates(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<CertificateInfo>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListCertificates(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListCertificates(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
     }
 }

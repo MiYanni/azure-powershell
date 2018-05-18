@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             string fileContents = "test file contents";
             BatchAccountContext context = null;
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-GetNodeFileContentByTask '{0}' '{1}' '{2}' '{3}'", jobId, taskId, nodeFilePath, fileContents) }; },
+                () => { return new[] { string.Format("Test-GetNodeFileContentByTask '{0}' '{1}' '{2}' '{3}'", jobId, taskId, nodeFilePath, fileContents) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             BatchAccountContext context = null;
             string computeNodeId = null;
             controller.RunPsTestWorkflow(
-            () => { return new string[] { string.Format("Test-GetNodeFileContentByComputeNode '{0}' '{1}' '{2}' '{3}'", poolId, computeNodeId, startTaskStdOutName, startTaskStdOutContent) }; },
+            () => { return new[] { string.Format("Test-GetNodeFileContentByComputeNode '{0}' '{1}' '{2}' '{3}'", poolId, computeNodeId, startTaskStdOutName, startTaskStdOutContent) }; },
             () =>
             {
                 context = new ScenarioTestContext();
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             BatchAccountContext context = null;
             string computeNodeId = null;
             controller.RunPsTestWorkflow(
-            () => { return new string[] { string.Format("Test-GetRDPFile '{0}' '{1}'", poolId, computeNodeId) }; },
+            () => { return new[] { string.Format("Test-GetRDPFile '{0}' '{1}'", poolId, computeNodeId) }; },
             () =>
             {
                 context = new ScenarioTestContext();
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             string fileName = "testFile.txt";
             string filePath = string.Format("wd\\{0}", fileName);
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-DeleteNodeFileByTask '{0}' '{1}' '{2}'", jobId, taskId, filePath) }; },
+                () => { return new[] { string.Format("Test-DeleteNodeFileByTask '{0}' '{1}' '{2}'", jobId, taskId, filePath) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             string fileName = "testFile.txt";
             string filePath = string.Format("workitems\\{0}\\job-1\\{1}\\wd\\{2}", jobId, taskId, fileName);
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-DeleteNodeFileByComputeNode '{0}' '{1}' '{2}'", poolId, computeNodeId, filePath) }; },
+                () => { return new[] { string.Format("Test-DeleteNodeFileByComputeNode '{0}' '{1}' '{2}'", poolId, computeNodeId, filePath) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();

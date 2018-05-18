@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
             TClient client = CreateClient<TClient>(container.DefaultContext, endpoint);
             foreach (IClientAction action in GetActions())
             {
-                action.Apply<TClient>(client, container, endpoint);
+                action.Apply(client, container, endpoint);
             }
 
             return client;
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Commands.Common.Authentication.Factories
 
             foreach (IClientAction action in GetActions())
             {
-                action.Apply<TClient>(client, profile, endpoint);
+                action.Apply(client, profile, endpoint);
             }
 
             return client;

@@ -45,45 +45,45 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
             insightsOperationsMock = new Mock<IActivityLogAlertsOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetAzureRmActivityLogAlertCommand()
+            cmdlet = new GetAzureRmActivityLogAlertCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
-            ActivityLogAlertResource responseObject = ActivityLogAlertsUtilities.CreateActivityLogAlertResource(location: "westus", name: "alert1");
+            ActivityLogAlertResource responseObject = ActivityLogAlertsUtilities.CreateActivityLogAlertResource("westus", "alert1");
 
-            responseSimple = new AzureOperationResponse<ActivityLogAlertResource>()
+            responseSimple = new AzureOperationResponse<ActivityLogAlertResource>
             {
                 Body = responseObject
             };
 
-            responsePage = new AzureOperationResponse<IEnumerable<ActivityLogAlertResource>>()
+            responsePage = new AzureOperationResponse<IEnumerable<ActivityLogAlertResource>>
             {
                 Body = new List<ActivityLogAlertResource> { responseObject }
             };
 
             insightsOperationsMock.Setup(f => f.GetWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<ActivityLogAlertResource>>(responseSimple))
+                .Returns(Task.FromResult(responseSimple))
                 .Callback((string resourceGrp, string name, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
-                    this.resourceGroup = resourceGrp;
+                    resourceGroup = resourceGrp;
                     this.name = name;
                 });
 
             insightsOperationsMock.Setup(f => f.ListByResourceGroupWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IEnumerable<ActivityLogAlertResource>>>(responsePage))
+                .Returns(Task.FromResult(responsePage))
                 .Callback((string resourceGrp, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
-                    this.resourceGroup = resourceGrp;
+                    resourceGroup = resourceGrp;
                 });
 
             insightsOperationsMock.Setup(f => f.ListBySubscriptionIdWithHttpMessagesAsync(It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<AzureOperationResponse<IEnumerable<ActivityLogAlertResource>>>(responsePage))
+                .Returns(Task.FromResult(responsePage))
                 .Callback((Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {});
 
-            insightsManagementClientMock.SetupGet(f => f.ActivityLogAlerts).Returns(this.insightsOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.ActivityLogAlerts).Returns(insightsOperationsMock.Object);
         }
 
         [Fact]
@@ -97,15 +97,15 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActivityLogAlerts
             cmdlet.ResourceGroupName = Utilities.ResourceGroup;
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Null(this.name);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Null(name);
 
             // Get by name
             cmdlet.Name = Utilities.Name;
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal(Utilities.Name, this.name);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal(Utilities.Name, name);
         }
     }
 }

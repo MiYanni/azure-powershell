@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
             resourcesClientMock = new Mock<ResourceManagerSdkClient>();
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new SetAzureResourceGroupCmdlet()
+            cmdlet = new SetAzureResourceGroupCmdlet
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 ResourceManagerSdkClient = resourcesClientMock.Object
@@ -62,13 +62,13 @@ namespace Microsoft.Azure.Commands.Resources.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void UpdatesSetPSResourceGroupWithTag()
         {
-            PSUpdateResourceGroupParameters expectedParameters = new PSUpdateResourceGroupParameters()
+            PSUpdateResourceGroupParameters expectedParameters = new PSUpdateResourceGroupParameters
             {
                 ResourceGroupName = resourceGroupName,
                 Tag = tags
             };
             PSUpdateResourceGroupParameters actualParameters = new PSUpdateResourceGroupParameters();
-            PSResourceGroup expected = new PSResourceGroup()
+            PSResourceGroup expected = new PSResourceGroup
             {
                 ResourceGroupName = expectedParameters.ResourceGroupName,
                 Tags = expectedParameters.Tag
@@ -92,13 +92,13 @@ namespace Microsoft.Azure.Commands.Resources.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void UpdatesSetPSResourceGroupWithTagFromId()
         {
-            PSUpdateResourceGroupParameters expectedParameters = new PSUpdateResourceGroupParameters()
+            PSUpdateResourceGroupParameters expectedParameters = new PSUpdateResourceGroupParameters
             {
                 ResourceGroupName = resourceGroupName,
                 Tag = tags
             };
             PSUpdateResourceGroupParameters actualParameters = new PSUpdateResourceGroupParameters();
-            PSResourceGroup expected = new PSResourceGroup()
+            PSResourceGroup expected = new PSResourceGroup
             {
                 ResourceGroupName = expectedParameters.ResourceGroupName,
                 Tags = expectedParameters.Tag

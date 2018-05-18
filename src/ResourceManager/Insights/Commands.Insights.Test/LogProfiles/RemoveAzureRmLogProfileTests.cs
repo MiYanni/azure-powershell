@@ -38,20 +38,20 @@ namespace Microsoft.Azure.Commands.Insights.Test.LogProfiles
             insightsLogProfilesOperationsMock = new Mock<ILogProfilesOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RemoveAzureRmLogProfileCommand()
+            cmdlet = new RemoveAzureRmLogProfileCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
             insightsLogProfilesOperationsMock.Setup(f => f.DeleteWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Rest.Azure.AzureOperationResponse>( new Rest.Azure.AzureOperationResponse()))
+                .Returns(Task.FromResult( new Rest.Azure.AzureOperationResponse()))
                 .Callback((string logProfileName, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     this.logProfileName = logProfileName;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.LogProfiles).Returns(this.insightsLogProfilesOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.LogProfiles).Returns(insightsLogProfilesOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.LogProfiles
             cmdlet.Name = Utilities.Name;
 
             cmdlet.ExecuteCmdlet();
-            Assert.Equal(Utilities.Name, this.logProfileName);
+            Assert.Equal(Utilities.Name, logProfileName);
         }
     }
 }

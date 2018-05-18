@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchPoolStatisticsCommand()
+            cmdlet = new GetBatchPoolStatisticsCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -64,9 +64,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.PoolGetAllLifetimeStatisticsOptions,
-                AzureOperationResponse<ProxyModels.PoolStatistics, ProxyModels.PoolGetAllLifetimeStatisticsHeaders>>(responseToUse: response);
+                AzureOperationResponse<ProxyModels.PoolStatistics, ProxyModels.PoolGetAllLifetimeStatisticsHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a variable that can be examined later
             PSPoolStatistics statistics = null;

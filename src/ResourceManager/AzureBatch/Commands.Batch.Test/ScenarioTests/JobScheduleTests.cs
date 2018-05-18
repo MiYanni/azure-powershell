@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 
             BatchAccountContext context = null;
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-DisableEnableTerminateJobSchedule '{0}'", jobScheduleId) }; },
+                () => { return new[] { string.Format("Test-DisableEnableTerminateJobSchedule '{0}'", jobScheduleId) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();

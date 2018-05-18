@@ -35,12 +35,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new GetAzureAutomationCredential
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new GetAzureAutomationCredential
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -52,16 +52,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string credentialName = "credential";
 
-            this.mockAutomationClient.Setup(f => f.GetCredential(resourceGroupName, accountName, credentialName));
+            mockAutomationClient.Setup(f => f.GetCredential(resourceGroupName, accountName, credentialName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = credentialName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = credentialName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.GetCredential(resourceGroupName, accountName, credentialName), Times.Once());
+            mockAutomationClient.Verify(f => f.GetCredential(resourceGroupName, accountName, credentialName), Times.Once());
         }
 
         [TestMethod]
@@ -72,15 +72,15 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string nextLink = string.Empty;
 
-            this.mockAutomationClient.Setup(f => f.ListCredentials(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<CredentialInfo>());
+            mockAutomationClient.Setup(f => f.ListCredentials(resourceGroupName, accountName, ref nextLink)).Returns((string a, string b, string c) => new List<CredentialInfo>());
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.ListCredentials(resourceGroupName, accountName, ref nextLink), Times.Once());
+            mockAutomationClient.Verify(f => f.ListCredentials(resourceGroupName, accountName, ref nextLink), Times.Once());
         }
     }
 }

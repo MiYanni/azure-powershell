@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.Autoscale
         {
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            Cmdlet = new NewAzureRmAutoscaleWebhookCommand()
+            Cmdlet = new NewAzureRmAutoscaleWebhookCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };

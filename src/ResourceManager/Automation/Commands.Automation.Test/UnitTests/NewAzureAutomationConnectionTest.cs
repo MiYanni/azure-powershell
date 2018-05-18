@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new NewAzureAutomationConnection
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new NewAzureAutomationConnection
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -52,19 +52,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string connectionTypeName = "connectiontype";
             string description = "desc";
 
-            this.mockAutomationClient.Setup(
+            mockAutomationClient.Setup(
                 f => f.CreateConnection(resourceGroupName, accountName, connectionName, connectionTypeName, null, description));
 
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = connectionName;
-            this.cmdlet.Description = description;
-            this.cmdlet.ConnectionTypeName = connectionTypeName;
-            this.cmdlet.ConnectionFieldValues = null;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = connectionName;
+            cmdlet.Description = description;
+            cmdlet.ConnectionTypeName = connectionTypeName;
+            cmdlet.ConnectionFieldValues = null;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.CreateConnection(resourceGroupName, accountName, connectionName, connectionTypeName, null, description), Times.Once());
+            mockAutomationClient.Verify(f => f.CreateConnection(resourceGroupName, accountName, connectionName, connectionTypeName, null, description), Times.Once());
         }
     }
 }

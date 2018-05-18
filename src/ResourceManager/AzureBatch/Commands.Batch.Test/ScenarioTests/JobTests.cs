@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 
             BatchAccountContext context = null;
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-DisableEnableTerminateJob '{0}'", jobId) }; },
+                () => { return new[] { string.Format("Test-DisableEnableTerminateJob '{0}'", jobId) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             string taskId = "taskId-1";
             PSCloudJob completedJob = null;
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("IfJobSetsAutoFailure-ItCompletesWhenAnyTaskFails '{0}' '{1}'", jobId, taskId) }; },
+                () => { return new[] { string.Format("IfJobSetsAutoFailure-ItCompletesWhenAnyTaskFails '{0}' '{1}'", jobId, taskId) }; },
                 null,
                 () =>
                 {

@@ -34,11 +34,11 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void StartAzureSqlServerUpgradeAttributes()
         {
             Type type = typeof(StartAzureSqlServerUpgrade);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.Low);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerVersion", isMandatory: true, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerVersion", true, false);
         }
 
         [Fact]
@@ -46,9 +46,9 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void StopAzureSqlServerUpgradeAttributes()
         {
             Type type = typeof(StopAzureSqlServerUpgrade);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: true);
+            UnitTestHelper.CheckCmdletModifiesData(type, true);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
         }
 
         [Fact]
@@ -56,10 +56,10 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void GetAzureSqlServerUpgradeAttributes()
         {
             Type type = typeof(GetAzureSqlServerUpgrade);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.None);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
         }
     }
 }

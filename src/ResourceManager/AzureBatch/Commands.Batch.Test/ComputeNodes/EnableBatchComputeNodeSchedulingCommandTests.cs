@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new EnableBatchComputeNodeSchedulingCommand()
+            cmdlet = new EnableBatchComputeNodeSchedulingCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ComputeNodes
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ComputeNodeEnableSchedulingOptions,
                 AzureOperationHeaderResponse<ComputeNodeEnableSchedulingHeaders>>();
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Verify no exceptions when required parameter is set
             cmdlet.ExecuteCmdlet();

@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Automation.Test
                 _helper.SetupEnvironment(AzureModule.AzureResourceManager);
 
                 _helper.SetupModules(AzureModule.AzureResourceManager,
-                    "ScenarioTests\\" + this.GetType().Name + ".ps1",
+                    "ScenarioTests\\" + GetType().Name + ".ps1",
                     _helper.RMProfileModule,
                     _helper.GetRMModulePath(@"AzureRM.Automation.psd1"));
 

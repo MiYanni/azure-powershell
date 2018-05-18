@@ -27,9 +27,9 @@ namespace Microsoft.Azure.Commands.KeyVault.Test.UnitTests
 
         public RemoveKeyVaultSecretTests()
         {
-            base.SetupTest();
+            SetupTest();
 
-            cmdlet = new RemoveAzureKeyVaultSecret()
+            cmdlet = new RemoveAzureKeyVaultSecret
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 DataServiceClient = keyVaultClientMock.Object,
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Test.UnitTests
         public void CanRemoveSecretWithPassThruTest()
         {
             SecureString secureSecretValue = SecretValue.ConvertToSecureString();
-            PSDeletedKeyVaultSecret expected = new PSDeletedKeyVaultSecret() { Name = SecretName, VaultName = VaultName, SecretValue = secureSecretValue };
+            PSDeletedKeyVaultSecret expected = new PSDeletedKeyVaultSecret { Name = SecretName, VaultName = VaultName, SecretValue = secureSecretValue };
             keyVaultClientMock.Setup(kv => kv.DeleteSecret(VaultName, SecretName)).Returns(expected).Verifiable();
 
             // Mock the should process to return true
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.KeyVault.Test.UnitTests
         public void CanRemoveSecretWithNoPassThruTest()
         {
             SecureString secureSecretValue = SecretValue.ConvertToSecureString();
-            PSDeletedKeyVaultSecret expected = new PSDeletedKeyVaultSecret() { Name = SecretName, VaultName = VaultName, SecretValue = secureSecretValue };
+            PSDeletedKeyVaultSecret expected = new PSDeletedKeyVaultSecret { Name = SecretName, VaultName = VaultName, SecretValue = secureSecretValue };
             keyVaultClientMock.Setup(kv => kv.DeleteSecret(VaultName, SecretName)).Returns(expected).Verifiable();
 
             // Mock the should process to return true

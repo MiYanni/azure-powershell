@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             string thumbprint = null;
             string poolId = "certPool";
             controller.RunPsTestWorkflow(
-                () => { return new string[] { string.Format("Test-TestCancelCertificateDelete '{0}' '{1}'", BatchTestHelpers.TestCertificateAlgorithm, thumbprint) }; },
+                () => { return new[] { string.Format("Test-TestCancelCertificateDelete '{0}' '{1}'", BatchTestHelpers.TestCertificateAlgorithm, thumbprint) }; },
                 () =>
                 {
                     context = new ScenarioTestContext();
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
                     certRef.ThumbprintAlgorithm = BatchTestHelpers.TestCertificateAlgorithm;
                     certRef.Thumbprint = thumbprint;
                     certRef.Visibility = CertificateVisibility.Task;
-                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, targetDedicated: 0, targetLowPriority: 0, certReference: certRef);
+                    ScenarioTestHelpers.CreateTestPool(controller, context, poolId, 0, 0, certRef);
                     ScenarioTestHelpers.DeleteTestCertificate(controller, context, BatchTestHelpers.TestCertificateAlgorithm, thumbprint);
                     ScenarioTestHelpers.WaitForCertificateToFailDeletion(controller, context, BatchTestHelpers.TestCertificateAlgorithm, thumbprint);
                 },

@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common
 
         private static readonly Tuple<int, int> ValidASCIIRange = new Tuple<int, int>(0x0020, 0x07E);
 
-        private static readonly char[] InvalidFileNameCharacters = new char[] { '\\', '/', ':', '|', '<', '>', '*', '?', '"' };
+        private static readonly char[] InvalidFileNameCharacters = { '\\', '/', ':', '|', '<', '>', '*', '?', '"' };
 
         private static readonly char[] ValidShareNameCharactersExceptDash =
             Enumerable.Range(0, 26).Select(x => (char)('a' + x)).Concat(
@@ -56,7 +56,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common
 
         public static string GenerateInvalidShareName_DoubleDash(int length)
         {
-            return GenerateShareNameInternal(length, ensureDoubleDash: true);
+            return GenerateShareNameInternal(length, true);
         }
 
         public static string GenerateInvalidShareName_StartsWithDash(int length)

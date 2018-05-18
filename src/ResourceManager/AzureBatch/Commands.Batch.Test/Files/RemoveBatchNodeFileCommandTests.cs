@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new RemoveBatchNodeFileCommand()
+            cmdlet = new RemoveBatchNodeFileCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 FileDeleteFromComputeNodeOptions,
                 AzureOperationHeaderResponse<FileDeleteFromComputeNodeHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             Assert.Throws<ArgumentException>(() => cmdlet.ExecuteCmdlet());
 
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Files
                 FileDeleteFromTaskOptions,
                 AzureOperationHeaderResponse<FileDeleteFromTaskHeaders>>();
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             Assert.Throws<ArgumentException>(() => cmdlet.ExecuteCmdlet());
 

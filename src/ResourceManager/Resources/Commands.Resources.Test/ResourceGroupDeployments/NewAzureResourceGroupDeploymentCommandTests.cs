@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
             commandRuntimeMock = new Mock<ICommandRuntime>();
             SetupConfirmation(commandRuntimeMock);
-            cmdlet = new NewAzureResourceGroupDeploymentCmdlet()
+            cmdlet = new NewAzureResourceGroupDeploymentCmdlet
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 ResourceManagerSdkClient = resourcesClientMock.Object
@@ -61,32 +61,32 @@ namespace Microsoft.Azure.Commands.Resources.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CreatesNewPSResourceGroupDeploymentWithUserTemplate()
         {
-            PSCreateResourceGroupDeploymentParameters expectedParameters = new PSCreateResourceGroupDeploymentParameters()
+            PSCreateResourceGroupDeploymentParameters expectedParameters = new PSCreateResourceGroupDeploymentParameters
             {
                 TemplateFile = templateFile,
                 DeploymentName = deploymentName,
             };
             PSCreateResourceGroupDeploymentParameters actualParameters = new PSCreateResourceGroupDeploymentParameters();
-            PSResourceGroupDeployment expected = new PSResourceGroupDeployment()
+            PSResourceGroupDeployment expected = new PSResourceGroupDeployment
             {
                 Mode = DeploymentMode.Incremental,
                 DeploymentName = deploymentName,
                 CorrelationId = "123",
-                Outputs = new Dictionary<string, DeploymentVariable>()
+                Outputs = new Dictionary<string, DeploymentVariable>
                 {
-                    { "Variable1", new DeploymentVariable() { Value = "true", Type = "bool" } },
-                    { "Variable2", new DeploymentVariable() { Value = "10", Type = "int" } },
-                    { "Variable3", new DeploymentVariable() { Value = "hello world", Type = "string" } }
+                    { "Variable1", new DeploymentVariable { Value = "true", Type = "bool" } },
+                    { "Variable2", new DeploymentVariable { Value = "10", Type = "int" } },
+                    { "Variable3", new DeploymentVariable { Value = "hello world", Type = "string" } }
                 },
-                Parameters = new Dictionary<string, DeploymentVariable>()
+                Parameters = new Dictionary<string, DeploymentVariable>
                 {
-                    { "Parameter1", new DeploymentVariable() { Value = "true", Type = "bool" } },
-                    { "Parameter2", new DeploymentVariable() { Value = "10", Type = "int" } },
-                    { "Parameter3", new DeploymentVariable() { Value = "hello world", Type = "string" } }
+                    { "Parameter1", new DeploymentVariable { Value = "true", Type = "bool" } },
+                    { "Parameter2", new DeploymentVariable { Value = "10", Type = "int" } },
+                    { "Parameter3", new DeploymentVariable { Value = "hello world", Type = "string" } }
                 },
                 ProvisioningState = ProvisioningState.Succeeded.ToString(),
                 ResourceGroupName = resourceGroupName,
-                TemplateLink = new TemplateLink()
+                TemplateLink = new TemplateLink
                 {
                     ContentVersion = "1.0",
                     Uri = "http://mytemplate.com"

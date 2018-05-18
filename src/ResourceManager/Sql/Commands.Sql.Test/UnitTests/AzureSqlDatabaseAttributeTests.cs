@@ -34,17 +34,17 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void NewAzureSqlDatabaseAttributes()
         {
             Type type = typeof(NewAzureSqlDatabase);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.Low);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "CollationName", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "CatalogCollation", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "MaxSizeBytes", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Edition", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "RequestedServiceObjectiveName", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "CollationName", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "CatalogCollation", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "MaxSizeBytes", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Edition", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "RequestedServiceObjectiveName", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", false, false);
         }
 
         [Fact]
@@ -52,15 +52,15 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void SetAzureSqlDatabaseAttributes()
         {
             Type type = typeof(SetAzureSqlDatabase);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.Medium);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "MaxSizeBytes", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Edition", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "RequestedServiceObjectiveName", isMandatory: false, valueFromPipelineByName: false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", isMandatory: false, valueFromPipelineByName: false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "MaxSizeBytes", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Edition", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "RequestedServiceObjectiveName", false, false);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", false, false);
         }
 
         [Fact]
@@ -68,10 +68,10 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void RemoveAzureSqlDatabaseAttributes()
         {
             Type type = typeof(RemoveAzureSqlDatabase);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: true);
+            UnitTestHelper.CheckCmdletModifiesData(type, true);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: true, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, true);
         }
 
         [Fact]
@@ -79,11 +79,11 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
         public void GetAzureSqlDatabaseAttributes()
         {
             Type type = typeof(GetAzureSqlDatabase);
-            UnitTestHelper.CheckCmdletModifiesData(type, supportsShouldProcess: false);
+            UnitTestHelper.CheckCmdletModifiesData(type, false);
             UnitTestHelper.CheckConfirmImpact(type, System.Management.Automation.ConfirmImpact.None);
 
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", isMandatory: true, valueFromPipelineByName: true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", isMandatory: false, valueFromPipelineByName: true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
+            UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", false, true);
         }
     }
 }

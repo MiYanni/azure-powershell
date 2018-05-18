@@ -49,9 +49,9 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common
 
         public void ThrowAssertExceptionIfAvailable()
         {
-            if (this.assertException != null)
+            if (assertException != null)
             {
-                throw this.assertException;
+                throw assertException;
             }
         }
     }

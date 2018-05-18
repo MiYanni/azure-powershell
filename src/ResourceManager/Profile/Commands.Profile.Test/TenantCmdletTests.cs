@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             cmdlt.InvokeEndProcessing();
 
             Assert.True(commandRuntimeMock.OutputPipeline.Count == 2);
-            Assert.Equal("72f988bf-86f1-41af-91ab-2d7cd011db47", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Id.ToString());
+            Assert.Equal("72f988bf-86f1-41af-91ab-2d7cd011db47", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Id);
             Assert.Equal("microsoft.com", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Directory);
         }
 
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             cmdlt.InvokeEndProcessing();
 
             Assert.True(commandRuntimeMock.OutputPipeline.Count == 3);
-            Assert.Equal("72f988bf-86f1-41af-91ab-2d7cd011db47", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Id.ToString());
+            Assert.Equal("72f988bf-86f1-41af-91ab-2d7cd011db47", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Id);
             Assert.Equal("microsoft.com", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Directory);
         }
 
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             cmdlt.InvokeEndProcessing();
 
             Assert.True(commandRuntimeMock.OutputPipeline.Count == 3);
-            Assert.Equal("72f988bf-86f1-41af-91ab-2d7cd011db47", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Id.ToString());
+            Assert.Equal("72f988bf-86f1-41af-91ab-2d7cd011db47", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Id);
             Assert.Equal("microsoft.com", ((PSAzureTenant)commandRuntimeMock.OutputPipeline[1]).Directory);
         }
 

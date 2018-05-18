@@ -110,20 +110,20 @@ namespace Microsoft.Azure.Commands.Profile.Test
             var cmdlet = SetupCmdlet(true, true, out mockRuntime);
             cmdlet.Wait = true;
             var job = cmdlet.ExecuteAsJob("Test Job") as AzureLongRunningJob<AzureStreamTestCmdlet>;
-            job.StateChanged += this.HandleStateChange;
+            job.StateChanged += HandleStateChange;
             try
             {
                 if (job.JobStateInfo.State != JobState.Completed)
                 {
                     job.StopJob();
-                    this.jobCompleted.WaitOne(TimeSpan.FromSeconds(10));
+                    jobCompleted.WaitOne(TimeSpan.FromSeconds(10));
                     Assert.Equal("Stopped", job.StatusMessage);
                 }
 
             }
             finally
             {
-                job.StateChanged -= this.HandleStateChange;
+                job.StateChanged -= HandleStateChange;
             }
         }
 
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             Mock<ICommandRuntime> mockRuntime;
             var cmdlet = SetupCmdlet(true, false, out mockRuntime);
             cmdlet.MyInvocation.BoundParameters["Confirm"] = true;
-            mockRuntime.Setup((r) => r.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidOperationException("Exception on ShouldProcess"));
+            mockRuntime.Setup(r => r.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidOperationException("Exception on ShouldProcess"));
             var job = cmdlet.ExecuteAsJob("Test Job") as AzureLongRunningJob<AzureStreamTestCmdlet>;
             WaitForCompletion(job, j =>
                 {
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             Mock<ICommandRuntime> mockRuntime;
             var cmdlet = SetupCmdlet(true, false, out mockRuntime);
             cmdlet.MyInvocation.BoundParameters["WhatIf"] = true;
-            mockRuntime.Setup((r) => r.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidOperationException("Exception on ShouldProcess"));
+            mockRuntime.Setup(r => r.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidOperationException("Exception on ShouldProcess"));
             var job = cmdlet.ExecuteAsJob("Test Job") as AzureLongRunningJob<AzureStreamTestCmdlet>;
             WaitForCompletion(job, j =>
 
@@ -167,7 +167,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         {
             Mock<ICommandRuntime> mockRuntime;
             var cmdlet = SetupCmdlet(true, true, out mockRuntime);
-            mockRuntime.Setup((r) => r.ShouldContinue(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidOperationException("Exception on ShouldContinue"));
+            mockRuntime.Setup(r => r.ShouldContinue(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidOperationException("Exception on ShouldContinue"));
             var job = cmdlet.ExecuteAsJob("Test Job") as AzureLongRunningJob<AzureStreamTestCmdlet>;
             WaitForCompletion(job, j =>
             {
@@ -241,7 +241,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
                 xunitLogger.Information(string.Format("[statechangedhandler]: previous state: '{0}', current state: '{1}'", args.PreviousJobStateInfo?.State, args.JobStateInfo?.State));
                 if (args.JobStateInfo.State == JobState.Completed || args.JobStateInfo.State == JobState.Failed || args.JobStateInfo.State == JobState.Stopped)
                 {
-                    this.jobCompleted.Set();
+                    jobCompleted.Set();
                 }
                 else
                 {
@@ -261,16 +261,16 @@ namespace Microsoft.Azure.Commands.Profile.Test
 
         void WaitForCompletion(AzureLongRunningJob job, Action<AzureLongRunningJob> validate)
         {
-            job.StateChanged += this.HandleStateChange;
+            job.StateChanged += HandleStateChange;
             try
             {
                 HandleStateChange(job, new JobStateEventArgs(job.JobStateInfo, new JobStateInfo(JobState.NotStarted)));
-                this.jobCompleted.WaitOne(TimeSpan.FromSeconds(30));
+                jobCompleted.WaitOne(TimeSpan.FromSeconds(30));
                 validate(job);
             }
             finally
             {
-                job.StateChanged -= this.HandleStateChange;
+                job.StateChanged -= HandleStateChange;
                foreach (var message in job.Debug)
                 {
                     xunitLogger.Information(message?.Message);
@@ -386,11 +386,11 @@ namespace Microsoft.Azure.Commands.Profile.Test
 
             public override void ExecuteCmdlet()
             {
-                if (String.IsNullOrEmpty(this.ParameterSetName))
+                if (String.IsNullOrEmpty(ParameterSetName))
                 {
                     throw new InvalidOperationException("Parameter set must be set");
                 }
-                if (this.AsJobDynamicParameters == null)
+                if (AsJobDynamicParameters == null)
                 {
                     throw new InvalidOperationException("Dynamic parameters must be set");
                 }

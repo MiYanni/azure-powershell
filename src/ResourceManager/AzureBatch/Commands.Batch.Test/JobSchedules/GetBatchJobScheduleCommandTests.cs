@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchJobScheduleCommand()
+            cmdlet = new GetBatchJobScheduleCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
                 ProxyModels.JobScheduleGetOptions,
                 AzureOperationResponse<ProxyModels.CloudJobSchedule, ProxyModels.JobScheduleGetHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudJobSchedule> pipeline = new List<PSCloudJobSchedule>();
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
 
                 return Task.FromResult(response);
             });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor, responseInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor, responseInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
 
             AzureOperationResponse<IPage<ProxyModels.CloudJobSchedule>, ProxyModels.JobScheduleListHeaders> response = BatchTestHelpers.CreateGenericAzureOperationListResponse<ProxyModels.CloudJobSchedule, ProxyModels.JobScheduleListHeaders>();
             Action<BatchRequest<ProxyModels.JobScheduleListOptions, AzureOperationResponse<IPage<ProxyModels.CloudJobSchedule>, ProxyModels.JobScheduleListHeaders>>> listJobScheduleAction =
-                (request) =>
+                request =>
                 {
                     ProxyModels.JobScheduleListOptions options = request.Options;
                     requestFilter = options.Filter;
@@ -136,9 +136,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
                     requestExpand = options.Expand;
                 };
 
-            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<ProxyModels.JobScheduleListOptions, AzureOperationResponse<IPage<ProxyModels.CloudJobSchedule>, ProxyModels.JobScheduleListHeaders>>(responseToUse: response, requestAction: listJobScheduleAction);
+            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(response, listJobScheduleAction);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -157,12 +157,12 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             cmdlet.Id = null;
             cmdlet.Filter = null;
 
-            string[] idsOfConstructedJobSchedules = new[] { "id1", "id2", "id3" };
+            string[] idsOfConstructedJobSchedules = { "id1", "id2", "id3" };
 
             // Build some CloudJobSchedules instead of querying the service on a List CloudJobSchedules call
             AzureOperationResponse<IPage<ProxyModels.CloudJobSchedule>, ProxyModels.JobScheduleListHeaders> response = BatchTestHelpers.CreateCloudJobScheduleListResponse(idsOfConstructedJobSchedules);
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<ProxyModels.JobScheduleListOptions, AzureOperationResponse<IPage<ProxyModels.CloudJobSchedule>, ProxyModels.JobScheduleListHeaders>>(response);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudJobSchedule> pipeline = new List<PSCloudJobSchedule>();
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
         public void ListJobSchedulesMaxCountTest()
         {
             // Verify default max count
-            Assert.Equal(Microsoft.Azure.Commands.Batch.Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
+            Assert.Equal(Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
 
             // Setup cmdlet to list job schedules without filters and a max count
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
@@ -198,12 +198,12 @@ namespace Microsoft.Azure.Commands.Batch.Test.JobSchedules
             int maxCount = 2;
             cmdlet.MaxCount = maxCount;
 
-            string[] idsOfConstructedJobSchedules = new[] { "id1", "id2", "id3" };
+            string[] idsOfConstructedJobSchedules = { "id1", "id2", "id3" };
 
             // Build some CloudJobSchedules instead of querying the service on a List CloudJobSchedules call
             AzureOperationResponse<IPage<ProxyModels.CloudJobSchedule>, ProxyModels.JobScheduleListHeaders> response = BatchTestHelpers.CreateCloudJobScheduleListResponse(idsOfConstructedJobSchedules);
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<ProxyModels.JobScheduleListOptions, AzureOperationResponse<IPage<ProxyModels.CloudJobSchedule>, ProxyModels.JobScheduleListHeaders>>(response);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudJobSchedule> pipeline = new List<PSCloudJobSchedule>();

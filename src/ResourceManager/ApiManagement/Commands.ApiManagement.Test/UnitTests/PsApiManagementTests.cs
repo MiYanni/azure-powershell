@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.Test.UnitTests
                 Location = "location",
                 Name = "name",
                 Type = "resource type",
-                Tags = new Dictionary<string, string>()
+                Tags = new Dictionary<string, string>
                 {
                     {"tagkey1", "tagvalue1" },
                     {"tagkey2", "tagvalue2" }
@@ -39,14 +39,14 @@ namespace Microsoft.Azure.Commands.ApiManagement.Test.UnitTests
                 },
                 Properties = new ApiServiceProperties
                 {
-                    AdditionalRegions = new List<AdditionalRegion>()
+                    AdditionalRegions = new List<AdditionalRegion>
                     {
                         new AdditionalRegion
                         {
                             Location = "region location",
                             SkuType = SkuType.Premium,
                             SkuUnitCount = 2,
-                            StaticIPs = new List<string>() { "192.168.1.1", "192.168.1.1" },
+                            StaticIPs = new List<string> { "192.168.1.1", "192.168.1.1" },
                             VirtualNetworkConfiguration = new VirtualNetworkConfiguration
                             {
                                 Location = "region vpn location",
@@ -56,12 +56,12 @@ namespace Microsoft.Azure.Commands.ApiManagement.Test.UnitTests
                     },
                     AddresserEmail = "addresser@email.com",
                     CreatedAtUtc = DateTime.UtcNow,
-                    CustomProperties = new Dictionary<string, string>()
+                    CustomProperties = new Dictionary<string, string>
                     {
                         { "cpkey1", "cpvalue1" },
                         { "cpkey2", "cpvalue2" }
                     },
-                    HostnameConfigurations = new List<HostnameConfiguration>()
+                    HostnameConfigurations = new List<HostnameConfiguration>
                     {
                         new HostnameConfiguration
                         {

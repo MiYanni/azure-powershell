@@ -36,12 +36,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new SetAzureAutomationCredential
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new SetAzureAutomationCredential
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -53,16 +53,16 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string credentialName = "credential";
 
-            this.mockAutomationClient.Setup(f => f.UpdateCredential(resourceGroupName, accountName, credentialName, null, null, null));
+            mockAutomationClient.Setup(f => f.UpdateCredential(resourceGroupName, accountName, credentialName, null, null, null));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = credentialName;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = credentialName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.UpdateCredential(resourceGroupName, accountName, credentialName, null, null, null), Times.Once());
+            mockAutomationClient.Verify(f => f.UpdateCredential(resourceGroupName, accountName, credentialName, null, null, null), Times.Once());
         }
 
         [TestMethod]
@@ -82,18 +82,18 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
 
             var value = new PSCredential(username, secureString);
 
-            this.mockAutomationClient.Setup(f => f.UpdateCredential(resourceGroupName, accountName, credentialName, username, password, description));
+            mockAutomationClient.Setup(f => f.UpdateCredential(resourceGroupName, accountName, credentialName, username, password, description));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = credentialName;
-            this.cmdlet.Description = description;
-            this.cmdlet.Value = value;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = credentialName;
+            cmdlet.Description = description;
+            cmdlet.Value = value;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.UpdateCredential(resourceGroupName, accountName, credentialName, username, password, description), Times.Once());
+            mockAutomationClient.Verify(f => f.UpdateCredential(resourceGroupName, accountName, credentialName, username, password, description), Times.Once());
         }
     }
 }

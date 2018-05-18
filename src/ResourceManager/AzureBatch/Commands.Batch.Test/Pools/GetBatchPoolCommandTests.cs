@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchPoolCommand()
+            cmdlet = new GetBatchPoolCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                 ProxyModels.PoolGetOptions,
                 AzureOperationResponse<ProxyModels.CloudPool, ProxyModels.PoolGetHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudPool> pipeline = new List<PSCloudPool>();
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
                 return Task.FromResult(response);
             });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor, responseInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor, responseInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
 
             AzureOperationResponse<IPage<ProxyModels.CloudPool>, ProxyModels.PoolListHeaders> response = BatchTestHelpers.CreateGenericAzureOperationListResponse<ProxyModels.CloudPool, ProxyModels.PoolListHeaders>();
             Action<BatchRequest<ProxyModels.PoolListOptions, AzureOperationResponse<IPage<ProxyModels.CloudPool>, ProxyModels.PoolListHeaders>>> extractPoolListAction =
-                (request) =>
+                request =>
                 {
                     ProxyModels.PoolListOptions options = request.Options;
                     requestFilter = options.Filter;
@@ -138,8 +138,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                     requestExpand = options.Expand;
                 };
 
-            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(responseToUse: response, requestAction: extractPoolListAction);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor };
+            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(response, extractPoolListAction);
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -158,7 +158,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             cmdlet.Id = null;
             cmdlet.Filter = null;
 
-            string[] idsOfConstructedPools = new[] { "pool1", "pool2", "pool3" };
+            string[] idsOfConstructedPools = { "pool1", "pool2", "pool3" };
 
             // Build some CloudPools instead of querying the service on a List CloudPools call
             AzureOperationResponse<IPage<ProxyModels.CloudPool>, ProxyModels.PoolListHeaders> response = BatchTestHelpers.CreateCloudPoolListResponse(idsOfConstructedPools);
@@ -166,7 +166,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
                 ProxyModels.PoolListOptions,
                 AzureOperationResponse<IPage<ProxyModels.CloudPool>, ProxyModels.PoolListHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudPool> pipeline = new List<PSCloudPool>();
@@ -192,7 +192,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
         public void ListPoolsMaxCountTest()
         {
             // Verify default max count
-            Assert.Equal(Microsoft.Azure.Commands.Batch.Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
+            Assert.Equal(Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
 
             // Setup cmdlet to list pools without filters and a max count
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
@@ -202,14 +202,14 @@ namespace Microsoft.Azure.Commands.Batch.Test.Pools
             int maxCount = 2;
             cmdlet.MaxCount = maxCount;
 
-            string[] idsOfConstructedPools = new[] { "pool1", "pool2", "pool3" };
+            string[] idsOfConstructedPools = { "pool1", "pool2", "pool3" };
 
             // Build some CloudPools instead of querying the service on a List CloudPools call
             AzureOperationResponse<IPage<ProxyModels.CloudPool>, ProxyModels.PoolListHeaders> response = BatchTestHelpers.CreateCloudPoolListResponse(idsOfConstructedPools);
             RequestInterceptor interceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor<
                 ProxyModels.PoolListOptions,
                 AzureOperationResponse<IPage<ProxyModels.CloudPool>, ProxyModels.PoolListHeaders>>(response);
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCloudPool> pipeline = new List<PSCloudPool>();

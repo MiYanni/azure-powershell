@@ -78,7 +78,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File
         {
             RunCmdlet(cmdlet, parameterSet,
                 parameters.Select(x => new KeyValuePair<string, object[]>(
-                    x.Key, new object[] { x.Value })).ToArray()
+                    x.Key, new[] { x.Value })).ToArray()
             );
         }
 

@@ -27,7 +27,7 @@ using Microsoft.Azure.Commands.Insights.ActionGroups;
 
 namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
 {
-    using Microsoft.Azure.Commands.Insights.OutputClasses;
+    using OutputClasses;
 
     public class AddAzureRmActionGroupTests
     {
@@ -57,24 +57,24 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
                 MonitorManagementClient = insightsManagementClientMock.Object
             };
 
-            response = new AzureOperationResponse<ActionGroupResource>()
-                       {
+            response = new AzureOperationResponse<ActionGroupResource>
+            {
                            Body =
                                ActionGroupsUtilities.CreateActionGroupResource(
-                                   name: "ActionGroupName",
-                                   shortName: "AgShortName")
+                                   "ActionGroupName",
+                                   "AgShortName")
                        };
 
             insightsOperationsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ActionGroupResource>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(response))
                 .Callback((string resourceGrp, string name, ActionGroupResource createOrUpdateParams, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
-                    this.resourceGroup = resourceGrp;
+                    resourceGroup = resourceGrp;
                     this.name = name;
-                    this.createOrUpdatePrms = createOrUpdateParams;
+                    createOrUpdatePrms = createOrUpdateParams;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.ActionGroups).Returns(this.insightsOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.ActionGroups).Returns(insightsOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -93,47 +93,47 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
             cmdlet.Receiver = new List<PSActionGroupReceiverBase>
             {
                 new PSEmailReceiver(ActionGroupsUtilities.CreateEmailReceiver(
-                    name: "email",
-                    emailAddress: "foo@email.com")),
+                    "email",
+                    "foo@email.com")),
                 new PSSmsReceiver(ActionGroupsUtilities.CreateSmsReceiver(
-                    name: "sms",
-                    phoneNumber: "4254251234")),
+                    "sms",
+                    "4254251234")),
                 new PSWebhookReceiver(ActionGroupsUtilities.CreateWebhookReceiver(
-                    name: "webhook",
-                    serviceUri: "http://test.com")),
+                    "webhook",
+                    "http://test.com")),
             };
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.ResourceGroup, this.resourceGroup);
-            Assert.Equal("ActionGroupName", this.name);
-            Assert.Null(this.createOrUpdatePrms.Id);
-            Assert.Equal(Location, this.createOrUpdatePrms.Location);
-            Assert.Equal("AgShortName", this.createOrUpdatePrms.GroupShortName);
+            Assert.Equal(Utilities.ResourceGroup, resourceGroup);
+            Assert.Equal("ActionGroupName", name);
+            Assert.Null(createOrUpdatePrms.Id);
+            Assert.Equal(Location, createOrUpdatePrms.Location);
+            Assert.Equal("AgShortName", createOrUpdatePrms.GroupShortName);
 
-            Assert.Equal(1, this.createOrUpdatePrms.EmailReceivers.Count);
-            Assert.Equal("email", this.createOrUpdatePrms.EmailReceivers[0].Name);
-            Assert.Equal("foo@email.com", this.createOrUpdatePrms.EmailReceivers[0].EmailAddress);
+            Assert.Equal(1, createOrUpdatePrms.EmailReceivers.Count);
+            Assert.Equal("email", createOrUpdatePrms.EmailReceivers[0].Name);
+            Assert.Equal("foo@email.com", createOrUpdatePrms.EmailReceivers[0].EmailAddress);
 
-            Assert.Equal(1, this.createOrUpdatePrms.SmsReceivers.Count);
-            Assert.Equal("sms", this.createOrUpdatePrms.SmsReceivers[0].Name);
-            Assert.Equal("1", this.createOrUpdatePrms.SmsReceivers[0].CountryCode);
-            Assert.Equal("4254251234", this.createOrUpdatePrms.SmsReceivers[0].PhoneNumber);
+            Assert.Equal(1, createOrUpdatePrms.SmsReceivers.Count);
+            Assert.Equal("sms", createOrUpdatePrms.SmsReceivers[0].Name);
+            Assert.Equal("1", createOrUpdatePrms.SmsReceivers[0].CountryCode);
+            Assert.Equal("4254251234", createOrUpdatePrms.SmsReceivers[0].PhoneNumber);
 
-            Assert.Equal(1, this.createOrUpdatePrms.WebhookReceivers.Count);
-            Assert.Equal("webhook", this.createOrUpdatePrms.WebhookReceivers[0].Name);
-            Assert.Equal("http://test.com", this.createOrUpdatePrms.WebhookReceivers[0].ServiceUri);
+            Assert.Equal(1, createOrUpdatePrms.WebhookReceivers.Count);
+            Assert.Equal("webhook", createOrUpdatePrms.WebhookReceivers[0].Name);
+            Assert.Equal("http://test.com", createOrUpdatePrms.WebhookReceivers[0].ServiceUri);
 
-            Assert.True(this.createOrUpdatePrms.Enabled);
-            Assert.Null(this.createOrUpdatePrms.Type);
-            Assert.Null(this.createOrUpdatePrms.Tags);
+            Assert.True(createOrUpdatePrms.Enabled);
+            Assert.Null(createOrUpdatePrms.Type);
+            Assert.Null(createOrUpdatePrms.Tags);
 
             cmdlet.DisableGroup = true;
             cmdlet.Tag = new Dictionary<string, string>();
             cmdlet.ExecuteCmdlet();
 
-            Assert.False(this.createOrUpdatePrms.Enabled);
-            Assert.Null(this.createOrUpdatePrms.Type);
-            Assert.NotNull(this.createOrUpdatePrms.Tags);
+            Assert.False(createOrUpdatePrms.Enabled);
+            Assert.Null(createOrUpdatePrms.Type);
+            Assert.NotNull(createOrUpdatePrms.Tags);
         }
     }
 }

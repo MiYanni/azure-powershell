@@ -748,19 +748,19 @@ namespace Microsoft.Azure.Commands.ResourceManager.Profile.Test
         {
             var profile = new AzureRmProfile();
             string contextName1;
-            var context1 = (new AzureContext { Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud] })
+            var context1 = new AzureContext { Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud] }
                 .WithAccount(new AzureAccount { Id = "user1@contoso.com" })
                 .WithTenant(new AzureTenant { Id = Guid.NewGuid().ToString(), Directory = "contoso.com" })
                 .WithSubscription(new AzureSubscription { Id = Guid.NewGuid().ToString(), Name = "Contoso Subscription 1" });
             profile.TryAddContext(context1, out contextName1);
             string contextName2;
-            var context2 = (new AzureContext { Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureChinaCloud] })
+            var context2 = new AzureContext { Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureChinaCloud] }
                 .WithAccount(new AzureAccount { Id = "user2@contoso.cn" })
                 .WithTenant(new AzureTenant { Id = Guid.NewGuid().ToString(), Directory = "contoso.cn" })
                 .WithSubscription(new AzureSubscription { Id = Guid.NewGuid().ToString(), Name = "Contoso Subscription 2" });
             profile.TryAddContext(context2, out contextName2);
             string contextName3;
-            var context3 = (new AzureContext { Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureGermanCloud] })
+            var context3 = new AzureContext { Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureGermanCloud] }
                 .WithAccount(new AzureAccount { Id = "user3@contoso.de" })
                 .WithTenant(new AzureTenant { Id = Guid.NewGuid().ToString(), Directory = "contoso.de" })
                 .WithSubscription(new AzureSubscription { Id = Guid.NewGuid().ToString(), Name = "Contoso Subscription 3" });

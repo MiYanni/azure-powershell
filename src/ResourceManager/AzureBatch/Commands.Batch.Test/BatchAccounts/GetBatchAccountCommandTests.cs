@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchAccountCommand()
+            cmdlet = new GetBatchAccountCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             BatchAccountContext expected01 = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource01, null);
             BatchAccountContext expected02 = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource02, null);
 
-            batchClientMock.Setup(b => b.ListAccounts(null, resourceGroup)).Returns(new List<BatchAccountContext>() { expected01, expected02 });
+            batchClientMock.Setup(b => b.ListAccounts(null, resourceGroup)).Returns(new List<BatchAccountContext> { expected01, expected02 });
 
             cmdlet.AccountName = null;
             cmdlet.ResourceGroupName = resourceGroup;

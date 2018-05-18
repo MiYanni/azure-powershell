@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.Common
     {
         public MockupException(string errorId)
         {
-            this.ErrorId = errorId;
+            ErrorId = errorId;
         }
 
         public string ErrorId { get; private set; }

@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Applications
         {
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new NewBatchApplicationCommand()
+            cmdlet = new NewBatchApplicationCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object

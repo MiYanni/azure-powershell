@@ -22,9 +22,9 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
 {
     using System;
 
-    using Microsoft.Azure.Commands.Insights.OutputClasses;
-    using Microsoft.Azure.Management.Monitor.Management.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using OutputClasses;
+    using Management.Monitor.Management.Models;
+    using WindowsAzure.Commands.Utilities.Common;
 
     public class NewAzureRmActionGroupReceiverTests
     {
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
         public NewAzureRmActionGroupReceiverTests(Xunit.Abstractions.ITestOutputHelper output)
         {
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            Cmdlet = new NewAzureRmActionGroupReceiverCommand()
+            Cmdlet = new NewAzureRmActionGroupReceiverCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
                 return true;
             };
 
-            this.commandRuntimeMock.Verify(o => o.WriteObject(It.Is<PSEmailReceiver>(r => verify(r))), Times.Once);
+            commandRuntimeMock.Verify(o => o.WriteObject(It.Is<PSEmailReceiver>(r => verify(r))), Times.Once);
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
                 return true;
             };
 
-            this.commandRuntimeMock.Verify(o => o.WriteObject(It.Is<PSSmsReceiver>(r => verify(r))), Times.Once);
+            commandRuntimeMock.Verify(o => o.WriteObject(It.Is<PSSmsReceiver>(r => verify(r))), Times.Once);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
                 return true;
             };
 
-            this.commandRuntimeMock.Verify(o => o.WriteObject(It.Is<PSWebhookReceiver>(r => verify(r))), Times.Once);
+            commandRuntimeMock.Verify(o => o.WriteObject(It.Is<PSWebhookReceiver>(r => verify(r))), Times.Once);
         }
     }
 }

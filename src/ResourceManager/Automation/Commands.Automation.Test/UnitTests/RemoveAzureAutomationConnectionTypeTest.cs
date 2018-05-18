@@ -33,12 +33,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
         [TestInitialize]
         public void SetupTest()
         {
-            this.mockAutomationClient = new Mock<IAutomationClient>();
-            this.mockCommandRuntime = new MockCommandRuntime();
-            this.cmdlet = new RemoveAzureAutomationConnectionType
+            mockAutomationClient = new Mock<IAutomationClient>();
+            mockCommandRuntime = new MockCommandRuntime();
+            cmdlet = new RemoveAzureAutomationConnectionType
             {
-                AutomationClient = this.mockAutomationClient.Object,
-                CommandRuntime = this.mockCommandRuntime
+                AutomationClient = mockAutomationClient.Object,
+                CommandRuntime = mockCommandRuntime
             };
         }
 
@@ -50,17 +50,17 @@ namespace Microsoft.Azure.Commands.ResourceManager.Automation.Test.UnitTests
             string accountName = "automation";
             string connectionTypeName = "connectionType";
 
-            this.mockAutomationClient.Setup(f => f.DeleteConnectionType(resourceGroupName, accountName, connectionTypeName));
+            mockAutomationClient.Setup(f => f.DeleteConnectionType(resourceGroupName, accountName, connectionTypeName));
 
             // Test
-            this.cmdlet.ResourceGroupName = resourceGroupName;
-            this.cmdlet.AutomationAccountName = accountName;
-            this.cmdlet.Name = connectionTypeName;
-            this.cmdlet.Force = true;
-            this.cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = resourceGroupName;
+            cmdlet.AutomationAccountName = accountName;
+            cmdlet.Name = connectionTypeName;
+            cmdlet.Force = true;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.mockAutomationClient.Verify(f => f.DeleteConnectionType(resourceGroupName, accountName, connectionTypeName), Times.Once());
+            mockAutomationClient.Verify(f => f.DeleteConnectionType(resourceGroupName, accountName, connectionTypeName), Times.Once());
         }
     }
 }

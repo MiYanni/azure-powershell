@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
 {
     using System.Collections.Generic;
 
-    using Microsoft.Azure.Management.Monitor.Management.Models;
+    using Management.Monitor.Management.Models;
 
     public class ActionGroupsUtilities
     {
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.ActionGroups
             string shortName)
         {
             return new ActionGroupResource(
-                location: "Global",
+                "Global",
                 enabled: true,
                 name: name,
                 groupShortName: shortName,

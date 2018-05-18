@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
             ServiceManagemenet.Common.Models.XunitTracingInterceptor.AddToContext(new ServiceManagemenet.Common.Models.XunitTracingInterceptor(output));
             batchClientMock = new Mock<BatchClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new GetBatchCertificateCommand()
+            cmdlet = new GetBatchCertificateCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 BatchClient = batchClientMock.Object,
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
                 ProxyModels.CertificateGetOptions,
                 AzureOperationResponse<ProxyModels.Certificate, ProxyModels.CertificateGetHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCertificate> pipeline = new List<PSCertificate>();
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
 
                 return Task.FromResult(response);
             });
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor, responseInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor, responseInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -127,16 +127,16 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
             AzureOperationResponse<IPage<ProxyModels.Certificate>, ProxyModels.CertificateListHeaders> response = BatchTestHelpers.CreateGenericAzureOperationListResponse<ProxyModels.Certificate, ProxyModels.CertificateListHeaders>();
 
             Action<BatchRequest<ProxyModels.CertificateListOptions, AzureOperationResponse<IPage<ProxyModels.Certificate>, ProxyModels.CertificateListHeaders>>> extractCertificateListAction =
-                (request) =>
+                request =>
                 {
                     ProxyModels.CertificateListOptions options = request.Options;
                     requestFilter = options.Filter;
                     requestSelect = options.Select;
                 };
 
-            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(responseToUse: response, requestAction: extractCertificateListAction);
+            RequestInterceptor requestInterceptor = BatchTestHelpers.CreateFakeServiceResponseInterceptor(response, extractCertificateListAction);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { requestInterceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { requestInterceptor };
 
             cmdlet.ExecuteCmdlet();
 
@@ -155,7 +155,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
             cmdlet.Thumbprint = null;
             cmdlet.Filter = null;
 
-            string[] thumbprintsOfConstructedCerts = new[] { "12345", "67890", "ABCDE" };
+            string[] thumbprintsOfConstructedCerts = { "12345", "67890", "ABCDE" };
 
             // Build some Certificates instead of querying the service on a List Certificates call
             AzureOperationResponse<IPage<ProxyModels.Certificate>, ProxyModels.CertificateListHeaders> response = BatchTestHelpers.CreateCertificateListResponse(thumbprintsOfConstructedCerts);
@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
                 ProxyModels.CertificateListOptions,
                 AzureOperationResponse<IPage<ProxyModels.Certificate>, ProxyModels.CertificateListHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCertificate> pipeline = new List<PSCertificate>();
@@ -189,7 +189,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
         public void ListCertificatesMaxCountTest()
         {
             // Verify default max count
-            Assert.Equal(Microsoft.Azure.Commands.Batch.Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
+            Assert.Equal(Utils.Constants.DefaultMaxCount, cmdlet.MaxCount);
 
             // Setup cmdlet to list pools without filters and a max count
             BatchAccountContext context = BatchTestHelpers.CreateBatchContextWithKeys();
@@ -200,7 +200,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
             int maxCount = 2;
             cmdlet.MaxCount = maxCount;
 
-            string[] thumbprintsOfConstructedCerts = new[] { "12345", "67890", "ABCDE" };
+            string[] thumbprintsOfConstructedCerts = { "12345", "67890", "ABCDE" };
 
             // Build some Certificates instead of querying the service on a List Certificates call
             AzureOperationResponse<IPage<ProxyModels.Certificate>, ProxyModels.CertificateListHeaders> response = BatchTestHelpers.CreateCertificateListResponse(thumbprintsOfConstructedCerts);
@@ -208,7 +208,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Certificates
                 ProxyModels.CertificateListOptions,
                 AzureOperationResponse<IPage<ProxyModels.Certificate>, ProxyModels.CertificateListHeaders>>(response);
 
-            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior>() { interceptor };
+            cmdlet.AdditionalBehaviors = new List<BatchClientBehavior> { interceptor };
 
             // Setup the cmdlet to write pipeline output to a list that can be examined later
             List<PSCertificate> pipeline = new List<PSCertificate>();

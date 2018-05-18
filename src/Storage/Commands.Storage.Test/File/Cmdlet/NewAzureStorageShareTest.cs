@@ -32,57 +32,57 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void NewShareBasicTest()
         {
-            this.NewShareAndValidate("newshare");
+            NewShareAndValidate("newshare");
         }
 
         [TestMethod]
         public void NewShareWithLongName()
         {
-            this.NewShareAndValidate(FileNamingGenerator.GenerateValidShareName(63));
+            NewShareAndValidate(FileNamingGenerator.GenerateValidShareName(63));
         }
 
         [TestMethod]
         public void NewShareWithInvalidShareName_DoubleDash()
         {
-            this.NewShareAndValidate(FileNamingGenerator.GenerateInvalidShareName_DoubleDash(20), "ArgumentException");
+            NewShareAndValidate(FileNamingGenerator.GenerateInvalidShareName_DoubleDash(20), "ArgumentException");
         }
 
         [TestMethod]
         public void NewShareWithInvalidShareName_EndsWithDash()
         {
-            this.NewShareAndValidate(FileNamingGenerator.GenerateInvalidShareName_EndsWithDash(20), "ArgumentException");
+            NewShareAndValidate(FileNamingGenerator.GenerateInvalidShareName_EndsWithDash(20), "ArgumentException");
         }
 
         [TestMethod]
         public void NewShareWithInvalidShareName_StartsWithDash()
         {
-            this.NewShareAndValidate(FileNamingGenerator.GenerateInvalidShareName_StartsWithDash(20), "ArgumentException");
+            NewShareAndValidate(FileNamingGenerator.GenerateInvalidShareName_StartsWithDash(20), "ArgumentException");
         }
 
         [TestMethod]
         public void NewShareWithInvalidShareName_UpperCase()
         {
-            this.NewShareAndValidate(FileNamingGenerator.GenerateInvalidShareName_UpperCase(20), "ArgumentException");
+            NewShareAndValidate(FileNamingGenerator.GenerateInvalidShareName_UpperCase(20), "ArgumentException");
         }
 
         [TestMethod]
         public void NewShareWithTooLongName()
         {
-            this.NewShareAndValidate(FileNamingGenerator.GenerateValidASCIIName(64), "ArgumentException");
+            NewShareAndValidate(FileNamingGenerator.GenerateValidASCIIName(64), "ArgumentException");
         }
 
         [TestMethod]
         public void NewShareWithInvalidCharacter()
         {
-            this.NewShareAndValidate("&LOv=\\ji1eJgg% -SY;m", "ArgumentException");
+            NewShareAndValidate("&LOv=\\ji1eJgg% -SY;m", "ArgumentException");
         }
 
         private void NewShareAndValidate(string name)
         {
-            this.CmdletInstance.RunCmdlet(
+            CmdletInstance.RunCmdlet(
                 Constants.ShareNameParameterSetName,
                 new KeyValuePair<string, object>("Name", name));
-            this.MockCmdRunTime.OutputPipeline.Cast<CloudFileShare>().AssertSingleObject(x => x.Name == name);
+            MockCmdRunTime.OutputPipeline.Cast<CloudFileShare>().AssertSingleObject(x => x.Name == name);
         }
 
         private void NewShareAndValidate(string name, string expectedErrorId)
@@ -90,7 +90,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
             try
             {
                 AzureSessionInitializer.InitializeAzureSession();
-                this.CmdletInstance.RunCmdlet(
+                CmdletInstance.RunCmdlet(
                     Constants.ShareNameParameterSetName,
                     new KeyValuePair<string, object>("Name", name));
             }

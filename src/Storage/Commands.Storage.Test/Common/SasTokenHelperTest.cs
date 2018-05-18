@@ -28,20 +28,19 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
         [TestMethod]
         public void ValidateExistingPolicyTest()
         {
-            Dictionary<string, string> policies = new Dictionary<string,string>() 
-                { { "test", "test" }, { "Abc", "abc" }, { "123", "123" } };
-            SasTokenHelper.GetExistingPolicy<string>(policies, "ABC");
-            SasTokenHelper.GetExistingPolicy<string>(policies, "test");
-            SasTokenHelper.GetExistingPolicy<string>(policies, "tesT");
-            SasTokenHelper.GetExistingPolicy<string>(policies, "123");
-            AssertThrows<ArgumentException>(() => SasTokenHelper.GetExistingPolicy<string>(policies, "test1"));
+            Dictionary<string, string> policies = new Dictionary<string,string> { { "test", "test" }, { "Abc", "abc" }, { "123", "123" } };
+            SasTokenHelper.GetExistingPolicy(policies, "ABC");
+            SasTokenHelper.GetExistingPolicy(policies, "test");
+            SasTokenHelper.GetExistingPolicy(policies, "tesT");
+            SasTokenHelper.GetExistingPolicy(policies, "123");
+            AssertThrows<ArgumentException>(() => SasTokenHelper.GetExistingPolicy(policies, "test1"));
         }
 
         [TestMethod]
         public void ValidateExistingPolicyWithEmptyPoliciesTest()
         {
             Dictionary<string, string> policies = new Dictionary<string, string>();
-            AssertThrows<ArgumentException>(() => SasTokenHelper.GetExistingPolicy<string>(policies, "test1"));
+            AssertThrows<ArgumentException>(() => SasTokenHelper.GetExistingPolicy(policies, "test1"));
         }
 
         [TestMethod]

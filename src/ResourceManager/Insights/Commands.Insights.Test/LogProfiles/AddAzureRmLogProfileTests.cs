@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Insights.Test.LogProfiles
             insightsLogProfileOperationsMock = new Mock<ILogProfilesOperations>();
             insightsManagementClientMock = new Mock<MonitorManagementClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
-            cmdlet = new AddAzureRmLogProfileCommand()
+            cmdlet = new AddAzureRmLogProfileCommand
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 MonitorManagementClient = insightsManagementClientMock.Object
@@ -55,14 +55,14 @@ namespace Microsoft.Azure.Commands.Insights.Test.LogProfiles
             response = Utilities.InitializeLogProfileResponse();
 
             insightsLogProfileOperationsMock.Setup(f => f.CreateOrUpdateWithHttpMessagesAsync(It.IsAny<string>(), It.IsAny<LogProfileResource>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult<Rest.Azure.AzureOperationResponse<LogProfileResource>>(response))
+                .Returns(Task.FromResult(response))
                 .Callback((string logProfileName, LogProfileResource createOrUpdateParams, Dictionary<string, List<string>> headers, CancellationToken t) =>
                 {
                     this.logProfileName = logProfileName;
                     createOrUpdatePrms = createOrUpdateParams;
                 });
 
-            insightsManagementClientMock.SetupGet(f => f.LogProfiles).Returns(this.insightsLogProfileOperationsMock.Object);
+            insightsManagementClientMock.SetupGet(f => f.LogProfiles).Returns(insightsLogProfileOperationsMock.Object);
 
             // Setup Confirmation
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>())).Returns(true);
@@ -77,22 +77,22 @@ namespace Microsoft.Azure.Commands.Insights.Test.LogProfiles
         {
             // With mandatory arguments only
             cmdlet.Name = Utilities.Name;
-            cmdlet.Location = new List<string>() { "East US" };
+            cmdlet.Location = new List<string> { "East US" };
             cmdlet.ExecuteCmdlet();
             
-            Assert.Equal(Utilities.Name, this.logProfileName);
+            Assert.Equal(Utilities.Name, logProfileName);
             
             // With all arguments
             cmdlet.Name = Utilities.Name;
-            cmdlet.Location = new List<string>() {"East US"};
+            cmdlet.Location = new List<string> {"East US"};
             cmdlet.RetentionInDays = 10;
             cmdlet.ServiceBusRuleId = "miBusId";
             cmdlet.StorageAccountId = "miCuentaId";
-            cmdlet.Category = new List<string>() {"cat1"};
+            cmdlet.Category = new List<string> {"cat1"};
 
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal(Utilities.Name, this.logProfileName);
+            Assert.Equal(Utilities.Name, logProfileName);
         }
     }
 }
