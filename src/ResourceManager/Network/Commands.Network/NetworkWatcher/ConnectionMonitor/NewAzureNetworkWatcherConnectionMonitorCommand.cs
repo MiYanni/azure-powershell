@@ -202,7 +202,7 @@ namespace Microsoft.Azure.Commands.Network
             }
             else if (ParameterSetName.Contains("SetByName"))
             {
-                NetworkWatcher networkWatcher = NetworkClient.NetworkManagementClient.NetworkWatchers.Get(ResourceGroupName, NetworkWatcherName);
+                MNM.NetworkWatcher networkWatcher = NetworkClient.NetworkManagementClient.NetworkWatchers.Get(ResourceGroupName, NetworkWatcherName);
                 parameters.Location = networkWatcher.Location;
             }
             else

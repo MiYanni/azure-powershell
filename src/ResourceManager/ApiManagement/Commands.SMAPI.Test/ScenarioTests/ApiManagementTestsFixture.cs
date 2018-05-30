@@ -12,10 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+using Microsoft.Rest.ClientRuntime.Azure.TestFramework;
+
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Test.ScenarioTests
 {
-    using Azure.Test;
-
     public class ApiManagementTestsFixture : TestsFixture
     {
         public string Location { get; set; }
@@ -24,26 +24,20 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Test.Scenario
 
         public ApiManagementTestsFixture()
         {
-            try
+            using (MockContext context = MockContext.Start("ApiManagementTests", "CreateApiManagementService"))
             {
-                TestUtilities.StartTest("ApiManagementTests", "CreateApiManagementService");
-
                 var resourceManagementClient = ApiManagementHelper.GetResourceManagementClient();
-                ResourceGroupName = resourceManagementClient.TryGetResourceGroup(null);
+                ResourceGroupName = "powershelltest";
                 Location = "West US";
 
                 if (string.IsNullOrWhiteSpace(ResourceGroupName))
                 {
-                    ResourceGroupName = TestUtilities.GenerateName("Api-Default");
-                    resourceManagementClient.TryRegisterResourceGroup("eastus", ResourceGroupName);
+                    ResourceGroupName = Azure.Test.TestUtilities.GenerateName("Api-Default");
+                    resourceManagementClient.TryRegisterResourceGroup(Location, ResourceGroupName);
                 }
 
-                ApiManagementServiceName = TestUtilities.GenerateName("hydraapimservice");
-                ApiManagementHelper.GetApiManagementClient().TryCreateApiService(ResourceGroupName, ApiManagementServiceName, Location);
-            }
-            finally
-            {
-                TestUtilities.EndTest();
+                ApiManagementServiceName = "powershellsdkservice";
+                ApiManagementHelper.GetApiManagementClient(context).TryCreateApiService(ResourceGroupName, ApiManagementServiceName, Location);
             }
         }
     }

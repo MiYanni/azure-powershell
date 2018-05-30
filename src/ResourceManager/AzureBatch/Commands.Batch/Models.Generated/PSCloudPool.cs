@@ -411,7 +411,7 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 networkConfiguration = value;
             }
         }
-
+        
         public IReadOnlyList<PSResizeError> ResizeErrors
         {
             get

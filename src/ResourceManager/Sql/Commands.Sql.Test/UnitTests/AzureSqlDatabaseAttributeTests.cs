@@ -42,7 +42,6 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
             UnitTestHelper.CheckCmdletParameterAttributes(type, "CollationName", false, false);
             UnitTestHelper.CheckCmdletParameterAttributes(type, "CatalogCollation", false, false);
             UnitTestHelper.CheckCmdletParameterAttributes(type, "MaxSizeBytes", false, false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Edition", false, false);
             UnitTestHelper.CheckCmdletParameterAttributes(type, "RequestedServiceObjectiveName", false, false);
             UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", false, false);
         }
@@ -57,10 +56,7 @@ namespace Microsoft.Azure.Commands.Sql.Test.UnitTests
 
             UnitTestHelper.CheckCmdletParameterAttributes(type, "ServerName", true, true);
             UnitTestHelper.CheckCmdletParameterAttributes(type, "DatabaseName", true, true);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "MaxSizeBytes", false, false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Edition", false, false);
             UnitTestHelper.CheckCmdletParameterAttributes(type, "RequestedServiceObjectiveName", false, false);
-            UnitTestHelper.CheckCmdletParameterAttributes(type, "Tags", false, false);
         }
 
         [Fact]

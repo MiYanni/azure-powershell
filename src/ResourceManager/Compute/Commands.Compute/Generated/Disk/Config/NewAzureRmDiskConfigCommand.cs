@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.Compute.Automation
 
             if (MyInvocation.BoundParameters.ContainsKey("SkuName"))
             {
-               if (vSku == null)
+                if (vSku == null)
                 {
                     vSku = new DiskSku();
                 }

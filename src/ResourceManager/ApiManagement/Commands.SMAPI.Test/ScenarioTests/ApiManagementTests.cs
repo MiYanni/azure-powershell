@@ -19,12 +19,13 @@ using System.Linq;
 using Microsoft.Azure.Commands.Common.Authentication;
 using Microsoft.Azure.Test.HttpRecorder;
 using Microsoft.Rest.ClientRuntime.Azure.TestFramework;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Xunit;
 
 namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Test.ScenarioTests
 {
-    using WindowsAzure.Commands.ScenarioTest;
-    using WindowsAzure.Commands.Test.Utilities.Common;
-    using Xunit;
+    using ApiManagementClient = Management.ApiManagement.ApiManagementClient;
 
     public class ApiManagementTests : RMTestBase, IClassFixture<ApiManagementTestsFixture>
     {
@@ -63,13 +64,6 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Test.Scenario
         public void ApiImportExportWsdlTest()
         {
             RunPowerShellTest("Api-ImportExportWsdlTest");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void ApiImportWsdlToCreateSoapToRest()
-        {
-            RunPowerShellTest("Api-ImportWsdlToCreateSoapToRestApi");
         }
 
         [Fact]
@@ -177,6 +171,27 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Test.Scenario
             RunPowerShellTest("Backend-CrudTest");
         }
 
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void BackendServiceFabricCrudTest()
+        {
+            RunPowerShellTest("BackendServiceFabric-CrudTest");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void ApiVersionSetCrudTest()
+        {
+            RunPowerShellTest("ApiVersionSet-CrudTest");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void ApiRevisionCrudTest()
+        {
+            RunPowerShellTest("ApiRevision-CrudTest");
+        }
+
         private void RunPowerShellTest(params string[] scripts)
         {
             var sf = new StackTrace().GetFrame(1);
@@ -185,9 +200,9 @@ namespace Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Test.Scenario
 
             HttpMockServer.RecordsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SessionRecords");
 
-            using (MockContext.Start(callingClassType, mockName))
+            using (var context = MockContext.Start(callingClassType, mockName))
             {
-                _helper.SetupSomeOfManagementClients();
+                _helper.SetupSomeOfManagementClients(context.GetServiceClient<ApiManagementClient>(TestEnvironmentFactory.GetTestEnvironment()));
 
                 _helper.SetupEnvironment(AzureModule.AzureResourceManager);
                 _helper.SetupModules(AzureModule.AzureResourceManager,

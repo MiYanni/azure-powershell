@@ -18,7 +18,6 @@ namespace Microsoft.Azure.Commands.ApiManagement.Commands
     using Models;
     using ResourceManager.Common;
     using ResourceManager.Common.ArgumentCompleters;
-    using System;
     using System.Management.Automation;
 
     [Cmdlet(VerbsCommon.New, "AzureRmApiManagementRegion"), OutputType(typeof(PsApiManagementRegion))]

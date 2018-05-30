@@ -95,6 +95,12 @@ namespace Microsoft.Azure.Commands.Network
         public List<PSVpnClientRevokedCertificate> VpnClientRevokedCertificates { get; set; }
 
         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             HelpMessage = "A list of IPSec policies for P2S VPN client tunneling protocols.")]
+        public List<PSIpsecPolicy> VpnClientIpsecPolicy { get; set; }
+
+        [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The virtual network gateway's ASN, used to set up BGP sessions inside IPsec tunnels")]
@@ -188,11 +194,13 @@ namespace Microsoft.Azure.Commands.Network
                 VirtualNetworkGateway.GatewayDefaultSite.Id = GatewayDefaultSite.Id;
             }
 
+
             if ((VpnClientAddressPool != null ||
                  VpnClientRootCertificates != null ||
                  VpnClientRevokedCertificates != null ||
                  RadiusServerAddress != null ||
-                 RadiusServerSecret != null) &&
+                 RadiusServerSecret != null ||
+                 (VpnClientIpsecPolicy != null && VpnClientIpsecPolicy.Count != 0)) &&
                 VirtualNetworkGateway.VpnClientConfiguration == null)
             {
                 VirtualNetworkGateway.VpnClientConfiguration = new PSVpnClientConfiguration();
@@ -219,8 +227,13 @@ namespace Microsoft.Azure.Commands.Network
                 VirtualNetworkGateway.VpnClientConfiguration.VpnClientRevokedCertificates = VpnClientRevokedCertificates;
             }
 
-            if (RadiusServerAddress != null && RadiusServerSecret == null ||
-                RadiusServerAddress == null && RadiusServerSecret != null)
+            if (VpnClientIpsecPolicy != null && VpnClientIpsecPolicy.Count != 0)
+            {
+                VirtualNetworkGateway.VpnClientConfiguration.VpnClientIpsecPolicies = VpnClientIpsecPolicy;
+            }
+
+            if ((RadiusServerAddress != null && RadiusServerSecret == null) ||
+                (RadiusServerAddress == null && RadiusServerSecret != null))
             {
                 throw new ArgumentException("Both radius server address and secret must be specified if external radius is being configured");
             }

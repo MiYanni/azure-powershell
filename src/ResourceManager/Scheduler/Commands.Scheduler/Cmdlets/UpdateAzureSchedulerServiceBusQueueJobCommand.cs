@@ -113,6 +113,7 @@ namespace Microsoft.Azure.Commands.Scheduler.Cmdlets
 
             var servicBusQueue = new PSServiceBusParams
             {
+                Authentication = serviceBusAuthentication,
                 Message = ServiceBusMessage,
                 NamespaceProperty = ServiceBusNamespace,
                 QueueName = ServiceBusQueueName,
