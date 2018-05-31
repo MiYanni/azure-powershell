@@ -654,9 +654,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.Test
             Assert.Equal(tenants[1], resultSubscription.TenantId);
         }
 
-#if !NETSTANDARD
-
+#if NETSTANDARD
+        [Fact(Skip = "ConcurrentDictionary is not marked as Serializable")]
+        [Trait(Category.RunType, Category.DesktopOnly)]
+#else
         [Fact]
+#endif
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ProfileSerializeDeserializeWorks()
         {
@@ -719,9 +722,13 @@ namespace Microsoft.Azure.Commands.ResourceManager.Common.Test
             Assert.Equal("http://contoso.io", deserializedProfile.DefaultContext.Environment.GetProperty(AzureEnvironment.ExtendedEndpoint.OperationalInsightsEndpoint));
             Assert.Equal("http://insights.contoso.io/", deserializedProfile.DefaultContext.Environment.GetProperty(AzureEnvironment.ExtendedEndpoint.OperationalInsightsEndpointResourceId));
         }
-#endif
 
+#if NETSTANDARD
+        [Fact(Skip = "Serialized property order changes from NetCore 2.1.2 -> 2.1.200")]
+        [Trait(Category.RunType, Category.DesktopOnly)]
+#else
         [Fact]
+#endif
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void SavingProfileWorks()
         {

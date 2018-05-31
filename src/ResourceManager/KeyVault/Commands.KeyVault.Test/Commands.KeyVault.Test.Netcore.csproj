@@ -57,7 +57,7 @@
     <None Update="Scripts\ControlPlane\KeyVaultManagementTests.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="pshtest.pfx">
+    <None Update="Resources\pshtest.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
