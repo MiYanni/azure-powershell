@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.Network
             return cmDetails;
         }
 
-        public NetworkWatcher GetNetworkWatcherByLocation(string location)
+        public MNM.NetworkWatcher GetNetworkWatcherByLocation(string location)
         {
             var nwList = NetworkClient.NetworkManagementClient.NetworkWatchers.ListAll();
             foreach (var nw in nwList)

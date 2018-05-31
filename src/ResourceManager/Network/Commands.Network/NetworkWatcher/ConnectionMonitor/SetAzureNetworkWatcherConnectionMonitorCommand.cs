@@ -203,14 +203,14 @@ namespace Microsoft.Azure.Commands.Network
 
         private PSConnectionMonitorResult UpdateConnectionMonitor(string resourceGroupName, string networkWatcherName)
         {
-            ConnectionMonitor parameters = new ConnectionMonitor
+            MNM.ConnectionMonitor parameters = new MNM.ConnectionMonitor
             {
-                Source = new ConnectionMonitorSource
+                Source = new MNM.ConnectionMonitorSource
                 {
                     ResourceId = SourceResourceId,
                     Port = SourcePort
                 },
-                Destination = new ConnectionMonitorDestination
+                Destination = new MNM.ConnectionMonitorDestination
                 {
                     ResourceId = DestinationResourceId,
                     Address = DestinationAddress,
