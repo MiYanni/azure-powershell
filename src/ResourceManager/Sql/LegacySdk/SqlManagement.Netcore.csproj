@@ -23,6 +23,13 @@
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" PrivateAssets="all"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <FilesToSign Include="$(OutputPath)$(AssemblyName).dll">
+      <Authenticode>Microsoft</Authenticode>
+      <StrongName>StrongName</StrongName>
+    </FilesToSign>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DelaySign>false</DelaySign>
     <DefineConstants>TRACE;DEBUG;NETSTANDARD</DefineConstants>
