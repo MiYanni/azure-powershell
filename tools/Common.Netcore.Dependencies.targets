@@ -64,7 +64,10 @@
       <PrivateAssets Condition="'$(HideReferenceDependencies)' == 'true'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0-preview-06" PrivateAssets="All" />
-    <PackageReference Include="MicroBuild.Core" Version="0.3.0" PrivateAssets="All" />
+    <PackageReference Include="MicroBuild.Core" Version="0.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <PropertyGroup>
     <StorageToolsPath>$(NugetPackageRoot)microsoft.azure.powershell.storage\1.1.4-preview\tools\</StorageToolsPath>
