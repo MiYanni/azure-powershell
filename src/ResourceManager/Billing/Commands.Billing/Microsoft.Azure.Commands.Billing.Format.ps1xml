@@ -105,5 +105,58 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Billing.Models.PSStorageSyncValidation</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Billing.Models.PSStorageSyncValidation</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <Frame>
+                <CustomItem>
+                  <ExpressionBinding>
+                    <ScriptBlock>
+                      $osCheck = 'Failed'
+                      if($_.OSVersionCheckResult)
+                      {
+                        $osCheck = 'Success'
+                      }
+
+                      $fsCheck = 'Failed'
+                      if($_.FileSystemCheckResult)
+                      {
+                        $fsCheck = 'Success'
+                      }
+
+                      $compatibilityCount = $_.CompatibilityIssueCount
+                      if($_.CompatibilityIssueCount -eq 0)
+                      {
+                        $compatibilityCount = 'no'
+                      }
+"Environment validation results:
+
+Computer name: $($_.ComputerName)
+OS version check: ${osCheck}.
+File system check: ${fsCheck}.
+
+Namespace validation results:
+
+Path: $($_.Path)
+Number of files scanned: $($_.FileScanCount)
+Number of directories scanned: $($_.DirectoryScanCount)
+
+There were ${compatibilityCount} compatibility issues found with your files.
+$($_.Results | Format-Table | Out-String)"
+                    </ScriptBlock>
+                  </ExpressionBinding>
+                </CustomItem>
+              </Frame>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
