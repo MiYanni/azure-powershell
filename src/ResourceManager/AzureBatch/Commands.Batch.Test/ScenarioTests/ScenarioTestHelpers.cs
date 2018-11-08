@@ -24,6 +24,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections.Generic;
+// TODO: Remove IfDef
 #if NETSTANDARD
 using System.Threading.Tasks;
 #else
@@ -61,9 +62,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         public static BatchAccountContext CreateTestAccountAndResourceGroup(BatchController controller, string resourceGroupName, string accountName, string location)
         {
             controller.ResourceManagementClient.ResourceGroups.CreateOrUpdate(resourceGroupName, new ResourceGroup() { Location = location });
-            BatchAccount createResponse = controller.BatchManagementClient.BatchAccount.Create(resourceGroupName, accountName, new BatchAccountCreateParameters() { Location = location });
-            BatchAccountContext context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(createResponse, null);
-            BatchAccountKeys response = controller.BatchManagementClient.BatchAccount.GetKeys(resourceGroupName, accountName);
+            var createResponse = controller.BatchManagementClient.BatchAccount.Create(resourceGroupName, accountName, new BatchAccountCreateParameters() { Location = location });
+            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(createResponse, null);
+            var response = controller.BatchManagementClient.BatchAccount.GetKeys(resourceGroupName, accountName);
             context.PrimaryAccountKey = response.Primary;
             context.SecondaryAccountKey = response.Secondary;
             return context;
@@ -83,10 +84,10 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static string AddTestCertificate(BatchController controller, BatchAccountContext context, string filePath)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            X509Certificate2 cert = new X509Certificate2(filePath);
-            ListCertificateOptions getParameters = new ListCertificateOptions(context)
+            var cert = new X509Certificate2(filePath);
+            var getParameters = new ListCertificateOptions(context)
             {
                 ThumbprintAlgorithm = BatchTestHelpers.TestCertificateAlgorithm,
                 Thumbprint = cert.Thumbprint,
@@ -95,10 +96,10 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 
             try
             {
-                PSCertificate existingCert = client.ListCertificates(getParameters).FirstOrDefault();
-                DateTime start = DateTime.Now;
-                TimeSpan timeout = GetTimeout(TimeSpan.FromMinutes(5));
-                DateTime end = start.Add(timeout);
+                var existingCert = client.ListCertificates(getParameters).FirstOrDefault();
+                var start = DateTime.Now;
+                var timeout = GetTimeout(TimeSpan.FromMinutes(5));
+                var end = start.Add(timeout);
 
                 // Cert might still be deleting from other tests, so we wait for the delete to finish.
                 while (existingCert != null && existingCert.State == CertificateState.Deleting)
@@ -114,13 +115,13 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             catch (BatchException ex)
             {
                 // When the cert doesn't exist, we get a 404 error. For all other errors, throw.
-                if (ex == null || !ex.Message.Contains("NotFound"))
+                if (!ex.Message.Contains("NotFound"))
                 {
                     throw;
                 }
             }
 
-            NewCertificateParameters parameters = new NewCertificateParameters(context, null, cert.RawData);
+            var parameters = new NewCertificateParameters(context, null, cert.RawData);
 
             client.AddCertificate(parameters);
 
@@ -132,9 +133,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void DeleteTestCertificate(BatchController controller, BatchAccountContext context, string thumbprintAlgorithm, string thumbprint)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            CertificateOperationParameters parameters = new CertificateOperationParameters(context, thumbprintAlgorithm,
+            var parameters = new CertificateOperationParameters(context, thumbprintAlgorithm,
                 thumbprint);
 
             client.DeleteCertificate(parameters);
@@ -145,17 +146,17 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void WaitForCertificateToFailDeletion(BatchController controller, BatchAccountContext context, string thumbprintAlgorithm, string thumbprint)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ListCertificateOptions parameters = new ListCertificateOptions(context)
+            var parameters = new ListCertificateOptions(context)
             {
                 ThumbprintAlgorithm = BatchTestHelpers.TestCertificateAlgorithm,
                 Thumbprint = thumbprint
             };
 
-            PSCertificate cert = client.ListCertificates(parameters).First();
+            var cert = client.ListCertificates(parameters).First();
 
-            DateTime timeout = DateTime.Now.Add(GetTimeout(TimeSpan.FromMinutes(2)));
+            var timeout = DateTime.Now.Add(GetTimeout(TimeSpan.FromMinutes(2)));
             while (cert.State != CertificateState.DeleteFailed)
             {
                 if (DateTime.Now > timeout)
@@ -182,7 +183,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             PSCertificateReference[] certReferences = null;
             if (certReference != null)
             {
-                certReferences = new PSCertificateReference[] { new PSCertificateReference(certReference) };
+                certReferences = new[] { new PSCertificateReference(certReference) };
             }
             PSStartTask psStartTask = null;
             if (startTask != null)
@@ -190,9 +191,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
                 psStartTask = new PSStartTask(startTask);
             }
 
-            PSCloudServiceConfiguration paasConfiguration = new PSCloudServiceConfiguration("4", "*");
+            var paasConfiguration = new PSCloudServiceConfiguration("4", "*");
 
-            NewPoolParameters parameters = new NewPoolParameters(context, poolId)
+            var parameters = new NewPoolParameters(context, poolId)
             {
                 VirtualMachineSize = "small",
                 CloudServiceConfiguration = paasConfiguration,
@@ -210,7 +211,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             BatchController controller,
             NewPoolParameters poolParameters)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
             try
             {
@@ -230,8 +231,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void CreateMpiPoolIfNotExists(BatchController controller, BatchAccountContext context, int targetDedicated = 3)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
-            ListPoolOptions listOptions = new ListPoolOptions(context)
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var listOptions = new ListPoolOptions(context)
             {
                 PoolId = MpiPoolId
             };
@@ -243,8 +244,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
             }
             catch (BatchException ex)
             {
-                if (ex.RequestInformation == null || ex.RequestInformation.BatchError == null ||
-                    ex.RequestInformation.BatchError.Code != BatchErrorCodeStrings.PoolNotFound)
+                if (ex.RequestInformation?.BatchError == null || ex.RequestInformation.BatchError.Code != BatchErrorCodeStrings.PoolNotFound)
                 {
                     throw;
                 }
@@ -256,15 +256,15 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 
         public static void WaitForSteadyPoolAllocation(BatchController controller, BatchAccountContext context, string poolId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ListPoolOptions options = new ListPoolOptions(context)
+            var options = new ListPoolOptions(context)
             {
                 PoolId = poolId
             };
 
-            DateTime timeout = DateTime.Now.Add(GetTimeout(TimeSpan.FromMinutes(5)));
-            PSCloudPool pool = client.ListPools(options).First();
+            var timeout = DateTime.Now.Add(GetTimeout(TimeSpan.FromMinutes(5)));
+            var pool = client.ListPools(options).First();
             while (pool.AllocationState != AllocationState.Steady)
             {
                 if (DateTime.Now > timeout)
@@ -281,9 +281,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static int GetPoolCount(BatchController controller, BatchAccountContext context)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ListPoolOptions options = new ListPoolOptions(context);
+            var options = new ListPoolOptions(context);
 
             return client.ListPools(options).Count();
         }
@@ -294,7 +294,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void DeletePool(BatchController controller, BatchAccountContext context, string poolId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
             client.DeletePool(context, poolId);
         }
@@ -304,19 +304,19 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void CreateTestJobSchedule(BatchController controller, BatchAccountContext context, string jobScheduleId, TimeSpan? recurrenceInterval)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            PSJobSpecification jobSpecification = new PSJobSpecification();
-            jobSpecification.PoolInformation = new PSPoolInformation();
-            jobSpecification.PoolInformation.PoolId = SharedPool;
-            PSSchedule schedule = new PSSchedule();
+            var jobSpecification = new PSJobSpecification
+            {
+                PoolInformation = new PSPoolInformation {PoolId = SharedPool}
+            };
+            var schedule = new PSSchedule();
             if (recurrenceInterval != null)
             {
-                schedule = new PSSchedule();
-                schedule.RecurrenceInterval = recurrenceInterval;
+                schedule = new PSSchedule {RecurrenceInterval = recurrenceInterval};
             }
 
-            NewJobScheduleParameters parameters = new NewJobScheduleParameters(context, jobScheduleId)
+            var parameters = new NewJobScheduleParameters(context, jobScheduleId)
             {
                 JobSpecification = jobSpecification,
                 Schedule = schedule
@@ -330,12 +330,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void CreateTestJob(BatchController controller, BatchAccountContext context, string jobId, string poolId = SharedPool)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            PSPoolInformation poolInfo = new PSPoolInformation();
-            poolInfo.PoolId = poolId;
+            var poolInfo = new PSPoolInformation {PoolId = poolId};
 
-            NewJobParameters parameters = new NewJobParameters(context, jobId)
+            var parameters = new NewJobParameters(context, jobId)
             {
                 PoolInformation = poolInfo
             };
@@ -348,16 +347,16 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static string WaitForRecentJob(BatchController controller, BatchAccountContext context, string jobScheduleId, string previousJob = null)
         {
-            DateTime timeout = DateTime.Now.Add(GetTimeout(TimeSpan.FromMinutes(2)));
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var timeout = DateTime.Now.Add(GetTimeout(TimeSpan.FromMinutes(2)));
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ListJobScheduleOptions options = new ListJobScheduleOptions(context)
+            var options = new ListJobScheduleOptions(context)
             {
                 JobScheduleId = jobScheduleId,
                 Filter = null,
                 MaxCount = Constants.DefaultMaxCount
             };
-            PSCloudJobSchedule jobSchedule = client.ListJobSchedules(options).First();
+            var jobSchedule = client.ListJobSchedules(options).First();
 
             while (jobSchedule.ExecutionInformation.RecentJob == null || string.Equals(jobSchedule.ExecutionInformation.RecentJob.Id, previousJob, StringComparison.OrdinalIgnoreCase))
             {
@@ -376,7 +375,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void CreateTestTask(BatchController controller, BatchAccountContext context, string jobId, string taskId, string cmdLine = "cmd /c dir /s", int numInstances = 0)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
             PSMultiInstanceSettings multiInstanceSettings = null;
             if (numInstances > 1)
@@ -384,7 +383,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
                 multiInstanceSettings = new PSMultiInstanceSettings("cmd /c echo coordinating", numInstances);
             }
 
-            NewTaskParameters parameters = new NewTaskParameters(context, jobId, null, taskId)
+            var parameters = new NewTaskParameters(context, jobId, null, taskId)
             {
                 CommandLine = cmdLine,
                 MultiInstanceSettings = multiInstanceSettings,
@@ -399,18 +398,18 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void WaitForTaskCompletion(BatchController controller, BatchAccountContext context, string jobId, string taskId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ListTaskOptions options = new ListTaskOptions(context, jobId, null)
+            var options = new ListTaskOptions(context, jobId, null)
             {
                 TaskId = taskId
             };
-            IEnumerable<PSCloudTask> tasks = client.ListTasks(options);
+            var tasks = client.ListTasks(options);
 
             // Save time by not waiting during playback scenarios
             if (HttpMockServer.Mode == HttpRecorderMode.Record)
             {
-                TaskStateMonitor monitor = context.BatchOMClient.Utilities.CreateTaskStateMonitor();
+                var monitor = context.BatchOMClient.Utilities.CreateTaskStateMonitor();
                 monitor.WaitAll(tasks.Select(t => t.omObject), TaskState.Completed, TimeSpan.FromMinutes(10), null);
             }
         }
@@ -420,11 +419,11 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static PSCloudJob WaitForJobCompletion(BatchController controller, BatchAccountContext context, string jobId, string taskId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            PSCloudJob job = client.ListJobs(new ListJobOptions(context)).First(cloudJob => cloudJob.Id == jobId);
+            var job = client.ListJobs(new ListJobOptions(context)).First(cloudJob => cloudJob.Id == jobId);
 
-            DateTime timeout = DateTime.Now.AddMinutes(10);
+            var timeout = DateTime.Now.AddMinutes(10);
 
             while (job.State != JobState.Completed || DateTime.Now > timeout)
             {
@@ -441,15 +440,15 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static string GetTaskComputeNodeId(BatchController controller, BatchAccountContext context, string jobId, string taskId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ListTaskOptions options = new ListTaskOptions(context, jobId, null)
+            var options = new ListTaskOptions(context, jobId, null)
             {
                 TaskId = taskId
             };
-            PSCloudTask task = client.ListTasks(options).First();
+            var task = client.ListTasks(options).First();
 
-            return task.ComputeNodeInformation == null ? null : task.ComputeNodeInformation.ComputeNodeId;
+            return task.ComputeNodeInformation?.ComputeNodeId;
         }
 
         /// <summary>
@@ -457,7 +456,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void DeleteJobSchedule(BatchController controller, BatchAccountContext context, string jobScheduleId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
             client.DeleteJobSchedule(context, jobScheduleId);
         }
@@ -467,7 +466,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void DeleteJob(BatchController controller, BatchAccountContext context, string jobId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
             client.DeleteJob(context, jobId);
         }
@@ -477,9 +476,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void TerminateJob(BatchController controller, BatchAccountContext context, string jobId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            TerminateJobParameters parameters = new TerminateJobParameters(context, jobId, null);
+            var parameters = new TerminateJobParameters(context, jobId, null);
 
             client.TerminateJob(parameters);
         }
@@ -489,10 +488,10 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static string GetComputeNodeId(BatchController controller, BatchAccountContext context, string poolId, int index = 0)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ListComputeNodeOptions options = new ListComputeNodeOptions(context, poolId, null);
-            List<PSComputeNode> computeNodes = client.ListComputeNodes(options).ToList();
+            var options = new ListComputeNodeOptions(context, poolId, null);
+            var computeNodes = client.ListComputeNodes(options).ToList();
             return computeNodes[index].Id;
         }
 
@@ -501,16 +500,16 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void WaitForIdleComputeNode(BatchController controller, BatchAccountContext context, string poolId, string computeNodeId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ListComputeNodeOptions options = new ListComputeNodeOptions(context, poolId, null)
+            var options = new ListComputeNodeOptions(context, poolId, null)
             {
                 ComputeNodeId = computeNodeId,
                 Select = "id,state"
             };
 
-            DateTime timeout = DateTime.Now.Add(GetTimeout(TimeSpan.FromMinutes(10)));
-            PSComputeNode computeNode = client.ListComputeNodes(options).First();
+            var timeout = DateTime.Now.Add(GetTimeout(TimeSpan.FromMinutes(10)));
+            var computeNode = client.ListComputeNodes(options).First();
             while (computeNode.State != ComputeNodeState.Idle)
             {
                 if (DateTime.Now > timeout)
@@ -528,9 +527,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void CreateComputeNodeUser(BatchController controller, BatchAccountContext context, string poolId, string computeNodeId, string computeNodeUserName)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            NewComputeNodeUserParameters parameters = new NewComputeNodeUserParameters(context, poolId, computeNodeId, null)
+            var parameters = new NewComputeNodeUserParameters(context, poolId, computeNodeId, null)
             {
                 ComputeNodeUserName = computeNodeUserName,
                 Password = "Password1234!",
@@ -544,9 +543,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void DeleteComputeNodeUser(BatchController controller, BatchAccountContext context, string poolId, string computeNodeId, string computeNodeUserName)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
-            ComputeNodeUserOperationParameters parameters = new ComputeNodeUserOperationParameters(context, poolId, computeNodeId, computeNodeUserName);
+            var parameters = new ComputeNodeUserOperationParameters(context, poolId, computeNodeId, computeNodeUserName);
 
             client.DeleteComputeNodeUser(parameters);
         }
@@ -566,7 +565,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
                     applicationId,
                     version);
 
-                CloudBlockBlob blob = new CloudBlockBlob(new Uri(applicationPackage.StorageUrl));
+                var blob = new CloudBlockBlob(new Uri(applicationPackage.StorageUrl));
+// TODO: Remove IfDef
 #if NETSTANDARD
                 Task.Run(() => blob.UploadFromFileAsync(filePath)).Wait();
 #else
@@ -582,7 +582,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void DeleteApplication(BatchController controller, BatchAccountContext context, string applicationId)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
             client.DeleteApplication(context.ResourceGroupName, context.AccountName, applicationId);
         }
@@ -592,7 +592,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         /// </summary>
         public static void DeleteApplicationPackage(BatchController controller, BatchAccountContext context, string applicationId, string version)
         {
-            BatchClient client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
+            var client = new BatchClient(controller.BatchManagementClient, controller.ResourceManagementClient);
 
             client.DeleteApplicationPackage(context.ResourceGroupName, context.AccountName, applicationId, version);
         }
@@ -610,12 +610,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 
         private static TimeSpan GetTimeout(TimeSpan timeout)
         {
-            if (HttpMockServer.Mode == HttpRecorderMode.Playback)
-            {
-                return TimeSpan.FromHours(3);
-            }
-
-            return timeout;
+            return HttpMockServer.Mode == HttpRecorderMode.Playback ? TimeSpan.FromHours(3) : timeout;
         }
     }
 }

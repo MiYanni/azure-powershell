@@ -79,15 +79,15 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestAddAzureASAccountCommand()
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
-            var addAmdlet = new AddAzureASAccountCommand()
+            var commandRuntimeMock = new Mock<ICommandRuntime>();
+            var addAmdlet = new AddAzureASAccountCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
             var expectedProfile = new AsAzureProfile
             {
                 Context = new AsAzureContext(
-                    new AsAzureAccount()
+                    new AsAzureAccount
                     {
                         Id = testUser,
                         Tenant = null
@@ -108,6 +108,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 authProvider => authProvider.GetAadAuthenticatedToken(
                     It.IsAny<AsAzureContext>(),
                     It.IsAny<SecureString>(),
+// TODO: Remove IfDef
 #if NETSTANDARD
                     It.IsAny<Action<string>>(),
 #else
@@ -150,6 +151,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
             commandRuntimeMock.Verify(f => f.WriteObject(AsAzureClientSession.Instance.Profile));
             mockAuthenticationProvider.Verify(authProvider => authProvider.GetAadAuthenticatedToken(It.IsAny<AsAzureContext>(),
                     It.IsAny<SecureString>(),
+// TODO: Remove IfDef
 #if NETSTANDARD
                     It.IsAny<Action<string>>(),
 #else
@@ -164,7 +166,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void RestartAzureASInstance_Succeeds()
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            var commandRuntimeMock = new Mock<ICommandRuntime>();
             // Setup
             // Clear the the current profile
             AsAzureClientSession.Instance.Profile.Environments.Clear();
@@ -173,6 +175,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 authProvider => authProvider.GetAadAuthenticatedToken(
                     It.IsAny<AsAzureContext>(),
                     It.IsAny<SecureString>(),
+// TODO: Remove IfDef
 #if NETSTANDARD
                     It.IsAny<Action<string>>(),
 #else
@@ -188,7 +191,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
             var mockAsAzureHttpClient = new Mock<IAsAzureHttpClient>();
             mockAsAzureHttpClient
                 .Setup(obj => obj.CallPostAsync(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpContent>()))
-                .Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
 
             var mockTokenCacheItemProvider = new Mock<ITokenCacheItemProvider>();
             mockTokenCacheItemProvider
@@ -199,7 +202,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 CommandRuntime = commandRuntimeMock.Object
             };
 
-            var addAmdlet = new AddAzureASAccountCommand()
+            var addAmdlet = new AddAzureASAccountCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
@@ -217,7 +220,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void RestartAzureASInstance_NullInstanceThrows()
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            var commandRuntimeMock = new Mock<ICommandRuntime>();
 
             var mockAsAzureHttpClient = new Mock<IAsAzureHttpClient>();
             var mockTokenCacheItemProvider = new Mock<ITokenCacheItemProvider>();
@@ -234,6 +237,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 authProvider => authProvider.GetAadAuthenticatedToken(
                     It.IsAny<AsAzureContext>(),
                     It.IsAny<SecureString>(),
+// TODO: Remove IfDef
 #if NETSTANDARD
                     It.IsAny<Action<string>>(),
 #else
@@ -254,7 +258,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void RestartAzureASInstance_NotLoggedInThrows()
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            var commandRuntimeMock = new Mock<ICommandRuntime>();
 
             var mockAsAzureHttpClient = new Mock<IAsAzureHttpClient>();
             var mockTokenCacheItemProvider = new Mock<ITokenCacheItemProvider>();
@@ -271,6 +275,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 authProvider => authProvider.GetAadAuthenticatedToken(
                     It.IsAny<AsAzureContext>(),
                     It.IsAny<SecureString>(),
+// TODO: Remove IfDef
 #if NETSTANDARD
                     It.IsAny<Action<string>>(),
 #else
@@ -298,7 +303,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ExportAzureASInstanceLogTest()
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            var commandRuntimeMock = new Mock<ICommandRuntime>();
             // Setup
             // Clear the the current profile
             AsAzureClientSession.Instance.Profile.Environments.Clear();
@@ -307,6 +312,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 authProvider => authProvider.GetAadAuthenticatedToken(
                     It.IsAny<AsAzureContext>(),
                     It.IsAny<SecureString>(),
+// TODO: Remove IfDef
 #if NETSTANDARD
                     It.IsAny<Action<string>>(),
 #else
@@ -326,13 +332,13 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                     It.Is<string>(s => s.Contains("clusterResolve")),
                     It.IsAny<string>(),
                     It.IsAny<HttpContent>()))
-                .Returns(Task<HttpResponseMessage>.FromResult(
+                .Returns(Task.FromResult(
                     new HttpResponseMessage(HttpStatusCode.OK)
                     {
                         Content = new StringContent("{\"clusterFQDN\": \"resolved.westcentralus.asazure.windows.net\"}")
                     }));
             mockAsAzureHttpClient.Setup(obj => obj.CallGetAsync(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>())).Returns(
-                Task<HttpResponseMessage>.FromResult(
+                Task.FromResult(
                     new HttpResponseMessage(HttpStatusCode.OK)
                     {
                         Content = new StringContent("MOCKED STREAM CONTENT")
@@ -348,7 +354,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 CommandRuntime = commandRuntimeMock.Object
             };
 
-            var addAmdlet = new AddAzureASAccountCommand()
+            var addAmdlet = new AddAzureASAccountCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
@@ -375,7 +381,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void SynchronizeAzureASInstance_SingleDB_Succeeds()
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            var commandRuntimeMock = new Mock<ICommandRuntime>();
             
             // Setup
             // Clear the the current profile
@@ -385,6 +391,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 authProvider => authProvider.GetAadAuthenticatedToken(
                     It.IsAny<AsAzureContext>(),
                     It.IsAny<SecureString>(),
+// TODO: Remove IfDef
 #if NETSTANDARD
                     It.IsAny<Action<string>>(),
 #else
@@ -400,7 +407,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
             var mockAsAzureHttpClient = new Mock<IAsAzureHttpClient>();
 
             // set up cluster resolve respnose
-            ClusterResolutionResult resolveResult = new ClusterResolutionResult()
+            var resolveResult = new ClusterResolutionResult
             {
                 ClusterFQDN = "resolved.westcentralus.asazure.windows.net",
                 CoreServerName = testServer + ":rw",
@@ -412,7 +419,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                     It.Is<string>(s => s.Contains("clusterResolve")),
                     It.IsAny<string>(),
                     It.IsAny<HttpContent>()))
-                .Returns(Task<HttpResponseMessage>.FromResult(
+                .Returns(Task.FromResult(
                     new HttpResponseMessage(HttpStatusCode.OK)
                     {
                         Content = new StringContent(JsonConvert.SerializeObject(resolveResult))
@@ -431,7 +438,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                     It.IsAny<string>(),
                     It.IsAny<Guid>(),
                     null))
-                .Returns(Task<Mock<HttpResponseMessage>>.FromResult(postResponse));
+                .Returns(Task.FromResult(postResponse));
 
 
             var getResponse1 = new HttpResponseMessage(HttpStatusCode.SeeOther);
@@ -443,7 +450,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                     string.Empty,
                     It.IsAny<string>(),
                     It.IsAny<Guid>()))
-                .Returns(Task<HttpResponseMessage>.FromResult(getResponse1));
+                .Returns(Task.FromResult(getResponse1));
 
             var getResponseSucceed = new HttpResponseMessage
             {
@@ -472,7 +479,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 CommandRuntime = commandRuntimeMock.Object
             };
 
-            var addAmdlet = new AddAzureASAccountCommand()
+            var addAmdlet = new AddAzureASAccountCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
@@ -491,7 +498,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void SynchronizeAzureASInstance_FailsAfterTooManyRetries()
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            var commandRuntimeMock = new Mock<ICommandRuntime>();
 
             // Setup
             // Clear the the current profile
@@ -501,6 +508,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 authProvider => authProvider.GetAadAuthenticatedToken(
                     It.IsAny<AsAzureContext>(),
                     It.IsAny<SecureString>(),
+// TODO: Remove IfDef
 #if NETSTANDARD
                     It.IsAny<Action<string>>(),
 #else
@@ -516,7 +524,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
             var mockAsAzureHttpClient = new Mock<IAsAzureHttpClient>();
 
             // set up cluster resolve respnose
-            ClusterResolutionResult resolveResult = new ClusterResolutionResult()
+            var resolveResult = new ClusterResolutionResult
             {
                 ClusterFQDN = "resolved.westcentralus.asazure.windows.net",
                 CoreServerName = testServer + ":rw",
@@ -528,7 +536,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                     It.Is<string>(s => s.Contains("clusterResolve")),
                     It.IsAny<string>(),
                     It.IsAny<HttpContent>()))
-                .Returns(Task<HttpResponseMessage>.FromResult(
+                .Returns(Task.FromResult(
                     new HttpResponseMessage(HttpStatusCode.OK)
                     {
                         Content = new StringContent(JsonConvert.SerializeObject(resolveResult))
@@ -547,7 +555,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                     It.IsAny<string>(),
                     It.IsAny<Guid>(),
                     null))
-                .Returns(Task<Mock<HttpResponseMessage>>.FromResult(postResponse));
+                .Returns(Task.FromResult(postResponse));
 
             var getResponse1 = new HttpResponseMessage(HttpStatusCode.SeeOther);
             getResponse1.Headers.Location = new Uri("https://done");
@@ -560,7 +568,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Guid>()))
-                .Returns(Task<HttpResponseMessage>.FromResult(getResponse1));
+                .Returns(Task.FromResult(getResponse1));
 
             var getResponseSucceed = new HttpResponseMessage
             {
@@ -593,7 +601,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
                 CommandRuntime = commandRuntimeMock.Object
             };
 
-            var addAmdlet = new AddAzureASAccountCommand()
+            var addAmdlet = new AddAzureASAccountCommand
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
@@ -610,7 +618,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.InMemoryTests
         
         private void DoLogin(AddAzureASAccountCommand addCmdlet)
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            var commandRuntimeMock = new Mock<ICommandRuntime>();
 
             addCmdlet.RolloutEnvironment = testAsAzureEnvironment;
             var password = new SecureString();

@@ -9,6 +9,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,12 +24,18 @@
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;SIGN</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net472'">
     <PackageReference Include="Microsoft.Azure.Graph.RBAC" Version="3.4.0-preview" />
-    <PackageReference Include="Microsoft.Azure.Management.Compute" Version="17.0.1" />
+    <PackageReference Include="Microsoft.Azure.Management.Compute" Version="23.2.0" />
     <PackageReference Include="Microsoft.Azure.Management.Network" Version="19.6.1-preview" />
-    <PackageReference Include="Microsoft.Azure.Management.Storage" Version="4.1.0-preview" />
-    <PackageReference Include="Moq" Version="4.2.1510.2205" />
+ 	  <PackageReference Include="Microsoft.Azure.Management.Storage" Version="8.1.0-preview" />
+    <PackageReference Include="Moq" Version="4.7.145" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Azure.Commands.Compute.ManagedService">
+      <HintPath>..\..\..\Package\$(Configuration)\ResourceManager\AzureResourceManager\Az.Compute.ManagedService\Microsoft.Azure.Commands.Compute.ManagedService.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +43,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ScenarioTests\*.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(ProjectDir)..\..\Compute\Commands.Compute.Test\ScenarioTests\ComputeTestCommon.ps1" Link="ScenarioTests\ComputeTestCommon.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(ProjectDir)..\..\Resources\Commands.Resources.Test\ScenarioTests\Common.ps1" Link="ScenarioTests\Common.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

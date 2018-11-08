@@ -92,6 +92,7 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.ScenarioTests
                     "ScenarioTests\\" + callingClassName + ".ps1",
                     _helper.RMProfileModule,
                     _helper.GetRMModulePath(@"AzureRM.AnalysisServices.psd1"),
+// TODO: Remove IfDef code
 #if !NETSTANDARD
                     _helper.GetRMModulePath(@"Azure.AnalysisServices.psd1"),
 #endif
@@ -128,14 +129,6 @@ namespace Microsoft.Azure.Commands.AnalysisServices.Test.ScenarioTests
         private static AnalysisServicesManagementClient GetAnalysisServicesManagementClient(MockContext context)
         {
             return context.GetServiceClient<AnalysisServicesManagementClient>(TestEnvironmentFactory.GetTestEnvironment());
-        }
-
-        private static void ThrowIfTrue(bool condition, string message)
-        {
-            if (condition)
-            {
-                throw new Exception(message);
-            }
         }
     }
 }

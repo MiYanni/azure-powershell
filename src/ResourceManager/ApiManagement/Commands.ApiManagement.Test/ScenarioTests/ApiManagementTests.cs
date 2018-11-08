@@ -58,12 +58,12 @@ namespace Microsoft.Azure.Commands.ApiManagement.Test.ScenarioTests
             return context.GetServiceClient<StorageManagementClient>(TestEnvironmentFactory.GetTestEnvironment());
         }
 
-        private ResourceManagementClient GetResourceManagementClient(MockContext context)
+        private static ResourceManagementClient GetResourceManagementClient(MockContext context)
         {
             return context.GetServiceClient<ResourceManagementClient>(TestEnvironmentFactory.GetTestEnvironment());
         }
 
-        private ApiManagementClient GetApiManagementManagementClient(MockContext context)
+        private static ApiManagementClient GetApiManagementManagementClient(MockContext context)
         {
             return context.GetServiceClient<ApiManagementClient>(TestEnvironmentFactory.GetTestEnvironment());
         }
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.Test.ScenarioTests
         {
             RunPowerShellTest("Test-CrudApiManagement");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Storage version out-of-date: Awaiting Storage.Management.Common")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.Test.ScenarioTests
             var callingClassType = sf.GetMethod().ReflectedType?.ToString();
             var mockName = sf.GetMethod().Name;
 
-            Dictionary<string, string> d = new Dictionary<string, string>
+            var d = new Dictionary<string, string>
             {
                 {"Microsoft.Resources", null},
                 {"Microsoft.Features", null},
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.Test.ScenarioTests
             HttpMockServer.Matcher = new PermissiveRecordMatcherWithApiExclusion(true, d, providersToIgnore);
             HttpMockServer.RecordsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SessionRecords");
 
-            using (MockContext context = MockContext.Start(callingClassType, mockName))
+            using (var context = MockContext.Start(callingClassType, mockName))
             {
                 SetupManagementClients(context);
 
@@ -150,6 +150,7 @@ namespace Microsoft.Azure.Commands.ApiManagement.Test.ScenarioTests
                     "ScenarioTests\\Common.ps1",
                     "ScenarioTests\\" + GetType().Name + ".ps1",
                     _helper.RMProfileModule,
+// TODO: Remove IfDef
 #if NETSTANDARD
                     _helper.RMStorageModule,
 #else
