@@ -20,14 +20,14 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
 {
     public class ChefExtensionTests
     {
-        XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public ChefExtensionTests(Xunit.Abstractions.ITestOutputHelper output)
         {
             _logger = new XunitTracingInterceptor(output);
             XunitTracingInterceptor.AddToContext(_logger);
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Updated Storage, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]

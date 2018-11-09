@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Azure.Management.Network;
 using Microsoft.Azure.Management.KeyVault;
+// TODO: Remove IfDef code
 #if !NETSTANDARD
 using Microsoft.Azure.Test;
 using TestBase = Microsoft.Azure.Test.TestBase;
@@ -99,22 +100,26 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
             string callingClassType,
             string mockName)
         {
-            Dictionary<string, string> d = new Dictionary<string, string>();
-            d.Add("Microsoft.Resources", null);
-            d.Add("Microsoft.Features", null);
-            d.Add("Microsoft.Authorization", null);
-            d.Add("Microsoft.Compute", null);
-            d.Add("Microsoft.Network", null);
-            d.Add("Microsoft.KeyVault", null);
-            d.Add("Microsoft.Storage", null);
+            var d = new Dictionary<string, string>
+            {
+                {"Microsoft.Resources", null},
+                {"Microsoft.Features", null},
+                {"Microsoft.Authorization", null},
+                {"Microsoft.Compute", null},
+                {"Microsoft.Network", null},
+                {"Microsoft.KeyVault", null},
+                {"Microsoft.Storage", null}
+            };
 
-            var providersToIgnore = new Dictionary<string, string>();
-            providersToIgnore.Add("Microsoft.Azure.Management.Resources.ResourceManagementClient", "2016-02-01");
-            providersToIgnore.Add("Microsoft.Azure.Management.ResourceManager.ResourceManagementClient", "2017-05-10");
-            providersToIgnore.Add("Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient", "2016-09-01");
+            var providersToIgnore = new Dictionary<string, string>
+            {
+                {"Microsoft.Azure.Management.Resources.ResourceManagementClient", "2016-02-01"},
+                {"Microsoft.Azure.Management.ResourceManager.ResourceManagementClient", "2017-05-10"},
+                {"Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient", "2016-09-01"}
+            };
             HttpMockServer.Matcher = new PermissiveRecordMatcherWithApiExclusion(true, d, providersToIgnore);
             HttpMockServer.RecordsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SessionRecords");
-            using (MockContext context = MockContext.Start(callingClassType, mockName))
+            using (var context = MockContext.Start(callingClassType, mockName))
             {
                 initialize?.Invoke(this);
 
@@ -128,10 +133,11 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
                     "ScenarioTests\\ComputeTestCommon.ps1",
                     "ScenarioTests\\" + callingClassName + ".ps1",
                     _helper.RMProfileModule,
-#if !NETSTANDARD
-                    _helper.RMStorageDataPlaneModule,
-#else
+// TODO: Remove IfDef
+#if NETSTANDARD
                     _helper.RMStorageModule,
+#else
+                    _helper.RMStorageDataPlaneModule,
 #endif
                     _helper.GetRMModulePath("AzureRM.Compute.psd1"),
                     _helper.GetRMModulePath("AzureRM.Network.psd1"),

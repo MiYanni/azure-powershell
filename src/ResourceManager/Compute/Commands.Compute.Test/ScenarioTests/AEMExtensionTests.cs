@@ -20,14 +20,14 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
 {
     public class AEMExtensionTests
     {
-        XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public AEMExtensionTests(Xunit.Abstractions.ITestOutputHelper output)
         {
             _logger = new XunitTracingInterceptor(output);
             XunitTracingInterceptor.AddToContext(_logger);
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Get-Location in Common.ps1 is not working correctly for NETSTANDARD")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-AEMExtensionBasicWindowsWAD");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Resources -> ResourceManager, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-AEMExtensionBasicWindows");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Unknown issue/update, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-AEMExtensionBasicLinuxWAD");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Unknown issue/update, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-AEMExtensionBasicLinux");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Resources -> ResourceManager, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-AEMExtensionAdvancedWindowsWAD");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Get-Location in Common.ps1 is not working correctly for NETSTANDARD")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-AEMExtensionAdvancedWindows");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Unknown issue/update, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-AEMExtensionAdvancedLinux");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Get-Location in Common.ps1 is not working correctly for NETSTANDARD")]
         [Trait(Category.RunType, Category.DesktopOnly)]
