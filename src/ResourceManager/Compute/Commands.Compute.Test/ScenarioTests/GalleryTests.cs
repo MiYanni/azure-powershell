@@ -20,14 +20,14 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
 {
     public class GalleryTests
     {
-        XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public GalleryTests(Xunit.Abstractions.ITestOutputHelper output)
         {
             _logger = new XunitTracingInterceptor(output);
             XunitTracingInterceptor.AddToContext(_logger);
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Resources -> ResourceManager, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]

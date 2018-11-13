@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
 {
     public class StrategiesVmssTests
     {
-        XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public StrategiesVmssTests(Xunit.Abstractions.ITestOutputHelper output)
         {
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-SimpleNewVmssImageName");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Unknown issue/update, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
             var create = typeof(UniqueId).GetField("_Create", BindingFlags.Static | BindingFlags.NonPublic);
             var oldCreate = create.GetValue(null);
 
-            ComputeTestController controller = ComputeTestController.NewInstance;
+            var controller = ComputeTestController.NewInstance;
             controller.SetLogger(_logger);
 
             controller.RunPsTestWorkflow(

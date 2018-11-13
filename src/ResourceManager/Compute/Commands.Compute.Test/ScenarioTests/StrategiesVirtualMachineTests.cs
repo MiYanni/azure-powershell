@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
 {
     public class StrategiesVirtualMachineTests
     {
-        XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public StrategiesVirtualMachineTests(Xunit.Abstractions.ITestOutputHelper output)
         {
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-SimpleNewVmSystemAssignedIdentity");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Unknown issue/update, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]

@@ -6,14 +6,14 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
 {
     public class SqlIaaSExtensionTests
     {
-        XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public SqlIaaSExtensionTests(Xunit.Abstractions.ITestOutputHelper output)
         {
             _logger = new XunitTracingInterceptor(output);
             XunitTracingInterceptor.AddToContext(_logger);
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Resources -> ResourceManager, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-SetAzureRmVMSqlServerExtension");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Resources -> ResourceManager, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Commands.Compute.Test.ScenarioTests
         {
             ComputeTestController.NewInstance.RunPsTest(_logger, "Test-SetAzureRmVMSqlServerAKVExtension");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Resources -> ResourceManager, needs re-recorded")]
         [Trait(Category.RunType, Category.DesktopOnly)]
