@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             _logger = new XunitTracingInterceptor(output);
             XunitTracingInterceptor.AddToContext(_logger);
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         {
             RunPowerShellTest(_logger, "Test-GetNonExistingDataFactory");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         {
             RunPowerShellTest(_logger, "Test-CreateDataFactory");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         {
             RunPowerShellTest(_logger, "Test-DeleteDataFactoryWithDataFactoryParameter");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]

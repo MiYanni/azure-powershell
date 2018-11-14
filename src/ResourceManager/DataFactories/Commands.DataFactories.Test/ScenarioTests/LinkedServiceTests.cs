@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             _logger = new XunitTracingInterceptor(output);
             XunitTracingInterceptor.AddToContext(_logger);
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         {
             RunPowerShellTest(_logger, "Test-LinkedService");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         {
             RunPowerShellTest(_logger, "Test-LinkedServiceWithDataFactoryParameter");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]

@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Test.ScenarioTests
 {
     public class ContainerInstanceTests : RMTestBase
     {
-        public XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public ContainerInstanceTests(Xunit.Abstractions.ITestOutputHelper output)
         {
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Test.ScenarioTests
         {
             TestController.NewInstance.RunPowerShellTest(_logger, "Test-AzureRmContainerGroup");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Command parameter not available in NetStandard")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.ContainerInstance.Test.ScenarioTests
         {
             TestController.NewInstance.RunPowerShellTest(_logger, "Test-AzureRmContainerInstanceLog");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Command parameter not available in NetStandard")]
         [Trait(Category.RunType, Category.DesktopOnly)]

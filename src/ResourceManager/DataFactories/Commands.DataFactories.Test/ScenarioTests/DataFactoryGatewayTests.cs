@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         {
             RunPowerShellTest(_logger, "Test-GetNonExistingDataFactoryGateway");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         {
             RunPowerShellTest(_logger, "Test-DataFactoryGateway");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Management library needs NetCore republish")]
         [Trait(Category.RunType, Category.DesktopOnly)]

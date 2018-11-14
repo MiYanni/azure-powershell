@@ -25,6 +25,7 @@ using Microsoft.Rest.ClientRuntime.Azure.TestFramework;
 using TestEnvironmentFactory = Microsoft.Rest.ClientRuntime.Azure.TestFramework.TestEnvironmentFactory;
 using ResourceManagementClient = Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient;
 using Microsoft.Azure.ServiceManagemenet.Common.Models;
+// TODO: Remove IfDef code
 #if !NETSTANDARD
 using Microsoft.Azure.Test;
 using TestBase = Microsoft.Azure.Test.TestBase;
@@ -57,12 +58,16 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
 
             _helper.TracingInterceptor = logger;
 
-            Dictionary<string, string> d = new Dictionary<string, string>();
-            d.Add("Microsoft.Resources", null);
-            d.Add("Microsoft.Features", null);
-            d.Add("Microsoft.Authorization", null);
-            var providersToIgnore = new Dictionary<string, string>();
-            providersToIgnore.Add("Microsoft.Azure.Management.Resources.ResourceManagementClient", "2016-02-01");
+            var d = new Dictionary<string, string>
+            {
+                {"Microsoft.Resources", null},
+                {"Microsoft.Features", null},
+                {"Microsoft.Authorization", null}
+            };
+            var providersToIgnore = new Dictionary<string, string>
+            {
+                {"Microsoft.Azure.Management.Resources.ResourceManagementClient", "2016-02-01"}
+            };
             HttpMockServer.Matcher = new PermissiveRecordMatcherWithApiExclusion(true, d, providersToIgnore);
             HttpMockServer.RecordsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SessionRecords");
 
@@ -84,6 +89,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
 
         protected DataFactoryManagementClient GetDataPipelineManagementClient(MockContext context)
         {
+// TODO: Remove IfDef
 #if NETSTANDARD
             //return context.GetServiceClient<DataFactoryManagementClient>(TestEnvironmentFactory.GetTestEnvironment());
             return null;
