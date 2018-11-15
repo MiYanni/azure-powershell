@@ -39,9 +39,9 @@ namespace Microsoft.Azure.Commands.Insights.Test
             const double y = 1.2;
             const string s = "hello";
             const bool b = true;
-            TimeSpan ts = TimeSpan.FromHours(13);
-            DateTime dt = DateTime.Now;
-            DateTime dtUtc = DateTime.UtcNow;
+            var ts = TimeSpan.FromHours(13);
+            var dt = DateTime.Now;
+            var dtUtc = DateTime.UtcNow;
 
             // The following should remove the " : " and the "\r\n" in the future
             Assert.Equal($" : 1{Environment.NewLine}", OutputClasses.CustomPrinter.Print(x));
@@ -79,11 +79,12 @@ namespace Microsoft.Azure.Commands.Insights.Test
             // Must be {} in the future
             Assert.Equal("", OutputClasses.CustomPrinter.Print(dictionarySO));
 
-            string result = OutputClasses.CustomPrinter.Print(eventData);
+            var result = OutputClasses.CustomPrinter.Print(eventData);
             Debug.WriteLine("EventData: ");
             Debug.WriteLine(result);
 
             var year = "2017";
+// TODO: Remove IfDef
 #if NETSTANDARD
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {

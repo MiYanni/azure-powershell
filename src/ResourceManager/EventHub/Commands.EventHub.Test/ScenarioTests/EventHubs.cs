@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Commands.EventHub.Test.ScenarioTests
     using Xunit.Abstractions;
     public class EventHubsTests : RMTestBase
     {
-        public XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public EventHubsTests(ITestOutputHelper output)
         {
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.EventHub.Test.ScenarioTests
         {
             EventHubsController.NewInstance.RunPsTest(_logger, "EventHubsTests");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Fails in NetStandard, investigation needed: $namespaceListKeys.PrimaryConnectionString.Contains($updatedAuthRule.PrimaryKey)")]
 #else

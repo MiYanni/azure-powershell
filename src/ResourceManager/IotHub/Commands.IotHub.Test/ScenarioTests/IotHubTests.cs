@@ -22,14 +22,14 @@ namespace Microsoft.Azure.Commands.IotHub.Test.ScenarioTests
 {
     public class IotHubTests : RMTestBase
     {
-        public XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public IotHubTests(ITestOutputHelper output)
         {
             _logger = new XunitTracingInterceptor(output);
             XunitTracingInterceptor.AddToContext(_logger);
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Needs re-recorded")]
 #else
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.IotHub.Test.ScenarioTests
         {
             IotHubController.NewInstance.RunPsTest(_logger, "Test-AzureRmIotHubLifecycle");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Requires New-SelfSignedCertificate, unavailable for PowerShell Core")]
         [Trait(Category.RunType, Category.DesktopOnly)]

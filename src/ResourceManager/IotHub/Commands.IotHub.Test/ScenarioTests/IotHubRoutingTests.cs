@@ -22,14 +22,14 @@ namespace Microsoft.Azure.Commands.IotHub.Test.ScenarioTests
 {
     public class IotHubRoutingTests : RMTestBase
     {
-        public XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public IotHubRoutingTests(ITestOutputHelper output)
         {
             _logger = new XunitTracingInterceptor(output);
             XunitTracingInterceptor.AddToContext(_logger);
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "Needs re-recorded")]
 #else

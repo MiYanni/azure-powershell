@@ -35,9 +35,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         public void CanConvertFullProfilet()
         {
             var context = GetDefaultContext();
-            var prof = new PSAzureProfile();
-            prof.Context = new PSAzureContext(context);
-            ConvertAndTestProfile(prof, (profile) =>
+            var prof = new PSAzureProfile {Context = new PSAzureContext(context)};
+            ConvertAndTestProfile(prof, profile =>
             {
                 AssertStandardEnvironments(profile);
                 Assert.True(context.IsEqual(profile.DefaultContext));
@@ -50,9 +49,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         {
             var context = GetDefaultContext();
             context.Subscription = null;
-            var prof = new PSAzureProfile();
-            prof.Context = new PSAzureContext(context);
-            ConvertAndTestProfile(prof, (profile) =>
+            var prof = new PSAzureProfile {Context = new PSAzureContext(context)};
+            ConvertAndTestProfile(prof, profile =>
             {
                 AssertStandardEnvironments(profile);
                 Assert.True(context.IsEqual(profile.DefaultContext));
@@ -65,12 +63,13 @@ namespace Microsoft.Azure.Commands.Profile.Test
         {
             IAzureContext context = new AzureContext(new AzureSubscription(), new AzureAccount(), new AzureEnvironment(), new AzureTenant(), new byte[0]);
             var testContext = new PSAzureContext(context);
-            var testEnvironment = new PSAzureEnvironment(AzureEnvironment.PublicEnvironments["AzureCloud"]);
-            testEnvironment.Name = "ExtraEnvironment";
-            var testProfile = new PSAzureProfile();
-            testProfile.Context = testContext;
+            var testEnvironment = new PSAzureEnvironment(AzureEnvironment.PublicEnvironments["AzureCloud"])
+            {
+                Name = "ExtraEnvironment"
+            };
+            var testProfile = new PSAzureProfile {Context = testContext};
             testProfile.Environments.Add("ExtraEnvironment", testEnvironment);
-            ConvertAndTestProfile(testProfile, (profile) =>
+            ConvertAndTestProfile(testProfile, profile =>
             {
                 Assert.NotEmpty(profile.EnvironmentTable);
                 Assert.True(profile.EnvironmentTable.ContainsKey("ExtraEnvironment"));
@@ -79,11 +78,11 @@ namespace Microsoft.Azure.Commands.Profile.Test
                 Assert.NotEmpty(profile.DefaultContextKey);
                 Assert.Equal("Default", profile.DefaultContextKey);
                 Assert.Collection(profile.Environments.OrderBy(e=>e.Name),
-                    (e) => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureChinaCloud]),
-                    (e) => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud]),
-                    (e) => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureGermanCloud]),
-                    (e) => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureUSGovernment]),
-                    (e) => Assert.Equal(e, testEnvironment));
+                    e => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureChinaCloud]),
+                    e => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud]),
+                    e => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureGermanCloud]),
+                    e => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureUSGovernment]),
+                    e => Assert.Equal(e, testEnvironment));
             });
         }
 
@@ -91,7 +90,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ConConvertEmptyProfile()
         {
-            ConvertAndTestProfile(new PSAzureProfile(), (profile) =>
+            ConvertAndTestProfile(new PSAzureProfile(), profile =>
             {
                 AssertStandardEnvironments(profile);
                 Assert.Null(profile.DefaultContext);
@@ -103,7 +102,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         public void CanConvertFullContext()
         {
             var context = GetDefaultContext();
-            ConvertAndTestProfile(context, (profile) =>
+            ConvertAndTestProfile(context, profile =>
             {
                 AssertStandardEnvironments(profile);
                 Assert.True(context.IsEqual(profile.DefaultContext));
@@ -116,7 +115,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         {
             var context = GetDefaultContext();
             context.Subscription = null;
-            ConvertAndTestProfile(context, (profile) =>
+            ConvertAndTestProfile(context, profile =>
             {
                 AssertStandardEnvironments(profile);
                 Assert.True(context.IsEqual(profile.DefaultContext));
@@ -128,7 +127,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         public void CanConvertMinimalContext()
         {
             IAzureContext context = new AzureContext(new AzureSubscription(), new AzureAccount(), new AzureEnvironment(), new AzureTenant(), new byte[0]);
-            ConvertAndTestProfile(new PSAzureContext(context), (profile) =>
+            ConvertAndTestProfile(new PSAzureContext(context), profile =>
             {
                 AssertStandardEnvironments(profile);
                 Assert.NotNull(profile.DefaultContext);
@@ -140,18 +139,18 @@ namespace Microsoft.Azure.Commands.Profile.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanConvertEmptyContext()
         {
-            ConvertAndTestProfile(new PSAzureContext(), (profile) =>
+            ConvertAndTestProfile(new PSAzureContext(), profile =>
             {
                 AssertStandardEnvironments(profile);
                 Assert.NotNull(profile.DefaultContext);
             });
         }
 
-        void ConvertAndTestProfile<T>(T objectToConvert, Action<AzureRmProfile> validator)
+        private static void ConvertAndTestProfile<T>(T objectToConvert, Action<AzureRmProfile> validator)
         {
             var converted = DoPSPassThroughConversion(objectToConvert);
             Assert.True(converted is IAzureContextContainer);
-            AzureRmProfile convertedProfile = converted as AzureRmProfile;
+            var convertedProfile = converted as AzureRmProfile;
             Assert.NotNull(convertedProfile);
             Assert.NotEmpty(convertedProfile.Environments);
             Assert.NotEmpty(convertedProfile.Contexts);
@@ -159,25 +158,25 @@ namespace Microsoft.Azure.Commands.Profile.Test
             validator(convertedProfile);
         }
 
-        object DoPSPassThroughConversion<T>(T objectToConvert)
+        private static object DoPSPassThroughConversion<T>(T objectToConvert)
         {
-            string content = PSSerializer.Serialize(objectToConvert, 10);
+            var content = PSSerializer.Serialize(objectToConvert, 10);
             var reconstituted = PSSerializer.Deserialize(content);
             var converter = new AzureContextConverter();
             Assert.True(converter.CanConvertFrom(reconstituted, typeof(IAzureContextContainer)));
             return converter.ConvertFrom(reconstituted, typeof(IAzureContextContainer), CultureInfo.InvariantCulture, true);
         }
 
-        void AssertStandardEnvironments(AzureRmProfile profile)
+        private static void AssertStandardEnvironments(AzureRmProfile profile)
         {
             Assert.Collection(profile.Environments.OrderBy(e => e.Name),
-                (e) => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureChinaCloud]),
-                (e) => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud]),
-                (e) => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureGermanCloud]),
-                (e) => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureUSGovernment]));
+                e => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureChinaCloud]),
+                e => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud]),
+                e => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureGermanCloud]),
+                e => Assert.Equal(e, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureUSGovernment]));
         }
 
-        IAzureAccount GetDefaultAccount()
+        private static IAzureAccount GetDefaultAccount()
         {
             var account = new AzureAccount
             {
@@ -191,7 +190,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             return account;
         }
 
-        IAzureSubscription GetDefaultSubscription()
+        private static IAzureSubscription GetDefaultSubscription()
         {
             var sub = new AzureSubscription
             {
@@ -206,7 +205,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
             return sub;
         }
 
-        IAzureTenant GetDefaultTenant()
+        private static IAzureTenant GetDefaultTenant()
         {
             var tenant = new AzureTenant
             {
@@ -218,30 +217,33 @@ namespace Microsoft.Azure.Commands.Profile.Test
             return tenant;
         }
 
-        IAzureEnvironment GetDefaultEnvironment()
+        private static IAzureEnvironment GetDefaultEnvironment()
         {
-            var env = new AzureEnvironment(AzureEnvironment.PublicEnvironments[EnvironmentName.AzureGermanCloud]);
-            env.Name = "CustomEnvironment1";
+            var env = new AzureEnvironment(AzureEnvironment.PublicEnvironments[EnvironmentName.AzureGermanCloud])
+            {
+                Name = "CustomEnvironment1"
+            };
             env.SetProperty("FirstProperty", "FirstValue1", "FirstValue2");
             env.SetProperty("SecondProperty", "SecondValue");
             return env;
         }
 
-        IAzureTokenCache GetDefaultTokenCache()
+        private static IAzureTokenCache GetDefaultTokenCache()
         {
             var cache = new AzureTokenCache
             {
-#if !NETSTANDARD
-                CacheData = new byte[] { 2, 0, 0, 0, 0, 0, 0, 0 }
-#else
+// TODO: Remove IfDef
+#if NETSTANDARD
                 CacheData = new byte[] { 3, 0, 0, 0, 0, 0, 0, 0 }
+#else
+                CacheData = new byte[] { 2, 0, 0, 0, 0, 0, 0, 0 }
 #endif
             };
 
             return cache;
         }
 
-        IAzureContext GetDefaultContext()
+        private static IAzureContext GetDefaultContext()
         {
             var context = new AzureContext
             {

@@ -21,7 +21,7 @@ namespace Commands.Network.Test.ScenarioTests
 {
     public class NetworkWatcherAPITests : Microsoft.WindowsAzure.Commands.Test.Utilities.Common.RMTestBase
     {
-        public XunitTracingInterceptor _logger;
+        private readonly XunitTracingInterceptor _logger;
 
         public NetworkWatcherAPITests(Xunit.Abstractions.ITestOutputHelper output)
         {
@@ -84,7 +84,7 @@ namespace Commands.Network.Test.ScenarioTests
         {
             NetworkResourcesController.NewInstance.RunPsTest(_logger, "Test-FlowLog");
         }
-
+// TODO: Remove IfDef
 #if NETSTANDARD
         [Fact(Skip = "This test only applies to desktop")]
         [Trait(Category.RunType, Category.DesktopOnly)]

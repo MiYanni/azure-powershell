@@ -33,6 +33,7 @@ namespace Microsoft.Azure.Commands.Profile.Test
         {
             TestExecutionHelpers.SetUpSessionAndProfile();
             XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
+// TODO: Remove IfDef code
 #if !NETSTANDARD
             ServiceManagementProfileProvider.InitializeServiceManagementProfile();
 #endif
@@ -42,8 +43,8 @@ namespace Microsoft.Azure.Commands.Profile.Test
         {
             var tenantId = Guid.NewGuid();
             var subscriptionId = Guid.NewGuid();
-            var domain = "Contoso.com";
-            var context = new PSAzureContext()
+            const string domain = "Contoso.com";
+            var context = new PSAzureContext
             {
                 Account = new PSAzureRmAccount
                 {
@@ -65,12 +66,12 @@ namespace Microsoft.Azure.Commands.Profile.Test
                     Id = tenantId.ToString()
                 }
             };
-            return new AzureRmProfile() { DefaultContext = context };
+            return new AzureRmProfile { DefaultContext = context };
         }
-
+// TODO: Remove IfDef code
+#if !NETSTANDARD
         public static IAzureContextContainer CreateAzureSMProfile(string storageAccount)
         {
-#if !NETSTANDARD
             var profile = new AzureSMProfile();
             var client = new ProfileClient(profile);
             var tenantId = Guid.NewGuid();
@@ -96,21 +97,21 @@ namespace Microsoft.Azure.Commands.Profile.Test
             client.AddOrSetSubscription(subscription);
             client.SetSubscriptionAsDefault(subscriptionId, account.Id);
             return profile;
-#else
-            return null;
-#endif
         }
+#endif
 
         private static void RunDataProfileTest(IAzureContextContainer rmProfile, IAzureContextContainer smProfile, Action testAction)
         {
             AzureSession.Instance.DataStore = new MemoryDataStore();
             var savedRmProfile = AzureRmProfileProvider.Instance.Profile;
+// TODO: Remove IfDef code
 #if !NETSTANDARD
             var savedSmProfile = AzureSMProfileProvider.Instance.Profile;
 #endif
             try
             {
                 AzureRmProfileProvider.Instance.Profile = rmProfile;
+// TODO: Remove IfDef code
 #if !NETSTANDARD
                 AzureSMProfileProvider.Instance.Profile = smProfile;
 #endif
@@ -119,12 +120,13 @@ namespace Microsoft.Azure.Commands.Profile.Test
             finally
             {
                 AzureRmProfileProvider.Instance.Profile = savedRmProfile;
+// TODO: Remove IfDef code
 #if !NETSTANDARD
                 AzureSMProfileProvider.Instance.Profile = savedSmProfile;
 #endif
             }
         }
-
+// TODO: Remove IfDef code
 #if !NETSTANDARD
         [Theory,
         InlineData(null, null),
@@ -143,21 +145,20 @@ namespace Microsoft.Azure.Commands.Profile.Test
                     Assert.True(string.IsNullOrEmpty(AzureSMProfileProvider.Instance.Profile.DefaultContext.GetCurrentStorageAccountName()));
                 });
         }
-        
+
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanClearStorageAccountForEmptyProfile()
         {
-            var rmProfile = new AzureRmProfile();
-            rmProfile.DefaultContext = new AzureContext(null, null, null, null);
+            var rmProfile = new AzureRmProfile {DefaultContext = new AzureContext(null, null, null, null)};
             RunDataProfileTest(
-                 rmProfile,
-                 new AzureSMProfile(),
-                 () =>
-                 {
-                     GeneralUtilities.ClearCurrentStorageAccount(true);
-                     Assert.True(string.IsNullOrEmpty(AzureSMProfileProvider.Instance.Profile.DefaultContext.GetCurrentStorageAccountName()));
-                 });
+                rmProfile,
+                new AzureSMProfile(),
+                () =>
+                {
+                    GeneralUtilities.ClearCurrentStorageAccount(true);
+                    Assert.True(string.IsNullOrEmpty(AzureSMProfileProvider.Instance.Profile.DefaultContext.GetCurrentStorageAccountName()));
+                });
         }
 #endif
 
@@ -170,7 +171,12 @@ namespace Microsoft.Azure.Commands.Profile.Test
         {
             RunDataProfileTest(
                 CreateAzureRMProfile(connectionString),
+// TODO: Remove IfDef
+#if NETSTANDARD
+                null,
+#else
                 CreateAzureSMProfile(null),
+#endif
                 () =>
                 {
                     Assert.Equal(expected, AzureRmProfileProvider.Instance.Profile.DefaultContext.GetCurrentStorageAccountName());
