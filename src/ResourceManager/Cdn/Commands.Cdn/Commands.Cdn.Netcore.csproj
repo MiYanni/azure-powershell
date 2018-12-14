@@ -56,4 +56,15 @@
     <Content Include="help\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <!-- https://github.com/dotnet/sdk/issues/933 -->
+  <Target Name="FilterCopyLocal" DependsOnTargets="PrepareForBuild;RunResolvePublishAssemblies" BeforeTargets="ResolveLockFileCopyLocalProjectDeps">
+    <ItemGroup>
+      <!-- https://stackoverflow.com/a/48102148/294804 -->
+      <!-- https://social.msdn.microsoft.com/Forums/vstudio/en-US/545c3455-af11-4f2f-8abc-054797e662c0/itemgroup-does-not-acknowledge-quotremovequot -->
+      <!-- https://stackoverflow.com/a/46017964/294804 -->
+      <AllCopyLocalItems Remove="@(AllCopyLocalItems)" Condition="($([System.String]::Copy(%(Filename)%(Extension)).StartsWith('System.')) and '%(Filename)%(Extension)' != 'System.Security.Cryptography.ProtectedData.dll') or '%(Filename)%(Extension)' == 'Microsoft.CSharp.dll'" />
+      <AllCopyLocalItems Remove="@(AllCopyLocalItems)" Condition="($([System.String]::Copy(%(Filename)%(Extension)).StartsWith('Microsoft.Azure.PowerShell.')) and !$([System.String]::Copy(%(Filename)%(Extension)).StartsWith('Microsoft.Azure.PowerShell.Cmdlets.'))) or $([System.String]::Copy(%(Filename)%(Extension)).StartsWith('Microsoft.Rest.')) or $([System.String]::Copy(%(Filename)%(Extension)).StartsWith('Microsoft.IdentityModel')) or '%(Filename)%(Extension)' == 'Newtonsoft.Json.dll' or '%(Filename)%(Extension)' == 'Microsoft.Azure.Common.dll' or '%(Filename)%(Extension)' == 'Microsoft.ApplicationInsights.dll' or '%(Filename)%(Extension)' == 'Hyak.Common.dll'" />
+    </ItemGroup>
+  </Target>
+
 </Project>

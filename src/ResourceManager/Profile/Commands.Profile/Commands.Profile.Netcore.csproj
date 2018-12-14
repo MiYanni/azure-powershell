@@ -95,4 +95,33 @@
     <Copy SourceFiles="@(NetCoreAssemblies)" DestinationFolder="$(TargetDir)\NetCoreAssemblies" />
     <Copy SourceFiles="@(StorageDependencies)" DestinationFolder="$(TargetDir)" />
   </Target>
+
+  <!-- https://github.com/dotnet/sdk/issues/933 -->
+  <Target Name="FilterCopyLocal" DependsOnTargets="PrepareForBuild;RunResolvePublishAssemblies" BeforeTargets="ResolveLockFileCopyLocalProjectDeps">
+  <!-- <Target Name="FilterCopyLocal" AfterTargets="ResolveLockFileCopyLocalProjectDeps"> -->
+  <!-- <Target Name="FilterCopyLocal" AfterTargets="PostBuildEvent"> -->
+  <!-- <Target Name="FilterCopyLocal" AfterTargets="Build"> -->
+    <ItemGroup>
+      <!-- <RedundantDlls Include="System*.dll" Exclude="System.Security.Cryptography.ProtectedData.dll" />
+      <RedundantDlls Include="Microsoft.CSharp.dll" /> -->
+
+      <!-- <AllCopyLocalItems Remove="$(OutputPath)Microsoft.CSharp.dll" /> -->
+      <!-- <Copy SourceFiles="@(AllCopyLocalItems)" DestinationFolder="C:\CodeTemp\TestFolder" /> -->
+      <!-- <Copy SourceFiles="@(ReferenceCopyLocalPaths)" DestinationFolder="C:\CodeTemp\TestFolder" /> -->
+      <!-- <Copy SourceFiles="@(StorageDependencies)" DestinationFolder="C:\CodeTemp\TestFolder" /> -->
+      <!-- <Error Text="Look at me!" /> -->
+      
+      <!-- https://stackoverflow.com/a/48102148/294804 -->
+      <!-- https://social.msdn.microsoft.com/Forums/vstudio/en-US/545c3455-af11-4f2f-8abc-054797e662c0/itemgroup-does-not-acknowledge-quotremovequot -->
+      <!-- https://stackoverflow.com/a/46017964/294804 -->
+      <!-- <AllCopyLocalItems Remove="@(AllCopyLocalItems)" Condition="'%(Filename)' == 'Microsoft.CSharp'" /> -->
+      <!-- <AllCopyLocalItems Remove="@(AllCopyLocalItems)" Condition="'%(Filename)%(Extension)' == 'Microsoft.CSharp'" /> -->
+      <AllCopyLocalItems Remove="@(AllCopyLocalItems)" Condition="($([System.String]::Copy(%(Filename)%(Extension)).StartsWith('System.')) and '%(Filename)%(Extension)' != 'System.Security.Cryptography.ProtectedData.dll') or '%(Filename)%(Extension)' == 'Microsoft.CSharp.dll'" />
+    </ItemGroup>
+    <!-- <Copy SourceFiles="@(StorageDependencies)" DestinationFolder="C:\CodeTemp\TestFolder" /> -->
+    <!-- <Copy SourceFiles="@(AllCopyLocalItems)" DestinationFolder="C:\CodeTemp\TestFolder" /> -->
+    <!-- <Error Text="@(AllCopyLocalItems)" /> -->
+
+  </Target>
+
 </Project>
