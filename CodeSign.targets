@@ -60,7 +60,7 @@
     
     <!-- CheckSignature.ps1 -->    
     <Message Text="----> CheckSignature section" Importance="high"/>        
-    <Exec Command="$(PowerShellCommandPrefix) &quot;. $(LibraryToolsFolder)\CheckSignature.ps1 -CustomPath $(PackageDirectory)\$(Configuration) &quot;" Condition="'$(Scope)' != 'Stack'" ContinueOnError="ErrorAndContinue" />
+    <!-- <Exec Command="$(PowerShellCommandPrefix) &quot;. $(LibraryToolsFolder)\CheckSignature.ps1 -CustomPath $(PackageDirectory)\$(Configuration) &quot;" Condition="'$(Scope)' != 'Stack'" ContinueOnError="ErrorAndContinue" /> -->
 
     <!-- Copy files back after signing -->
     <Copy SourceFiles="$(PackageDirectory)\$(Configuration)\Az.psm1" DestinationFolder="$(LibraryRoot)tools\Az" Condition="'$(Scope)' == 'Netcore'" />
