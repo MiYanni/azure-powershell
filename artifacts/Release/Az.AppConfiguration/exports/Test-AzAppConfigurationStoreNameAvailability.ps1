@@ -3,6 +3,8 @@
 Checks whether the configuration store name is available for use.
 .Description
 Checks whether the configuration store name is available for use.
+.Link
+https://docs.microsoft.com/en-us/powershell/module/az.appconfiguration/test-azappconfigurationstorenameavailability
 #>
 function Test-AzAppConfigurationStoreNameAvailability {
 [OutputType('Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Models.Api20190201Preview.INameAvailabilityStatus')]

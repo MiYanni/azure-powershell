@@ -3,6 +3,8 @@
 Lists the access key for the specified configuration store.
 .Description
 Lists the access key for the specified configuration store.
+.Link
+https://docs.microsoft.com/en-us/powershell/module/az.appconfiguration/get-azappconfigurationstorekey
 #>
 function Get-AzAppConfigurationStoreKey {
 [OutputType('Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Models.Api20190201Preview.IApiKey')]

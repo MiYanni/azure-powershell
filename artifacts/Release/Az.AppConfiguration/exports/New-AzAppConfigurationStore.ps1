@@ -3,6 +3,8 @@
 Creates a configuration store with the specified parameters.
 .Description
 Creates a configuration store with the specified parameters.
+.Link
+https://docs.microsoft.com/en-us/powershell/module/az.appconfiguration/new-azappconfigurationstore
 #>
 function New-AzAppConfigurationStore {
 [OutputType('Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Models.Api20190201Preview.IConfigurationStore')]

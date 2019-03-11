@@ -3,6 +3,8 @@
 Lists the configuration stores for a given subscription.
 .Description
 Lists the configuration stores for a given subscription.
+.Link
+https://docs.microsoft.com/en-us/powershell/module/az.appconfiguration/get-azappconfigurationstore
 #>
 function Get-AzAppConfigurationStore {
 [OutputType('Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Models.Api20190201Preview.IConfigurationStore')]

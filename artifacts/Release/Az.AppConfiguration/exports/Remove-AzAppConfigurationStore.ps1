@@ -3,6 +3,8 @@
 Deletes a configuration store.
 .Description
 Deletes a configuration store.
+.Link
+https://docs.microsoft.com/en-us/powershell/module/az.appconfiguration/remove-azappconfigurationstore
 #>
 function Remove-AzAppConfigurationStore {
 [OutputType('System.Boolean')]

@@ -1,6 +1,6 @@
 # region Initialization
   # Load the private module dll
-  $null = Import-Module -PassThru -Name (Join-Path $PSScriptRoot ..\bin\Az.AppConfiguration.private.dll)
+  $null = Import-Module -PassThru -Name (Join-Path $PSScriptRoot '..\bin\Az.AppConfiguration.private.dll')
   # Export nothing to clear implicit exports
   Export-ModuleMember
 # endregion

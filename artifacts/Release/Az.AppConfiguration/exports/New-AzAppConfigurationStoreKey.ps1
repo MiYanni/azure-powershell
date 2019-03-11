@@ -3,6 +3,8 @@
 Regenerates an access key for the specified configuration store.
 .Description
 Regenerates an access key for the specified configuration store.
+.Link
+https://docs.microsoft.com/en-us/powershell/module/az.appconfiguration/new-azappconfigurationstorekey
 #>
 function New-AzAppConfigurationStoreKey {
 [OutputType('Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Models.Api20190201Preview.IApiKey')]

@@ -3,13 +3,13 @@
   $instance = [Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Module]::Instance
 
   # Load the custom script module
-  $scriptModulePath = Join-Path $PSScriptRoot custom/Az.AppConfiguration.custom.psm1
+  $scriptModulePath = Join-Path $PSScriptRoot 'custom/Az.AppConfiguration.custom.psm1'
   if(Test-Path $scriptModulePath) {
     $null = Import-Module -Name $scriptModulePath
   }
 
   # Load the private module dll
-  $null = Import-Module -Name (Join-Path $PSScriptRoot ./bin/Az.AppConfiguration.private.dll)
+  $null = Import-Module -Name (Join-Path $PSScriptRoot './bin/Az.AppConfiguration.private.dll')
 
   # Export nothing to clear implicit exports
   Export-ModuleMember
@@ -49,7 +49,7 @@
 
 # region LoadExports
   # Export proxy cmdlet scripts
-  $exportsPath = Join-Path $PSScriptRoot ./exports
+  $exportsPath = Join-Path $PSScriptRoot './exports'
   $directories = Get-ChildItem -Directory -Path $exportsPath
   $profileDirectory = $null
   if($instance.ProfileName) {
