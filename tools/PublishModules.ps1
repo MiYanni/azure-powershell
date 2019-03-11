@@ -14,26 +14,26 @@
 
 <#
 
-.SYNOPSIS
-    Create nuget packages for each module.
+    .SYNOPSIS
+        Create nuget packages for each module.
 
-.PARAMETER IsNetCore
-    If built using .NET core.
+    .PARAMETER IsNetCore
+        If built using .NET core.
 
-.PARAMETER BuildConfig
-    Either Debug or Release.
+    .PARAMETER BuildConfig
+        Either Debug or Release.
 
-.PARAMETER Scope
-    Either All, Latest, Stack, NetCore, ServiceManagement, AzureStorage
+    .PARAMETER Scope
+        Either All, Latest, Stack, NetCore, ServiceManagement, AzureStorage
 
-.PARAMETER ApiKey
-    ApiKey used to publish nuget to PS repository.
+    .PARAMETER ApiKey
+        ApiKey used to publish nuget to PS repository.
 
-.PARAMETER RepositoryLocation
-    Location we want to publish too.
+    .PARAMETER RepositoryLocation
+        Location we want to publish too.
 
-.PARAMETER NugetExe
-    Path to the nuget executable.
+    .PARAMETER NugetExe
+        Path to the nuget executable.
 
 #>
 
@@ -67,13 +67,13 @@ param(
 #################################################>
 
 <#
-.SYNOPSIS Write out to a file using UTF-8 without BOM.
+    .SYNOPSIS Write out to a file using UTF-8 without BOM.
 
-.PARAMETER File
-The file to write the contents too.
+    .PARAMETER File
+    The file to write the contents too.
 
-.PARAMETER Text
-The new file contents.
+    .PARAMETER Text
+    The new file contents.
 
 #>
 function Out-FileNoBom {
@@ -86,13 +86,13 @@ function Out-FileNoBom {
 }
 
 <#
-.SYNOPSIS Get the Package and build Output directory.
+    .SYNOPSIS Get the Package and build Output directory.
 
-.PARAMETER BuildConfig
-Either debug or release.
+    .PARAMETER BuildConfig
+    Either debug or release.
 
-.PARAMETER Profile
-Either Latest or Stack.
+    .PARAMETER Profile
+    Either Latest or Stack.
 
 #>
 function Get-Directories {
@@ -119,16 +119,16 @@ function Get-Directories {
 #################################################>
 
 <#
-.SYNOPSIS Get the list of rollup modules.  Currently AzureRM, for Stack and Azure, or AzureStack.
+    .SYNOPSIS Get the list of rollup modules.  Currently AzureRM, for Stack and Azure, or AzureStack.
 
-.PARAMETER BuildConfig
-Either debug or release.
+    .PARAMETER BuildConfig
+    Either debug or release.
 
-.PARAMETER SCOPE
-All, AzureRM, and Stack are valid Rollup modules.
+    .PARAMETER SCOPE
+    All, AzureRM, and Stack are valid Rollup modules.
 
-.PARAMETER IsNetCore
-If built using .NET core.
+    .PARAMETER IsNetCore
+    If built using .NET core.
 
 #>
 function Get-RollupModules {
@@ -163,16 +163,16 @@ function Get-RollupModules {
 }
 
 <#
-.SYNOPSIS Find and return all AzureStack admin modules.
+    .SYNOPSIS Find and return all AzureStack admin modules.
 
-.PARAMETER BuildConfig
-Either debug or release.
+    .PARAMETER BuildConfig
+    Either debug or release.
 
-.PARAMETER Profile
-Either Latest or Stack.
+    .PARAMETER Profile
+    Either Latest or Stack.
 
-.PARAMETER Scope
-The Module or class of Modules to build.
+    .PARAMETER Scope
+    The Module or class of Modules to build.
 
 #>
 function Get-AdminModules {
@@ -200,22 +200,22 @@ function Get-AdminModules {
 
 <#
 
-.SYNOPSIS Get the list of Azure modules.
+    .SYNOPSIS Get the list of Azure modules.
 
-.PARAMETER BuildConfig
-Either release or debug.
+    .PARAMETER BuildConfig
+    Either release or debug.
 
-.PARAMETER Profile
-Either Latest or Stack
+    .PARAMETER Profile
+    Either Latest or Stack
 
-.PARAMETER Scope
-The scope, either a specific Module or class of modules.
+    .PARAMETER Scope
+    The scope, either a specific Module or class of modules.
 
-.PARAMETER PublishLocal
-If publishing locally only.
+    .PARAMETER PublishLocal
+    If publishing locally only.
 
-.PARAMETER IsNetCore
-If built with .NET core.
+    .PARAMETER IsNetCore
+    If built with .NET core.
 
 #>
 function Get-ClientModules {
@@ -285,22 +285,22 @@ function Get-ClientModules {
 }
 
 <#
-.SYNOPSIS Get the modules to publish.
+    .SYNOPSIS Get the modules to publish.
 
-.PARAMETER BuildConfig
-The build configuration, either Release or Debug
+    .PARAMETER BuildConfig
+    The build configuration, either Release or Debug
 
-.PARAMETER Scope
-The module scope, either All, Storage, or Stack.
+    .PARAMETER Scope
+    The module scope, either All, Storage, or Stack.
 
-.PARAMETER PublishToLocal
-$true if publishing locally only, $false otherwise
+    .PARAMETER PublishToLocal
+    $true if publishing locally only, $false otherwise
 
-.PARAMETER Profile
-Either Latest or Stack
+    .PARAMETER Profile
+    Either Latest or Stack
 
-.PARAMETER IsNetCore
-If the modules are built using Net Core.
+    .PARAMETER IsNetCore
+    If the modules are built using Net Core.
 
 #>
 function Get-AllModules {
@@ -343,10 +343,10 @@ function Get-AllModules {
 
 
 <#
-.SYNOPSIS Remove the RequiredModules and NestedModules psd1 properties with empty array.
+    .SYNOPSIS Remove the RequiredModules and NestedModules psd1 properties with empty array.
 
-.PARAMETER Path
-Path to the psd1 file.
+    .PARAMETER Path
+    Path to the psd1 file.
 
 #>
 function Remove-ModuleDependencies {
@@ -369,19 +369,19 @@ function Remove-ModuleDependencies {
 }
 
 <#
-.SYNOPSIS Update license acceptance to be required.
+    .SYNOPSIS Update license acceptance to be required.
 
-.PARAMETER TempRepoPath
-Path to the local temporary repository.
+    .PARAMETER TempRepoPath
+    Path to the local temporary repository.
 
-.PARAMETER ModuleName
-Name of the module to update.
+    .PARAMETER ModuleName
+    Name of the module to update.
 
-.PARAMETER DirPath
-Path to the directory holding the modules to update.
+    .PARAMETER DirPath
+    Path to the directory holding the modules to update.
 
-.PARAMETER NugetExe
-Path to the Nuget executable.
+    .PARAMETER NugetExe
+    Path to the Nuget executable.
 #>
 function Update-NugetPackage {
     [CmdletBinding()]
@@ -415,19 +415,19 @@ function Update-NugetPackage {
 }
 
 <#
-.SYNOPSIS Add given modules to local repository.
+    .SYNOPSIS Add given modules to local repository.
 
-.PARAMETER ModulePaths
-List of paths to modules.
+    .PARAMETER ModulePaths
+    List of paths to modules.
 
-.PARAMETER TempRepo
-Name of local temporary repository.
+    .PARAMETER TempRepo
+    Name of local temporary repository.
 
-.PARAMETER TempRepoPath
-path to local temporary repository.
+    .PARAMETER TempRepoPath
+    path to local temporary repository.
 
-.PARAMETER NugetExe
-Path to nuget executable.
+    .PARAMETER NugetExe
+    Path to nuget executable.
 
 #>
 function Add-Modules {
@@ -456,17 +456,17 @@ function Add-Modules {
 }
 
 <#
-.SYNOPSIS
-    Saves a module into the local temporary repository
+    .SYNOPSIS
+        Saves a module into the local temporary repository
 
-.PARAMETER Module
-    Module information.
+    .PARAMETER Module
+        Module information.
 
-.PARAMETER TempRepo
-    Name of the local temporary repository
+    .PARAMETER TempRepo
+        Name of the local temporary repository
 
-.PARAMETER TempRepoPath
-    Path to the local temporary repository
+    .PARAMETER TempRepoPath
+        Path to the local temporary repository
 #>
 function Save-PackageLocally {
     [CmdletBinding()]
@@ -496,20 +496,20 @@ function Save-PackageLocally {
 }
 
 <#
-.SYNOPSIS
-Save the packages from PsGallery to local repo path
-This is typically used in a scenario where we are intending to use the existing publshed version of the module as a dependency
-Checks whether the module is already published in the local temp repo, if not downloads from the PSGallery
-This is used only for the rollup modules AzureRm or AzureStack at the moment
+    .SYNOPSIS
+    Save the packages from PsGallery to local repo path
+    This is typically used in a scenario where we are intending to use the existing publshed version of the module as a dependency
+    Checks whether the module is already published in the local temp repo, if not downloads from the PSGallery
+    This is used only for the rollup modules AzureRm or AzureStack at the moment
 
-.PARAMETER ModulePaths
-List of paths to modules.
+    .PARAMETER ModulePaths
+    List of paths to modules.
 
-.PARAMETER TempRepo
-Name of local temporary repository.
+    .PARAMETER TempRepo
+    Name of local temporary repository.
 
-.PARAMETER TempRepoPath
-path to local temporary repository.
+    .PARAMETER TempRepoPath
+    path to local temporary repository.
 
 #>
 function Save-PackagesFromPsGallery {
@@ -551,19 +551,19 @@ function Save-PackagesFromPsGallery {
 }
 
 <#
-.SYNOPSIS Add all modules to local repo.
+    .SYNOPSIS Add all modules to local repo.
 
-.PARAMETER ModulePaths
-A hash table of Modules types and paths.
+    .PARAMETER ModulePaths
+    A hash table of Modules types and paths.
 
-.PARAMETER TempRepo
-The name of the temporary repository.
+    .PARAMETER TempRepo
+    The name of the temporary repository.
 
-.PARAMETER TempRepoPath
-Path to the temporary reposityroy.
+    .PARAMETER TempRepoPath
+    Path to the temporary reposityroy.
 
-.PARAMETER NugetExe
-Location of nuget executable.
+    .PARAMETER NugetExe
+    Location of nuget executable.
 
 #>
 function Add-AllModules {
@@ -603,8 +603,8 @@ function Add-AllModules {
 #################################################>
 
 <#
-.SYNOPSIS
-Adds Rootmodule
+    .SYNOPSIS
+    Adds Rootmodule
 
 
 #>
@@ -628,19 +628,19 @@ function Add-PSM1Dependency {
 
 <#
 
-.SYNOPSIS Publish module to local temporary repository.  If no RootModule found create and add new psm1.
+    .SYNOPSIS Publish module to local temporary repository.  If no RootModule found create and add new psm1.
 
-.PARAMETER Path
-Path to the local module.
+    .PARAMETER Path
+    Path to the local module.
 
-.PARAMETER TempRepo
-Name of the local temporary repository.
+    .PARAMETER TempRepo
+    Name of the local temporary repository.
 
-.PARAMETER TempRepoPath
-Path to the local temporary repository.
+    .PARAMETER TempRepoPath
+    Path to the local temporary repository.
 
-.PARAMETER NugetExe
-Path to nuget exectuable.
+    .PARAMETER NugetExe
+    Path to nuget exectuable.
 
 #>
 function Add-Module {
@@ -733,22 +733,22 @@ function Add-Module {
 }
 
 <#
-.SYNOPSIS Publish the module to PS Gallery.
+    .SYNOPSIS Publish the module to PS Gallery.
 
-.PARAMETER Path
-Path to the module.
+    .PARAMETER Path
+    Path to the module.
 
-.PARAMETER ApiKey
-Key used to publish.
+    .PARAMETER ApiKey
+    Key used to publish.
 
-.PARAMETER TempRepoPath
-Path to the local temporary repository containing nuget.
+    .PARAMETER TempRepoPath
+    Path to the local temporary repository containing nuget.
 
-.PARAMETER RepoLocation
-Repository we are publishing too.
+    .PARAMETER RepoLocation
+    Repository we are publishing too.
 
-.PARAMETER NugetExe
-Path to nuget executable.
+    .PARAMETER NugetExe
+    Path to nuget executable.
 
 #>
 function Publish-PowershellModule {
@@ -778,22 +778,22 @@ function Publish-PowershellModule {
 }
 
 <#
-.SYNOPSIS Publish the nugets to PSGallery
+    .SYNOPSIS Publish the nugets to PSGallery
 
-.PARAMETER ApiKey
-Key used to publish.
+    .PARAMETER ApiKey
+    Key used to publish.
 
-.PARAMETER TempRepoPath
-Path to the local temporary repository.
+    .PARAMETER TempRepoPath
+    Path to the local temporary repository.
 
-.PARAMETER RepoLocation
-Name of repository we are publishing too.
+    .PARAMETER RepoLocation
+    Name of repository we are publishing too.
 
-.PARAMETER NugetExe
-Path to nuget executable.
+    .PARAMETER NugetExe
+    Path to nuget executable.
 
-.PARAMETER PublishLocal
-If publishing locally we don't do anything.
+    .PARAMETER PublishLocal
+    If publishing locally we don't do anything.
 
 #>
 function Publish-AllModules {

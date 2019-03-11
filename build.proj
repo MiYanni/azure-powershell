@@ -235,7 +235,7 @@
     </ItemGroup>
     <Exec Command="dotnet sln Azure.PowerShell.sln add @(ModuleCsprojFilesRelative->'%(RelativePath)', ' ')" />
     <Exec Command="dotnet sln Azure.PowerShell.sln add $(LibraryRoot)tools/Tools.Common/Tools.Common.Netcore.csproj $(LibraryRoot)tools/StaticAnalysis/StaticAnalysis.Netcore.csproj $(LibraryRoot)tools/VersionController/VersionController.Netcore.csproj" />
-    <Exec Command="dotnet publish Azure.PowerShell.sln -c $(Configuration)" />
+    <!-- <Exec Command="dotnet publish Azure.PowerShell.sln -c $(Configuration)" /> -->
 
 
     <!-- TODO: <REMOVE THIS SECTION> -->
@@ -278,7 +278,7 @@
       Condition="'$(CodeSign)' == 'true'"/> -->
 
     <CallTarget targets="DependencyAnalysisNetcore" ContinueOnError="ErrorAndContinue" Condition="'$(RunStaticAnalysis)' == 'true'" />
-    <Exec Command="$(PowerShellCommandPrefix) &quot;. $(LibraryToolsFolder)\CheckAssemblies.ps1 -BuildConfig $(Configuration) &quot;" Condition="'$(RunStaticAnalysis)' == 'true'" />
+    <!-- <Exec Command="$(PowerShellCommandPrefix) &quot;. $(LibraryToolsFolder)\CheckAssemblies.ps1 -BuildConfig $(Configuration) &quot;" Condition="'$(RunStaticAnalysis)' == 'true'" /> -->
 
     <!-- Cleanup extraneous files. -->
     <!-- <Exec Command="$(PowerShellCoreCommandPrefix) &quot;. $(LibraryToolsFolder)\CleanupBuild.ps1 -BuildConfig $(Configuration)&quot;" /> -->
