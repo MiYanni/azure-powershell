@@ -36,7 +36,7 @@
     <!-- <Exec Command="$(PowerShellCommandPrefix) &quot;. $(LibraryToolsFolder)\UpdateModules.ps1 -BuildConfig $(Configuration) -Scope $(Scope) &quot;" /> -->
 
     <!-- Copying shortcut to be signed -->
-    <Copy SourceFiles="$(LibraryRoot)tools\Az\Az.psm1" DestinationFolder="$(PackageDirectory)\$(Configuration)" Condition="'$(Scope)' == 'Netcore'" />
+    <!-- <Copy SourceFiles="$(LibraryRoot)tools\Az\Az.psm1" DestinationFolder="$(PackageDirectory)\$(Configuration)" Condition="'$(Scope)' == 'Netcore'" /> -->
 
     <Message Text="----> Scripts signing section" Importance="high"/>
     <!-- Azure -->
@@ -64,13 +64,12 @@
     <!-- <Exec Command="$(PowerShellCommandPrefix) &quot;. $(LibraryToolsFolder)\CheckSignature.ps1 -CustomPath $(PackageDirectory)\$(Configuration) &quot;" Condition="'$(Scope)' != 'Stack'" ContinueOnError="ErrorAndContinue" /> -->
 
     <!-- Copy files back after signing -->
-    <Copy SourceFiles="$(PackageDirectory)\$(Configuration)\Az.psm1" DestinationFolder="$(LibraryRoot)tools\Az" Condition="'$(Scope)' == 'Netcore'" />
+    <!-- <Copy SourceFiles="$(PackageDirectory)\$(Configuration)\Az.psm1" DestinationFolder="$(LibraryRoot)tools\Az" Condition="'$(Scope)' == 'Netcore'" /> -->
   </Target>
 
   <Target Name="CodeSignInstaller">
-    <Message Text="----> CodeSignInstaller section" Importance="high"/>
+    <!-- <Message Text="----> CodeSignInstaller section" Importance="high"/>
     <PropertyGroup>
-      <!--public token associated with MSSharedLibKey.snk-->
       <StrongNameToken Condition=" '$(StrongNameToken)' == '' ">31bf3856ad364e35</StrongNameToken>
     </PropertyGroup>
     <GetFrameworkSdkPath>
@@ -90,9 +89,8 @@
         SignLogDirPath="$(LibraryRoot)\msi-signing.log" 
         Condition="!$(DelaySign) and '@(InstallersToSign)' != ''"/>
 
-    <!--If we are testing locally then we copy the binaries and do not submit to the code sign server-->
     <Copy SourceFiles="@(InstallersToSign)" DestinationFolder="signed" Condition="$(DelaySign)" />
-    <SetEnvVar EnvName="SignedMsiDir" EnvValue="$(SignedOutputRootDir)" />
+    <SetEnvVar EnvName="SignedMsiDir" EnvValue="$(SignedOutputRootDir)" /> -->
   </Target>
 
 </Project>
