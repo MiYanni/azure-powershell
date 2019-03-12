@@ -19,7 +19,8 @@
     <Message Text="----> Dlls signing section" Importance="high"/>
     <!-- Azure -->
     <ItemGroup Condition="'$(Scope)' == 'All' or '$(Scope)' == 'Latest' or '$(Scope)' == 'Netcore'">
-      <DelaySignedAssembliesToSign Include="$(PackageDirectory)\$(Configuration)\**\Microsoft*Azure*PowerShell*Cmdlets*.dll;$(PackageDirectory)\$(Configuration)\**\Az.AppConfiguration.private.dll;
+      <DelaySignedAssembliesToSign Include="$(PackageDirectory)\$(Configuration)\**\Microsoft*Azure*PowerShell*Cmdlets*.dll;
+        $(PackageDirectory)\$(Configuration)\Az.AppConfiguration\bin\Az.AppConfiguration.private.dll;
         $(PackageDirectory)\$(Configuration)\Az.Accounts\Microsoft.Azure.PowerShell.Authentication.ResourceManager.dll;
         $(PackageDirectory)\$(Configuration)\**\Microsoft.Azure.PowerShell.Authenticators.dll;
         $(PackageDirectory)\$(Configuration)\Az.Accounts\Microsoft.Azure.PowerShell.Authentication.dll" />
@@ -32,7 +33,7 @@
         SignLogDirPath="$(LibraryRoot)dlls-signing.log" 
         Condition="!$(DelaySign) and '@(DelaySignedAssembliesToSign)' != ''"/>
 
-    <Exec Command="$(PowerShellCommandPrefix) &quot;. $(LibraryToolsFolder)\UpdateModules.ps1 -BuildConfig $(Configuration) -Scope $(Scope) &quot;" />
+    <!-- <Exec Command="$(PowerShellCommandPrefix) &quot;. $(LibraryToolsFolder)\UpdateModules.ps1 -BuildConfig $(Configuration) -Scope $(Scope) &quot;" /> -->
 
     <!-- Copying shortcut to be signed -->
     <Copy SourceFiles="$(LibraryRoot)tools\Az\Az.psm1" DestinationFolder="$(PackageDirectory)\$(Configuration)" Condition="'$(Scope)' == 'Netcore'" />
