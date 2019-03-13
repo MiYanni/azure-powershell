@@ -58,27 +58,15 @@ param(
 
     [Parameter(ParameterSetName='ResourceGroupNameConfigStoreName', Mandatory)]
     [Parameter(ParameterSetName='ResourceGroupResourceGroupName', Mandatory)]
-    [Parameter(ParameterSetName='ResourceGroupResourceGroupNameSkipToken', Mandatory)]
     [Parameter(ParameterSetName='ResourceGroupSubscriptionIdResourceGroupName', Mandatory)]
-    [Parameter(ParameterSetName='ResourceGroupSubscriptionIdResourceGroupNameSkipToken', Mandatory)]
     [Parameter(ParameterSetName='SubscriptionIdResourceGroupNameConfigStoreName', Mandatory)]
     [System.String]
     # The name of the resource group to which the container registry belongs.
     ${ResourceGroupName},
 
-    [Parameter(ParameterSetName='ResourceGroupResourceGroupNameSkipToken', Mandatory)]
-    [Parameter(ParameterSetName='ResourceGroupSubscriptionIdResourceGroupNameSkipToken', Mandatory)]
-    [Parameter(ParameterSetName='SkipToken', Mandatory)]
-    [Parameter(ParameterSetName='SubscriptionIdSkipToken', Mandatory)]
-    [System.String]
-    # A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
-    ${SkipToken},
-
     [Parameter(ParameterSetName='ResourceGroupSubscriptionIdResourceGroupName', Mandatory)]
-    [Parameter(ParameterSetName='ResourceGroupSubscriptionIdResourceGroupNameSkipToken', Mandatory)]
     [Parameter(ParameterSetName='SubscriptionId', Mandatory)]
     [Parameter(ParameterSetName='SubscriptionIdResourceGroupNameConfigStoreName', Mandatory)]
-    [Parameter(ParameterSetName='SubscriptionIdSkipToken', Mandatory)]
     [System.String]
     # The Microsoft Azure subscription ID.
     ${SubscriptionId}
@@ -95,13 +83,9 @@ begin {
             __NoParameters = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore';
             ResourceGroupNameConfigStoreName = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_ResourceGroupNameConfigStoreName';
             ResourceGroupResourceGroupName = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_ResourceGroupResourceGroupName';
-            ResourceGroupResourceGroupNameSkipToken = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_ResourceGroupResourceGroupNameSkipToken';
             ResourceGroupSubscriptionIdResourceGroupName = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_ResourceGroupSubscriptionIdResourceGroupName';
-            ResourceGroupSubscriptionIdResourceGroupNameSkipToken = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_ResourceGroupSubscriptionIdResourceGroupNameSkipToken';
-            SkipToken = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_SkipToken';
             SubscriptionId = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_SubscriptionId';
             SubscriptionIdResourceGroupNameConfigStoreName = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_SubscriptionIdResourceGroupNameConfigStoreName';
-            SubscriptionIdSkipToken = 'Az.AppConfiguration.private\Get-AzAppConfigurationStore_SubscriptionIdSkipToken';
         }
         $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand("$($mapping["$parameterSet"])", [System.Management.Automation.CommandTypes]::Cmdlet)
         $scriptCmd = {& $wrappedCmd @PSBoundParameters}

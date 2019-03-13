@@ -29,38 +29,15 @@ Get-AzAppConfigurationStore [-DefaultProfile <PSObject>] -Name <String> -Resourc
  [<CommonParameters>]
 ```
 
-### ResourceGroupSubscriptionIdResourceGroupNameSkipToken
-```
-Get-AzAppConfigurationStore [-DefaultProfile <PSObject>] -ResourceGroupName <String> -SkipToken <String>
- -SubscriptionId <String> [<CommonParameters>]
-```
-
 ### ResourceGroupSubscriptionIdResourceGroupName
 ```
 Get-AzAppConfigurationStore [-DefaultProfile <PSObject>] -ResourceGroupName <String> -SubscriptionId <String>
  [<CommonParameters>]
 ```
 
-### ResourceGroupResourceGroupNameSkipToken
-```
-Get-AzAppConfigurationStore [-DefaultProfile <PSObject>] -ResourceGroupName <String> -SkipToken <String>
- [<CommonParameters>]
-```
-
 ### ResourceGroupResourceGroupName
 ```
 Get-AzAppConfigurationStore [-DefaultProfile <PSObject>] -ResourceGroupName <String> [<CommonParameters>]
-```
-
-### SubscriptionIdSkipToken
-```
-Get-AzAppConfigurationStore [-DefaultProfile <PSObject>] -SkipToken <String> -SubscriptionId <String>
- [<CommonParameters>]
-```
-
-### SkipToken
-```
-Get-AzAppConfigurationStore [-DefaultProfile <PSObject>] -SkipToken <String> [<CommonParameters>]
 ```
 
 ### SubscriptionId
@@ -117,23 +94,7 @@ The name of the resource group to which the container registry belongs.
 
 ```yaml
 Type: System.String
-Parameter Sets: SubscriptionIdResourceGroupNameConfigStoreName, ResourceGroupNameConfigStoreName, ResourceGroupSubscriptionIdResourceGroupNameSkipToken, ResourceGroupSubscriptionIdResourceGroupName, ResourceGroupResourceGroupNameSkipToken, ResourceGroupResourceGroupName
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SkipToken
-A skip token is used to continue retrieving items after an operation returns a partial result.
-If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
-
-```yaml
-Type: System.String
-Parameter Sets: ResourceGroupSubscriptionIdResourceGroupNameSkipToken, ResourceGroupResourceGroupNameSkipToken, SubscriptionIdSkipToken, SkipToken
+Parameter Sets: SubscriptionIdResourceGroupNameConfigStoreName, ResourceGroupNameConfigStoreName, ResourceGroupSubscriptionIdResourceGroupName, ResourceGroupResourceGroupName
 Aliases:
 
 Required: True
@@ -148,7 +109,7 @@ The Microsoft Azure subscription ID.
 
 ```yaml
 Type: System.String
-Parameter Sets: SubscriptionIdResourceGroupNameConfigStoreName, ResourceGroupSubscriptionIdResourceGroupNameSkipToken, ResourceGroupSubscriptionIdResourceGroupName, SubscriptionIdSkipToken, SubscriptionId
+Parameter Sets: SubscriptionIdResourceGroupNameConfigStoreName, ResourceGroupSubscriptionIdResourceGroupName, SubscriptionId
 Aliases:
 
 Required: True

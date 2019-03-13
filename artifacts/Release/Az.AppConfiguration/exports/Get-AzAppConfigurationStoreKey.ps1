@@ -60,14 +60,7 @@ param(
     # The name of the resource group to which the container registry belongs.
     ${ResourceGroupName},
 
-    [Parameter(ParameterSetName='KeysResourceGroupNameConfigStoreNameSkipToken', Mandatory)]
-    [Parameter(ParameterSetName='KeysSubscriptionIdResourceGroupNameConfigStoreNameSkipToken', Mandatory)]
-    [System.String]
-    # A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
-    ${SkipToken},
-
     [Parameter(ParameterSetName='KeysSubscriptionIdResourceGroupNameConfigStoreName', Mandatory)]
-    [Parameter(ParameterSetName='KeysSubscriptionIdResourceGroupNameConfigStoreNameSkipToken', Mandatory)]
     [System.String]
     # The Microsoft Azure subscription ID.
     ${SubscriptionId}
@@ -82,9 +75,7 @@ begin {
         $parameterSet = $PsCmdlet.ParameterSetName
         $mapping = @{
             KeysResourceGroupNameConfigStoreName = 'Az.AppConfiguration.private\Get-AzAppConfigurationStoreKey_KeysResourceGroupNameConfigStoreName';
-            KeysResourceGroupNameConfigStoreNameSkipToken = 'Az.AppConfiguration.private\Get-AzAppConfigurationStoreKey_KeysResourceGroupNameConfigStoreNameSkipToken';
             KeysSubscriptionIdResourceGroupNameConfigStoreName = 'Az.AppConfiguration.private\Get-AzAppConfigurationStoreKey_KeysSubscriptionIdResourceGroupNameConfigStoreName';
-            KeysSubscriptionIdResourceGroupNameConfigStoreNameSkipToken = 'Az.AppConfiguration.private\Get-AzAppConfigurationStoreKey_KeysSubscriptionIdResourceGroupNameConfigStoreNameSkipToken';
         }
         $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand("$($mapping["$parameterSet"])", [System.Management.Automation.CommandTypes]::Cmdlet)
         $scriptCmd = {& $wrappedCmd @PSBoundParameters}
