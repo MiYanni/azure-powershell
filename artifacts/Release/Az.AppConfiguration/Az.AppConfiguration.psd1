@@ -1,7 +1,7 @@
 @{
 # region definition
   RootModule = './Az.AppConfiguration.psm1'
-  ModuleVersion = '0.1.0'
+  ModuleVersion = '0.1.1'
   CompatiblePSEditions = 'Core', 'Desktop'
   GUID = '3ff16738-381e-4d5a-9d90-c7ef6816f78e'
   Author = 'Microsoft Corporation'
@@ -23,6 +23,10 @@
       ReleaseNotes = ''
     }
   }
+# endregion
+
+# region exports
+  CmdletsToExport = 'Get-AzAppConfigurationStore', 'Get-AzAppConfigurationStoreKey', 'New-AzAppConfigurationStore', 'New-AzAppConfigurationStoreKey', 'Remove-AzAppConfigurationStore', 'Test-AzAppConfigurationStoreNameAvailability', '*'
 # endregion
 
 }

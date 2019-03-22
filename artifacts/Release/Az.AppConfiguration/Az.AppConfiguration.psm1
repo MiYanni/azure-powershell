@@ -3,7 +3,7 @@
   $instance = [Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Module]::Instance
 
   # Load the custom script module
-  $scriptModulePath = Join-Path $PSScriptRoot 'custom/Az.AppConfiguration.custom.psm1'
+  $scriptModulePath = Join-Path $PSScriptRoot './custom/Az.AppConfiguration.custom.psm1'
   if(Test-Path $scriptModulePath) {
     $null = Import-Module -Name $scriptModulePath
   }
@@ -18,12 +18,17 @@
 # region AzureInitialization
   # Load required Az.Accounts module
   $sharedModule = Get-Module -Name Az.Accounts
-  if ($sharedModule -ne $null -and $sharedModule.Version.ToString().CompareTo('1.4.0') -lt 0) {
-    Write-Error 'This module requires Az.Accounts version 1.4.0. An earlier version of Az.Accounts is imported in the current PowerShell session. Please open a new session before importing this module. This error could indicate that multiple incompatible versions of the Azure PowerShell cmdlets are installed on your system. Please see https://aka.ms/azps-version-error for troubleshooting information.' -ErrorAction Stop
-  } elseif ($sharedModule -eq $null) {
-    $sharedModule = Import-Module -Name Az.Accounts -MinimumVersion 1.4.0 -Scope Global -PassThru
+  if (-not $sharedModule) {
+    $accountsName = 'Az.Accounts'
+    $localAccounts = Get-ChildItem -Path (Join-Path $PSScriptRoot 'generated\modules') -Recurse -Include 'Az.Accounts.psd1' | Select-Object -Last 1
+    if($localAccounts -and (Test-Path -Path $localAccounts)) {
+      $accountsName = $localAccounts.FullName
+    }
+    $sharedModule = Import-Module -Name $accountsName -MinimumVersion 1.4.0 -Scope Global -PassThru
+  } elseif ($sharedModule.Version -lt [System.Version]'1.4.0') {
+    Write-Error 'This module requires Az.Accounts version 1.4.0 or greater. An earlier version of Az.Accounts is imported in the current PowerShell session. Please open a new session before importing this module. This error could indicate that multiple incompatible versions of the Azure PowerShell cmdlets are installed on your system. Please see https://aka.ms/azps-version-error for troubleshooting information.' -ErrorAction Stop
   }
-  Write-Host "Loaded Module '$($sharedModule.Name)'"
+  Write-Information "Loaded Module '$($sharedModule.Name)'"
 
   # Ask for the shared functionality table
   $VTable = Register-AzModule
@@ -66,7 +71,7 @@
   }
 
   if($profileDirectory) {
-    Write-Host "Loaded Azure profile '$($profileDirectory.Name)' for module '$($instance.Name)'"
+    Write-Information "Loaded Azure profile '$($profileDirectory.Name)' for module '$($instance.Name)'"
     $exportsPath = $profileDirectory.FullName
   }
 
@@ -82,5 +87,5 @@
 # region Finalization
   # Finalize initialization of this module
   $instance.Init();
-  Write-Host "Loaded Module '$($instance.Name)'"
+  Write-Information "Loaded Module '$($instance.Name)'"
 # endregion
