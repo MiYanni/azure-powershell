@@ -92,7 +92,7 @@ begin {
             ResourceGroupNameConfigStoreNameLocationTagsPropertiesExpanded = 'Az.AppConfiguration.private\New-AzAppConfigurationStore_ResourceGroupNameConfigStoreNameLocationTagsPropertiesExpanded';
             SubscriptionIdResourceGroupNameConfigStoreNameLocationTagsPropertiesEtc = 'Az.AppConfiguration.private\New-AzAppConfigurationStore_SubscriptionIdResourceGroupNameConfigStoreNameLocationTagsPropertiesEtc';
         }
-        $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand("$($mapping["$parameterSet"])", [System.Management.Automation.CommandTypes]::Cmdlet)
+        $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand(($mapping[$parameterSet]), [System.Management.Automation.CommandTypes]::Cmdlet)
         $scriptCmd = {& $wrappedCmd @PSBoundParameters}
         $steppablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)

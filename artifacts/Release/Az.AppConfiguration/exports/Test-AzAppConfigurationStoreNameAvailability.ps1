@@ -8,7 +8,7 @@ https://docs.microsoft.com/en-us/powershell/module/az.appconfiguration/test-azap
 #>
 function Test-AzAppConfigurationStoreNameAvailability {
 [OutputType('Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Models.Api20190201Preview.INameAvailabilityStatus')]
-[CmdletBinding(DefaultParameterSetName='NameAvailabilityNameTypeExpanded', SupportsShouldProcess, ConfirmImpact='Medium')]
+[CmdletBinding(DefaultParameterSetName='NoType', SupportsShouldProcess, ConfirmImpact='Medium')]
 param(
     [Parameter(DontShow)]
     [System.Management.Automation.SwitchParameter]
@@ -55,13 +55,15 @@ param(
     # Use the default credentials for the proxy
     ${ProxyUseDefaultCredentials},
 
-    [Parameter(Mandatory)]
+    [Parameter(ParameterSetName='NameAvailabilityNameTypeExpanded', Mandatory)]
+    [Parameter(ParameterSetName='NameAvailabilitySubscriptionIdNameTypeExpanded', Mandatory)]
     [ArgumentCompleter([Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Support.ConfigurationResourceType])]
     [Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Support.ConfigurationResourceType]
     # The resource type to check for name availability.
     ${Type},
 
     [Parameter(ParameterSetName='NameAvailabilitySubscriptionIdNameTypeExpanded', Mandatory)]
+    [Parameter(ParameterSetName='NoType')]
     [System.String]
     # The Microsoft Azure subscription ID.
     ${SubscriptionId}
@@ -77,8 +79,9 @@ begin {
         $mapping = @{
             NameAvailabilityNameTypeExpanded = 'Az.AppConfiguration.private\Test-AzAppConfigurationStoreNameAvailability_NameAvailabilityNameTypeExpanded';
             NameAvailabilitySubscriptionIdNameTypeExpanded = 'Az.AppConfiguration.private\Test-AzAppConfigurationStoreNameAvailability_NameAvailabilitySubscriptionIdNameTypeExpanded';
+            NoType = 'Az.AppConfiguration.custom\Test-AzAppConfigurationStoreNameAvailability';
         }
-        $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand("$($mapping["$parameterSet"])", [System.Management.Automation.CommandTypes]::Cmdlet)
+        $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand(($mapping[$parameterSet]), [System.Management.Automation.CommandTypes]::Cmdlet)
         $scriptCmd = {& $wrappedCmd @PSBoundParameters}
         $steppablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)

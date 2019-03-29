@@ -2,14 +2,14 @@
   # Get this module's instance
   $instance = [Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Module]::Instance
 
-  # Load the custom script module
-  $scriptModulePath = Join-Path $PSScriptRoot './custom/Az.AppConfiguration.custom.psm1'
-  if(Test-Path $scriptModulePath) {
-    $null = Import-Module -Name $scriptModulePath
-  }
-
   # Load the private module dll
   $null = Import-Module -Name (Join-Path $PSScriptRoot './bin/Az.AppConfiguration.private.dll')
+
+  # Load the custom module
+  $customModulePath = Join-Path $PSScriptRoot './custom/Az.AppConfiguration.custom.psm1'
+  if(Test-Path $customModulePath) {
+    $null = Import-Module -Name $customModulePath
+  }
 
   # Export nothing to clear implicit exports
   Export-ModuleMember
@@ -76,11 +76,8 @@
   }
 
   if($exportsPath) {
-    Get-ChildItem -Path $exportsPath -Recurse -Filter '*.ps1' -File | Sort-Object Name | ForEach-Object {
-      Write-Verbose "Loading script file: $($_.Name)"
-      . $_.FullName
-      Export-ModuleMember -Function $_.BaseName
-    }
+    Get-ChildItem -Path $exportsPath -Recurse -Filter '*.ps1' -File | ForEach-Object { . $_.FullName }
+    Export-ModuleMember -Function (Get-ScriptCmdlet -ScriptFolder $exportsPath)
   }
 # endregion
 

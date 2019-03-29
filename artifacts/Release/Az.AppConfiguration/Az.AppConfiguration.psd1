@@ -1,9 +1,8 @@
 @{
 # region definition
   RootModule = './Az.AppConfiguration.psm1'
-  ModuleVersion = '0.1.1'
+  ModuleVersion = '0.1.2'
   CompatiblePSEditions = 'Core', 'Desktop'
-  GUID = '3ff16738-381e-4d5a-9d90-c7ef6816f78e'
   Author = 'Microsoft Corporation'
   CompanyName = 'Microsoft Corporation'
   Copyright = 'Microsoft Corporation. All rights reserved.'
@@ -12,6 +11,10 @@
   DotNetFrameworkVersion = '4.7.2'
   RequiredAssemblies = './bin/Az.AppConfiguration.private.dll'
   FormatsToProcess = './Az.AppConfiguration.format.ps1xml'
+# endregion
+
+# region persistent data
+  GUID = '3ff16738-381e-4d5a-9d90-c7ef6816f78e'
 # endregion
 
 # region private data

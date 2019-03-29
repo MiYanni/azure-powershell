@@ -12,16 +12,22 @@ Checks whether the configuration store name is available for use.
 
 ## SYNTAX
 
-### NameAvailabilityNameTypeExpanded (Default)
+### NoType (Default)
 ```
 Test-AzAppConfigurationStoreNameAvailability [-DefaultProfile <PSObject>] -Name <String>
- -Type <ConfigurationResourceType> [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-SubscriptionId <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### NameAvailabilitySubscriptionIdNameTypeExpanded
 ```
 Test-AzAppConfigurationStoreNameAvailability [-DefaultProfile <PSObject>] -Name <String>
  -Type <ConfigurationResourceType> -SubscriptionId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### NameAvailabilityNameTypeExpanded
+```
+Test-AzAppConfigurationStoreNameAvailability [-DefaultProfile <PSObject>] -Name <String>
+ -Type <ConfigurationResourceType> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -73,6 +79,18 @@ The Microsoft Azure subscription ID.
 
 ```yaml
 Type: System.String
+Parameter Sets: NoType
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: System.String
 Parameter Sets: NameAvailabilitySubscriptionIdNameTypeExpanded
 Aliases:
 
@@ -88,7 +106,7 @@ The resource type to check for name availability.
 
 ```yaml
 Type: Microsoft.Azure.PowerShell.Cmdlets.AppConfiguration.Support.ConfigurationResourceType
-Parameter Sets: (All)
+Parameter Sets: NameAvailabilitySubscriptionIdNameTypeExpanded, NameAvailabilityNameTypeExpanded
 Aliases:
 
 Required: True

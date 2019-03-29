@@ -77,7 +77,7 @@ begin {
             KeysResourceGroupNameConfigStoreName = 'Az.AppConfiguration.private\Get-AzAppConfigurationStoreKey_KeysResourceGroupNameConfigStoreName';
             KeysSubscriptionIdResourceGroupNameConfigStoreName = 'Az.AppConfiguration.private\Get-AzAppConfigurationStoreKey_KeysSubscriptionIdResourceGroupNameConfigStoreName';
         }
-        $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand("$($mapping["$parameterSet"])", [System.Management.Automation.CommandTypes]::Cmdlet)
+        $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand(($mapping[$parameterSet]), [System.Management.Automation.CommandTypes]::Cmdlet)
         $scriptCmd = {& $wrappedCmd @PSBoundParameters}
         $steppablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
