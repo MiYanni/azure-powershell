@@ -1,0 +1,88 @@
+### Get-AzHealthCareOperationResult
+  - DefaultProfile
+  - Id
+  - InputObject
+  - LocationName
+  - SubscriptionId
+
+### Get-AzHealthCareService
+  - DefaultProfile
+  - InputObject
+  - ResourceGroupName
+  - ResourceName
+  - SubscriptionId
+
+### New-AzHealthCareService
+  - AccessPolicy
+  - AsJob
+  - AuthenticationConfigurationAudience
+  - AuthenticationConfigurationAuthority
+  - AuthenticationConfigurationSmartProxyEnabled
+  - CorConfigurationAllowCredentials
+  - CorConfigurationHeader
+  - CorConfigurationMaxAge
+  - CorConfigurationMethod
+  - CorConfigurationOrigin
+  - CosmoDbConfigurationOfferThroughput
+  - DefaultProfile
+  - Etag
+  - InputObject
+  - Location
+  - NoWait
+  - ResourceGroupName
+  - ResourceName
+  - ServiceDescription
+  - SubscriptionId
+  - Tag
+
+### Remove-AzHealthCareService
+  - AsJob
+  - DefaultProfile
+  - InputObject
+  - NoWait
+  - PassThru
+  - ResourceGroupName
+  - ResourceName
+  - SubscriptionId
+
+### Set-AzHealthCareService
+  - AccessPolicy
+  - AsJob
+  - AuthenticationConfigurationAudience
+  - AuthenticationConfigurationAuthority
+  - AuthenticationConfigurationSmartProxyEnabled
+  - CorConfigurationAllowCredentials
+  - CorConfigurationHeader
+  - CorConfigurationMaxAge
+  - CorConfigurationMethod
+  - CorConfigurationOrigin
+  - CosmoDbConfigurationOfferThroughput
+  - DefaultProfile
+  - Etag
+  - Location
+  - NoWait
+  - ResourceGroupName
+  - ResourceName
+  - ServiceDescription
+  - SubscriptionId
+  - Tag
+
+### Test-AzHealthCareServiceNameAvailability
+  - CheckNameAvailabilityInput
+  - DefaultProfile
+  - InputObject
+  - Name
+  - SubscriptionId
+  - Type
+
+### Update-AzHealthCareService
+  - AsJob
+  - DefaultProfile
+  - InputObject
+  - NoWait
+  - ResourceGroupName
+  - ResourceName
+  - ServicePatchDescription
+  - SubscriptionId
+  - Tag
+
