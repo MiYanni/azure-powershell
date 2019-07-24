@@ -682,6 +682,8 @@ function Add-Module {
         }
 
         Write-Output "Publishing the module $moduleName"
+        Write-Output "Path: $Path"
+        Write-Output "TempRepo: $TempRepo"
         Publish-Module -Path $Path -Repository $TempRepo -Force | Out-Null
         Write-Output "$moduleName published"
 
