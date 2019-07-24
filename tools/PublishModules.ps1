@@ -684,6 +684,10 @@ function Add-Module {
         Write-Output "Publishing the module $moduleName"
         Write-Output "Path: $Path"
         Write-Output "TempRepo: $TempRepo"
+        $gmo = Get-Module -Name PowerShellGet
+        Write-Output "GMO: $gmo"
+        $gmoli = Get-Module -Name PowerShellGet -ListAvailable
+        Write-Output "GMOLI: $gmoli"
         Publish-Module -Path $Path -Repository $TempRepo -Force | Out-Null
         Write-Output "$moduleName published"
 
