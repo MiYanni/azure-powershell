@@ -690,7 +690,7 @@ function Add-Module {
         $gmoli = Get-Module -Name PowerShellGet -ListAvailable
         Write-Output "GMOLI:"
         Write-Output $gmoli
-        Publish-Module -Path $Path -Repository $TempRepo -Force | Out-Null
+        Publish-Module -Path $Path -Repository $TempRepo -Force -ErrorAction Stop -Debug
         Write-Output "$moduleName published"
 
         # Create a psm1 and alter psd1 dependencies to allow fine-grained
